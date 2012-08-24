@@ -59,6 +59,7 @@ uses Classes, SysUtils,
   pcnEnvEventoNFe, pcnRetEnvEventoNFe, pcnRetConsSitNFe, // Incluido por Italo em 09/04/2012
   pcnConsNFeDest, pcnRetConsNFeDest, // Incluido por Italo em 17/07/2012
   pcnDownloadNFe, // Incluido por Italo em 18/07/2012
+  pcnRetDownloadNFe, // Incluido por Italo em 23/08/2012
   ACBrNFeNotasFiscais,
   ACBrNFeConfiguracoes;
 
@@ -456,8 +457,8 @@ type
   public
     constructor Create(AOwner : TComponent);reintroduce;
     destructor Destroy; override;
-
     function Executar: Boolean; override;
+
     property tpAmb: TpcnTipoAmbiente         read FtpAmb;
     property CNPJ: String                    read FCNPJ           write FCNPJ;
     property indNFe: TpcnIndicadorNFe        read FindNFe         write FindNFe;
@@ -472,15 +473,15 @@ type
     FtpAmb: TpcnTipoAmbiente;
     FCNPJ: String;
     FDownload: TDownLoadNFe;
-//    FretDownloadNFe: TretDownloadNFe;
+    FretDownloadNFe: TretDownloadNFe;
   public
     constructor Create(AOwner : TComponent; ADownload : TDownloadNFe); reintroduce;
     destructor Destroy; override;
     function Executar: Boolean; override;
 
-    property tpAmb: TpcnTipoAmbiente      read FtpAmb;
-    property CNPJ: String                 read FCNPJ   write FCNPJ;
-//    property retDownloadNFe: TretDownloadNFe     read FretDownloadNFe write FretDownloadNFe;
+    property tpAmb: TpcnTipoAmbiente        read FtpAmb;
+    property CNPJ: String                   read FCNPJ            write FCNPJ;
+    property retDownloadNFe: TretDownloadNFe read FretDownloadNFe write FretDownloadNFe;
   end;
 
   TWebServices = Class(TWebServicesBase)
@@ -3720,8 +3721,8 @@ end;
 
 destructor TNFeDownloadNFe.Destroy;
 begin
-//  if Assigned(FCCeRetorno) then
-//     FCCeRetorno.Free;
+  if Assigned(FRetDownloadNFe) then
+     FRetDownloadNFe.Free;
 
   inherited;
 end;
@@ -3734,6 +3735,7 @@ var
   Acao  : TStringList ;
   Stream: TMemoryStream;
   StrStream: TStringStream;
+  i: Integer;
 
   {$IFDEF ACBrNFeOpenSSL}
      HTTP: THTTPSend;
@@ -3776,6 +3778,12 @@ begin
      ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/nfe/wsdl/NfeDownloadNF/nfeDownloadNF';
   {$ENDIF}
 
+  // Movido para fora do try por Italo em 23/08/2012
+  if Assigned(FRetDownloadNFe)
+   then FreeAndNil(FRetDownloadNFe);
+
+  FRetDownloadNFe := TRetDownloadNFe.Create;
+
   try
     TACBrNFe( FACBrNFe ).SetStatus( stNFeStatusServico );
     if FConfiguracoes.Geral.Salvar then
@@ -3802,47 +3810,40 @@ begin
          FRetWS := SeparaDados( FRetornoWS,'nfeDownloadNFResult');
          StrStream.Free;
       {$ENDIF}
-      {
-      NFeRetorno := TRetConsStatServ.Create;
-      NFeRetorno.Leitor.Arquivo := FRetWS;
-      NFeRetorno.LerXml;
+
+      FRetDownloadNFe.Leitor.Arquivo := FRetWS;
+      FRetDownloadNFe.LerXml;
 
       TACBrNFe( FACBrNFe ).SetStatus( stIdle );
-      aMsg := 'Ambiente : '+TpAmbToStr(NFeRetorno.tpAmb)+LineBreak+
-              'Versão Aplicativo : '+NFeRetorno.verAplic+LineBreak+
-              'Status Código : '+IntToStr(NFeRetorno.cStat)+LineBreak+
-              'Status Descrição : '+NFeRetorno.xMotivo+LineBreak+
-              'UF : '+CodigoParaUF(NFeRetorno.cUF)+LineBreak+
-              'Recebimento : '+NotaUtil.SeSenao(NFeRetorno.DhRecbto = 0, '', DateTimeToStr(NFeRetorno.dhRecbto))+LineBreak+
-              'Tempo Médio : '+IntToStr(NFeRetorno.TMed)+LineBreak+
-              'Retorno : '+ NotaUtil.SeSenao(NFeRetorno.dhRetorno = 0, '', DateTimeToStr(NFeRetorno.dhRetorno))+LineBreak+
-              'Observação : '+NFeRetorno.xObs+LineBreak;
+
+      aMsg := 'Versão : '+FRetDownloadNFe.versao+LineBreak+
+              'Ambiente : '+TpAmbToStr(FRetDownloadNFe.tpAmb)+LineBreak+
+              'Versão Aplicativo : '+FRetDownloadNFe.verAplic+LineBreak+
+              'Status Código : '+IntToStr(FRetDownloadNFe.cStat)+LineBreak+
+              'Status Descrição : '+FRetDownloadNFe.xMotivo+LineBreak+
+              'Recebimento : '+NotaUtil.SeSenao(FRetDownloadNFe.dhResp = 0, '', DateTimeToStr(FRetDownloadNFe.dhResp))+LineBreak;
+
       if FConfiguracoes.WebServices.Visualizar then
         ShowMessage(aMsg);
 
       if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
          TACBrNFe( FACBrNFe ).OnGerarLog(aMsg);
 
-      FtpAmb    := NFeRetorno.tpAmb;
-      FverAplic := NFeRetorno.verAplic;
-      FcStat    := NFeRetorno.cStat;
-      FxMotivo  := NFeRetorno.xMotivo;
-      FcUF      := NFeRetorno.cUF;
-      FdhRecbto := NFeRetorno.dhRecbto;
-      FTMed     := NFeRetorno.TMed;
-      FdhRetorno:= NFeRetorno.dhRetorno;
-      FxObs     := NFeRetorno.xObs;
+      Result := (FRetDownloadNFe.cStat = 139);
 
-      FMsg   := NFeRetorno.XMotivo+ LineBreak+NFeRetorno.XObs;
-
-      Result := (NFeRetorno.CStat = 138);
-
-      NFeRetorno.Free;
-      }
       if FConfiguracoes.Geral.Salvar then
        begin
          FPathArqResp := FormatDateTime('yyyymmddhhnnss',Now)+'-down-nfe.xml';
          FConfiguracoes.Geral.Save(FPathArqResp, FRetWS);
+       end;
+
+      for i := 0 to FRetDownloadNFe.retNFe.Count - 1 do
+       begin
+         if FRetDownloadNFe.retNFe.Items[i].cStat = 140
+          then begin
+           FPathArqResp := FRetDownloadNFe.retNFe.Items[i].chNFe + '-nfe.xml';
+           FConfiguracoes.Geral.Save(FPathArqResp, FRetDownloadNFe.retNFe.Items[i].procNFe);
+          end;
        end;
 
     except on E: Exception do

@@ -70,28 +70,28 @@ type
 
   TRetNFeCollectionItem = class(TCollectionItem)
   private
-    FchNFe: string;
-    FcStat: integer;
-    FxMotivo: string;
-    FprocNFe: ansistring;
+    FchNFe: String;
+    FcStat: Integer;
+    FxMotivo: String;
+    FprocNFe: AnsiString;
   public
     constructor Create; reintroduce;
     destructor Destroy; override;
   published
-    property chNFe: string read FchNFe write FchNFe;
-    property cStat: integer read FcStat write FcStat;
-    property xMotivo: string read FxMotivo write FxMotivo;
-    property procNFe: ansistring read FprocNFe write FprocNFe;
+    property chNFe: String       read FchNFe   write FchNFe;
+    property cStat: Integer      read FcStat   write FcStat;
+    property xMotivo: String     read FxMotivo write FxMotivo;
+    property procNFe: AnsiString read FprocNFe write FprocNFe;
   end;
 
   TRetDownloadNFe = class(TPersistent)
   private
     FLeitor: TLeitor;
-    Fversao : string;
+    Fversao : String;
     FtpAmb: TpcnTipoAmbiente;
-    FverAplic: string;
-    FcStat: integer;
-    FxMotivo: string;
+    FverAplic: String;
+    FcStat: Integer;
+    FxMotivo: String;
     FdhResp: TDateTime;
     FretNFe: TRetNFeCollection;
     FXML: AnsiString;
@@ -102,15 +102,15 @@ type
     destructor Destroy; override;
     function LerXml: boolean;
   published
-    property Leitor: TLeitor read FLeitor write FLeitor;
-    property versao: string read Fversao write Fversao;
-    property tpAmb: TpcnTipoAmbiente read FtpAmb write FtpAmb;
-    property verAplic: string read FverAplic write FverAplic;
-    property cStat: integer read FcStat write FcStat;
-    property xMotivo: string read FxMotivo write FxMotivo;
-    property dhResp: TDateTime read FdhResp write FdhResp;
-    property retNFe: TRetNFeCollection read FretNFe write SetretNFe;
-    property XML: AnsiString read FXML write FXML;
+    property Leitor: TLeitor           read FLeitor   write FLeitor;
+    property versao: String            read Fversao   write Fversao;
+    property tpAmb: TpcnTipoAmbiente   read FtpAmb    write FtpAmb;
+    property verAplic: String          read FverAplic write FverAplic;
+    property cStat: Integer            read FcStat    write FcStat;
+    property xMotivo: String           read FxMotivo  write FxMotivo;
+    property dhResp: TDateTime         read FdhResp   write FdhResp;
+    property retNFe: TRetNFeCollection read FretNFe   write SetretNFe;
+    property XML: AnsiString           read FXML      write FXML;
   end;
 
 
@@ -175,8 +175,8 @@ end;
 
 function TRetDownloadNFe.LerXml: boolean;
 var
-  ok: boolean;
-  i : integer;
+  ok: Boolean;
+  i : Integer;
 begin
   Result := False;
   try
@@ -197,12 +197,13 @@ begin
         (*JR10 *)FretNFe.Items[i].FcStat   := Leitor.rCampo(tcInt, 'cStat');
         (*JR11 *)FretNFe.Items[i].FxMotivo := Leitor.rCampo(tcStr, 'xMotivo');
 
-        (*JR12 *)FretNFe.Items[i].FprocNFe := SeparaDados( Leitor.Grupo, 'procNFe');
+        (*JR12 *)FretNFe.Items[i].FprocNFe := '<?xml version="1.0" encoding="utf-8"?>' +
+                                              SeparaDados(Leitor.Grupo, 'procNFe');
         inc(i);
       end;
       Result := True;
     end;
-    if i =0
+    if i = 0
      then FretNFe.Add;
   except
     result := False;

@@ -36,6 +36,8 @@
 |*
 |* 06/02/2012: Jeferson Rodrigo Stefani
 |*  - Criação do Bloco P
+|* 21/05/2012 : Edilson Alves de Oliveira
+|*  - Continuação do bloco P. 
 *******************************************************************************}
 
 unit ACBrEPCBloco_P;
@@ -180,7 +182,7 @@ type
   TRegistroP200 = class
   private
     fREG             : String;
-    fPER_REF         : TDateTime;
+    fPER_REF         : String;
     fVL_TOT_CONT_APU : Currency;
     fVL_TOT_AJ_REDUC : Currency;
     fVL_TOT_AJ_ACRES : Currency;
@@ -192,7 +194,7 @@ type
     Destructor Destroy; override;
 
     property REG             : String            read fREG             write fREG;
-    property PER_REF         : TDateTime         read fPER_REF         write fPER_REF;
+    property PER_REF         : String            read fPER_REF         write fPER_REF;
     property VL_TOT_CONT_APU : Currency          read fVL_TOT_CONT_APU write fVL_TOT_CONT_APU;
     property VL_TOT_AJ_REDUC : Currency          read fVL_TOT_AJ_REDUC write fVL_TOT_AJ_REDUC;
     property VL_TOT_AJ_ACRES : Currency          read fVL_TOT_AJ_ACRES write fVL_TOT_AJ_ACRES;
@@ -231,11 +233,11 @@ type
 
   TRegistroP210List = class( TObjectList )
   private
-    function  GetItem(Index: Integer): TRegistroP200;
-    procedure SetItem(Index: Integer; const Value: TRegistroP200);
+    function  GetItem(Index: Integer): TRegistroP210;
+    procedure SetItem(Index: Integer; const Value: TRegistroP210);
   public
-    function New: TRegistroP200;
-    property Items[Index: Integer]: TRegistroP200 read GetItem write SetItem;
+    function New: TRegistroP210;
+    property Items[Index: Integer]: TRegistroP210 read GetItem write SetItem;
   end;
 
   TRegistroP990 = class
@@ -354,19 +356,19 @@ end;
 
 { TRegistroP210List }
 
-function TRegistroP210List.GetItem(Index: Integer): TRegistroP200;
+function TRegistroP210List.GetItem(Index: Integer): TRegistroP210;
 begin
-  Result := TRegistroP200( inherited Items[Index] );
+  Result := TRegistroP210( inherited Items[Index] );
 end;
 
-function TRegistroP210List.New: TRegistroP200;
+function TRegistroP210List.New: TRegistroP210;
 begin
-  Result := TRegistroP200.Create;
+  Result := TRegistroP210.Create;
   Add( Result );
 end;
 
 procedure TRegistroP210List.SetItem(Index: Integer;
-  const Value: TRegistroP200);
+  const Value: TRegistroP210);
 begin
   Put( Index, Value );
 end;

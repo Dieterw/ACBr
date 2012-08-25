@@ -1,6 +1,6 @@
 Type=Control
 UserControl=ACBrECF.ctl
-Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#..\..\..\..\Windows\system32\stdole2.tlb#OLE Automation
+Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#C:\WINDOWS\system32\stdole2.tlb#OLE Automation
 Module=Declarations; Declarations.bas
 Class=ModeloECF; ModeloECF.cls
 Startup="(None)"
@@ -16,6 +16,7 @@ MinorVer=0
 RevisionVer=0
 AutoIncrementVer=0
 ServerSupportFiles=0
+VersionCompanyName="."
 CompilationType=0
 OptimizationType=0
 FavorPentiumPro(tm)=0
@@ -34,3 +35,6 @@ MaxNumberOfThreads=1
 ThreadingModel=1
 DebugStartupOption=1
 DebugStartupComponent=ACBrECF
+
+[MS Transaction Server]
+AutoRefresh=1

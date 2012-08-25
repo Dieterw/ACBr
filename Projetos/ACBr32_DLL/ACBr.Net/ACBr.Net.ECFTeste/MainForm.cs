@@ -121,7 +121,7 @@ namespace ACBr.Net.ECFTeste
         private bool ValidarAAC()
         {
             string nomeArquivo = aacNomeArquivoTextbox.Text;
-            string diretorio = nomeArquivo.Substring(0, nomeArquivo.LastIndexOf('\\'));
+            string diretorio = Path.GetDirectoryName(nomeArquivo);
             bool validado = true;
 
             if (!Directory.Exists(diretorio))

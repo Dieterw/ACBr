@@ -80,8 +80,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ACBrAAC.cs" />
+    <Compile Include="ACBrAACECF.cs" />
     <Compile Include="ACBrBal.cs" />
-    <Compile Include="ACBrDevice.cs" />
+    <Compile Include="ACBrComponent.cs" />
+    <Compile Include="ACBrComposedComponent.cs" />
     <Compile Include="ACBrECF.cs" />
     <Compile Include="ACBrECFComprovanteNaoFiscal.cs" />
     <Compile Include="ACBrDll.cs" />
@@ -92,6 +95,7 @@
     <Compile Include="ACBrLCB.cs" />
     <Compile Include="ACBrECFDadosRZ.cs" />
     <Compile Include="ACBrECFRelatorioGerencial.cs" />
+    <Compile Include="ACBrPAFTipoIntegracao.cs" />
     <Compile Include="EstadoECF.cs" />
     <Compile Include="ModeloBal.cs" />
     <Compile Include="ModeloECF.cs" />
@@ -99,7 +103,8 @@
     <Compile Include="SerialHandShake.cs" />
     <Compile Include="SerialParity.cs" />
     <Compile Include="SerialStopBits.cs" />
-    <Compile Include="TipoAliquota.cs" />
+    <Compile Include="ACBrPAFTipoDesenvolvimento.cs" />
+    <Compile Include="ACBrPAFTipoFuncionamento.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

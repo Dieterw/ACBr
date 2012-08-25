@@ -8,7 +8,8 @@ uses
   ACBrCommonDll,
   ACBrECFDll,
   ACBrBALDll,
-  ACBrLCBDll;
+  ACBrLCBDll,
+  ACBrAACDll;
 
 {$R *.res}
 

@@ -8,12 +8,14 @@ uses
   ACBrECF,
   ACBrECFClass,
   ACBrDevice,
-  ACBrUtil;
+  ACBrUtil,
+  ACBrAACDLL;
 
 {Classe que armazena os EventHandlers para o componente ACBr}
 type TEventHandlers = class
     procedure OnMsgPoucoPapel(Sender: TObject);
 end;
+
 
 {Handle para o componente TACBrECF }
 type TECFHandle = record
@@ -114,7 +116,6 @@ end;
 {Ponteiro para o Handle }
 type PDadosRZRec = ^TDadosRZRec;
 
-
 implementation
 
 {
@@ -167,7 +168,6 @@ begin
      ecfHandle^.ECF.BloqueiaMouseTeclado := False;
      ecfHandle^.UltimoErro := '';
      ecfHandle^.ECF.OnMsgPoucoPapel := ecfHandle^.EventHandlers.OnMsgPoucoPapel;
-
      Result := 0;
 
   except
@@ -4294,13 +4294,6 @@ begin
 
       Dispose(dadosRZ);
       dadosRZ := nil;
-
-      //SetLength(retDadosRZ.TotalizadoresNaoFiscais, dadosRZ.TotalizadoresNaoFiscais.Count);
-      //SetLength(retDadosRZ.ICMS, dadosRZ.ICMS.Count);
-      //SetLength(retDadosRZ.RelatorioGerencial, dadosRZ.RelatorioGerencial.Count);
-      //SetLength(retDadosRZ.ISSQN, dadosRZ.ISSQN.Count);
-      //SetLength(retDadosRZ.MeiosDePagamento, dadosRZ.MeiosDePagamento.Count);
-
       Result := 0;
 
    except
@@ -4312,6 +4305,33 @@ begin
    end;
 end;
 
+Function ECF_SetAAC(const ecfHandle: PECFHandle; const aacHandle : PAACHandle) : Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF}  export;
+begin
+
+  if (ecfHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+  if (aacHandle = nil) then
+  begin
+     ecfHandle^.ECF.AAC := nil;
+  end
+  else
+  begin
+
+    try
+       ecfHandle^.ECF.AAC := aacHandle^.AAC;
+       Result := 0;
+    except on exception : Exception do
+        begin
+         ecfHandle^.UltimoErro := exception.Message;
+         Result := -1;
+         end
+    end;
+  end;
+end;
 
 {
 NÀO IMPLEMENTADO
@@ -4581,7 +4601,9 @@ ECF_IdentificaPAF,
 ECF_GetDadosReducaoZ,
 ECF_GetDadosUltimaReducaoZ,
 ECF_GetDadosReducaoZClass,
-ECF_DestroyDadosReducaoZClass;
+ECF_DestroyDadosReducaoZClass,
+
+ECF_SetAAC;
 
 {Não implementado}
 

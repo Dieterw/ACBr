@@ -3723,6 +3723,10 @@ var
   FileMFD: AnsiString;
   DataArquivo: TDateTime;
 begin
+
+ {$IFDEF LINUX}
+  inherited PafMF_GerarCAT52( DataInicial, DataFinal, DirArquivos);
+ {$ELSE}
   LoadDLLFunctions;
 
   NumUsu   := AnsiString(UsuarioAtual);
@@ -3776,6 +3780,7 @@ begin
     xBematech_FI_FechaPortaSerial();
     Ativo := OldAtivo ;
   end;
+ {$ENDIF}
 end;
 
 procedure TACBrECFBematech.ArquivoMFD_DLL(DataInicial, DataFinal: TDateTime;

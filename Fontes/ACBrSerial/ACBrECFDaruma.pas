@@ -4648,7 +4648,7 @@ procedure TACBrECFDaruma.LoadDLLFunctions;
   end ;
 
 begin
-  DarumaFunctionDetect('eCarregarBitmapPromocional_ECF_Daruma', @xeCarregarBitmapPromocional_ECF_Daruma);
+  DarumaFunctionDetect('eCarregarBitmapPromocional_ECF_Daruma',@xeCarregarBitmapPromocional_ECF_Daruma);
   DarumaFunctionDetect('eDefinirModoRegistro_Daruma', @xeDefinirModoRegistro_Daruma);
   DarumaFunctionDetect('eDefinirProduto', @xeDefinirProduto);
   DarumaFunctionDetect('regAlterarValor_Daruma', @xregAlterarValor_Daruma);
@@ -4679,13 +4679,26 @@ end;
 
 procedure TACBrECFDaruma.ConfigurarDLL(Path : AnsiString );
 Var
-  Resp : Integer ;
+  Resp, ComNr : Integer ;
   Porta, Velocidade : AnsiString ;
 begin
   if Trim(Path) = '' then
     Path := ExtractFilePath(ParamStr(0));
 
-  Porta      := fpDevice.Porta ;
+  Porta := fpDevice.Porta ;
+  {$IFDEF LINUX}
+   if pos('/DEV/TTYS', uppercase(Porta)) = 1 then
+    begin
+      ComNr := StrToIntdef(copy(Porta, 10, Length(Porta) - 9), -1) + 1;
+      Porta := 'COM'+IntToStr(ComNr);
+    end
+  else if pos('/DEV/TTYUSB', uppercase(Porta)) = 1 then
+    begin
+      ComNr := StrToIntdef(copy(Porta, 12, Length(Porta) - 11), -1) + 1;
+      Porta := 'COM'+IntToStr(10+ComNr);
+    end ;
+  {$ENDIF}
+
   Velocidade := IntToStr(fpDevice.Baud) ;
 
   // configurar a daruma para gravar somente no XML
@@ -5042,7 +5055,7 @@ begin
       LoadDLLFunctions;
       ConfigurarDLL('');
 
-      Ativo  := False;
+      Ativo := False;
 
       Resp := xeCarregarBitmapPromocional_ECF_Daruma(APathArquivo, Indice, Posicao);
       if (Resp <> 1) then
@@ -5172,4 +5185,4 @@ end;
 
 end.
 
-
+

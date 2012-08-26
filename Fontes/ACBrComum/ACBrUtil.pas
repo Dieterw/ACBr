@@ -227,7 +227,7 @@ Function PathWithDelim( const APath : String ) : String ;
 Function PathWithoutDelim( const APath : String ) : String ;
 Procedure CopyFilesToDir( FileMask : String ; ToDirName : String;
    const ForceDirectory : Boolean = False)  ;
-procedure RunCommand(Command: String; Params: String = ''; Wait : Boolean = false;
+procedure RunCommand(Command: AnsiString; Params: AnsiString = ''; Wait : Boolean = false;
    WindowState : Word = 5);
 procedure OpenURL( const URL : String ) ;
 
@@ -1735,7 +1735,7 @@ end ;
    programa externo executado por "Command"
  - WindowState apenas é utilizado na plataforma Windows
  ---------------------------------------------------------------------------- }
-procedure RunCommand(Command: String; Params: String; Wait : Boolean;
+procedure RunCommand(Command: AnsiString; Params: AnsiString; Wait : Boolean;
    WindowState : Word);
 var
   {$ifdef MSWINDOWS}
@@ -1754,7 +1754,7 @@ begin
        ConnectCommand := PChar(Command);
        Libc.system(ConnectCommand);
      {$ELSE}
-       Shell(Command)
+       fpSystem(Command)
      {$ENDIF}
   {$endif}
   {$ifdef MSWINDOWS}
@@ -2365,4 +2365,4 @@ initialization
 
   Randomized := False ;
 end.
-
+

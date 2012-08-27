@@ -1555,12 +1555,12 @@ begin
                   LFill( VL_REC_COMP,0,2 )     +
                   LFill( strCST_PIS )          +
                   LFill( VL_DESC_PIS ,0,2 )    +
-                  DFill( VL_BC_PIS, 4 )      +
+                  DFill( VL_BC_PIS, 2 )      +
                   DFill( ALIQ_PIS, 4 )        +
                   LFill( VL_PIS,0,2 )          +
                   LFill( strCST_COFINS )       +
                   LFill( VL_DESC_COFINS ,0,2 ) +
-                  DFill( VL_BC_COFINS, 4 )   +
+                  DFill( VL_BC_COFINS, 2 )   +
                   DFill( ALIQ_COFINS, 4 )     +
                   LFill( VL_COFINS,0,2 )       +
                   LFill( COD_MOD )             +
@@ -1688,7 +1688,7 @@ begin
            RegistroF990.QTD_LIN_F := RegistroF990.QTD_LIN_F + 1;
         end;
         /// Variavél para armazenar a quantidade de registro do tipo.
-        FRegistroF550Count := FRegistroF560Count + RegF010.RegistroF560.Count;
+        FRegistroF560Count := FRegistroF560Count + RegF010.RegistroF560.Count;
      end;
   //end;
 end;
@@ -1953,12 +1953,12 @@ begin
                   LFill( VL_REC_CAIXA,0,2 )    +
                   LFill( strCST_PIS )          +
                   LFill( VL_DESC_PIS ,0,2 )    +
-                  DFill( VL_BC_PIS, 4 )      +
+                  DFill( VL_BC_PIS, 2 )      +
                   DFill( ALIQ_PIS, 4 )        +
                   LFill( VL_PIS,0,2 )          +
                   LFill( strCST_COFINS )       +
                   LFill( VL_DESC_COFINS ,0,2 ) +
-                  DFill( VL_BC_COFINS, 4 )   +
+                  DFill( VL_BC_COFINS, 2 )   +
                   DFill( ALIQ_COFINS, 4 )     +
                   LFill( VL_COFINS,0,2 )       +
                   LFill( COD_MOD )             +

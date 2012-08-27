@@ -765,6 +765,28 @@ begin
             IND_FRT        := tfNenhum;
             IND_PGTO       := tpNenhum;
             booNFCancelada := true
+            // Incluido por Filipe Sortica 30/07/2012
+            COD_PART       := '';
+            DT_DOC         := 0;
+            DT_E_S         := 0;
+            VL_DOC         := 0;
+            VL_DESC        := 0;
+            VL_ABAT_NT     := 0;
+            VL_MERC        := 0;
+            VL_FRT         := 0;
+            VL_SEG         := 0;
+            VL_OUT_DA      := 0;
+            VL_BC_ICMS     := 0;
+            VL_ICMS        := 0;
+            VL_BC_ICMS_ST  := 0;
+            VL_ICMS_ST     := 0;
+            VL_IPI         := 0;
+            VL_PIS         := 0;
+            VL_COFINS      := 0;
+            VL_PIS_ST      := 0;
+            VL_COFINS_ST   := 0;
+            if (strCOD_SIT = '05') then
+              CHV_NFE := '';
           end
           else
             booNFCancelada := false;

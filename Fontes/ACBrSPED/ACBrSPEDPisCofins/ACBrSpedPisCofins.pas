@@ -1742,6 +1742,15 @@ begin
                QTD_REG_BLC := Bloco_F.RegistroF500Count;
             end;
          end;
+         (*Adilson Rodrigues - foi incluso este código para totalizar o registro f525 no blobo 9*)
+         if Bloco_F.RegistroF525Count > 0 then
+         begin
+            with New do
+            begin
+               REG_BLC := 'F525';
+               QTD_REG_BLC := Bloco_F.RegistroF525Count;
+            end;
+         end;
          if Bloco_F.RegistroF550Count > 0 then
          begin
             with New do

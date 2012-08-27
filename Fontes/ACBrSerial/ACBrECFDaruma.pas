@@ -4694,7 +4694,7 @@ begin
     end
   else if pos('/DEV/TTYUSB', uppercase(Porta)) = 1 then
     begin
-      ComNr := StrToIntdef(copy(Porta, 12, Length(Porta) - 11), -1) + 1;
+      ComNr := StrToIntdef(copy(Porta, 12, Length(Porta) - 11), -1);
       Porta := 'COM'+IntToStr(10+ComNr);
     end ;
   {$ENDIF}

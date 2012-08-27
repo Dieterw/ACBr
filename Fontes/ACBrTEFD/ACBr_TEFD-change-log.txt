@@ -48,17 +48,32 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Data:  27/08/2012
+-- ACBrTEFDCliSiTef 3.3.0 --
+[*]  Modificação no fluxo de impressão de Relatórios administrativos. A versão
+    anterior imprimia o Relatório Gerencial logo após o SiTEF enviar a informação
+    dos Campos 121 (1a via) e 122 (2a via), dentro do Loop de chamadas a função
+    ContinuaFuncaoSiTefInterativo. Ou seja, a impressão ocorria antes mesmo de
+    ler todos os campos enviados pelo SiTEF, o que poderia causar problemas como
+    por exemplo não saber o NSU da transação no momento da Impressao, pois o
+    campo 134 (NSU), é enviado após o 121 e 122
+     O novo fluxo, lê todas as informações do SiTEF, e move os valores para as
+    propriedades internas do Objeto Resposta, e usa a rotina padrão de Impressão
+    da classe Mãe "ImprimirRelatorio", para a impressão de ADM...
+     Para voltar o modo de impressão antigo, modifique a constante:
+    CACBrTEFD_CliSiTef_ImprimeGerencialConcomitante = True           (por: DSA)
+
 Data:  24/08/2012
 -- ACBrTEFD 3.2.0 --
 [*] Ajustes nos fontes para o uso de constantes com as mensagens padrões (por: DSA)
 
 [*] Modificação no fluxo de transações de Multilplos Cartoes. Antes, o componente
     já confirmava a transação (CNF) logo após o termino do CRT ou CHQ, caso
-    a propriedades MultiplosCartoes estivesse ativado... Isso poderia causar
+    a propriedades MultiplosCartoes estivesse ativada... Isso poderia causar
     problema quando necessário cancelar uma transação em aberto, e com alguns
     cartões já aprovados.
     O Novo fluxo só irá enviar a confirmação (CNF) para a transação anterior,
-    quando uma nova transação, para aquele mesmo G.P. for aberta      (por: DSA)
+    quando uma nova transação, para aquele mesmo G.P., for aberta     (por: DSA)
 
 Data:  20/08/2012
 -- ACBrTEFD 3.1 --

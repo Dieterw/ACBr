@@ -54,7 +54,8 @@ uses
 
 
 Const
-   CACBrTEFD_CliSiTef_Backup = 'ACBr_CliSiTef_Backup.tef' ;
+   CACBrTEFD_CliSiTef_ImprimeGerencialConcomitante = False ;
+   CACBrTEFD_CliSiTef_PressioneEnter = 'PRESSIONE <ENTER>' ;
    CACBrTEFD_CliSiTef_TransacaoNaoEfetuada =
       'Transação não efetuada.'+sLineBreak+'Favor reter o Cupom' ;
    CACBrTEFD_CliSiTef_TransacaoEfetuadaReImprimir =
@@ -105,6 +106,7 @@ type
 
    TACBrTEFDCliSiTef = class( TACBrTEFDClass )
    private
+      fIniciouRequisicao: Boolean;
       fReimpressao: Boolean; {Indica se foi selecionado uma reimpressão no ADM}
       fCancelamento: Boolean; {Indica se foi selecionado Cancelamento no ADM}
       fCodigoLoja : AnsiString;
@@ -183,8 +185,11 @@ type
         ListaRestricoes : AnsiString = '') : Integer ;
      Function ContinuarRequisicao( ImprimirComprovantes : Boolean ) : Integer ;
 
+     procedure ProcessarResposta ; override;
      Function ProcessarRespostaPagamento( const IndiceFPG_ECF : String;
         const Valor : Double) : Boolean; override;
+
+     procedure VerificarIniciouRequisicao; override;
 
      Function SuportaDesconto : Boolean ;
 
@@ -343,6 +348,8 @@ begin
      end;
    end ;
 
+   fpQtdLinhasComprovante := fpImagemComprovante1aVia.Count;
+
    fpParcelas.Clear;
    for I := 1 to fpQtdParcelas do
    begin
@@ -379,8 +386,9 @@ constructor TACBrTEFDCliSiTef.Create(AOwner : TComponent);
 begin
   inherited Create(AOwner);
 
-  fReimpressao := False;
-  fCancelamento:= False;
+  fIniciouRequisicao := False;
+  fReimpressao       := False;
+  fCancelamento      := False;
   ArqReq    := '' ;
   ArqResp   := '' ;
   ArqSTS    := '' ;
@@ -570,7 +578,6 @@ end;
 procedure TACBrTEFDCliSiTef.ConfirmarEReimprimirTransacoesPendentes;
 Var
   ArquivosVerficar : TStringList ;
-//I, Sts           : Integer;
   ArqMask, NSUs    : AnsiString;
   ExibeMsg         : Boolean ;
 begin
@@ -580,9 +587,9 @@ begin
      ArquivosVerficar.Clear;
 
      { Achando Arquivos de Backup deste GP }
-     ArqMask := TACBrTEFD(Owner).PathBackup + PathDelim + 'ACBr_' + Self.Name + '_*.tef' ;
+     ArqMask  := TACBrTEFD(Owner).PathBackup + PathDelim + 'ACBr_' + Self.Name + '_*.tef' ;
      FindFiles( ArqMask, ArquivosVerficar, True );
-     NSUs := '' ;
+     NSUs     := '' ;
      ExibeMsg := (ArquivosVerficar.Count > 0) ;
 
      { Enviando NCN ou CNC para todos os arquivos encontrados }
@@ -600,8 +607,8 @@ begin
            if pos(Resp.DocumentoVinculado, fDocumentosProcessados) = 0 then
               CNF;   {Confirma}
 
-           if Resp.NSU <> '' then
-              NSUs := NSUs + sLineBreak + 'NSU: '+Resp.NSU ;
+           if Trim(Resp.NSU) <> '' then
+              NSUs := NSUs + Resp.NSU + sLineBreak;
 
            SysUtils.DeleteFile( ArquivosVerficar[ 0 ] );
            ArquivosVerficar.Delete( 0 );
@@ -624,10 +631,13 @@ begin
   Sts := FazerRequisicao( fOperacaoATV, 'ATV' ) ;
 
   if Sts = 10000 then
-     Sts := ContinuarRequisicao( True ) ;  { True = Imprimir Comprovantes agora }
+     Sts := ContinuarRequisicao( CACBrTEFD_CliSiTef_ImprimeGerencialConcomitante ) ;
 
   if ( Sts <> 0 ) then
-     AvaliaErro( Sts );
+     AvaliaErro( Sts )
+  else
+     if not CACBrTEFD_CliSiTef_ImprimeGerencialConcomitante then
+        ProcessarResposta;
 end;
 
 Function TACBrTEFDCliSiTef.ADM : Boolean;
@@ -637,12 +647,15 @@ begin
   Sts := FazerRequisicao( fOperacaoADM, 'ADM' ) ;
 
   if Sts = 10000 then
-     Sts := ContinuarRequisicao( True ) ;  { True = Imprimir Comprovantes agora }
+     Sts := ContinuarRequisicao( CACBrTEFD_CliSiTef_ImprimeGerencialConcomitante ) ;
 
   Result := ( Sts = 0 ) ;
 
   if not Result then
-     AvaliaErro( Sts );
+     AvaliaErro( Sts )
+  else
+     if not CACBrTEFD_CliSiTef_ImprimeGerencialConcomitante then
+        ProcessarResposta;
 end;
 
 Function TACBrTEFDCliSiTef.CRT( Valor : Double; IndiceFPG_ECF : String;
@@ -745,12 +758,15 @@ begin
   Sts := FazerRequisicao( fOperacaoCNC, 'CNC' ) ;
 
   if Sts = 10000 then
-     Sts := ContinuarRequisicao( True ) ;  { True = Imprimir Comprovantes agora }
+     Sts := ContinuarRequisicao( CACBrTEFD_CliSiTef_ImprimeGerencialConcomitante ) ;
 
   Result := ( Sts = 0 ) ;
 
   if not Result then
-     AvaliaErro( Sts );
+     AvaliaErro( Sts )
+  else
+     if not CACBrTEFD_CliSiTef_ImprimeGerencialConcomitante then
+        ProcessarResposta;
 end;
 
 Procedure TACBrTEFDCliSiTef.NCN(Rede, NSU, Finalizacao : String;
@@ -790,8 +806,8 @@ begin
       ListaRestricoes := ListaRestricoes + '{TipoTratamento=4}';
    end;
 
-   fReimpressao := False;
-   fCancelamento:= False;
+   fIniciouRequisicao := True;
+
    ANow     := Now ;
    DataStr  := FormatDateTime('YYYYMMDD', ANow );
    HoraStr  := FormatDateTime('HHNNSS', ANow );
@@ -854,22 +870,24 @@ var
   end;
 
 begin
-   Result           := 0;
-   ProximoComando   := 0;
-   TipoCampo        := 0;
-   TamanhoMinimo    := 0;
-   TamanhoMaximo    := 0;
-   Continua         := 0;
-   Mensagem         := '' ;
-   MensagemOperador := '' ;
-   MensagemCliente  := '' ;
-   CaptionMenu      := '' ;
-   GerencialAberto  := False ;
-   ImpressaoOk      := True ;
-   HouveImpressao   := False ;
-   fCancelamento    := False ;
-   ArqBackUp        := '' ;
-   Resposta         := '' ;
+   Result            := 0;
+   ProximoComando    := 0;
+   TipoCampo         := 0;
+   TamanhoMinimo     := 0;
+   TamanhoMaximo     := 0;
+   Continua          := 0;
+   Mensagem          := '' ;
+   MensagemOperador  := '' ;
+   MensagemCliente   := '' ;
+   CaptionMenu       := '' ;
+   GerencialAberto   := False ;
+   ImpressaoOk       := True ;
+   HouveImpressao    := False ;
+   fIniciouRequisicao:= True ;
+   fCancelamento     := False ;
+   fReimpressao      := False;
+   ArqBackUp         := '' ;
+   Resposta          := '' ;
 
    fpAguardandoResposta := True ;
    FechaGerencialAberto := True ;
@@ -1090,7 +1108,7 @@ begin
                  22 :
                    begin
                      if Mensagem = '' then
-                        Mensagem := 'PRESSIONE <ENTER>';
+                        Mensagem := CACBrTEFD_CliSiTef_PressioneEnter;
 
                      DoExibeMsg( opmOK, Mensagem );
                    end ;
@@ -1188,12 +1206,42 @@ begin
    end ;
 end;
 
+procedure TACBrTEFDCliSiTef.ProcessarResposta;
+var
+   RespostaPendente: TACBrTEFDRespCliSiTef;
+begin
+  GravaLog( Name +' ProcessarResposta: '+Req.Header );
+
+  TACBrTEFD(Owner).EstadoResp := respProcessando;
+
+  if Resp.QtdLinhasComprovante > 0 then
+  begin
+      { Cria cópia do Objeto Resp, e salva no ObjectList "RespostasPendentes" }
+      RespostaPendente := TACBrTEFDRespCliSiTef.Create ;
+      try
+         RespostaPendente.Assign( Resp );
+         TACBrTEFD(Owner).RespostasPendentes.Add( RespostaPendente );
+
+         ImprimirRelatorio ;
+
+         with TACBrTEFD(Owner) do
+         begin
+            if Assigned( OnDepoisConfirmarTransacoes ) then
+               OnDepoisConfirmarTransacoes( RespostasPendentes );
+         end ;
+      finally
+         TACBrTEFD(Owner).RespostasPendentes.Clear;
+      end;
+  end ;
+end;
+
 procedure TACBrTEFDCliSiTef.FinalizarTransacao( Confirma : Boolean;
    DocumentoVinculado : AnsiString);
 Var
    DataStr, HoraStr : AnsiString;
 begin
    fRespostas.Clear;
+   fIniciouRequisicao := False;
 
    if (fReimpressao) or (pos(DocumentoVinculado, fDocumentosProcessados) > 0) then
       exit;
@@ -1208,13 +1256,20 @@ begin
                                           ' Data: '      +DataStr+
                                           ' Hora: '      +HoraStr ) ;
 
-  xFinalizaTransacaoSiTefInterativo( IfThen(Confirma,1,0),
+  xFinalizaTransacaoSiTefInterativo( IfThen(Confirma or fCancelamento,1,0),
                                      PAnsiChar( DocumentoVinculado ),
                                      PAnsiChar( DataStr ),
                                      PAnsiChar( HoraStr ) ) ;
 
   if not Confirma then
-     TACBrTEFD(Owner).DoExibeMsg( opmOK, CACBrTEFD_CliSiTef_TransacaoNaoEfetuada );
+  begin
+     if fCancelamento  then
+        TACBrTEFD(Owner).DoExibeMsg( opmOK,
+                    Format( CACBrTEFD_CliSiTef_TransacaoEfetuadaReImprimir,
+                            [Resp.NSU]) )
+     else
+        TACBrTEFD(Owner).DoExibeMsg( opmOK, CACBrTEFD_CliSiTef_TransacaoNaoEfetuada );
+  end;
 
 end;
 
@@ -1306,6 +1361,12 @@ begin
         end;
      end ;
   end;
+end;
+
+procedure TACBrTEFDCliSiTef.VerificarIniciouRequisicao;
+begin
+  if not fIniciouRequisicao then
+     raise EACBrTEFDErro.Create( ACBrStr( CACBrTEFD_Erro_SemRequisicao ) ) ;
 end;
 
 function TACBrTEFDCliSiTef.SuportaDesconto: Boolean;

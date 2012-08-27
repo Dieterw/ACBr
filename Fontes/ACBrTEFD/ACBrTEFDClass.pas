@@ -55,7 +55,7 @@ uses
   {$ENDIF} ;
 
 const
-   CACBrTEFD_Versao      = '3.2.0' ;
+   CACBrTEFD_Versao      = '3.3.0' ;
    CACBrTEFD_EsperaSTS   = 7 ;
    CACBrTEFD_EsperaSleep = 250 ;
    CACBrTEFD_NumVias     = 2 ;
@@ -64,6 +64,7 @@ const
    CACBrTEFD_Erro_ECFNaoResponde = 'Impressora não responde'+sLineBreak+
                                    'Deseja imprimir novamente ?' ;
    CACBrTEFD_Erro_NaoAtivo = 'O gerenciador padrão %s não está ativo !' ;
+   CACBrTEFD_Erro_SemRequisicao = 'Nenhuma Requisição Iniciada' ;
 
 type
 
@@ -2198,9 +2199,9 @@ begin
   if fpSalvarArquivoBackup then
     CopiarResposta ;
 
-  ImpressaoOk     := False ;
-  RemoverMsg      := False ;
-  TempoInicio     := now ;
+  ImpressaoOk  := False ;
+  RemoverMsg   := False ;
+  TempoInicio  := now ;
 
   with TACBrTEFD( Owner ) do
   begin
@@ -2476,7 +2477,7 @@ end;
 procedure TACBrTEFDClass.VerificarIniciouRequisicao;
 begin
   if Req.Header = '' then
-     raise EACBrTEFDErro.Create( ACBrStr( 'Nenhuma Requisição Iniciada' ) ) ;
+     raise EACBrTEFDErro.Create( ACBrStr( CACBrTEFD_Erro_SemRequisicao ) ) ;
 end;
 
 Procedure TACBrTEFDClass.VerificarTransacaoPagamento(Valor : Double );

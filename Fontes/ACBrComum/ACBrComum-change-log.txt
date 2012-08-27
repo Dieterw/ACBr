@@ -38,6 +38,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+27/08/2012
+-- ACBrUtil --
+[-] Ajuste em RunCommand para compatibilizar com FPC 2.7.1     (por: DSA)
+
 20/08/2012
 -- ACBrEAD --
 [-] Ajuste no método RemoverEAD, para suportar arquivos assinados com linha de

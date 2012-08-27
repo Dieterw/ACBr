@@ -47,6 +47,19 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+
+Data:  24/08/2012
+-- ACBrTEFD 3.2.0 --
+[*] Ajustes nos fontes para o uso de constantes com as mensagens padrões (por: DSA)
+
+[*] Modificação no fluxo de transações de Multilplos Cartoes. Antes, o componente
+    já confirmava a transação (CNF) logo após o termino do CRT ou CHQ, caso
+    a propriedades MultiplosCartoes estivesse ativado... Isso poderia causar
+    problema quando necessário cancelar uma transação em aberto, e com alguns
+    cartões já aprovados.
+    O Novo fluxo só irá enviar a confirmação (CNF) para a transação anterior,
+    quando uma nova transação, para aquele mesmo G.P. for aberta      (por: DSA)
+
 Data:  20/08/2012
 -- ACBrTEFD 3.1 --
 [*] Adicionado tratamento para Impressão de via reduzida em CCD (campos 710 e

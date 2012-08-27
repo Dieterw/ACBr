@@ -70,16 +70,17 @@
         <PackageName Value="FCL"/>
       </Item2>
     </RequiredPackages>
-    <Units Count="50">
+    <Units Count="51">
       <Unit0>
         <Filename Value="ACBrMonitorConsole.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="ACBrMonitorConsole"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="141"/>
-        <CursorPos X="41" Y="162"/>
-        <UsageCount Value="27"/>
+        <TopLine Value="120"/>
+        <CursorPos X="60" Y="133"/>
+        <UsageCount Value="28"/>
         <Loaded Value="True"/>
       </Unit0>
       <Unit1>
@@ -92,7 +93,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="456"/>
         <CursorPos X="20" Y="45"/>
-        <UsageCount Value="27"/>
+        <UsageCount Value="28"/>
       </Unit1>
       <Unit2>
         <Filename Value="C:\lazarus\fpc\2.4.3\source\packages\fcl-base\src\custapp.pp"/>
@@ -128,7 +129,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="31"/>
         <CursorPos X="22" Y="45"/>
-        <UsageCount Value="26"/>
+        <UsageCount Value="27"/>
       </Unit5>
       <Unit6>
         <Filename Value="DoACBrUnit.pas"/>
@@ -137,7 +138,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="38"/>
         <CursorPos X="27" Y="43"/>
-        <UsageCount Value="26"/>
+        <UsageCount Value="27"/>
       </Unit6>
       <Unit7>
         <Filename Value="DoECFBemafi32.pas"/>
@@ -146,7 +147,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="32"/>
         <CursorPos X="23" Y="48"/>
-        <UsageCount Value="26"/>
+        <UsageCount Value="27"/>
       </Unit7>
       <Unit8>
         <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrDevice.pas"/>
@@ -167,37 +168,37 @@
         <Filename Value="DoLCBUnit.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="DoLCBUnit"/>
-        <UsageCount Value="26"/>
+        <UsageCount Value="27"/>
       </Unit10>
       <Unit11>
         <Filename Value="DoBALUnit.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="DoBALUnit"/>
-        <UsageCount Value="26"/>
+        <UsageCount Value="27"/>
       </Unit11>
       <Unit12>
         <Filename Value="DoCEPUnit.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="DoCEPUnit"/>
-        <UsageCount Value="26"/>
+        <UsageCount Value="27"/>
       </Unit12>
       <Unit13>
         <Filename Value="DoCHQUnit.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="DoCHQUnit"/>
-        <UsageCount Value="26"/>
+        <UsageCount Value="27"/>
       </Unit13>
       <Unit14>
         <Filename Value="DoDISUnit.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="DoDISUnit"/>
-        <UsageCount Value="26"/>
+        <UsageCount Value="27"/>
       </Unit14>
       <Unit15>
         <Filename Value="DoECFObserver.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="DoECFObserver"/>
-        <UsageCount Value="26"/>
+        <UsageCount Value="27"/>
       </Unit15>
       <Unit16>
         <Filename Value="DoECFUnit.pas"/>
@@ -206,19 +207,19 @@
         <WindowIndex Value="0"/>
         <TopLine Value="862"/>
         <CursorPos X="37" Y="887"/>
-        <UsageCount Value="26"/>
+        <UsageCount Value="27"/>
       </Unit16>
       <Unit17>
         <Filename Value="DoGAVUnit.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="DoGAVUnit"/>
-        <UsageCount Value="26"/>
+        <UsageCount Value="27"/>
       </Unit17>
       <Unit18>
         <Filename Value="DoIBGEUnit.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="DoIBGEUnit"/>
-        <UsageCount Value="26"/>
+        <UsageCount Value="27"/>
       </Unit18>
       <Unit19>
         <Filename Value="..\..\..\Fontes\ACBrTCP\ACBrSocket.pas"/>
@@ -247,13 +248,10 @@
       <Unit22>
         <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
         <UnitName Value="ACBrUtil"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
         <TopLine Value="93"/>
         <CursorPos X="35" Y="104"/>
         <UsageCount Value="10"/>
-        <Loaded Value="True"/>
       </Unit22>
       <Unit23>
         <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrECF.pas"/>
@@ -466,64 +464,40 @@
         <CursorPos X="15" Y="148"/>
         <UsageCount Value="10"/>
       </Unit49>
+      <Unit50>
+        <Filename Value="versao.txt"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="79" Y="2"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="None"/>
+      </Unit50>
     </Units>
-    <JumpHistory Count="14" HistoryIndex="13">
+    <JumpHistory Count="6" HistoryIndex="5">
       <Position1>
-        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
-        <Caret Line="256" Column="33" TopLine="249"/>
+        <Filename Value="ACBrMonitorConsole.lpr"/>
+        <Caret Line="147" Column="24" TopLine="141"/>
       </Position1>
       <Position2>
-        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
-        <Caret Line="2093" Column="41" TopLine="2085"/>
+        <Filename Value="ACBrMonitorConsole.lpr"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position2>
       <Position3>
-        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="ACBrMonitorConsole.lpr"/>
+        <Caret Line="11" Column="33" TopLine="1"/>
       </Position3>
       <Position4>
-        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
-        <Caret Line="94" Column="1" TopLine="78"/>
+        <Filename Value="ACBrMonitorConsole.lpr"/>
+        <Caret Line="15" Column="36" TopLine="1"/>
       </Position4>
       <Position5>
-        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
-        <Caret Line="991" Column="34" TopLine="960"/>
+        <Filename Value="ACBrMonitorConsole.lpr"/>
+        <Caret Line="16" Column="16" TopLine="1"/>
       </Position5>
       <Position6>
-        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="ACBrMonitorConsole.lpr"/>
+        <Caret Line="133" Column="60" TopLine="120"/>
       </Position6>
-      <Position7>
-        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
-        <Caret Line="102" Column="61" TopLine="89"/>
-      </Position7>
-      <Position8>
-        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
-        <Caret Line="986" Column="18" TopLine="978"/>
-      </Position8>
-      <Position9>
-        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
-        <Caret Line="90" Column="21" TopLine="85"/>
-      </Position9>
-      <Position10>
-        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
-        <Caret Line="105" Column="26" TopLine="87"/>
-      </Position10>
-      <Position11>
-        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
-        <Caret Line="1798" Column="50" TopLine="1786"/>
-      </Position11>
-      <Position12>
-        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
-      </Position12>
-      <Position13>
-        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
-        <Caret Line="92" Column="2" TopLine="81"/>
-      </Position13>
-      <Position14>
-        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
-        <Caret Line="102" Column="33" TopLine="93"/>
-      </Position14>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
@@ -559,4 +533,5 @@
       </Item3>
     </Exceptions>
   </Debugging>
+  <EditorMacros Count="0"/>
 </CONFIG>

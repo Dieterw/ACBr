@@ -1555,16 +1555,16 @@ begin
                   LFill( VL_REC_COMP,0,2 )     +
                   LFill( strCST_PIS )          +
                   LFill( VL_DESC_PIS ,0,2 )    +
-                  DFill( VL_BC_PIS, 2 )      +
-                  DFill( ALIQ_PIS, 4 )        +
+                  DFill( VL_BC_PIS, 2 )        +
+                  DFill( ALIQ_PIS, 4 )         +
                   LFill( VL_PIS,0,2 )          +
                   LFill( strCST_COFINS )       +
                   LFill( VL_DESC_COFINS ,0,2 ) +
-                  DFill( VL_BC_COFINS, 2 )   +
-                  DFill( ALIQ_COFINS, 4 )     +
+                  DFill( VL_BC_COFINS, 2 )     +
+                  DFill( ALIQ_COFINS, 4 )      +
                   LFill( VL_COFINS,0,2 )       +
                   LFill( COD_MOD )             +
-                  LFill( CFOP )                +
+                  LFill( CFOP, 4 )             +
                   LFill( COD_CTA )             +
                   LFill( INFO_COMPL ) ) ;
            end;
@@ -1680,7 +1680,7 @@ begin
                   DFill( ALIQ_COFINS_QUANT , 4 )  +
                   LFill( VL_COFINS         ,0,2 )  +
                   LFill( COD_MOD           )      +
-                  LFill( CFOP              )      +
+                  LFill( CFOP, 4           )      +
                   LFill( COD_CTA           )      +
                   LFill( INFO_COMPL        ) )    ;
            end;
@@ -1953,16 +1953,16 @@ begin
                   LFill( VL_REC_CAIXA,0,2 )    +
                   LFill( strCST_PIS )          +
                   LFill( VL_DESC_PIS ,0,2 )    +
-                  DFill( VL_BC_PIS, 2 )      +
-                  DFill( ALIQ_PIS, 4 )        +
+                  DFill( VL_BC_PIS, 2 )        +
+                  DFill( ALIQ_PIS, 4 )         +
                   LFill( VL_PIS,0,2 )          +
                   LFill( strCST_COFINS )       +
                   LFill( VL_DESC_COFINS ,0,2 ) +
-                  DFill( VL_BC_COFINS, 2 )   +
-                  DFill( ALIQ_COFINS, 4 )     +
+                  DFill( VL_BC_COFINS, 2 )     +
+                  DFill( ALIQ_COFINS, 4 )      +
                   LFill( VL_COFINS,0,2 )       +
                   LFill( COD_MOD )             +
-                  LFill( CFOP )                +
+                  LFill( CFOP, 4 )             +
                   LFill( COD_CTA )             +
                   LFill( INFO_COMPL ) ) ;
            end;
@@ -2096,7 +2096,7 @@ begin
                   LFill( ALIQ_COFINS_QUANT,0,2 ) +
                   LFill( VL_COFINS,0,2 )         +
                   LFill( COD_MOD )               +
-                  LFill( CFOP )                  +
+                  LFill( CFOP, 4 )               +
                   LFill( COD_CTA )               +
                   LFill( INFO_COMPL ) ) ;
            end;

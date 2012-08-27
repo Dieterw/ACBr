@@ -764,7 +764,7 @@ begin
             DT_E_S         := 0;
             IND_FRT        := tfNenhum;
             IND_PGTO       := tpNenhum;
-            booNFCancelada := true
+            booNFCancelada := true;
             // Incluido por Filipe Sortica 30/07/2012
             COD_PART       := '';
             DT_DOC         := 0;

@@ -1644,9 +1644,9 @@ begin
   {$ENDIF}
      DoLeResposta ;
 
-  if fpRespostaComando = 'ACBrErro' then
+  if (pos('ACBrErro:',fpRespostaComando) = 1)  then
   begin
-     fpRespostaComando := '' ;
+     fpRespostaComando := copy( fpRespostaComando, 11, Length( fpRespostaComando ) );
      raise EACBrECFTimeOut.create( Format(ACBrStr(cACBrECFSemRespostaException), [ModeloStr]) ) ;
   end ;
 end;
@@ -1717,7 +1717,7 @@ begin
 
            if now > TempoLimite then      { Respondeu Nao a Retentar }
            begin
-              fpRespostaComando := 'ACBrErro' ;
+              fpRespostaComando := 'ACBrErro: '+fpRespostaComando ;
               break ;
            end ;
         end ;

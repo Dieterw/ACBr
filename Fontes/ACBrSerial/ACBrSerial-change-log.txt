@@ -98,6 +98,11 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Data: 28/08/2012
+-- ACBrECF --
+[*] Modificação no tratamento de TimeOut, para permitir que o LOG do ACBrECF
+    informe o conteudo do buffer serial lido até o momento do erro
+
 Data: 27/08/2012
 -- ACBrECFDaruma --
 [*] Ajustes na rotina abertura de porta Serial pela DLL/.SO, para compatibilizar

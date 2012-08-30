@@ -261,6 +261,8 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
     procedure NaoFiscalCompleto(CodCNF: String; Valor: Double;
           CodFormaPagto: String; Obs: AnsiString; IndiceBMP : Integer);override;
 
+    Function LeituraCMC7 : AnsiString ; override ;
+
     Procedure LeituraMFDSerial(DataInicial, DataFinal : TDateTime;
        Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
     Procedure LeituraMFDSerial( COOInicial, COOFinal : Integer;
@@ -1434,6 +1436,11 @@ begin
          raise ;
       end ;
    end ;
+end;
+
+function TACBrECFSwedaSTX.LeituraCMC7: AnsiString;
+begin
+   Result := EnviaComando('24|1|0');
 end;
 
 procedure TACBrECFSwedaSTX.AbreCupom  ;

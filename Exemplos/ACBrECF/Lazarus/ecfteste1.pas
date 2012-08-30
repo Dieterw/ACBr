@@ -217,6 +217,7 @@ type
     MenuItem28: TMenuItem;
     MenuItem29: TMenuItem;
     MenuItem30: TMenuItem;
+    miLeituraCMC7: TMenuItem;
     miEstornoCCD : TMenuItem ;
     miTipoUltimoDoc : TMenuItem ;
     mValorTotalNaoFiscal : TMenuItem ;
@@ -469,6 +470,7 @@ type
     procedure MenuItem29Click(Sender: TObject);
     procedure MenuItem30Click(Sender: TObject);
     procedure miEstornoCCDClick(Sender : TObject) ;
+    procedure miLeituraCMC7Click(Sender: TObject);
     procedure miTipoUltimoDocClick(Sender : TObject) ;
     procedure mLerTotaisRelatoriosGerenciaisClick(Sender : TObject) ;
     procedure mLerTrocoClick(Sender : TObject) ;
@@ -1797,6 +1799,12 @@ begin
    mResp.Lines.Add( 'EstornaCCD  - Estornados: '+IntToStr(Estor) );
 
    AtualizaMemos;
+end;
+
+procedure TForm1.miLeituraCMC7Click(Sender: TObject);
+begin
+  mResp.Lines.Add( 'Leitura CMC7: ['+ACBrECF1.LeituraCMC7+']' );
+  AtualizaMemos ;
 end;
 
 procedure TForm1.miTipoUltimoDocClick(Sender : TObject) ;

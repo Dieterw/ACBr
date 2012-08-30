@@ -98,6 +98,12 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Data: 30/08/2012
+-- ACBrECF --
+[*] Ajustes para que o ACBrECF efetue o LOG corretamente dos comandos, mesmo
+    quando houver falha na verificação dos parâmetros.    (por: DSA)
+[*] Revisão do tratamento dos parâmetros de entrada de vários métodos. (por:DSA)
+
 Data: 28/08/2012
 -- ACBrECF --
 [*] Modificação no tratamento de TimeOut, para permitir que o LOG do ACBrECF

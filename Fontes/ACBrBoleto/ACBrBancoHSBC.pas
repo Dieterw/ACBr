@@ -430,7 +430,8 @@ begin
          raise Exception.Create(ACBrStr('Agencia\Conta do arquivo inválido'));
 
       Cedente.Nome          := rCedente;
-      Cedente.CNPJCPF       := rCNPJCPF;
+      if Trim(Copy(ARetorno[0], 12, 15)) <> 'COBRANCA CNR' then
+         Cedente.CNPJCPF       := rCNPJCPF;
       Cedente.Agencia       := rAgencia;
       Cedente.AgenciaDigito := '';
       Cedente.Conta         := rConta;
@@ -456,7 +457,10 @@ begin
 
       with Titulo do
       begin
-         SeuNumero                   := copy(Linha,38,25);
+         if Trim(Copy(ARetorno[0], 12, 15)) = 'COBRANCA CNR' then  
+            SeuNumero := copy(Linha,117,06)
+         else
+            SeuNumero := copy(Linha,38,25);
          NumeroDocumento             := copy(Linha,117,10);
          OcorrenciaOriginal.Tipo     := CodOcorrenciaToTipo(StrToIntDef(
                                         copy(Linha,109,2),0));
@@ -536,10 +540,24 @@ begin
          ValorMoraJuros       := StrToFloatDef(Copy(Linha,267,13),0)/100;
          ValorOutrosCreditos  := 0;
          ValorRecebido        := StrToFloatDef(Copy(Linha,254,13),0)/100;
-         NossoNumero          := Copy(Linha,127,11);
+
+         if Trim(Copy(ARetorno[0], 12, 15)) <> 'COBRANCA CNR' Then
+            NossoNumero := Copy(Linha, 127, 11)
+         else //Verificar se é melhor copiar com os 3 ultimos digitos que são digitos verificadores ou não
+            NossoNumero := Copy(Linha, 63, 13);
+      
          Carteira             := Copy(Linha,108,1);
          ValorDespesaCobranca := StrToFloatDef(Copy(Linha,176,13),0)/100;
          ValorOutrasDespesas  := 0;
+
+         if Trim(Copy(ARetorno[0], 12, 15)) = 'COBRANCA CNR' then 
+         begin
+            if StrToIntDef(Copy(Linha,83,6),0) <> 0 then
+               DataCredito:= StringToDateTimeDef( Copy(Linha,83,2)+'/'+
+                                                  Copy(Linha,85,2)+'/'+
+                                                  Copy(Linha,87,2),0, 'DD/MM/YY' );
+
+         end;
 
          {if StrToIntDef(Copy(Linha,111,6),0) <> 0 then
             DataCredito:= StringToDateTimeDef( Copy(Linha,296,2)+'/'+

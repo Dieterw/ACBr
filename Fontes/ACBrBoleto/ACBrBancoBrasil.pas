@@ -1181,7 +1181,7 @@ begin
    begin
       Linha := ARetorno[ContLinha] ;
 
-      if (Copy(Linha,1,1) <> '7') or (Copy(Linha,1,1) <> '1') then
+      if (Copy(Linha,1,1) <> '7') and (Copy(Linha,1,1) <> '1') then
          Continue;
 
       Titulo := ACBrBanco.ACBrBoleto.CriarTituloNaLista;

@@ -10,7 +10,8 @@ uses
   Classes, SysUtils,
   Forms, Controls, Graphics, Dialogs,
   StdCtrls, ExtCtrls, Buttons, ComCtrls, ACBrECF, ACBrDevice, ACBrTEFD,
-  ACBrTEFDClass, ACBrUtil , ACBrTEFDCliSiTef, ACBrBase, ACBrECFClass;
+  ACBrTEFDClass, ACBrUtil , ACBrTEFDCliSiTef, ACBrTEFDCliDTEF, ACBrECFClass,
+  ACBrBase;
 
 type
 
@@ -38,8 +39,8 @@ type
      bInicializar : TButton;
      bLeituraX : TButton;
      bNCN : TButton;
-     bPagamento : TButton;
      bReducaoZ : TButton;
+     bPagamento: TButton;
      btSerial : TSpeedButton;
      bCancelarResp : TButton;
      bVendeItem : TButton;
@@ -76,6 +77,7 @@ type
      Label1 : TLabel;
      Label10 : TLabel;
      Label11 : TLabel;
+     Label12: TLabel;
      lMensagemCliente : TLabel ;
      Label2 : TLabel;
      Label3 : TLabel;
@@ -87,13 +89,22 @@ type
      Label9 : TLabel;
      lECFName : TLabel;
      lMensagemOperador : TLabel ;
-     Memo1 : TMemo;
+     Memo1: TMemo;
+     mPagamentos: TMemo;
      PageControl1 : TPageControl;
      Panel1 : TPanel;
      Panel2 : TPanel;
+     Panel3: TPanel;
+     Panel4: TPanel;
+     Panel5: TPanel;
      pMensagemOperador : TPanel;
      pMensagemCliente : TPanel;
      pMensagem : TPanel;
+     spbAdicionaPagamento: TSpeedButton;
+     spbAdicionaPagamento1: TSpeedButton;
+     spRemovePagamento: TSpeedButton;
+     spbLimpaPagamentos: TSpeedButton;
+     Splitter1: TSplitter;
      sVSPague : TShape ;
      sECF : TShape;
      sHiperTEF : TShape;
@@ -139,6 +150,7 @@ type
      procedure bAbreVendeSubTotaliza4Click(Sender : TObject);
      procedure BaneseObtemInformacao(var ItemSelecionado : Integer);
      procedure bCancelarRespClick(Sender : TObject);
+     procedure bPagamentoClick(Sender: TObject);
      procedure cbxGPChange(Sender : TObject);
      procedure ckCHQemGerencialChange(Sender: TObject);
      procedure ckAuttarChange(Sender : TObject) ;
@@ -151,6 +163,10 @@ type
      procedure edEsperaSTSChange(Sender : TObject);
      procedure pMensagemOperadorClick(Sender: TObject);
      procedure pMensagemResize(Sender : TObject);
+     procedure spbAdicionaPagamento1Click(Sender: TObject);
+     procedure spbAdicionaPagamentoClick(Sender: TObject);
+     procedure spbLimpaPagamentosClick(Sender: TObject);
+     procedure spRemovePagamentoClick(Sender: TObject);
      procedure TrataErros(Sender : TObject; E : Exception);
      procedure bAbreVendeSubTotalizaClick(Sender : TObject);
      procedure bCHQClick(Sender : TObject);
@@ -161,7 +177,6 @@ type
      procedure bFecharClick(Sender : TObject);
      procedure bFPGClick(Sender : TObject);
      procedure bNCNClick(Sender : TObject);
-     procedure bPagamentoClick(Sender : TObject);
      procedure bSubTotalizaClick(Sender : TObject);
      procedure bVendeItemClick(Sender : TObject);
      procedure bAbreCupomClick(Sender : TObject);
@@ -196,9 +211,9 @@ type
       Tipo: AnsiChar; var Resposta: string; var Digitado: Boolean);
     procedure ACBrTEFD1CliSiTefExibeMenu(Titulo: string; Opcoes: TStringList;
       var ItemSelecionado: Integer; var VoltarMenu: Boolean);
-    procedure ACBrTEFD1CliSiTefObtemCampo(Titulo: string; TamanhoMinimo,
+    procedure ACBrTEFD1CliSiTefObtemCampo(Titulo: String; TamanhoMinimo,
       TamanhoMaximo, TipoCampo: Integer;
-      Operacao: TACBrTEFDCliSiTefOperacaoCampo; var Resposta: AnsiString;
+      Operacao: TACBrTEFDCliSiTefOperacaoCampo; var Resposta: String;
       var Digitado, VoltarMenu: Boolean);
   private
      fCancelado : Boolean ;
@@ -206,6 +221,9 @@ type
      procedure AvaliaTEFs;
      procedure MostraSaldoRestante;
      procedure VerificaECFAtivo;
+
+     Function CalculaTotalPago : Double ;
+     Function CalculaSaldoRestante : Double ;
     { private declarations }
   public
     { public declarations }
@@ -317,20 +335,44 @@ begin
 end;
 
 procedure TForm1.MostraSaldoRestante;
-Var
-  Saldo : Double ;
 begin
-  Saldo := ACBrECF1.Subtotal - ACBrECF1.TotalPago ;
-  if not ACBrTEFD1.AutoEfetuarPagamento then
-     Saldo := Saldo - ACBrTEFD1.RespostasPendentes.TotalPago;
-
-  Memo1.Lines.Add( 'Saldo Restante: '+FormatFloat('0.00',Saldo)) ;
+  Memo1.Lines.Add( 'Saldo Restante: '+FormatFloat('0.00',CalculaSaldoRestante)) ;
 end;
 
 procedure TForm1.VerificaECFAtivo;
 begin
    if not ACBrECF1.Ativo then
       Memo1.Lines.Add( ACBrStr( 'ATENÇÃO !! O ECF AINDA NÃO FOI ATIVADO' ) );
+end;
+
+function TForm1.CalculaTotalPago: Double;
+var
+   I: Integer;
+   Linha: String;
+   Valor: Double;
+begin
+  Result := 0;
+
+  { Adicionando valores de Pagamentos a Fazer }
+  For I := 0 to mPagamentos.Lines.Count-1 do
+  begin
+     Linha  := mPagamentos.Lines[I];
+     Valor  := StringToFloatDef( copy( Linha, Pos('|',Linha)+1, Length(Linha)), 0 );
+     Result := Result + Valor;
+  end;
+end;
+
+function TForm1.CalculaSaldoRestante: Double;
+begin
+  // Lendo Valor do Saldo do ECF //
+  Result := ACBrECF1.Subtotal ;
+  Result := Result - ACBrECF1.TotalPago ;
+  Result := Result - CalculaTotalPago  ;
+
+  { TEFD ainda não imprimiu os pagamentos ? Então adicionando o Total das
+    Transaçoes TEF já efetuadas no TotalPago}
+  if not ACBrTEFD1.AutoEfetuarPagamento then
+     Result := Result - ACBrTEFD1.RespostasPendentes.TotalPago;
 end;
 
 procedure TForm1.bInicializarClick(Sender : TObject);
@@ -468,6 +510,7 @@ procedure TForm1.bAbreCupomClick(Sender : TObject);
 begin
   ACBrECF1.AbreCupom;
   Memo1.Lines.Add('ACBrECF.AbreCupom');
+  spbLimpaPagamentos.Click;
 end;
 
 procedure TForm1.bVendeItemClick(Sender : TObject);
@@ -489,27 +532,6 @@ procedure TForm1.bSubTotalizaClick(Sender : TObject);
 begin
   ACBrECF1.SubtotalizaCupom ;
   Memo1.Lines.Add('ACBrECF.SubtotalizaCupom');
-  MostraSaldoRestante;
-end;
-
-procedure TForm1.bPagamentoClick(Sender : TObject);
-Var
-  CodFormaPagamento, ValorStr : String;
-begin
-  CodFormaPagamento := '01' ;
-  ValorStr          := '0' ;
-
-  if not InputQuery('Pagamento','Digite o Cod.Forma Pagamento',CodFormaPagamento ) then
-     exit ;
-
-  if not InputQuery('Pagamento','Digite o Valor a Pagar',ValorStr ) then
-     exit ;
-
-  if StrToFloatDef(ValorStr,0) = 0 then
-     exit ;
-
-  ACBrECF1.EfetuaPagamento( CodFormaPagamento, StrToFloat(ValorStr) );
-  Memo1.Lines.Add('ACBrECF.EfetuaPagamento');
   MostraSaldoRestante;
 end;
 
@@ -564,6 +586,7 @@ end;
 
 procedure TForm1.bCancelarClick(Sender : TObject);
 begin
+   spbLimpaPagamentos.Click;
    ACBrECF1.CancelaCupom;
    Memo1.Lines.Add('ACBrECF.CancelaCupom');
    ACBrTEFD1.CancelarTransacoesPendentes;
@@ -700,13 +723,23 @@ end;
 
 procedure TForm1.ACBrTEFD1InfoECF(Operacao : TACBrTEFDInfoECF;
    var RetornoECF : String );
+var
+   ASubTotal: Double;
 begin
    if not ACBrECF1.Ativo then
       ACBrECF1.Ativar;
 
    case Operacao of
      ineSubTotal :
-        RetornoECF := FloatToStr( ACBrECF1.Subtotal-ACBrECF1.TotalPago ) ;
+       begin
+         ASubTotal := ACBrECF1.Subtotal ;
+         ASubTotal := ASubTotal - ACBrECF1.TotalPago ;
+
+         RetornoECF := FloatToStr( ASubTotal ) ;
+       end;
+
+     ineTotalAPagar :
+       RetornoECF := FloatToStr( CalculaTotalPago );
 
      ineEstadoECF :
        begin
@@ -765,6 +798,25 @@ end;
 procedure TForm1.bCancelarRespClick(Sender : TObject);
 begin
    fCancelado := True ;
+end;
+
+procedure TForm1.bPagamentoClick(Sender: TObject);
+Var
+  CodFormaPagamento : String;
+begin
+  CodFormaPagamento := '01' ;
+
+  if not InputQuery('Pagamento de R$ '+edValorECF.Text,'Digite o Cod.Forma Pagamento',CodFormaPagamento ) then
+     exit ;
+
+  if StringToFloatDef(edValorECF.Text,0) = 0 then
+     exit ;
+
+  ACBrECF1.EfetuaPagamento( CodFormaPagamento, StrToFloat(edValorECF.Text) );
+  Memo1.Lines.Add('ACBrECF.EfetuaPagamento');
+  Memo1.Lines.Add( 'Pagamento: '+CodFormaPagamento+' no valor: R$ '+edValorECF.Text+
+                   ' registrado');
+  MostraSaldoRestante;
 end;
 
 procedure TForm1.cbxGPChange(Sender : TObject);
@@ -850,6 +902,65 @@ end;
 procedure TForm1.pMensagemResize(Sender : TObject);
 begin
    pMensagemCliente.Height := Trunc( pMensagem.Height / 2 ) ;
+end;
+
+procedure TForm1.spbAdicionaPagamento1Click(Sender: TObject);
+begin
+   MostraSaldoRestante;
+end;
+
+procedure TForm1.spbAdicionaPagamentoClick(Sender: TObject);
+Var
+  CodFormaPagamento, ValorStr : String;
+begin
+  if CalculaSaldoRestante <= 0 then
+  begin
+    Memo1.Lines.Add('Total do Cupom já foi atingido');
+    exit ;
+  end;
+
+  CodFormaPagamento := ACBrECF1.FormasPagamento[0].Indice ;
+  ValorStr          := '1' ;
+
+  if not InputQuery('Pagamento','Digite o Cod.Forma Pagamento',CodFormaPagamento ) then
+     exit ;
+
+  if not InputQuery('Pagamento','Digite o Valor a Pagar',ValorStr ) then
+     exit ;
+
+  if StringToFloatDef(ValorStr,0) = 0 then
+  begin
+     Memo1.Lines.Add('Valor: '+ValorStr+' inválido');
+     exit ;
+  end;
+
+  CodFormaPagamento := Trim(CodFormaPagamento);
+  if (CodFormaPagamento = '') or
+     (ACBrECF1.AchaFPGIndice(CodFormaPagamento) = Nil) then
+  begin
+    Memo1.Lines.Add('Cod.Forma Pagto: ['+CodFormaPagamento+'] inválido');
+    exit ;
+  end;
+
+  mPagamentos.Lines.Add( CodFormaPagamento + '|' + ValorStr );
+  Memo1.Lines.Add( 'Pagamento: '+CodFormaPagamento+' no valor: '+ValorStr+
+                   ' acumulado');
+
+  MostraSaldoRestante;
+end;
+
+procedure TForm1.spbLimpaPagamentosClick(Sender: TObject);
+begin
+   mPagamentos.Lines.Clear;
+end;
+
+procedure TForm1.spRemovePagamentoClick(Sender: TObject);
+var
+   LineNumber: Integer;
+begin
+  LineNumber := mPagamentos.CaretPos.y;
+  if LineNumber >= 0 then
+     mPagamentos.Lines.Delete( LineNumber );
 end;
 
 procedure TForm1.TrataErros(Sender : TObject; E : Exception);
@@ -998,14 +1109,13 @@ begin
   OldTecladoBloqueado := ACBrTEFD1.TecladoBloqueado;
   ACBrTEFD1.BloquearMouseTeclado(False);
   try
-     ShowMessage('ATENÇÃO. Detectada proximadade do fim da Bobina');
+     ShowMessage( ACBrStr('ATENÇÃO. Detectada proximadade do fim da Bobina') );
   finally
     ACBrTEFD1.BloquearMouseTeclado(OldTecladoBloqueado);
   end ;
 end;
 
-procedure TForm1.ACBrTEFD1AntesCancelarTransacao(RespostaPendente: TACBrTEFDResp
-   );
+procedure TForm1.ACBrTEFD1AntesCancelarTransacao(RespostaPendente: TACBrTEFDResp);
 var
    Est: TACBrECFEstado;
 begin
@@ -1063,6 +1173,9 @@ procedure TForm1.ACBrTEFD1ComandaECF(Operacao : TACBrTEFDOperacaoECF;
    Resp : TACBrTEFDResp; var RetornoECF : Integer );
 Var
    Est : TACBrECFEstado ;
+   P   : Integer;
+   Linha, CodFPG : String ;
+   ValorFPG : Double ;
 begin
   Memo1.Lines.Add('ComandaECF: '+GetEnumName( TypeInfo(TACBrTEFDOperacaoECF),
                                               integer(Operacao) ));
@@ -1100,6 +1213,23 @@ begin
           ACBrECF1.PulaLinhas( ACBrECF1.LinhasEntreCupons );
           ACBrECF1.CortaPapel( True );
           Sleep(200);
+        end;
+
+      opeImprimePagamentos :
+        begin
+          while mPagamentos.Lines.Count > 0 do
+          begin
+             Linha := mPagamentos.Lines[0] ;
+             P     := pos('|',Linha) ;
+             if P > 0 then
+             begin
+                CodFPG   := Trim(copy(Linha,1,P-1)) ;
+                ValorFPG := StringToFloatDef( copy(Linha, P+1, Length(Linha) ), 0 );
+                if (CodFPG <> '') and (ValorFPG > 0) then
+                   ACBrECF1.EfetuaPagamento( CodFPG, ValorFPG );
+             end;
+             mPagamentos.Lines.Delete(0);
+          end;
         end;
     end;
 
@@ -1237,9 +1367,10 @@ begin
   end;
 end;
 
-procedure TForm1.ACBrTEFD1CliSiTefObtemCampo(Titulo: string; TamanhoMinimo,
-  TamanhoMaximo, TipoCampo: Integer; Operacao: TACBrTEFDCliSiTefOperacaoCampo;
-  var Resposta: AnsiString; var Digitado, VoltarMenu: Boolean);
+procedure TForm1.ACBrTEFD1CliSiTefObtemCampo(Titulo: String; TamanhoMinimo,
+  TamanhoMaximo, TipoCampo: Integer;
+  Operacao: TACBrTEFDCliSiTefOperacaoCampo; var Resposta: String;
+  var Digitado, VoltarMenu: Boolean);
 Var
   AForm : TForm5 ;
   MR    : TModalResult ;
@@ -1265,8 +1396,8 @@ begin
   end;
 end;
 
-procedure TForm1.ACBrTEFD1VeSPagueExibeMenu(Titulo: String;
-  Opcoes: TStringList; Memo: TStringList; var ItemSelecionado: Integer);
+procedure TForm1.ACBrTEFD1VeSPagueExibeMenu(Titulo: string; Opcoes,
+   Memo: TStringList; var ItemSelecionado: Integer);
 Var
   AForm : TForm4 ;
   MR    : TModalResult ;

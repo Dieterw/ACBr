@@ -48,6 +48,26 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Data:  31/08/2012
+-- ACBrTEFD 4.0.0 --    (por: DSA)
+[*] Melhora no mecanismo de LOG do ACBrTEFD, adicionando a chamada e resposta do
+    evento OnInfoECF ao LOG
+[+] Adicionado nova operação para o Evento OnInfoECF, "ineTotalAPagar", que
+    permite a aplicação informar o total dos Pagamentos acumlados e não
+    impressos no ECF
+[+] Adicionado nova operação para o Evento OnComandaECF, "opeImprimePagamentos",
+    que deve ser tratada dentro do evento OnComandaECF (veja o exemplo no Demo)
+[*] Fluxo do método ACBrTEFD.FinalizarCupom modificado para chamar o evento
+    OnComandaECF( opeImprimePagamentos ) quando o SubTotal do ECF ainda não
+    estiver totalmente Pago (TotalPagoECF < SubTotalECF).
+       Isso permite a aplicação enviar as Formas de Pagamento que estejam
+    acumuladas pela aplicação, mas que não são do Tipo TEF (Ex: Dinheiro, Vale,
+    etc) permitindo assim, imprimi-las dentro da rotina de tratamento de erros
+    exigida pelos roteiros de homolgação TEF
+[*] TEFDDemo modificado para exemplificar funcionamento de pagamentos acumulados
+    pela aplicação
+
+
 Data:  27/08/2012
 -- ACBrTEFDCliSiTef 3.3.0 --
 [*]  Modificação no fluxo de impressão de Relatórios administrativos. A versão

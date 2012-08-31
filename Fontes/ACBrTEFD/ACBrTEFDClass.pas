@@ -55,7 +55,7 @@ uses
   {$ENDIF} ;
 
 const
-   CACBrTEFD_Versao      = '3.3.0' ;
+   CACBrTEFD_Versao      = '4.0.0' ;
    CACBrTEFD_EsperaSTS   = 7 ;
    CACBrTEFD_EsperaSleep = 250 ;
    CACBrTEFD_NumVias     = 2 ;
@@ -120,7 +120,8 @@ type
 
   TACBrTEFDOperacaoECF = ( opeAbreGerencial, opeFechaGerencial,
                            opePulaLinhas, opeSubTotalizaCupom, opeFechaCupom,
-                           opeFechaVinculado, opeCancelaCupom ) ;
+                           opeFechaVinculado, opeCancelaCupom,
+                           opeImprimePagamentos ) ;
 
   TACBrTEFDBloqueiaMouseTeclado = procedure( Bloqueia : Boolean;
      var Tratado : Boolean ) of object ;
@@ -146,12 +147,13 @@ type
      var RetornoECF : Integer ) of object ; { -1 - Não tratado, 0 - Erro na Execucao, 1 - Sucesso }
 
   TACBrTEFDInfoECF = ( ineSubTotal,  // Valor do Saldo restante "A Pagar" do Cupom
-                       ineEstadoECF  // Estado do ECF "L" Livre, "V" Em Venda de Itens,
+                       ineEstadoECF, // Estado do ECF "L" Livre, "V" Em Venda de Itens,
                                      //               "P" Em Pagamento,
                                      //               "C" CDC ou Vinculado
                                      //               "G" Relatório Gerencial
                                      //               "N" Não Fiscal (em qq fase, pois é dificil detectar a fase)
                                      //               "O" Outro
+                       ineTotalAPagar// Valor Total de Pagamentos registrados, na Aplicação, e não enviados ao ECF
                      ) ;
 
   TACBrTEFDObterInfoECF = procedure( Operacao : TACBrTEFDInfoECF;
@@ -1860,6 +1862,8 @@ var
   TemIdentificacao : Boolean ;
   Operacoes : String ;
 begin
+  TemIdentificacao := False;
+  
   with TACBrTEFD(Owner) do
   begin
      if (Identificacao.NomeAplicacao + Identificacao.VersaoAplicacao <> '') then
@@ -2463,10 +2467,7 @@ begin
 
      FinalizarResposta( False );    { False = NAO Apaga Arquivo de Resposta }
 
-     if AutoFinalizarCupom and
-        ( (not MultiplosCartoes) or
-          (RespostasPendentes.SaldoRestante <= 0)
-        ) then
+     if AutoFinalizarCupom and (RespostasPendentes.SaldoRestante <= 0) then
      begin
         FinalizarCupom;
         ImprimirTransacoesPendentes;
@@ -2496,17 +2497,13 @@ begin
        raise Exception.Create(
           ACBrStr('ECF deve estar em Estado de "Venda", "Pagamento" ou "Não Fiscal"') );
 
-    SaldoAPagar := SubTotalECF ;
+    SaldoAPagar := InfoECFAsDouble(ineSubTotal) ;
+    SaldoAPagar := SaldoAPagar - InfoECFAsDouble(ineTotalAPagar);
     RespostasPendentes.SaldoAPagar := SaldoAPagar ;
 
     if (Valor > RespostasPendentes.SaldoRestante ) then
-       raise Exception.Create( ACBrStr( 'Operação TEF deve ser igual ao '+
-                                        'Saldo a Pagar' ) );
-
-    if (not MultiplosCartoes) and (Valor < SaldoAPagar) then
-       raise Exception.Create(
-              ACBrStr( 'Multiplos Cartões não habilitado.' + sLineBreak +
-                       'Valor da Operação TEF deve ser igual ao Saldo a Pagar' ) );
+       raise Exception.Create( ACBrStr( 'Operação TEF deve ser limitada ao '+
+                                        'Saldo restante a Pagar' ) );
 
     if MultiplosCartoes and (NumeroMaximoCartoes > 0) and   // Tem multiplos Cartoes ?
        (Valor <> RespostasPendentes.SaldoRestante) and      // Valor é diferente do Saldo Restante a Pagar ?
@@ -2558,8 +2555,8 @@ begin
      exit ;
 
   try
-     WriteToTXT( fArqLOG, '-- '+FormatDateTime('dd/mm/yy hh:nn:ss',now) +
-                          sLineBreak + AString, True);
+     WriteToTXT( fArqLOG, '-- '+FormatDateTime('dd/mm hh:nn:ss:zzz',now) +
+                          ' - ' + AString, True);
   except
   end ;
 end;

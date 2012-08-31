@@ -167,8 +167,9 @@ type
      procedure SetArqLOG(const AValue : String);
 
    public
+     Function InfoECFAsString( Operacao : TACBrTEFDInfoECF ) : String ;
+     Function InfoECFAsDouble( Operacao : TACBrTEFDInfoECF ) : Double ;
      Function EstadoECF : AnsiChar ;
-     function SubTotalECF: Double;
      function DoExibeMsg( Operacao : TACBrTEFDOperacaoMensagem;
         Mensagem : String ) : TModalResult;
      function ComandarECF(Operacao : TACBrTEFDOperacaoECF) : Integer;
@@ -639,15 +640,8 @@ function TACBrTEFD.EstadoECF : AnsiChar;
 Var
   Retorno : String ;
 begin
-  Retorno := ' ' ;
-  try
-     OnInfoEcf( ineEstadoECF, Retorno ) ;
-  except
-     On E : Exception do
-        raise EACBrTEFDECF.Create(E.Message);
-  end;
-  Result := upcase( padL(Retorno,1)[1] );
-  fTefClass.GravaLog( 'EstadoECF: '+Result ) ;
+  Retorno := InfoECFAsString( ineEstadoECF ) ;
+  Result  := upcase( padL(Retorno,1)[1] );
 
   if not (Result in ['L','V','P','C','G','R','N','O']) then
      raise EACBrTEFDECF.Create(
@@ -659,28 +653,6 @@ begin
                  '"G" ou "R" - Relatório Gerencial'+sLineBreak+
                  '"N" - Recebimento Não Fiscal'+sLineBreak+
                  '"O" - Outro' ) );
-end;
-
-function TACBrTEFD.SubTotalECF : Double;
-var
-   SaldoAPagar : Double ;
-   SubTotal    : String ;
-begin
-   try
-      SubTotal := '' ;
-      OnInfoECF( ineSubTotal, SubTotal ) ;
-   except
-      on E : Exception do
-         raise EACBrTEFDECF.Create(E.Message);
-   end;
-
-   SaldoAPagar := StringToFloatDef( SubTotal, -98787158);
-   SaldoAPagar := RoundTo( SaldoAPagar, -2);
-
-   if SaldoAPagar = -98787158 then
-      raise Exception.Create( ACBrStr( 'Erro na conversão do Valor Retornado '+
-                                       'em: OnInfoECF( ineSubTotal, SaldoAPagar )' ) );
-   Result := SaldoAPagar;
 end;
 
 procedure TACBrTEFD.AtivarGP(GP : TACBrTEFDTipo);
@@ -844,9 +816,10 @@ begin
         raise EACBrTEFDECF.Create( ACBrStr(CACBrTEFD_Erro_ECFNaoLivre) ) ;
   end;
 
-  ImpressaoOk := False ;
-  Gerencial   := False ;
-  RemoverMsg  := False ;
+  ImpressaoOk            := False ;
+  Gerencial              := False ;
+  RemoverMsg             := False ;
+  GerencialAberto        := False ;
   MsgAutenticacaoAExibir := '' ;
 
   GrupoVinc := nil ;
@@ -1351,7 +1324,7 @@ begin
                                  begin
                                    Inc( Ordem ) ;
 
-                                   if SubTotalECF > 0 then
+                                   if InfoECFAsDouble(ineSubTotal) > 0 then
                                       ECFPagamento( GrupoFPG[I].IndiceFPG_ECF, GrupoFPG[I].Total );
 
                                    For J := 0 to RespostasPendentes.Count-1 do
@@ -1371,18 +1344,38 @@ begin
                              end;
                           end;
 
-                          if SubTotalECF <= 0 then
-                             ComandarECF( opeFechaCupom )
-                          else
-                             break ;
+                          if (InfoECFAsDouble(ineSubTotal) > 0) then
+                          begin
+                             if (InfoECFAsDouble(ineTotalAPagar) > 0) then
+                             begin
+                                ComandarECF( opeImprimePagamentos ) ;
+
+                                if InfoECFAsDouble(ineSubTotal) > 0 then
+                                   Break;
+                              end
+                             else
+                                Break;
+                          end ;
+
+                          ComandarECF( opeFechaCupom )
                         end ;
 
                       'N' :     // Usado apenas no Fechamento de NaoFiscal
                         begin
-                          if SubTotalECF <= 0 then
-                             ComandarECF( opeFechaCupom )
-                          else
-                             break ;
+                          if (InfoECFAsDouble(ineSubTotal) > 0) then
+                          begin
+                             if (InfoECFAsDouble(ineTotalAPagar) > 0) then
+                             begin
+                                ComandarECF( opeImprimePagamentos ) ;
+
+                                if InfoECFAsDouble(ineSubTotal) > 0 then
+                                   Break;
+                              end
+                             else
+                                Break;
+                          end ;
+
+                          ComandarECF( opeFechaCupom )
                         end ;
                     else
                       raise Exception.Create(
@@ -1662,6 +1655,41 @@ begin
   end;
 
   fArqLOG := AValue;
+end;
+
+function TACBrTEFD.InfoECFAsString(Operacao: TACBrTEFDInfoECF): String;
+var
+   Retorno: String;
+begin
+   Retorno := '';
+   fTefClass.GravaLog( 'InfoECF: '+
+     GetEnumName(TypeInfo(TACBrTEFDInfoECF), Integer(Operacao) ) ) ;
+
+   try
+      OnInfoEcf( Operacao, Retorno ) ;
+   except
+      On E : Exception do
+      begin
+         fTefClass.GravaLog( fTefClass.Name +'   Erro: '+E.Message ) ;
+         raise EACBrTEFDECF.Create(E.Message);
+      end;
+   end;
+
+   fTefClass.GravaLog( '    Ret: '+Retorno ) ;
+   Result := Retorno;
+end;
+
+function TACBrTEFD.InfoECFAsDouble(Operacao: TACBrTEFDInfoECF): Double;
+var
+   Retorno: String;
+begin
+   Retorno := InfoECFAsString( Operacao );
+   Result  := RoundTo( StringToFloatDef( Retorno, -98787158), -2 );
+
+   if Result = -98787158 then
+      raise EACBrTEFDErro.Create( ACBrStr(
+         'Erro na conversão do Valor Retornado de: OnInfoECF( '+
+         GetEnumName(TypeInfo(TACBrTEFDInfoECF), Integer(Operacao)) + ')' ) );
 end;
 
 function TACBrTEFD.getArqResp : String;

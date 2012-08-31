@@ -58,6 +58,12 @@ var
 
 implementation
 
+{$IFNDEF FPC}
+ {$R *.dfm}
+{$ELSE}
+ {$R *.lfm}
+{$ENDIF}
+
 { TfrConfiguraSerial }
 
 procedure TfrConfiguraSerial.FormCreate(Sender: TObject);
@@ -138,8 +144,5 @@ begin
 end;
 
 initialization
-{$IFDEF FPC}
-  {$I ConfiguraSerial.lrs}
-{$ENDIF}
 
 end.

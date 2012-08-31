@@ -2,40 +2,287 @@ object Form1: TForm1
   Left = 371
   Height = 452
   Top = 104
-  Width = 769
+  Width = 731
   Caption = 'TEFDDemo'
   ClientHeight = 452
-  ClientWidth = 769
+  ClientWidth = 731
   KeyPreview = True
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   LCLVersion = '1.1'
-  object Memo1: TMemo
+  object Panel3: TPanel
     Left = 0
     Height = 194
     Top = 208
-    Width = 769
+    Width = 731
     Align = alClient
-    Lines.Strings = (
-      'Memo1'
-    )
-    OnChange = Memo1Change
-    ScrollBars = ssAutoBoth
-    TabOrder = 0
+    BevelOuter = bvNone
+    ClientHeight = 194
+    ClientWidth = 731
+    TabOrder = 4
+    object Panel4: TPanel
+      Left = 561
+      Height = 194
+      Top = 0
+      Width = 170
+      Align = alRight
+      ClientHeight = 194
+      ClientWidth = 170
+      Constraints.MinWidth = 170
+      TabOrder = 0
+      object Panel5: TPanel
+        Left = 1
+        Height = 33
+        Top = 160
+        Width = 168
+        Align = alBottom
+        ClientHeight = 33
+        ClientWidth = 168
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 0
+        object spbAdicionaPagamento: TSpeedButton
+          AnchorSideTop.Control = Panel5
+          AnchorSideTop.Side = asrCenter
+          Left = 14
+          Height = 22
+          Hint = 'Adiciona Pagamento'
+          Top = 5
+          Width = 23
+          Glyph.Data = {
+            36040000424D3604000000000000360000002800000010000000100000000100
+            2000000000000004000000000000000000000000000000000000FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF00007D00FF007D00FF007D00FF007D
+            00FFFF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF00007D00FF31E38CFF31E78CFF007D
+            00FFFF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF00007D00FF42FBADFF42FFADFF007D
+            00FFFF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF00007D00FF00EF7BFF00EF7BFF007D
+            00FFFF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF00007D00FF29E37BFF29E37BFF007D
+            00FFFF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00007D
+            00FF007D00FF007D00FF007D00FF007D00FF007D00FF39DB7BFF39DB73FF007D
+            00FF007D00FF007D00FF007D00FF007D00FF007D00FFFF00FF00FF00FF00219E
+            31FF63D384FF63D784FF5AD784FF5ADB84FF4AD77BFF42D373FF42D373FF4AD7
+            7BFF52D77BFF4AD37BFF4ACF73FF4ACB6BFF189E21FFFF00FF00FF00FF00219E
+            29FF73D37BFF6BD37BFF6BD37BFF63DB84FF5AD37BFF52D373FF52CF73FF52D3
+            73FF5AD773FF52CF73FF52CB6BFF52C763FF189A21FFFF00FF00FF00FF004FA5
+            4FFF4AA64FFF4BA650FF4BA650FF4BA050FF43AA5AFF6BD37BFF63D37BFF4BAA
+            5BFF4C9E51FF4BA650FF4BA650FF4AA64FFF4DA74DFFFF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF004BA358FF73D784FF73D384FF52A3
+            59FFFF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF0050A257FF84D78CFF84D384FF58A3
+            58FFFF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF0056A25EFF9CDF9CFF94DB94FF5FA3
+            5FFFFF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF005A9B60FF84C784FF84C784FF629B
+            69FFFF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF0046974BFF3A983AFF3A983AFF4697
+            4BFFFF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+          }
+          OnClick = spbAdicionaPagamentoClick
+        end
+        object spRemovePagamento: TSpeedButton
+          AnchorSideTop.Control = Panel5
+          AnchorSideTop.Side = asrCenter
+          Left = 46
+          Height = 22
+          Hint = 'Remove Pagamento'
+          Top = 5
+          Width = 23
+          Glyph.Data = {
+            36040000424D3604000000000000360000002800000010000000100000000100
+            2000000000000004000000000000000000000000000000000000FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF000014
+            BDFF0014BDFF0014BDFF0014BDFF0014BDFF0014BDFF0014BDFF0014BDFF0014
+            BDFF0014BDFF0014BDFF0014BDFF0014BDFF0014BDFFFF00FF00FF00FF000014
+            BDFF4265E7FF3965E7FF3969EFFF3969EFFF396DEFFF396DEFFF396DEFFF396D
+            EFFF3969EFFF3969EFFF3965E7FF3961E7FF0014BDFFFF00FF00FF00FF000014
+            BDFF3169EFFF3171F7FF3175F7FF3179FFFF3179FFFF3179FFFF3179FFFF3179
+            FFFF3175F7FF3171F7FF3169EFFF3165EFFF0014BDFFFF00FF00FF00FF000014
+            BDFF7B96EFFF7B96F7FF7B9AF7FF7B9AF7FF7B9EF7FF7B9EF7FF7B9EF7FF7B9A
+            F7FF7B9AF7FF7B96F7FF7B92EFFF7B92EFFF0014BDFFFF00FF00FF00FF000014
+            BDFF7E92EAFF7E97F0FF7E99F0FF7E9EF5FF7EA1F5FF7EA1F5FF7EA1F5FF7EA1
+            F5FF7EA1F5FF7E9EF5FF7E99F0FF7E97F0FF0014BDFFFF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+          }
+          OnClick = spRemovePagamentoClick
+        end
+        object spbLimpaPagamentos: TSpeedButton
+          AnchorSideTop.Control = Panel5
+          AnchorSideTop.Side = asrCenter
+          Left = 134
+          Height = 22
+          Hint = 'Limpa Pagamentos'
+          Top = 5
+          Width = 23
+          Glyph.Data = {
+            36040000424D3604000000000000360000002800000010000000100000000100
+            2000000000000004000000000000000000000000000000000000FF00FF00FF00
+            FF00FF00FF00FF00FF00EDEDF000A3A3B300F2F2F300FF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00F3F3F9000F0E170030312B001F1F2B0069697B00CBCBCD00F9F9
+            F900FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00808085001F1F1E00FF00FF00E3E3E300E2E2E300D8D8D900BDBDBD007373
+            73003333330087878700FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00F2F3
+            FC0000000000CFCFD000F9F9F900CBCBCB00D0D0D000DADADA00F4F4F400F5F5
+            F5008F8F8F00171717000000000080808000FF00FF00FF00FF00FF00FF006161
+            5E006C6C8100D7D6CF00D1D1CF00D7D7D700DADADA00E1E1E100DCDCDC00DADA
+            DA00FF00FF00FF00FF00C9C9C9003A3A3A0063636300EDEDED00DADAD8000000
+            0B0027267D004746790094959A00C7C7C200DDDDDE00DFDFDF00E2E2E200E2E2
+            E200F6F6F600D2D2D2009B9B9B00929292000000000039393900C9C9C7000000
+            13003739BC00262579001E1D6B001D1C6E0082829500C1C2B900DEDEDC00F1F1
+            F3003939390069696900FF00FF00FF00FF00F1F1F100FF00FF00FF00FF007474
+            7300222880003C43D9002A2A8D00242372001B1A6D004F4E8000B2B2AA00E2E2
+            D90040404000F4F4F400FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF001A190800141737002B2C8C0027267F0023236E0011116800242474005454
+            7000C7C7C700FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FEFEFE00FF00
+            FF00222224001E1E590023227300232371003132A00029287B00201F72001110
+            5F00C1C2C000FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00A4A4
+            A20022236A0027267F00101046002A2926003E3F410000001C00000014002A2A
+            2A00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FCFCFC002929
+            27002524770028277E00000000009C9C9A00FAFAF900BAB9B600AFAFAC00F8F7
+            F700FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00A5A6A2000000
+            1D002C2A8F00000020004D4D4700FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00BDBDB9000002
+            1F002224840000000000ECECEB00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FDFD
+            FC00D2D2D000FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+          }
+          OnClick = spbLimpaPagamentosClick
+        end
+        object spbAdicionaPagamento1: TSpeedButton
+          AnchorSideTop.Control = Panel5
+          AnchorSideTop.Side = asrCenter
+          Left = 102
+          Height = 22
+          Hint = 'Saldo Restante'
+          Top = 5
+          Width = 23
+          Glyph.Data = {
+            36040000424D3604000000000000360000002800000010000000100000000100
+            2000000000000004000000000000000000000000000000000000FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00FF00FF00E3BDA500CFAD9700CFAD9700E3BD
+            A500FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00D8B39B00A78E7F007D7975007D79750066666600675E
+            5600806C6000C4A18C00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00C3A49100999999009AA1A50099999900958580008F827D008A89
+            8A006E7579004C4B4A0089706100FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00CCAD9A00ACB0B300B5ACA700A46D5200964926008D3C18008D3C1800813F
+            28008663590087898B004C4B4A0089706100FF00FF00FF00FF00FF00FF00E3BD
+            A500C0C0C100C6B7A400AC5E2E00A54E1800AB7E6200ACB0B3009F7C69008D3C
+            18007E2E10007F4A3A0087898B004C4B4A00BE9C8700FF00FF00FF00FF00D8C5
+            B400CCCCCC00BC754000B76A2B00B76A2B00B6875B00B8A58E00A87E5D009652
+            26008D4621007E2E1000845C5000767E82007A675C00FF00FF00D8C5B400DCD8
+            D700CFAD9700C2752B00C4833B00C0813400BF8E5300C0AA9200B6875B00A15D
+            2000965226008C431D00813A1F008685850066666600D4AF9800D8C5B400E6E5
+            E600D7A56D00CD8A3700CE954000CD8A3700CDAD7600D7E5F900C6B7A400AD71
+            3000A15D2000965226008D3C1800977C72007B7B7900BE9C8700ECD4C700E6E5
+            E600D7A56D00D6993E00DDA44200DDA44200DDA44200D2B57E00D0D6DB00C9C4
+            BC00AF784100A15D200091401700977C720086858500BE9C8700ECD4C700E6E5
+            E600DCB37A00DDA44200E2B64E00E1BB4C00DBB43A00D09D2100D3B78200D7E1
+            F100C4A18C00A15D20009A4A1D00A08B83008A898A00D8B39B00FF00FF00E7DF
+            DD00E9C7B200DDA44200E7BE5000F0E0A600F0E0A600E1C57700DFD4BE00D7E5
+            F900C0AA9200AD611F00A55F3400A6ABAE00A3928800FF00FF00FF00FF00ECD4
+            C700E7EAEC00E6BC6800E8B44300F6E3AC00FFFFFF00F3F6FB00EEEDEE00DCCF
+            BA00C4833B00B15F1C00BE9C8700A6ABAE00CFAD9700FF00FF00FF00FF00FF00
+            FF00E8DDD900ECE7E800E6BC6800E8B44300E7BE5000E6BC6800DCAA5900CD88
+            2D00C2752B00C59E7D00BFC5CA00C0AA9C00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00E7DFDD00EEEDEE00E9D1A500E6BC6800DCA04E00DCA04E00D7A5
+            6D00D8C5B400D0D6DB00CDB7AB00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00ECD4C700ECE7E800EEEDEE00EEEDEE00ECE7E800ECE7
+            E800DCD8D700E1C2AF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+            FF00FF00FF00FF00FF00FF00FF00EEC5AC00ECD4C700ECD4C700ECD4C700E9C7
+            B200EEC5AC00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+          }
+          OnClick = spbAdicionaPagamento1Click
+        end
+      end
+      object Label12: TLabel
+        Left = 1
+        Height = 15
+        Top = 1
+        Width = 168
+        Align = alTop
+        Alignment = taCenter
+        Caption = 'Pagamentos a Fazer'
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+      end
+      object mPagamentos: TMemo
+        Left = 1
+        Height = 144
+        Top = 16
+        Width = 168
+        Align = alClient
+        ReadOnly = True
+        ScrollBars = ssAutoBoth
+        TabOrder = 1
+      end
+    end
+    object Splitter1: TSplitter
+      Left = 556
+      Height = 194
+      Top = 0
+      Width = 5
+      Align = alRight
+      ResizeAnchor = akRight
+    end
+    object Memo1: TMemo
+      Left = 0
+      Height = 194
+      Top = 0
+      Width = 556
+      Align = alClient
+      Lines.Strings = (
+        'Memo1'
+      )
+      ScrollBars = ssAutoBoth
+      TabOrder = 2
+    end
   end
   object PageControl1: TPageControl
     Left = 0
     Height = 208
     Top = 0
-    Width = 769
-    ActivePage = tsConfig
+    Width = 731
+    ActivePage = tsOperacao
     Align = alTop
-    TabIndex = 0
-    TabOrder = 2
+    TabIndex = 1
+    TabOrder = 1
     object tsConfig: TTabSheet
       Caption = 'Configuração'
       ClientHeight = 180
-      ClientWidth = 761
+      ClientWidth = 723
       object gbConfigECF: TGroupBox
         Left = 0
         Height = 180
@@ -169,7 +416,7 @@ object Form1: TForm1
           Width = 43
           Alignment = taCenter
           TabOrder = 3
-          Text = '02'
+          Text = '06'
         end
         object Label7: TLabel
           Left = 186
@@ -186,7 +433,7 @@ object Form1: TForm1
           Width = 43
           Alignment = taCenter
           TabOrder = 4
-          Text = '03'
+          Text = '02'
         end
         object bFPG: TButton
           AnchorSideLeft.Side = asrCenter
@@ -203,20 +450,20 @@ object Form1: TForm1
         Left = 308
         Height = 180
         Top = 0
-        Width = 453
+        Width = 415
         Align = alClient
         ClientHeight = 180
-        ClientWidth = 453
+        ClientWidth = 415
         TabOrder = 1
         object gbConfigTEF: TGroupBox
           Left = 1
           Height = 178
           Top = 1
-          Width = 451
+          Width = 413
           Align = alClient
           Caption = 'TEF'
           ClientHeight = 160
-          ClientWidth = 447
+          ClientWidth = 409
           TabOrder = 0
           object bInicializar: TButton
             Left = 37
@@ -347,7 +594,7 @@ object Form1: TForm1
     object tsOperacao: TTabSheet
       Caption = 'Operação'
       ClientHeight = 180
-      ClientWidth = 761
+      ClientWidth = 723
       object gbCupomECF: TGroupBox
         Left = 0
         Height = 180
@@ -366,7 +613,7 @@ object Form1: TForm1
           Width = 93
           Caption = 'Cancelar'
           OnClick = bCancelarClick
-          TabOrder = 8
+          TabOrder = 5
         end
         object bAbreCupom: TButton
           Left = 6
@@ -375,7 +622,7 @@ object Form1: TForm1
           Width = 93
           Caption = 'Abrir'
           OnClick = bAbreCupomClick
-          TabOrder = 3
+          TabOrder = 0
         end
         object bVendeItem: TButton
           Left = 108
@@ -384,7 +631,7 @@ object Form1: TForm1
           Width = 93
           Caption = 'Vende Item'
           OnClick = bVendeItemClick
-          TabOrder = 4
+          TabOrder = 1
         end
         object bSubTotaliza: TButton
           Left = 6
@@ -393,7 +640,7 @@ object Form1: TForm1
           Width = 93
           Caption = 'SubTotalizar'
           OnClick = bSubTotalizaClick
-          TabOrder = 5
+          TabOrder = 2
         end
         object bFechar: TButton
           Left = 6
@@ -402,16 +649,7 @@ object Form1: TForm1
           Width = 93
           Caption = 'Fechar'
           OnClick = bFecharClick
-          TabOrder = 7
-        end
-        object bPagamento: TButton
-          Left = 108
-          Height = 25
-          Top = 32
-          Width = 93
-          Caption = 'Pagamento'
-          OnClick = bPagamentoClick
-          TabOrder = 6
+          TabOrder = 4
         end
         object bAbreVendeSubTotaliza: TButton
           Left = 6
@@ -420,35 +658,35 @@ object Form1: TForm1
           Width = 195
           Caption = 'AbreVendeSubtotaliza'
           OnClick = bAbreVendeSubTotalizaClick
-          TabOrder = 2
+          TabOrder = 6
         end
         object edValorECF: TEdit
           Left = 210
           Height = 25
-          Top = 53
+          Top = 24
           Width = 72
           Alignment = taRightJustify
           AutoSize = False
-          TabOrder = 1
+          TabOrder = 9
           Text = '1,00'
         end
         object Label5: TLabel
-          Left = 254
+          Left = 218
           Height = 15
-          Top = 37
-          Width = 27
+          Top = 0
+          Width = 50
           Alignment = taRightJustify
-          Caption = 'Valor'
+          Caption = 'Valor ECF'
           ParentColor = False
         end
         object bEstado: TButton
           Left = 210
           Height = 25
-          Top = 0
+          Top = 64
           Width = 72
           Caption = 'Estado'
           OnClick = bEstadoClick
-          TabOrder = 0
+          TabOrder = 8
         end
         object bReducaoZ: TButton
           AnchorSideLeft.Side = asrCenter
@@ -478,18 +716,27 @@ object Form1: TForm1
           Width = 195
           Caption = 'Fechar Gerencial/Vinculado'
           OnClick = bFechaRelatorioClick
-          TabOrder = 9
+          TabOrder = 7
+        end
+        object bPagamento: TButton
+          Left = 108
+          Height = 25
+          Top = 32
+          Width = 93
+          Caption = 'Pagamento'
+          OnClick = bPagamentoClick
+          TabOrder = 3
         end
       end
       object gbComandosTEF: TGroupBox
         Left = 292
         Height = 180
         Top = 0
-        Width = 469
+        Width = 431
         Align = alClient
         Caption = 'TEF'
         ClientHeight = 162
-        ClientWidth = 465
+        ClientWidth = 427
         TabOrder = 1
         object bADM: TButton
           Left = 6
@@ -555,12 +802,12 @@ object Form1: TForm1
           TabOrder = 6
         end
         object Label3: TLabel
-          Left = 6
+          Left = 14
           Height = 15
-          Top = 108
-          Width = 27
+          Top = 111
+          Width = 49
           Alignment = taRightJustify
-          Caption = 'Valor'
+          Caption = 'Valor TEF'
           ParentColor = False
         end
         object edValorTEF: TEdit
@@ -579,7 +826,9 @@ object Form1: TForm1
           Top = 128
           Width = 113
           Caption = 'Multiplos Cartões'
+          Checked = True
           OnChange = ckMultiplosCartoesChange
+          State = cbChecked
           TabOrder = 9
         end
         object cbxGP1: TComboBox
@@ -643,7 +892,6 @@ object Form1: TForm1
             Top = 1
             Width = 166
             ItemHeight = 15
-            ItemIndex = 0
             Items.Strings = (
               'Nenhuma Transação'
               'Cartão de Crédito'
@@ -654,7 +902,6 @@ object Form1: TForm1
               'Controle de Frota'
             )
             TabOrder = 0
-            Text = 'Nenhuma Transação'
           end
         end
       end
@@ -664,7 +911,7 @@ object Form1: TForm1
     Left = 0
     Height = 23
     Top = 429
-    Width = 769
+    Width = 731
     Panels = <    
       item
         Width = 100
@@ -681,12 +928,12 @@ object Form1: TForm1
     Left = 0
     Height = 27
     Top = 402
-    Width = 769
+    Width = 731
     Align = alBottom
     BevelInner = bvLowered
     ClientHeight = 27
-    ClientWidth = 769
-    TabOrder = 4
+    ClientWidth = 731
+    TabOrder = 2
     object sECF: TShape
       Left = 8
       Height = 16
@@ -774,7 +1021,7 @@ object Form1: TForm1
       TabOrder = 3
     end
     object bCancelarResp: TButton
-      Left = 679
+      Left = 641
       Height = 23
       Top = 2
       Width = 88
@@ -820,7 +1067,7 @@ object Form1: TForm1
     end
   end
   object pMensagem: TPanel
-    Left = 175
+    Left = 64
     Height = 136
     Top = 240
     Width = 440
@@ -833,7 +1080,7 @@ object Form1: TForm1
     Font.Height = -16
     Font.Style = [fsBold]
     ParentFont = False
-    TabOrder = 1
+    TabOrder = 0
     Visible = False
     OnResize = pMensagemResize
     object pMensagemOperador: TPanel
@@ -847,16 +1094,6 @@ object Form1: TForm1
       TabOrder = 0
       Visible = False
       OnClick = pMensagemOperadorClick
-      object Label10: TLabel
-        Left = 0
-        Height = 13
-        Top = 0
-        Width = 109
-        Caption = 'Mensagem Operador'
-        Font.Height = -11
-        ParentColor = False
-        ParentFont = False
-      end
       object lMensagemOperador: TLabel
         Left = 1
         Height = 60
@@ -869,6 +1106,16 @@ object Form1: TForm1
         ParentColor = False
         WordWrap = True
         OnClick = pMensagemOperadorClick
+      end
+      object Label10: TLabel
+        Left = 0
+        Height = 13
+        Top = 0
+        Width = 109
+        Caption = 'Mensagem Operador'
+        Font.Height = -11
+        ParentColor = False
+        ParentFont = False
       end
     end
     object pMensagemCliente: TPanel
@@ -908,20 +1155,20 @@ object Form1: TForm1
     end
   end
   object ACBrECF1: TACBrECF
-    Modelo = ecfBematech
+    Modelo = ecfDaruma
     Porta = 'COM1'
     ReTentar = False
     TimeOut = 6
     IntervaloAposComando = 0
     MsgAguarde = 'Aguardando a resposta da Impressora: %d segundos'
-    MsgTrabalhando = 'Impressora está trabalhando'
+    MsgTrabalhando = 'Impressora estÃ¡ trabalhando'
     ExibeMensagem = False
     TempoInicioMsg = 6
     BloqueiaMouseTeclado = False
-    MsgRelatorio = 'Imprimindo %s  %dª Via '
+    MsgRelatorio = 'Imprimindo %s  %dÂª Via '
     MsgPausaRelatorio = 'Destaque a %dª via, <ENTER> proxima, %d seg.'
     MaxLinhasBuffer = 3
-    PaginaDeCodigo = 850
+    PaginaDeCodigo = 28591
     FormMsgColor = clHighlight
     OnMsgPoucoPapel = ACBrECF1MsgPoucoPapel
     MemoParams.Strings = (
@@ -965,6 +1212,7 @@ object Form1: TForm1
     Identificacao.VersaoAplicacao = '3.0'
     Identificacao.SoftwareHouse = 'ACBr'
     Identificacao.RazaoSocial = 'Projeto ACBr'
+    MultiplosCartoes = True
     EsperaSTS = 7
     CHQEmGerencial = True
     TEFDial.ArqLOG = 'TEF_DIAL.log'
@@ -1068,7 +1316,7 @@ object Form1: TForm1
     OnAntesCancelarTransacao = ACBrTEFD1AntesCancelarTransacao
     OnMudaEstadoReq = ACBrTEFD1MudaEstadoReq
     OnMudaEstadoResp = ACBrTEFD1MudaEstadoResp
-    left = 96
-    top = 296
+    left = 16
+    top = 240
   end
 end

@@ -712,7 +712,7 @@ begin
   begin
     Erro := StrToIntDef( copy(Bloco,6,4), 0 ) ;
 
-    if not (Erro in [ 52, 110, 216, 240 ])  then
+    if not (Erro in [ 0, 52, 110, 216, 240 ])  then
     begin
       GravaLog( '         VerificaFimLeitura: Bloco (!) Descartado: '+Bloco, True) ;
       Result := False ;

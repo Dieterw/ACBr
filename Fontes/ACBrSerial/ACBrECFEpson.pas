@@ -1146,7 +1146,7 @@ end ;
 Function TACBrECFEpson.EnviaComando_ECF( cmd : AnsiString = '' ) : AnsiString ;
 Var
   ErroMsg    : String ;
-  OldTimeOut, Resp : Integer ;
+  OldTimeOut : Integer ;
   aStatus  : array [0..20] of AnsiChar;
   aLineOut : array [0..4096] of AnsiChar;
 begin
@@ -1165,10 +1165,7 @@ begin
 
      aStatus[0]  := #0; // Zera Buffer de Saida
      aLineOut[0] := #0;
-     Resp := xEPSON_Send_From_FileEXX( cmd, aStatus, aLineOut ) ;
-     {if Resp <> 0 then
-        raise EACBrECFERRO.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao executar:'+
-           'EPSON_Send_From_FileEXX('+cmd+')' ));}
+     xEPSON_Send_From_FileEXX( cmd, aStatus, aLineOut ) ;
 
      fpComandoEnviado  := cmd ;
      fpRespostaComando := TrimRight( aStatus )+'|:|'+TrimRight( aLineOut );

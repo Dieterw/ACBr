@@ -275,6 +275,7 @@ Var ErroMsg : String ;
 begin
   result    := '' ;
   ErroMsg   := '' ;
+  Erro      := 0 ;
   Verificar := false ;
   LeituraMF := (cmd = '++') ;
   fpComandoEnviado   := '' ;

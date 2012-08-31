@@ -258,6 +258,7 @@ Var ErroMsg     : String ;
 begin
   result  := '' ;
   ErroMsg := '' ;
+  Erro    := 0 ;
   fpComandoEnviado   := '' ;
   fpRespostaComando  := '' ;
 

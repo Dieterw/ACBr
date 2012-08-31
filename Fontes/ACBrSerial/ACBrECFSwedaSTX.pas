@@ -371,7 +371,7 @@ begin
   GravaLog( 'Ativar' ) ;
 
   fsVerProtocolo    := '' ;
-  fsSubModelo       := '';
+  fsSubModelo       := '' ;
   fsApplicationPath := ExtractFilePath( ParamStr(0) );
   fsCache34.Clear ;
   fsRespostasComando := '' ;
@@ -712,7 +712,7 @@ begin
   begin
     Erro := StrToIntDef( copy(Bloco,6,4), 0 ) ;
 
-    if not (Erro in [ 52, 216, 240 ])  then
+    if not (Erro in [ 52, 110, 216, 240 ])  then
     begin
       GravaLog( '         VerificaFimLeitura: Bloco (!) Descartado: '+Bloco, True) ;
       Result := False ;
@@ -862,7 +862,7 @@ end ;
 { Remove Blocos de Resposta de Status não solicitados  (envio automático pelo ECF)}
 Function TACBrECFSwedaSTX.AjustaRetorno(Retorno: AnsiString) : AnsiString ;
 Var
-  LenRet, PosETX, PosSTX : Integer ;
+  LenRet, PosETX, PosSTX, Erro : Integer ;
   Bloco, Tipo : AnsiString ;
 begin
   LenRet := Length(Retorno) ;
@@ -888,11 +888,16 @@ begin
 
      if Tipo = '!' then  // Bloco de Status nao solicitado, excluindo
      begin
-        Delete(Result, PosSTX, PosETX-PosSTX + 2 ) ;
-        PosETX := max(PosSTX - 2,0) ;
+        Erro := StrToIntDef( copy(Bloco,6,4), 0 ) ;
+
+        if Erro <> 110 then  // 110 = Leitura de CMC7 completada, mantenha o bloco
+        begin
+           Delete(Result, PosSTX, PosETX-PosSTX + 2 ) ;
+           PosETX := max(PosSTX - 2,0) ;
+        end;
      end ;
 
-     PosSTX := PosEx( STX , Result, PosETX);
+     PosSTX := PosEx( STX , Result, PosETX);  // Acha inicio do proximo Bloco
   end ;
 end ;
 

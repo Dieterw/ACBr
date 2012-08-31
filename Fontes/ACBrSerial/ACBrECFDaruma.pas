@@ -4679,7 +4679,10 @@ end;
 
 procedure TACBrECFDaruma.ConfigurarDLL(Path : AnsiString );
 Var
-  Resp, ComNr : Integer ;
+  Resp: Integer ;
+  {$IFDEF LINUX}
+   ComNr : Integer ;
+  {$ENDIF} 
   Porta, Velocidade : AnsiString ;
 begin
   if Trim(Path) = '' then

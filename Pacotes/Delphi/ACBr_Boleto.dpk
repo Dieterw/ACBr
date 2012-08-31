@@ -25,6 +25,7 @@ package ACBr_Boleto;
 {$DESCRIPTION 'ACBr Automação Comercial Brasil - ACBrBoleto - (http://acbr.sourceforge.net/)'}
 {$IMPLICITBUILD ON}
 {$DEFINE DEBUG}
+{$DEFINE DEBUG}
 
 requires
   rtl,
@@ -50,6 +51,7 @@ contains
   ACBrCaixaEconomicaSICOB in '..\..\Fontes\ACBrBoleto\ACBrCaixaEconomicaSICOB.pas',
   ACBrBancoHSBC in '..\..\Fontes\ACBrBoleto\ACBrBancoHSBC.pas',
   ACBrBanestes in '..\..\Fontes\ACBrBoleto\ACBrBanestes.pas',
-  ACBrBancoNordeste in '..\..\Fontes\ACBrBoleto\ACBrBancoNordeste.pas';
+  ACBrBancoNordeste in '..\..\Fontes\ACBrBoleto\ACBrBancoNordeste.pas',
+  ACBrBancoBRB in '..\..\Fontes\ACBrBoleto\ACBrBancoBRB.pas';
 
 end.

@@ -572,6 +572,8 @@ begin
         fpTipoTransacao := ifthen(LowerCase(Valor)='debito', 20, 10 )
      else if Chave = 'transacao_valor' then
         fpValorTotal := StringToFloatDef( Valor, 0 )
+     else if Chave = 'transacao_valor_ajuste' then //---Valor retornado contendo o valor CIELO PREMIA
+        fpDesconto := StringToFloatDef( Valor, 0 )
      else if Chave = 'transacao_valor_saque' then
         fpSaque := StringToFloatDef( Valor, 0 )
      else if Chave = 'transacao_valor_taxa_embarque' then
@@ -729,6 +731,7 @@ end ;
 procedure TACBrTEFDVeSPague.Inicializar;
 var
   Erro, Tentativas : Integer ;
+  Est : AnsiChar;
 begin
   if Inicializado then exit ;
 
@@ -762,11 +765,38 @@ begin
                              'Porta: '+fPorta+sLineBreak+
                              'Erro: '+IntToStr(Erro)+'-'+fSocket.LastErrorDesc ) ) ;
 
-  fpInicializado := True ;
   GravaLog( Name +' Inicializado VeSPague' );
 
   ServicoIniciar;
-  CancelarTransacoesPendentesClass  ;
+
+  try
+    Est := TACBrTEFD(Owner).EstadoECF;
+  except
+    Est := 'O' ;
+    { TODO: Criar arquivo de Status da Transação
+
+        Se o ECF estiver desligado, será retornado 'O', o que fará o código
+      abaixo Cancelar Todas as Transações Pendentes, porém, pelo Roteiro do
+      TEF dedicado, é necessário confirmar a Transação se o Cupom foi
+      finalizado com sucesso.
+        Criar um arquivo de Status que seja atualizado no Fim do Cupom e no
+      inicio do CCD, de maneira que seja possível identificar o Status do
+      Documento no ECF indepentende do mesmo estar ou não ligado
+
+        Como alteranativa, é possível implementar código no Evento "OnInfoECF"
+      para buscar o Status do Documento no Banco de dados da sua aplicação, e
+      responder diferente de 'O',   (Veja exemplo nos fontes do TEFDDemo)
+    }
+  end ;
+
+  fpInicializado := True ;
+
+  // Cupom Ficou aberto ?? Se SIM, Cancele tudo... //
+  if (Est in ['V','P','N','O']) then
+     CancelarTransacoesPendentesClass
+  else
+     // NAO, Cupom Fechado, Pode confirmar e Mandar aviso para re-imprimir //
+     ConfirmarESolicitarImpressaoTransacoesPendentes ;
 end;
 
 procedure TACBrTEFDVeSPague.DesInicializar ;
@@ -1064,6 +1094,10 @@ begin
 
    if TransacaoOpcao <> '' then
       ReqVS.AddParamString( 'transacao_opcao', TransacaoOpcao ) ;
+
+   //---Adicionando o parametro CIELO PREMIA--------------
+   ReqVS.AddParamDouble( 'transacao_valor_ajuste',  00) ;
+   //-----------------------------------------------------
 
    if ListaParams <> '' then
       ReqVS.Params.Add(ListaParams);

@@ -726,8 +726,36 @@ procedure TForm1.ACBrTEFD1InfoECF(Operacao : TACBrTEFDInfoECF;
 var
    ASubTotal: Double;
 begin
-   if not ACBrECF1.Ativo then
-      ACBrECF1.Ativar;
+   try
+      if not ACBrECF1.Ativo then
+         ACBrECF1.Ativar ;
+   except
+      { Para CliSiTEF ou V&SPague aplique o IF abaixo em sua aplicação, que
+        permite saber se o Cupom foi concluido mesmo com o ECF desligado }
+
+      if (not ACBrTEFD1.TEF.Inicializado) and   { Está na inicialização ? }
+         (Operacao = ineEstadoECF) and          { Quer Saber o estado do ECF ? (mas se chegou aqui é pq o ECF já está com problemas) }
+         (ACBrTEFD1.GPAtual in [gpCliSiTef,gpVeSPague]) then
+      begin
+         { Leia o último Documento Gravado no seu Banco de Dados, e verifique
+           se o Cupom já foi finalizado,ou se já foi aberto um CCD ou Gerencial...
+           Exemplo:
+
+           Documento.Le(0);
+
+           if (Documento.Finalizado) or (pos(Documento.Denominacao,'CC|RG') > 0) then
+              RetornoECF := 'R'
+           else
+              RetornoECF := 'O' ;
+         }
+
+         //RetornoECF := 'O';    // Executará CancelarTransacoesPendentes;
+         RetornoECF := 'R';    // Executará ConfirmarESolicitarImpressaoTransacoesPendentes;
+         exit ;
+      end ;
+
+      raise ;
+   end;
 
    case Operacao of
      ineSubTotal :

@@ -576,6 +576,8 @@ type
      procedure VerificarIniciouRequisicao; virtual;
 
      procedure ImprimirRelatorio ; virtual;
+     procedure ConfirmarESolicitarImpressaoTransacoesPendentes ; virtual ;
+
 
      Procedure VerificarTransacaoPagamento(Valor : Double); virtual;
      Function TransacaoEPagamento( AHeader: String ): Boolean;
@@ -2332,6 +2334,54 @@ begin
 
      if not ImpressaoOk then
         raise EACBrTEFDECF.Create( ACBrStr('Impressão de Relatório Falhou' ) ) ;
+  end;
+end;
+
+procedure TACBrTEFDClass.ConfirmarESolicitarImpressaoTransacoesPendentes;
+Var
+  ArquivosVerficar : TStringList ;
+  ArqMask, NSUs    : AnsiString;
+  ExibeMsg         : Boolean ;
+begin
+  ArquivosVerficar := TStringList.Create;
+
+  try
+     ArquivosVerficar.Clear;
+
+     { Achando Arquivos de Backup deste GP }
+     ArqMask  := TACBrTEFD(Owner).PathBackup + PathDelim + 'ACBr_' + Self.Name + '_*.tef' ;
+     FindFiles( ArqMask, ArquivosVerficar, True );
+     NSUs     := '' ;
+     ExibeMsg := (ArquivosVerficar.Count > 0) ;
+
+     { Enviando NCN ou CNC para todos os arquivos encontrados }
+     while ArquivosVerficar.Count > 0 do
+     begin
+        if not FileExists( ArquivosVerficar[ 0 ] ) then
+        begin
+           ArquivosVerficar.Delete( 0 );
+           Continue;
+        end;
+
+        Resp.LeArquivo( ArquivosVerficar[ 0 ] );
+
+        try
+           CNF;   {Confirma}
+
+           if Trim(Resp.NSU) <> '' then
+              NSUs := NSUs + Resp.NSU + sLineBreak;
+
+           SysUtils.DeleteFile( ArquivosVerficar[ 0 ] );
+           ArquivosVerficar.Delete( 0 );
+        except
+        end;
+     end;
+
+     if ExibeMsg then
+        TACBrTEFD(Owner).DoExibeMsg( opmOK,
+           Format( CACBrTEFD_CliSiTef_TransacaoEfetuadaReImprimir, [NSUs] ) ) ;
+  finally
+     ArquivosVerficar.Free;
   end;
 end;
 

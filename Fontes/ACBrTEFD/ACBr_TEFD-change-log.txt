@@ -48,8 +48,21 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
-Data:  31/08/2012
--- ACBrTEFD 4.0.0 --    (por: DSA)
+Data:  31/08/2012 - 4.1.0
+-- ACBrTEFDCliSitef --
+[*] Método "ConfirmarEReimprimirTransacoesPendentes" movido para ACBrTEFDClass
+    como "ConfirmarESolicitarImpressaoTransacoesPendentes", para poder ser
+    utilizado em outras classes de TEF dedicado    (por: DSA)
+
+-- ACBrTEFDVeSPague --
+[+] Adicionado tratamento de Verificação de Transações Pendentes na Inicialização
+    aplicando a mesma lógica que a existente no ACBrTEFDCliSitef    (por: DSA)
+[+] Adicionado Suporte a Cielo Premia, coletando corretamente o Desconto a ser
+    utilizado no evento "OnComandaECFSubtotaliza"                   (por: DSA)
+
+
+Data:  31/08/2012 - 4.0.0
+-- ACBrTEFD --    (por: DSA)
 [*] Melhora no mecanismo de LOG do ACBrTEFD, adicionando a chamada e resposta do
     evento OnInfoECF ao LOG
 [+] Adicionado nova operação para o Evento OnInfoECF, "ineTotalAPagar", que
@@ -68,8 +81,8 @@ Data:  31/08/2012
     pela aplicação
 
 
-Data:  27/08/2012
--- ACBrTEFDCliSiTef 3.3.0 --
+Data:  27/08/2012 - 3.3.0
+-- ACBrTEFDCliSiTef --
 [*]  Modificação no fluxo de impressão de Relatórios administrativos. A versão
     anterior imprimia o Relatório Gerencial logo após o SiTEF enviar a informação
     dos Campos 121 (1a via) e 122 (2a via), dentro do Loop de chamadas a função
@@ -83,8 +96,8 @@ Data:  27/08/2012
      Para voltar o modo de impressão antigo, modifique a constante:
     CACBrTEFD_CliSiTef_ImprimeGerencialConcomitante = True           (por: DSA)
 
-Data:  24/08/2012
--- ACBrTEFD 3.2.0 --
+Data:  24/08/2012 - 3.2.0
+-- ACBrTEFD --
 [*] Ajustes nos fontes para o uso de constantes com as mensagens padrões (por: DSA)
 
 [*] Modificação no fluxo de transações de Multilplos Cartoes. Antes, o componente

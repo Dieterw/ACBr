@@ -205,8 +205,6 @@ type
      procedure AtivarGP ; override;
      procedure VerificaAtivo ; override;
 
-     procedure ConfirmarEReimprimirTransacoesPendentes ;
-
      Procedure ATV ; override;
      Function ADM : Boolean ; override;
      Function CRT( Valor : Double; IndiceFPG_ECF : String;
@@ -550,19 +548,36 @@ begin
   if Erro <> '' then
      raise EACBrTEFDErro.Create( ACBrStr( Erro ) ) ;
 
-  fpInicializado := True ;
   GravaLog( Name +' Inicializado CliSiTEF' );
 
   try
      Est := TACBrTEFD(Owner).EstadoECF;
   except
      Est := 'O' ;
+     { TODO: Criar arquivo de Status da Transação
+
+         Se o ECF estiver desligado, será retornado 'O', o que fará o código
+       abaixo Cancelar Todas as Transações Pendentes, porém, pelo Roteiro do
+       TEF dedicado, é necessário confirmar a Transação se o Cupom foi
+       finalizado com sucesso.
+         Criar um arquivo de Status que seja atualizado no Fim do Cupom e no
+       inicio do CCD, de maneira que seja possível identificar o Status do
+       Documento no ECF indepentende do mesmo estar ou não ligado
+
+         Como alteranativa, é possível implementar código no Evento "OnInfoECF"
+       para buscar o Status do Documento no Banco de dados da sua aplicação, e
+       responder diferente de 'O',   (Veja exemplo nos fontes do TEFDDemo)
+     }
   end ;
 
-  if (Est in ['V','P','N','O']) then            // Cupom Ficou aberto ?? //
-     CancelarTransacoesPendentesClass           // SIM, Cancele tudo... //
+  fpInicializado := True ;
+
+  // Cupom Ficou aberto ?? Se SIM, Cancele tudo... //
+  if (Est in ['V','P','N','O']) then
+     CancelarTransacoesPendentesClass
   else
-     ConfirmarEReimprimirTransacoesPendentes ;  // NAO, Cupom Fechado, basta re-imprimir //
+     // NAO, Cupom Fechado, Pode confirmar e Mandar aviso para re-imprimir //
+     ConfirmarESolicitarImpressaoTransacoesPendentes ;
 end;
 
 procedure TACBrTEFDCliSiTef.AtivarGP;
@@ -573,55 +588,6 @@ end;
 procedure TACBrTEFDCliSiTef.VerificaAtivo;
 begin
    {Nada a Fazer}
-end;
-
-procedure TACBrTEFDCliSiTef.ConfirmarEReimprimirTransacoesPendentes;
-Var
-  ArquivosVerficar : TStringList ;
-  ArqMask, NSUs    : AnsiString;
-  ExibeMsg         : Boolean ;
-begin
-  ArquivosVerficar := TStringList.Create;
-
-  try
-     ArquivosVerficar.Clear;
-
-     { Achando Arquivos de Backup deste GP }
-     ArqMask  := TACBrTEFD(Owner).PathBackup + PathDelim + 'ACBr_' + Self.Name + '_*.tef' ;
-     FindFiles( ArqMask, ArquivosVerficar, True );
-     NSUs     := '' ;
-     ExibeMsg := (ArquivosVerficar.Count > 0) ;
-
-     { Enviando NCN ou CNC para todos os arquivos encontrados }
-     while ArquivosVerficar.Count > 0 do
-     begin
-        if not FileExists( ArquivosVerficar[ 0 ] ) then
-        begin
-           ArquivosVerficar.Delete( 0 );
-           Continue;
-        end;
-
-        Resp.LeArquivo( ArquivosVerficar[ 0 ] );
-
-        try
-           if pos(Resp.DocumentoVinculado, fDocumentosProcessados) = 0 then
-              CNF;   {Confirma}
-
-           if Trim(Resp.NSU) <> '' then
-              NSUs := NSUs + Resp.NSU + sLineBreak;
-
-           SysUtils.DeleteFile( ArquivosVerficar[ 0 ] );
-           ArquivosVerficar.Delete( 0 );
-        except
-        end;
-     end;
-
-     if ExibeMsg then
-        TACBrTEFD(Owner).DoExibeMsg( opmOK,
-           Format( CACBrTEFD_CliSiTef_TransacaoEfetuadaReImprimir, [NSUs] ) ) ;
-  finally
-     ArquivosVerficar.Free;
-  end;
 end;
 
 Procedure TACBrTEFDCliSiTef.ATV ;

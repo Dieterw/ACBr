@@ -55,7 +55,7 @@ uses
   {$ENDIF} ;
 
 const
-   CACBrTEFD_Versao      = '4.0.0' ;
+   CACBrTEFD_Versao      = '4.1.1' ;
    CACBrTEFD_EsperaSTS   = 7 ;
    CACBrTEFD_EsperaSleep = 250 ;
    CACBrTEFD_NumVias     = 2 ;
@@ -2548,7 +2548,7 @@ begin
           ACBrStr('ECF deve estar em Estado de "Venda", "Pagamento" ou "Não Fiscal"') );
 
     SaldoAPagar := InfoECFAsDouble(ineSubTotal) ;
-    SaldoAPagar := SaldoAPagar - InfoECFAsDouble(ineTotalAPagar);
+    SaldoAPagar := SaldoAPagar - InfoECFAsDouble(ineTotalAPagar,0);
     RespostasPendentes.SaldoAPagar := SaldoAPagar ;
 
     if (Valor > RespostasPendentes.SaldoRestante ) then

@@ -168,7 +168,8 @@ type
 
    public
      Function InfoECFAsString( Operacao : TACBrTEFDInfoECF ) : String ;
-     Function InfoECFAsDouble( Operacao : TACBrTEFDInfoECF ) : Double ;
+     Function InfoECFAsDouble( Operacao : TACBrTEFDInfoECF;
+        DefaultValue: Integer = -98787158) : Double ;
      Function EstadoECF : AnsiChar ;
      function DoExibeMsg( Operacao : TACBrTEFDOperacaoMensagem;
         Mensagem : String ) : TModalResult;
@@ -1346,7 +1347,7 @@ begin
 
                           if (InfoECFAsDouble(ineSubTotal) > 0) then
                           begin
-                             if (InfoECFAsDouble(ineTotalAPagar) > 0) then
+                             if (InfoECFAsDouble(ineTotalAPagar,0) > 0) then
                              begin
                                 ComandarECF( opeImprimePagamentos ) ;
 
@@ -1364,7 +1365,7 @@ begin
                         begin
                           if (InfoECFAsDouble(ineSubTotal) > 0) then
                           begin
-                             if (InfoECFAsDouble(ineTotalAPagar) > 0) then
+                             if (InfoECFAsDouble(ineTotalAPagar,0) > 0) then
                              begin
                                 ComandarECF( opeImprimePagamentos ) ;
 
@@ -1679,12 +1680,13 @@ begin
    Result := Retorno;
 end;
 
-function TACBrTEFD.InfoECFAsDouble(Operacao: TACBrTEFDInfoECF): Double;
+function TACBrTEFD.InfoECFAsDouble(Operacao: TACBrTEFDInfoECF;
+   DefaultValue: Integer): Double;
 var
    Retorno: String;
 begin
    Retorno := InfoECFAsString( Operacao );
-   Result  := RoundTo( StringToFloatDef( Retorno, -98787158), -2 );
+   Result  := RoundTo( StringToFloatDef( Retorno, DefaultValue), -2 );
 
    if Result = -98787158 then
       raise EACBrTEFDErro.Create( ACBrStr(

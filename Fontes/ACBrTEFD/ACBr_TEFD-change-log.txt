@@ -48,6 +48,12 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Data:  31/08/2012 - 4.1.1
+-- ACBrTEFDClass --
+[-] Pequena correção para não exigir o retorno do novo tipo de Informação,
+    "ineTotalAPagar" pelo evento OnInfoECF, assumindo valor padrão igual a 0 
+    se nada for informado
+
 Data:  31/08/2012 - 4.1.0
 -- ACBrTEFDCliSitef --
 [*] Método "ConfirmarEReimprimirTransacoesPendentes" movido para ACBrTEFDClass

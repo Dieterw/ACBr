@@ -176,6 +176,7 @@ type
      procedure FinalizarTransacao( Confirma : Boolean;
         DocumentoVinculado : AnsiString);
      procedure LoadDLLFunctions;
+     procedure UnLoadDLLFunctions;
      procedure SetParametrosAdicionais(const AValue : TStringList) ;
    protected
      procedure SetNumVias(const AValue : Integer); override;
@@ -201,6 +202,7 @@ type
      destructor Destroy ; override;
 
      procedure Inicializar ; override;
+     procedure DesInicializar ; override;
 
      procedure AtivarGP ; override;
      procedure VerificaAtivo ; override;
@@ -457,6 +459,7 @@ procedure TACBrTEFDCliSiTef.LoadDLLFunctions ;
    if not Assigned( LibPointer )  then
    begin
      // Verifica se exite o caminho das DLLs
+     sLibName := '';
      if Length(PathDLL) > 0 then
         sLibName := PathWithDelim(PathDLL);
 
@@ -479,6 +482,24 @@ begin
    CliSiTefFunctionDetect('EscreveMensagemPermanentePinPad',@xEscreveMensagemPermanentePinPad);
    CliSiTefFunctionDetect('ObtemQuantidadeTransacoesPendentes',@xObtemQuantidadeTransacoesPendentes);
 end ;
+
+procedure TACBrTEFDCliSiTef.UnLoadDLLFunctions;
+var
+   sLibName: String;
+begin
+  sLibName := '';
+  if Length(PathDLL) > 0 then
+     sLibName := PathWithDelim(PathDLL);
+
+  UnLoadLibrary( sLibName + CACBrTEFD_CliSiTef_Lib );
+
+  xConfiguraIntSiTefInterativoEx      := Nil;
+  xIniciaFuncaoSiTefInterativo        := Nil;
+  xContinuaFuncaoSiTefInterativo      := Nil;
+  xFinalizaTransacaoSiTefInterativo   := Nil;
+  xEscreveMensagemPermanentePinPad    := Nil;
+  xObtemQuantidadeTransacoesPendentes := Nil;
+end;
 
 procedure TACBrTEFDCliSiTef.SetParametrosAdicionais(const AValue : TStringList
    ) ;
@@ -578,6 +599,13 @@ begin
   else
      // NAO, Cupom Fechado, Pode confirmar e Mandar aviso para re-imprimir //
      ConfirmarESolicitarImpressaoTransacoesPendentes ;
+end;
+
+procedure TACBrTEFDCliSiTef.DesInicializar;
+begin
+   UnLoadDLLFunctions ;
+
+   inherited DesInicializar;
 end;
 
 procedure TACBrTEFDCliSiTef.AtivarGP;

@@ -48,11 +48,16 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Data:  31/08/2012 - 4.1.2
+-- ACBrTEFDCliSitef --
+[+] Adicionada rotina de liberação das DLLs do CliSiTef32.dll (apesar de
+    aparentemente não estar funcionar adequadamente)           (por: DSA)
+
 Data:  31/08/2012 - 4.1.1
 -- ACBrTEFDClass --
 [-] Pequena correção para não exigir o retorno do novo tipo de Informação,
     "ineTotalAPagar" pelo evento OnInfoECF, assumindo valor padrão igual a 0 
-    se nada for informado
+    se nada for informado                  (por: DSA)
 
 Data:  31/08/2012 - 4.1.0
 -- ACBrTEFDCliSitef --

@@ -1882,19 +1882,22 @@ end;
 
 function TACBrECF.GetPoucoPapelClass: Boolean;
 begin
-  ComandoLOG := 'PoucoPapel' ;
+  if ComandoLOG = '' then
+     ComandoLOG := 'PoucoPapel' ;
   Result := fsECF.PoucoPapel ;
 end;
 
 function TACBrECF.GetArredondaClass: Boolean;
 begin
-  ComandoLOG := 'Arredonda' ;
+  if ComandoLOG = '' then
+     ComandoLOG := 'Arredonda' ;
   Result := fsECF.Arredonda or (fsECF.MFD and fsECF.ArredondaItemMFD) ;
 end;
 
 function TACBrECF.GetHorarioVeraoClass: Boolean;
 begin
-  ComandoLOG := 'HorarioVerao' ;
+  if ComandoLOG = '' then
+     ComandoLOG := 'HorarioVerao' ;
   Result := fsECF.HorarioVerao ;
 end;
 

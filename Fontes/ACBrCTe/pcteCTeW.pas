@@ -691,9 +691,9 @@ begin
           Gerador.wAlerta('#115', 'IE', DSC_IE, ERR_MSG_INVALIDO);
 //       end;
 
-      {if CTe.Ide.tpAmb = taHomologacao
+      if CTe.Ide.tpAmb = taHomologacao
        then Gerador.wCampo(tcStr, '#116', 'xNome  ', 01, 60, 1, xRazao, DSC_XNOME)
-       else} Gerador.wCampo(tcStr, '#116', 'xNome  ', 01, 60, 1, CTe.Rem.xNome, DSC_XNOME);
+       else Gerador.wCampo(tcStr, '#116', 'xNome  ', 01, 60, 1, CTe.Rem.xNome, DSC_XNOME);
       Gerador.wCampo(tcStr, '#117', 'xFant  ', 01, 60, 0, CTe.Rem.xFant, DSC_XFANT);
       Gerador.wCampo(tcStr, '#118', 'fone   ', 07, 12, 0, somenteNumeros(CTe.Rem.fone), DSC_FONE);
 
@@ -852,9 +852,9 @@ begin
         Gerador.wAlerta('#170', 'IE', DSC_IE, ERR_MSG_INVALIDO);
 //     end;
 
-    {if CTe.Ide.tpAmb = taHomologacao
+    if CTe.Ide.tpAmb = taHomologacao
      then Gerador.wCampo(tcStr, '#171', 'xNome  ', 01, 60, 1, xRazao, DSC_XNOME)
-     else} Gerador.wCampo(tcStr, '#171', 'xNome  ', 01, 60, 1, CTe.Exped.xNome, DSC_XNOME);
+     else Gerador.wCampo(tcStr, '#171', 'xNome  ', 01, 60, 1, CTe.Exped.xNome, DSC_XNOME);
     Gerador.wCampo(tcStr, '#172', 'fone   ', 07, 12, 0, somenteNumeros(CTe.Exped.fone), DSC_FONE);
 
     (**)GerarEnderExped;
@@ -913,9 +913,9 @@ begin
         Gerador.wAlerta('#188', 'IE', DSC_IE, ERR_MSG_INVALIDO);
 //     end;
 
-    {if CTe.Ide.tpAmb = taHomologacao
+    if CTe.Ide.tpAmb = taHomologacao
      then Gerador.wCampo(tcStr, '#189', 'xNome  ', 01, 60, 1, xRazao, DSC_XNOME)
-     else} Gerador.wCampo(tcStr, '#189', 'xNome  ', 01, 60, 1, CTe.Receb.xNome, DSC_XNOME);
+     else Gerador.wCampo(tcStr, '#189', 'xNome  ', 01, 60, 1, CTe.Receb.xNome, DSC_XNOME);
     Gerador.wCampo(tcStr, '#190', 'fone   ', 07, 12, 0, somenteNumeros(CTe.Receb.fone), DSC_FONE);
 
     (**)GerarEnderReceb;
@@ -974,9 +974,9 @@ begin
           Gerador.wAlerta('#206', 'IE', DSC_IE, ERR_MSG_INVALIDO);
        end;
 
-      {if CTe.Ide.tpAmb = taHomologacao
+      if CTe.Ide.tpAmb = taHomologacao
        then Gerador.wCampo(tcStr, '#207', 'xNome  ', 01, 60, 1, xRazao, DSC_XNOME)
-       else} Gerador.wCampo(tcStr, '#207', 'xNome  ', 01, 60, 1, CTe.Dest.xNome, DSC_XNOME);
+       else Gerador.wCampo(tcStr, '#207', 'xNome  ', 01, 60, 1, CTe.Dest.xNome, DSC_XNOME);
       Gerador.wCampo(tcStr, '#208', 'fone   ', 07, 12, 0, somenteNumeros(CTe.Dest.fone), DSC_FONE);
       Gerador.wCampo(tcStr, '#209', 'ISUF   ', 08, 09, 0, CTe.Dest.ISUF, DSC_ISUF);
       if (FOpcoes.ValidarInscricoes) and (CTe.Dest.ISUF <> '') then

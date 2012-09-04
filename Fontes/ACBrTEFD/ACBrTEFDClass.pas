@@ -55,7 +55,7 @@ uses
   {$ENDIF} ;
 
 const
-   CACBrTEFD_Versao      = '4.1.2' ;
+   CACBrTEFD_Versao      = '4.1.3' ;
    CACBrTEFD_EsperaSTS   = 7 ;
    CACBrTEFD_EsperaSleep = 250 ;
    CACBrTEFD_NumVias     = 2 ;
@@ -975,7 +975,7 @@ end;
 
 procedure TACBrTEFDReq.SetMoeda(const AValue : Integer);
 begin
-  fInformacao.AsString := IntToStr(AValue);
+  fInformacao.AsString := IntToStr(AValue);   // Converte para String para garantir a existencia
   fConteudo.GravaInformacao(4,0,fInformacao);
   fMoeda := AValue;
 end;
@@ -1589,6 +1589,7 @@ begin
   Req.ContaDC            := ContaDC;
   Req.Cheque             := Cheque;
   Req.ChequeDC           := ChequeDC;
+  Req.Moeda              := 0;            // Moeda 0 = Real
   AdicionarIdentificacao;
   FinalizarRequisicao;
 
@@ -1629,6 +1630,7 @@ begin
      Req.ContaDC                      := OldResp.ContaDC;
      Req.Cheque                       := OldResp.Cheque;
      Req.ChequeDC                     := OldResp.ChequeDC;
+     Req.Moeda                        := OldResp.Moeda;
      AdicionarIdentificacao;
      FinalizarRequisicao;
 

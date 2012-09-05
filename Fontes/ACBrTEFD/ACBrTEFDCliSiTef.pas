@@ -272,6 +272,7 @@ var
    I     : Integer;
    Parc  : TACBrTEFDRespParcela;
    LinStr: AnsiString ;
+   wTipoOperacao: Integer;
 begin
    fpValorTotal := 0 ;
    fpImagemComprovante1aVia.Clear;
@@ -285,9 +286,29 @@ begin
 
      case Linha.Identificacao of
        // TODO: Mapear mais propriedades do CliSiTef //
-       15  : fpDebito                  := True;
-       25  : fpCredito                 := True;
-       100 : fpModalidadePagto         := LinStr;
+       100 :
+         begin
+            fpModalidadePagto := LinStr;
+
+            case StrToIntDef(Copy(fpModalidadePagto,1,2),0) of
+              01 : fpDebito  := True;
+              02 : fpCredito := True;
+            end;
+
+            wTipoOperacao:= StrToIntDef(Copy(fpModalidadePagto,3,2),0);
+            {Tipo de Parcelamento}
+            case wTipoOperacao of
+               02 : fpParceladoPor:= parcLoja;
+               03 : fpParceladoPor:= parcADM;
+            end;
+
+            case wTipoOperacao of
+               00 : fpTipoOperacao:= opAvista;
+               01 : fpTipoOperacao:= opPreDatado;
+               else
+                 fpTipoOperacao:= opParcelado;
+            end;
+         end;
        101 : fpModalidadePagtoExtenso  := LinStr;
        102 : fpModalidadePagtoDescrita := LinStr;
        105 :
@@ -305,11 +326,17 @@ begin
        131 : fpInstituicao                 := LinStr;
        133 : fpCodigoAutorizacaoTransacao  := Linha.Informacao.AsInteger;
        134 : fpNSU                         := LinStr;
+
+       {Entrada CDC}
+       139 : fpValorEntradaCDC:= Linha.Informacao.AsFloat;
+       140 : fpDataEntradaCDC := Linha.Informacao.AsDate;
+
        156 : fpRede                        := LinStr;
        501 : fpTipoPessoa                  := AnsiChar(IfThen(Linha.Informacao.AsInteger = 0,'J','F')[1]);
        502 : fpDocumentoPessoa             := LinStr ;
        505 : fpQtdParcelas                 := Linha.Informacao.AsInteger ;
        506 : fpDataPreDatado               := Linha.Informacao.AsDate;
+       511 : fpQtdParcelas                 := Linha.Informacao.AsInteger;  {Parcelas CDC - Neste caso o campo 505 não é retornado}
        
        //incluido por Evandro
        627 : fpAgencia                     := LinStr;

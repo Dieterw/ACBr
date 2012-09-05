@@ -86,6 +86,10 @@ type
                           respProcessando,         // Processando a Resposta
                           respConcluida ) ;
 
+  TACBrTEFDRespParceladoPor = (parcNenhum,parcADM, parcLoja);
+
+  TACBrTEFDRespTipoOperacao = (opOutras,opAvista,opParcelado,opPreDatado);
+
   EACBrTEFDErro              = class(Exception) ;
   EACBrTEFDGPNaoResponde     = class(EACBrTEFDErro) ;
   EACBrTEFDGPNaoInicializado = class(EACBrTEFDErro) ;
@@ -396,6 +400,10 @@ type
      fpCodigoRedeAutorizada: String;
      fpDebito: Boolean;
      fpCredito: Boolean;
+     fpParceladoPor: TACBrTEFDRespParceladoPor;
+     fpValorEntradaCDC:Double;
+     fpDataEntradaCDC:TDateTime;
+     fpTipoOperacao: TACBrTEFDRespTipoOperacao;
 
      procedure SetCNFEnviado(const AValue : Boolean);
      procedure SetIndiceFPG_ECF(const AValue : String);
@@ -482,6 +490,10 @@ type
      property CodigoRedeAutorizada:String read fpCodigoRedeAutorizada;
      property Debito:Boolean read fpDebito;
      property Credito:Boolean read fpCredito;
+     property ParceladoPor: TACBrTEFDRespParceladoPor read fpParceladoPor;
+     property ValorEntradaCDC:Double read fpValorEntradaCDC;
+     property DataEntradaCDC:TDateTime read fpDataEntradaCDC;
+     property TipoOperacao: TACBrTEFDRespTipoOperacao read fpTipoOperacao;
    end;
 
    { TACBrTEFDRespTXT }
@@ -1089,6 +1101,7 @@ begin
   fpCredito  := False;
   fpConteudo := TACBrTEFDArquivo.Create;
   fpParcelas := TACBrTEFDRespParcelas.create(True) ;
+  fpParceladoPor:= parcNenhum;
 
   fpImagemComprovante1aVia := TStringList.Create;
   fpImagemComprovante2aVia := TStringList.Create;
@@ -1170,6 +1183,14 @@ begin
    fpDesconto                     := 0 ;
    fpDocumentoVinculado           := '' ;
    fpTipoParcelamento             := 0 ;
+   fpValorEntradaCDC              := 0;
+   fpDataEntradaCDC               := 0;
+
+   fpParceladoPor := parcNenhum;
+   fpTipoOperacao := opOutras;
+
+   fpCredito:= False;
+   fpDebito := False;
 
    fpCNFEnviado     := False ;
    fpIndiceFPG_ECF  := '' ;
@@ -1268,7 +1289,16 @@ begin
        14  : fpNumeroLoteTransacao        := Linha.Informacao.AsInteger;
        15  : fpDataHoraTransacaoHost      := Linha.Informacao.AsTimeStamp;
        16  : fpDataHoraTransacaoLocal     := Linha.Informacao.AsTimeStamp;
-       17  : fpTipoParcelamento           := Linha.Informacao.AsInteger;
+       17  :
+         begin
+           fpTipoParcelamento := Linha.Informacao.AsInteger;
+           case fpTipoParcelamento  of
+              0 : fpParceladoPor:= parcADM;
+              1 : fpParceladoPor:= parcLoja;
+              else
+                fpParceladoPor:= parcNenhum;
+           end;
+         end;
        18  : fpQtdParcelas                := Linha.Informacao.AsInteger;
        22  : fpDataHoraTransacaoComprovante := fpDataHoraTransacaoComprovante +
                                                Linha.Informacao.AsDate;
@@ -1353,8 +1383,16 @@ begin
    end;
 
    // Tipo da transação se foi Crédito ou Débito
-   fpDebito  := (fpTipoTransacao >= 20) and (fpTipoTransacao <= 25) ;
+   fpDebito  := ((fpTipoTransacao >= 20) and (fpTipoTransacao <= 25)) or (fpTipoTransacao = 40) ;
    fpCredito := (fpTipoTransacao >= 10) and (fpTipoTransacao <= 12) ;
+
+   case fpTipoTransacao of
+     10,20,23    : fpTipoOperacao:= opAvista;
+     11,12,22,40 : fpTipoOperacao:= opParcelado;
+     21,24,25    : fpTipoOperacao:= opPreDatado;
+     else
+       fpTipoOperacao:= opOutras;
+   end;
 end;
 
 function TACBrTEFDRespTXT.GetTransacaoAprovada : Boolean;

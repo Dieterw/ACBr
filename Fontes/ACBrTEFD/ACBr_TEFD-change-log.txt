@@ -57,7 +57,7 @@ Data:  06/09/2012 - 4.1.4
     opOutras - Tipo Genérico, opAvista - Operação Avista, opParcelado - Operação 
 	Parcelada e opPreDatado - Operação Pré-Datada, criado também a propriedade 
 	TipoOperacao para armazenar esta informação. (Juliana Tamizou)
-[*]	Criado as propriedade ValorEntradaCDC e DataEntradaCDC para(atualmente essas
+[*]	Criadas as propriedade ValorEntradaCDC e DataEntradaCDC(atualmente essas
     informações constam apenas no manual do Sitef). (Juliana Tamizou)
 [*]	Adicionado a função ConteudoToProperty a gravação das novas propriedades 
     citadas acima. (Juliana Tamizou)
@@ -69,7 +69,7 @@ Data:  06/09/2012 - 4.1.4
     citadas acima. (Juliana Tamizou)
 [*]	Modificado forma de capturar as propriedades Credito e Debito, passado a 
     utilizar  os 2 primeiros dígitos do campo 100.(Juliana Tamizou)
-[*]	Adicionado captura das quantidade de parcelas para operações de Débito
+[*]	Adicionado captura da quantidade de parcelas para operações de Débito
     parcelado(CDC), esta informação está no campo 511.(Juliana Tamizou)
 
 Data:  04/09/2012 - 4.1.3

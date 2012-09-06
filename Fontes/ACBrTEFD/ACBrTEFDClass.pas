@@ -1385,11 +1385,19 @@ begin
 
    case fpTipoTransacao of
      10,20,23    : fpTipoOperacao:= opAvista;
-     11,12,22,40 : fpTipoOperacao:= opParcelado;
+     11,12,22    : fpTipoOperacao:= opParcelado;
      21,24,25    : fpTipoOperacao:= opPreDatado;
+     40 :
+       begin
+          fpTipoOperacao:= opParcelado;
+          fpParceladoPor:= parcADM;
+       end;
+
    else
      fpTipoOperacao:= opOutras;
    end;
+
+
 end;
 
 function TACBrTEFDRespTXT.GetTransacaoAprovada : Boolean;

@@ -55,7 +55,7 @@ uses
   {$ENDIF} ;
 
 const
-   CACBrTEFD_Versao      = '4.1.3' ;
+   CACBrTEFD_Versao      = '4.1.4' ;
    CACBrTEFD_EsperaSTS   = 7 ;
    CACBrTEFD_EsperaSleep = 250 ;
    CACBrTEFD_NumVias     = 2 ;
@@ -1097,12 +1097,9 @@ constructor TACBrTEFDResp.Create ;
 begin
   inherited Create ;
 
-  fpDebito   := False;
-  fpCredito  := False;
   fpConteudo := TACBrTEFDArquivo.Create;
   fpParcelas := TACBrTEFDRespParcelas.create(True) ;
-  fpParceladoPor:= parcNenhum;
-
+  
   fpImagemComprovante1aVia := TStringList.Create;
   fpImagemComprovante2aVia := TStringList.Create;
 
@@ -1295,8 +1292,8 @@ begin
            case fpTipoParcelamento  of
               0 : fpParceladoPor:= parcADM;
               1 : fpParceladoPor:= parcLoja;
-              else
-                fpParceladoPor:= parcNenhum;
+           else
+              fpParceladoPor:= parcNenhum;
            end;
          end;
        18  : fpQtdParcelas                := Linha.Informacao.AsInteger;
@@ -1390,8 +1387,8 @@ begin
      10,20,23    : fpTipoOperacao:= opAvista;
      11,12,22,40 : fpTipoOperacao:= opParcelado;
      21,24,25    : fpTipoOperacao:= opPreDatado;
-     else
-       fpTipoOperacao:= opOutras;
+   else
+     fpTipoOperacao:= opOutras;
    end;
 end;
 

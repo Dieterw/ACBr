@@ -303,10 +303,11 @@ begin
             end;
 
             case wTipoOperacao of
-               00 : fpTipoOperacao:= opAvista;
-               01 : fpTipoOperacao:= opPreDatado;
+               00    : fpTipoOperacao:= opAvista;
+               01    : fpTipoOperacao:= opPreDatado;
+               02,03 : fpTipoOperacao:= opParcelado;
                else
-                 fpTipoOperacao:= opParcelado;
+                 fpTipoOperacao:= opOutras;
             end;
          end;
        101 : fpModalidadePagtoExtenso  := LinStr;

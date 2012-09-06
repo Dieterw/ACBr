@@ -1290,8 +1290,8 @@ begin
          begin
            fpTipoParcelamento := Linha.Informacao.AsInteger;
            case fpTipoParcelamento  of
-              0 : fpParceladoPor:= parcADM;
-              1 : fpParceladoPor:= parcLoja;
+              0 : fpParceladoPor:= parcLoja;
+              1 : fpParceladoPor:= parcADM;
            else
               fpParceladoPor:= parcNenhum;
            end;

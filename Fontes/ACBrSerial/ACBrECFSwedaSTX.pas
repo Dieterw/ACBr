@@ -667,12 +667,15 @@ function TACBrECFSwedaSTX.VerificaFimLeitura(var Retorno: AnsiString;
    var TempoLimite: TDateTime) : Boolean ;
 Var
   LenRet, PosETX, PosSTX, Erro : Integer ;
-  Bloco : AnsiString ;
+  Bloco, Tarefa, MsgLog : AnsiString ;
   Sequencia, ACK_PC : Byte ;
   Tipo : AnsiChar ;
 begin
   LenRet := Length(Retorno) ;
   Result := False ;
+
+  // DEBUG
+  //GravaLog( 'Retorno: '+Retorno);
 
   if LenRet < 5 then
      exit ;
@@ -694,30 +697,23 @@ begin
   Bloco     := copy(Retorno, 1, PosETX+1) ;
   Result    := True ;
   Sequencia := Ord( Bloco[2] ) ;
-  //Tarefa  := copy(Bloco,3,2) ;
+  Tarefa    := copy(Bloco,3,2) ;
   Tipo      := Bloco[5] ;
+  Erro      := StrToIntDef( copy(Bloco,6,4), 0 ) ;
+  MsgLog    := '';
 
-  // DEBUG
-  //GravaLog( '         VerificaFimLeitura: Verificando Bloco: '+Bloco, True) ;
+  { ECF está enviando dados... aumente o TimeOut }
+  TempoLimite := IncSecond(now, TimeOut);
 
   { Verificando a Sequencia }
   if Sequencia <> fsSEQ then
   begin
      Result := False ;  // Ignore o Bloco, pois não é a resposta do CMD solicitado
-     GravaLog( '         Sequencia de Resposta ('+IntToStr(Sequencia)+')'+
-               'diferente da enviada ('+IntToStr(fsSEQ)+')' ) ;
+     MsgLog := 'Sequencia diferente da enviada ('+IntToStr(fsSEQ)+')' ;
   end ;
 
   if Result and (Tipo = '!') then  // Bloco de Satus não solicitado, Verificando
-  begin
-    Erro := StrToIntDef( copy(Bloco,6,4), 0 ) ;
-
-    if not (Erro in [ 0, 52, 110, 216, 240 ])  then
-    begin
-      GravaLog( '         VerificaFimLeitura: Bloco (!) Descartado: '+Bloco, True) ;
-      Result := False ;
-    end
-  end ;
+     Result := (Erro in [ 52, 110, 216, 240 ]) ;
 
   { Verificando o CheckSum }
   ACK_PC := Ord(ACK) ;
@@ -743,17 +739,23 @@ begin
      if Tipo = '-' then            // Erro ocorrido,
         AguardaImpressao := False  //   portanto, Desliga AguardaImpressao (caso estivesse ligado)
      else if Result and (Tipo = '!') then
-        GravaLog('         Bloco "!" considerado')
+        MsgLog := 'Bloco "!" considerado'
      else if Tipo <> '+' then      // Tipo não é '-' nem '+', portanto não é o Ultimo Bloco
         Result := False ;          //   portanto Zera para Ler proximo Bloco
   end ;
 
-  // DEBUG
-  {GravaLog( '         VerificaFimLeitura: Seq:'+IntToStr(Sequencia)+' Tarefa:'+
-            Tarefa+' Tipo: '+Tipo+' ACK:'+IntToStr(ACK_PC)+' Result: '+IfThen(Result,'True','False') ) ;}
-
   if not Result then
-     Retorno := copy(Retorno, PosETX+2, Length(Retorno) ) ;
+  begin
+    if (Tipo in ['-','+']) then
+       MsgLog := MsgLog + ' - Bloco removido:' ;
+    Retorno := copy(Retorno, PosETX+2, Length(Retorno) ) ;
+  end ;
+
+  if MsgLog <> '' then
+   GravaLog( '         VerificaFimLeitura, '+MsgLog+' Seq:'+IntToStr(Sequencia)+
+           ' Tipo:'+Tipo+' Tarefa:'+Tarefa+' Erro:'+IntToStr(Erro)+
+           ' ACK:'+IntToStr(ACK_PC)+' - Bloco:'+Bloco  ) ;
+
 end;
 
 function TACBrECFSwedaSTX.VerificaFimImpressao(var TempoLimite: TDateTime): Boolean;
@@ -1444,8 +1446,20 @@ begin
 end;
 
 function TACBrECFSwedaSTX.LeituraCMC7: AnsiString;
+var
+   OldTimeOut: Integer;
 begin
-   Result := EnviaComando('24|1|0');
+   Result := EnviaComando('24|1|0|1000');
+
+   { Leitura do CMC7 deve retornar mais dados }
+   OldTimeOut := TimeOut;
+   try
+      TimeOut := max(OldTimeOut,5);  // Espere mais 5 segundos...
+      GravaLog( '         Aguardando Resposta CMC7');
+      LeResposta;
+   finally
+     TimeOut := OldTimeOut;
+   end;
 end;
 
 procedure TACBrECFSwedaSTX.AbreCupom  ;

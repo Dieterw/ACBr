@@ -59,7 +59,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="11" Y="10"/>
-        <UsageCount Value="176"/>
+        <UsageCount Value="177"/>
       </Unit0>
       <Unit1>
         <Filename Value="uDemo.pas"/>
@@ -68,12 +68,11 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uDemo"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="215"/>
-        <CursorPos X="40" Y="234"/>
-        <UsageCount Value="176"/>
+        <TopLine Value="1"/>
+        <CursorPos X="1" Y="1"/>
+        <UsageCount Value="177"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
@@ -83,14 +82,17 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ACBrBoletoFCFortesFr"/>
+        <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="535"/>
-        <CursorPos X="30" Y="541"/>
-        <UsageCount Value="28"/>
+        <TopLine Value="419"/>
+        <CursorPos X="14" Y="436"/>
+        <UsageCount Value="29"/>
         <Bookmarks Count="2">
           <Item0 X="24" Y="532" ID="1"/>
           <Item1 X="44" Y="478" ID="2"/>
         </Bookmarks>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit2>
       <Unit3>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
@@ -358,10 +360,13 @@
       <Unit36>
         <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
         <UnitName Value="ACBrUtil"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1528"/>
-        <CursorPos X="16" Y="1537"/>
-        <UsageCount Value="11"/>
+        <TopLine Value="1790"/>
+        <CursorPos X="16" Y="1810"/>
+        <UsageCount Value="12"/>
+        <Loaded Value="True"/>
       </Unit36>
       <Unit37>
         <Filename Value="D:\lazarus\djpdv\djmonitor\Rfd.pas"/>
@@ -955,99 +960,127 @@
         <UsageCount Value="10"/>
       </Unit107>
     </Units>
-    <JumpHistory Count="23" HistoryIndex="22">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="uDemo.pas"/>
-        <Caret Line="189" Column="14" TopLine="187"/>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoletoFCFortesFr.pas"/>
+        <Caret Line="602" Column="4" TopLine="599"/>
       </Position1>
       <Position2>
-        <Filename Value="uDemo.pas"/>
-        <Caret Line="118" Column="15" TopLine="112"/>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoletoFCFortesFr.pas"/>
+        <Caret Line="611" Column="34" TopLine="605"/>
       </Position2>
       <Position3>
-        <Filename Value="uDemo.pas"/>
-        <Caret Line="208" Column="88" TopLine="188"/>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoletoFCFortesFr.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position3>
       <Position4>
-        <Filename Value="uDemo.pas"/>
-        <Caret Line="198" Column="31" TopLine="189"/>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoletoFCFortesFr.pas"/>
+        <Caret Line="4" Column="39" TopLine="1"/>
       </Position4>
       <Position5>
-        <Filename Value="uDemo.pas"/>
-        <Caret Line="285" Column="31" TopLine="268"/>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoletoFCFortesFr.pas"/>
+        <Caret Line="47" Column="10" TopLine="30"/>
       </Position5>
       <Position6>
-        <Filename Value="uDemo.pas"/>
-        <Caret Line="149" Column="60" TopLine="140"/>
+        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
+        <Caret Line="1530" Column="20" TopLine="1528"/>
       </Position6>
       <Position7>
-        <Filename Value="uDemo.pas"/>
+        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
         <Caret Line="1" Column="1" TopLine="1"/>
       </Position7>
       <Position8>
-        <Filename Value="uDemo.pas"/>
-        <Caret Line="17" Column="73" TopLine="1"/>
+        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
+        <Caret Line="230" Column="28" TopLine="219"/>
       </Position8>
       <Position9>
-        <Filename Value="uDemo.pas"/>
-        <Caret Line="29" Column="10" TopLine="10"/>
+        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
+        <Caret Line="1756" Column="32" TopLine="1737"/>
       </Position9>
       <Position10>
-        <Filename Value="uDemo.pas"/>
-        <Caret Line="105" Column="20" TopLine="86"/>
+        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
+        <Caret Line="1747" Column="4" TopLine="1741"/>
       </Position10>
       <Position11>
-        <Filename Value="uDemo.pas"/>
-        <Caret Line="204" Column="33" TopLine="186"/>
+        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
+        <Caret Line="1749" Column="19" TopLine="1740"/>
       </Position11>
       <Position12>
-        <Filename Value="uDemo.pas"/>
-        <Caret Line="278" Column="16" TopLine="268"/>
+        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
+        <Caret Line="1751" Column="33" TopLine="1740"/>
       </Position12>
       <Position13>
-        <Filename Value="uDemo.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
+        <Caret Line="1753" Column="35" TopLine="1740"/>
       </Position13>
       <Position14>
-        <Filename Value="uDemo.pas"/>
-        <Caret Line="198" Column="10" TopLine="184"/>
+        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
+        <Caret Line="1755" Column="16" TopLine="1740"/>
       </Position14>
       <Position15>
-        <Filename Value="uDemo.pas"/>
-        <Caret Line="204" Column="28" TopLine="184"/>
+        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
+        <Caret Line="1748" Column="24" TopLine="1740"/>
       </Position15>
       <Position16>
-        <Filename Value="uDemo.pas"/>
-        <Caret Line="112" Column="32" TopLine="97"/>
+        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
+        <Caret Line="1750" Column="17" TopLine="1740"/>
       </Position16>
       <Position17>
-        <Filename Value="uDemo.pas"/>
-        <Caret Line="198" Column="11" TopLine="179"/>
+        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
+        <Caret Line="1751" Column="29" TopLine="1740"/>
       </Position17>
       <Position18>
-        <Filename Value="uDemo.pas"/>
-        <Caret Line="204" Column="24" TopLine="189"/>
+        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
+        <Caret Line="1752" Column="35" TopLine="1740"/>
       </Position18>
       <Position19>
-        <Filename Value="uDemo.pas"/>
-        <Caret Line="236" Column="67" TopLine="220"/>
+        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
+        <Caret Line="1754" Column="38" TopLine="1740"/>
       </Position19>
       <Position20>
-        <Filename Value="uDemo.pas"/>
-        <Caret Line="239" Column="48" TopLine="223"/>
+        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
+        <Caret Line="1756" Column="29" TopLine="1743"/>
       </Position20>
       <Position21>
-        <Filename Value="uDemo.pas"/>
-        <Caret Line="108" Column="1" TopLine="97"/>
+        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
+        <Caret Line="1759" Column="40" TopLine="1750"/>
       </Position21>
       <Position22>
-        <Filename Value="uDemo.pas"/>
-        <Caret Line="197" Column="1" TopLine="178"/>
+        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
+        <Caret Line="1770" Column="15" TopLine="1756"/>
       </Position22>
       <Position23>
-        <Filename Value="uDemo.pas"/>
-        <Caret Line="228" Column="56" TopLine="209"/>
+        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
+        <Caret Line="1763" Column="3" TopLine="1745"/>
       </Position23>
+      <Position24>
+        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
+        <Caret Line="1750" Column="3" TopLine="1743"/>
+      </Position24>
+      <Position25>
+        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
+        <Caret Line="1762" Column="30" TopLine="1752"/>
+      </Position25>
+      <Position26>
+        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
+        <Caret Line="1763" Column="33" TopLine="1752"/>
+      </Position26>
+      <Position27>
+        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
+        <Caret Line="1771" Column="32" TopLine="1765"/>
+      </Position27>
+      <Position28>
+        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
+        <Caret Line="1772" Column="45" TopLine="1765"/>
+      </Position28>
+      <Position29>
+        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
+        <Caret Line="1773" Column="50" TopLine="1765"/>
+      </Position29>
+      <Position30>
+        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
+        <Caret Line="1784" Column="54" TopLine="1768"/>
+      </Position30>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
@@ -1072,6 +1105,15 @@
     </Other>
   </CompilerOptions>
   <Debugging>
+    <BreakPoints Count="1">
+      <Item1>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
+        <Line Value="1767"/>
+      </Item1>
+    </BreakPoints>
     <Exceptions Count="8">
       <Item1>
         <Name Value="EAbort"/>
@@ -1099,4 +1141,5 @@
       </Item8>
     </Exceptions>
   </Debugging>
+  <EditorMacros Count="0"/>
 </CONFIG>

@@ -227,8 +227,8 @@ Function PathWithDelim( const APath : String ) : String ;
 Function PathWithoutDelim( const APath : String ) : String ;
 Procedure CopyFilesToDir( FileMask : String ; ToDirName : String;
    const ForceDirectory : Boolean = False)  ;
-procedure RunCommand(Command: AnsiString; Params: AnsiString = ''; Wait : Boolean = false;
-   WindowState : Word = 5);
+procedure RunCommand(const Command: String; const Params: String = '';
+   Wait : Boolean = false; WindowState : Word = 5);
 procedure OpenURL( const URL : String ) ;
 
 function FunctionDetect (LibName, FuncName: String; var LibPointer: Pointer)
@@ -1735,40 +1735,41 @@ end ;
    programa externo executado por "Command"
  - WindowState apenas é utilizado na plataforma Windows
  ---------------------------------------------------------------------------- }
-procedure RunCommand(Command: AnsiString; Params: AnsiString; Wait : Boolean;
-   WindowState : Word);
+procedure RunCommand(const Command: String; const Params: String;
+   Wait : Boolean; WindowState : Word);
 var
   {$ifdef MSWINDOWS}
-  SUInfo: TStartupInfo;
-  ProcInfo: TProcessInformation;
-  Executed : Boolean ;
-  PCharStr : PChar ;
+   SUInfo: TStartupInfo;
+   ProcInfo: TProcessInformation;
+   Executed : Boolean ;
+   PCharStr : PChar ;
   {$endif}
   ConnectCommand : PChar;
+  FullCommand : AnsiString;
 begin
   {$ifdef LINUX}
-     Command := Trim(Command + ' ' + Params) ;
+     FullCommand := Trim(Command + ' ' + Params) ;
      if not Wait then
-        Command := Command + ' &' ;  { & = Rodar em BackGround }
+        FullCommand := FullCommand + ' &' ;  { & = Rodar em BackGround }
+
      {$IFNDEF FPC}
-       ConnectCommand := PChar(Command);
+       ConnectCommand := PChar(FullCommand);
        Libc.system(ConnectCommand);
      {$ELSE}
-       fpSystem(Command)
+       fpSystem(FullCommand)
      {$ENDIF}
   {$endif}
   {$ifdef MSWINDOWS}
-     Command  := Trim(Command) ;
      PCharStr := PChar(Trim(Params)) ;
      if Length(PCharStr) = 0 then
         PCharStr := nil ;
 
      if not Wait then
-        ShellExecute(0,'open',PChar(Command),PCharStr, nil, WindowState )
+        ShellExecute(0,'open',PChar(Trim(Command)),PCharStr, nil, WindowState )
 //        winexec(ConnectCommand, WindowState)
      else
       begin
-        ConnectCommand := PChar(Trim(Command + ' ' + Params));
+        ConnectCommand := PChar(Trim(Command) + ' ' + Trim(Params));
         PCharStr := PChar(ExtractFilePath(Command)) ;
         if Length(PCharStr) = 0 then
            PCharStr := nil ;
@@ -2365,4 +2366,4 @@ initialization
 
   Randomized := False ;
 end.
-
+

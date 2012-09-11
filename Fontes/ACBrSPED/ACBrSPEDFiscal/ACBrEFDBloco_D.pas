@@ -2166,6 +2166,7 @@ begin
   FRegistroD170 := TRegistroD170List.Create;
   FRegistroD180 := TRegistroD180List.Create;
   FRegistroD190 := TRegistroD190List.Create;  /// BLOCO D - Lista de RegistroD190 (FILHO) {Márcio Lopes 21Dez2009}
+  FRegistroD195 := TRegistroD195List.Create;  /// BLOCO D - Lista de RegistroD195 {Leonardo Silva Barbosa 28Mai2012}
 end;
 
 destructor TRegistroD100.Destroy;
@@ -2178,6 +2179,7 @@ begin
   FRegistroD170.Free;
   FRegistroD180.Free;
   FRegistroD190.Free;
+  FRegistroD195.Free;
   inherited;
 end;
 

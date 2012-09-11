@@ -1623,6 +1623,23 @@ begin
                QTD_REG_BLC := Bloco_D.RegistroD190Count;
             end;
          end;
+         if Bloco_D.RegistroD195Count > 0 then
+         begin
+            with New do
+            begin
+               REG_BLC := 'D195';
+               QTD_REG_BLC := Bloco_D.RegistroD195Count;
+            end;
+         end;
+         if Bloco_D.RegistroD197Count > 0 then
+         begin
+            with New do
+            begin
+               REG_BLC := 'D197';
+               QTD_REG_BLC := Bloco_D.RegistroD197Count;
+            end;
+         end;
+		 
          if Bloco_D.RegistroD300Count > 0 then
          begin
             with New do

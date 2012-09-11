@@ -602,6 +602,77 @@ namespace ACBr.Net
 
 		#endregion Cupom Fiscal
 
+		#region DAV
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int ECF_DAV_Abrir(IntPtr ecfHandle, double emissao, string decrdocumento, string numero, string situacao, string vendedor, string observacao, string cpfCnpj, string nome, string endereco);
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int ECF_DAV_Fechar(IntPtr ecfHandle, string observacao);
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int ECF_DAV_RegistrarItem(IntPtr ecfHandle, string codigo, string descricao, string unidade, double quantidade, double vlrunitario, double desconto, double acrescimo, bool cancelado);
+
+		#endregion
+
+		#region PAF LMFC
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int ECF_PafMF_LMFC_Cotepe1704(IntPtr ecfHandle, double DataInicial, double DataFinal, string CaminhoArquivo);
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int ECF_PafMF_LMFC_Cotepe1704_CRZ(IntPtr ecfHandle, int CRZInicial, int CRZFinal, string CaminhoArquivo);
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int ECF_PafMF_LMFC_Espelho(IntPtr ecfHandle, double DataInicial, double DataFinal, string CaminhoArquivo);
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int ECF_PafMF_LMFC_Espelho_CRZ(IntPtr ecfHandle, int CRZInicial, int CRZFinal, string CaminhoArquivo);
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int ECF_PafMF_LMFC_Impressao(IntPtr ecfHandle, double DataInicial, double DataFinal);
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int ECF_PafMF_LMFC_Impressao_CRZ(IntPtr ecfHandle, int CRZInicial, int CRZFinal);
+
+		#endregion
+
+		#region PAF LMFS
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int ECF_PafMF_LMFS_Espelho(IntPtr ecfHandle, double DataInicial, double DataFinal, string CaminhoArquivo);
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int ECF_PafMF_LMFS_Espelho_CRZ(IntPtr ecfHandle, int CRZInicial, int CRZFinal, string CaminhoArquivo);
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int ECF_PafMF_LMFS_Impressao(IntPtr ecfHandle, double DataInicial, double DataFinal);
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int ECF_PafMF_LMFS_Impressao_CRZ(IntPtr ecfHandle, int CRZInicial, int CRZFinal);
+
+		#endregion
+
+		#region PAF Espelho MFD
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int ECF_PafMF_MFD_Cotepe1704(IntPtr ecfHandle, double DataInicial, double DataFinal, string CaminhoArquivo);
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int ECF_PafMF_MFD_Cotepe1704_COO(IntPtr ecfHandle, int COOInicial, int COOFinal, string CaminhoArquivo);
+
+		#endregion
+
+		#region PAF Arq. MFD
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int ECF_PafMF_MFD_Espelho(IntPtr ecfHandle, double DataInicial, double DataFinal, string CaminhoArquivo);
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int ECF_PafMF_MFD_Espelho_COO(IntPtr ecfHandle, int COOInicial, int COOFinal, string CaminhoArquivo);
+
+		#endregion
+
 		#region Relatórios
 
 		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -741,7 +812,7 @@ namespace ACBr.Net
 
 		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
 		public static extern int ECF_SetAAC(IntPtr ecfHandle, IntPtr aacHandle);
-		
+
 		#endregion ACBrECF
 
 		#region ACBrACC

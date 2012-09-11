@@ -11,11 +11,11 @@ namespace ACBr.Net
 		protected delegate int DestroyEntryPointDelegate(ref IntPtr handle);
 
 		protected delegate int GetStringEntryPointDelegate(IntPtr handle, StringBuilder buffer, int bufferLen);
-		protected delegate int GetDoubleEntryPointDelegate(IntPtr handle, ref double value);
+		protected delegate int GetdoubleEntryPointDelegate(IntPtr handle, ref double value);
 		protected delegate int GetInt32EntryPointDelegate(IntPtr handle);
 
 		protected delegate int SetStringEntryPointDelegate(IntPtr handle, string value);
-		protected delegate int SetDoubleEntryPointDelegate(IntPtr handle, double value);
+		protected delegate int SetdoubleEntryPointDelegate(IntPtr handle, double value);
 		protected delegate int SetInt32EntryPointDelegate(IntPtr handle, int value);
 		protected delegate int SetBoolEntryPointDelegate(IntPtr handle, bool value);
 
@@ -101,7 +101,7 @@ namespace ACBr.Net
 			CheckResult(ret);
 		}
 
-		protected DateTime GetDateTime(GetDoubleEntryPointDelegate entryPoint)
+		protected DateTime GetDateTime(GetdoubleEntryPointDelegate entryPoint)
 		{
 			double ticks = 0d;
 			int ret = entryPoint(Handle, ref ticks);
@@ -110,14 +110,14 @@ namespace ACBr.Net
 			return DateTime.FromOADate(ticks);
 		}
 
-		protected void SetDateTime(SetDoubleEntryPointDelegate entryPoint, DateTime value)
+		protected void SetDateTime(SetdoubleEntryPointDelegate entryPoint, DateTime value)
 		{
 			double ticks = value.ToOADate();
 			int ret = entryPoint(Handle, ticks);
 			CheckResult(ret);
 		}
 
-		protected decimal GetDecimal(GetDoubleEntryPointDelegate entryPoint)
+		protected decimal GetDecimal(GetdoubleEntryPointDelegate entryPoint)
 		{
 			double value = 0d;
 			int ret = entryPoint(Handle, ref value);
@@ -126,7 +126,7 @@ namespace ACBr.Net
 			return Convert.ToDecimal(value);
 		}
 
-		protected void SetDecimal(SetDoubleEntryPointDelegate entryPoint, decimal value)
+		protected void SetDecimal(SetdoubleEntryPointDelegate entryPoint, decimal value)
 		{
 			int ret = entryPoint(Handle, Convert.ToDouble(value));
 			CheckResult(ret);

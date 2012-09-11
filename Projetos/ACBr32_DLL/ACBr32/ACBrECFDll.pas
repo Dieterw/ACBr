@@ -4333,6 +4333,369 @@ begin
   end;
 end;
 
+
+{PAF LMFC}
+Function ECF_PafMF_LMFC_Cotepe1704(const ecfHandle: PECFHandle; const DataInicial , DataFinal: double; const CaminhoArquivo: pChar) : Integer ;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+begin
+if (ecfHandle = nil) then
+begin
+Result := -2;
+Exit;
+end;
+
+try
+ecfHandle^.ECF.PafMF_LMFC_Cotepe1704(DataInicial, DataFinal, CaminhoArquivo);
+Result := 0;
+except
+on exception : Exception do
+begin
+ecfHandle^.UltimoErro := exception.Message;
+Result := -1;
+end
+end;
+end;
+
+Function ECF_PafMF_LMFC_Cotepe1704_CRZ( const ecfHandle: PECFHandle; const CRZInicial, CRZFinal: Integer;
+      const PathArquivo: pChar ) : Integer ;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+begin
+if (ecfHandle = nil) then
+begin
+Result := -2;
+Exit;
+end;
+
+try
+ecfHandle^.ECF.PafMF_LMFC_Cotepe1704(CRZInicial, CRZFinal, PathArquivo);
+Result := 0;
+except
+on exception : Exception do
+begin
+ecfHandle^.UltimoErro := exception.Message;
+Result := -1;
+end
+end;
+end;
+
+Function ECF_PafMF_LMFC_Espelho(const ecfHandle: PECFHandle; const DataInicial , DataFinal: double; const CaminhoArquivo: pChar) : Integer ;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+begin
+if (ecfHandle = nil) then
+begin
+Result := -2;
+Exit;
+end;
+
+try
+ecfHandle^.ECF.PafMF_LMFC_Espelho(DataInicial, DataFinal, CaminhoArquivo);
+Result := 0;
+except
+on exception : Exception do
+begin
+ecfHandle^.UltimoErro := exception.Message;
+Result := -1;
+end
+end;
+end;
+
+Function ECF_PafMF_LMFC_Espelho_CRZ(const ecfHandle: PECFHandle; const CRZInicial, CRZFinal: Integer;
+      const PathArquivo: pChar ) : Integer ;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+begin
+if (ecfHandle = nil) then
+begin
+Result := -2;
+Exit;
+end;
+
+try
+ecfHandle^.ECF.PafMF_LMFC_Espelho(CRZInicial, CRZFinal, PathArquivo);
+Result := 0;
+except
+on exception : Exception do
+begin
+ecfHandle^.UltimoErro := exception.Message;
+Result := -1;
+end
+end;
+end;
+
+Function ECF_PafMF_LMFC_Impressao(const ecfHandle: PECFHandle; const DataInicial , DataFinal: double) : Integer ;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+begin
+if (ecfHandle = nil) then
+begin
+Result := -2;
+Exit;
+end;
+
+try
+ecfHandle^.ECF.PafMF_LMFC_Impressao(DataInicial, DataFinal);
+Result := 0;
+except
+on exception : Exception do
+begin
+ecfHandle^.UltimoErro := exception.Message;
+Result := -1;
+end
+end;
+end;
+
+Function ECF_PafMF_LMFC_Impressao_CRZ(const ecfHandle: PECFHandle; const CRZInicial, CRZFinal: Integer) : Integer ;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+begin
+if (ecfHandle = nil) then
+begin
+Result := -2;
+Exit;
+end;
+
+try
+ecfHandle^.ECF.PafMF_LMFC_Impressao(CRZInicial, CRZFinal);
+Result := 0;
+except
+on exception : Exception do
+begin
+ecfHandle^.UltimoErro := exception.Message;
+Result := -1;
+end
+end;
+end;
+
+{PAF LMFS}
+Function ECF_PafMF_LMFS_Espelho(const ecfHandle: PECFHandle; const DataInicial , DataFinal: double; const CaminhoArquivo: pChar) : Integer ;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+begin
+if (ecfHandle = nil) then
+begin
+Result := -2;
+Exit;
+end;
+
+try
+ecfHandle^.ECF.PafMF_LMFS_Espelho(DataInicial, DataFinal, CaminhoArquivo);
+Result := 0;
+except
+on exception : Exception do
+begin
+ecfHandle^.UltimoErro := exception.Message;
+Result := -1;
+end
+end;
+end;
+
+Function ECF_PafMF_LMFS_Espelho_CRZ( const ecfHandle: PECFHandle; const CRZInicial, CRZFinal: Integer;
+      const PathArquivo: pChar ) : Integer ;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+begin
+if (ecfHandle = nil) then
+begin
+Result := -2;
+Exit;
+end;
+
+try
+ecfHandle^.ECF.PafMF_LMFS_Espelho(CRZInicial, CRZFinal, PathArquivo);
+Result := 0;
+except
+on exception : Exception do
+begin
+ecfHandle^.UltimoErro := exception.Message;
+Result := -1;
+end
+end;
+end;
+
+Function ECF_PafMF_LMFS_Impressao(const ecfHandle: PECFHandle; const DataInicial , DataFinal: double) : Integer ;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+begin
+if (ecfHandle = nil) then
+begin
+Result := -2;
+Exit;
+end;
+
+try
+ecfHandle^.ECF.PafMF_LMFS_Impressao(DataInicial, DataFinal);
+Result := 0;
+except
+on exception : Exception do
+begin
+ecfHandle^.UltimoErro := exception.Message;
+Result := -1;
+end
+end;
+end;
+
+Function ECF_PafMF_LMFS_Impressao_CRZ(const ecfHandle: PECFHandle; const CRZInicial, CRZFinal: Integer) : Integer ;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+begin
+if (ecfHandle = nil) then
+begin
+Result := -2;
+Exit;
+end;
+
+try
+ecfHandle^.ECF.PafMF_LMFS_Impressao(CRZInicial, CRZFinal);
+Result := 0;
+except
+on exception : Exception do
+begin
+ecfHandle^.UltimoErro := exception.Message;
+Result := -1;
+end
+end;
+end;
+
+{PAF Espelho MFD}
+Function ECF_PafMF_MFD_Cotepe1704( const ecfHandle: PECFHandle; const DataInicial, DataFinal: double; const CaminhoArquivo: pChar ) : Integer ;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+begin
+if (ecfHandle = nil) then
+begin
+Result := -2;
+Exit;
+end;
+
+try
+ecfHandle^.ECF.PafMF_MFD_Cotepe1704(DataInicial, DataFinal, CaminhoArquivo);
+Result := 0;
+except
+on exception : Exception do
+begin
+ecfHandle^.UltimoErro := exception.Message;
+Result := -1;
+end
+end;
+end;
+
+Function ECF_PafMF_MFD_Cotepe1704_COO( const ecfHandle: PECFHandle; const COOInicial, COOFinal: Integer;
+      const PathArquivo: pChar ) : Integer ;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+begin
+if (ecfHandle = nil) then
+begin
+Result := -2;
+Exit;
+end;
+
+try
+ecfHandle^.ECF.PafMF_MFD_Cotepe1704(COOInicial, COOFinal, PathArquivo);
+Result := 0;
+except
+on exception : Exception do
+begin
+ecfHandle^.UltimoErro := exception.Message;
+Result := -1;
+end
+end;
+end;
+
+{PAF Arq. MFD}
+Function ECF_PafMF_MFD_Espelho( const ecfHandle: PECFHandle; const DataInicial, DataFinal: double; const CaminhoArquivo: pChar ) : Integer ;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+begin
+if (ecfHandle = nil) then
+begin
+Result := -2;
+Exit;
+end;
+
+try
+ecfHandle^.ECF.PafMF_MFD_Espelho(DataInicial, DataFinal, CaminhoArquivo);
+Result := 0;
+except
+on exception : Exception do
+begin
+ecfHandle^.UltimoErro := exception.Message;
+Result := -1;
+end
+end;
+end;
+
+Function ECF_PafMF_MFD_Espelho_COO( const ecfHandle: PECFHandle; const COOInicial, COOFinal: Integer;
+      const PathArquivo: pChar ) : Integer ;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+begin
+if (ecfHandle = nil) then
+begin
+Result := -2;
+Exit;
+end;
+
+try
+ecfHandle^.ECF.PafMF_MFD_Espelho(COOInicial, COOFinal, PathArquivo);
+Result := 0;
+except
+on exception : Exception do
+begin
+ecfHandle^.UltimoErro := exception.Message;
+Result := -1;
+end
+end;
+end;
+
+{Metodos DAV OK}
+Function ECF_DAV_Abrir(const ecfHandle: PECFHandle; const AEmissao : double;
+      const ADescrDocumento, ANumero, ASituacao, AVendedor, AObservacao,
+      ACNPJCPF, ANomeCliente, AEndereco: pChar) : Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF}  export;
+begin
+
+  if (ecfHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+  try
+     ecfHandle^.ECF.DAV_Abrir(AEmissao, AdescrDocumento, ANumero, ASituacao, AVendedor, AObservacao, ACNPJCPF, ANomeCliente, AEndereco);
+     Result := 0;
+  except
+     on exception : Exception do
+     begin
+        ecfHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end;
+
+end;
+
+Function ECF_DAV_RegistrarItem(const ecfHandle: PECFHandle; const ACodigo, ADescricao, AUnid : pChar;
+      const AQuantidade, AVlrUnitario, AVlrDesconto, AVlrAcrescimo: Double;
+      const ACancelado: Boolean) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF}  export;
+begin
+
+  if (ecfHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+  try
+     ecfHandle^.ECF.DAV_RegistrarItem(ACodigo, ADescricao, AUnid, AQuantidade, AVlrUnitario, AVlrDesconto, AVlrAcrescimo, ACancelado);
+     Result := 0 ;
+  except
+     on exception : Exception do
+     begin
+        ecfHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end;
+
+end;
+
+Function ECF_DAV_Fechar(const ecfHandle: PECFHandle; const Observacao : pChar) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+begin
+
+  if (ecfHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+  try
+     ecfHandle^.ECF.DAV_Fechar( Observacao );
+     Result := 0 ;
+  except
+     on exception : Exception do
+     begin
+        ecfHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end;
+end;
+
+
+
+
 {
 NÀO IMPLEMENTADO
 
@@ -4603,7 +4966,34 @@ ECF_GetDadosUltimaReducaoZ,
 ECF_GetDadosReducaoZClass,
 ECF_DestroyDadosReducaoZClass,
 
-ECF_SetAAC;
+ECF_SetAAC,
+
+{PAF LMFC}
+ECF_PafMF_LMFC_Cotepe1704,
+ECF_PafMF_LMFC_Cotepe1704_CRZ,
+ECF_PafMF_LMFC_Espelho,
+ECF_PafMF_LMFC_Espelho_CRZ,
+ECF_PafMF_LMFC_Impressao,
+ECF_PafMF_LMFC_Impressao_CRZ,
+
+{PAF LMFS}
+ECF_PafMF_LMFS_Espelho,
+ECF_PafMF_LMFS_Espelho_CRZ,
+ECF_PafMF_LMFS_Impressao,
+ECF_PafMF_LMFS_Impressao_CRZ,
+
+{PAF Espelho MFD}
+ECF_PafMF_MFD_Cotepe1704,
+ECF_PafMF_MFD_Cotepe1704_COO,
+
+{PAF Arq. MFD}
+ECF_PafMF_MFD_Espelho,
+ECF_PafMF_MFD_Espelho_COO,
+
+{DAV}
+ECF_DAV_Abrir,
+ECF_DAV_RegistrarItem,
+ECF_DAV_Fechar;
 
 {Não implementado}
 

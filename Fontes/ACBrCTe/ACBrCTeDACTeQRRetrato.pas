@@ -1036,8 +1036,9 @@ begin
   qrlFormaPagamento.Caption := tpforPagToStrText(FCTe.Ide.forPag);
 
   // As Linhas abaixo foram inseridas por Italo em 31/08/2010
+  // Incluido os valores teSVCSP e teSVCRS por Italo em 19/09/2012
   // Normal **************************************************************
-  if FCTe.Ide.tpEmis in [teNormal, teSCAN] then
+  if FCTe.Ide.tpEmis in [teNormal, teSCAN, teSVCSP, teSVCRS] then
    begin
     // Incluidas por Italo em 01/01/2012
     qrlVariavel1.Enabled := True;

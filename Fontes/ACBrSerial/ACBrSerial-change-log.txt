@@ -98,6 +98,10 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Data: 12/09/2012
+-- ACBrECFSwedaSTX --
+[+] Adicionado suporte a leitura de CMC7    (por: DSA)
+
 Data: 30/08/2012
 -- ACBrECF --
 [*] Ajustes para que o ACBrECF efetue o LOG corretamente dos comandos, mesmo

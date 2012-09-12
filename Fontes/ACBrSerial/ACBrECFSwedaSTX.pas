@@ -1448,15 +1448,33 @@ end;
 function TACBrECFSwedaSTX.LeituraCMC7: AnsiString;
 var
    OldTimeOut: Integer;
+   P1, P2: Integer;
 begin
-   Result := EnviaComando('24|1|0|1000');
+   Result := '';
+   EnviaComando('24|1|0|1000');
 
    { Leitura do CMC7 deve retornar mais dados }
    OldTimeOut := TimeOut;
    try
-      TimeOut := max(OldTimeOut,5);  // Espere mais 5 segundos...
+      TimeOut := max(OldTimeOut,10);  // Espere mais 10 segundos...
       GravaLog( '         Aguardando Resposta CMC7');
       LeResposta;
+
+      fpRespostaComando := fsRespostasComando ;   // Respostas Acumuladas
+      //DEBUG
+      //GravaLog( '         Retorno Completo: '+fpRespostaComando );
+      { Limpando de "fpRespostaComando" os Status não solicitados }
+      fpRespostaComando := AjustaRetorno( fpRespostaComando  );
+      //DEBUG
+      //GravaLog( '         Retorno Tratado: '+fpRespostaComando );
+
+      P1 := pos('!0110', fpRespostaComando) ;  // Procura por resposta do CMC7
+      if P1 > 0 then
+      begin
+         P1 := P1 + 12;
+         P2 := PosEx(ETX, fpRespostaComando, P1 );
+         Result := copy(fpRespostaComando, P1, P2-P1-1 );
+      end;
    finally
      TimeOut := OldTimeOut;
    end;

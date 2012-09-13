@@ -1,0 +1,15 @@
+D:\RFTD\Acbr\Projetos\ACBr32_DLL\ACBr.Net\ACBr.Net.ECFTeste\bin\Debug\ACBr.Net.ECFTeste.exe
+D:\RFTD\Acbr\Projetos\ACBr32_DLL\ACBr.Net\ACBr.Net.ECFTeste\bin\Debug\ACBr.Net.ECFTeste.pdb
+D:\RFTD\Acbr\Projetos\ACBr32_DLL\ACBr.Net\ACBr.Net.ECFTeste\bin\Debug\ACBr.Net.dll
+D:\RFTD\Acbr\Projetos\ACBr32_DLL\ACBr.Net\ACBr.Net.ECFTeste\bin\Debug\ACBr.Net.pdb
+D:\RFTD\Acbr\Projetos\ACBr32_DLL\ACBr.Net\ACBr.Net.ECFTeste\obj\Debug\ACBr.Net.ECFTeste.csprojResolveAssemblyReference.cache
+D:\RFTD\Acbr\Projetos\ACBr32_DLL\ACBr.Net\ACBr.Net.ECFTeste\obj\Debug\ACBr.Net.ECFTeste.LeituraMemoriaFiscalPAF.resources
+D:\RFTD\Acbr\Projetos\ACBr32_DLL\ACBr.Net\ACBr.Net.ECFTeste\obj\Debug\ACBr.Net.ECFTeste.IdentificaPAF.resources
+D:\RFTD\Acbr\Projetos\ACBr32_DLL\ACBr.Net\ACBr.Net.ECFTeste\obj\Debug\ACBr.Net.ECFTeste.LeituraMemoriaFiscal.resources
+D:\RFTD\Acbr\Projetos\ACBr32_DLL\ACBr.Net\ACBr.Net.ECFTeste\obj\Debug\ACBr.Net.ECFTeste.MainForm.resources
+D:\RFTD\Acbr\Projetos\ACBr32_DLL\ACBr.Net\ACBr.Net.ECFTeste\obj\Debug\ACBr.Net.ECFTeste.Properties.Resources.resources
+D:\RFTD\Acbr\Projetos\ACBr32_DLL\ACBr.Net\ACBr.Net.ECFTeste\obj\Debug\ACBr.Net.ECFTeste.csproj.GenerateResource.Cache
+D:\RFTD\Acbr\Projetos\ACBr32_DLL\ACBr.Net\ACBr.Net.ECFTeste\obj\Debug\ACBr.Net.ECFTeste.exe
+D:\RFTD\Acbr\Projetos\ACBr32_DLL\ACBr.Net\ACBr.Net.ECFTeste\obj\Debug\ACBr.Net.ECFTeste.pdb
+H:\RFTD\Programacao\C Sharp\ACBR\Projetos\ACBr32_DLL\ACBr.Net\ACBr.Net.ECFTeste\obj\Debug\ACBr.Net.ECFTeste.exe
+H:\RFTD\Programacao\C Sharp\ACBR\Projetos\ACBr32_DLL\ACBr.Net\ACBr.Net.ECFTeste\obj\Debug\ACBr.Net.ECFTeste.pdb

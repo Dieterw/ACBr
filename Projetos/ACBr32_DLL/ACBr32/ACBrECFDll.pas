@@ -9,7 +9,8 @@ uses
   ACBrECFClass,
   ACBrDevice,
   ACBrUtil,
-  ACBrAACDLL;
+  ACBrAACDLL,
+  ACBrPAFClass;
 
 {Classe que armazena os EventHandlers para o componente ACBr}
 type TEventHandlers = class
@@ -35,6 +36,15 @@ type TAliquotaRec = record
       Tipo : char;
       Total : double;
       Sequencia : byte;
+end;
+
+type TDAVsRec = record
+      Numero    : array[0..13] of char;
+      COO_Cupom : Integer;
+      COO_Dav   : Integer;
+      Titulo    : array[0..30] of char;
+      Valor     : double;
+      DtEmissao : double;
 end;
 
 type TFormaPagamentoRec = record
@@ -4280,7 +4290,6 @@ begin
    end;
 end;
 
-
 Function ECF_DestroyDadosReducaoZClass(const ecfHandle: PECFHandle; var dadosRZ : PDadosRZRec) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
 begin
 
@@ -4333,6 +4342,47 @@ begin
   end;
 end;
 
+{PAF}
+Function ECF_PafMF_GerarCAT52(const ecfHandle: PECFHandle; const DataInicial , DataFinal: double; const CaminhoArquivo: pChar) : Integer ;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+begin
+if (ecfHandle = nil) then
+begin
+Result := -2;
+Exit;
+end;
+
+try
+ecfHandle^.ECF.PafMF_GerarCAT52(DataInicial, DataFinal, CaminhoArquivo);
+Result := 0;
+except
+on exception : Exception do
+begin
+ecfHandle^.UltimoErro := exception.Message;
+Result := -1;
+end
+end;
+end;
+
+Function ECF_PafMF_LX_Impressao(const ecfHandle: PECFHandle) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+begin
+
+  if (ecfHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+  try
+     ecfHandle^.ECF.PafMF_LX_Impressao;
+     Result := 0;
+  except
+     on exception : Exception do
+     begin
+        ecfHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end;
+end;
 
 {PAF LMFC}
 Function ECF_PafMF_LMFC_Cotepe1704(const ecfHandle: PECFHandle; const DataInicial , DataFinal: double; const CaminhoArquivo: pChar) : Integer ;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
@@ -4693,8 +4743,49 @@ begin
   end;
 end;
 
+Function ECF_PafMF_RelDAVEmitidos(const ecfHandle: PECFHandle; const DAVsEmitidos: array of TDAVsRec; const Index : Integer;
+      const TituloRelatorio: pChar; const IndiceRelatorio: Integer) : Integer ;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+var
+  DAVs: TACBrECFDAVs;
+  I : Integer;
+begin
+if (ecfHandle = nil) then
+begin
+Result := -2;
+Exit;
+end;
+if(Index <= 0) then
+begin
+   ecfHandle^.UltimoErro := 'O Número de DAVs precisa ser maior que zero';
+   Result := -1;
+end;
+try
+   DAVs := TACBrECFDAVs.Create;
+   for I := 0 to Index - 1 do
+   begin
+   with DAVs.New do
+       begin
+         Numero    := DAVsEmitidos[i].Numero;
+         COO_Dav   := DAVsEmitidos[i].COO_Dav;
+         COO_Cupom := DAVsEmitidos[i].COO_Cupom;
+         Titulo    := DAVsEmitidos[i].Titulo;
+         DtEmissao := DAVsEmitidos[i].DtEmissao;
+         Valor     := DAVsEmitidos[i].Valor;
+       end;
+   end;
 
-
+   ecfHandle^.ECF.PafMF_RelDAVEmitidos(DAVs, TituloRelatorio, IndiceRelatorio);
+   DAVs.Free;
+   Result := 0;
+except
+   on exception : Exception do
+begin
+  ecfHandle^.UltimoErro := exception.Message;
+  DAVs.Free;
+  Result := -1;
+end
+end;
+end;
 
 {
 NÀO IMPLEMENTADO
@@ -4968,6 +5059,10 @@ ECF_DestroyDadosReducaoZClass,
 
 ECF_SetAAC,
 
+{PAF}
+ECF_PafMF_GerarCAT52,
+ECF_PafMF_LX_Impressao,
+
 {PAF LMFC}
 ECF_PafMF_LMFC_Cotepe1704,
 ECF_PafMF_LMFC_Cotepe1704_CRZ,
@@ -4993,7 +5088,8 @@ ECF_PafMF_MFD_Espelho_COO,
 {DAV}
 ECF_DAV_Abrir,
 ECF_DAV_RegistrarItem,
-ECF_DAV_Fechar;
+ECF_DAV_Fechar,
+ECF_PafMF_RelDAVEmitidos;
 
 {Não implementado}
 

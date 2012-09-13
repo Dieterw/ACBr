@@ -71,6 +71,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LeituraMemoriaFiscalPAF.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LeituraMemoriaFiscalPAF.Designer.cs">
+      <DependentUpon>LeituraMemoriaFiscalPAF.cs</DependentUpon>
+    </Compile>
     <Compile Include="IdentificaPAF.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -91,6 +97,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="LeituraMemoriaFiscalPAF.resx">
+      <DependentUpon>LeituraMemoriaFiscalPAF.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="IdentificaPAF.resx">
       <DependentUpon>IdentificaPAF.cs</DependentUpon>
     </EmbeddedResource>

@@ -1,0 +1,5 @@
+D:\RFTD\Acbr\Projetos\ACBr32_DLL\ACBr.Net\ACBr.Net\bin\Debug\ACBr.Net.dll
+D:\RFTD\Acbr\Projetos\ACBr32_DLL\ACBr.Net\ACBr.Net\bin\Debug\ACBr.Net.pdb
+D:\RFTD\Acbr\Projetos\ACBr32_DLL\ACBr.Net\ACBr.Net\obj\Debug\ACBr.Net.csprojResolveAssemblyReference.cache
+D:\RFTD\Acbr\Projetos\ACBr32_DLL\ACBr.Net\ACBr.Net\obj\Debug\ACBr.Net.dll
+D:\RFTD\Acbr\Projetos\ACBr32_DLL\ACBr.Net\ACBr.Net\obj\Debug\ACBr.Net.pdb

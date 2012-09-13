@@ -902,6 +902,71 @@ namespace ACBr.Net.ECFTeste
             }
         }
 
+        private void leituraMemToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (LeituraMemoriaFiscalPAF form = new LeituraMemoriaFiscalPAF())
+            {
+                var ret = form.ShowDialog();
+                if (ret == System.Windows.Forms.DialogResult.OK)
+                {
+                    try
+                    {
+                        if (form.ByPeriod)
+                        {
+                            if (form.Simple)
+                            {
+                                if (form.Imprimir)
+                                    acbrECF.PafMF_LMFS_Impressao(form.InitialDate, form.FinalDate);
+                                else if (form.SalvarEspelho)
+                                    acbrECF.PafMF_LMFS_Espelho(form.InitialDate, form.FinalDate, form.Caminho);
+                            }
+                            else
+                            {
+                                if (form.Imprimir)
+                                    acbrECF.PafMF_LMFC_Impressao(form.InitialDate, form.FinalDate);
+                                else if (form.SalvarCotepe1704)
+                                    acbrECF.PafMF_LMFC_Cotepe1704(form.InitialDate, form.FinalDate, form.Caminho);
+                                else if (form.SalvarEspelho)
+                                    acbrECF.PafMF_LMFC_Espelho(form.InitialDate, form.FinalDate, form.Caminho);
+                            }
+                        }
+                        else
+                        {
+
+                            if (form.Simple)
+                            {
+                                if (form.Imprimir)
+                                    acbrECF.PafMF_LMFS_Impressao(form.InitialCCR, form.FinalCCR);
+                                else if (form.SalvarEspelho)
+                                    acbrECF.PafMF_LMFS_Espelho(form.InitialCCR, form.FinalCCR, form.Caminho);
+                            }
+                            else
+                            {
+                                if (form.Imprimir)
+                                    acbrECF.PafMF_LMFC_Impressao(form.InitialCCR, form.FinalCCR);
+                                else if (form.SalvarCotepe1704)
+                                    acbrECF.PafMF_LMFC_Cotepe1704(form.InitialCCR, form.FinalCCR, form.Caminho);
+                                else if (form.SalvarEspelho)
+                                    acbrECF.PafMF_LMFC_Espelho(form.InitialCCR, form.FinalCCR, form.Caminho);
+                            }
+                        }
+
+                        WriteResp("LeituraMemoriaFiscal PAF OK");
+                    }
+                    catch (NullReferenceException)
+                    {
+                        messageToolStripStatusLabel.Text = "Não inicializado.";
+                        descriptionToolStripStatusLabel.Text = string.Empty;
+                    }
+                    catch (Exception exception)
+                    {
+                        messageToolStripStatusLabel.Text = "Exception";
+                        descriptionToolStripStatusLabel.Text = exception.Message;
+                    }
+                }
+            }
+        }
+
         private void identificaPAFToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (IdentificaPAF form = new IdentificaPAF())
@@ -1011,7 +1076,8 @@ namespace ACBr.Net.ECFTeste
 				this.acbrECF.AAC = null;
 			}
 		}
-
         #endregion Event Handlers
+
+        
     }
 }

@@ -97,6 +97,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 13/09/2012
+-- ACBrECF --
+[+] Adicionado Troco em cartão ao relatório de configuração do paf-ecf.
+    por: regys silveira
 
 Data: 12/09/2012
 -- ACBrECFSwedaSTX --

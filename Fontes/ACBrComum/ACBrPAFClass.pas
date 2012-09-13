@@ -183,6 +183,7 @@ type
     fsBancoDados: String;
     fsSistemaOperacional: String;
     fsLinguagem: String;
+    FTrocoEmCartao: Boolean;
     procedure SetVersao(const AValue : String) ;
   public
     constructor Create;
@@ -237,6 +238,7 @@ type
     property EmitePED: Boolean read FEmitePED write FEmitePED;
     property CupomMania: Boolean read FCupomMania write FCupomMania;
     property MinasLegal: Boolean read FMinasLegal write FMinasLegal;
+    property TrocoEmCartao: Boolean read FTrocoEmCartao write FTrocoEmCartao;
   end;
 
   TACBrECFIdentificacaoPAF = class( TPersistent )

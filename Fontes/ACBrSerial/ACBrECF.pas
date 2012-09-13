@@ -6177,6 +6177,9 @@ begin
     Relatorio.Add(padL('ITEM 2 : MINAS LEGAL', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.MinasLegal ));
     Relatorio.Add(padL('ITEM 2A: CUPOM MANIA', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.CupomMania ));
 
+    Relatorio.Add('<n>REQUISITO XIV</n>');
+    Relatorio.Add(padL('ITEM 4: TROCO EM CARTÃO', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.TrocoEmCartao ));
+
     Relatorio.Add('');
 
     {$IFDEF UNICODE}

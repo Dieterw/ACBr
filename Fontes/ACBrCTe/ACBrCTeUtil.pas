@@ -108,7 +108,9 @@ type
 
   public
 {$IFDEF ACBrCTeOpenSSL}
-    class function sign_file(const Axml: PAnsiChar; const key_file: PChar; const senha: PChar): AnsiString;
+//    class function sign_file(const Axml: PAnsiChar; const key_file: PChar; const senha: PChar): AnsiString;
+    class function sign_file(const Axml: PAnsiChar; const key_file: PAnsiChar; const senha: PAnsiChar): AnsiString;
+    class function sign_memory(const Axml: PAnsiChar; const key_file: PAnsichar; const senha: PAnsiChar; Size: Cardinal; Ponteiro: Pointer): AnsiString;
     class procedure InitXmlSec;
     class procedure ShutDownXmlSec;
 {$ENDIF}
@@ -170,6 +172,8 @@ type
     class function CortaD(const AString: string; const ATamanho: Integer): String;
     class function CortaE(const AString: string; const ATamanho: Integer): String;
     class function UFtoCUF(UF : String): Integer;
+    // Incluido por Italo em 13/09/2012
+    class function IdentificaTipoSchema(Const AXML: AnsiString; var I: Integer): integer;
   end;
 
 implementation
@@ -1294,10 +1298,15 @@ var
   I, J, PosIni, PosFim : Integer;
   URI, AStr, XmlAss    : AnsiString;
   Tipo                 : Integer;  // 1 - CTe 2 - Cancelamento 3 - Inutilizacao
+  Cert: TMemoryStream;
+  Cert2: TStringStream;
 begin
   AStr := AXML;
 
   //// Encontrando o URI ////
+  // Alterado por Italo em 13/09/2012
+  Tipo := CTeUtil.IdentificaTipoSchema(AStr, I);
+  (*
   I := pos('<infCte', AStr);
   Tipo := 1;
 
@@ -1315,7 +1324,7 @@ begin
            Tipo := 4;
       end;
    end;
-
+  *)
   if I = 0 then
     raise Exception.Create('Não encontrei inicio do URI: <infCte');
   I := CTeUtil.PosEx('Id=', AStr, I + 6);
@@ -1332,16 +1341,6 @@ begin
 
   //// Adicionando Cabeçalho DTD, necessário para xmlsec encontrar o ID ////
   I := pos('?>', AStr);
-  //if I = 0 then
-  //   raise Exception.Create('Não encontrei inicio do XML: <?xml version="1.0" encoding="UTF-8"?>') ;
-
-  //  AStr := copy(AStr,1,I+1) + cDTD + Copy(AStr,I+2,Length(AStr)) ;
-  {  if Tipo = 1 then
-       AStr := cDTD + Copy(AStr,I,Length(AStr))
-    else if Tipo = 2 then
-       AStr := cDTDCanc + Copy(AStr,I+2,Length(AStr))
-    else if Tipo = 3 then
-       AStr := cDTDInut + Copy(AStr,I+2,Length(AStr));}
 
   case Tipo of
    1: AStr := copy(AStr, 1, StrToInt(VarToStr(CTeUtil.SeSenao(I > 0, I + 1, I))))
@@ -1358,39 +1357,34 @@ begin
          + cDTDDpec + Copy(AStr,StrToInt(VarToStr(CTeUtil.SeSenao(I>0,I+2,I))),
           Length(AStr));
    }
+   else AStr := '';
   end;
 
-  {
-  if Tipo = 1 then
-    AStr := copy(AStr, 1, StrToInt(VarToStr(CTeUtil.SeSenao(I > 0, I + 1, I)))) + cDTD + Copy(AStr, StrToInt(VarToStr(CTeUtil.SeSenao(I > 0, I + 2, I))), Length(AStr))
-  else if Tipo = 2 then
-    AStr := copy(AStr, 1, StrToInt(VarToStr(CTeUtil.SeSenao(I > 0, I + 1, I)))) + cDTDCanc + Copy(AStr, StrToInt(VarToStr(CTeUtil.SeSenao(I > 0, I + 2, I))), Length(AStr))
-  else if Tipo = 3 then
-    AStr := copy(AStr, 1, StrToInt(VarToStr(CTeUtil.SeSenao(I > 0, I + 1, I)))) + cDTDInut + Copy(AStr, StrToInt(VarToStr(CTeUtil.SeSenao(I > 0, I + 2, I))), Length(AStr));
-  }
-
   //// Inserindo Template da Assinatura digital ////
-  if Tipo = 1 then
-  begin
-    I := pos('</CTe>', AStr);
-    if I = 0 then
-      raise Exception.Create('Não encontrei final do XML: </CTe>');
-  end
-  else if Tipo = 2 then
-  begin
-    I := pos('</cancCTe>', AStr);
-    if I = 0 then
-      raise Exception.Create('Não encontrei final do XML: </cancCTe>');
-  end
-  else if Tipo = 3 then
-  begin
-    I := pos('</inutCTe>', AStr);
-    if I = 0 then
-      raise Exception.Create('Não encontrei final do XML: </inutCTe>');
+  // Alterado por Italo em 13/09/2012
+  case Tipo of
+   1: begin
+       I := pos('</CTe>', AStr);
+       if I = 0 then
+        raise Exception.Create('Não encontrei final do XML: </CTe>');
+      end;
+   2: begin
+       I := pos('</cancCTe>', AStr);
+       if I = 0 then
+        raise Exception.Create('Não encontrei final do XML: </cancCTe>');
+      end;
+   3: begin
+       I := pos('</inutCTe>', AStr);
+       if I = 0 then
+        raise Exception.Create('Não encontrei final do XML: </inutCTe>');
+      end;
+   else
+      raise EACBrNFeException.Create('Template de Tipo não implementado.') ;
   end;
 
   if pos('<Signature', AStr) > 0 then
     I := pos('<Signature', AStr);
+
   AStr := copy(AStr, 1, I - 1) +
     '<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">' +
       '<SignedInfo>' +
@@ -1413,26 +1407,44 @@ begin
       '</KeyInfo>' +
     '</Signature>';
 
-  if Tipo = 1 then
-    AStr := AStr + '</CTe>'
-  else if Tipo = 2 then
-    AStr := AStr + '</cancCTe>'
-  else if Tipo = 3 then
-    AStr := AStr + '</inutCTe>';
+  // Alterado por Italo em 13/09/2012
+  case Tipo of
+    1: AStr := AStr + '</CTe>';
+    2: AStr := AStr + '</cancCTe>';
+    3: AStr := AStr + '</inutCTe>';
+    else AStr := '';
+  end;
 
-  XmlAss := CTeUtil.sign_file(PAnsiChar(AStr), PChar(ArqPFX), PChar(PFXSenha));
+//  XmlAss := CTeUtil.sign_file(PAnsiChar(AStr), PChar(ArqPFX), PChar(PFXSenha));
+
+  // Alterado por Italo em 13/09/2012
+  if FileExists(ArqPFX) then
+    XmlAss := CTeUtil.sign_file(PAnsiChar(AStr), PAnsiChar(ArqPFX), PAnsiChar(PFXSenha))
+  else
+   begin
+    Cert := TMemoryStream.Create;
+    Cert2 := TStringStream.Create(ArqPFX);
+    try
+      Cert.LoadFromStream(Cert2);
+      XmlAss := CTeUtil.sign_memory(PAnsiChar(AStr), PAnsiChar(ArqPFX), PAnsiChar(PFXSenha), Cert.Size, Cert.Memory) ;
+    finally
+      Cert2.Free;
+      Cert.Free;
+    end;
+  end;
 
   // Removendo quebras de linha //
   XmlAss := StringReplace(XmlAss, #10, '', [rfReplaceAll]);
   XmlAss := StringReplace(XmlAss, #13, '', [rfReplaceAll]);
 
   // Removendo DTD //
-  if Tipo = 1 then
-    XmlAss := StringReplace(XmlAss, cDTD, '', [])
-  else if Tipo = 2 then
-    XmlAss := StringReplace(XmlAss, cDTDCanc, '', [])
-  else if Tipo = 3 then
-    XmlAss := StringReplace(XmlAss, cDTDInut, '', []);
+  // Alterado por Italo em 13/09/2012
+  case Tipo of
+    1: XmlAss := StringReplace( XmlAss, cDTD, '', [] );
+    2: XmlAss := StringReplace( XmlAss, cDTDCanc, '', [] );
+    3: XmlAss := StringReplace( XmlAss, cDTDInut, '', [] );
+    else XmlAss := '';
+  end;
 
   PosIni := Pos('<X509Certificate>', XmlAss) - 1;
   PosFim := CTeUtil.PosLast('<X509Certificate>', XmlAss);
@@ -1459,16 +1471,8 @@ var
 begin
   if Pos('<Signature', XML) <= 0 then
   begin
-    I := pos('<infCte', XML);
-    Tipo := 1;
-
-    if I = 0 then
-    begin
-      I := pos('<infCanc', XML);
-      Tipo := 2;
-      if I = 0 then
-        Tipo := 3;
-    end;
+    // Alterado por Italo em 13/09/2012
+    Tipo := CTeUtil.IdentificaTipoSchema(XML,I);
 
     I := CTeUtil.PosEx('Id=', XML, 6);
     if I = 0 then
@@ -1482,24 +1486,36 @@ begin
 
     URI := copy(XML, I + 1, J - I - 1);
 
-    if Tipo = 1 then
-      XML := copy(XML, 1, pos('</CTe>', XML) - 1)
-    else if Tipo = 2 then
-      XML := copy(XML, 1, pos('</cancCTe>', XML) - 1)
-    else if Tipo = 3 then
-      XML := copy(XML, 1, pos('</inutCTe>', XML) - 1);
+    case Tipo of
+      1: XML := copy(XML,1,pos('</CTe>',XML)-1);
+      2: XML := copy(XML,1,pos('</cancCTe>',XML)-1);
+      3: XML := copy(XML,1,pos('</inutCTe>',XML)-1);
+      else XML := '';
+    end;
 
-    XML := XML + '<Signature xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />';
-    XML := XML + '<Reference URI="#' + URI + '">';
-    XML := XML + '<Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />';
-    XML := XML + '<DigestValue></DigestValue></Reference></SignedInfo><SignatureValue></SignatureValue><KeyInfo></KeyInfo></Signature>';
+    XML := XML + '<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">' +
+                   '<SignedInfo>' +
+                     '<CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />' +
+                     '<SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />' +
+                     '<Reference URI="#' + URI + '">' +
+                       '<Transforms>' +
+                         '<Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />' +
+                         '<Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />' +
+                       '</Transforms>' +
+                       '<DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />' +
+                       '<DigestValue></DigestValue>' +
+                     '</Reference>' +
+                   '</SignedInfo>' +
+                   '<SignatureValue></SignatureValue>' +
+                   '<KeyInfo></KeyInfo>' +
+                 '</Signature>';
 
-    if Tipo = 1 then
-      XML := XML + '</CTe>'
-    else if Tipo = 2 then
-      XML := XML + '</cancCTe>'
-    else if Tipo = 3 then
-      XML := XML + '</inutCTe>';
+    case Tipo of
+      1: XML := XML + '</CTe>';
+      2: XML := XML + '</cancCTe>';
+      3: XML := XML + '</inutCTe>';
+      else XML := '';
+    end;
   end;
 
   // Lendo Header antes de assinar //
@@ -1598,18 +1614,18 @@ end;
 {$ENDIF}
 
 {$IFDEF ACBrCTeOpenSSL}
-
-class function CTeUtil.sign_file(const Axml: PAnsiChar; const key_file: PChar; const senha: PChar): AnsiString;
+class function CTeUtil.sign_file(const Axml: PAnsiChar; const key_file: PAnsiChar; const senha: PChar): AnsiString;
 var
-  doc               : xmlDocPtr;
-  node              : xmlNodePtr;
-  dsigCtx           : xmlSecDSigCtxPtr;
-  buffer            : PChar;
-  bufSize           : integer;
-label done;
+  doc     : xmlDocPtr;
+  node    : xmlNodePtr;
+  dsigCtx : xmlSecDSigCtxPtr;
+  buffer  : PChar;
+  bufSize : integer;
+label
+  done;
 begin
   doc := nil;
-  node := nil;
+  // node := nil;
   dsigCtx := nil;
   result := '';
 
@@ -1632,9 +1648,13 @@ begin
       raise Exception.Create('Error :failed to create signature context');
 
     // { load private key}
-    dsigCtx^.signKey := xmlSecCryptoAppKeyLoad(PAnsiChar(key_file), xmlSecKeyDataFormatPkcs12, PAnsiChar(senha), nil, nil);
+    dsigCtx^.signKey := xmlSecCryptoAppKeyLoad(key_file, xmlSecKeyDataFormatPkcs12, senha, nil, nil);
     if (dsigCtx^.signKey = nil) then
       raise Exception.Create('Error: failed to load private pem key from "' + key_file + '"');
+
+//    dsigCtx^.signKey := xmlSecCryptoAppKeyLoad(PAnsiChar(key_file), xmlSecKeyDataFormatPkcs12, PAnsiChar(senha), nil, nil);
+//    if (dsigCtx^.signKey = nil) then
+//      raise Exception.Create('Error: failed to load private pem key from "' + key_file + '"');
 
     { set key name to the file name, this is just an example! }
     if (xmlSecKeySetName(dsigCtx^.signKey, PAnsiChar(key_file)) < 0) then
@@ -1660,6 +1680,70 @@ begin
     if (doc <> nil) then
       xmlFreeDoc(doc);
   end;
+end;
+
+class function CTeUtil.sign_memory(const Axml: PAnsiChar; const key_file: PAnsichar; const senha: PAnsiChar; Size: Cardinal; Ponteiro: Pointer): AnsiString;
+var
+  doc     : xmlDocPtr;
+  node    : xmlNodePtr;
+  dsigCtx : xmlSecDSigCtxPtr;
+  buffer  : PAnsiChar;
+  bufSize : integer;
+label
+ done;
+begin
+    doc := nil;
+    //node := nil;
+    dsigCtx := nil;
+    result := '';
+
+    if (Axml = nil) or (key_file = nil) then Exit;
+    try
+       { load template }
+       doc := xmlParseDoc(Axml);
+       if ((doc = nil) or (xmlDocGetRootElement(doc) = nil)) then
+         raise Exception.Create('Error: unable to parse');
+
+       { find start node }
+       node := xmlSecFindNode(xmlDocGetRootElement(doc), PAnsiChar(xmlSecNodeSignature), PAnsiChar(xmlSecDSigNs));
+       if (node = nil) then
+         raise Exception.Create('Error: start node not found');
+
+       { create signature context, we don't need keys manager in this example }
+       dsigCtx := xmlSecDSigCtxCreate(nil);
+       if (dsigCtx = nil) then
+         raise Exception.Create('Error :failed to create signature context');
+
+       // { load private key, assuming that there is not password }
+       dsigCtx^.signKey := xmlSecCryptoAppKeyLoadMemory(Ponteiro, size, xmlSecKeyDataFormatPkcs12, senha, nil, nil);
+
+       if (dsigCtx^.signKey = nil) then
+          raise Exception.Create('Error: failed to load private pem key from "' + key_file + '"');
+
+       { set key name to the file name, this is just an example! }
+       if (xmlSecKeySetName(dsigCtx^.signKey, key_file) < 0) then
+         raise Exception.Create('Error: failed to set key name for key from "' + key_file + '"');
+
+       { sign the template }
+       if (xmlSecDSigCtxSign(dsigCtx, node) < 0) then
+         raise Exception.Create('Error: signature failed');
+
+       { print signed document to stdout }
+       // xmlDocDump(stdout, doc);
+       // Can't use "stdout" from Delphi, so we'll use xmlDocDumpMemory instead...
+       buffer := nil;
+       xmlDocDumpMemory(doc, @buffer, @bufSize);
+       if (buffer <> nil) then
+          { success }
+          result := buffer ;
+   finally
+       { cleanup }
+       if (dsigCtx <> nil) then
+         xmlSecDSigCtxDestroy(dsigCtx);
+
+       if (doc <> nil) then
+         xmlFreeDoc(doc);
+   end ;
 end;
 {$ENDIF}
 
@@ -1847,6 +1931,49 @@ begin
             copy(AValue,17,4) + ' ' + copy(AValue,21,4) + ' ' +
             copy(AValue,25,4) + ' ' + copy(AValue,29,4) + ' ' +
             copy(AValue,33,4) ;
+end;
+
+// Incluido por Italo em 13/09/2012
+class function CTeUtil.IdentificaTipoSchema(const AXML: AnsiString; var I: integer): integer;
+var
+ lTipoEvento: String;
+begin
+  I := pos('<infCTe',AXML) ;
+  Result := 1;
+  if I = 0  then
+   begin
+     I := pos('<infCanc',AXML) ;
+     if I > 0 then
+        Result := 2
+     else
+      begin
+        I := pos('<infInut',AXML) ;
+        if I > 0 then
+           Result := 3
+        else
+         begin
+          I := Pos('<infEvento', AXML);
+          if I > 0 then
+          begin
+            lTipoEvento := Trim(RetornarConteudoEntre(AXML,'<tpEvento>','</tpEvento>'));
+            if lTipoEvento = '110111' then
+              Result := 6 // Cancelamento
+            else if lTipoEvento = '210200' then
+              Result := 7 //Manif. Destinatario: Confirmação da Operação
+            else if lTipoEvento = '210210' then
+              Result := 8 //Manif. Destinatario: Ciência da Operação Realizada
+            else if lTipoEvento = '210220' then
+              Result := 9 //Manif. Destinatario: Desconhecimento da Operação
+            else if lTipoEvento = '210240' then
+              Result := 10 //Manif. Destinatario: Operação não Realizada
+            else
+              Result := 5; //Carta de Correção Eletrônica
+          end
+          else
+            Result := 4; //DPEC
+         end;
+     end;
+   end;
 end;
 
 end.

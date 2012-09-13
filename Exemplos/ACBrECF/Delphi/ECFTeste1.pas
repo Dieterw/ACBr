@@ -3534,6 +3534,7 @@ begin
       Parametros.EmitePED                     := True;
       Parametros.CupomMania                   := True;
       Parametros.MinasLegal                   := True;
+      Parametros.TrocoEmCartao                := True;
 
       ACBrECF1.PafMF_RelParametrosConfiguracao(Parametros);
     finally

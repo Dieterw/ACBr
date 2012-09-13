@@ -184,7 +184,7 @@ uses
  {$ELSE}
   ComObj,
  {$ENDIF}
-  Sysutils, Variants, ACBrUtil;
+  Sysutils, Variants, ACBrUtil, pcnAuxiliar;
 
 { CTeUtil }
 {$IFDEF ACBrCTeOpenSSL}

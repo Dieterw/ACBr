@@ -1,8 +1,9 @@
 object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
-  Left = 330
-  Top = 173
+  Left = 309
+  Top = 167
   Width = 1066
-  Height = 872
+  Height = 784
+  VertScrollBar.Position = 103
   Caption = 'ACBRBoletoFCFortesFr'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -16,7 +17,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
   TextHeight = 13
   object LayoutBoleto: TRLReport
     Left = 72
-    Top = -192
+    Top = -295
     Width = 794
     Height = 1123
     Margins.LeftMargin = 4.000000000000000000
@@ -1235,6 +1236,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Width = 529
         Height = 83
         AutoSize = False
+        Behavior = [beSiteExpander]
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -11
@@ -1556,6 +1558,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Width = 179
         Height = 45
         AutoSize = False
+        Behavior = [beSiteExpander]
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -9
@@ -1712,6 +1715,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Height = 49
         Alignment = taCenter
         AutoSize = False
+        Behavior = [beSiteExpander]
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -8
@@ -2375,6 +2379,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Width = 529
         Height = 82
         AutoSize = False
+        Behavior = [beSiteExpander]
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -11
@@ -2778,7 +2783,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
   end
   object BoletoCarne: TRLReport
     Left = 920
-    Top = 8
+    Top = -95
     Width = 794
     Height = 1123
     Font.Charset = DEFAULT_CHARSET
@@ -3611,6 +3616,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Width = 410
         Height = 64
         AutoSize = False
+        Behavior = [beSiteExpander]
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -9
@@ -3989,8 +3995,6 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
     DocumentInfo.Creator = 
       'FortesReport (Open Source) v3.24(B14)  \251 Copyright '#169' 1999-200' +
       '8 Fortes Inform'#225'tica'
-    ViewerOptions = []
-    FontEncoding = feNoEncoding
     DisplayName = 'ACBrBoleto - http://acbr.sf.net'
     Left = 128
     Top = 8

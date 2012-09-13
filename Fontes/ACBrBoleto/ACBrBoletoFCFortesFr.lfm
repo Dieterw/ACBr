@@ -4876,7 +4876,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         RealBounds.Width = 0
         RealBounds.Height = 0
       end
-      object txtNomeSacado: TRLMemo
+      object txtNomeSacado: TRLLabel
         Left = 180
         Height = 13
         Top = 229

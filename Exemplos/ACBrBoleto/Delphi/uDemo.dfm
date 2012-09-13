@@ -1,7 +1,7 @@
 object frmDemo: TfrmDemo
   Left = 288
   Top = 133
-  Width = 793
+  Width = 827
   Height = 577
   Caption = 'Demo ACBrBoleto '
   Color = clBtnFace
@@ -562,8 +562,8 @@ object frmDemo: TfrmDemo
   end
   object Panel1: TPanel
     Left = 0
-    Top = 472
-    Width = 794
+    Top = 489
+    Width = 811
     Height = 50
     Align = alBottom
     TabOrder = 5
@@ -631,6 +631,9 @@ object frmDemo: TfrmDemo
     end
   end
   object ACBrBoleto1: TACBrBoleto
+    Banco.Numero = 237
+    Banco.TamanhoMaximoNossoNum = 11
+    Banco.TipoCobranca = cobBradesco
     Cedente.Nome = 'TodaObra Materias p/ Construcao'
     Cedente.CodigoCedente = '4266443'
     Cedente.Agencia = '0284'
@@ -638,9 +641,6 @@ object frmDemo: TfrmDemo
     Cedente.Conta = '0000079489'
     Cedente.ContaDigito = '9'
     Cedente.TipoInscricao = pOutras
-    Banco.Numero = 237
-    Banco.TamanhoMaximoNossoNum = 11
-    Banco.TipoCobranca = cobBradesco
     NomeArqRemessa = '.'
     NumeroArquivo = 0
     LayoutRemessa = c240

@@ -216,7 +216,7 @@ type
     RLLabel93: TRLLabel;
     RLLabel96: TRLLabel;
     RLLabel98: TRLLabel;
-    txtNomeSacado: TRLMemo;
+    txtNomeSacado: TRLLabel;
     txtOrientacoesBanco: TRLMemo;
     RLMemo2: TRLMemo;
     txtDesconto5: TRLLabel;

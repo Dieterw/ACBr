@@ -1324,9 +1324,9 @@ begin
            Tipo := 4;
       end;
    end;
-  *)
   if I = 0 then
     raise Exception.Create('Não encontrei inicio do URI: <infCte');
+  *)
   I := CTeUtil.PosEx('Id=', AStr, I + 6);
   if I = 0 then
     raise Exception.Create('Não encontrei inicio do URI: Id=');

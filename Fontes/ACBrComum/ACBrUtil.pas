@@ -116,6 +116,7 @@ Uses SysUtils, Math, Classes
 
 function ParseText( Texto : AnsiString; Decode : Boolean = True;
    IsUTF8: Boolean = True) : AnsiString;
+function DecodeToSys( Texto : AnsiString; TextoIsUTF8: Boolean ) : String ;
 function SeparaDados( Texto : AnsiString; Chave : String; MantemChave : Boolean = False ) : AnsiString;
 
 function ACBrStr( AString : AnsiString ) : String ;
@@ -2260,6 +2261,23 @@ begin
     end;
 end;
 
+function DecodeToSys(Texto: AnsiString; TextoIsUTF8: Boolean): String;
+begin
+  {$IFDEF UNICODE}
+   if not TextoIsUTF8 then
+      Result := ACBrStr( Texto )
+   else
+      {$IFNDEF FPC}
+       Result := UTF8Decode( Texto );
+      {$ENDIF}
+  {$ELSE}
+   if TextoIsUTF8 then
+      Result := Utf8ToAnsi( Texto ) ;
+  {$ENDIF}
+
+  if Result = '' then
+     Result := Texto;
+end;
 
 function SeparaDados( Texto : AnsiString; Chave : String; MantemChave : Boolean = False ) : AnsiString;
 var

@@ -121,6 +121,7 @@ begin
           Memo1.Lines.Add('Complemento: '+Complemento );
           Memo1.Lines.Add('Bairro: '+Bairro );
           Memo1.Lines.Add('Municipio: '+Municipio + ' - IBGE: '+IBGE_Municipio);
+          edCidade.Text := Municipio;
           Memo1.Lines.Add('UF: '+UF + ' - IBGE: '+IBGE_UF);
           Memo1.Lines.Add( StringOfChar('-',20) );
        end ;

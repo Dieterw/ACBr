@@ -217,7 +217,7 @@ type
 
 implementation
 
-uses ACBrUtil ;
+uses ACBrUtil, strutils ;
 
 { TACBrCEPEndereco ************************************************************}
 
@@ -531,8 +531,8 @@ end ;
 Procedure TACBrWSCEPLivre.ProcessaResposta ;
 Var
    SL1, SL2 : TStringList ;
-   Buffer : String ;
-   I : Integer ;
+   Buffer, Linha : String ;
+   I, J : Integer ;
 begin
   fOwner.fEnderecos.Clear;
 
@@ -549,6 +549,18 @@ begin
 
       SL2.Clear;
       SL2.Text := StringReplace( Buffer, ',', sLineBreak, [rfReplaceAll] );
+
+      { Removendo as aspas do inicio e fim }
+      for J := 0 to SL2.Count-1 do
+      begin
+         Linha := SL2[J] ;
+         if LeftStr(Linha,1) = '"' then
+            Delete( Linha, 1, 1) ;
+         if RightStr(Linha,1) = '"' then
+            Delete( Linha, Length(Linha), 1) ;
+
+         SL2[J] := Linha;
+      end ;
 
       if (SL2.Count >= 9) and (Length( OnlyNumber( AnsiString(SL2[8]) ) ) = 8) then
       begin

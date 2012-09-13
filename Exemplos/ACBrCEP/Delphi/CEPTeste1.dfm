@@ -32,7 +32,7 @@ object Form1: TForm1
     Top = 0
     Width = 600
     Height = 136
-    ActivePage = TabSheet1
+    ActivePage = TabSheet2
     Align = alTop
     TabOrder = 1
     object TabSheet1: TTabSheet

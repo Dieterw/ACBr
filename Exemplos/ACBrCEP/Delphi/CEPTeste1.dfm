@@ -1,9 +1,9 @@
 object Form1: TForm1
   Left = 451
   Top = 163
-  Width = 616
-  Height = 488
   Caption = 'CEP Teste'
+  ClientHeight = 450
+  ClientWidth = 600
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -60,7 +60,6 @@ object Form1: TForm1
           Width = 156
           Height = 21
           Style = csDropDownList
-          ItemHeight = 13
           TabOrder = 0
         end
         object edChaveBuscarCEP: TEdit
@@ -338,6 +337,7 @@ object Form1: TForm1
   end
   object ACBrCEP1: TACBrCEP
     ProxyPort = '8080'
+    ParseText = True
     OnAntesAbrirHTTP = ACBrCEP1AntesAbrirHTTP
     WebService = wsBuscarCep
     OnBuscaEfetuada = ACBrCEP1BuscaEfetuada

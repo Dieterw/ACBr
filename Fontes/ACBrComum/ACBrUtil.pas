@@ -114,7 +114,8 @@ Uses SysUtils, Math, Classes
       {$endif}
     {$endif} ;
 
-function ParseText( Texto : AnsiString; Decode : Boolean = True) : AnsiString;
+function ParseText( Texto : AnsiString; Decode : Boolean = True;
+   IsUTF8: Boolean = True) : AnsiString;
 function SeparaDados( Texto : AnsiString; Chave : String; MantemChave : Boolean = False ) : AnsiString;
 
 function ACBrStr( AString : AnsiString ) : String ;
@@ -278,7 +279,7 @@ begin
  {$IFDEF USE_LConvEncoding}
    Result := CP1252ToUTF8( AString ) ;
  {$ELSE}
-   Result := String( AnsiToUtf8( String( AString ) ) ) ;
+   Result := AnsiToUtf8( AString ) ;
  {$ENDIF}
 {$ELSE}
   Result := AString
@@ -2289,7 +2290,8 @@ begin
   Result := AnsiString(copy(String(Texto),PosIni,PosFim-(PosIni+1)));
 end;
 
-function ParseText( Texto : AnsiString; Decode : Boolean = True) : AnsiString;
+function ParseText( Texto : AnsiString; Decode : Boolean = True;
+   IsUTF8: Boolean = True ) : AnsiString;
 begin
   if Decode then
    begin
@@ -2325,11 +2327,14 @@ begin
     Texto := AnsiString(StringReplace(String(Texto), '&ccedil;', 'ç', [rfReplaceAll]));
     Texto := AnsiString(StringReplace(String(Texto), '&Ccedil;', 'Ç', [rfReplaceAll]));
     Texto := AnsiString(StringReplace(String(Texto), '&apos;', '''', [rfReplaceAll]));
-    {$IFDEF DELPHI12_UP}  // delphi 2009 em diante
-    Texto := AnsiString(UTF8ToString(Texto));
-    {$ELSE}
-    Texto := AnsiString(UTF8Decode(Texto));
-    {$ENDIF}
+    if IsUTF8 then
+    begin
+      {$IFDEF DELPHI12_UP}  // delphi 2009 em diante
+       Texto := AnsiString(UTF8ToString(Texto));
+      {$ELSE}
+       Texto := AnsiString(UTF8Decode(Texto));
+      {$ENDIF}
+    end ;
    end
   else
    begin
@@ -2338,11 +2343,14 @@ begin
     Texto := AnsiString(StringReplace(String(Texto), '>', '&gt;', [rfReplaceAll]));
     Texto := AnsiString(StringReplace(String(Texto), '"', '&quot;', [rfReplaceAll]));
     Texto := AnsiString(StringReplace(String(Texto), #39, '&#39;', [rfReplaceAll]));
-    {$IFDEF DELPHI12_UP}  // delphi 2009 em diante
-    Texto := AnsiString(UTF8ToString(Texto));
-    {$ELSE}
-    Texto := AnsiString(UTF8Decode(Texto));
-    {$ENDIF}
+    if IsUTF8 then
+    begin
+      {$IFDEF DELPHI12_UP}  // delphi 2009 em diante
+       Texto := AnsiString(UTF8ToString(Texto));
+      {$ELSE}
+       Texto := AnsiString(UTF8Decode(Texto));
+      {$ENDIF}
+    end ;
    end;
 
   Result := Texto;

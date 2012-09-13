@@ -621,7 +621,7 @@ begin
     HTTPSend.Clear;
 
     // DEBUG //
-    // WriteToTXT( '/tmp/HTTP.txt', 'URL: '+AURL );
+    //WriteToTXT( 'c:\temp\HTTP.txt', 'URL: '+AURL );
 
     {$IFDEF UNICODE}
      HTTPSend.Headers.Add('Accept-Charset: utf-8;q=*;q=0.7') ;
@@ -633,21 +633,27 @@ begin
     OK := HTTPSend.HTTPMethod('GET', AURL) and (HTTPSend.ResultCode = 200);
     RespHTTP.LoadFromStream( HTTPSend.Document ) ;
 
+    // DEBUG //
+    //WriteToTXT( 'c:\temp\HTTP.txt', 'RespHTTP 1: '+RespHTTP.Text );
+
     if ParseText then
-      RespHTTP.Text := String( ACBrUtil.ParseText( AnsiString( RespHTTP.Text ) ) ) ;
+      RespHTTP.Text := ACBrUtil.ParseText( RespHTTP.Text, True, False ) ;
+
+    // DEBUG //
+    //WriteToTXT( 'c:\temp\HTTP.txt', 'RespHTTP 2: '+RespHTTP.Text );
 
     // Verifica se a Resposta está em ANSI //
      CT := LowerCase( GetHeaderValue('Content-Type:') );
     {$IFDEF UNICODE}
      if pos('utf-8', CT) = 0 then     // Resposta em ISO (ansi) ?
-        RespHTTP.Text := String( ACBrStr( AnsiString( RespHTTP.Text ) ) ) ;
+        RespHTTP.Text := ACBrStr( RespHTTP.Text ) ;
      {$ELSE}
      if pos('utf-8', CT) > 0 then     // Resposta em UTF-8 ?
         RespHTTP.Text := Utf8ToAnsi( RespHTTP.Text ) ;
     {$ENDIF}
 
     // DEBUG //
-    //WriteToTXT( 'C:\TEMP\HTTP.txt', RespHTTP.Text );
+    //WriteToTXT( 'c:\temp\HTTP.txt', 'RespHTTP 3: '+RespHTTP.Text );
     //WriteToTXT( 'C:\TEMP\HeaderRESP.txt', HTTPSend.Headers.Text );
 
     if not OK then
@@ -696,7 +702,7 @@ begin
     RespHTTP.LoadFromStream( HTTPSend.Document ) ;
 
     if ParseText then
-      RespHTTP.Text := String( ACBrUtil.ParseText( AnsiString( RespHTTP.Text ) ) );
+      RespHTTP.Text := ACBrUtil.ParseText( RespHTTP.Text, True, False );
 
     // Verifica se a Resposta está em ANSI //
     {$IFDEF UNICODE}

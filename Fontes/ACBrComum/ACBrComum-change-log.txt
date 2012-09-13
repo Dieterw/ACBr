@@ -38,6 +38,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+13/09/2012
+-- ACBrUtil --
+[-] Corrigido Bug de perda de acentos em sistemas com Unicode na
+    function ParseText      (por: DSA)
+
 27/08/2012
 -- ACBrUtil --
 [-] Ajuste em RunCommand para compatibilizar com FPC 2.7.1     (por: DSA)

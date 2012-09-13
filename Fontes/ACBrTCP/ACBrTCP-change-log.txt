@@ -37,6 +37,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+
+13/09/2012
+-- ACBrSocket --
+[-] Corrigido Bug de perda de acentos em sistemas com Unicode na chamada da 
+    function ParseText      (por: DSA)
+
 14/08/2012
 -- ACBrCNIEE --
 [-] Correção feita por (Carlos do Nascimento Filho)

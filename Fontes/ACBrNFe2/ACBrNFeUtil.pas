@@ -1517,12 +1517,14 @@ begin
               '</KeyInfo>'+
             '</Signature>';
 
+  // Alterado por Italo em 14/09/2012
   case Tipo of
     1: AStr := AStr + '</NFe>';
     2: AStr := AStr + '</cancNFe>';
     3: AStr := AStr + '</inutNFe>';
     4: AStr := AStr + '</envDPEC>';
-    5..10: AStr := AStr + '</evento></envEvento>';
+    5..10: AStr := AStr + '</evento>';
+//    5..10: AStr := AStr + '</evento></envEvento>';
     else AStr := '';
   end;
 
@@ -1608,12 +1610,14 @@ begin
       XML := XML + '<Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />';
       XML := XML + '<DigestValue></DigestValue></Reference></SignedInfo><SignatureValue></SignatureValue><KeyInfo></KeyInfo></Signature>';
 
+      // Alterado por Italo em 14/09/2012
       case Tipo of
         1: XML := XML + '</NFe>';
         2: XML := XML + '</cancNFe>';
         3: XML := XML + '</inutNFe>';
         4: XML := XML + '</envDPEC>';
-        5..10: XML := XML + '</evento></envEvento>';
+        5..10: XML := XML + '</evento>';
+//        5..10: XML := XML + '</evento></envEvento>';
         else XML := '';
       end;
    end;

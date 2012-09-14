@@ -61,11 +61,10 @@
       <Unit2>
         <Filename Value="ACBrECFDll.pas"/>
         <UnitName Value="ACBrECFDll"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
         <TopLine Value="5057"/>
-        <CursorPos X="1" Y="5092"/>
+        <CursorPos X="103" Y="5074"/>
         <UsageCount Value="65"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -217,11 +216,12 @@
         <Filename Value="ACBrPAFDll.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="ACBrPAFDll"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="198"/>
-        <CursorPos X="17" Y="388"/>
-        <FoldState Value=" TCKI43 T3k10I4 pidjU0N]9j0jX0K2]9SkC0qu"/>
+        <TopLine Value="400"/>
+        <CursorPos X="8" Y="18"/>
+        <FoldState Value=" TCiBMH T3k10I4 pidjU0N]9j0jX0K011]B2kC0q/"/>
         <UsageCount Value="32"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -260,7 +260,7 @@
         <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
-        <CursorPos X="29" Y="18"/>
+        <CursorPos X="83" Y="15"/>
         <UsageCount Value="12"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -330,7 +330,7 @@
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
-    <Version Value="11"/>
+    <Version Value="9"/>
     <PathDelim Value="\"/>
     <Target>
       <Filename Value="ACBr32"/>
@@ -351,7 +351,6 @@
     </CodeGeneration>
     <Linking>
       <Debugging>
-        <GenerateDebugInfo Value="False"/>
         <UseLineInfoUnit Value="False"/>
         <StripSymbols Value="True"/>
       </Debugging>

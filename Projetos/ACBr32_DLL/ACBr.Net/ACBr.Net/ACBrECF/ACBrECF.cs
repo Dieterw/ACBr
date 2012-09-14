@@ -875,8 +875,9 @@ namespace ACBr.Net
 		#endregion Métodos do Cupom Fiscal
 
 		#region Métodos DAV
+
 		public void DAV_Abrir(DateTime emissao, string decrdocumento, string numero, string situacao, string vendedor, string observacao, string cpfCnpj, string nome, string endereco)
-        {
+		{
 			int ret = ACBrDll.ECF_DAV_Abrir(this.Handle, emissao.ToOADate(), ToUTF8(decrdocumento),
 				ToUTF8(numero), ToUTF8(situacao), ToUTF8(vendedor), ToUTF8(observacao),
 				ToUTF8(cpfCnpj), ToUTF8(nome), ToUTF8(endereco));
@@ -884,7 +885,7 @@ namespace ACBr.Net
 		}
 
 		public void DAV_RegistrarItem(string codigo, string descricao, string unidade, double quantidade, double vlrunitario, double desconto, double acrescimo, bool cancelado)
-        {
+		{
 			int ret = ACBrDll.ECF_DAV_RegistrarItem(this.Handle, ToUTF8(codigo), ToUTF8(descricao), ToUTF8(unidade),
 			quantidade, vlrunitario, desconto, acrescimo, cancelado);
 			CheckResult(ret);
@@ -896,118 +897,128 @@ namespace ACBr.Net
 			CheckResult(ret);
 		}
 
-        private void PafMF_RelDAVEmitidos(List<ACBrECFDAVs> DAVs, string TituloRelatorio, string IndiceRelatorio)
-        {
-            ACBrDll.DAVsRec[] record = new ACBrDll.DAVsRec[DAVs.Count];
-            for (int i = 0; i < DAVs.Count; i++)
-            {
-                record[i].Numero = DAVs[i].Numero;
-                record[i].COO_Cupom = DAVs[i].COO_Cupom;
-                record[i].COO_Dav = DAVs[i].COO_Dav;
-                record[i].Titulo = DAVs[i].Titulo;
-                record[i].DtEmissao = DAVs[i].DtEmissao.ToOADate();
-                record[i].Valor = DAVs[i].Valor;
-            }
+		private void PafMF_RelDAVEmitidos(List<ACBrECFDAVs> DAVs, string TituloRelatorio, string IndiceRelatorio)
+		{
+			ACBrDll.DAVsRec[] record = new ACBrDll.DAVsRec[DAVs.Count];
+			for (int i = 0; i < DAVs.Count; i++)
+			{
+				record[i].Numero = DAVs[i].Numero;
+				record[i].COO_Cupom = DAVs[i].COO_Cupom;
+				record[i].COO_Dav = DAVs[i].COO_Dav;
+				record[i].Titulo = DAVs[i].Titulo;
+				record[i].DtEmissao = DAVs[i].DtEmissao.ToOADate();
+				record[i].Valor = DAVs[i].Valor;
+			}
 
-            int ret = ACBrDll.ECF_PafMF_RelDAVEmitidos(this.Handle, record, DAVs.Count, ToUTF8(TituloRelatorio), ToUTF8(IndiceRelatorio));
-            CheckResult(ret);
-        }
+			int ret = ACBrDll.ECF_PafMF_RelDAVEmitidos(this.Handle, record, DAVs.Count, ToUTF8(TituloRelatorio), ToUTF8(IndiceRelatorio));
+			CheckResult(ret);
+		}
+
 		#endregion Métodos DAV
 
-        #region PAF
-        public void PafMF_GerarCAT52(DateTime DataInicial, DateTime DataFinal, string CaminhoArquivo)
-        {
-            int ret = ACBrDll.ECF_PafMF_GerarCAT52(this.Handle, DataInicial.ToOADate(), DataFinal.ToOADate(), ToUTF8(CaminhoArquivo));
-            CheckResult(ret);
-        }
+		#region PAF
 
-        public void PafMF_LX_Impressao()
-        {
-            int ret = ACBrDll.ECF_PafMF_LX_Impressao(this.Handle);
-            CheckResult(ret);
-        } 
-        #endregion
+		public void PafMF_GerarCAT52(DateTime DataInicial, DateTime DataFinal, string CaminhoArquivo)
+		{
+			int ret = ACBrDll.ECF_PafMF_GerarCAT52(this.Handle, DataInicial.ToOADate(), DataFinal.ToOADate(), ToUTF8(CaminhoArquivo));
+			CheckResult(ret);
+		}
 
-        #region PAF LMFC
-        public void PafMF_LMFC_Cotepe1704(DateTime DataInicial, DateTime DataFinal, string CaminhoArquivo)
-        {
-            int ret = ACBrDll.ECF_PafMF_LMFC_Cotepe1704(this.Handle, DataInicial.ToOADate(), DataFinal.ToOADate(), ToUTF8(CaminhoArquivo));
-            CheckResult(ret);
-        }
+		public void PafMF_LX_Impressao()
+		{
+			int ret = ACBrDll.ECF_PafMF_LX_Impressao(this.Handle);
+			CheckResult(ret);
+		}
 
-        public void PafMF_LMFC_Cotepe1704(int CRZInicial, int CRZFinal, string CaminhoArquivo)
-        {
-            int ret = ACBrDll.ECF_PafMF_LMFC_Cotepe1704_CRZ(this.Handle, CRZInicial, CRZFinal, ToUTF8(CaminhoArquivo));
-            CheckResult(ret);
-        }
+		#endregion PAF
 
-        public void PafMF_LMFC_Espelho(DateTime DataInicial, DateTime DataFinal, string CaminhoArquivo)
-        {
-            int ret = ACBrDll.ECF_PafMF_LMFC_Espelho(this.Handle, DataInicial.ToOADate(), DataFinal.ToOADate(), ToUTF8(CaminhoArquivo));
-            CheckResult(ret);
-        }
+		#region PAF LMFC
 
-        public void PafMF_LMFC_Espelho(int CRZInicial, int CRZFinal, string CaminhoArquivo)
-        {
-            int ret = ACBrDll.ECF_PafMF_LMFC_Espelho_CRZ(this.Handle, CRZInicial, CRZFinal, ToUTF8(CaminhoArquivo));
-            CheckResult(ret);
-        }
+		public void PafMF_LMFC_Cotepe1704(DateTime DataInicial, DateTime DataFinal, string CaminhoArquivo)
+		{
+			int ret = ACBrDll.ECF_PafMF_LMFC_Cotepe1704(this.Handle, DataInicial.ToOADate(), DataFinal.ToOADate(), ToUTF8(CaminhoArquivo));
+			CheckResult(ret);
+		}
 
-        public void PafMF_LMFC_Impressao(DateTime DataInicial, DateTime DataFinal)
-        {
-            int ret = ACBrDll.ECF_PafMF_LMFC_Impressao(this.Handle, DataInicial.ToOADate(), DataFinal.ToOADate());
-            CheckResult(ret);
-        }
+		public void PafMF_LMFC_Cotepe1704(int CRZInicial, int CRZFinal, string CaminhoArquivo)
+		{
+			int ret = ACBrDll.ECF_PafMF_LMFC_Cotepe1704_CRZ(this.Handle, CRZInicial, CRZFinal, ToUTF8(CaminhoArquivo));
+			CheckResult(ret);
+		}
 
-        public void PafMF_LMFC_Impressao(int CRZInicial, int CRZFinal)
-        {
-            int ret = ACBrDll.ECF_PafMF_LMFC_Impressao_CRZ(this.Handle, CRZInicial, CRZFinal);
-            CheckResult(ret);
-        }      
-        #endregion
+		public void PafMF_LMFC_Espelho(DateTime DataInicial, DateTime DataFinal, string CaminhoArquivo)
+		{
+			int ret = ACBrDll.ECF_PafMF_LMFC_Espelho(this.Handle, DataInicial.ToOADate(), DataFinal.ToOADate(), ToUTF8(CaminhoArquivo));
+			CheckResult(ret);
+		}
 
-        #region PAF LMFS
-        public void PafMF_LMFS_Espelho(DateTime DataInicial, DateTime DataFinal, string CaminhoArquivo)
-        {
-            int ret = ACBrDll.ECF_PafMF_LMFS_Espelho(this.Handle, DataInicial.ToOADate(), DataFinal.ToOADate(), ToUTF8(CaminhoArquivo));
-            CheckResult(ret);
-        }
+		public void PafMF_LMFC_Espelho(int CRZInicial, int CRZFinal, string CaminhoArquivo)
+		{
+			int ret = ACBrDll.ECF_PafMF_LMFC_Espelho_CRZ(this.Handle, CRZInicial, CRZFinal, ToUTF8(CaminhoArquivo));
+			CheckResult(ret);
+		}
 
-        public void PafMF_LMFS_Espelho(int CRZInicial, int CRZFinal, string CaminhoArquivo)
-        {
-            int ret = ACBrDll.ECF_PafMF_LMFS_Espelho_CRZ(this.Handle, CRZInicial, CRZFinal, ToUTF8(CaminhoArquivo));
-            CheckResult(ret);
-        }
+		public void PafMF_LMFC_Impressao(DateTime DataInicial, DateTime DataFinal)
+		{
+			int ret = ACBrDll.ECF_PafMF_LMFC_Impressao(this.Handle, DataInicial.ToOADate(), DataFinal.ToOADate());
+			CheckResult(ret);
+		}
 
-        public void PafMF_LMFS_Impressao(DateTime DataInicial, DateTime DataFinal)
-        {
-            int ret = ACBrDll.ECF_PafMF_LMFS_Impressao(this.Handle, DataInicial.ToOADate(), DataFinal.ToOADate());
-            CheckResult(ret);
-        }
+		public void PafMF_LMFC_Impressao(int CRZInicial, int CRZFinal)
+		{
+			int ret = ACBrDll.ECF_PafMF_LMFC_Impressao_CRZ(this.Handle, CRZInicial, CRZFinal);
+			CheckResult(ret);
+		}
 
-        public void PafMF_LMFS_Impressao(int CRZInicial, int CRZFinal)
-        {
-            int ret = ACBrDll.ECF_PafMF_LMFS_Impressao_CRZ(this.Handle, CRZInicial, CRZFinal);
-            CheckResult(ret);
-        }
-        #endregion
+		#endregion PAF LMFC
 
-        #region PAF Espelho MFD
-        public void PafMF_MFD_Cotepe1704(DateTime DataInicial, DateTime DataFinal, string CaminhoArquivo)
-        {
-            int ret = ACBrDll.ECF_PafMF_MFD_Cotepe1704(this.Handle, DataInicial.ToOADate(), DataFinal.ToOADate(), ToUTF8(CaminhoArquivo));
-            CheckResult(ret);
-        }
+		#region PAF LMFS
 
-        public void PafMF_MFD_Cotepe1704(int COOInicial, int COOFinal, string CaminhoArquivo)
-        {
-            int ret = ACBrDll.ECF_PafMF_MFD_Cotepe1704_COO(this.Handle, COOInicial, COOFinal, ToUTF8(CaminhoArquivo));
-            CheckResult(ret);
-        }
-        #endregion
+		public void PafMF_LMFS_Espelho(DateTime DataInicial, DateTime DataFinal, string CaminhoArquivo)
+		{
+			int ret = ACBrDll.ECF_PafMF_LMFS_Espelho(this.Handle, DataInicial.ToOADate(), DataFinal.ToOADate(), ToUTF8(CaminhoArquivo));
+			CheckResult(ret);
+		}
 
-        #region PAF Arq. MFD
-        public void PafMF_MFD_Espelho(DateTime DataInicial, DateTime DataFinal, string CaminhoArquivo)
+		public void PafMF_LMFS_Espelho(int CRZInicial, int CRZFinal, string CaminhoArquivo)
+		{
+			int ret = ACBrDll.ECF_PafMF_LMFS_Espelho_CRZ(this.Handle, CRZInicial, CRZFinal, ToUTF8(CaminhoArquivo));
+			CheckResult(ret);
+		}
+
+		public void PafMF_LMFS_Impressao(DateTime DataInicial, DateTime DataFinal)
+		{
+			int ret = ACBrDll.ECF_PafMF_LMFS_Impressao(this.Handle, DataInicial.ToOADate(), DataFinal.ToOADate());
+			CheckResult(ret);
+		}
+
+		public void PafMF_LMFS_Impressao(int CRZInicial, int CRZFinal)
+		{
+			int ret = ACBrDll.ECF_PafMF_LMFS_Impressao_CRZ(this.Handle, CRZInicial, CRZFinal);
+			CheckResult(ret);
+		}
+
+		#endregion PAF LMFS
+
+		#region PAF Espelho MFD
+
+		public void PafMF_MFD_Cotepe1704(DateTime DataInicial, DateTime DataFinal, string CaminhoArquivo)
+		{
+			int ret = ACBrDll.ECF_PafMF_MFD_Cotepe1704(this.Handle, DataInicial.ToOADate(), DataFinal.ToOADate(), ToUTF8(CaminhoArquivo));
+			CheckResult(ret);
+		}
+
+		public void PafMF_MFD_Cotepe1704(int COOInicial, int COOFinal, string CaminhoArquivo)
+		{
+			int ret = ACBrDll.ECF_PafMF_MFD_Cotepe1704_COO(this.Handle, COOInicial, COOFinal, ToUTF8(CaminhoArquivo));
+			CheckResult(ret);
+		}
+
+		#endregion PAF Espelho MFD
+
+		#region PAF Arq. MFD
+
+		public void PafMF_MFD_Espelho(DateTime DataInicial, DateTime DataFinal, string CaminhoArquivo)
 		{
 			int ret = ACBrDll.ECF_PafMF_MFD_Espelho(this.Handle, DataInicial.ToOADate(), DataFinal.ToOADate(), ToUTF8(CaminhoArquivo));
 			CheckResult(ret);
@@ -1019,7 +1030,7 @@ namespace ACBr.Net
 			CheckResult(ret);
 		}
 
-		#endregion PAF MFD
+		#endregion PAF Arq. MFD
 
 		#region Relatórios
 

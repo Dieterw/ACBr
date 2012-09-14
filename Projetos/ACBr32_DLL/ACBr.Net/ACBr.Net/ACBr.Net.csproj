@@ -82,6 +82,10 @@
   <ItemGroup>
     <Compile Include="ACBrAAC\ACBrAAC.cs" />
     <Compile Include="ACBrAAC\ACBrAACECF.cs" />
+    <Compile Include="ACBrAAC\ACBrAACECFs.cs" />
+    <Compile Include="ACBrAAC\ACBrECFEmpresa.cs" />
+    <Compile Include="ACBrAAC\ACBrECFIdenticacaoPaf.cs" />
+    <Compile Include="ACBrAAC\ACBrECFInfoPaf.cs" />
     <Compile Include="ACBrBAL\ACBrBal.cs" />
     <Compile Include="ACBrDLL\ACBrComponent.cs" />
     <Compile Include="ACBrDLL\ACBrComposedComponent.cs" />

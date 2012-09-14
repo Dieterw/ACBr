@@ -5,7 +5,6 @@ library ACBr32;
 {$ENDIF}
 
 uses
-  Interfaces,
   ACBrCommonDll,
   ACBrECFDll,
   ACBrPAFDll,

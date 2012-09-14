@@ -111,7 +111,7 @@ namespace ACBr.Net
         {
             int i;
 
-            ACBrDll.RegistroTXRec RegistroC1Rec = new ACBrDll.RegistroTXRec();
+            ACBrDll.RegistroHD1Rec RegistroC1Rec = new ACBrDll.RegistroHD1Rec();
             ACBrDll.RegistroC2Rec[] RegistroC2Rec = new ACBrDll.RegistroC2Rec[RegistroC2.Length];
 
             RegistroC1Rec.RAZAOSOCIAL = ToUTF8(RegistroC1.RazaoSocial);
@@ -149,7 +149,7 @@ namespace ACBr.Net
         {
             int i;
 
-            ACBrDll.RegistroTXRec RegistroD1Rec = new ACBrDll.RegistroTXRec();
+            ACBrDll.RegistroHD1Rec RegistroD1Rec = new ACBrDll.RegistroHD1Rec();
             ACBrDll.RegistroD2Rec[] RegistroD2Rec = new ACBrDll.RegistroD2Rec[RegistroD2.Length];
             ACBrDll.RegistroD3Rec[] RegistroD3Rec = new ACBrDll.RegistroD3Rec[RegistroD3.Length];
 
@@ -203,11 +203,82 @@ namespace ACBr.Net
             CheckResult(ret);
         }
 
+		public void SaveFileTXT_E(ACBrPAFRegistroE1 RegistroE1, ACBrPAFRegistroE2[] RegistroE2, string arquivo)
+		{
+			int i;
+
+			ACBrDll.RegistroHD2Rec RegistroE1Rec = new ACBrDll.RegistroHD2Rec();
+			ACBrDll.RegistroE2Rec[] RegistroE2Rec = new ACBrDll.RegistroE2Rec[RegistroE2.Length];
+
+			RegistroE1Rec.RAZAOSOCIAL = ToUTF8(RegistroE1.RazaoSocial);
+			RegistroE1Rec.CNPJ = ToUTF8(RegistroE1.CNPJ);
+			RegistroE1Rec.UF = ToUTF8(RegistroE1.UF);
+			RegistroE1Rec.IE = ToUTF8(RegistroE1.IE);
+			RegistroE1Rec.IM = ToUTF8(RegistroE1.IM);
+			RegistroE1Rec.NUM_FAB = ToUTF8(RegistroE1.NUM_FAB);
+			RegistroE1Rec.MF_ADICIONAL = ToUTF8(RegistroE1.MF_ADICIONAL);
+			RegistroE1Rec.TIPO_ECF = ToUTF8(RegistroE1.TIPO_ECF);
+			RegistroE1Rec.MARCA_ECF = ToUTF8(RegistroE1.MARCA_ECF);
+			RegistroE1Rec.MODELO_ECF = ToUTF8(RegistroE1.NUM_FAB);
+			RegistroE1Rec.DT_EST = RegistroE1.DT_EST.ToOADate();
+			RegistroE1Rec.RegistroValido = RegistroE1.RegistroValido;
+			RegistroE1Rec.InclusaoExclusao = RegistroE1.InclusaoExclusao;
+
+			for (i = 0; i < RegistroE2.Length; i++)
+			{
+				RegistroE2Rec[i].COD_MERC = ToUTF8(RegistroE2[i].COD_MERC);
+				RegistroE2Rec[i].DESC_MERC = ToUTF8(RegistroE2[i].DESC_MERC);
+				RegistroE2Rec[i].UN_MED = ToUTF8(RegistroE2[i].UN_MED);
+				RegistroE2Rec[i].QTDE_EST = RegistroE2[i].QTDE_EST;
+				RegistroE2Rec[i].RegistroValido = RegistroE2[i].RegistroValido;
+			}
+
+			int ret = ACBrDll.PAF_SaveFileTXT_E(this.Handle, RegistroE1Rec, RegistroE2Rec, RegistroE2.Length, ToUTF8(arquivo));
+			CheckResult(ret);
+		}
+
+		public void SaveFileTXT_H(ACBrPAFRegistroH1 RegistroH1, ACBrPAFRegistroH2[] RegistroH2, string arquivo)
+		{
+			int i;
+
+			ACBrDll.RegistroHD2Rec RegistroH1Rec = new ACBrDll.RegistroHD2Rec();
+			ACBrDll.RegistroH2Rec[] RegistroH2Rec = new ACBrDll.RegistroH2Rec[RegistroH2.Length];
+
+			RegistroH1Rec.RAZAOSOCIAL = ToUTF8(RegistroH1.RazaoSocial);
+			RegistroH1Rec.CNPJ = ToUTF8(RegistroH1.CNPJ);
+			RegistroH1Rec.UF = ToUTF8(RegistroH1.UF);
+			RegistroH1Rec.IE = ToUTF8(RegistroH1.IE);
+			RegistroH1Rec.IM = ToUTF8(RegistroH1.IM);
+			RegistroH1Rec.NUM_FAB = ToUTF8(RegistroH1.NUM_FAB);
+			RegistroH1Rec.MF_ADICIONAL = ToUTF8(RegistroH1.MF_ADICIONAL);
+			RegistroH1Rec.TIPO_ECF = ToUTF8(RegistroH1.TIPO_ECF);
+			RegistroH1Rec.MARCA_ECF = ToUTF8(RegistroH1.MARCA_ECF);
+			RegistroH1Rec.MODELO_ECF = ToUTF8(RegistroH1.NUM_FAB);
+			RegistroH1Rec.DT_EST = RegistroH1.DT_EST.ToOADate();
+			RegistroH1Rec.RegistroValido = RegistroH1.RegistroValido;
+			RegistroH1Rec.InclusaoExclusao = RegistroH1.InclusaoExclusao;
+
+			for (i = 0; i < RegistroH2.Length; i++)
+			{
+				RegistroH2Rec[i].CNPJ_CRED_CARTAO = ToUTF8(RegistroH2[i].CNPJ_CRED_CARTAO);
+				RegistroH2Rec[i].COO = RegistroH2[i].COO;
+				RegistroH2Rec[i].CCF = RegistroH2Rec[i].CCF;
+				RegistroH2Rec[i].VLR_TROCO = RegistroH2Rec[i].VLR_TROCO;
+				RegistroH2Rec[i].DT_TROCO = RegistroH2[i].DT_TROCO.ToOADate() ;
+				RegistroH2Rec[i].CPF = ToUTF8(RegistroH2[i].CPF);
+				RegistroH2Rec[i].Titulo = ToUTF8(RegistroH2[i].Titulo);
+				RegistroH2Rec[i].RegistroValido = RegistroH2[i].RegistroValido;
+			}
+
+			int ret = ACBrDll.PAF_SaveFileTXT_H(this.Handle, RegistroH1Rec, RegistroH2Rec, RegistroH2.Length, ToUTF8(arquivo));
+			CheckResult(ret);
+		}
+
         public void SaveFileTXT_P(ACBrPAFRegistroP1 RegistroP1, ACBrPAFRegistroP2[] RegistroP2, string arquivo)
         {
             int i;
 
-            ACBrDll.RegistroTXRec RegistroP1Rec = new ACBrDll.RegistroTXRec();
+            ACBrDll.RegistroHD1Rec RegistroP1Rec = new ACBrDll.RegistroHD1Rec();
             ACBrDll.RegistroP2Rec[] RegistroP2Rec = new ACBrDll.RegistroP2Rec[RegistroP2.Length];
 
             RegistroP1Rec.RAZAOSOCIAL = RegistroP1.RazaoSocial;

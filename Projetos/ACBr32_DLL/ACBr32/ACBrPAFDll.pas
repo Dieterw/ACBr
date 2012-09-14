@@ -25,13 +25,29 @@ end;
 type PPAFHandle = ^TPAFHandle;
 
 {Records estilo C utilizados nas funções}
-type TRegistroTXRec = record
+type TRegistroHD1Rec = record
    RAZAOSOCIAL      : array[0..50] of char;
    UF               : array[0..2] of char;
    CNPJ             : array[0..14] of char;
    IE               : array[0..14] of char;
    IM               : array[0..14] of char;
    InclusaoExclusao : Boolean;
+end;
+
+type TRegistroHD2Rec = record
+   RAZAOSOCIAL      : array[0..50] of char;
+   UF               : array[0..2] of char;
+   CNPJ             : array[0..14] of char;
+   IE               : array[0..14] of char;
+   IM               : array[0..14] of char;
+   NUM_FAB          : array[0..20] of char;
+   MF_ADICIONAL     : array[0..1] of char;
+   TIPO_ECF         : array[0..7] of char;
+   MARCA_ECF        : array[0..20] of char;
+   MODELO_ECF       : array[0..20] of char;
+   DT_EST           : Double;
+   InclusaoExclusao : Boolean;
+   RegistroValido   : Boolean;
 end;
 
 type TregistroC2Rec = record
@@ -71,6 +87,25 @@ type TRegistroD2Rec = record
    NOME_CLIENTE   : array[0..40] of char;
    CPF_CNPJ       : array[0..14] of char;
    RegistroValido : Boolean;
+end;
+
+type TRegistroE2Rec = record
+   COD_MERC       : array[0..14] of char;
+   DESC_MERC      : array[0..50] of char;
+   UN_MED         : array[0..6] of char;
+   QTDE_EST       : Double;
+   RegistroValido : Boolean;
+end;
+
+type TRegistroH2Rec = record
+    CNPJ_CRED_CARTAO : array[0..14] of char;
+    COO              : Integer;
+    CCF              : Integer;
+    VLR_TROCO        : Double;
+    DT_TROCO         : Double;
+    CPF              : array[0..14] of char;
+    Titulo           : array[0..7] of char;
+    RegistroValido   : boolean;
 end;
 
 type TRegistroD3Rec = record
@@ -462,7 +497,7 @@ begin
 end;
 
 {Gerar o arquivo PAF}
-Function PAF_SaveFileTXT_C(const pafHandle: PPAFHandle; const RegistroC1Rec : TRegistroTXRec;
+Function PAF_SaveFileTXT_C(const pafHandle: PPAFHandle; const RegistroC1Rec : TRegistroHD1Rec;
       const RegistroC2Rec : array of TRegistroC2Rec; const CountC2 : Integer; const Arquivo: pChar) : Integer ;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
 var
   i : Integer;
@@ -529,7 +564,7 @@ begin
   end;
 end;
 
-Function PAF_SaveFileTXT_D(const pafHandle: PPAFHandle; const RegistroD1Rec : TRegistroTXRec;
+Function PAF_SaveFileTXT_D(const pafHandle: PPAFHandle; const RegistroD1Rec : TRegistroHD1Rec;
       const RegistroD2Rec : array of TRegistroD2Rec; const CountD2 : Integer; const RegistroD3Rec: array of TRegistroD3Rec; const Arquivo: pChar) : Integer ;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
 var
   i, IndexItem, D: Integer;
@@ -622,7 +657,128 @@ begin
   end;
 end;
 
-Function PAF_SaveFileTXT_P(const pafHandle: PPAFHandle; const RegistroP1Rec : TRegistroTXRec;
+Function PAF_SaveFileTXT_E(const pafHandle: PPAFHandle; const RegistroE1Rec : TRegistroHD2Rec;
+      const RegistroE2Rec : array of TRegistroE2Rec; const CountE2 : Integer; const Arquivo: pChar) : Integer;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+var
+  i : Integer;
+begin
+  if (pafHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+  if(CountE2 <= 0) then
+  begin
+     pafHandle^.UltimoErro := 'O numero de Itens não pode ser Zero';
+     Result := -1;
+     Exit;
+  end;
+
+  try
+   pafHandle^.PAF.PAF_E.RegistroE1.RAZAOSOCIAL      := RegistroE1Rec.RAZAOSOCIAL;
+   pafHandle^.PAF.PAF_E.RegistroE1.UF               := RegistroE1Rec.UF;
+   pafHandle^.PAF.PAF_E.RegistroE1.CNPJ             := RegistroE1Rec.CNPJ;
+   pafHandle^.PAF.PAF_E.RegistroE1.IE               := RegistroE1Rec.IE;
+   pafHandle^.PAF.PAF_E.RegistroE1.IM               := RegistroE1Rec.IM;
+   pafHandle^.PAF.PAF_E.RegistroE1.NUM_FAB          := RegistroE1Rec.NUM_FAB;
+   pafHandle^.PAF.PAF_E.RegistroE1.MF_ADICIONAL     := RegistroE1Rec.MF_ADICIONAL;
+   pafHandle^.PAF.PAF_E.RegistroE1.TIPO_ECF         := RegistroE1Rec.TIPO_ECF;
+   pafHandle^.PAF.PAF_E.RegistroE1.MARCA_ECF        := RegistroE1Rec.MARCA_ECF;
+   pafHandle^.PAF.PAF_E.RegistroE1.MODELO_ECF       := RegistroE1Rec.MODELO_ECF;
+   pafHandle^.PAF.PAF_E.RegistroE1.DT_EST           := RegistroE1Rec.DT_EST;
+   pafHandle^.PAF.PAF_E.RegistroE1.RegistroValido   := RegistroE1Rec.RegistroValido;
+   pafHandle^.PAF.PAF_E.RegistroE1.InclusaoExclusao := RegistroE1Rec.InclusaoExclusao;
+
+   pafHandle^.PAF.PAF_E.RegistroE2.Clear;
+
+   for i := 0 to CountE2 - 1 do
+   begin
+   with pafHandle^.PAF.PAF_E.RegistroE2.New do
+   begin
+      COD_MERC       := RegistroE2Rec[i].COD_MERC;
+      DESC_MERC      := RegistroE2Rec[i].DESC_MERC;
+      UN_MED         := RegistroE2Rec[i].UN_MED;
+      QTDE_EST       := RegistroE2Rec[i].QTDE_EST;
+      RegistroValido := RegistroE2Rec[i].RegistroValido;
+   end;
+   end;
+
+   pafHandle^.PAF.SaveFileTXT_E(Arquivo);
+   Result := 0;
+  except
+  on exception : Exception do
+  begin
+  pafHandle^.UltimoErro := exception.Message;
+  pafHandle^.PAF.PAF_E.LimpaRegistros;
+  Result := -1;
+  end
+  end;
+end;
+
+Function PAF_SaveFileTXT_H(const pafHandle: PPAFHandle; const RegistroH1Rec : TRegistroHD2Rec;
+      const RegistroH2Rec : array of TRegistroH2Rec; const CountH2 : Integer; const Arquivo: pChar) : Integer;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+var
+  i : Integer;
+begin
+  if (pafHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+  if(CountH2 <= 0) then
+  begin
+     pafHandle^.UltimoErro := 'O numero de Itens não pode ser Zero';
+     Result := -1;
+     Exit;
+  end;
+
+  try
+   pafHandle^.PAF.PAF_H.RegistroH1.RAZAOSOCIAL      := RegistroH1Rec.RAZAOSOCIAL;
+   pafHandle^.PAF.PAF_H.RegistroH1.UF               := RegistroH1Rec.UF;
+   pafHandle^.PAF.PAF_H.RegistroH1.CNPJ             := RegistroH1Rec.CNPJ;
+   pafHandle^.PAF.PAF_H.RegistroH1.IE               := RegistroH1Rec.IE;
+   pafHandle^.PAF.PAF_H.RegistroH1.IM               := RegistroH1Rec.IM;
+   pafHandle^.PAF.PAF_H.RegistroH1.NUM_FAB          := RegistroH1Rec.NUM_FAB;
+   pafHandle^.PAF.PAF_H.RegistroH1.MF_ADICIONAL     := RegistroH1Rec.MF_ADICIONAL;
+   pafHandle^.PAF.PAF_H.RegistroH1.TIPO_ECF         := RegistroH1Rec.TIPO_ECF;
+   pafHandle^.PAF.PAF_H.RegistroH1.MARCA_ECF        := RegistroH1Rec.MARCA_ECF;
+   pafHandle^.PAF.PAF_H.RegistroH1.MODELO_ECF       := RegistroH1Rec.MODELO_ECF;
+   pafHandle^.PAF.PAF_H.RegistroH1.DT_EST           := RegistroH1Rec.DT_EST;
+   pafHandle^.PAF.PAF_H.RegistroH1.RegistroValido   := RegistroH1Rec.RegistroValido;
+   pafHandle^.PAF.PAF_H.RegistroH1.InclusaoExclusao := RegistroH1Rec.InclusaoExclusao;
+
+   pafHandle^.PAF.PAF_H.RegistroH2.Clear;
+
+   for i := 0 to CountH2 - 1 do
+   begin
+   with pafHandle^.PAF.PAF_H.RegistroH2.New do
+   begin
+   RegistroValido   := RegistroH2Rec[i].RegistroValido;
+   CNPJ_CRED_CARTAO := RegistroH2Rec[i].CNPJ_CRED_CARTAO;
+   COO              := RegistroH2Rec[i].COO;
+   CCF              := RegistroH2Rec[i].CCF;
+   VLR_TROCO        := RegistroH2Rec[i].VLR_TROCO;
+   DT_TROCO         := RegistroH2Rec[i].DT_TROCO;
+   CPF              := RegistroH2Rec[i].CPF;
+   Titulo           := RegistroH2Rec[i].Titulo;
+   end;
+   end;
+
+   pafHandle^.PAF.SaveFileTXT_H(Arquivo);
+   Result := 0;
+  except
+  on exception : Exception do
+  begin
+  pafHandle^.UltimoErro := exception.Message;
+  pafHandle^.PAF.PAF_H.LimpaRegistros;
+  Result := -1;
+  end
+  end;
+end;
+
+Function PAF_SaveFileTXT_P(const pafHandle: PPAFHandle; const RegistroP1Rec : TRegistroHD1Rec;
       const RegistroP2Rec : array of TRegistroP2Rec; const CountP2 : Integer; const Arquivo: pChar) : Integer;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
 var
   i : Integer;
@@ -693,7 +849,9 @@ PAF_GetAssinarArquivo, PAF_SetAssinarArquivo,
 PAF_SetAAC,
 
 {DAV D}
-PAF_SaveFileTXT_C, PAF_SaveFileTXT_D, PAF_SaveFileTXT_P;
+PAF_SaveFileTXT_C, PAF_SaveFileTXT_D,
+PAF_SaveFileTXT_E, PAF_SaveFileTXT_H,
+PAF_SaveFileTXT_P;
 
 end.
 

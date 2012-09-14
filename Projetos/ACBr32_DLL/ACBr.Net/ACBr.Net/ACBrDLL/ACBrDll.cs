@@ -870,7 +870,7 @@ namespace ACBr.Net
 		#region Interop Types
 
 		[StructLayout(LayoutKind.Sequential)]
-		public struct RegistroTXRec
+		public struct RegistroHD1Rec
 		{
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 51)]
 			public string RAZAOSOCIAL;
@@ -886,6 +886,49 @@ namespace ACBr.Net
 
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
 			public string IM;
+
+			[MarshalAs(UnmanagedType.U1)]
+			public bool InclusaoExclusao;
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
+		public struct RegistroHD2Rec
+		{
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 51)]
+			public string RAZAOSOCIAL;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 3)]
+			public string UF;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+			public string CNPJ;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+			public string IE;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+			public string IM;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+			public string NUM_FAB;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2)]
+			public string MF_ADICIONAL;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 8)]
+			public string TIPO_ECF;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+			public string MARCA_ECF;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+			public string MODELO_ECF;
+
+			[MarshalAs(UnmanagedType.R8)]
+			public double DT_EST;
+
+			[MarshalAs(UnmanagedType.U1)]
+			public bool RegistroValido;
 
 			[MarshalAs(UnmanagedType.U1)]
 			public bool InclusaoExclusao;
@@ -993,6 +1036,53 @@ namespace ACBr.Net
 
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
 			public string CPF_CNPJ;
+
+			[MarshalAs(UnmanagedType.U1)]
+			public bool RegistroValido;
+		}
+	
+		[StructLayout(LayoutKind.Sequential)]
+		public struct RegistroE2Rec
+		{
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+			public string COD_MERC;
+			
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 51)]
+			public string DESC_MERC;
+			
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 7)]
+			public string UN_MED;
+			
+			[MarshalAs(UnmanagedType.R8)]
+			public double QTDE_EST;
+
+			[MarshalAs(UnmanagedType.U1)]
+			public bool RegistroValido;
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
+		public struct RegistroH2Rec
+		{
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+			public string CNPJ_CRED_CARTAO;
+			
+			[MarshalAs(UnmanagedType.I4)]
+			public int COO;
+			
+			[MarshalAs(UnmanagedType.I4)]
+			public int CCF;
+			
+			[MarshalAs(UnmanagedType.R8)]
+			public double VLR_TROCO;
+			
+			[MarshalAs(UnmanagedType.R8)]
+			public double DT_TROCO;
+			
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+			public string CPF;
+			
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 8)]
+			public string Titulo;
 
 			[MarshalAs(UnmanagedType.U1)]
 			public bool RegistroValido;
@@ -1136,13 +1226,19 @@ namespace ACBr.Net
 		#region SaveFile
 
 		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-		public static extern int PAF_SaveFileTXT_C(IntPtr pafHandle, RegistroTXRec RegistroC1, RegistroC2Rec[] RegistroC2, int CountC2, string Arquivo);
+		public static extern int PAF_SaveFileTXT_C(IntPtr pafHandle, RegistroHD1Rec RegistroC1, RegistroC2Rec[] RegistroC2, int CountC2, string Arquivo);
 
 		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-		public static extern int PAF_SaveFileTXT_D(IntPtr pafHandle, RegistroTXRec RegsitroD1Rec, RegistroD2Rec[] RegsitroD2Rec, int CountD2, RegistroD3Rec[] RegsitroD3Rec, string Arquivo);
+		public static extern int PAF_SaveFileTXT_D(IntPtr pafHandle, RegistroHD1Rec RegsitroD1Rec, RegistroD2Rec[] RegsitroD2Rec, int CountD2, RegistroD3Rec[] RegsitroD3Rec, string Arquivo);
 
 		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-		public static extern int PAF_SaveFileTXT_P(IntPtr pafHandle, RegistroTXRec RegsitroP1Rec, RegistroP2Rec[] RegsitroP2Rec, int CountP2, string Arquivo);
+		public static extern int PAF_SaveFileTXT_E(IntPtr pafHandle, RegistroHD2Rec RegsitroE1Rec, RegistroE2Rec[] RegsitroE2Rec, int CountE2, string Arquivo);
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int PAF_SaveFileTXT_H(IntPtr pafHandle, RegistroHD2Rec RegsitroH1Rec, RegistroH2Rec[] RegsitroH2Rec, int CountH2, string Arquivo);
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int PAF_SaveFileTXT_P(IntPtr pafHandle, RegistroHD1Rec RegsitroP1Rec, RegistroP2Rec[] RegsitroP2Rec, int CountP2, string Arquivo);
 
 		#endregion
 

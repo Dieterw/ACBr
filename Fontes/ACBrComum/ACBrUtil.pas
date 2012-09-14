@@ -122,6 +122,7 @@ function SeparaDados( Texto : AnsiString; Chave : String; MantemChave : Boolean 
 function ACBrStr( AString : AnsiString ) : String ;
 function ACBrStrToAnsi( AString : String ) : AnsiString ;
 function TruncFix( X : Double ) : Integer ;
+function RoundABNT(const AValue: Double; const Digits: SmallInt): Double;
 
 function TestBit(const Value: Integer; const Bit: Byte): Boolean;
 function IntToBin (value: LongInt; digits: integer ): string;
@@ -317,6 +318,43 @@ function TruncFix( X : Double ) : Integer ;
 begin
   Result := Trunc( SimpleRoundTo( X, -9) ) ;
 end ;
+
+{-----------------------------------------------------------------------------
+ Arredondamento segundo as normas da ABNT  (por: DSA)
+ Fontes:
+ http://www.sofazquemsabe.com/2011/01/como-fazer-arredondamento-da-numeracao.html
+ http://partners.bematech.com.br/2011/12/edicao-98-entendendo-o-truncamento-e-arredondamento-no-ecf/
+ -----------------------------------------------------------------------------}
+function RoundABNT(const AValue: Double; const Digits: SmallInt):Double;
+var
+   Pow, PowValue, RestPart : Extended;
+   IntPart, FracPart, LastNumber : Integer;
+Begin
+   Pow      := intpower(10, abs(Digits) );
+   PowValue := SimpleRoundTo( AValue * Pow, -9) ; // SimpleRoundTo elimina dizimas ;
+   IntPart  := trunc( PowValue );
+   FracPart := trunc( frac( PowValue ) * 100);
+
+   if (FracPart > 50) then
+      Inc( IntPart )
+
+   else if (FracPart = 50) then
+    begin
+      LastNumber := round( frac( IntPart / 10) * 10);
+
+      if odd(LastNumber) then
+         Inc( IntPart )
+      else
+       begin
+         RestPart := frac( PowValue * 10 ) ;
+
+         if RestPart > 0 then
+            Inc( IntPart );
+       end ;
+    end ;
+
+   Result := (IntPart / Pow);
+end;
 
 {-----------------------------------------------------------------------------
  *** Adaptado de JclLogic.pas  - Project JEDI Code Library (JCL) ***

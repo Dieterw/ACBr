@@ -31,10 +31,10 @@ type PECFHandle = ^TECFHandle;
 {Records estilo C utilizados nos retornos das funções}
 
 type TAliquotaRec = record
-      Indice : array[0..3] of char;
-      Aliquota : double;
-      Tipo : char;
-      Total : double;
+      Indice    : array[0..3] of char;
+      Aliquota  : double;
+      Tipo      : char;
+      Total     : double;
       Sequencia : byte;
 end;
 
@@ -48,25 +48,25 @@ type TDAVsRec = record
 end;
 
 type TFormaPagamentoRec = record
-      Indice : array[0..3] of char;
-      Descricao : array[0..29] of char;
+      Indice           : array[0..3] of char;
+      Descricao        : array[0..29] of char;
       PermiteVinculado : boolean;
-      Total : double;
+      Total            : double;
 end;
 
 type TComprovanteNaoFiscalRec = record
-    Indice: array[0..3] of char;
-    Descricao: array[0..29] of char;
-    PermiteVinculado: Boolean;
-    FormaPagamento: array[0..3] of char;
-    Total: Double ;
-    Contador: Integer;
+    Indice            : array[0..3] of char;
+    Descricao         : array[0..29] of char;
+    PermiteVinculado  : Boolean;
+    FormaPagamento    : array[0..3] of char;
+    Total             : Double ;
+    Contador          : Integer;
 end;
 
 type TRelatorioGerencialRec = record
-    Indice: array[0..3] of char;
-    Descricao: array[0..29] of char;
-    Contador: Integer;
+    Indice    : array[0..3] of char;
+    Descricao : array[0..29] of char;
+    Contador  : Integer;
 end;
 
 type TDadosRZRec = record
@@ -125,6 +125,8 @@ end;
 
 {Ponteiro para o Handle }
 type PDadosRZRec = ^TDadosRZRec;
+
+type PTDAVsRec = ^TDAVsRec;
 
 implementation
 
@@ -4743,7 +4745,7 @@ begin
   end;
 end;
 
-Function ECF_PafMF_RelDAVEmitidos(const ecfHandle: PECFHandle; const DAVsEmitidos: array of TDAVsRec; const Index : Integer;
+Function ECF_PafMF_RelDAVEmitidos(const ecfHandle: PECFHandle; const DAVsEmitidos: array of PTDAVsRec; const Index : Integer;
       const TituloRelatorio: pChar; const IndiceRelatorio: Integer) : Integer ;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
 var
   DAVs: TACBrECFDAVs;
@@ -4765,12 +4767,12 @@ try
    begin
    with DAVs.New do
        begin
-         Numero    := DAVsEmitidos[i].Numero;
-         COO_Dav   := DAVsEmitidos[i].COO_Dav;
-         COO_Cupom := DAVsEmitidos[i].COO_Cupom;
-         Titulo    := DAVsEmitidos[i].Titulo;
-         DtEmissao := DAVsEmitidos[i].DtEmissao;
-         Valor     := DAVsEmitidos[i].Valor;
+         Numero    := DAVsEmitidos[i]^.Numero;
+         COO_Dav   := DAVsEmitidos[i]^.COO_Dav;
+         COO_Cupom := DAVsEmitidos[i]^.COO_Cupom;
+         Titulo    := DAVsEmitidos[i]^.Titulo;
+         DtEmissao := DAVsEmitidos[i]^.DtEmissao;
+         Valor     := DAVsEmitidos[i]^.Valor;
        end;
    end;
 

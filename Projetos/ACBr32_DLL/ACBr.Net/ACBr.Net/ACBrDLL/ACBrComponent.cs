@@ -51,7 +51,6 @@ namespace ACBr.Net
 		#endregion Constructor
 
 		#region P/Invoke Helpers
-
 		protected void Create(CreateEntryPointDelegate entryPoint)
 		{
 			var ret = entryPoint(ref this.handle);

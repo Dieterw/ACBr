@@ -82,10 +82,6 @@
   <ItemGroup>
     <Compile Include="ACBrAAC\ACBrAAC.cs" />
     <Compile Include="ACBrAAC\ACBrAACECF.cs" />
-    <Compile Include="ACBrAAC\ACBrAACECFs.cs" />
-    <Compile Include="ACBrAAC\ACBrECFEmpresa.cs" />
-    <Compile Include="ACBrAAC\ACBrECFIdenticacaoPaf.cs" />
-    <Compile Include="ACBrAAC\ACBrECFInfoPaf.cs" />
     <Compile Include="ACBrBAL\ACBrBal.cs" />
     <Compile Include="ACBrDLL\ACBrComponent.cs" />
     <Compile Include="ACBrDLL\ACBrComposedComponent.cs" />
@@ -101,6 +97,8 @@
     <Compile Include="ACBrECF\ACBrECFDadosRZ.cs" />
     <Compile Include="ACBrECF\ACBrECFRelatorioGerencial.cs" />
     <Compile Include="ACBrPAF\ACBrPAF.cs" />
+    <Compile Include="ACBrPAF\ACBrPAFRegistroC1.cs" />
+    <Compile Include="ACBrPAF\ACBrPAFRegistroC2.cs" />
     <Compile Include="ACBrPAF\ACBrPAFRegistroD1.cs" />
     <Compile Include="ACBrPAF\ACBrPAFRegistroD2.cs" />
     <Compile Include="ACBrPAF\ACBrPAFRegistroD3.cs" />

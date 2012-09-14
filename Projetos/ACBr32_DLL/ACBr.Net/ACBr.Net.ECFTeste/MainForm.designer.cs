@@ -166,6 +166,20 @@
             this.label14 = new System.Windows.Forms.Label();
             this.aacParametrosTabPage = new System.Windows.Forms.TabPage();
             this.aacParamsTextBox = new System.Windows.Forms.TextBox();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.btnTipoP = new System.Windows.Forms.Button();
+            this.btnTipoD = new System.Windows.Forms.Button();
+            this.btnTipoC = new System.Windows.Forms.Button();
+            this.label21 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.lblUF = new System.Windows.Forms.Label();
+            this.txtIE = new System.Windows.Forms.TextBox();
+            this.txtCNPJ = new System.Windows.Forms.TextBox();
+            this.txtRazaoSocial = new System.Windows.Forms.TextBox();
+            this.txtIM = new System.Windows.Forms.TextBox();
+            this.txtUF = new System.Windows.Forms.TextBox();
             this.ativarCheckButton = new System.Windows.Forms.CheckBox();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -188,6 +202,7 @@
             this.aacECFsTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.aacECFsAutorizadaDataGridView)).BeginInit();
             this.aacParametrosTabPage.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip1
@@ -491,6 +506,7 @@
             this.tabControl.Controls.Add(this.ecfTabPage);
             this.tabControl.Controls.Add(this.cmdTabPage);
             this.tabControl.Controls.Add(this.aacTabPage);
+            this.tabControl.Controls.Add(this.tabPage1);
             this.tabControl.Location = new System.Drawing.Point(10, 27);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
@@ -1508,6 +1524,161 @@
             this.aacParamsTextBox.Size = new System.Drawing.Size(552, 145);
             this.aacParamsTextBox.TabIndex = 0;
             // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.btnTipoP);
+            this.tabPage1.Controls.Add(this.btnTipoD);
+            this.tabPage1.Controls.Add(this.btnTipoC);
+            this.tabPage1.Controls.Add(this.label21);
+            this.tabPage1.Controls.Add(this.label20);
+            this.tabPage1.Controls.Add(this.label19);
+            this.tabPage1.Controls.Add(this.label18);
+            this.tabPage1.Controls.Add(this.lblUF);
+            this.tabPage1.Controls.Add(this.txtIE);
+            this.tabPage1.Controls.Add(this.txtCNPJ);
+            this.tabPage1.Controls.Add(this.txtRazaoSocial);
+            this.tabPage1.Controls.Add(this.txtIM);
+            this.tabPage1.Controls.Add(this.txtUF);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(640, 360);
+            this.tabPage1.TabIndex = 3;
+            this.tabPage1.Text = "PAF";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // btnTipoP
+            // 
+            this.btnTipoP.Location = new System.Drawing.Point(181, 167);
+            this.btnTipoP.Name = "btnTipoP";
+            this.btnTipoP.Size = new System.Drawing.Size(75, 23);
+            this.btnTipoP.TabIndex = 12;
+            this.btnTipoP.Text = "Tipo P";
+            this.btnTipoP.UseVisualStyleBackColor = true;
+            // 
+            // btnTipoD
+            // 
+            this.btnTipoD.Location = new System.Drawing.Point(100, 167);
+            this.btnTipoD.Name = "btnTipoD";
+            this.btnTipoD.Size = new System.Drawing.Size(75, 23);
+            this.btnTipoD.TabIndex = 11;
+            this.btnTipoD.Text = "Tipo D";
+            this.btnTipoD.UseVisualStyleBackColor = true;
+            // 
+            // btnTipoC
+            // 
+            this.btnTipoC.Location = new System.Drawing.Point(19, 167);
+            this.btnTipoC.Name = "btnTipoC";
+            this.btnTipoC.Size = new System.Drawing.Size(75, 23);
+            this.btnTipoC.TabIndex = 10;
+            this.btnTipoC.Text = "Tipo C";
+            this.btnTipoC.UseVisualStyleBackColor = true;
+            this.btnTipoC.Click += new System.EventHandler(this.btnTipoC_Click);
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label21.Location = new System.Drawing.Point(16, 76);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(82, 13);
+            this.label21.TabIndex = 9;
+            this.label21.Text = "Razão Social";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label20.Location = new System.Drawing.Point(464, 16);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(117, 13);
+            this.label20.TabIndex = 8;
+            this.label20.Text = "Inscrição Municipal";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label19.Location = new System.Drawing.Point(269, 16);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(112, 13);
+            this.label19.TabIndex = 7;
+            this.label19.Text = "Inscrição Estadual";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label18.Location = new System.Drawing.Point(72, 16);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(38, 13);
+            this.label18.TabIndex = 6;
+            this.label18.Text = "CNPJ";
+            // 
+            // lblUF
+            // 
+            this.lblUF.AutoSize = true;
+            this.lblUF.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblUF.Location = new System.Drawing.Point(16, 16);
+            this.lblUF.Name = "lblUF";
+            this.lblUF.Size = new System.Drawing.Size(23, 13);
+            this.lblUF.TabIndex = 5;
+            this.lblUF.Text = "UF";
+            // 
+            // txtIE
+            // 
+            this.txtIE.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.txtIE.Location = new System.Drawing.Point(272, 32);
+            this.txtIE.MaxLength = 14;
+            this.txtIE.Name = "txtIE";
+            this.txtIE.Size = new System.Drawing.Size(189, 20);
+            this.txtIE.TabIndex = 4;
+            this.txtIE.Text = "75792415000144";
+            this.txtIE.WordWrap = false;
+            // 
+            // txtCNPJ
+            // 
+            this.txtCNPJ.Location = new System.Drawing.Point(75, 32);
+            this.txtCNPJ.MaxLength = 14;
+            this.txtCNPJ.Name = "txtCNPJ";
+            this.txtCNPJ.Size = new System.Drawing.Size(191, 20);
+            this.txtCNPJ.TabIndex = 3;
+            this.txtCNPJ.Text = "46038555000123";
+            this.txtCNPJ.WordWrap = false;
+            // 
+            // txtRazaoSocial
+            // 
+            this.txtRazaoSocial.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.txtRazaoSocial.Location = new System.Drawing.Point(19, 92);
+            this.txtRazaoSocial.MaxLength = 50;
+            this.txtRazaoSocial.Name = "txtRazaoSocial";
+            this.txtRazaoSocial.Size = new System.Drawing.Size(615, 20);
+            this.txtRazaoSocial.TabIndex = 2;
+            this.txtRazaoSocial.Text = "DEMO ACBR.NET PAF";
+            this.txtRazaoSocial.WordWrap = false;
+            // 
+            // txtIM
+            // 
+            this.txtIM.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.txtIM.Location = new System.Drawing.Point(467, 32);
+            this.txtIM.MaxLength = 14;
+            this.txtIM.Name = "txtIM";
+            this.txtIM.Size = new System.Drawing.Size(167, 20);
+            this.txtIM.TabIndex = 1;
+            this.txtIM.Text = "16784268000100";
+            this.txtIM.WordWrap = false;
+            // 
+            // txtUF
+            // 
+            this.txtUF.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.txtUF.Location = new System.Drawing.Point(19, 32);
+            this.txtUF.MaxLength = 2;
+            this.txtUF.Name = "txtUF";
+            this.txtUF.Size = new System.Drawing.Size(50, 20);
+            this.txtUF.TabIndex = 0;
+            this.txtUF.Text = "MS";
+            this.txtUF.WordWrap = false;
+            // 
             // ativarCheckButton
             // 
             this.ativarCheckButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -1567,6 +1738,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.aacECFsAutorizadaDataGridView)).EndInit();
             this.aacParametrosTabPage.ResumeLayout(false);
             this.aacParametrosTabPage.PerformLayout();
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1713,6 +1886,20 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataColumn;
 		private System.Windows.Forms.CheckBox usarAACCheckBox;
         private System.Windows.Forms.ToolStripMenuItem leituraMemToolStripMenuItem;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Label lblUF;
+        private System.Windows.Forms.TextBox txtIE;
+        private System.Windows.Forms.TextBox txtCNPJ;
+        private System.Windows.Forms.TextBox txtRazaoSocial;
+        private System.Windows.Forms.TextBox txtIM;
+        private System.Windows.Forms.TextBox txtUF;
+        private System.Windows.Forms.Button btnTipoP;
+        private System.Windows.Forms.Button btnTipoD;
+        private System.Windows.Forms.Button btnTipoC;
     }
 }
 

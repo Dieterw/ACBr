@@ -22,7 +22,7 @@
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MinorVersionNr Value="9"/>
-      <BuildNr Value="111"/>
+      <BuildNr Value="112"/>
       <Language Value="0416"/>
       <StringTable CompanyName="Projeto: Componentes ACBr " FileDescription="Projeto: Componentes ACBr " ProductName="ACBr32.DLL" ProductVersion="ACBr32.DLL"/>
     </VersionInfo>
@@ -218,9 +218,9 @@
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="338"/>
-        <CursorPos X="108" Y="635"/>
-        <FoldState Value=" TCRM74 T3kL0I4 pidjU0N[96T0K]9k1kW0{91I"/>
+        <TopLine Value="506"/>
+        <CursorPos X="45" Y="525"/>
+        <FoldState Value=" TCiDMH2 T3kL0I4 pidjU0N[96T0K311 pj5md0ra"/>
         <UsageCount Value="38"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -305,123 +305,123 @@
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="ACBr32.lpr"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Caret Line="8" Column="1" TopLine="1"/>
       </Position1>
       <Position2>
         <Filename Value="ACBr32.lpr"/>
-        <Caret Line="8" Column="1" TopLine="1"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position2>
       <Position3>
-        <Filename Value="ACBr32.lpr"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
-      </Position3>
-      <Position4>
         <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrBALClass.pas"/>
         <Caret Line="49" Column="28" TopLine="39"/>
-      </Position4>
-      <Position5>
+      </Position3>
+      <Position4>
         <Filename Value="ACBrPAFDll.pas"/>
         <Caret Line="3" Column="10" TopLine="1"/>
+      </Position4>
+      <Position5>
+        <Filename Value="ACBr32.lpr"/>
+        <Caret Line="18" Column="1" TopLine="1"/>
       </Position5>
       <Position6>
         <Filename Value="ACBr32.lpr"/>
-        <Caret Line="18" Column="1" TopLine="1"/>
+        <Caret Line="10" Column="3" TopLine="1"/>
       </Position6>
       <Position7>
         <Filename Value="ACBr32.lpr"/>
-        <Caret Line="10" Column="3" TopLine="1"/>
+        <Caret Line="18" Column="1" TopLine="1"/>
       </Position7>
       <Position8>
-        <Filename Value="ACBr32.lpr"/>
-        <Caret Line="18" Column="1" TopLine="1"/>
+        <Filename Value="ACBrPAFDll.pas"/>
+        <Caret Line="369" Column="74" TopLine="365"/>
       </Position8>
       <Position9>
         <Filename Value="ACBrPAFDll.pas"/>
-        <Caret Line="369" Column="74" TopLine="365"/>
+        <Caret Line="11" Column="13" TopLine="1"/>
       </Position9>
       <Position10>
-        <Filename Value="ACBrPAFDll.pas"/>
-        <Caret Line="11" Column="13" TopLine="1"/>
+        <Filename Value="ACBr32.lpr"/>
+        <Caret Line="18" Column="1" TopLine="1"/>
       </Position10>
       <Position11>
-        <Filename Value="ACBr32.lpr"/>
-        <Caret Line="18" Column="1" TopLine="1"/>
-      </Position11>
-      <Position12>
         <Filename Value="ACBrPAFDll.pas"/>
         <Caret Line="11" Column="1" TopLine="1"/>
-      </Position12>
-      <Position13>
+      </Position11>
+      <Position12>
         <Filename Value="ACBr32.lpr"/>
         <Caret Line="18" Column="1" TopLine="1"/>
+      </Position12>
+      <Position13>
+        <Filename Value="ACBrPAFDll.pas"/>
+        <Caret Line="9" Column="1" TopLine="1"/>
       </Position13>
       <Position14>
         <Filename Value="ACBrPAFDll.pas"/>
-        <Caret Line="9" Column="1" TopLine="1"/>
+        <Caret Line="629" Column="13" TopLine="536"/>
       </Position14>
       <Position15>
         <Filename Value="ACBrPAFDll.pas"/>
-        <Caret Line="629" Column="13" TopLine="536"/>
+        <Caret Line="628" Column="42" TopLine="439"/>
       </Position15>
       <Position16>
-        <Filename Value="ACBrPAFDll.pas"/>
-        <Caret Line="628" Column="42" TopLine="439"/>
-      </Position16>
-      <Position17>
         <Filename Value="ACBr32.lpr"/>
         <Caret Line="18" Column="1" TopLine="1"/>
+      </Position16>
+      <Position17>
+        <Filename Value="ACBrPAFDll.pas"/>
+        <Caret Line="396" Column="1" TopLine="373"/>
       </Position17>
       <Position18>
         <Filename Value="ACBrPAFDll.pas"/>
-        <Caret Line="396" Column="1" TopLine="373"/>
+        <Caret Line="352" Column="56" TopLine="342"/>
       </Position18>
       <Position19>
         <Filename Value="ACBrPAFDll.pas"/>
-        <Caret Line="352" Column="56" TopLine="342"/>
+        <Caret Line="353" Column="38" TopLine="342"/>
       </Position19>
       <Position20>
         <Filename Value="ACBrPAFDll.pas"/>
-        <Caret Line="353" Column="38" TopLine="342"/>
+        <Caret Line="352" Column="56" TopLine="342"/>
       </Position20>
       <Position21>
-        <Filename Value="ACBrPAFDll.pas"/>
-        <Caret Line="352" Column="56" TopLine="342"/>
-      </Position21>
-      <Position22>
         <Filename Value="ACBr32.lpr"/>
         <Caret Line="18" Column="1" TopLine="1"/>
-      </Position22>
-      <Position23>
+      </Position21>
+      <Position22>
         <Filename Value="ACBrPAFDll.pas"/>
         <Caret Line="14" Column="86" TopLine="4"/>
+      </Position22>
+      <Position23>
+        <Filename Value="ACBr32.lpr"/>
+        <Caret Line="18" Column="1" TopLine="1"/>
       </Position23>
       <Position24>
         <Filename Value="ACBr32.lpr"/>
-        <Caret Line="18" Column="1" TopLine="1"/>
+        <Caret Line="10" Column="3" TopLine="1"/>
       </Position24>
       <Position25>
         <Filename Value="ACBr32.lpr"/>
-        <Caret Line="10" Column="3" TopLine="1"/>
+        <Caret Line="18" Column="1" TopLine="1"/>
       </Position25>
       <Position26>
         <Filename Value="ACBr32.lpr"/>
-        <Caret Line="18" Column="1" TopLine="1"/>
+        <Caret Line="8" Column="14" TopLine="1"/>
       </Position26>
       <Position27>
         <Filename Value="ACBr32.lpr"/>
-        <Caret Line="8" Column="14" TopLine="1"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position27>
       <Position28>
-        <Filename Value="ACBr32.lpr"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
-      </Position28>
-      <Position29>
         <Filename Value="ACBrPAFDll.pas"/>
         <Caret Line="517" Column="45" TopLine="429"/>
-      </Position29>
-      <Position30>
+      </Position28>
+      <Position29>
         <Filename Value="ACBrECFDll.pas"/>
         <Caret Line="129" Column="23" TopLine="111"/>
+      </Position29>
+      <Position30>
+        <Filename Value="ACBrPAFDll.pas"/>
+        <Caret Line="488" Column="13" TopLine="360"/>
       </Position30>
     </JumpHistory>
   </ProjectOptions>

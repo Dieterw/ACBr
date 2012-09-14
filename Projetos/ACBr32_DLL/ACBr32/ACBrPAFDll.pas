@@ -104,17 +104,6 @@ type TRegistroP2Rec = record
    RegistroValido : Boolean;
 end;
 
-{Ponteiros para Funções}
-type PTRegistroTXRec = ^TRegistroTXRec;
-
-type PTregistroC2Rec = ^TregistroC2Rec;
-
-type PTregistroD2Rec = ^TregistroD2Rec;
-
-type PTregistroD3Rec = ^TregistroD3Rec;
-
-type PTregistroP2Rec = ^TregistroP2Rec;
-
 implementation
 
 {
@@ -473,8 +462,8 @@ begin
 end;
 
 {Gerar o arquivo de DAV’s emitidos}
-Function PAF_SaveFileTXT_C(const pafHandle: PPAFHandle; const RegistroC1Rec : PTRegistroTXRec;
-      const RegistroC2Rec : array of PTRegistroC2Rec; const CountC2 : Integer; const Arquivo: pChar) : Integer ;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+Function PAF_SaveFileTXT_C(const pafHandle: PPAFHandle; const RegistroC1Rec : TRegistroTXRec;
+      const RegistroC2Rec : array of TRegistroC2Rec; const CountC2 : Integer; const Arquivo: pChar) : Integer ;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
 var
   i : Integer;
   OldMask:string;
@@ -493,11 +482,11 @@ begin
   end;
 
   try
-   pafHandle^.PAF.PAF_C.RegistroC1.RAZAOSOCIAL := RegistroC1Rec^.RAZAOSOCIAL;
-   pafHandle^.PAF.PAF_C.RegistroC1.UF          := RegistroC1Rec^.UF;
-   pafHandle^.PAF.PAF_C.RegistroC1.CNPJ        := RegistroC1Rec^.CNPJ;
-   pafHandle^.PAF.PAF_C.RegistroC1.IE          := RegistroC1Rec^.IE;
-   pafHandle^.PAF.PAF_C.RegistroC1.IM          := RegistroC1Rec^.IM;
+   pafHandle^.PAF.PAF_C.RegistroC1.RAZAOSOCIAL := RegistroC1Rec.RAZAOSOCIAL;
+   pafHandle^.PAF.PAF_C.RegistroC1.UF          := RegistroC1Rec.UF;
+   pafHandle^.PAF.PAF_C.RegistroC1.CNPJ        := RegistroC1Rec.CNPJ;
+   pafHandle^.PAF.PAF_C.RegistroC1.IE          := RegistroC1Rec.IE;
+   pafHandle^.PAF.PAF_C.RegistroC1.IM          := RegistroC1Rec.IM;
 
    pafHandle^.PAF.PAF_C.RegistroC2.Clear;
 
@@ -505,23 +494,23 @@ begin
    begin
    with pafHandle^.PAF.PAF_C.RegistroC2.New do
    begin
-   ID_ABASTECIMENTO      := RegistroC2Rec[i]^.ID_ABASTECIMENTO;
-   TANQUE                := RegistroC2Rec[i]^.TANQUE;
-   BOMBA                 := RegistroC2Rec[i]^.BOMBA;
-   BICO                  := RegistroC2Rec[i]^.BICO;
-   COMBUSTIVEL           := RegistroC2Rec[i]^.COMBUSTIVEL;
-   DATA_ABASTECIMENTO    := RegistroC2Rec[i]^.DATA_ABASTECIMENTO;
-   HORA_ABASTECIMENTO    := StrToTime(RegistroC2Rec[i]^.HORA_ABASTECIMENTO);
-   ENCERRANTE_INICIAL    := RegistroC2Rec[i]^.ENCERRANTE_INICIAL;
-   ENCERRANTE_FINAL      := RegistroC2Rec[i]^.ENCERRANTE_FINAL;
-   STATUS_ABASTECIMENTO  := RegistroC2Rec[i]^.STATUS_ABASTECIMENTO;
-   NRO_SERIE_ECF         := RegistroC2Rec[i]^.NRO_SERIE_ECF;
-   DATA                  := RegistroC2Rec[i]^.DATA;
-   HORA                  := StrToTime(RegistroC2Rec[i]^.HORA);
-   COO                   := RegistroC2Rec[i]^.COO;
-   NRO_NOTA_FISCAL       := RegistroC2Rec[i]^.NRO_NOTA_FISCAL;
-   VOLUME                := RegistroC2Rec[i]^.VOLUME;
-   RegistroValido        := RegistroC2Rec[i]^.RegistroValido;
+   ID_ABASTECIMENTO      := RegistroC2Rec[i].ID_ABASTECIMENTO;
+   TANQUE                := RegistroC2Rec[i].TANQUE;
+   BOMBA                 := RegistroC2Rec[i].BOMBA;
+   BICO                  := RegistroC2Rec[i].BICO;
+   COMBUSTIVEL           := RegistroC2Rec[i].COMBUSTIVEL;
+   DATA_ABASTECIMENTO    := RegistroC2Rec[i].DATA_ABASTECIMENTO;
+   HORA_ABASTECIMENTO    := StrToTime(RegistroC2Rec[i].HORA_ABASTECIMENTO);
+   ENCERRANTE_INICIAL    := RegistroC2Rec[i].ENCERRANTE_INICIAL;
+   ENCERRANTE_FINAL      := RegistroC2Rec[i].ENCERRANTE_FINAL;
+   STATUS_ABASTECIMENTO  := RegistroC2Rec[i].STATUS_ABASTECIMENTO;
+   NRO_SERIE_ECF         := RegistroC2Rec[i].NRO_SERIE_ECF;
+   DATA                  := RegistroC2Rec[i].DATA;
+   HORA                  := StrToTime(RegistroC2Rec[i].HORA);
+   COO                   := RegistroC2Rec[i].COO;
+   NRO_NOTA_FISCAL       := RegistroC2Rec[i].NRO_NOTA_FISCAL;
+   VOLUME                := RegistroC2Rec[i].VOLUME;
+   RegistroValido        := RegistroC2Rec[i].RegistroValido;
    end;
    end;
 
@@ -540,8 +529,8 @@ begin
   end;
 end;
 
-Function PAF_SaveFileTXT_D(const pafHandle: PPAFHandle; const RegistroD1Rec : PTRegistroTXRec;
-      const RegistroD2Rec : array of PTRegistroD2Rec; const CountD2 : Integer; const RegistroD3Rec: array of PTRegistroD3Rec; const Arquivo: pChar) : Integer ;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+Function PAF_SaveFileTXT_D(const pafHandle: PPAFHandle; const RegistroD1Rec : TRegistroTXRec;
+      const RegistroD2Rec : array of TRegistroD2Rec; const CountD2 : Integer; const RegistroD3Rec: array of TRegistroD3Rec; const Arquivo: pChar) : Integer ;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
 var
   i, IndexItem, D: Integer;
 begin
@@ -560,11 +549,11 @@ begin
 
   try
    IndexItem := 0;
-   pafHandle^.PAF.PAF_D.RegistroD1.RAZAOSOCIAL  := RegistroD1Rec^.RAZAOSOCIAL;
-   pafHandle^.PAF.PAF_D.RegistroD1.UF           := RegistroD1Rec^.UF;
-   pafHandle^.PAF.PAF_D.RegistroD1.CNPJ         := RegistroD1Rec^.CNPJ;
-   pafHandle^.PAF.PAF_D.RegistroD1.IE           := RegistroD1Rec^.IE;
-   pafHandle^.PAF.PAF_D.RegistroD1.IM           := RegistroD1Rec^.IM;
+   pafHandle^.PAF.PAF_D.RegistroD1.RAZAOSOCIAL  := RegistroD1Rec.RAZAOSOCIAL;
+   pafHandle^.PAF.PAF_D.RegistroD1.UF           := RegistroD1Rec.UF;
+   pafHandle^.PAF.PAF_D.RegistroD1.CNPJ         := RegistroD1Rec.CNPJ;
+   pafHandle^.PAF.PAF_D.RegistroD1.IE           := RegistroD1Rec.IE;
+   pafHandle^.PAF.PAF_D.RegistroD1.IM           := RegistroD1Rec.IM;
 
    pafHandle^.PAF.PAF_D.RegistroD2.Clear;
 
@@ -572,21 +561,21 @@ begin
    begin
        with pafHandle^.PAF.PAF_D.RegistroD2.New do
        begin
-         NUM_FAB        := RegistroD2Rec[i]^.NUM_FAB;
-         MF_ADICIONAL   := RegistroD2Rec[i]^.MF_ADICIONAL;
-         TIPO_ECF       := RegistroD2Rec[i]^.TIPO_ECF;
-         MARCA_ECF      := RegistroD2Rec[i]^.MARCA_ECF;
-         MODELO_ECF     := RegistroD2Rec[i]^.MODELO_ECF;
-         COO            := RegistroD2Rec[i]^.COO;
-         NUM_DAV        := RegistroD2Rec[i]^.NUM_DAV;
-         DT_DAV         := RegistroD2Rec[i]^.DT_DAV;
-         TIT_DAV        := RegistroD2Rec[i]^.TIT_DAV;
-         VLT_DAV        := RegistroD2Rec[i]^.VLT_DAV;
-         COO_DFV        := RegistroD2Rec[i]^.COO_DFV;
-         NUMERO_ECF     := RegistroD2Rec[i]^.NUMERO_ECF;
-         NOME_CLIENTE   := RegistroD2Rec[i]^.NOME_CLIENTE;
-         CPF_CNPJ       := RegistroD2Rec[i]^.CPF_CNPJ;
-         RegistroValido := RegistroD2Rec[i]^.RegistroValido;
+         NUM_FAB        := RegistroD2Rec[i].NUM_FAB;
+         MF_ADICIONAL   := RegistroD2Rec[i].MF_ADICIONAL;
+         TIPO_ECF       := RegistroD2Rec[i].TIPO_ECF;
+         MARCA_ECF      := RegistroD2Rec[i].MARCA_ECF;
+         MODELO_ECF     := RegistroD2Rec[i].MODELO_ECF;
+         COO            := RegistroD2Rec[i].COO;
+         NUM_DAV        := RegistroD2Rec[i].NUM_DAV;
+         DT_DAV         := RegistroD2Rec[i].DT_DAV;
+         TIT_DAV        := RegistroD2Rec[i].TIT_DAV;
+         VLT_DAV        := RegistroD2Rec[i].VLT_DAV;
+         COO_DFV        := RegistroD2Rec[i].COO_DFV;
+         NUMERO_ECF     := RegistroD2Rec[i].NUMERO_ECF;
+         NOME_CLIENTE   := RegistroD2Rec[i].NOME_CLIENTE;
+         CPF_CNPJ       := RegistroD2Rec[i].CPF_CNPJ;
+         RegistroValido := RegistroD2Rec[i].RegistroValido;
 
          if RegistroD2Rec[i].QTD_ITENS < 1 then
          begin
@@ -600,22 +589,22 @@ begin
          // adicionar os itens do dav, um para cada item
          with RegistroD3.New do
          begin
-           DT_INCLUSAO    := RegistroD3Rec[IndexItem]^.DT_INCLUSAO;
-           NUM_ITEM       := RegistroD3Rec[IndexItem]^.NUM_ITEM;
-           COD_ITEM       := RegistroD3Rec[IndexItem]^.COD_ITEM;
-           DESC_ITEM      := RegistroD3Rec[IndexItem]^.DESC_ITEM;
-           QTDE_ITEM      := RegistroD3Rec[IndexItem]^.QTDE_ITEM;
-           UNI_ITEM       := RegistroD3Rec[IndexItem]^.UNI_ITEM;
-           VL_UNIT        := RegistroD3Rec[IndexItem]^.VL_UNIT;
-           VL_DESCTO      := RegistroD3Rec[IndexItem]^.VL_DESCTO;
-           VL_ACRES       := RegistroD3Rec[IndexItem]^.VL_ACRES;
-           VL_TOTAL       := RegistroD3Rec[IndexItem]^.VL_TOTAL;
-           DEC_VL_UNIT    := RegistroD3Rec[IndexItem]^.DEC_VL_UNIT;
-           DEC_QTDE_ITEM  := RegistroD3Rec[IndexItem]^.DEC_QTDE_ITEM;
-           SIT_TRIB       := RegistroD3Rec[IndexItem]^.SIT_TRIB;
-           ALIQ           := RegistroD3Rec[IndexItem]^.ALIQ;
-           IND_CANC       := RegistroD3Rec[IndexItem]^.IND_CANC;
-           RegistroValido := RegistroD3Rec[IndexItem]^.RegistroValido;
+           DT_INCLUSAO    := RegistroD3Rec[IndexItem].DT_INCLUSAO;
+           NUM_ITEM       := RegistroD3Rec[IndexItem].NUM_ITEM;
+           COD_ITEM       := RegistroD3Rec[IndexItem].COD_ITEM;
+           DESC_ITEM      := RegistroD3Rec[IndexItem].DESC_ITEM;
+           QTDE_ITEM      := RegistroD3Rec[IndexItem].QTDE_ITEM;
+           UNI_ITEM       := RegistroD3Rec[IndexItem].UNI_ITEM;
+           VL_UNIT        := RegistroD3Rec[IndexItem].VL_UNIT;
+           VL_DESCTO      := RegistroD3Rec[IndexItem].VL_DESCTO;
+           VL_ACRES       := RegistroD3Rec[IndexItem].VL_ACRES;
+           VL_TOTAL       := RegistroD3Rec[IndexItem].VL_TOTAL;
+           DEC_VL_UNIT    := RegistroD3Rec[IndexItem].DEC_VL_UNIT;
+           DEC_QTDE_ITEM  := RegistroD3Rec[IndexItem].DEC_QTDE_ITEM;
+           SIT_TRIB       := RegistroD3Rec[IndexItem].SIT_TRIB;
+           ALIQ           := RegistroD3Rec[IndexItem].ALIQ;
+           IND_CANC       := RegistroD3Rec[IndexItem].IND_CANC;
+           RegistroValido := RegistroD3Rec[IndexItem].RegistroValido;
          end;
          inc(IndexItem);
          end;
@@ -633,8 +622,8 @@ begin
   end;
 end;
 
-Function PAF_SaveFileTXT_P(const pafHandle: PPAFHandle; const RegistroP1Rec : PTRegistroTXRec;
-      const RegistroP2Rec : array of PTRegistroP2Rec; const CountP2 : Integer; const Arquivo: pChar) : Integer;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+Function PAF_SaveFileTXT_P(const pafHandle: PPAFHandle; const RegistroP1Rec : TRegistroTXRec;
+      const RegistroP2Rec : array of TRegistroP2Rec; const CountP2 : Integer; const Arquivo: pChar) : Integer;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
 var
   i : Integer;
 begin
@@ -652,27 +641,27 @@ begin
   end;
 
   try
-   pafHandle^.PAF.PAF_P.RegistroP1.RAZAOSOCIAL      := RegistroP1Rec^.RAZAOSOCIAL;
-   pafHandle^.PAF.PAF_P.RegistroP1.UF               := RegistroP1Rec^.UF;
-   pafHandle^.PAF.PAF_P.RegistroP1.CNPJ             := RegistroP1Rec^.CNPJ;
-   pafHandle^.PAF.PAF_P.RegistroP1.IE               := RegistroP1Rec^.IE;
-   pafHandle^.PAF.PAF_P.RegistroP1.IM               := RegistroP1Rec^.IM;
-   pafHandle^.PAF.PAF_P.RegistroP1.InclusaoExclusao := RegistroP1Rec^.InclusaoExclusao;
+   pafHandle^.PAF.PAF_P.RegistroP1.RAZAOSOCIAL      := RegistroP1Rec.RAZAOSOCIAL;
+   pafHandle^.PAF.PAF_P.RegistroP1.UF               := RegistroP1Rec.UF;
+   pafHandle^.PAF.PAF_P.RegistroP1.CNPJ             := RegistroP1Rec.CNPJ;
+   pafHandle^.PAF.PAF_P.RegistroP1.IE               := RegistroP1Rec.IE;
+   pafHandle^.PAF.PAF_P.RegistroP1.IM               := RegistroP1Rec.IM;
+   pafHandle^.PAF.PAF_P.RegistroP1.InclusaoExclusao := RegistroP1Rec.InclusaoExclusao;
    pafHandle^.PAF.PAF_P.RegistroP2.Clear;
 
    for i := 0 to CountP2 - 1 do
    begin
    with pafHandle^.PAF.PAF_P.RegistroP2.New do
    begin
-   COD_MERC_SERV  := RegistroP2Rec[i]^.COD_MERC_SERV;
-   DESC_MERC_SERV := RegistroP2Rec[i]^.DESC_MERC_SERV;
-   UN_MED         := RegistroP2Rec[i]^.UN_MED;
-   IAT            := RegistroP2Rec[i]^.IAT;
-   IPPT           := RegistroP2Rec[i]^.IPPT;
-   ST             := RegistroP2Rec[i]^.ST;
-   ALIQ           := RegistroP2Rec[i]^.ALIQ;
-   VL_UNIT        := RegistroP2Rec[i]^.VL_UNIT;
-   RegistroValido := RegistroP2Rec[i]^.RegistroValido;
+   COD_MERC_SERV  := RegistroP2Rec[i].COD_MERC_SERV;
+   DESC_MERC_SERV := RegistroP2Rec[i].DESC_MERC_SERV;
+   UN_MED         := RegistroP2Rec[i].UN_MED;
+   IAT            := RegistroP2Rec[i].IAT;
+   IPPT           := RegistroP2Rec[i].IPPT;
+   ST             := RegistroP2Rec[i].ST;
+   ALIQ           := RegistroP2Rec[i].ALIQ;
+   VL_UNIT        := RegistroP2Rec[i].VL_UNIT;
+   RegistroValido := RegistroP2Rec[i].RegistroValido;
    end;
    end;
 

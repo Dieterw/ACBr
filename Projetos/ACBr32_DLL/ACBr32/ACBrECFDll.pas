@@ -4789,6 +4789,50 @@ end
 end;
 end;
 
+{Paf RelMeiosPagamento}
+Function ECF_PafMF_RelMeiosPagamento(const ecfHandle: PECFHandle; const formasPagamento: array of TFormaPagamentoRec; const Index : Integer; const TituloRelatorio: pChar; const IndiceRelatorio: Integer) : Integer ;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+var
+  AFormasPagamento : TACBrECFFormasPagamento;
+  I : Integer;
+begin
+if (ecfHandle = nil) then
+begin
+Result := -2;
+Exit;
+end;
+if(Index <= 0) then
+begin
+   ecfHandle^.UltimoErro := 'O Número de formas de pagamento precisa ser maior que zero';
+   Result := -1;
+end;
+try
+   AFormasPagamento := TACBrECFFormasPagamento.Create;
+   for I := 0 to Index - 1 do
+   begin
+   with AFormasPagamento.New do
+       begin
+         Indice              := formasPagamento[i].Indice;
+         Descricao           := formasPagamento[i].Descricao;
+         PermiteVinculado    := formasPagamento[i].PermiteVinculado;
+         Total               := formasPagamento[i].Total;
+       end;
+   end;
+
+   ecfHandle^.ECF.PafMF_RelMeiosPagamento(AFormasPagamento, TituloRelatorio, IndiceRelatorio);
+   AFormasPagamento.Free;
+   Result := 0;
+except
+   on exception : Exception do
+begin
+  ecfHandle^.UltimoErro := exception.Message;
+  AFormasPagamento.Free;
+  Result := -1;
+end
+end;
+end;
+
+
+
 {
 NÀO IMPLEMENTADO
 
@@ -5091,7 +5135,10 @@ ECF_PafMF_MFD_Espelho_COO,
 ECF_DAV_Abrir,
 ECF_DAV_RegistrarItem,
 ECF_DAV_Fechar,
-ECF_PafMF_RelDAVEmitidos;
+ECF_PafMF_RelDAVEmitidos,
+
+{Paf RelMeiosPagamento}
+ECF_PafMF_RelMeiosPagamento;
 
 {Não implementado}
 

@@ -914,6 +914,25 @@ namespace ACBr.Net
         }
 		#endregion Métodos DAV
 
+		#region PAF RelMeiosPagamento
+
+		private void PafMF_RelMeiosPagamento(ACBrECFFormaPagamento[] formasPagamento, string TituloRelatorio, int indiceRelatorio)
+		{
+			ACBrDll.FormaPagamentoRec[] record = new ACBrDll.FormaPagamentoRec[formasPagamento.Length];
+			for (int i = 0; i < formasPagamento.Length; i++)
+			{
+				record[i].Indice = formasPagamento[i].Indice;
+				record[i].Descricao = formasPagamento[i].Descricao;
+				record[i].PermiteVinculado = formasPagamento[i].PermiteVinculado;
+				record[i].Total = Convert.ToDouble(formasPagamento[i].Total);
+			}
+
+			int ret = ACBrDll.ECF_PafMF_RelMeiosPagamento(this.Handle, record, record.Length, ToUTF8(TituloRelatorio), indiceRelatorio);
+			CheckResult(ret);
+		}
+
+		#endregion PAF RelMeiosPagamento
+
         #region PAF
         public void PafMF_GerarCAT52(DateTime DataInicial, DateTime DataFinal, string CaminhoArquivo)
         {

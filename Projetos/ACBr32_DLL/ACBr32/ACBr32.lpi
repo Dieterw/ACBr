@@ -22,7 +22,7 @@
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MinorVersionNr Value="9"/>
-      <BuildNr Value="112"/>
+      <BuildNr Value="114"/>
       <Language Value="0416"/>
       <StringTable CompanyName="Projeto: Componentes ACBr " FileDescription="Projeto: Componentes ACBr " ProductName="ACBr32.DLL" ProductVersion="ACBr32.DLL"/>
     </VersionInfo>
@@ -70,10 +70,12 @@
         <Filename Value="ACBrECFDll.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="ACBrECFDll"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="4726"/>
-        <CursorPos X="36" Y="4753"/>
+        <TopLine Value="5107"/>
+        <CursorPos X="33" Y="5138"/>
+        <FoldState Value=" T3j:Y0M3e"/>
         <UsageCount Value="70"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -215,12 +217,11 @@
         <Filename Value="ACBrPAFDll.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="ACBrPAFDll"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="506"/>
-        <CursorPos X="45" Y="525"/>
-        <FoldState Value=" TCiDMH2 T3kL0I4 pidjU0N[96T0K311 pj5md0ra"/>
+        <TopLine Value="498"/>
+        <CursorPos X="14" Y="527"/>
+        <FoldState Value=" TCiDMH2M"/>
         <UsageCount Value="38"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -426,7 +427,7 @@
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
-    <Version Value="11"/>
+    <Version Value="9"/>
     <PathDelim Value="\"/>
     <Target>
       <Filename Value="ACBr32"/>
@@ -447,7 +448,6 @@
     </CodeGeneration>
     <Linking>
       <Debugging>
-        <GenerateDebugInfo Value="False"/>
         <UseLineInfoUnit Value="False"/>
         <StripSymbols Value="True"/>
       </Debugging>

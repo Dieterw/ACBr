@@ -8,64 +8,64 @@ namespace ACBr.Net
 	{
 		#region ACBrECF
 
-		#region Interop Types	
+		#region Interop Types
 
-        [StructLayout(LayoutKind.Sequential)]
-        public struct AliquotaRec
-        {
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
-            public string Indice;
+		[StructLayout(LayoutKind.Sequential)]
+		public struct AliquotaRec
+		{
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+			public string Indice;
 
-            [MarshalAs(UnmanagedType.R8)]
-            public double Aliquota;
+			[MarshalAs(UnmanagedType.R8)]
+			public double Aliquota;
 
-            [MarshalAs(UnmanagedType.U1)]
-            public char Tipo;
+			[MarshalAs(UnmanagedType.U1)]
+			public char Tipo;
 
-            [MarshalAs(UnmanagedType.R8)]
-            public double Total;
+			[MarshalAs(UnmanagedType.R8)]
+			public double Total;
 
-            [MarshalAs(UnmanagedType.U1)]
-            public byte Sequencia;
-        }
+			[MarshalAs(UnmanagedType.U1)]
+			public byte Sequencia;
+		}
 
 		[StructLayout(LayoutKind.Sequential)]
 		public struct DAVsRec
 		{
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
-            public string Numero;
+			public string Numero;
 
-            [MarshalAs(UnmanagedType.I4)]
-            public int COO_Cupom;
+			[MarshalAs(UnmanagedType.I4)]
+			public int COO_Cupom;
 
-            [MarshalAs(UnmanagedType.I4)]
-            public int COO_Dav;
+			[MarshalAs(UnmanagedType.I4)]
+			public int COO_Dav;
 
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 29)]
-            public string Titulo;
-
-            [MarshalAs(UnmanagedType.R8)]
-            public double Valor;
+			public string Titulo;
 
 			[MarshalAs(UnmanagedType.R8)]
-            public double DtEmissao;
+			public double Valor;
+
+			[MarshalAs(UnmanagedType.R8)]
+			public double DtEmissao;
 		}
 
-        [StructLayout(LayoutKind.Sequential)]
-        public struct FormaPagamentoRec
-        {
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
-            public string Indice;
+		[StructLayout(LayoutKind.Sequential)]
+		public struct FormaPagamentoRec
+		{
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+			public string Indice;
 
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 30)]
-            public string Descricao;
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 30)]
+			public string Descricao;
 
-            [MarshalAs(UnmanagedType.U1)]
-            public bool PermiteVinculado;
+			[MarshalAs(UnmanagedType.U1)]
+			public bool PermiteVinculado;
 
-            [MarshalAs(UnmanagedType.R8)]
-            public double Total;
-        }
+			[MarshalAs(UnmanagedType.R8)]
+			public double Total;
+		}
 
 		[StructLayout(LayoutKind.Sequential)]
 		public struct ComprovanteNaoFiscalRec
@@ -256,8 +256,9 @@ namespace ACBr.Net
 
 		#endregion Interop Types
 
-        #region Constructors/Erro Handler
-        [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		#region Constructors/Erro Handler
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
 		public static extern int ECF_Create(ref IntPtr ecfHandle);
 
 		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -265,19 +266,22 @@ namespace ACBr.Net
 
 		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
 		public static extern int ECF_GetUltimoErro(IntPtr ecfHandle, StringBuilder buffer, int bufferLen);
-        #endregion
 
-        #region Ativar/Desativar
-        [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		#endregion
+
+		#region Ativar/Desativar
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
 		public static extern int ECF_Ativar(IntPtr ecfHandle);
 
 		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
 		public static extern int ECF_Desativar(IntPtr ecfHandle);
-        #endregion
 
-        #region Propriedades do Componente
+		#endregion
 
-        [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		#region Propriedades do Componente
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
 		public static extern int ECF_GetModelo(IntPtr ecfHandle);
 
 		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -639,20 +643,31 @@ namespace ACBr.Net
 		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
 		public static extern int ECF_DAV_RegistrarItem(IntPtr ecfHandle, string codigo, string descricao, string unidade, double quantidade, double vlrunitario, double desconto, double acrescimo, bool cancelado);
 
-        [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int ECF_PafMF_RelDAVEmitidos(IntPtr ecfHandle, ref DAVsRec[] DAVs, int index, string TituloRelatorio, string IndiceRelatorio);
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int ECF_PafMF_RelDAVEmitidos(IntPtr ecfHandle, ref DAVsRec[] DAVs, int index, string TituloRelatorio, string IndiceRelatorio);
+
 		#endregion
 
-        #region PAF
-        [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int ECF_PafMF_GerarCAT52(IntPtr ecfHandle, double DataInicial, double DataFinal, string CaminhoArquivo);
+		#region PAF
 
-        [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int ECF_PafMF_LX_Impressao(IntPtr ecfHandle);
-        #endregion
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int ECF_PafMF_RelMeiosPagamento(IntPtr ecfHandle, FormaPagamentoRec[] formasPagamento, int count, string TituloRelatorio, int IndiceRelatorio);
 
-        #region PAF LMFC
-        [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		#endregion
+
+		#region PAF
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int ECF_PafMF_GerarCAT52(IntPtr ecfHandle, double DataInicial, double DataFinal, string CaminhoArquivo);
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int ECF_PafMF_LX_Impressao(IntPtr ecfHandle);
+
+		#endregion
+
+		#region PAF LMFC
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
 		public static extern int ECF_PafMF_LMFC_Cotepe1704(IntPtr ecfHandle, double DataInicial, double DataFinal, string CaminhoArquivo);
 
 		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -673,6 +688,7 @@ namespace ACBr.Net
 		#endregion
 
 		#region PAF LMFS
+
 		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
 		public static extern int ECF_PafMF_LMFS_Espelho(IntPtr ecfHandle, double DataInicial, double DataFinal, string CaminhoArquivo);
 
@@ -684,6 +700,7 @@ namespace ACBr.Net
 
 		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
 		public static extern int ECF_PafMF_LMFS_Impressao_CRZ(IntPtr ecfHandle, int CRZInicial, int CRZFinal);
+
 		#endregion
 
 		#region PAF Espelho MFD
@@ -848,287 +865,294 @@ namespace ACBr.Net
 
 		#endregion ACBrECF
 
-        #region ACBrPAF
-
-        #region Interop Types
-
-        [StructLayout(LayoutKind.Sequential)]
-        public struct RegistroTXRec
-        {
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 51)]
-            public string RAZAOSOCIAL;
-
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 3)]
-            public string UF;
-
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
-            public string CNPJ;
-
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
-            public string IE;
-
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
-            public string IM;
-
-            [MarshalAs(UnmanagedType.U1)]
-            public bool InclusaoExclusao;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        public struct RegistroC2Rec
-        {
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
-            public string ID_ABASTECIMENTO;
-
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
-            public string TANQUE;
-            
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
-            public string BOMBA;
-            
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
-            public string BICO;
-            
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
-            public string COMBUSTIVEL;
-            
-            [MarshalAs(UnmanagedType.R8)]
-            public double DATA_ABASTECIMENTO;
-            
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
-            public string HORA_ABASTECIMENTO;
-            
-            [MarshalAs(UnmanagedType.R8)]
-            public double ENCERRANTE_INICIAL;
-            
-            [MarshalAs(UnmanagedType.R8)]
-            public double ENCERRANTE_FINAL;
-            
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
-            public string STATUS_ABASTECIMENTO;
-            
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
-            public string NRO_SERIE_ECF;
-            
-            [MarshalAs(UnmanagedType.R8)]
-            public double DATA;
-            
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
-            public string HORA;
-            
-            [MarshalAs(UnmanagedType.I4)]
-            public int COO;
-            
-            [MarshalAs(UnmanagedType.I4)]
-            public int NRO_NOTA_FISCAL;
-
-            [MarshalAs(UnmanagedType.R8)]
-            public double VOLUME;
-
-            [MarshalAs(UnmanagedType.U1)]
-            public bool RegistroValido;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        public struct RegistroD2Rec
-        {
-            [MarshalAs(UnmanagedType.I4)]
-            public int QTD_ITENS;
-
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
-            public string NUM_FAB;
-
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2)]
-            public string MF_ADICIONAL;
-
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 8)]
-            public string TIPO_ECF;
-
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
-            public string MARCA_ECF;
-
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
-            public string MODELO_ECF;
+		#region ACBrPAF
 
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 7)]
-            public string COO;
+		#region Interop Types
 
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 14)]
-            public string NUM_DAV;
+		[StructLayout(LayoutKind.Sequential)]
+		public struct RegistroTXRec
+		{
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 51)]
+			public string RAZAOSOCIAL;
 
-            [MarshalAs(UnmanagedType.R8)]
-            public double DT_DAV;
-
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
-            public string TIT_DAV;
-
-            [MarshalAs(UnmanagedType.R8)]
-            public double VLT_DAV;
-
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 7)]
-            public string COO_DFV;
-
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
-            public string NUMERO_ECF;
-
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 41)]
-            public string NOME_CLIENTE;
-
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
-            public string CPF_CNPJ;
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 3)]
+			public string UF;
 
-            [MarshalAs(UnmanagedType.U1)]
-            public bool RegistroValido;
-        }
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+			public string CNPJ;
 
-        [StructLayout(LayoutKind.Sequential)]
-        public struct RegistroD3Rec
-        {
-            [MarshalAs(UnmanagedType.R8)]
-            public double DT_INCLUSAO;
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+			public string IE;
 
-            [MarshalAs(UnmanagedType.I4)]
-            public int NUM_ITEM;
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+			public string IM;
 
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
-            public string COD_ITEM;
+			[MarshalAs(UnmanagedType.U1)]
+			public bool InclusaoExclusao;
+		}
 
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 101)]
-            public string DESC_ITEM;
+		[StructLayout(LayoutKind.Sequential)]
+		public struct RegistroC2Rec
+		{
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+			public string ID_ABASTECIMENTO;
 
-            [MarshalAs(UnmanagedType.R8)]
-            public double QTDE_ITEM;
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+			public string TANQUE;
 
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
-            public string UNI_ITEM;
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+			public string BOMBA;
 
-            [MarshalAs(UnmanagedType.R8)]
-            public double VL_UNIT;
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+			public string BICO;
 
-            [MarshalAs(UnmanagedType.R8)]
-            public double VL_DESCTO;
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+			public string COMBUSTIVEL;
 
-            [MarshalAs(UnmanagedType.R8)]
-            public double VL_ACRES;
+			[MarshalAs(UnmanagedType.R8)]
+			public double DATA_ABASTECIMENTO;
 
-            [MarshalAs(UnmanagedType.R8)]
-            public double VL_TOTAL;
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+			public string HORA_ABASTECIMENTO;
 
-            [MarshalAs(UnmanagedType.I4)]
-            public int DEC_VL_UNIT;
+			[MarshalAs(UnmanagedType.R8)]
+			public double ENCERRANTE_INICIAL;
 
-            [MarshalAs(UnmanagedType.I4)]
-            public int DEC_QTDE_ITEM;
+			[MarshalAs(UnmanagedType.R8)]
+			public double ENCERRANTE_FINAL;
 
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2)]
-            public string SIT_TRIB;
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+			public string STATUS_ABASTECIMENTO;
 
-            [MarshalAs(UnmanagedType.R8)]
-            public double ALIQ;
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+			public string NRO_SERIE_ECF;
 
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2)]
-            public string IND_CANC;
+			[MarshalAs(UnmanagedType.R8)]
+			public double DATA;
 
-            [MarshalAs(UnmanagedType.U1)]
-            public bool RegistroValido;
-        }        
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+			public string HORA;
 
-        [StructLayout(LayoutKind.Sequential)]
-        public struct RegistroP2Rec
-        {
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
-            public string COD_MERC_SERV;
-            
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 51)]
-            public string DESC_MERC_SERV;
-            
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 7)]
-            public string UN_MED;
-            
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2)]
-            public string IAT;
-            
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2)]
-            public string IPPT ;
-            
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2)]
-            public string ST;
-            
-            [MarshalAs(UnmanagedType.R8)]
-            public double ALIQ;
-            
-            [MarshalAs(UnmanagedType.R8)]
-            public double VL_UNIT;        
+			[MarshalAs(UnmanagedType.I4)]
+			public int COO;
 
-            [MarshalAs(UnmanagedType.U1)]
-            public bool RegistroValido;
-        }
-        #endregion
+			[MarshalAs(UnmanagedType.I4)]
+			public int NRO_NOTA_FISCAL;
 
-        #region Constructors/Erro Handler
-        [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int PAF_Create(ref IntPtr pafHandle);
+			[MarshalAs(UnmanagedType.R8)]
+			public double VOLUME;
 
-        [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int PAF_Destroy(ref IntPtr pafHandle);
+			[MarshalAs(UnmanagedType.U1)]
+			public bool RegistroValido;
+		}
 
-        [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int PAF_GetUltimoErro(IntPtr pafHandle, StringBuilder buffer, int bufferLen);
-        #endregion
+		[StructLayout(LayoutKind.Sequential)]
+		public struct RegistroD2Rec
+		{
+			[MarshalAs(UnmanagedType.I4)]
+			public int QTD_ITENS;
 
-        #region Propriedades do Componente
-        [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int PAF_GetPath(IntPtr pafHandle, StringBuilder buffer, int bufferLen);
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+			public string NUM_FAB;
 
-        [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int PAF_SetPath(IntPtr pafHandle, string porta);
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2)]
+			public string MF_ADICIONAL;
 
-        [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int PAF_GetDelimitador(IntPtr pafHandle, StringBuilder buffer, int bufferLen);
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 8)]
+			public string TIPO_ECF;
 
-        [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int PAF_SetDelimitador(IntPtr pafHandle, string Delimitador);
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+			public string MARCA_ECF;
 
-        [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int PAF_GetCurMascara(IntPtr pafHandle, StringBuilder buffer, int bufferLen);
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+			public string MODELO_ECF;
 
-        [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int PAF_SetCurMascara(IntPtr pafHandle, string CurMascara);
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 7)]
+			public string COO;
 
-        [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int PAF_GetTrimString(IntPtr pafHandle);
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 14)]
+			public string NUM_DAV;
 
-        [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int PAF_SetTrimString(IntPtr pafHandle, Boolean TrimString);
+			[MarshalAs(UnmanagedType.R8)]
+			public double DT_DAV;
 
-        [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int PAF_GetAssinarArquivo(IntPtr pafHandle);
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+			public string TIT_DAV;
 
-        [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int PAF_SetAssinarArquivo(IntPtr pafHandle, Boolean Assinar);
+			[MarshalAs(UnmanagedType.R8)]
+			public double VLT_DAV;
 
-        [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int PAF_SetAAC(IntPtr pafHandle, IntPtr aacHandle);
-        #endregion
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 7)]
+			public string COO_DFV;
 
-        #region SaveFile
-        [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int PAF_SaveFileTXT_C(IntPtr pafHandle, ref RegistroTXRec RegistroC1, ref RegistroC2Rec[] RegistroC2, int CountC2, string Arquivo);
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+			public string NUMERO_ECF;
 
-        [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int PAF_SaveFileTXT_D(IntPtr pafHandle, ref RegistroTXRec RegsitroD1Rec, ref RegistroD2Rec[] RegsitroD2Rec, int CountD2, ref RegistroD3Rec[] RegsitroD3Rec, string Arquivo);
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 41)]
+			public string NOME_CLIENTE;
 
-        [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int PAF_SaveFileTXT_P(IntPtr pafHandle, ref RegistroTXRec RegsitroP1Rec, ref RegistroP2Rec[] RegsitroP2Rec, int CountP2, string Arquivo);
-        #endregion
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+			public string CPF_CNPJ;
 
-        #endregion
+			[MarshalAs(UnmanagedType.U1)]
+			public bool RegistroValido;
+		}
 
-        #region ACBrACC
+		[StructLayout(LayoutKind.Sequential)]
+		public struct RegistroD3Rec
+		{
+			[MarshalAs(UnmanagedType.R8)]
+			public double DT_INCLUSAO;
 
-        #region Interop Types
+			[MarshalAs(UnmanagedType.I4)]
+			public int NUM_ITEM;
 
-        [StructLayout(LayoutKind.Sequential)]
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+			public string COD_ITEM;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 101)]
+			public string DESC_ITEM;
+
+			[MarshalAs(UnmanagedType.R8)]
+			public double QTDE_ITEM;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+			public string UNI_ITEM;
+
+			[MarshalAs(UnmanagedType.R8)]
+			public double VL_UNIT;
+
+			[MarshalAs(UnmanagedType.R8)]
+			public double VL_DESCTO;
+
+			[MarshalAs(UnmanagedType.R8)]
+			public double VL_ACRES;
+
+			[MarshalAs(UnmanagedType.R8)]
+			public double VL_TOTAL;
+
+			[MarshalAs(UnmanagedType.I4)]
+			public int DEC_VL_UNIT;
+
+			[MarshalAs(UnmanagedType.I4)]
+			public int DEC_QTDE_ITEM;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2)]
+			public string SIT_TRIB;
+
+			[MarshalAs(UnmanagedType.R8)]
+			public double ALIQ;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2)]
+			public string IND_CANC;
+
+			[MarshalAs(UnmanagedType.U1)]
+			public bool RegistroValido;
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
+		public struct RegistroP2Rec
+		{
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+			public string COD_MERC_SERV;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 51)]
+			public string DESC_MERC_SERV;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 7)]
+			public string UN_MED;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2)]
+			public string IAT;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2)]
+			public string IPPT;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2)]
+			public string ST;
+
+			[MarshalAs(UnmanagedType.R8)]
+			public double ALIQ;
+
+			[MarshalAs(UnmanagedType.R8)]
+			public double VL_UNIT;
+
+			[MarshalAs(UnmanagedType.U1)]
+			public bool RegistroValido;
+		}
+
+		#endregion
+
+		#region Constructors/Erro Handler
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int PAF_Create(ref IntPtr pafHandle);
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int PAF_Destroy(ref IntPtr pafHandle);
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int PAF_GetUltimoErro(IntPtr pafHandle, StringBuilder buffer, int bufferLen);
+
+		#endregion
+
+		#region Propriedades do Componente
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int PAF_GetPath(IntPtr pafHandle, StringBuilder buffer, int bufferLen);
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int PAF_SetPath(IntPtr pafHandle, string porta);
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int PAF_GetDelimitador(IntPtr pafHandle, StringBuilder buffer, int bufferLen);
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int PAF_SetDelimitador(IntPtr pafHandle, string Delimitador);
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int PAF_GetCurMascara(IntPtr pafHandle, StringBuilder buffer, int bufferLen);
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int PAF_SetCurMascara(IntPtr pafHandle, string CurMascara);
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int PAF_GetTrimString(IntPtr pafHandle);
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int PAF_SetTrimString(IntPtr pafHandle, Boolean TrimString);
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int PAF_GetAssinarArquivo(IntPtr pafHandle);
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int PAF_SetAssinarArquivo(IntPtr pafHandle, Boolean Assinar);
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int PAF_SetAAC(IntPtr pafHandle, IntPtr aacHandle);
+
+		#endregion
+
+		#region SaveFile
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int PAF_SaveFileTXT_C(IntPtr pafHandle, ref RegistroTXRec RegistroC1, ref RegistroC2Rec[] RegistroC2, int CountC2, string Arquivo);
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int PAF_SaveFileTXT_D(IntPtr pafHandle, ref RegistroTXRec RegsitroD1Rec, ref RegistroD2Rec[] RegsitroD2Rec, int CountD2, ref RegistroD3Rec[] RegsitroD3Rec, string Arquivo);
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int PAF_SaveFileTXT_P(IntPtr pafHandle, ref RegistroTXRec RegsitroP1Rec, ref RegistroP2Rec[] RegsitroP2Rec, int CountP2, string Arquivo);
+
+		#endregion
+
+		#endregion
+
+		#region ACBrACC
+
+		#region Interop Types
+
+		[StructLayout(LayoutKind.Sequential)]
 		public struct TECFAutorizado
 		{
 			[MarshalAs(UnmanagedType.R8)]
@@ -1149,8 +1173,9 @@ namespace ACBr.Net
 
 		#endregion Interop Types
 
-        #region Constructors/Erro Handler
-        [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		#region Constructors/Erro Handler
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
 		public static extern int AAC_Create(ref IntPtr aacHandle);
 
 		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -1158,11 +1183,12 @@ namespace ACBr.Net
 
 		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
 		public static extern int AAC_GetUltimoErro(IntPtr aacHandle, StringBuilder buffer, int bufferLen);
-        #endregion
 
-        #region Métodos do Componente
+		#endregion
 
-        [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		#region Métodos do Componente
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
 		public static extern int AAC_AbrirArquivo(IntPtr aacHandle);
 
 		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -1466,8 +1492,9 @@ namespace ACBr.Net
 
 		#region ACBrBal
 
-        #region Constructors/Erro Handler
-        [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		#region Constructors/Erro Handler
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
 		public static extern int BAL_Create(ref IntPtr balHandle);
 
 		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -1475,19 +1502,22 @@ namespace ACBr.Net
 
 		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
 		public static extern int BAL_GetUltimoErro(IntPtr balHandle, StringBuilder buffer, int bufferLen);
-        #endregion
 
-        #region Ativar/Desativar
-        [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		#endregion
+
+		#region Ativar/Desativar
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
 		public static extern int BAL_Ativar(IntPtr balHandle);
 
 		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
 		public static extern int BAL_Desativar(IntPtr balHandle);
-        #endregion
 
-        #region Propriedades do Componente
+		#endregion
 
-        [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		#region Propriedades do Componente
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
 		public static extern int BAL_GetModelo(IntPtr balHandle);
 
 		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -1520,8 +1550,9 @@ namespace ACBr.Net
 
 		#region ACBrLCB
 
-        #region Constructors/Erro Handler
-        [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		#region Constructors/Erro Handler
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
 		public static extern int LCB_Create(ref IntPtr lcbHandle);
 
 		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -1529,19 +1560,22 @@ namespace ACBr.Net
 
 		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
 		public static extern int LCB_GetUltimoErro(IntPtr lcbHandle, StringBuilder buffer, int bufferLen);
-        #endregion
 
-        #region Ativar/Desativar
-        [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		#endregion
+
+		#region Ativar/Desativar
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
 		public static extern int LCB_Ativar(IntPtr lcbHandle);
 
 		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
 		public static extern int LCB_Desativar(IntPtr lcbHandle);
-        #endregion
 
-        #region Propriedades do Componente
+		#endregion
 
-        [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		#region Propriedades do Componente
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
 		public static extern int LCB_GetPorta(IntPtr lcbHandle, StringBuilder buffer, int bufferLen);
 
 		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]

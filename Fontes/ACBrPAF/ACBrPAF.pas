@@ -48,10 +48,12 @@ interface
 
 uses
    SysUtils, Classes, DateUtils,
+   {$IFNDEF CONSOLE}
    {$IFDEF FPC}
       LResources,
    {$ENDIF}
    {$IFDEF CLX}QForms, {$ELSE} Forms, {$ENDIF}
+   {$ENDIF}
    ACBrTXTClass, ACBrUtil, ACBrEAD, ACBrAAC,
    ACBrPAF_B, ACBrPAF_B_Class,
    ACBrPAF_D, ACBrPAF_D_Class,
@@ -778,9 +780,11 @@ begin
   Result := True;
 end;
 
+{$IFNDEF CONSOLE}
 {$ifdef FPC}
 initialization
    {$I ACBrPAF.lrs}
+{$endif}
 {$endif}
 
 end.

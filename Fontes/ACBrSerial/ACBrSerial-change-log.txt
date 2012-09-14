@@ -102,6 +102,9 @@ Data: 13/09/2012
 [+] Adicionado Troco em cartão ao relatório de configuração do paf-ecf.
     por: regys silveira
 
+[*] Melhorada exibição de informações do LOG durante o proceso de Ativação
+    (por: DSA)
+
 Data: 12/09/2012
 -- ACBrECFSwedaSTX --
 [+] Adicionado suporte a leitura de CMC7    (por: DSA)

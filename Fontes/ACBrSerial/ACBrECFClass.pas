@@ -640,7 +640,6 @@ TACBrECFClass = class
        const Situacao : String = '') : Boolean ;
 
     procedure ImprimirLinhaALinha( Texto, Cmd : AnsiString ) ;
-    procedure GravaLog(AString: AnsiString; Traduz :Boolean = False);
 
     function ConfigBarras: TACBrECFConfigBarras;
  public
@@ -650,6 +649,8 @@ TACBrECFClass = class
     Property Ativo  : Boolean read fpAtivo write SetAtivo ;
     procedure Ativar ; virtual ;
     procedure Desativar ; virtual ;
+
+    procedure GravaLog(AString: AnsiString; Traduz :Boolean = False);
 
     property ArredondaPorQtd : Boolean read fpArredondaPorQtd
        write fpArredondaPorQtd ;
@@ -1472,6 +1473,14 @@ end;
 procedure TACBrECFClass.Ativar;
 begin
   if fpAtivo then exit ;
+
+  GravaLog( sLineBreak +
+            StringOfChar('-',80)+ sLineBreak +
+            'ATIVAR - '+FormatDateTime('dd/mm/yy hh:nn:ss:zzz',now)+
+            ' - Modelo: '+ModeloStr+
+            ' - Porta: '+fpDevice.Porta+ sLineBreak +
+            '         Device: '+fpDevice.DeviceToString(False) + sLineBreak +
+            StringOfChar('-',80) + sLineBreak );
 
   fpDevice.Ativar ;
 

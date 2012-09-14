@@ -162,6 +162,7 @@ TACBrDevice = class( TComponent )
     procedure ConfiguraSerial ;
     procedure EnviaStringSerial(const AString : AnsiString) ;
     procedure EnviaStringArquivo(const AString : AnsiString) ;
+    function GetParamsString: String;
     {$IFDEF ThreadEnviaLPT}
     procedure EnviaStrThread( AString : AnsiString ) ;
     {$ENDIF}
@@ -180,7 +181,6 @@ TACBrDevice = class( TComponent )
     function GetOnStatus: THookSerialStatus;
     procedure SetAtivo(const Value: Boolean);
     procedure SetHandShake(const Value: TACBrHandShake);
-    function GetParamsString: String;
     procedure SetParamsString(const Value: String);
     function GetMaxBandwidth: Integer;
     procedure SetMaxBandwidth(const Value: Integer);
@@ -213,6 +213,7 @@ TACBrDevice = class( TComponent )
 
     procedure AcharPortasSeriais( const AStringList : TStrings;
        UltimaPorta : Integer = 64 ) ;
+    function DeviceToString(OnlyException: Boolean): String;
 
   published
      property Baud     : Integer read fsBaud write SetBaud default 9600 ;
@@ -630,21 +631,22 @@ begin
    end ;
 end ;
 
-function TACBrDevice.GetParamsString: String;
-Var sStop, sHandShake : String ;
+function TACBrDevice.DeviceToString( OnlyException: Boolean): String;
+Var
+  sStop, sHandShake : String ;
 begin
   Result := '' ;
 
-  if fsBaud <> 9600 then
+  if (not OnlyException) or (fsBaud <> 9600)  then
      Result := Result + ' BAUD='+IntToStr(fsBaud) ;
 
-  if fsData <> 8 then
+  if (not OnlyException) or (fsData <> 8) then
      Result := Result + ' DATA='+IntToStr(fsData) ;
 
-  if fsParity <> 'N' then
+  if (not OnlyException) or (fsParity <> 'N') then
      Result := Result + ' PARITY='+fsParity ;
 
-  if fsStop <> 0 then
+  if (not OnlyException) or (fsStop <> 0) then
   begin
      if fsStop = 2 then
         sStop := '2'
@@ -656,7 +658,7 @@ begin
      Result := Result + ' STOP='+sStop ;
   end ;
 
-  if fsHandShake <> hsNenhum then
+  if (not OnlyException) or (fsHandShake <> hsNenhum) then
   begin
      if fsHandShake = hsXON_XOFF then
         sHandShake := 'XON/XOFF'
@@ -674,7 +676,7 @@ begin
   if fsSoftFlow then
      Result := Result + ' SOFTFLOW' ;
 
-  if MaxBandwidth > 0 then
+  if (not OnlyException) or (MaxBandwidth > 0) then
      Result := Result + ' MAXBANDWIDTH='+IntToStr(MaxBandwidth) ;
      
   Result := Trim(Result) ;
@@ -835,6 +837,11 @@ begin
     end ;
   {$ENDIF}
 end ;
+
+function TACBrDevice.GetParamsString: String;
+begin
+   Result := DeviceToString( True );
+end;
 
 {$IFDEF ThreadEnviaLPT}
 { A ideia dessa Thread é testar se os dados estão sendo gravados com sucesso na

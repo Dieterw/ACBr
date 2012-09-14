@@ -1265,8 +1265,6 @@ procedure TACBrECF.Ativar;
 begin
   if fsAtivo then exit ;
 
-  ComandoLOG := DateToStr(now)+ ' Ativar' ;
-
   if fsModelo = ecfNenhum then
      raise EACBrECFErro.Create( ACBrStr('Modelo não definido'));
 
@@ -4773,6 +4771,8 @@ begin
   if ProcuraPorta then
      Porta := 'procurar' ;
 
+  fsECF.GravaLog( 'AcharECF: '+ifthen(ProcuraModelo,' ProcuraModelo','')+
+                               ifthen(ProcuraPorta,' ProcuraPorta','') );
   try
      fsProcurandoECF := true ;
 
@@ -4812,6 +4812,8 @@ Var wPorta : String ;
 begin
   Result := false ;
   if fsProcurandoPorta then exit ;  { para evitar chamadas recursivas }
+
+  fsECF.GravaLog( 'AcharPorta( '+IntToStr(ATimeOut)+' )' );
 
   if fsModelo = ecfNenhum then
      raise EACBrECFErro.Create( ACBrStr(cACBrECFModeloNaoDefinidoException));

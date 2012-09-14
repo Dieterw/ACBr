@@ -368,8 +368,6 @@ begin
   fpDevice.HandShake := hsDTR_DSR ;
   inherited Ativar ; { Abre porta serial }
 
-  GravaLog( 'Ativar' ) ;
-
   fsVerProtocolo    := '' ;
   fsSubModelo       := '' ;
   fsApplicationPath := ExtractFilePath( ParamStr(0) );

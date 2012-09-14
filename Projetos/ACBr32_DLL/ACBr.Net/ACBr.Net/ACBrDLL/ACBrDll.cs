@@ -32,7 +32,7 @@ namespace ACBr.Net
 		[StructLayout(LayoutKind.Sequential)]
 		public struct DAVsRec
 		{
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 14)]
 			public string Numero;
 
 			[MarshalAs(UnmanagedType.I4)]
@@ -41,7 +41,7 @@ namespace ACBr.Net
 			[MarshalAs(UnmanagedType.I4)]
 			public int COO_Dav;
 
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 29)]
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
 			public string Titulo;
 
 			[MarshalAs(UnmanagedType.R8)]
@@ -644,7 +644,7 @@ namespace ACBr.Net
 		public static extern int ECF_DAV_RegistrarItem(IntPtr ecfHandle, string codigo, string descricao, string unidade, double quantidade, double vlrunitario, double desconto, double acrescimo, bool cancelado);
 
 		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-		public static extern int ECF_PafMF_RelDAVEmitidos(IntPtr ecfHandle, ref DAVsRec[] DAVs, int index, string TituloRelatorio, string IndiceRelatorio);
+		public static extern int ECF_PafMF_RelDAVEmitidos(IntPtr ecfHandle,DAVsRec[] DAVs, int index, string TituloRelatorio, string IndiceRelatorio);
 
 		#endregion
 
@@ -912,8 +912,8 @@ namespace ACBr.Net
 			[MarshalAs(UnmanagedType.R8)]
 			public double DATA_ABASTECIMENTO;
 
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
-			public string HORA_ABASTECIMENTO;
+			[MarshalAs(UnmanagedType.R8)]
+			public double HORA_ABASTECIMENTO;
 
 			[MarshalAs(UnmanagedType.R8)]
 			public double ENCERRANTE_INICIAL;
@@ -930,8 +930,8 @@ namespace ACBr.Net
 			[MarshalAs(UnmanagedType.R8)]
 			public double DATA;
 
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
-			public string HORA;
+			[MarshalAs(UnmanagedType.R8)]
+			public double HORA;
 
 			[MarshalAs(UnmanagedType.I4)]
 			public int COO;
@@ -1136,13 +1136,13 @@ namespace ACBr.Net
 		#region SaveFile
 
 		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-		public static extern int PAF_SaveFileTXT_C(IntPtr pafHandle, ref RegistroTXRec RegistroC1, ref RegistroC2Rec[] RegistroC2, int CountC2, string Arquivo);
+		public static extern int PAF_SaveFileTXT_C(IntPtr pafHandle, RegistroTXRec RegistroC1, RegistroC2Rec[] RegistroC2, int CountC2, string Arquivo);
 
 		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-		public static extern int PAF_SaveFileTXT_D(IntPtr pafHandle, ref RegistroTXRec RegsitroD1Rec, ref RegistroD2Rec[] RegsitroD2Rec, int CountD2, ref RegistroD3Rec[] RegsitroD3Rec, string Arquivo);
+		public static extern int PAF_SaveFileTXT_D(IntPtr pafHandle, RegistroTXRec RegsitroD1Rec, RegistroD2Rec[] RegsitroD2Rec, int CountD2, RegistroD3Rec[] RegsitroD3Rec, string Arquivo);
 
 		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-		public static extern int PAF_SaveFileTXT_P(IntPtr pafHandle, ref RegistroTXRec RegsitroP1Rec, ref RegistroP2Rec[] RegsitroP2Rec, int CountP2, string Arquivo);
+		public static extern int PAF_SaveFileTXT_P(IntPtr pafHandle, RegistroTXRec RegsitroP1Rec, RegistroP2Rec[] RegsitroP2Rec, int CountP2, string Arquivo);
 
 		#endregion
 

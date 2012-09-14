@@ -127,13 +127,13 @@ namespace ACBr.Net
                 RegistroC2Rec[i].BOMBA = ToUTF8(RegistroC2[i].BOMBA);
                 RegistroC2Rec[i].COMBUSTIVEL = ToUTF8(RegistroC2[i].COMBUSTIVEL);
                 RegistroC2Rec[i].DATA_ABASTECIMENTO = RegistroC2[i].DATA_ABASTECIMENTO.ToOADate();
-                RegistroC2Rec[i].HORA_ABASTECIMENTO = ToUTF8(RegistroC2[i].HORA_ABASTECIMENTO.ToLongTimeString());
+                RegistroC2Rec[i].HORA_ABASTECIMENTO = RegistroC2[i].HORA_ABASTECIMENTO.ToOADate();
                 RegistroC2Rec[i].ENCERRANTE_INICIAL = RegistroC2[i].ENCERRANTE_INICIAL;
                 RegistroC2Rec[i].ENCERRANTE_FINAL = RegistroC2[i].ENCERRANTE_FINAL;
                 RegistroC2Rec[i].STATUS_ABASTECIMENTO = ToUTF8(RegistroC2[i].STATUS_ABASTECIMENTO);
                 RegistroC2Rec[i].NRO_SERIE_ECF = ToUTF8(RegistroC2[i].NRO_SERIE_ECF);
                 RegistroC2Rec[i].DATA = RegistroC2[i].DATA.ToOADate();
-                RegistroC2Rec[i].HORA = ToUTF8(RegistroC2[i].HORA.ToLongTimeString());
+                RegistroC2Rec[i].HORA = RegistroC2[i].HORA.ToOADate();
                 RegistroC2Rec[i].COO = RegistroC2[i].COO;
                 RegistroC2Rec[i].NRO_NOTA_FISCAL = RegistroC2[i].NRO_NOTA_FISCAL;
                 RegistroC2Rec[i].VOLUME = RegistroC2[i].VOLUME;
@@ -141,7 +141,7 @@ namespace ACBr.Net
 
             }
 
-            int ret = ACBrDll.PAF_SaveFileTXT_C(this.Handle, ref RegistroC1Rec, ref RegistroC2Rec, RegistroC2.Length, ToUTF8(arquivo));
+            int ret = ACBrDll.PAF_SaveFileTXT_C(this.Handle, RegistroC1Rec, RegistroC2Rec, RegistroC2.Length, ToUTF8(arquivo));
             CheckResult(ret);
         }
 
@@ -199,7 +199,7 @@ namespace ACBr.Net
                 RegistroD3Rec[i].RegistroValido = RegistroD3[i].RegistroValido;
             }
 
-            int ret = ACBrDll.PAF_SaveFileTXT_D(this.Handle, ref RegistroD1Rec, ref RegistroD2Rec, RegistroD2.Length, ref RegistroD3Rec, ToUTF8(arquivo));
+            int ret = ACBrDll.PAF_SaveFileTXT_D(this.Handle, RegistroD1Rec, RegistroD2Rec, RegistroD2.Length, RegistroD3Rec, ToUTF8(arquivo));
             CheckResult(ret);
         }
 
@@ -230,7 +230,7 @@ namespace ACBr.Net
                 RegistroP2Rec[i].RegistroValido = RegistroP2[i].RegistroValido;
             }
 
-            int ret = ACBrDll.PAF_SaveFileTXT_P(this.Handle, ref RegistroP1Rec, ref RegistroP2Rec, RegistroP2.Length, ToUTF8(arquivo));
+            int ret = ACBrDll.PAF_SaveFileTXT_P(this.Handle, RegistroP1Rec, RegistroP2Rec, RegistroP2.Length, ToUTF8(arquivo));
             CheckResult(ret);
         }
         #endregion

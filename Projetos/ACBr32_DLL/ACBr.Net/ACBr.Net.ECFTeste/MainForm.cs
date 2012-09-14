@@ -770,7 +770,7 @@ namespace ACBr.Net.ECFTeste
                 }
 
                 acbrPaf.Path = Path.GetDirectoryName(Application.ExecutablePath);
-                acbrPaf.SaveFileTXT_C(RegistroC1, RegistroC2.ToArray(), "PAF_C.txt");
+                acbrPaf.SaveFileTXT_C(RegistroC1, RegistroC2.ToArray(), @"\PAF_C.txt");
                 MessageBox.Show("Arquivo PAF_C Gerado com sucesso");
             }
             catch (Exception exception)

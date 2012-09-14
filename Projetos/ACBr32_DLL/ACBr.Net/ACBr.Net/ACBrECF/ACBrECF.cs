@@ -896,10 +896,10 @@ namespace ACBr.Net
 			CheckResult(ret);
 		}
 
-        private void PafMF_RelDAVEmitidos(List<ACBrECFDAVs> DAVs, string TituloRelatorio, string IndiceRelatorio)
+        private void PafMF_RelDAVEmitidos(ACBrECFDAVs[] DAVs, string TituloRelatorio, string IndiceRelatorio)
         {
-            ACBrDll.DAVsRec[] record = new ACBrDll.DAVsRec[DAVs.Count];
-            for (int i = 0; i < DAVs.Count; i++)
+            ACBrDll.DAVsRec[] record = new ACBrDll.DAVsRec[DAVs.Length];
+            for (int i = 0; i < DAVs.Length; i++)
             {
                 record[i].Numero = DAVs[i].Numero;
                 record[i].COO_Cupom = DAVs[i].COO_Cupom;
@@ -909,7 +909,7 @@ namespace ACBr.Net
                 record[i].Valor = DAVs[i].Valor;
             }
 
-            int ret = ACBrDll.ECF_PafMF_RelDAVEmitidos(this.Handle, ref record, DAVs.Count, ToUTF8(TituloRelatorio), ToUTF8(IndiceRelatorio));
+            int ret = ACBrDll.ECF_PafMF_RelDAVEmitidos(this.Handle, record, DAVs.Length, ToUTF8(TituloRelatorio), ToUTF8(IndiceRelatorio));
             CheckResult(ret);
         }
 		#endregion Métodos DAV

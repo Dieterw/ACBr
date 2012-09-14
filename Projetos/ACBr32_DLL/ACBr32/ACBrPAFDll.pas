@@ -41,13 +41,13 @@ type TregistroC2Rec = record
    BICO                  : array[0..3] of char;
    COMBUSTIVEL           : array[0..20] of char;
    DATA_ABASTECIMENTO    : Double;
-   HORA_ABASTECIMENTO    : array[0..8] of char;
+   HORA_ABASTECIMENTO    : Double;
    ENCERRANTE_INICIAL    : Double;
    ENCERRANTE_FINAL      : Double;
    STATUS_ABASTECIMENTO  : array[0..10] of char;
    NRO_SERIE_ECF         : array[0..14] of char;
    DATA                  : Double;
-   HORA                  : array[0..8] of char;
+   HORA                  : Double;
    COO                   : Integer;
    NRO_NOTA_FISCAL       : Integer;
    VOLUME                : Double;
@@ -461,7 +461,7 @@ begin
   end;
 end;
 
-{Gerar o arquivo de DAV’s emitidos}
+{Gerar o arquivo PAF}
 Function PAF_SaveFileTXT_C(const pafHandle: PPAFHandle; const RegistroC1Rec : TRegistroTXRec;
       const RegistroC2Rec : array of TRegistroC2Rec; const CountC2 : Integer; const Arquivo: pChar) : Integer ;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
 var
@@ -500,13 +500,13 @@ begin
    BICO                  := RegistroC2Rec[i].BICO;
    COMBUSTIVEL           := RegistroC2Rec[i].COMBUSTIVEL;
    DATA_ABASTECIMENTO    := RegistroC2Rec[i].DATA_ABASTECIMENTO;
-   HORA_ABASTECIMENTO    := StrToTime(RegistroC2Rec[i].HORA_ABASTECIMENTO);
+   HORA_ABASTECIMENTO    := RegistroC2Rec[i].HORA_ABASTECIMENTO;
    ENCERRANTE_INICIAL    := RegistroC2Rec[i].ENCERRANTE_INICIAL;
    ENCERRANTE_FINAL      := RegistroC2Rec[i].ENCERRANTE_FINAL;
    STATUS_ABASTECIMENTO  := RegistroC2Rec[i].STATUS_ABASTECIMENTO;
    NRO_SERIE_ECF         := RegistroC2Rec[i].NRO_SERIE_ECF;
    DATA                  := RegistroC2Rec[i].DATA;
-   HORA                  := StrToTime(RegistroC2Rec[i].HORA);
+   HORA                  := RegistroC2Rec[i].HORA;
    COO                   := RegistroC2Rec[i].COO;
    NRO_NOTA_FISCAL       := RegistroC2Rec[i].NRO_NOTA_FISCAL;
    VOLUME                := RegistroC2Rec[i].VOLUME;

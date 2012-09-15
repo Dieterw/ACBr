@@ -217,6 +217,7 @@ type
     MenuItem28: TMenuItem;
     MenuItem29: TMenuItem;
     MenuItem30: TMenuItem;
+    miTesteArredondamento: TMenuItem;
     miLeituraCMC7: TMenuItem;
     miEstornoCCD : TMenuItem ;
     miTipoUltimoDoc : TMenuItem ;
@@ -469,6 +470,7 @@ type
     procedure MenuItem23Click(Sender : TObject) ;
     procedure MenuItem29Click(Sender: TObject);
     procedure MenuItem30Click(Sender: TObject);
+    procedure miTesteArredondamentoClick(Sender: TObject);
     procedure miEstornoCCDClick(Sender : TObject) ;
     procedure miLeituraCMC7Click(Sender: TObject);
     procedure miTipoUltimoDocClick(Sender : TObject) ;
@@ -1790,6 +1792,57 @@ begin
   mResp.Lines.Add( 'NumReducoesZRestantes: '+ACBrECF1.NumReducoesZRestantes );
 
   AtualizaMemos;
+end;
+
+procedure TForm1.miTesteArredondamentoClick(Sender: TObject);
+var
+   SubTot, TotalEsperado: Double;
+   OldArr : Boolean;
+begin
+  Form1.Enabled := False ;
+  OldArr := ACBrECF1.ArredondaItemMFD;
+  try
+     ACBrECF1.ArredondaItemMFD := True;
+     mResp.Lines.Add('Abrindo Cupom...') ;
+     ACBrECF1.AbreCupom();
+     mResp.Lines.Add('Cupom Aberto.') ;
+
+     ACBrECF1.VendeItem( '123456789','TESTE ARREDONDAMENTO','NN',1,0.015);
+     ACBrECF1.VendeItem( '123456789','TESTE ARREDONDAMENTO','NN',1,0.025);
+     ACBrECF1.VendeItem( '123456789','TESTE ARREDONDAMENTO','NN',1,0.035);
+     ACBrECF1.VendeItem( '123456789','TESTE ARREDONDAMENTO','NN',1,0.045);
+     ACBrECF1.VendeItem( '123456789','TESTE ARREDONDAMENTO','NN',1,5.555);
+     ACBrECF1.VendeItem( '123456789','TESTE ARREDONDAMENTO','NN',1,1.875);
+     ACBrECF1.VendeItem( '123456789','TESTE ARREDONDAMENTO','NN',1,47.76226);
+     ACBrECF1.VendeItem( '123456789','TESTE ARREDONDAMENTO','NN',1,36.21672);
+     ACBrECF1.VendeItem( '123456789','TESTE ARREDONDAMENTO','NN',1,47.2150);
+     ACBrECF1.VendeItem( '123456789','TESTE ARREDONDAMENTO','NN',1,58.6851);
+     ACBrECF1.VendeItem( '123456789','TESTE ARREDONDAMENTO','NN',1,72.3650);
+     ACBrECF1.VendeItem( '123456789','TESTE ARREDONDAMENTO','NN',1,58.93497);
+     ACBrECF1.VendeItem( '123456789','TESTE ARREDONDAMENTO','NN',1,93.58746);
+     ACBrECF1.VendeItem( '123456789','TESTE ARREDONDAMENTO','NN',1,667.4756);
+     ACBrECF1.VendeItem( '123456789','TESTE ARREDONDAMENTO','NN',1,667.4856);
+     ACBrECF1.VendeItem( '123456789','TESTE ARREDONDAMENTO','NN',1,667.4850);
+
+     mResp.Lines.Add('SubTotalizando o Cupom.') ;
+     ACBrECF1.SubtotalizaCupom( );
+
+     mResp.Lines.Add('Verificando o SubTotal Calculado com o do ECF') ;
+     SubTot := ACBrECF1.Subtotal;
+     TotalEsperado := 2424.78 ;
+     if SubTot <> TotalEsperado then
+        mResp.Lines.Add('SubTotal diferente do esperado!')
+     else
+      begin
+        mResp.Lines.Add('O SubTotal está correto.  Verifique a Bobina da Tela...') ;
+        PageControl1.ActivePage := TabSheet2;
+      end;
+
+     ACBrECF1.CancelaCupom;
+  finally
+     ACBrECF1.ArredondaItemMFD := OldArr;
+     Form1.Enabled := True ;
+  end ;
 end;
 
 procedure TForm1.miEstornoCCDClick(Sender : TObject) ;
@@ -3609,6 +3662,7 @@ end;
 
 procedure TForm1.WB_ScrollToBottom(WebBrowser1: TIpHtmlPanel);
 begin
+  Application.ProcessMessages;
   WebBrowser1.Scroll(hsaEnd);
   Application.ProcessMessages;
 end;

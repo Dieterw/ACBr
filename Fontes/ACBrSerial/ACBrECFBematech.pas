@@ -1527,7 +1527,7 @@ begin
      if TipoDescontoAcrescimo = '%' then
       begin
         if Arredonda then
-           DescontoStr := IntToStrZero( Round( RoundTo(ValorUnitario*Qtd,-2) *
+           DescontoStr := IntToStrZero( Round( RoundABNT(ValorUnitario*Qtd,-2) *
                                         ValorDescontoAcrescimo), 10 )
         else
            DescontoStr := IntToStrZero( TruncFix( RoundTo(ValorUnitario*Qtd,-2) *

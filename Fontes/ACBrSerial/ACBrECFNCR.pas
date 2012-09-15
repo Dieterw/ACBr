@@ -1589,7 +1589,7 @@ Procedure TACBrECFNCR.VendeItem( Codigo, Descricao : String;
 begin
   with NCRComando do
   begin
-    ValTotal := RoundTo(TruncFix(Qtd*ValorUnitario*100)/100,-2) ;
+    ValTotal := RoundABNT(TruncFix(Qtd*ValorUnitario*100)/100,-2) ;
     Comando := '30' ;
     AddParam( LeftStr(Codigo,14) );
     AddParam( LeftStr(Descricao,233) );

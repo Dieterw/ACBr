@@ -558,7 +558,7 @@ TACBrECF = class( TACBrComponent )
     procedure LegendaInmetroProximoItem;
     Procedure VendeItem( Codigo, Descricao : String; AliquotaICMS : String;
        Qtd : Double ; ValorUnitario : Double; ValorDescontoAcrescimo : Double = 0;
-       Unidade : String = ''; TipoDescontoAcrescimo : String = '%';
+       Unidade : String = 'UN'; TipoDescontoAcrescimo : String = '%';
        DescontoAcrescimo : String = 'D'; CodDepartamento: Integer = -1 ) ;
     Procedure DescontoAcrescimoItemAnterior( ValorDescontoAcrescimo : Double = 0;
        DescontoAcrescimo : String = 'D'; TipoDescontoAcrescimo : String = '%';
@@ -2574,7 +2574,7 @@ begin
         StrPreco := FormatFloat('##,##0.000',ValorUnitario ) ;
 
      if self.Arredonda then
-        Total := RoundTo( Qtd * ValorUnitario, -2)
+        Total := RoundABNT( Qtd * ValorUnitario, -2)
      else
         Total := TruncFix( Qtd * ValorUnitario * 100 ) / 100 ;
 
@@ -2652,7 +2652,7 @@ begin
      begin
         { RFD aceita apenas desconto em Valor, convertendo... }
         if TipoDescontoAcrescimo = '%' then
-           ValorDescontoAcrescimo := RoundTo( RoundTo(ValorUnitario*Qtd,-2) *
+           ValorDescontoAcrescimo := RoundTo( RoundABNT(ValorUnitario*Qtd,-2) *
                                               ValorDescontoAcrescimo / 100  , -2 ) ;
         { RFD considera Descontos, valores negativos, Acrescimos positivos }
         if DescontoAcrescimo = 'D' then

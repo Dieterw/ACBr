@@ -320,7 +320,7 @@ begin
 end ;
 
 {-----------------------------------------------------------------------------
- Arredondamento segundo as normas da ABNT  (por: DSA)
+ Arredondamento segundo as normas da ABNT NBR 5891/77  (por: DSA)
  Fontes:
  http://www.sofazquemsabe.com/2011/01/como-fazer-arredondamento-da-numeracao.html
  http://partners.bematech.com.br/2011/12/edicao-98-entendendo-o-truncamento-e-arredondamento-no-ecf/

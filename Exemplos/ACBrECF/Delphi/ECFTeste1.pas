@@ -328,6 +328,7 @@ type
     DAVOS1: TMenuItem;
     NumerodeReduesZrestantes1: TMenuItem;
     btnMenuFiscalNotaPaulista: TButton;
+    chArredondamentoItemMFD: TCheckBox;
     procedure cbxModeloChange(Sender: TObject);
     procedure Sair1Click(Sender: TObject);
     procedure bAtivarClick(Sender: TObject);
@@ -524,6 +525,7 @@ type
     procedure DAVOS1Click(Sender: TObject);
     procedure NumerodeReduesZrestantes1Click(Sender: TObject);
     procedure btnMenuFiscalNotaPaulistaClick(Sender: TObject);
+    procedure chArredondamentoItemMFDClick(Sender: TObject);
   private
     { Private declarations }
     Function Converte( cmd : String) : String;
@@ -3784,6 +3786,11 @@ begin
   ACBrECF1.PafMF_GerarCAT52(edtDtInicial.Date, edtDtFinal.Date, DirArquivos);
 
   ShowMessage(Format('Arquivos gerados com sucesso em:'#13#10' "%s"', [DirArquivos]));
+end;
+
+procedure TForm1.chArredondamentoItemMFDClick(Sender: TObject);
+begin
+  ACBrECF1.ArredondaItemMFD := chArredondamentoItemMFD.Checked ;
 end;
 
 end.

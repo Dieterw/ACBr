@@ -1248,7 +1248,7 @@ begin
                           (TruncFix(Qtd * ValorUnitario * 100 ) / 100)
    else
       fsTotalAcumulado := fsTotalAcumulado +
-                          RoundTo(Qtd * ValorUnitario, -2) ;
+                          RoundABNT(Qtd * ValorUnitario, -2) ;
 
    if fsItensCupom.Count = 1 then
       GravaArqINI

@@ -1623,7 +1623,7 @@ begin
   ValorStr    := IntToStrZero( Round( ValorUnitario*1000 ) ,9) ;
 
   if Arredonda then
-     ValTotal := RoundTo( Qtd*ValorUnitario, -2 )
+     ValTotal := RoundABNT( Qtd*ValorUnitario, -2 )
   else
      ValTotal := RoundTo(TruncFix(Qtd*ValorUnitario*100)/100,-2) ;
 

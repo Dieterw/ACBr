@@ -1066,7 +1066,7 @@ begin
   try
      with TACBrECFNaoFiscalItemCupom( fsItensCupom[NumItem-1] ) do
      begin
-        fsSubTotal := RoundTo(Subtotal - ( RoundTo( Qtd * ValorUnit,-2) + Desconto ) ,-2);
+        fsSubTotal := RoundTo(Subtotal - ( RoundABNT( Qtd * ValorUnit,-2) + Desconto ) ,-2);
         Qtd := 0;
 
         with TACBrECFNaoFiscalAliquota( fsAliquotas[PosAliq] ) do
@@ -1342,7 +1342,7 @@ begin
   else
      StrPreco := FormatFloat('####0.000',ValorUnitario ) ;
 
-  Total   := RoundTo( Qtd * ValorUnitario, -2) ;
+  Total   := RoundABNT( Qtd * ValorUnitario, -2) ;
   ValDesc := 0 ;
   PorcDesc:= 0 ;
   if ValorDescontoAcrescimo > 0 then

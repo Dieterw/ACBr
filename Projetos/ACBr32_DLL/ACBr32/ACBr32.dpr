@@ -3,8 +3,10 @@ library ACBr32;
 uses
   ACBrCommonDll,
   ACBrECFDll,
+  ACBrPAFDll,
   ACBrBALDll,
-  ACBrLCBDll;
+  ACBrLCBDll,
+  ACBrAACDll;
 
 begin
 end.

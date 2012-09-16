@@ -1,4 +1,4 @@
-unit ACBrPAFDll;
+﻿unit ACBrPAFDll;
 
 interface
 
@@ -31,7 +31,6 @@ type TRegistroHD1Rec = record
    CNPJ             : array[0..14] of char;
    IE               : array[0..14] of char;
    IM               : array[0..14] of char;
-   InclusaoExclusao : Boolean;
 end;
 
 type TRegistroHD2Rec = record
@@ -70,8 +69,27 @@ type TregistroC2Rec = record
    RegistroValido        : Boolean;
 end;
 
+type TRegistroD3Rec = record
+   DT_INCLUSAO    : double;
+   NUM_ITEM       : Integer;
+   COD_ITEM       : array[0..14] of char;
+   DESC_ITEM      : array[0..100] of char;
+   QTDE_ITEM      : Double;
+   UNI_ITEM       : array[0..3] of char;
+   VL_UNIT        : Double;
+   VL_DESCTO      : Double;
+   VL_ACRES       : Double;
+   VL_TOTAL       : Double;
+   DEC_VL_UNIT    : Integer;
+   DEC_QTDE_ITEM  : Integer;
+   SIT_TRIB       : array[0..1] of char;
+   ALIQ           : Double;
+   IND_CANC       : array[0..1] of char;
+   RegistroValido : Boolean;
+end;
+
 type TRegistroD2Rec = record
-   QTD_ITENS      : Integer;
+   QTD_D3         : Integer;
    NUM_FAB        : array[0..20] of char;
    MF_ADICIONAL   : array[0..1] of char;
    TIPO_ECF       : array[0..7] of char;
@@ -108,25 +126,6 @@ type TRegistroH2Rec = record
     RegistroValido   : boolean;
 end;
 
-type TRegistroD3Rec = record
-   DT_INCLUSAO    : double;
-   NUM_ITEM       : Integer;
-   COD_ITEM       : array[0..14] of char;
-   DESC_ITEM      : array[0..100] of char;
-   QTDE_ITEM      : Double;
-   UNI_ITEM       : array[0..3] of char;
-   VL_UNIT        : Double;
-   VL_DESCTO      : Double;
-   VL_ACRES       : Double;
-   VL_TOTAL       : Double;
-   DEC_VL_UNIT    : Integer;
-   DEC_QTDE_ITEM  : Integer;
-   SIT_TRIB       : array[0..1] of char;
-   ALIQ           : Double;
-   IND_CANC       : array[0..1] of char;
-   RegistroValido : Boolean;
-end;
-
 type TRegistroP2Rec = record
    COD_MERC_SERV  : array[0..14] of char;
    DESC_MERC_SERV : array[0..50] of char;
@@ -139,6 +138,135 @@ type TRegistroP2Rec = record
    RegistroValido : Boolean;
 end;
 
+type TRegistroR1Rec = record
+   NUM_FAB          : array[0..20] of char;
+   MF_ADICIONAL     : array[0..1] of char;
+   TIPO_ECF         : array[0..7] of char;
+   MARCA_ECF        : array[0..20] of char;
+   MODELO_ECF       : array[0..20] of char;
+   VERSAO_SB        : array[0..10] of char;
+   DT_INST_SB       : Double;
+   HR_INST_SB       : Double;
+   NUM_SEQ_ECF      : Integer;
+   CNPJ             : array[0..14] of char;
+   IE               : array[0..14] of char;
+   CNPJ_SH          : array[0..14] of char;
+   IE_SH            : array[0..14] of char;
+   IM_SH            : array[0..14] of char;
+   NOME_SH          : array[0..40] of char;
+   NOME_PAF         : array[0..40] of char;
+   VER_PAF          : array[0..10] of char;
+   COD_MD5          : array[0..32] of char;
+   DT_INI           : Double;
+   DT_FIN           : Double;
+   ER_PAF_ECF       : array[0..4] of char;
+   InclusaoExclusao : Boolean;
+   RegistroValido   : Boolean;
+end;
+
+type TRegistroR2Rec = record
+    QTD_R3         : integer;
+    NUM_USU        : integer;
+    CRZ            : integer;
+    COO            : integer;
+    CRO            : integer;
+    DT_MOV         : Double;
+    DT_EMI         : Double;
+    HR_EMI         : Double;
+    VL_VBD         : Double;
+    PAR_ECF        : array[0..1] of char;
+    RegistroValido : boolean;
+end;
+
+type TRegistroR3Rec = record
+    TOT_PARCIAL    : array[0..7] of char;
+    VL_ACUM        : Double;
+    RegistroValido : boolean;
+end;
+
+type TRegistroR4Rec = record
+    QTD_R5         : integer;
+    QTD_R7         : integer;
+    NUM_USU        : integer;
+    NUM_CONT       : integer;
+    COO            : integer;
+    DT_INI         : Double;
+    SUB_DOCTO      : Double;
+    SUB_DESCTO     : Double;
+    TP_DESCTO      : array[0..1] of char;
+    SUB_ACRES      : Double;
+    TP_ACRES       : array[0..1] of char;
+    VL_TOT         : Double;
+    CANC           : array[0..1] of char;
+    VL_CA          : Double;
+    ORDEM_DA       : array[0..1] of char;
+    NOME_CLI       : array[0..40] of char;
+    fCNPJ_CPF      : array[0..14] of char;
+    RegistroValido : boolean;
+end;
+
+type TRegistroR5Rec = record
+    NUM_ITEM       : integer;
+    COD_ITEM       : array[0..14] of char;
+    DESC_ITEM      : array[0..100] of char;
+    QTDE_ITEM      : double;
+    UN_MED         : array[0..3] of char;
+    VL_UNIT        : double;
+    DESCTO_ITEM    : double;
+    ACRES_ITEM     : double;
+    VL_TOT_ITEM    : double;
+    COD_TOT_PARC   : array[0..7] of char;
+    IND_CANC       : array[0..1] of char;
+    QTDE_CANC      : double;
+    VL_CANC        : double;
+    VL_CANC_ACRES  : double;
+    IAT            : array[0..1] of char;
+    IPPT           : array[0..1] of char;
+    QTDE_DECIMAL   : integer;
+    VL_DECIMAL     : integer;
+    RegistroValido : boolean;
+end;
+
+type TRegistroR6Rec = record
+    QTD_R7         : integer;
+    NUM_USU        : integer;
+    COO            : integer;
+    GNF            : integer;
+    GRG            : integer;
+    CDC            : integer;
+    DENOM          : array[0..2] of char;
+    DT_FIN         : double;
+    HR_FIN         : double;
+    RegistroValido : boolean;
+end;
+
+type TRegistroR7Rec = record
+    CCF            : integer;
+    GNF            : integer;
+    MP             : array[0..15] of char;
+    VL_PAGTO       : double;
+    IND_EST        : array[0..1] of char;
+    VL_EST         : double;
+    RegistroValido : boolean;
+end;
+
+type TRegistroT2Rec = record
+   DT_MOV         : Double;
+   TP_DOCTO       : array[0..10] of char;
+   SERIE          : array[0..2] of char;
+   NUM_BILH_I     : integer;
+   NUM_BILH_F     : integer;
+   NUM_ECF        : array[0..20] of char;
+   CRZ            : integer;
+   CFOP           : array[0..4] of char;
+   VL_CONT        : Double;
+   VL_BASECALC    : Double;
+   ALIQ           : Double;
+   VL_IMPOSTO     : Double;
+   VL_ISENTAS     : Double;
+   VL_OUTRAS      : Double;
+   RegistroValido : boolean;
+end;
 implementation
 
 {
@@ -612,14 +740,14 @@ begin
          CPF_CNPJ       := RegistroD2Rec[i].CPF_CNPJ;
          RegistroValido := RegistroD2Rec[i].RegistroValido;
 
-         if RegistroD2Rec[i].QTD_ITENS < 1 then
+         if RegistroD2Rec[i].QTD_D3 < 1 then
          begin
             pafHandle^.PAF.PAF_D.LimpaRegistros;
             pafHandle^.UltimoErro := 'O numero de itens nas DAVs não pode ser Zero';
             Result := -1;
          end;
 
-         for D := 0 to RegistroD2Rec[i].QTD_ITENS - 1 do
+         for D := 0 to RegistroD2Rec[i].QTD_D3 - 1 do
          begin
          // adicionar os itens do dav, um para cada item
          with RegistroD3.New do
@@ -802,7 +930,7 @@ begin
    pafHandle^.PAF.PAF_P.RegistroP1.CNPJ             := RegistroP1Rec.CNPJ;
    pafHandle^.PAF.PAF_P.RegistroP1.IE               := RegistroP1Rec.IE;
    pafHandle^.PAF.PAF_P.RegistroP1.IM               := RegistroP1Rec.IM;
-   pafHandle^.PAF.PAF_P.RegistroP1.InclusaoExclusao := RegistroP1Rec.InclusaoExclusao;
+
    pafHandle^.PAF.PAF_P.RegistroP2.Clear;
 
    for i := 0 to CountP2 - 1 do
@@ -833,6 +961,66 @@ begin
   end;
 end;
 
+Function PAF_SaveFileTXT_T(const pafHandle: PPAFHandle; const RegistroT1Rec : TRegistroHD1Rec;
+      const RegistroT2Rec : array of TRegistroT2Rec; const CountT2 : Integer; const Arquivo: pChar) : Integer;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+var
+  i : Integer;
+begin
+  if (pafHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+  if(CountT2 <= 0) then
+  begin
+     pafHandle^.UltimoErro := 'O numero de Itens não pode ser Zero';
+     Result := -1;
+     Exit;
+  end;
+
+  try
+   pafHandle^.PAF.PAF_T.RegistroT1.RAZAOSOCIAL      := RegistroT1Rec.RAZAOSOCIAL;
+   pafHandle^.PAF.PAF_T.RegistroT1.UF               := RegistroT1Rec.UF;
+   pafHandle^.PAF.PAF_T.RegistroT1.CNPJ             := RegistroT1Rec.CNPJ;
+   pafHandle^.PAF.PAF_T.RegistroT1.IE               := RegistroT1Rec.IE;
+   pafHandle^.PAF.PAF_T.RegistroT1.IM               := RegistroT1Rec.IM;
+
+   pafHandle^.PAF.PAF_T.RegistroT2.Clear;
+
+   for i := 0 to CountT2 - 1 do
+   begin
+   with pafHandle^.PAF.PAF_T.RegistroT2.New do
+   begin
+   DT_MOV         := RegistroT2Rec[i].DT_MOV;
+   TP_DOCTO       := RegistroT2Rec[i].TP_DOCTO;
+   SERIE          := RegistroT2Rec[i].SERIE;
+   NUM_BILH_I     := RegistroT2Rec[i].NUM_BILH_I;
+   NUM_BILH_F     := RegistroT2Rec[i].NUM_BILH_F;
+   NUM_ECF        := RegistroT2Rec[i].NUM_ECF;
+   CRZ            := RegistroT2Rec[i].CRZ;
+   CFOP           := RegistroT2Rec[i].CFOP;
+   VL_CONT        := RegistroT2Rec[i].VL_CONT;
+   VL_BASECALC    := RegistroT2Rec[i].VL_BASECALC;
+   ALIQ           := RegistroT2Rec[i].ALIQ;
+   VL_IMPOSTO     := RegistroT2Rec[i].VL_IMPOSTO;
+   VL_ISENTAS     := RegistroT2Rec[i].VL_ISENTAS;
+   VL_OUTRAS      := RegistroT2Rec[i].VL_OUTRAS;
+   RegistroValido := RegistroT2Rec[i].RegistroValido;
+   end;
+   end;
+
+   pafHandle^.PAF.SaveFileTXT_T(Arquivo);
+   Result := 0;
+  except
+  on exception : Exception do
+  begin
+  pafHandle^.UltimoErro := exception.Message;
+  pafHandle^.PAF.PAF_T.LimpaRegistros;
+  Result := -1;
+  end
+  end;
+end;
 exports
 
 { Funções }
@@ -851,7 +1039,7 @@ PAF_SetAAC,
 {DAV D}
 PAF_SaveFileTXT_C, PAF_SaveFileTXT_D,
 PAF_SaveFileTXT_E, PAF_SaveFileTXT_H,
-PAF_SaveFileTXT_P;
+PAF_SaveFileTXT_P, PAF_SaveFileTXT_T;
 
 end.
 

@@ -8,15 +8,21 @@ namespace ACBr.Net
 		#region Inner Types
 
 		protected delegate int CreateEntryPointDelegate(ref IntPtr handle);
+
 		protected delegate int DestroyEntryPointDelegate(ref IntPtr handle);
 
 		protected delegate int GetStringEntryPointDelegate(IntPtr handle, StringBuilder buffer, int bufferLen);
+
 		protected delegate int GetdoubleEntryPointDelegate(IntPtr handle, ref double value);
+
 		protected delegate int GetInt32EntryPointDelegate(IntPtr handle);
 
 		protected delegate int SetStringEntryPointDelegate(IntPtr handle, string value);
+
 		protected delegate int SetdoubleEntryPointDelegate(IntPtr handle, double value);
+
 		protected delegate int SetInt32EntryPointDelegate(IntPtr handle, int value);
+
 		protected delegate int SetBoolEntryPointDelegate(IntPtr handle, bool value);
 
 		#endregion Inner Types
@@ -51,6 +57,7 @@ namespace ACBr.Net
 		#endregion Constructor
 
 		#region P/Invoke Helpers
+
 		protected void Create(CreateEntryPointDelegate entryPoint)
 		{
 			var ret = entryPoint(ref this.handle);
@@ -161,7 +168,7 @@ namespace ACBr.Net
 			CheckResult(ret);
 		}
 
-		internal protected abstract void CheckResult(int result);
+		protected internal abstract void CheckResult(int result);
 
 		#endregion P/Invoke Helpers
 

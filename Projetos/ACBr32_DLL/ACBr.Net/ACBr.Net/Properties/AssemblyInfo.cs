@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("ACBr.Net")]
-[assembly: AssemblyDescription("Projeto ACBr")]
+[assembly: AssemblyDescription("Projeto ACBr para .Net")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("ACBr")]
 [assembly: AssemblyProduct("ACBr.Net")]

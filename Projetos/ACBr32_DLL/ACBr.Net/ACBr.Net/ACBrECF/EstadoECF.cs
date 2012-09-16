@@ -5,7 +5,7 @@
 		#region Documentation
 
 		/// <summary>
-		///  Porta Serial ainda nao foi aberta
+		/// Porta Serial ainda nao foi aberta
 		/// </summary>
 
 		#endregion Documentation
@@ -25,7 +25,7 @@
 		#region Documentation
 
 		/// <summary>
-		///  Impressora Livre, sem nenhum cupom aberto, pronta para nova venda, Reducao Z e Leitura X ok, pode ou nao já ter ocorrido 1ª venda no dia...
+		/// Impressora Livre, sem nenhum cupom aberto, pronta para nova venda, Reducao Z e Leitura X ok, pode ou nao já ter ocorrido 1ª venda no dia...
 		/// </summary>
 
 		#endregion Documentation

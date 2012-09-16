@@ -72,41 +72,42 @@ namespace ACBr.Net.ECFTeste
 			}
 		}
 
-        public bool Imprimir
-        {
-            get
+		public bool Imprimir
+		{
+			get
 			{
-                return radImprimir.Checked;
+				return radImprimir.Checked;
 			}
-        }
+		}
 
-        public bool SalvarCotepe1704
-        {
-            get
-            {
-                return radCotepe1704.Checked;
-            }
-        }
+		public bool SalvarCotepe1704
+		{
+			get
+			{
+				return radCotepe1704.Checked;
+			}
+		}
 
-        public bool SalvarEspelho
-        {
-            get
-            {
-                return radEspelhoMFD.Checked;
-            }
-        }
+		public bool SalvarEspelho
+		{
+			get
+			{
+				return radEspelhoMFD.Checked;
+			}
+		}
 
-        public string Caminho
-        {
-            get
-            {
-                return txtLocal.Text;
-            }
-        }
+		public string Caminho
+		{
+			get
+			{
+				return txtLocal.Text;
+			}
+		}
 
 		#endregion Properties
 
 		#region EventHandlers
+
 		private void ccrRadioButton_CheckedChanged(object sender, EventArgs e)
 		{
 			initialCCR.Enabled = ccrRadioButton.Checked;
@@ -119,30 +120,31 @@ namespace ACBr.Net.ECFTeste
 			finalDateTime.Enabled = periodRadioButton.Checked;
 		}
 
-        private void simpleCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            radCotepe1704.Checked = false;
-            radCotepe1704.Enabled = !simpleCheckBox.Checked;
-        }
+		private void simpleCheckBox_CheckedChanged(object sender, EventArgs e)
+		{
+			radCotepe1704.Checked = false;
+			radCotepe1704.Enabled = !simpleCheckBox.Checked;
+		}
 
-        private void radCotepe1704_CheckedChanged(object sender, EventArgs e)
-        {
-            txtLocal.Enabled = radCotepe1704.Checked;
-            btnBtnProcurar.Enabled = radCotepe1704.Checked;
-        }
+		private void radCotepe1704_CheckedChanged(object sender, EventArgs e)
+		{
+			txtLocal.Enabled = radCotepe1704.Checked;
+			btnBtnProcurar.Enabled = radCotepe1704.Checked;
+		}
 
-        private void radEspelhoMFD_CheckedChanged(object sender, EventArgs e)
-        {
-            txtLocal.Enabled = radEspelhoMFD.Checked;
-            btnBtnProcurar.Enabled = radEspelhoMFD.Checked;
-        }
+		private void radEspelhoMFD_CheckedChanged(object sender, EventArgs e)
+		{
+			txtLocal.Enabled = radEspelhoMFD.Checked;
+			btnBtnProcurar.Enabled = radEspelhoMFD.Checked;
+		}
 
-        private void btnBtnProcurar_Click(object sender, EventArgs e)
-        {
-            FolderBrowserDialog fold = new FolderBrowserDialog();
-            if (fold.ShowDialog() == DialogResult.OK)
-                txtLocal.Text = fold.SelectedPath;
-        }
-		#endregion EventHandlers          
+		private void btnBtnProcurar_Click(object sender, EventArgs e)
+		{
+			FolderBrowserDialog fold = new FolderBrowserDialog();
+			if (fold.ShowDialog() == DialogResult.OK)
+				txtLocal.Text = fold.SelectedPath;
+		}
+
+		#endregion EventHandlers
 	}
 }

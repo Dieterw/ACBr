@@ -38,4 +38,5 @@ namespace ACBr.Net
 
 		public bool RegistroValido { get; set; }
 	}
+
 }

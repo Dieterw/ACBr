@@ -2056,6 +2056,9 @@ begin
   qrmObsExcEmitente.Lines.Text := StringReplace( qrmObsExcEmitente.Lines.Text, ';', #13, [rfReplaceAll] );
   qrmObsExcEmitente.Lines.EndUpdate;
 
+  // Incluido por Italo em 17/09/2012
+  qrmObsFisco.Lines.Add( StringReplace( FCTe.Imp.infAdFisco , '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
+
   // Linhas inseridas por Italo em 11/10/2011
   for i := 0 to FCTe.Compl.ObsFisco.Count-1 do
    with FCTe.Compl.ObsFisco.Items[i] do

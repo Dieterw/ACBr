@@ -322,6 +322,10 @@ namespace ACBr.Net.ECFTeste
 			try
 			{
 				acbrECF.Desativar();
+				ativarCheckButton.Checked = false;
+				ativarCheckButton.Text = "Ativar";
+
+				WriteResp("Desativado: OK!");
 				messageToolStripStatusLabel.Text = "OK";
 				descriptionToolStripStatusLabel.Text = string.Empty;
 			}
@@ -691,6 +695,43 @@ namespace ACBr.Net.ECFTeste
 			}
 		}
 
+		private void TestaCupomDAV()
+		{
+			try
+			{
+				if (acbrECF.Estado == EstadoECF.Livre)
+				{
+					respListBox.Items.Add("Abrindo DAV ...");
+					acbrECF.DAV_Abrir(DateTime.Now, "Pedido", "0001", "Teste", "Rafael", "Teste DAV", "99999999999", "Rafael", "Rua Teste");
+					Application.DoEvents();
+				}
+
+				if (acbrECF.Estado == EstadoECF.Relatorio)
+				{
+					for (int i = 0; i < 10; i++)
+					{
+						respListBox.Items.Add(String.Format("DAV Item #{0} ...", i));
+						acbrECF.DAV_RegistrarItem(string.Format("{0:0000000000000}", i + 1), "PRODUTO àáèéìíòóùúü " + i, "UN", 1, 1.99, 0, 0, false);	
+					}
+
+					acbrECF.DAV_Fechar("Mensagem àáèéìíòóùúü FechaDAV ACBr.NET");
+					respListBox.Items.Add("Fecha DAV ...");
+					WriteResp("Finalizado!");
+				}				
+			}
+			catch (NullReferenceException)
+			{
+				messageToolStripStatusLabel.Text = "Não inicializado.";
+				descriptionToolStripStatusLabel.Text = string.Empty;
+			}
+			catch (Exception exception)
+			{
+				messageToolStripStatusLabel.Text = "Exception";
+				descriptionToolStripStatusLabel.Text = exception.Message;
+				WriteResp(exception.Message);
+			}
+		}
+
 		private void LeituraX()
 		{
 			try
@@ -715,7 +756,7 @@ namespace ACBr.Net.ECFTeste
 		{
 			try
 			{
-				acbrECF.LeituraX();
+				acbrECF.ReducaoZ();
 				WriteResp("ReducaoZ OK");
 				descriptionToolStripStatusLabel.Text = string.Empty;
 			}
@@ -983,6 +1024,11 @@ namespace ACBr.Net.ECFTeste
 			TestaCupomFiscal();
 		}
 
+		private void testarDAVToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			TestaCupomDAV();
+		}
+
 		private void leituraXToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			LeituraX();
@@ -1248,6 +1294,8 @@ namespace ACBr.Net.ECFTeste
 		}
 
 		#endregion Event Handlers
+
+		
 
 		
 	}

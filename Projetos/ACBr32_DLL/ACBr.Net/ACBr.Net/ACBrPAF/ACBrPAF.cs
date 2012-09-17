@@ -6,7 +6,7 @@ namespace ACBr.Net
 	{
 		#region Fields
 
-		private ACBrAAC aac;	
+		private ACBrAAC aac;
 
 		#endregion Fields
 
@@ -20,6 +20,7 @@ namespace ACBr.Net
 		#endregion Constructor
 
 		#region Properties
+
 		public string Path
 		{
 			get
@@ -104,11 +105,13 @@ namespace ACBr.Net
 				}
 			}
 		}
+
 		#endregion Properties
 
 		#region Methods
 
 		#region SaveFileTXT
+
 		public void SaveFileTXT_C(ACBrPAFRegistroC1 RegistroC1, ACBrPAFRegistroC2[] RegistroC2, string arquivo)
 		{
 			int i;
@@ -157,7 +160,7 @@ namespace ACBr.Net
 			}
 
 			ACBrDll.RegistroHD1Rec RegistroD1Rec = new ACBrDll.RegistroHD1Rec();
-			ACBrDll.RegistroD2Rec[] RegistroD2Rec = new ACBrDll.RegistroD2Rec[RegistroD2.Length];			
+			ACBrDll.RegistroD2Rec[] RegistroD2Rec = new ACBrDll.RegistroD2Rec[RegistroD2.Length];
 			ACBrDll.RegistroD3Rec[] RegistroD3Rec = new ACBrDll.RegistroD3Rec[D3];
 
 			RegistroD1Rec.RAZAOSOCIAL = ToUTF8(RegistroD1.RazaoSocial);
@@ -311,6 +314,7 @@ namespace ACBr.Net
 			int ret = ACBrDll.PAF_SaveFileTXT_P(this.Handle, RegistroP1Rec, RegistroP2Rec, RegistroP2.Length, ToUTF8(arquivo));
 			CheckResult(ret);
 		}
+
 		#endregion SaveFileTXT
 
 		#region Override Methods

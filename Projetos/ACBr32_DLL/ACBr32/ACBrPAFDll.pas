@@ -201,7 +201,7 @@ type TRegistroR4Rec = record
     VL_CA          : Double;
     ORDEM_DA       : array[0..1] of char;
     NOME_CLI       : array[0..40] of char;
-    fCNPJ_CPF      : array[0..14] of char;
+    CNPJ_CPF      : array[0..14] of char;
     RegistroValido : boolean;
 end;
 
@@ -624,7 +624,7 @@ begin
   end;
 end;
 
-{Gerar o arquivo PAF}
+{Salvar arquivos PAF}
 Function PAF_SaveFileTXT_C(const pafHandle: PPAFHandle; const RegistroC1Rec : TRegistroHD1Rec;
       const RegistroC2Rec : array of TRegistroC2Rec; const CountC2 : Integer; const Arquivo: pChar) : Integer ;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
 var
@@ -961,6 +961,231 @@ begin
   end;
 end;
 
+Function PAF_SaveFileTXT_R(const pafHandle: PPAFHandle; const RegistroR1Rec : TRegistroR1Rec;
+      const RegistroR2Rec : array of TRegistroR2Rec; const CountR2 : Integer; const RegistroR3Rec: array of TRegistroR3Rec;
+      const RegistroR4Rec: array of TRegistroR4Rec; const CountR4 : Integer; const RegistroR5Rec: array of TRegistroR5Rec;
+      const RegistroR6Rec: array of TRegistroR6Rec; const CountR6 : Integer; const RegistroR7Rec: array of TRegistroR7Rec; const Arquivo: pChar) : Integer ;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+var
+  i, D, IndexR3, IndexR5, IndexR7: Integer;
+begin
+  if (pafHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+  if(CountR2 <= 0) then
+  begin
+     pafHandle^.UltimoErro := 'O numero de Registros não pode ser Zero';
+     Result := -1;
+     Exit;
+  end;
+
+  if(CountR4 <= 0) then
+  begin
+     pafHandle^.UltimoErro := 'O numero de Registros não pode ser Zero';
+     Result := -1;
+     Exit;
+  end;
+
+  if(CountR6 <= 0) then
+  begin
+     pafHandle^.UltimoErro := 'O numero de Registros não pode ser Zero';
+     Result := -1;
+     Exit;
+  end;
+
+  try
+   IndexR3 := 0;
+   IndexR5 := 0;
+   IndexR7 := 0;
+   pafHandle^.PAF.PAF_R.LimpaRegistros;
+
+   pafHandle^.PAF.PAF_R.RegistroR01.NUM_FAB          := RegistroR1Rec.NUM_FAB;
+   pafHandle^.PAF.PAF_R.RegistroR01.MF_ADICIONAL     := RegistroR1Rec.MF_ADICIONAL;
+   pafHandle^.PAF.PAF_R.RegistroR01.TIPO_ECF         := RegistroR1Rec.TIPO_ECF;
+   pafHandle^.PAF.PAF_R.RegistroR01.MARCA_ECF        := RegistroR1Rec.MARCA_ECF;
+   pafHandle^.PAF.PAF_R.RegistroR01.MODELO_ECF       := RegistroR1Rec.MODELO_ECF;
+   pafHandle^.PAF.PAF_R.RegistroR01.VERSAO_SB        := RegistroR1Rec.VERSAO_SB;
+   pafHandle^.PAF.PAF_R.RegistroR01.DT_INST_SB       := RegistroR1Rec.DT_INST_SB;
+   pafHandle^.PAF.PAF_R.RegistroR01.HR_INST_SB       := RegistroR1Rec.HR_INST_SB;
+   pafHandle^.PAF.PAF_R.RegistroR01.NUM_SEQ_ECF      := RegistroR1Rec.NUM_SEQ_ECF;
+   pafHandle^.PAF.PAF_R.RegistroR01.CNPJ             := RegistroR1Rec.CNPJ;
+   pafHandle^.PAF.PAF_R.RegistroR01.IE               := RegistroR1Rec.IE;
+   pafHandle^.PAF.PAF_R.RegistroR01.CNPJ_SH          := RegistroR1Rec.CNPJ_SH;
+   pafHandle^.PAF.PAF_R.RegistroR01.IE_SH            := RegistroR1Rec.IE_SH;
+   pafHandle^.PAF.PAF_R.RegistroR01.IM_SH            := RegistroR1Rec.IM_SH;
+   pafHandle^.PAF.PAF_R.RegistroR01.NOME_SH          := RegistroR1Rec.NOME_SH;
+   pafHandle^.PAF.PAF_R.RegistroR01.NOME_PAF         := RegistroR1Rec.NOME_PAF;
+   pafHandle^.PAF.PAF_R.RegistroR01.VER_PAF          := RegistroR1Rec.VER_PAF;
+   pafHandle^.PAF.PAF_R.RegistroR01.COD_MD5          := RegistroR1Rec.COD_MD5;
+   pafHandle^.PAF.PAF_R.RegistroR01.DT_INI           := RegistroR1Rec.DT_INI;
+   pafHandle^.PAF.PAF_R.RegistroR01.DT_FIN           := RegistroR1Rec.DT_FIN;
+   pafHandle^.PAF.PAF_R.RegistroR01.ER_PAF_ECF       := RegistroR1Rec.ER_PAF_ECF;
+   pafHandle^.PAF.PAF_R.RegistroR01.InclusaoExclusao := RegistroR1Rec.InclusaoExclusao;
+   pafHandle^.PAF.PAF_R.RegistroR01.RegistroValido   := RegistroR1Rec.RegistroValido;
+
+   //Registro R2 e R3
+   for i := 0 to CountR2 - 1 do
+   begin
+       with pafHandle^.PAF.PAF_R.RegistroR02.New do
+       begin
+       NUM_USU        := RegistroR2Rec[i].NUM_USU;
+       CRZ            := RegistroR2Rec[i].CRZ;
+       COO            := RegistroR2Rec[i].COO;
+       CRO            := RegistroR2Rec[i].CRO;
+       DT_MOV         := RegistroR2Rec[i].DT_MOV;
+       DT_EMI         := RegistroR2Rec[i].DT_EMI;
+       HR_EMI         := RegistroR2Rec[i].HR_EMI;
+       VL_VBD         := RegistroR2Rec[i].VL_VBD;
+       PAR_ECF        := RegistroR2Rec[i].PAR_ECF;
+       RegistroValido := RegistroR2Rec[i].RegistroValido;
+
+         if RegistroR2Rec[i].QTD_R3 < 1 then
+         begin
+            pafHandle^.PAF.PAF_R.LimpaRegistros;
+            pafHandle^.UltimoErro := 'O numero de itens no registro R3 não pode ser Zero';
+            Result := -1;
+         end;
+
+         for D := 0 to RegistroR2Rec[i].QTD_R3 - 1 do
+         begin
+         with RegistroR03.New do
+         begin
+         TOT_PARCIAL    := RegistroR3Rec[IndexR3].TOT_PARCIAL;
+         VL_ACUM        := RegistroR3Rec[IndexR3].VL_ACUM;
+         RegistroValido := RegistroR3Rec[IndexR3].RegistroValido;
+         end;
+         inc(IndexR3);
+         end;
+       end;
+   end;
+
+   //Registro R4, R5 e R7
+   for i := 0 to CountR4 - 1 do
+   begin
+       with pafHandle^.PAF.PAF_R.RegistroR04.New do
+       begin
+       NUM_USU        :=  RegistroR4Rec[i].NUM_USU;
+       NUM_CONT       :=  RegistroR4Rec[i].NUM_CONT;
+       COO            :=  RegistroR4Rec[i].COO;
+       DT_INI         :=  RegistroR4Rec[i].DT_INI;
+       SUB_DOCTO      :=  RegistroR4Rec[i].SUB_DOCTO;
+       SUB_DESCTO     :=  RegistroR4Rec[i].SUB_DESCTO;
+       TP_DESCTO      :=  RegistroR4Rec[i].TP_DESCTO;
+       SUB_ACRES      :=  RegistroR4Rec[i].SUB_ACRES;
+       TP_ACRES       :=  RegistroR4Rec[i].TP_ACRES;
+       VL_TOT         :=  RegistroR4Rec[i].VL_TOT;
+       CANC           :=  RegistroR4Rec[i].CANC;
+       VL_CA          :=  RegistroR4Rec[i].VL_CA;
+       ORDEM_DA       :=  RegistroR4Rec[i].ORDEM_DA;
+       NOME_CLI       :=  RegistroR4Rec[i].NOME_CLI;
+       CNPJ_CPF       :=  RegistroR4Rec[i].CNPJ_CPF;
+       RegistroValido :=  RegistroR4Rec[i].RegistroValido;
+
+         if RegistroR4Rec[i].QTD_R5 < 1 then
+         begin
+            pafHandle^.PAF.PAF_R.LimpaRegistros;
+            pafHandle^.UltimoErro := 'O numero de itens no registro R5 não pode ser Zero';
+            Result := -1;
+         end;
+
+         for D := 0 to RegistroR4Rec[i].QTD_R5 - 1 do
+         begin
+         with RegistroR05.New do
+         begin
+         NUM_ITEM       := RegistroR5Rec[IndexR5].NUM_ITEM;
+         COD_ITEM       := RegistroR5Rec[IndexR5].COD_ITEM;
+         DESC_ITEM      := RegistroR5Rec[IndexR5].DESC_ITEM;
+         QTDE_ITEM      := RegistroR5Rec[IndexR5].QTDE_ITEM;
+         UN_MED         := RegistroR5Rec[IndexR5].UN_MED;
+         VL_UNIT        := RegistroR5Rec[IndexR5].VL_UNIT;
+         DESCTO_ITEM    := RegistroR5Rec[IndexR5].DESCTO_ITEM;
+         ACRES_ITEM     := RegistroR5Rec[IndexR5].ACRES_ITEM;
+         VL_TOT_ITEM    := RegistroR5Rec[IndexR5].VL_TOT_ITEM;
+         COD_TOT_PARC   := RegistroR5Rec[IndexR5].COD_TOT_PARC;
+         IND_CANC       := RegistroR5Rec[IndexR5].IND_CANC;
+         QTDE_CANC      := RegistroR5Rec[IndexR5].QTDE_CANC;
+         VL_CANC        := RegistroR5Rec[IndexR5].VL_CANC;
+         VL_CANC_ACRES  := RegistroR5Rec[IndexR5].VL_CANC_ACRES;
+         IAT            := RegistroR5Rec[IndexR5].IAT;
+         IPPT           := RegistroR5Rec[IndexR5].IPPT;
+         QTDE_DECIMAL   := RegistroR5Rec[IndexR5].QTDE_DECIMAL;
+         VL_DECIMAL     := RegistroR5Rec[IndexR5].VL_DECIMAL;
+         RegistroValido := RegistroR5Rec[IndexR5].RegistroValido;
+         end;
+         inc(IndexR5);
+         end;
+
+         for D := 0 to RegistroR4Rec[i].QTD_R7 - 1 do
+         begin
+         with RegistroR07.New do
+         begin
+         CCF            := RegistroR7Rec[IndexR7].CCF;
+         GNF            := RegistroR7Rec[IndexR7].GNF;
+         MP             := RegistroR7Rec[IndexR7].MP;
+         VL_PAGTO       := RegistroR7Rec[IndexR7].VL_PAGTO;
+         IND_EST        := RegistroR7Rec[IndexR7].IND_EST;
+         VL_EST         := RegistroR7Rec[IndexR7].VL_EST;
+         RegistroValido := RegistroR7Rec[IndexR7].RegistroValido;
+         end;
+         inc(IndexR7);
+         end;
+
+       end;
+   end;
+
+   //Registro R6 e R7
+   for i := 0 to CountR6 - 1 do
+   begin
+       with pafHandle^.PAF.PAF_R.RegistroR06.New do
+       begin
+       NUM_USU        := RegistroR6Rec[i].NUM_USU;
+       COO            := RegistroR6Rec[i].COO;
+       GNF            := RegistroR6Rec[i].GNF;
+       GRG            := RegistroR6Rec[i].GRG;
+       CDC            := RegistroR6Rec[i].CDC;
+       DENOM          := RegistroR6Rec[i].DENOM;
+       DT_FIN         := RegistroR6Rec[i].DT_FIN;
+       HR_FIN         := RegistroR6Rec[i].HR_FIN;
+       RegistroValido := RegistroR6Rec[i].RegistroValido;
+
+         if RegistroR6Rec[i].QTD_R7 < 1 then
+         begin
+            pafHandle^.PAF.PAF_R.LimpaRegistros;
+            pafHandle^.UltimoErro := 'O numero de itens no registro R7 não pode ser Zero';
+            Result := -1;
+         end;
+
+         for D := 0 to RegistroR6Rec[i].QTD_R7 - 1 do
+         begin
+         with RegistroR07.New do
+         begin
+         CCF            := RegistroR7Rec[IndexR7].CCF;
+         GNF            := RegistroR7Rec[IndexR7].GNF;
+         MP             := RegistroR7Rec[IndexR7].MP;
+         VL_PAGTO       := RegistroR7Rec[IndexR7].VL_PAGTO;
+         IND_EST        := RegistroR7Rec[IndexR7].IND_EST;
+         VL_EST         := RegistroR7Rec[IndexR7].VL_EST;
+         RegistroValido := RegistroR7Rec[IndexR7].RegistroValido;
+         end;
+         inc(IndexR7);
+         end;
+       end;
+   end;
+
+  pafHandle^.PAF.SaveFileTXT_R(Arquivo);
+  Result := 0;
+  except
+     on exception : Exception do
+     begin
+        pafHandle^.UltimoErro := exception.Message;
+        pafHandle^.PAF.PAF_R.LimpaRegistros;
+        Result := -1;
+     end
+  end;
+end;
+
 Function PAF_SaveFileTXT_T(const pafHandle: PPAFHandle; const RegistroT1Rec : TRegistroHD1Rec;
       const RegistroT2Rec : array of TRegistroT2Rec; const CountT2 : Integer; const Arquivo: pChar) : Integer;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
 var
@@ -1036,10 +1261,11 @@ PAF_GetTrimString, PAF_SetTrimString,
 PAF_GetAssinarArquivo, PAF_SetAssinarArquivo,
 PAF_SetAAC,
 
-{DAV D}
+{Salvar Arquivos PAF}
 PAF_SaveFileTXT_C, PAF_SaveFileTXT_D,
 PAF_SaveFileTXT_E, PAF_SaveFileTXT_H,
-PAF_SaveFileTXT_P, PAF_SaveFileTXT_T;
+PAF_SaveFileTXT_P, PAF_SaveFileTXT_R,
+PAF_SaveFileTXT_T;
 
 end.
 

@@ -181,6 +181,8 @@
 			this.txtIM = new System.Windows.Forms.TextBox();
 			this.txtUF = new System.Windows.Forms.TextBox();
 			this.ativarCheckButton = new System.Windows.Forms.CheckBox();
+			this.dAVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.testarDAVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStrip1.SuspendLayout();
 			this.menuStrip1.SuspendLayout();
 			this.tabControl.SuspendLayout();
@@ -245,6 +247,7 @@
             this.variáveisToolStripMenuItem,
             this.relatóriosToolStripMenuItem,
             this.cupomFiscalToolStripMenuItem,
+            this.dAVToolStripMenuItem,
             this.utilitariosToolStripMenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
@@ -1694,6 +1697,21 @@
 			this.ativarCheckButton.UseVisualStyleBackColor = true;
 			this.ativarCheckButton.CheckedChanged += new System.EventHandler(this.ativarCheckButton_CheckedChanged);
 			// 
+			// dAVToolStripMenuItem
+			// 
+			this.dAVToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.testarDAVToolStripMenuItem});
+			this.dAVToolStripMenuItem.Name = "dAVToolStripMenuItem";
+			this.dAVToolStripMenuItem.Size = new System.Drawing.Size(42, 20);
+			this.dAVToolStripMenuItem.Text = "DAV";
+			// 
+			// testarDAVToolStripMenuItem
+			// 
+			this.testarDAVToolStripMenuItem.Name = "testarDAVToolStripMenuItem";
+			this.testarDAVToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.testarDAVToolStripMenuItem.Text = "Testa DAV";
+			this.testarDAVToolStripMenuItem.Click += new System.EventHandler(this.testarDAVToolStripMenuItem_Click);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1901,6 +1919,8 @@
         private System.Windows.Forms.Button btnTipoP;
         private System.Windows.Forms.Button btnTipoD;
         private System.Windows.Forms.Button btnTipoC;
+		private System.Windows.Forms.ToolStripMenuItem dAVToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem testarDAVToolStripMenuItem;
     }
 }
 

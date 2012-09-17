@@ -97,6 +97,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 17/09/2012
+-- ACBrECFFiscNet --
+[-] Acerto no método ArquivoMFD_DLL para zpm fit/logger (por: Natanael)
+
 Data: 15/09/2012
 -- ACBrECF --
 [*] Métodos VendeItem revisados para usar a função ArredondaABNT.  (por:DSA)

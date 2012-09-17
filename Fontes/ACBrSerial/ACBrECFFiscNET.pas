@@ -3063,8 +3063,8 @@ begin
         if FileExists( NomeArquivo ) then
            DeleteFile( NomeArquivo ) ;
 
-        DiaIni := FormatDateTime('ddmmyy', DataInicial);
-        DiaFim := FormatDateTime('ddmmyy', DataFinal);
+        DiaIni := FormatDateTime('yyyymmdd', DataInicial);
+        DiaFim := FormatDateTime('yyyymmdd', DataFinal);
 
         iRet := xDLLReadLeMemorias( PortaSerial, ArqTmp, NumFab, #1);
 

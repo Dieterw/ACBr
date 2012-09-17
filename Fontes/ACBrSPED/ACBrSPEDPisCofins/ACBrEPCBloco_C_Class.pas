@@ -793,10 +793,16 @@ begin
           //
 
           case IND_PGTO of
-            tpVista : strIND_PGTO        := '0';
-            tpPrazo : strIND_PGTO        := '1';
-            tpSemPagamento : strIND_PGTO := '9';
-            tpNenhum : strIND_PGTO       := '';
+            tpVista : strIND_PGTO := '0';
+            tpPrazo : strIND_PGTO := '1';
+            tpSemPagamento :
+            begin
+               if DT_INI >= EncodeDate(2012,07,01) then
+                  strIND_PGTO := '2'
+               else
+                  strIND_PGTO := '9';
+            end;
+            tpNenhum : strIND_PGTO := '';
           end;
 
           case IND_FRT of

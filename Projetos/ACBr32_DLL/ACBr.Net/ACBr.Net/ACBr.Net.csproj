@@ -113,6 +113,7 @@
     <Compile Include="ACBrDLL\ACBrException.cs" />
     <Compile Include="ACBrECF\ACBrECFAliquota.cs" />
     <Compile Include="ACBrECF\ACBrECFFormaPagamento.cs" />
+    <Compile Include="ACBrEAD\EADDigest.cs" />
     <Compile Include="ACBrLCB\ACBrLCB.cs" />
     <Compile Include="ACBrECF\ACBrECFDadosRZ.cs" />
     <Compile Include="ACBrECF\ACBrECFRelatorioGerencial.cs" />

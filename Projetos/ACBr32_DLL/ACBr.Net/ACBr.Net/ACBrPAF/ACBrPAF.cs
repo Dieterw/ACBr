@@ -336,6 +336,7 @@ namespace ACBr.Net
 			{
 				R7 += R6.RegistroR7.Count;
 			}
+
 			#endregion Contadores
 
 			ACBrDll.RegistroR1Rec RegistroR1Rec = new ACBrDll.RegistroR1Rec();
@@ -345,7 +346,7 @@ namespace ACBr.Net
 			ACBrDll.RegistroR5Rec[] RegistroR5Rec = new ACBrDll.RegistroR5Rec[R5];
 			ACBrDll.RegistroR6Rec[] RegistroR6Rec = new ACBrDll.RegistroR6Rec[RegistroR6.Length];
 			ACBrDll.RegistroR7Rec[] RegistroR7Rec = new ACBrDll.RegistroR7Rec[R7];
-			
+
 			RegistroR1Rec.NUM_FAB = RegistroR1.NUM_FAB;
 			RegistroR1Rec.MF_ADICIONAL = RegistroR1.MF_ADICIONAL;
 			RegistroR1Rec.TIPO_ECF = RegistroR1.TIPO_ECF;
@@ -435,7 +436,7 @@ namespace ACBr.Net
 					RegistroR5Rec[ItemR5].IAT = RegistroR5.IAT;
 					RegistroR5Rec[ItemR5].IPPT = RegistroR5.IPPT;
 					RegistroR5Rec[ItemR5].QTDE_DECIMAL = RegistroR5.QTDE_DECIMAL;
-					RegistroR5Rec[ItemR5].VL_DECIMAL = RegistroR5.VL_DECIMAL; 
+					RegistroR5Rec[ItemR5].VL_DECIMAL = RegistroR5.VL_DECIMAL;
 					RegistroR5Rec[ItemR5].RegistroValido = RegistroR5.RegistroValido;
 					ItemR5++;
 				}
@@ -464,7 +465,7 @@ namespace ACBr.Net
 				RegistroR6Rec[i].CDC = RegistroR6[i].CDC;
 				RegistroR6Rec[i].DENOM = RegistroR6[i].DENOM;
 				RegistroR6Rec[i].DT_FIN = RegistroR6[i].DT_FIN.ToOADate();
-				RegistroR6Rec[i].HR_FIN = RegistroR6[i].HR_FIN.ToOADate();			
+				RegistroR6Rec[i].HR_FIN = RegistroR6[i].HR_FIN.ToOADate();
 				RegistroR6Rec[i].RegistroValido = RegistroR6[i].RegistroValido;
 
 				foreach (ACBrPAFRegistroR7 RegistroR7 in RegistroR6[i].RegistroR7)

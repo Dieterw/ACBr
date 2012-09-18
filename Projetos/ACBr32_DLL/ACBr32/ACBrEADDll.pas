@@ -10,7 +10,8 @@ uses
 
 {Classe que armazena os EventHandlers para o componente ACBr}
 type TEventHandlers = class
-
+   procedure GetChavePrivada(var Chave : AnsiString);
+   procedure GetChavePublica(var Chave : AnsiString);
 end;
 
 {Handle para o componente TACBrECF }
@@ -22,6 +23,7 @@ end;
 
 {Ponteiro para o Handle }
 type PEADHandle = ^TEADHandle;
+
 
 implementation
 
@@ -64,6 +66,8 @@ begin
      New(eadHandle);
      eadHandle^.EAD := TACBrEAD.Create(nil);
      eadHandle^.EventHandlers := TEventHandlers.Create();
+     eadHandle^.EAD.OnGetChavePrivada := eadHandle^.EventHandlers.GetChavePrivada;
+     eadHandle^.EAD.OnGetChavePublica := eadHandle^.EventHandlers.GetChavePublica;
      eadHandle^.UltimoErro:= '';
      Result := 0;
   except
@@ -124,6 +128,19 @@ begin
   end;
 end;
 
+{Procedures}
+procedure TEventHandlers.GetChavePrivada(var Chave : AnsiString);
+begin
+  //
+end;
+
+procedure TEventHandlers.GetChavePublica(var Chave : AnsiString);
+begin
+  //
+end;
+
+{Propriedades}
+
 {Funções}
 function EAD_GerarChaves(const eadHandle: PEADHandle; ChavePUB, ChavePRI : pChar; const BufferLen : Integer): Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF}  export;
 var
@@ -154,6 +171,176 @@ begin
   end
 end;
 
+function EAD_CalcularModuloeExpoente(const eadHandle: PEADHandle; ModuloBuffer, ExpoenteBuffer: pChar; const BufferLen : Integer): Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF}  export;
+var
+  Modulo, Expoente : AnsiString ;
+begin
+  try
+     if (eadHandle = nil) then
+     begin
+     Result := -2;
+     Exit;
+     end;
+
+     Modulo := '' ;
+     Expoente := '' ;
+     eadHandle^.EAD.CalcularModuloeExpoente(Modulo, Expoente);
+
+     StrPLCopy(ModuloBuffer, Modulo, BufferLen);
+     StrPLCopy(ExpoenteBuffer, Expoente, BufferLen);
+     Result := 1;
+  except
+     on exception : Exception do
+     begin
+        eadHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end
+end;
+
+function EAD_GerarXMLeECFc(const eadHandle: PEADHandle;const NomeSH, PathArquivo: pChar): Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF}  export;
+begin
+  try
+     if (eadHandle = nil) then
+     begin
+     Result := -2;
+     Exit;
+     end;
+
+     eadHandle^.EAD.GerarXMLeECFc(NomeSH, PathArquivo);
+     Result := 1;
+  except
+     on exception : Exception do
+     begin
+        eadHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end
+end;
+
+function EAD_GerarXMLeECFc_NP(const eadHandle: PEADHandle;const NomeSH: pChar): Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF}  export;
+begin
+  try
+     if (eadHandle = nil) then
+     begin
+     Result := -2;
+     Exit;
+     end;
+
+     eadHandle^.EAD.GerarXMLeECFc(NomeSH);
+     Result := 1;
+  except
+     on exception : Exception do
+     begin
+        eadHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end
+end;
+
+function EAD_ConverteXMLeECFcParaOpenSSL(const eadHandle: PEADHandle;const Arquivo: pChar): Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF}  export;
+begin
+  try
+     if (eadHandle = nil) then
+     begin
+     Result := -2;
+     Exit;
+     end;
+
+     eadHandle^.EAD.ConverteXMLeECFcParaOpenSSL(Arquivo);
+     Result := 1;
+  except
+     on exception : Exception do
+     begin
+        eadHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end
+end;
+
+function EAD_CalcularHashArquivo(const eadHandle: PEADHandle;const Arquivo: pChar; const Hash: Integer): Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF}  export;
+begin
+  try
+     if (eadHandle = nil) then
+     begin
+     Result := -2;
+     Exit;
+     end;
+
+     eadHandle^.EAD.CalcularHashArquivo(Arquivo, TACBrEADDgst(Hash));
+     Result := 1;
+  except
+     on exception : Exception do
+     begin
+        eadHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end
+end;
+
+function EAD_CalcularEADArquivo(const eadHandle: PEADHandle;const Arquivo: pChar): Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF}  export;
+begin
+  try
+     if (eadHandle = nil) then
+     begin
+     Result := -2;
+     Exit;
+     end;
+
+     eadHandle^.EAD.CalcularEADArquivo(Arquivo);
+     Result := 1;
+  except
+     on exception : Exception do
+     begin
+        eadHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end
+end;
+
+function EAD_AssinarArquivoComEAD(const eadHandle: PEADHandle;const Arquivo: pChar; const Remove:Boolean): Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF}  export;
+begin
+  try
+     if (eadHandle = nil) then
+     begin
+     Result := -2;
+     Exit;
+     end;
+
+     eadHandle^.EAD.AssinarArquivoComEAD(Arquivo, Remove);
+     Result := 1;
+  except
+     on exception : Exception do
+     begin
+        eadHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end
+end;
+
+function EAD_VerificarEADArquivo(const eadHandle: PEADHandle;const Arquivo: pChar): Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF}  export;
+begin
+  try
+     if (eadHandle = nil) then
+     begin
+     Result := -2;
+     Exit;
+     end;
+
+     if (eadHandle^.EAD.VerificarEADArquivo(Arquivo))then
+       Result := 1
+     else
+       Result := 0;
+
+  except
+     on exception : Exception do
+     begin
+        eadHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end
+end;
+
 exports
 
 { Funções }
@@ -162,6 +349,10 @@ EAD_Destroy,
 EAD_GetUltimoErro,
 
 {Chaves}
-EAD_GerarChaves;
+EAD_GerarChaves, EAD_CalcularModuloeExpoente,
+EAD_GerarXMLeECFc, EAD_GerarXMLeECFc_NP,
+EAD_ConverteXMLeECFcParaOpenSSL,EAD_CalcularHashArquivo,
+EAD_CalcularEADArquivo, EAD_AssinarArquivoComEAD,
+EAD_VerificarEADArquivo;
 
 end.

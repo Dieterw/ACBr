@@ -35,6 +35,7 @@ namespace ACBr.Net.ECFTeste
 
 			Popular();
 			PopularAAC();
+			PopularEAD();
 		}
 
 		#endregion Constructor
@@ -926,6 +927,11 @@ namespace ACBr.Net.ECFTeste
 		#endregion PAF
 
 		#region EAD
+		public void PopularEAD()
+		{
+			foreach (var hash in Enum.GetValues(typeof(EADDigest))) cmbHash.Items.Add(hash);
+		}
+
 		public void GerarChaves()
 		{
 			try
@@ -935,6 +941,12 @@ namespace ACBr.Net.ECFTeste
 				acbrEAD.GerarChaves(out ChavePUB, out ChavePRI);
 				txtChavePri.Text = ChavePRI;
 				txtChavePub.Text = ChavePUB;
+
+				if (MessageBox.Show("Gostaria de salvar as chaves", "ACBr.Net", MessageBoxButtons.YesNo, MessageBoxIcon.Question).Equals(DialogResult.Yes))
+				{
+					SalvarPriKey(false);
+					SalvarPubKey(false);
+				}
 			}
 			catch (Exception exception)
 			{
@@ -943,9 +955,24 @@ namespace ACBr.Net.ECFTeste
 			}
 		}
 
-		public void SalvarPriKey()
+		public void SalvarPriKey(bool menssagem)
 		{
+			StreamWriter sw = new StreamWriter(txtArqPrivKey.Text);
+			sw.Write(txtChavePri.Text);
+			sw.Close();
 
+			if(menssagem)
+				MessageBox.Show("Chave privada salva com sucesso !!");
+		}
+
+		public void SalvarPubKey(bool menssagem)
+		{
+			StreamWriter sw = new StreamWriter(txtArqPubKey.Text);
+			sw.Write(txtChavePub.Text);
+			sw.Close();
+
+			if (menssagem)
+				MessageBox.Show("Chave privada salva com sucesso !!");
 		}
 		#endregion EAD
 
@@ -1326,9 +1353,15 @@ namespace ACBr.Net.ECFTeste
 		
 		private void btnGravarCPI_Click(object sender, EventArgs e)
 		{
-			SalvarPriKey();
+			SalvarPriKey(true);
+		}
+
+		private void btnGravarCPU_Click(object sender, EventArgs e)
+		{
+			SalvarPubKey(true);
 		}
 
 		#endregion Event Handlers				
+		
 	}
 }

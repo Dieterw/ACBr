@@ -32,8 +32,8 @@ namespace ACBr.Net
 		public string NOME_CLIENTE { get; set; }
 
 		public string CPF_CNPJ { get; set; }
-		
-		public List<ACBrPAFRegistroD3>  RegistroD3 { get; set; }
+
+		public List<ACBrPAFRegistroD3> RegistroD3 { get; set; }
 
 		public bool RegistroValido { get; set; }
 	}

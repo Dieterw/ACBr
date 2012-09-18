@@ -867,7 +867,7 @@ namespace ACBr.Net
 
 		#endregion ACBrECF
 
-		#region ACBrEAD	
+		#region ACBrEAD
 
 		#region Constructors/Erro Handler
 
@@ -883,8 +883,34 @@ namespace ACBr.Net
 		#endregion Constructors/Erro Handler
 
 		#region Methods
+
 		[DllImport(ACBr32, CallingConvention = CallingConvention.Cdecl)]
 		public static extern int EAD_GerarChaves(IntPtr eadHandle, StringBuilder ChavePUB, StringBuilder ChavePRI, int bufferLen);
+
+		[DllImport(ACBr32, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int EAD_CalcularModuloeExpoente(IntPtr eadHandle, StringBuilder Modulo, StringBuilder Expoente, int bufferLen);
+
+		[DllImport(ACBr32, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int EAD_GerarXMLeECFc(IntPtr eadHandle, String NomeSH, String PathArquivo);
+
+		[DllImport(ACBr32, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int EAD_GerarXMLeECFc_NP(IntPtr eadHandle, String NomeSH);
+
+		[DllImport(ACBr32, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int EAD_ConverteXMLeECFcParaOpenSSL(IntPtr eadHandle, String Arquivo);
+
+		[DllImport(ACBr32, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int EAD_CalcularHashArquivo(IntPtr eadHandle, String ChavePUB, int Hash);
+
+		[DllImport(ACBr32, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int EAD_CalcularEADArquivo(IntPtr eadHandle, String Arquivo);
+
+		[DllImport(ACBr32, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int EAD_AssinarArquivoComEAD(IntPtr eadHandle, String Arquivo, bool Remove);
+
+		[DllImport(ACBr32, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int EAD_VerificarEADArquivo(IntPtr eadHandle, String Arquivo);
+
 		#endregion Methods
 
 		#endregion ACBrEAD
@@ -1008,7 +1034,7 @@ namespace ACBr.Net
 
 			[MarshalAs(UnmanagedType.U1)]
 			public bool RegistroValido;
-		}		
+		}
 
 		[StructLayout(LayoutKind.Sequential)]
 		public struct RegistroD2Rec
@@ -1159,7 +1185,7 @@ namespace ACBr.Net
 
 			[MarshalAs(UnmanagedType.U1)]
 			public bool RegistroValido;
-		}		
+		}
 
 		[StructLayout(LayoutKind.Sequential)]
 		public struct RegistroP2Rec
@@ -1197,70 +1223,70 @@ namespace ACBr.Net
 		{
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
 			public string NUM_FAB;
-			
+
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2)]
 			public string MF_ADICIONAL;
-			
+
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 8)]
 			public string TIPO_ECF;
-			
+
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
 			public string MARCA_ECF;
-			
+
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
 			public string MODELO_ECF;
-			
+
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
 			public string VERSAO_SB;
-			
+
 			[MarshalAs(UnmanagedType.R8)]
 			public double DT_INST_SB;
-			
+
 			[MarshalAs(UnmanagedType.R8)]
 			public double HR_INST_SB;
-			
+
 			[MarshalAs(UnmanagedType.I4)]
 			public int NUM_SEQ_ECF;
-			
+
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
 			public string CNPJ;
-			
+
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
 			public string IE;
-			
+
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
 			public string CNPJ_SH;
-			
+
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
 			public string IE_SH;
-			
+
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
 			public string IM_SH;
-			
+
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 41)]
 			public string NOME_SH;
-			
+
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 41)]
 			public string NOME_PAF;
-			
+
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
 			public string VER_PAF;
-			
+
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
 			public string COD_MD5;
-			
+
 			[MarshalAs(UnmanagedType.R8)]
 			public double DT_INI;
-			
+
 			[MarshalAs(UnmanagedType.R8)]
 			public double DT_FIN;
-			
+
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 5)]
 			public string ER_PAF_ECF;
-			
+
 			[MarshalAs(UnmanagedType.U1)]
 			public Boolean InclusaoExclusao;
-			
+
 			[MarshalAs(UnmanagedType.U1)]
 			public Boolean RegistroValido;
 		}
@@ -1270,36 +1296,36 @@ namespace ACBr.Net
 		{
 			[MarshalAs(UnmanagedType.I4)]
 			public int QTD_R3;
-			
+
 			[MarshalAs(UnmanagedType.I4)]
 			public int NUM_USU;
-			
+
 			[MarshalAs(UnmanagedType.I4)]
 			public int CRZ;
-			
+
 			[MarshalAs(UnmanagedType.I4)]
 			public int COO;
-			
+
 			[MarshalAs(UnmanagedType.I4)]
 			public int CRO;
-			
-			[MarshalAs(UnmanagedType.R8)]
-			public double DT_MOV;
-			
-			[MarshalAs(UnmanagedType.R8)]
-			public double DT_EMI;
-			
-			[MarshalAs(UnmanagedType.R8)]
-			public double HR_EMI;
-			
-			[MarshalAs(UnmanagedType.R8)]
-			public double VL_VBD;
-			
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2)]
-			public string PAR_ECF;		
 
 			[MarshalAs(UnmanagedType.R8)]
-			public double DT_FIN;		
+			public double DT_MOV;
+
+			[MarshalAs(UnmanagedType.R8)]
+			public double DT_EMI;
+
+			[MarshalAs(UnmanagedType.R8)]
+			public double HR_EMI;
+
+			[MarshalAs(UnmanagedType.R8)]
+			public double VL_VBD;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2)]
+			public string PAR_ECF;
+
+			[MarshalAs(UnmanagedType.R8)]
+			public double DT_FIN;
 
 			[MarshalAs(UnmanagedType.U1)]
 			public Boolean RegistroValido;
@@ -1310,7 +1336,7 @@ namespace ACBr.Net
 		{
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 8)]
 			public string TOT_PARCIAL;
-			
+
 			[MarshalAs(UnmanagedType.R8)]
 			public double VL_ACUM;
 
@@ -1326,51 +1352,51 @@ namespace ACBr.Net
 
 			[MarshalAs(UnmanagedType.I4)]
 			public int QTD_R7;
-			
+
 			[MarshalAs(UnmanagedType.I4)]
 			public int NUM_USU;
 
 			[MarshalAs(UnmanagedType.I4)]
 			public int NUM_CONT;
-			
+
 			[MarshalAs(UnmanagedType.I4)]
 			public int COO;
-			
+
 			[MarshalAs(UnmanagedType.R8)]
 			public double DT_INI;
-			
+
 			[MarshalAs(UnmanagedType.R8)]
 			public double SUB_DOCTO;
-			
+
 			[MarshalAs(UnmanagedType.R8)]
 			public double SUB_DESCTO;
-			
+
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2)]
 			public string TP_DESCTO;
-			
+
 			[MarshalAs(UnmanagedType.R8)]
 			public double SUB_ACRES;
-			
+
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2)]
 			public string TP_ACRES;
-			
+
 			[MarshalAs(UnmanagedType.R8)]
 			public double VL_TOT;
-			
+
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2)]
 			public string CANC;
-			
+
 			[MarshalAs(UnmanagedType.R8)]
 			public double VL_CA;
-			
+
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2)]
 			public string ORDEM_DA;
-			
+
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 41)]
 			public string NOME_CLI;
-			
+
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
-			public string CNPJ_CPF ;
+			public string CNPJ_CPF;
 
 			[MarshalAs(UnmanagedType.U1)]
 			public Boolean RegistroValido;
@@ -1381,55 +1407,55 @@ namespace ACBr.Net
 		{
 			[MarshalAs(UnmanagedType.I4)]
 			public int NUM_ITEM;
-			
+
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
 			public string COD_ITEM;
-			
+
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 101)]
 			public string DESC_ITEM;
-			
+
 			[MarshalAs(UnmanagedType.R8)]
 			public double QTDE_ITEM;
-			
+
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
 			public string UN_MED;
-			
+
 			[MarshalAs(UnmanagedType.R8)]
 			public double VL_UNIT;
-			
+
 			[MarshalAs(UnmanagedType.R8)]
 			public double DESCTO_ITEM;
-			
+
 			[MarshalAs(UnmanagedType.R8)]
 			public double ACRES_ITEM;
-			
+
 			[MarshalAs(UnmanagedType.R8)]
 			public double VL_TOT_ITEM;
-			
+
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 8)]
 			public string COD_TOT_PARC;
-			
+
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2)]
 			public string IND_CANC;
-			
+
 			[MarshalAs(UnmanagedType.R8)]
 			public double QTDE_CANC;
-			
+
 			[MarshalAs(UnmanagedType.R8)]
 			public double VL_CANC;
-			
+
 			[MarshalAs(UnmanagedType.R8)]
 			public double VL_CANC_ACRES;
-			
+
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2)]
 			public string IAT;
-			
+
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2)]
 			public string IPPT;
-			
+
 			[MarshalAs(UnmanagedType.I4)]
 			public int QTDE_DECIMAL;
-			
+
 			[MarshalAs(UnmanagedType.I4)]
 			public int VL_DECIMAL;
 
@@ -1442,28 +1468,28 @@ namespace ACBr.Net
 		{
 			[MarshalAs(UnmanagedType.I4)]
 			public int QTD_R7;
-			
+
 			[MarshalAs(UnmanagedType.I4)]
 			public int NUM_USU;
-			
+
 			[MarshalAs(UnmanagedType.I4)]
 			public int COO;
-			
+
 			[MarshalAs(UnmanagedType.I4)]
 			public int GNF;
-			
+
 			[MarshalAs(UnmanagedType.I4)]
 			public int GRG;
-			
+
 			[MarshalAs(UnmanagedType.I4)]
 			public int CDC;
-			
+
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 3)]
 			public string DENOM;
-			
+
 			[MarshalAs(UnmanagedType.R8)]
 			public double DT_FIN;
-			
+
 			[MarshalAs(UnmanagedType.R8)]
 			public double HR_FIN;
 
@@ -1495,6 +1521,7 @@ namespace ACBr.Net
 			[MarshalAs(UnmanagedType.U1)]
 			public Boolean RegistroValido;
 		}
+
 		#endregion Interop Types
 
 		#region Constructors/Erro Handler
@@ -1565,8 +1592,7 @@ namespace ACBr.Net
 		public static extern int PAF_SaveFileTXT_P(IntPtr pafHandle, RegistroHD1Rec RegsitroP1Rec, RegistroP2Rec[] RegsitroP2Rec, int CountP2, string Arquivo);
 
 		[DllImport(ACBr32, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int PAF_SaveFileTXT_R(IntPtr pafHandle, RegistroR1Rec RegsitroR1Rec, RegistroR2Rec[] RegsitroR2Rec, int CountR2, RegistroR3Rec[] RegsitroR3Rec, RegistroR4Rec[] RegsitroR4Rec, int CountR4,RegistroR5Rec[] RegsitroP5Rec, RegistroR6Rec[] RegsitroR6Rec, int CountR6,RegistroR7Rec[] RegsitroR7Rec, string Arquivo);
-
+		public static extern int PAF_SaveFileTXT_R(IntPtr pafHandle, RegistroR1Rec RegsitroR1Rec, RegistroR2Rec[] RegsitroR2Rec, int CountR2, RegistroR3Rec[] RegsitroR3Rec, RegistroR4Rec[] RegsitroR4Rec, int CountR4, RegistroR5Rec[] RegsitroP5Rec, RegistroR6Rec[] RegsitroR6Rec, int CountR6, RegistroR7Rec[] RegsitroR7Rec, string Arquivo);
 
 		#endregion SaveFile
 

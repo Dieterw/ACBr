@@ -84,13 +84,6 @@
 			this.cmdTabPage = new System.Windows.Forms.TabPage();
 			this.respListBox = new System.Windows.Forms.ListBox();
 			this.aacTabPage = new System.Windows.Forms.TabPage();
-			this.aacChaveTextBox = new System.Windows.Forms.TextBox();
-			this.aacChaveLabel = new System.Windows.Forms.Label();
-			this.aacGravarArquivoButton = new System.Windows.Forms.Button();
-			this.aacAbrirArquivoButton = new System.Windows.Forms.Button();
-			this.accVisualizarArquivoButton = new System.Windows.Forms.Button();
-			this.aacNomeArquivoTextbox = new System.Windows.Forms.TextBox();
-			this.aacNomeArquivoLabel = new System.Windows.Forms.Label();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.aacDadosTabPage = new System.Windows.Forms.TabPage();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -191,15 +184,30 @@
 			this.btnNPChaves = new System.Windows.Forms.Button();
 			this.btnGravarCPI = new System.Windows.Forms.Button();
 			this.btnLerCPI = new System.Windows.Forms.Button();
-			this.textBox1 = new System.Windows.Forms.TextBox();
+			this.txtArqPrivKey = new System.Windows.Forms.TextBox();
 			this.txtChavePri = new System.Windows.Forms.TextBox();
 			this.grpChavePublica = new System.Windows.Forms.GroupBox();
 			this.button7 = new System.Windows.Forms.Button();
 			this.btnGravarCPU = new System.Windows.Forms.Button();
 			this.btnLerCPU = new System.Windows.Forms.Button();
-			this.txtArqPrivKey = new System.Windows.Forms.TextBox();
+			this.txtArqPubKey = new System.Windows.Forms.TextBox();
 			this.txtChavePub = new System.Windows.Forms.TextBox();
 			this.ativarCheckButton = new System.Windows.Forms.CheckBox();
+			this.cmbHash = new System.Windows.Forms.ComboBox();
+			this.txtArqEntrada = new System.Windows.Forms.TextBox();
+			this.btnVersao = new System.Windows.Forms.Button();
+			this.button1 = new System.Windows.Forms.Button();
+			this.button2 = new System.Windows.Forms.Button();
+			this.btnVerifArqAssinado = new System.Windows.Forms.Button();
+			this.btnProcurarArqu = new System.Windows.Forms.Button();
+			this.button3 = new System.Windows.Forms.Button();
+			this.aacGravarArquivoButton = new System.Windows.Forms.Button();
+			this.aacNomeArquivoLabel = new System.Windows.Forms.Label();
+			this.aacNomeArquivoTextbox = new System.Windows.Forms.TextBox();
+			this.accVisualizarArquivoButton = new System.Windows.Forms.Button();
+			this.aacAbrirArquivoButton = new System.Windows.Forms.Button();
+			this.aacChaveLabel = new System.Windows.Forms.Label();
+			this.aacChaveTextBox = new System.Windows.Forms.TextBox();
 			this.statusStrip1.SuspendLayout();
 			this.menuStrip1.SuspendLayout();
 			this.tabControl.SuspendLayout();
@@ -223,6 +231,7 @@
 			this.aacParametrosTabPage.SuspendLayout();
 			this.tabPage1.SuspendLayout();
 			this.tabPage2.SuspendLayout();
+			this.grpArquivoDe.SuspendLayout();
 			this.grpChavePrivada.SuspendLayout();
 			this.grpChavePublica.SuspendLayout();
 			this.SuspendLayout();
@@ -742,73 +751,8 @@
 			this.aacTabPage.Text = "Arq.Aux.Cript.";
 			this.aacTabPage.UseVisualStyleBackColor = true;
 			// 
-			// aacChaveTextBox
-			// 
-			this.aacChaveTextBox.Location = new System.Drawing.Point(100, 322);
-			this.aacChaveTextBox.Name = "aacChaveTextBox";
-			this.aacChaveTextBox.Size = new System.Drawing.Size(228, 20);
-			this.aacChaveTextBox.TabIndex = 8;
-			// 
-			// aacChaveLabel
-			// 
-			this.aacChaveLabel.AutoSize = true;
-			this.aacChaveLabel.Location = new System.Drawing.Point(54, 325);
-			this.aacChaveLabel.Name = "aacChaveLabel";
-			this.aacChaveLabel.Size = new System.Drawing.Size(41, 13);
-			this.aacChaveLabel.TabIndex = 7;
-			this.aacChaveLabel.Text = "Chave:";
-			// 
-			// aacGravarArquivoButton
-			// 
-			this.aacGravarArquivoButton.Location = new System.Drawing.Point(476, 316);
-			this.aacGravarArquivoButton.Name = "aacGravarArquivoButton";
-			this.aacGravarArquivoButton.Size = new System.Drawing.Size(97, 25);
-			this.aacGravarArquivoButton.TabIndex = 6;
-			this.aacGravarArquivoButton.Text = "Gravar Arquivo";
-			this.aacGravarArquivoButton.UseVisualStyleBackColor = true;
-			this.aacGravarArquivoButton.Click += new System.EventHandler(this.aacGravarArquivoButton_Click);
-			// 
-			// aacAbrirArquivoButton
-			// 
-			this.aacAbrirArquivoButton.Location = new System.Drawing.Point(476, 287);
-			this.aacAbrirArquivoButton.Name = "aacAbrirArquivoButton";
-			this.aacAbrirArquivoButton.Size = new System.Drawing.Size(97, 25);
-			this.aacAbrirArquivoButton.TabIndex = 5;
-			this.aacAbrirArquivoButton.Text = "Abrir Arquivo";
-			this.aacAbrirArquivoButton.UseVisualStyleBackColor = true;
-			this.aacAbrirArquivoButton.Click += new System.EventHandler(this.aacAbrirArquivoButton_Click);
-			// 
-			// accVisualizarArquivoButton
-			// 
-			this.accVisualizarArquivoButton.Location = new System.Drawing.Point(410, 296);
-			this.accVisualizarArquivoButton.Name = "accVisualizarArquivoButton";
-			this.accVisualizarArquivoButton.Size = new System.Drawing.Size(31, 20);
-			this.accVisualizarArquivoButton.TabIndex = 4;
-			this.accVisualizarArquivoButton.Text = "...";
-			this.accVisualizarArquivoButton.UseVisualStyleBackColor = true;
-			this.accVisualizarArquivoButton.Click += new System.EventHandler(this.accVisualizarArquivoButton_Click);
-			// 
-			// aacNomeArquivoTextbox
-			// 
-			this.aacNomeArquivoTextbox.Location = new System.Drawing.Point(101, 296);
-			this.aacNomeArquivoTextbox.Name = "aacNomeArquivoTextbox";
-			this.aacNomeArquivoTextbox.Size = new System.Drawing.Size(303, 20);
-			this.aacNomeArquivoTextbox.TabIndex = 3;
-			// 
-			// aacNomeArquivoLabel
-			// 
-			this.aacNomeArquivoLabel.AutoSize = true;
-			this.aacNomeArquivoLabel.Location = new System.Drawing.Point(18, 299);
-			this.aacNomeArquivoLabel.Name = "aacNomeArquivoLabel";
-			this.aacNomeArquivoLabel.Size = new System.Drawing.Size(77, 13);
-			this.aacNomeArquivoLabel.TabIndex = 2;
-			this.aacNomeArquivoLabel.Text = "Nome Arquivo:";
-			// 
 			// tabControl1
 			// 
-			this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
 			this.tabControl1.Controls.Add(this.aacDadosTabPage);
 			this.tabControl1.Controls.Add(this.aacConfigPAFTabPage);
 			this.tabControl1.Controls.Add(this.aacECFsTabPage);
@@ -1734,6 +1678,14 @@
 			// 
 			// grpArquivoDe
 			// 
+			this.grpArquivoDe.Controls.Add(this.button3);
+			this.grpArquivoDe.Controls.Add(this.btnProcurarArqu);
+			this.grpArquivoDe.Controls.Add(this.btnVerifArqAssinado);
+			this.grpArquivoDe.Controls.Add(this.button2);
+			this.grpArquivoDe.Controls.Add(this.button1);
+			this.grpArquivoDe.Controls.Add(this.btnVersao);
+			this.grpArquivoDe.Controls.Add(this.txtArqEntrada);
+			this.grpArquivoDe.Controls.Add(this.cmbHash);
 			this.grpArquivoDe.Location = new System.Drawing.Point(6, 280);
 			this.grpArquivoDe.Name = "grpArquivoDe";
 			this.grpArquivoDe.Size = new System.Drawing.Size(628, 72);
@@ -1749,7 +1701,7 @@
 			this.grpChavePrivada.Controls.Add(this.btnNPChaves);
 			this.grpChavePrivada.Controls.Add(this.btnGravarCPI);
 			this.grpChavePrivada.Controls.Add(this.btnLerCPI);
-			this.grpChavePrivada.Controls.Add(this.textBox1);
+			this.grpChavePrivada.Controls.Add(this.txtArqPrivKey);
 			this.grpChavePrivada.Controls.Add(this.txtChavePri);
 			this.grpChavePrivada.Location = new System.Drawing.Point(6, 6);
 			this.grpChavePrivada.Name = "grpChavePrivada";
@@ -1815,13 +1767,13 @@
 			this.btnLerCPI.Text = "Ler";
 			this.btnLerCPI.UseVisualStyleBackColor = true;
 			// 
-			// textBox1
+			// txtArqPrivKey
 			// 
-			this.textBox1.Location = new System.Drawing.Point(6, 15);
-			this.textBox1.Name = "textBox1";
-			this.textBox1.Size = new System.Drawing.Size(298, 20);
-			this.textBox1.TabIndex = 5;
-			this.textBox1.Text = "priv_key.pem";
+			this.txtArqPrivKey.Location = new System.Drawing.Point(6, 15);
+			this.txtArqPrivKey.Name = "txtArqPrivKey";
+			this.txtArqPrivKey.Size = new System.Drawing.Size(298, 20);
+			this.txtArqPrivKey.TabIndex = 5;
+			this.txtArqPrivKey.Text = "priv_key.pem";
 			// 
 			// txtChavePri
 			// 
@@ -1837,7 +1789,7 @@
 			this.grpChavePublica.Controls.Add(this.button7);
 			this.grpChavePublica.Controls.Add(this.btnGravarCPU);
 			this.grpChavePublica.Controls.Add(this.btnLerCPU);
-			this.grpChavePublica.Controls.Add(this.txtArqPrivKey);
+			this.grpChavePublica.Controls.Add(this.txtArqPubKey);
 			this.grpChavePublica.Controls.Add(this.txtChavePub);
 			this.grpChavePublica.Location = new System.Drawing.Point(6, 146);
 			this.grpChavePublica.Name = "grpChavePublica";
@@ -1864,6 +1816,7 @@
 			this.btnGravarCPU.TabIndex = 12;
 			this.btnGravarCPU.Text = "Gravar";
 			this.btnGravarCPU.UseVisualStyleBackColor = true;
+			this.btnGravarCPU.Click += new System.EventHandler(this.btnGravarCPU_Click);
 			// 
 			// btnLerCPU
 			// 
@@ -1874,13 +1827,13 @@
 			this.btnLerCPU.Text = "Ler";
 			this.btnLerCPU.UseVisualStyleBackColor = true;
 			// 
-			// txtArqPrivKey
+			// txtArqPubKey
 			// 
-			this.txtArqPrivKey.Location = new System.Drawing.Point(6, 15);
-			this.txtArqPrivKey.Name = "txtArqPrivKey";
-			this.txtArqPrivKey.Size = new System.Drawing.Size(298, 20);
-			this.txtArqPrivKey.TabIndex = 4;
-			this.txtArqPrivKey.Text = "pub_key.pem";
+			this.txtArqPubKey.Location = new System.Drawing.Point(6, 15);
+			this.txtArqPubKey.Name = "txtArqPubKey";
+			this.txtArqPubKey.Size = new System.Drawing.Size(298, 20);
+			this.txtArqPubKey.TabIndex = 4;
+			this.txtArqPubKey.Text = "pub_key.pem";
 			// 
 			// txtChavePub
 			// 
@@ -1904,6 +1857,138 @@
 			this.ativarCheckButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.ativarCheckButton.UseVisualStyleBackColor = true;
 			this.ativarCheckButton.CheckedChanged += new System.EventHandler(this.ativarCheckButton_CheckedChanged);
+			// 
+			// cmbHash
+			// 
+			this.cmbHash.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cmbHash.FormattingEnabled = true;
+			this.cmbHash.Location = new System.Drawing.Point(74, 46);
+			this.cmbHash.Name = "cmbHash";
+			this.cmbHash.Size = new System.Drawing.Size(77, 21);
+			this.cmbHash.TabIndex = 0;
+			// 
+			// txtArqEntrada
+			// 
+			this.txtArqEntrada.Location = new System.Drawing.Point(6, 19);
+			this.txtArqEntrada.Name = "txtArqEntrada";
+			this.txtArqEntrada.Size = new System.Drawing.Size(541, 20);
+			this.txtArqEntrada.TabIndex = 1;
+			// 
+			// btnVersao
+			// 
+			this.btnVersao.Location = new System.Drawing.Point(5, 45);
+			this.btnVersao.Name = "btnVersao";
+			this.btnVersao.Size = new System.Drawing.Size(63, 23);
+			this.btnVersao.TabIndex = 2;
+			this.btnVersao.Text = "Versão";
+			this.btnVersao.UseVisualStyleBackColor = true;
+			// 
+			// button1
+			// 
+			this.button1.Location = new System.Drawing.Point(216, 45);
+			this.button1.Name = "button1";
+			this.button1.Size = new System.Drawing.Size(104, 23);
+			this.button1.TabIndex = 3;
+			this.button1.Text = "Calcular EAD";
+			this.button1.UseVisualStyleBackColor = true;
+			// 
+			// button2
+			// 
+			this.button2.Location = new System.Drawing.Point(326, 45);
+			this.button2.Name = "button2";
+			this.button2.Size = new System.Drawing.Size(149, 23);
+			this.button2.TabIndex = 4;
+			this.button2.Text = "Assinar Arquivo com EAD";
+			this.button2.UseVisualStyleBackColor = true;
+			// 
+			// btnVerifArqAssinado
+			// 
+			this.btnVerifArqAssinado.Location = new System.Drawing.Point(481, 45);
+			this.btnVerifArqAssinado.Name = "btnVerifArqAssinado";
+			this.btnVerifArqAssinado.Size = new System.Drawing.Size(141, 23);
+			this.btnVerifArqAssinado.TabIndex = 5;
+			this.btnVerifArqAssinado.Text = "Verificar Arquivo Assinado";
+			this.btnVerifArqAssinado.UseVisualStyleBackColor = true;
+			// 
+			// btnProcurarArqu
+			// 
+			this.btnProcurarArqu.Location = new System.Drawing.Point(553, 17);
+			this.btnProcurarArqu.Name = "btnProcurarArqu";
+			this.btnProcurarArqu.Size = new System.Drawing.Size(75, 23);
+			this.btnProcurarArqu.TabIndex = 6;
+			this.btnProcurarArqu.Text = "Procurar";
+			this.btnProcurarArqu.UseVisualStyleBackColor = true;
+			// 
+			// button3
+			// 
+			this.button3.Location = new System.Drawing.Point(156, 45);
+			this.button3.Name = "button3";
+			this.button3.Size = new System.Drawing.Size(54, 23);
+			this.button3.TabIndex = 7;
+			this.button3.Text = "HASH";
+			this.button3.UseVisualStyleBackColor = true;
+			// 
+			// aacGravarArquivoButton
+			// 
+			this.aacGravarArquivoButton.Location = new System.Drawing.Point(476, 316);
+			this.aacGravarArquivoButton.Name = "aacGravarArquivoButton";
+			this.aacGravarArquivoButton.Size = new System.Drawing.Size(97, 25);
+			this.aacGravarArquivoButton.TabIndex = 6;
+			this.aacGravarArquivoButton.Text = "Gravar Arquivo";
+			this.aacGravarArquivoButton.UseVisualStyleBackColor = true;
+			this.aacGravarArquivoButton.Click += new System.EventHandler(this.aacGravarArquivoButton_Click);
+			// 
+			// aacNomeArquivoLabel
+			// 
+			this.aacNomeArquivoLabel.AutoSize = true;
+			this.aacNomeArquivoLabel.Location = new System.Drawing.Point(18, 299);
+			this.aacNomeArquivoLabel.Name = "aacNomeArquivoLabel";
+			this.aacNomeArquivoLabel.Size = new System.Drawing.Size(77, 13);
+			this.aacNomeArquivoLabel.TabIndex = 2;
+			this.aacNomeArquivoLabel.Text = "Nome Arquivo:";
+			// 
+			// aacNomeArquivoTextbox
+			// 
+			this.aacNomeArquivoTextbox.Location = new System.Drawing.Point(101, 296);
+			this.aacNomeArquivoTextbox.Name = "aacNomeArquivoTextbox";
+			this.aacNomeArquivoTextbox.Size = new System.Drawing.Size(303, 20);
+			this.aacNomeArquivoTextbox.TabIndex = 3;
+			// 
+			// accVisualizarArquivoButton
+			// 
+			this.accVisualizarArquivoButton.Location = new System.Drawing.Point(410, 296);
+			this.accVisualizarArquivoButton.Name = "accVisualizarArquivoButton";
+			this.accVisualizarArquivoButton.Size = new System.Drawing.Size(31, 20);
+			this.accVisualizarArquivoButton.TabIndex = 4;
+			this.accVisualizarArquivoButton.Text = "...";
+			this.accVisualizarArquivoButton.UseVisualStyleBackColor = true;
+			this.accVisualizarArquivoButton.Click += new System.EventHandler(this.accVisualizarArquivoButton_Click);
+			// 
+			// aacAbrirArquivoButton
+			// 
+			this.aacAbrirArquivoButton.Location = new System.Drawing.Point(476, 287);
+			this.aacAbrirArquivoButton.Name = "aacAbrirArquivoButton";
+			this.aacAbrirArquivoButton.Size = new System.Drawing.Size(97, 25);
+			this.aacAbrirArquivoButton.TabIndex = 5;
+			this.aacAbrirArquivoButton.Text = "Abrir Arquivo";
+			this.aacAbrirArquivoButton.UseVisualStyleBackColor = true;
+			this.aacAbrirArquivoButton.Click += new System.EventHandler(this.aacAbrirArquivoButton_Click);
+			// 
+			// aacChaveLabel
+			// 
+			this.aacChaveLabel.AutoSize = true;
+			this.aacChaveLabel.Location = new System.Drawing.Point(54, 325);
+			this.aacChaveLabel.Name = "aacChaveLabel";
+			this.aacChaveLabel.Size = new System.Drawing.Size(41, 13);
+			this.aacChaveLabel.TabIndex = 7;
+			this.aacChaveLabel.Text = "Chave:";
+			// 
+			// aacChaveTextBox
+			// 
+			this.aacChaveTextBox.Location = new System.Drawing.Point(100, 322);
+			this.aacChaveTextBox.Name = "aacChaveTextBox";
+			this.aacChaveTextBox.Size = new System.Drawing.Size(228, 20);
+			this.aacChaveTextBox.TabIndex = 8;
 			// 
 			// MainForm
 			// 
@@ -1953,6 +2038,8 @@
 			this.tabPage1.ResumeLayout(false);
 			this.tabPage1.PerformLayout();
 			this.tabPage2.ResumeLayout(false);
+			this.grpArquivoDe.ResumeLayout(false);
+			this.grpArquivoDe.PerformLayout();
 			this.grpChavePrivada.ResumeLayout(false);
 			this.grpChavePrivada.PerformLayout();
 			this.grpChavePublica.ResumeLayout(false);
@@ -2016,12 +2103,7 @@
 		private System.Windows.Forms.ToolStripMenuItem identificaPAFToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem dadosReduçãoZToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem dadosUltimaReduçãoZToolStripMenuItem;
-        private System.Windows.Forms.TabPage aacTabPage;
-        private System.Windows.Forms.Button aacGravarArquivoButton;
-        private System.Windows.Forms.Button aacAbrirArquivoButton;
-        private System.Windows.Forms.Button accVisualizarArquivoButton;
-        private System.Windows.Forms.TextBox aacNomeArquivoTextbox;
-        private System.Windows.Forms.Label aacNomeArquivoLabel;
+		private System.Windows.Forms.TabPage aacTabPage;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage aacDadosTabPage;
         private System.Windows.Forms.TabPage aacECFsTabPage;
@@ -2040,9 +2122,7 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox aacIMTextBox;
         private System.Windows.Forms.TextBox aacIETextBox;
-        private System.Windows.Forms.TextBox aacCNPJTextBox;
-        private System.Windows.Forms.TextBox aacChaveTextBox;
-        private System.Windows.Forms.Label aacChaveLabel;
+		private System.Windows.Forms.TextBox aacCNPJTextBox;
         private System.Windows.Forms.TextBox aacBancoDadosTextBox;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox aacLinguagemTextBox;
@@ -2128,14 +2208,29 @@
 		private System.Windows.Forms.Button btnNPChaves;
 		private System.Windows.Forms.Button btnGravarCPI;
 		private System.Windows.Forms.Button btnLerCPI;
-		private System.Windows.Forms.TextBox textBox1;
+		private System.Windows.Forms.TextBox txtArqPrivKey;
 		private System.Windows.Forms.TextBox txtChavePri;
 		private System.Windows.Forms.GroupBox grpChavePublica;
-		private System.Windows.Forms.TextBox txtArqPrivKey;
+		private System.Windows.Forms.TextBox txtArqPubKey;
 		private System.Windows.Forms.TextBox txtChavePub;
 		private System.Windows.Forms.Button button7;
 		private System.Windows.Forms.Button btnGravarCPU;
 		private System.Windows.Forms.Button btnLerCPU;
+		private System.Windows.Forms.Button button3;
+		private System.Windows.Forms.Button btnProcurarArqu;
+		private System.Windows.Forms.Button btnVerifArqAssinado;
+		private System.Windows.Forms.Button button2;
+		private System.Windows.Forms.Button button1;
+		private System.Windows.Forms.Button btnVersao;
+		private System.Windows.Forms.TextBox txtArqEntrada;
+		private System.Windows.Forms.ComboBox cmbHash;
+		private System.Windows.Forms.TextBox aacChaveTextBox;
+		private System.Windows.Forms.Label aacChaveLabel;
+		private System.Windows.Forms.Button aacGravarArquivoButton;
+		private System.Windows.Forms.Button aacAbrirArquivoButton;
+		private System.Windows.Forms.Button accVisualizarArquivoButton;
+		private System.Windows.Forms.TextBox aacNomeArquivoTextbox;
+		private System.Windows.Forms.Label aacNomeArquivoLabel;
     }
 }
 

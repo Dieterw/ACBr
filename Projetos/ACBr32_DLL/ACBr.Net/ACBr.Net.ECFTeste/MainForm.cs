@@ -12,7 +12,8 @@ namespace ACBr.Net.ECFTeste
 
 		private ACBrECF acbrECF;
 		private ACBrAAC acbrAAC;
-		private ACBrPAF acbrPaf;
+		private ACBrPAF acbrPAF;
+		private ACBrEAD acbrEAD;
 		private const string NUM_FAB = "NUMFAB78901234567890";
 		private const string MF_ADICIONAL = "";
 		private const string TIPO_ECF = "ECF-IF";
@@ -29,7 +30,8 @@ namespace ACBr.Net.ECFTeste
 
 			this.acbrECF = new ACBrECF();
 			this.acbrAAC = new ACBrAAC();
-			this.acbrPaf = new ACBrPAF();
+			this.acbrPAF = new ACBrPAF();
+			this.acbrEAD = new ACBrEAD();
 
 			Popular();
 			PopularAAC();
@@ -813,8 +815,8 @@ namespace ACBr.Net.ECFTeste
 					ItemC2 = null;
 				}
 
-				acbrPaf.Path = Path.GetDirectoryName(Application.ExecutablePath);
-				acbrPaf.SaveFileTXT_C(RegistroC1, RegistroC2.ToArray(), @"\PAF_C.txt");
+				acbrPAF.Path = Path.GetDirectoryName(Application.ExecutablePath);
+				acbrPAF.SaveFileTXT_C(RegistroC1, RegistroC2.ToArray(), @"\PAF_C.txt");
 				MessageBox.Show("Arquivo PAF_C Gerado com sucesso");
 			}
 			catch (Exception exception)
@@ -883,8 +885,8 @@ namespace ACBr.Net.ECFTeste
 					ItemD2 = null;
 				}
 
-				acbrPaf.Path = Path.GetDirectoryName(Application.ExecutablePath);
-				acbrPaf.SaveFileTXT_D(RegistroD1, RegistroD2.ToArray(), @"\PAF_D.txt");
+				acbrPAF.Path = Path.GetDirectoryName(Application.ExecutablePath);
+				acbrPAF.SaveFileTXT_D(RegistroD1, RegistroD2.ToArray(), @"\PAF_D.txt");
 				MessageBox.Show("Arquivo PAF_D Gerado com sucesso");
 			}
 			catch (Exception exception)
@@ -922,6 +924,30 @@ namespace ACBr.Net.ECFTeste
 		}
 
 		#endregion PAF
+
+		#region EAD
+		public void GerarChaves()
+		{
+			try
+			{
+				string ChavePUB = string.Empty;
+				string ChavePRI = string.Empty;
+				acbrEAD.GerarChaves(out ChavePUB, out ChavePRI);
+				txtChavePri.Text = ChavePRI;
+				txtChavePub.Text = ChavePUB;
+			}
+			catch (Exception exception)
+			{
+				messageToolStripStatusLabel.Text = "Exception";
+				descriptionToolStripStatusLabel.Text = exception.Message;
+			}
+		}
+
+		public void SalvarPriKey()
+		{
+
+		}
+		#endregion EAD
 
 		#endregion Methods
 
@@ -1293,10 +1319,16 @@ namespace ACBr.Net.ECFTeste
 			GerarArquivoD();
 		}
 
-		#endregion Event Handlers
-
+		private void btnNPChaves_Click(object sender, EventArgs e)
+		{
+			GerarChaves();
+		}
 		
+		private void btnGravarCPI_Click(object sender, EventArgs e)
+		{
+			SalvarPriKey();
+		}
 
-		
+		#endregion Event Handlers				
 	}
 }

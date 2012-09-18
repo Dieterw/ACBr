@@ -62,6 +62,8 @@
 			this.leituraMemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.cupomFiscalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.testaCupomFiscalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.dAVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.testarDAVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.utilitariosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.identificaPAFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.tabControl = new System.Windows.Forms.TabControl();
@@ -180,9 +182,24 @@
 			this.txtRazaoSocial = new System.Windows.Forms.TextBox();
 			this.txtIM = new System.Windows.Forms.TextBox();
 			this.txtUF = new System.Windows.Forms.TextBox();
+			this.tabPage2 = new System.Windows.Forms.TabPage();
+			this.grpArquivoDe = new System.Windows.Forms.GroupBox();
+			this.grpChavePrivada = new System.Windows.Forms.GroupBox();
+			this.btnCalcCP = new System.Windows.Forms.Button();
+			this.btnGXeECFc = new System.Windows.Forms.Button();
+			this.btnME = new System.Windows.Forms.Button();
+			this.btnNPChaves = new System.Windows.Forms.Button();
+			this.btnGravarCPI = new System.Windows.Forms.Button();
+			this.btnLerCPI = new System.Windows.Forms.Button();
+			this.textBox1 = new System.Windows.Forms.TextBox();
+			this.txtChavePri = new System.Windows.Forms.TextBox();
+			this.grpChavePublica = new System.Windows.Forms.GroupBox();
+			this.button7 = new System.Windows.Forms.Button();
+			this.btnGravarCPU = new System.Windows.Forms.Button();
+			this.btnLerCPU = new System.Windows.Forms.Button();
+			this.txtArqPrivKey = new System.Windows.Forms.TextBox();
+			this.txtChavePub = new System.Windows.Forms.TextBox();
 			this.ativarCheckButton = new System.Windows.Forms.CheckBox();
-			this.dAVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.testarDAVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStrip1.SuspendLayout();
 			this.menuStrip1.SuspendLayout();
 			this.tabControl.SuspendLayout();
@@ -205,6 +222,9 @@
 			((System.ComponentModel.ISupportInitialize)(this.aacECFsAutorizadaDataGridView)).BeginInit();
 			this.aacParametrosTabPage.SuspendLayout();
 			this.tabPage1.SuspendLayout();
+			this.tabPage2.SuspendLayout();
+			this.grpChavePrivada.SuspendLayout();
+			this.grpChavePublica.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// statusStrip1
@@ -486,6 +506,21 @@
 			this.testaCupomFiscalToolStripMenuItem.Text = "Testa Cupom Fiscal";
 			this.testaCupomFiscalToolStripMenuItem.Click += new System.EventHandler(this.testaCupomFiscalToolStripMenuItem_Click);
 			// 
+			// dAVToolStripMenuItem
+			// 
+			this.dAVToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.testarDAVToolStripMenuItem});
+			this.dAVToolStripMenuItem.Name = "dAVToolStripMenuItem";
+			this.dAVToolStripMenuItem.Size = new System.Drawing.Size(42, 20);
+			this.dAVToolStripMenuItem.Text = "DAV";
+			// 
+			// testarDAVToolStripMenuItem
+			// 
+			this.testarDAVToolStripMenuItem.Name = "testarDAVToolStripMenuItem";
+			this.testarDAVToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
+			this.testarDAVToolStripMenuItem.Text = "Testa DAV";
+			this.testarDAVToolStripMenuItem.Click += new System.EventHandler(this.testarDAVToolStripMenuItem_Click);
+			// 
 			// utilitariosToolStripMenuItem
 			// 
 			this.utilitariosToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -510,6 +545,7 @@
 			this.tabControl.Controls.Add(this.cmdTabPage);
 			this.tabControl.Controls.Add(this.aacTabPage);
 			this.tabControl.Controls.Add(this.tabPage1);
+			this.tabControl.Controls.Add(this.tabPage2);
 			this.tabControl.Location = new System.Drawing.Point(10, 27);
 			this.tabControl.Name = "tabControl";
 			this.tabControl.SelectedIndex = 0;
@@ -1683,6 +1719,178 @@
 			this.txtUF.Text = "MS";
 			this.txtUF.WordWrap = false;
 			// 
+			// tabPage2
+			// 
+			this.tabPage2.Controls.Add(this.grpArquivoDe);
+			this.tabPage2.Controls.Add(this.grpChavePrivada);
+			this.tabPage2.Controls.Add(this.grpChavePublica);
+			this.tabPage2.Location = new System.Drawing.Point(4, 22);
+			this.tabPage2.Name = "tabPage2";
+			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+			this.tabPage2.Size = new System.Drawing.Size(640, 360);
+			this.tabPage2.TabIndex = 4;
+			this.tabPage2.Text = "EAD";
+			this.tabPage2.UseVisualStyleBackColor = true;
+			// 
+			// grpArquivoDe
+			// 
+			this.grpArquivoDe.Location = new System.Drawing.Point(6, 280);
+			this.grpArquivoDe.Name = "grpArquivoDe";
+			this.grpArquivoDe.Size = new System.Drawing.Size(628, 72);
+			this.grpArquivoDe.TabIndex = 6;
+			this.grpArquivoDe.TabStop = false;
+			this.grpArquivoDe.Text = "Arquivo de Entrada";
+			// 
+			// grpChavePrivada
+			// 
+			this.grpChavePrivada.Controls.Add(this.btnCalcCP);
+			this.grpChavePrivada.Controls.Add(this.btnGXeECFc);
+			this.grpChavePrivada.Controls.Add(this.btnME);
+			this.grpChavePrivada.Controls.Add(this.btnNPChaves);
+			this.grpChavePrivada.Controls.Add(this.btnGravarCPI);
+			this.grpChavePrivada.Controls.Add(this.btnLerCPI);
+			this.grpChavePrivada.Controls.Add(this.textBox1);
+			this.grpChavePrivada.Controls.Add(this.txtChavePri);
+			this.grpChavePrivada.Location = new System.Drawing.Point(6, 6);
+			this.grpChavePrivada.Name = "grpChavePrivada";
+			this.grpChavePrivada.Size = new System.Drawing.Size(628, 134);
+			this.grpChavePrivada.TabIndex = 5;
+			this.grpChavePrivada.TabStop = false;
+			this.grpChavePrivada.Text = "Chave Privada";
+			// 
+			// btnCalcCP
+			// 
+			this.btnCalcCP.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.btnCalcCP.Location = new System.Drawing.Point(505, 99);
+			this.btnCalcCP.Name = "btnCalcCP";
+			this.btnCalcCP.Size = new System.Drawing.Size(117, 23);
+			this.btnCalcCP.TabIndex = 11;
+			this.btnCalcCP.Text = "Calcular Ch. Publica";
+			this.btnCalcCP.UseVisualStyleBackColor = true;
+			// 
+			// btnGXeECFc
+			// 
+			this.btnGXeECFc.Location = new System.Drawing.Point(505, 70);
+			this.btnGXeECFc.Name = "btnGXeECFc";
+			this.btnGXeECFc.Size = new System.Drawing.Size(117, 23);
+			this.btnGXeECFc.TabIndex = 10;
+			this.btnGXeECFc.Text = "Gerar XML eECFc";
+			this.btnGXeECFc.UseVisualStyleBackColor = true;
+			// 
+			// btnME
+			// 
+			this.btnME.Location = new System.Drawing.Point(505, 41);
+			this.btnME.Name = "btnME";
+			this.btnME.Size = new System.Drawing.Size(117, 23);
+			this.btnME.TabIndex = 9;
+			this.btnME.Text = "Módulo / Expoente";
+			this.btnME.UseVisualStyleBackColor = true;
+			// 
+			// btnNPChaves
+			// 
+			this.btnNPChaves.Location = new System.Drawing.Point(505, 12);
+			this.btnNPChaves.Name = "btnNPChaves";
+			this.btnNPChaves.Size = new System.Drawing.Size(117, 23);
+			this.btnNPChaves.TabIndex = 8;
+			this.btnNPChaves.Text = "Novo Par de Chaves";
+			this.btnNPChaves.UseVisualStyleBackColor = true;
+			this.btnNPChaves.Click += new System.EventHandler(this.btnNPChaves_Click);
+			// 
+			// btnGravarCPI
+			// 
+			this.btnGravarCPI.Location = new System.Drawing.Point(391, 12);
+			this.btnGravarCPI.Name = "btnGravarCPI";
+			this.btnGravarCPI.Size = new System.Drawing.Size(75, 23);
+			this.btnGravarCPI.TabIndex = 7;
+			this.btnGravarCPI.Text = "Gravar";
+			this.btnGravarCPI.UseVisualStyleBackColor = true;
+			this.btnGravarCPI.Click += new System.EventHandler(this.btnGravarCPI_Click);
+			// 
+			// btnLerCPI
+			// 
+			this.btnLerCPI.Location = new System.Drawing.Point(310, 12);
+			this.btnLerCPI.Name = "btnLerCPI";
+			this.btnLerCPI.Size = new System.Drawing.Size(75, 23);
+			this.btnLerCPI.TabIndex = 6;
+			this.btnLerCPI.Text = "Ler";
+			this.btnLerCPI.UseVisualStyleBackColor = true;
+			// 
+			// textBox1
+			// 
+			this.textBox1.Location = new System.Drawing.Point(6, 15);
+			this.textBox1.Name = "textBox1";
+			this.textBox1.Size = new System.Drawing.Size(298, 20);
+			this.textBox1.TabIndex = 5;
+			this.textBox1.Text = "priv_key.pem";
+			// 
+			// txtChavePri
+			// 
+			this.txtChavePri.Location = new System.Drawing.Point(6, 41);
+			this.txtChavePri.Multiline = true;
+			this.txtChavePri.Name = "txtChavePri";
+			this.txtChavePri.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.txtChavePri.Size = new System.Drawing.Size(493, 81);
+			this.txtChavePri.TabIndex = 4;
+			// 
+			// grpChavePublica
+			// 
+			this.grpChavePublica.Controls.Add(this.button7);
+			this.grpChavePublica.Controls.Add(this.btnGravarCPU);
+			this.grpChavePublica.Controls.Add(this.btnLerCPU);
+			this.grpChavePublica.Controls.Add(this.txtArqPrivKey);
+			this.grpChavePublica.Controls.Add(this.txtChavePub);
+			this.grpChavePublica.Location = new System.Drawing.Point(6, 146);
+			this.grpChavePublica.Name = "grpChavePublica";
+			this.grpChavePublica.Size = new System.Drawing.Size(628, 128);
+			this.grpChavePublica.TabIndex = 4;
+			this.grpChavePublica.TabStop = false;
+			this.grpChavePublica.Text = "Chave Publica";
+			// 
+			// button7
+			// 
+			this.button7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.button7.Location = new System.Drawing.Point(472, 13);
+			this.button7.Name = "button7";
+			this.button7.Size = new System.Drawing.Size(150, 23);
+			this.button7.TabIndex = 12;
+			this.button7.Text = "Calcular Ch. de XML eECFc";
+			this.button7.UseVisualStyleBackColor = true;
+			// 
+			// btnGravarCPU
+			// 
+			this.btnGravarCPU.Location = new System.Drawing.Point(391, 13);
+			this.btnGravarCPU.Name = "btnGravarCPU";
+			this.btnGravarCPU.Size = new System.Drawing.Size(75, 23);
+			this.btnGravarCPU.TabIndex = 12;
+			this.btnGravarCPU.Text = "Gravar";
+			this.btnGravarCPU.UseVisualStyleBackColor = true;
+			// 
+			// btnLerCPU
+			// 
+			this.btnLerCPU.Location = new System.Drawing.Point(310, 13);
+			this.btnLerCPU.Name = "btnLerCPU";
+			this.btnLerCPU.Size = new System.Drawing.Size(75, 23);
+			this.btnLerCPU.TabIndex = 7;
+			this.btnLerCPU.Text = "Ler";
+			this.btnLerCPU.UseVisualStyleBackColor = true;
+			// 
+			// txtArqPrivKey
+			// 
+			this.txtArqPrivKey.Location = new System.Drawing.Point(6, 15);
+			this.txtArqPrivKey.Name = "txtArqPrivKey";
+			this.txtArqPrivKey.Size = new System.Drawing.Size(298, 20);
+			this.txtArqPrivKey.TabIndex = 4;
+			this.txtArqPrivKey.Text = "pub_key.pem";
+			// 
+			// txtChavePub
+			// 
+			this.txtChavePub.Location = new System.Drawing.Point(6, 41);
+			this.txtChavePub.Multiline = true;
+			this.txtChavePub.Name = "txtChavePub";
+			this.txtChavePub.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.txtChavePub.Size = new System.Drawing.Size(616, 75);
+			this.txtChavePub.TabIndex = 3;
+			// 
 			// ativarCheckButton
 			// 
 			this.ativarCheckButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -1696,21 +1904,6 @@
 			this.ativarCheckButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.ativarCheckButton.UseVisualStyleBackColor = true;
 			this.ativarCheckButton.CheckedChanged += new System.EventHandler(this.ativarCheckButton_CheckedChanged);
-			// 
-			// dAVToolStripMenuItem
-			// 
-			this.dAVToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.testarDAVToolStripMenuItem});
-			this.dAVToolStripMenuItem.Name = "dAVToolStripMenuItem";
-			this.dAVToolStripMenuItem.Size = new System.Drawing.Size(42, 20);
-			this.dAVToolStripMenuItem.Text = "DAV";
-			// 
-			// testarDAVToolStripMenuItem
-			// 
-			this.testarDAVToolStripMenuItem.Name = "testarDAVToolStripMenuItem";
-			this.testarDAVToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.testarDAVToolStripMenuItem.Text = "Testa DAV";
-			this.testarDAVToolStripMenuItem.Click += new System.EventHandler(this.testarDAVToolStripMenuItem_Click);
 			// 
 			// MainForm
 			// 
@@ -1759,6 +1952,11 @@
 			this.aacParametrosTabPage.PerformLayout();
 			this.tabPage1.ResumeLayout(false);
 			this.tabPage1.PerformLayout();
+			this.tabPage2.ResumeLayout(false);
+			this.grpChavePrivada.ResumeLayout(false);
+			this.grpChavePrivada.PerformLayout();
+			this.grpChavePublica.ResumeLayout(false);
+			this.grpChavePublica.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -1921,6 +2119,23 @@
         private System.Windows.Forms.Button btnTipoC;
 		private System.Windows.Forms.ToolStripMenuItem dAVToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem testarDAVToolStripMenuItem;
+		private System.Windows.Forms.TabPage tabPage2;
+		private System.Windows.Forms.GroupBox grpArquivoDe;
+		private System.Windows.Forms.GroupBox grpChavePrivada;
+		private System.Windows.Forms.Button btnCalcCP;
+		private System.Windows.Forms.Button btnGXeECFc;
+		private System.Windows.Forms.Button btnME;
+		private System.Windows.Forms.Button btnNPChaves;
+		private System.Windows.Forms.Button btnGravarCPI;
+		private System.Windows.Forms.Button btnLerCPI;
+		private System.Windows.Forms.TextBox textBox1;
+		private System.Windows.Forms.TextBox txtChavePri;
+		private System.Windows.Forms.GroupBox grpChavePublica;
+		private System.Windows.Forms.TextBox txtArqPrivKey;
+		private System.Windows.Forms.TextBox txtChavePub;
+		private System.Windows.Forms.Button button7;
+		private System.Windows.Forms.Button btnGravarCPU;
+		private System.Windows.Forms.Button btnLerCPU;
     }
 }
 

@@ -8,6 +8,7 @@ uses
   ACBrCommonDll,
   ACBrECFDll,
   ACBrPAFDll,
+  ACBrEADDll,
   ACBrBALDll,
   ACBrLCBDll,
   ACBrAACDll;

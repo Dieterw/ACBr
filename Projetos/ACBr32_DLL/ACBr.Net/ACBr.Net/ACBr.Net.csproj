@@ -116,6 +116,7 @@
     <Compile Include="ACBrLCB\ACBrLCB.cs" />
     <Compile Include="ACBrECF\ACBrECFDadosRZ.cs" />
     <Compile Include="ACBrECF\ACBrECFRelatorioGerencial.cs" />
+    <Compile Include="ACBrEAD\ACBrEAD.cs" />
     <Compile Include="ACBrPAF\ACBrPAF.cs" />
     <Compile Include="ACBrPAF\Registros\ACBrPAFRegistroC1.cs" />
     <Compile Include="ACBrPAF\Registros\ACBrPAFRegistroC2.cs" />
@@ -163,6 +164,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

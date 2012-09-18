@@ -867,6 +867,28 @@ namespace ACBr.Net
 
 		#endregion ACBrECF
 
+		#region ACBrEAD	
+
+		#region Constructors/Erro Handler
+
+		[DllImport(ACBr32, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int EAD_Create(ref IntPtr eadHandle);
+
+		[DllImport(ACBr32, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int EAD_Destroy(ref IntPtr eadHandle);
+
+		[DllImport(ACBr32, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int EAD_GetUltimoErro(IntPtr eadHandle, StringBuilder buffer, int bufferLen);
+
+		#endregion Constructors/Erro Handler
+
+		#region Methods
+		[DllImport(ACBr32, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int EAD_GerarChaves(IntPtr eadHandle, StringBuilder ChavePUB, StringBuilder ChavePRI, int bufferLen);
+		#endregion Methods
+
+		#endregion ACBrEAD
+
 		#region ACBrPAF
 
 		#region Interop Types

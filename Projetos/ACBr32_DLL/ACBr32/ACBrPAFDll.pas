@@ -7,6 +7,7 @@ uses
   Classes,
   ACBrPAF,
   ACBrAACDLL,
+  ACBrEADDLL,
   ACBrUtil;
 
 {Classe que armazena os EventHandlers para o componente ACBr}
@@ -614,6 +615,34 @@ begin
 
     try
        pafHandle^.PAF.AAC := aacHandle^.AAC;
+       Result := 0;
+    except on exception : Exception do
+        begin
+         pafHandle^.UltimoErro := exception.Message;
+         Result := -1;
+         end
+    end;
+  end;
+end;
+
+Function PAF_SetEAD(const pafHandle: PPAFHandle; const eadHandle : PEADHandle) : Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF}  export;
+begin
+
+  if (pafHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+  if (eadHandle = nil) then
+  begin
+     pafHandle^.PAF.EAD := nil;
+  end
+  else
+  begin
+
+    try
+       pafHandle^.PAF.EAD := eadHandle^.EAD;
        Result := 0;
     except on exception : Exception do
         begin

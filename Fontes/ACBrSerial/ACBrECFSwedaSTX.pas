@@ -1104,7 +1104,7 @@ begin
                                  'Para a data de: "' + Dia + '"' ));
 
       // próximo dia
-      IncDay( DataArquivo, 1 );
+      DataArquivo := IncDay( DataArquivo, 1 );
 
     until DataArquivo > DataFinal;
 

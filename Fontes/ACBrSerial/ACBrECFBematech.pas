@@ -3772,7 +3772,7 @@ begin
       end;
 
       // próximo dia
-      IncDay( DataArquivo, 1 );
+      DataArquivo := IncDay( DataArquivo, 1 );
 
     until DataArquivo > DataFinal;
 

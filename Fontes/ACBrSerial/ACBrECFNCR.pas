@@ -1303,7 +1303,7 @@ begin
 
         // Pois a ECF fica bloqueada até as 02:00h do dia seguinte da data do movimento
         DataMovLiber := EncodeDate(Ano, Mes, Dia);
-        IncDay(DataMovLiber, 1) ;
+        DataMovLiber := IncDay(DataMovLiber, 1) ;
         DataMovLiber := RecodeHour( DataMovLiber, 2) ;
         DataMovLiber := RecodeMinute( DataMovLiber, 0) ;
         DataMovLiber := RecodeSecond( DataMovLiber, 0) ;

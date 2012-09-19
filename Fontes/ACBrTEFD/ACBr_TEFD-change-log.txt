@@ -47,12 +47,24 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data:  19/09/2012 - 4.1.5  (por: DSA)
+-- ACBrTEFD --
+[-] Correção no algorítimo de ordenação do método: AgruparRespostasPendentes
+
+[*] Adicionada chamada a OnComandarECF( opeImprimePagamentos ) logo após a
+    execução do evento: OnComandaECFSubtotaliza, isso permite a aplicação
+    imprimir pagamentos em Dinheiro antes dos pagamentos do TEF.
+
+-- ACBrTEFDVeSPague --
+[-] Correção para correta exibição de mensagem no momento da Inicialização com
+    Transações pendentes a serem canceladas.
+
 Data:  06/09/2012 - 4.1.4
 -- ACBrTEFDClass --
 [*] Criado o tipo enumerado TACBrTEFDRespParceladoPor com os seguinte valores:
     parcNenhum - Sem parcelamento, parcADM - Parcelado pela Administradora e 
     parcLoja - Parcelado pela Loja, criado também a propriedade ParceladoPor
-    para armazenar esta informação. (Juliana Tammizou)
+    para armazenar esta informação. (Juliana Tamizou)
 [*] Criado o tipo enumerado TACBrTEFDRespTipoOperacao com os seguinte valores:
     opOutras - Tipo Genérico, opAvista - Operação Avista, opParcelado - Operação 
 	Parcelada e opPreDatado - Operação Pré-Datada, criado também a propriedade 

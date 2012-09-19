@@ -1200,6 +1200,9 @@ begin
 
      raise EACBrTEFDECF.Create( ACBrStr( Erro ) )
   end;
+
+  ComandarECF( opeImprimePagamentos ) ;  // Deve imprimir Dinheiro antes dos pagamentos do TEF
+
 end;
 
 Function TACBrTEFD.ECFPagamento( Indice: String; Valor: Double ) : Integer ;
@@ -1435,6 +1438,7 @@ var
    wTotal: Double;
    wIndiceFPG_ECF: String;
    wOrdemPagamento: Integer;
+   Trocou: Boolean;
 begin
   SetLength( Grupo, 0) ;
 
@@ -1464,28 +1468,34 @@ begin
      Grupo[J].Total := Grupo[J].Total + RespostasPendentes[I].ValorTotal ;
   end;
 
-  // Ordenando por OrdemPagamento //
-  J := 1 ;
+  // Ordenando por OrdemPagamento (usando Bubble sort) //
   LenArr := Length( Grupo ) ;
-  while J < LenArr do
-  begin
-     if Grupo[J].OrdemPagamento < Grupo[J-1].OrdemPagamento then
+  repeat
+     J      := 1 ;
+     Trocou := False ;
+     while J < LenArr do
      begin
-       wOrdemPagamento := Grupo[J].OrdemPagamento ;
-       wIndiceFPG_ECF  := Grupo[J].IndiceFPG_ECF ;
-       wTotal          := Grupo[J].Total ;
+        if Grupo[J].OrdemPagamento < Grupo[J-1].OrdemPagamento then
+        begin
+          Trocou := True;
+          wOrdemPagamento := Grupo[J].OrdemPagamento ;
+          wIndiceFPG_ECF  := Grupo[J].IndiceFPG_ECF ;
+          wTotal          := Grupo[J].Total ;
 
-       Grupo[J].OrdemPagamento := Grupo[J-1].OrdemPagamento ;
-       Grupo[J].IndiceFPG_ECF  := Grupo[J-1].IndiceFPG_ECF ;
-       Grupo[J].Total          := Grupo[J-1].Total ;
+          Grupo[J].OrdemPagamento := Grupo[J-1].OrdemPagamento ;
+          Grupo[J].IndiceFPG_ECF  := Grupo[J-1].IndiceFPG_ECF ;
+          Grupo[J].Total          := Grupo[J-1].Total ;
 
-       Grupo[J-1].OrdemPagamento := wOrdemPagamento ;
-       Grupo[J-1].IndiceFPG_ECF  := wIndiceFPG_ECF ;
-       Grupo[J-1].Total          := wTotal ;
+          Grupo[J-1].OrdemPagamento := wOrdemPagamento ;
+          Grupo[J-1].IndiceFPG_ECF  := wIndiceFPG_ECF ;
+          Grupo[J-1].Total          := wTotal ;
+        end;
+
+        Inc( J ) ;
      end;
 
-     Inc( J ) ;
-  end;
+     Dec( LenArr ) ;
+  until not Trocou;
 end;
 
 

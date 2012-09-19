@@ -732,6 +732,7 @@ procedure TACBrTEFDVeSPague.Inicializar;
 var
   Erro, Tentativas : Integer ;
   Est : AnsiChar;
+  ArqMask: String;
 begin
   if Inicializado then exit ;
 
@@ -793,7 +794,19 @@ begin
 
   // Cupom Ficou aberto ?? Se SIM, Cancele tudo... //
   if (Est in ['V','P','N','O']) then
-     CancelarTransacoesPendentesClass
+   begin
+     { Achando Arquivos de Backup deste GP }
+     ArqMask := TACBrTEFD(Owner).PathBackup + PathDelim + 'ACBr_' + Self.Name + '_*.tef' ;
+     if FilesExists( ArqMask ) then
+     begin
+        TACBrTEFD(Owner).DoExibeMsg( opmOK,
+           'Há pelo menos uma transação PENDENTE.'+sLineBreak+
+           'Favor realizar o DESFAZIMENTO no menu Administrativo -> pedende.'+sLineBreak+
+           'Cancelar o cupom fiscal !' ) ;
+
+        CancelarTransacoesPendentesClass;
+     end;
+   end
   else
      // NAO, Cupom Fechado, Pode confirmar e Mandar aviso para re-imprimir //
      ConfirmarESolicitarImpressaoTransacoesPendentes ;

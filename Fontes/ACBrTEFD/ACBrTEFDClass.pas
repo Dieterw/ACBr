@@ -55,7 +55,7 @@ uses
   {$ENDIF} ;
 
 const
-   CACBrTEFD_Versao      = '4.1.4' ;
+   CACBrTEFD_Versao      = '4.1.5' ;
    CACBrTEFD_EsperaSTS   = 7 ;
    CACBrTEFD_EsperaSleep = 250 ;
    CACBrTEFD_NumVias     = 2 ;
@@ -2073,10 +2073,10 @@ Var
   JaCancelado         : Boolean ;
   ArqMask             : String;
 begin
+  GravaLog( Name +' CancelarTransacoesPendentesClass ');
+
   ArquivosVerficar    := TStringList.Create;
   RespostasCanceladas := TObjectList.create(True);
-
-  GravaLog( Name +' CancelarTransacoesPendentesClass ');
 
   try
      ArquivosVerficar.Clear;

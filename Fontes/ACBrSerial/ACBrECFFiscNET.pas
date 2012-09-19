@@ -669,7 +669,7 @@ begin
      // Ajuste de Colunas para modelos Específicos //
      if (fsModeloECF = 'TPF2001') then
         fpColunas := 40
-     else if (pos(fsModeloECF, 'X5|3202DT|ELGIN FIT') > 0) then
+     else if (pos(fsModeloECF, 'X5|3202DT|ELGIN FIT|ELGIN K') > 0) then
         fpColunas := 48;
 
   except
@@ -3413,12 +3413,12 @@ const
   // <n></n>
   cNegritoON     = ESC + 'E' ;
   cNegritoOFF    = ESC + 'F' ;
-  cNegritoON_B   = ESC + 'E' + #1 ;
-  cNegritoOFF_B  = ESC + 'E' + #0 ;
+  cNegritoON_B   = ESC + '!' + #8 ;
+  cNegritoOFF_B  = ESC + '!' + #0 ;
 
-  cBarras   = #29 ;
-  cBarrasAltura = cBarras + 'h' ;
-  cBarrasLargura= cBarras + 'w' ;
+  cBarras           = #29 ;
+  cBarrasAltura     = cBarras + 'h' ;
+  cBarrasLargura    = cBarras + 'w' ;
   cBarrasMostrarOFF = cBarras + 'H' + #0 ;
   cBarrasMostrarON  = cBarras + 'H' + #2 ; // HRI na Base
   cBarrasFonte      = cBarras + 'f' + #0 ; // Fonte A
@@ -3464,7 +3464,7 @@ var
 begin
 
   // Modelos mais antigos usam comandos "B" //
-  CodB := (pos(fsModeloECF,'3202DT') > 0) ;
+  CodB := (pos(fsModeloECF,'3202DT|X5|ELGIN FIT|ELGIN K') > 0 );
 
   case AnsiIndexText( ATag, ARRAY_TAGS) of
      -1: Result := ATag;

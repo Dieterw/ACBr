@@ -97,6 +97,16 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 19/09/2012
+-- ACBrECFBematech, ACBrECFSwedaSTX --
+[-] Correção do método PafMF_GerarCAT52, que ficava em Loop infinito quando
+    usando um periodo de mais de um dia.
+    http://www.djsystem.com.br/acbr/forum/viewtopic.php?p=39803#p39803
+
+-- ACBrECFFiscNet --
+[*] Ajustes para a compatibilização do modelo: ELGIN K
+    http://www.djsystem.com.br/acbr/forum/viewtopic.php?f=10&t=7333&p=39696
+
 Data: 17/09/2012
 -- ACBrECFFiscNet --
 [-] Acerto no método ArquivoMFD_DLL para zpm fit/logger (por: Natanael)

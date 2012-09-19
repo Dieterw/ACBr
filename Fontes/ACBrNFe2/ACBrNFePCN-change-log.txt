@@ -47,6 +47,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+
+Alterações   08/05/12 (beretta)
+---------------
+[-] Acerto para impressão da quantidade e unidade tributaveis e comercial 
+    quando forem diferentes.
+
 Alterações   08/05/12 (juaumkiko)
 ---------------
 [-] Correção de memory leak. 

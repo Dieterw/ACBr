@@ -1242,6 +1242,7 @@ begin
 
           PrintTab(Prod.CFOP);
           PrintTab(Prod.UCom);
+
           PrintTab(NotaUtil.FormatFloat(Prod.QCom,NotaUtil.SeSenao(Mask_qCom='',NotaUtil.PreparaCasasDecimais(CasasDecimais_qCom),Mask_qCom)));
           PrintTab(NotaUtil.FormatFloat(Prod.VUnCom,NotaUtil.SeSenao(Mask_vUnCom='',NotaUtil.PreparaCasasDecimais(CasasDecimais_vUnCom),Mask_vUnCom)));
 
@@ -1277,6 +1278,20 @@ begin
           finally
             Memo.Free;
           end;
+
+          // Beretta
+          If Prod.UCom <> Prod.uTrib Then
+             Begin
+             NewLine;
+             PrintTab('');  // 1
+             PrintTab('');  // 2
+             PrintTab('');  // 3
+             PrintTab('');  // 4
+             PrintTab('');  // 5
+             PrintTab(Prod.uTrib);  // 6
+             PrintTab(NotaUtil.FormatFloat(Prod.qTrib,'0.0000'));
+             PrintTab(NotaUtil.FormatFloat(Prod.vUnTrib,'0.0000'));
+             End ;
           inc(FDetIndex);
           NewLine;
          end;

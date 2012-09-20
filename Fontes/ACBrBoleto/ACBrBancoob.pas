@@ -75,7 +75,7 @@ constructor TACBrBancoob.create(AOwner: TACBrBanco);
 begin
    inherited create(AOwner);
    fpDigito := 0;
-   fpNome   := 'SICCOB';
+   fpNome   := 'SICOOB';
    fpNumero:= 756;
    fpTamanhoMaximoNossoNum := 7;
    fpTamanhoCarteira := 1;
@@ -236,6 +236,7 @@ var
   MensagemCedente: String;
   ACarteira      : String;
   I: Integer;
+  TipoCedente: String;
 begin
 
     if (Length(ACBrTitulo.Carteira) > 0 )then
@@ -300,6 +301,12 @@ begin
          TipoSacado := '99';
       end;
 
+      {Pegando Tipo de Cedente}
+      if ACBrBoleto.Cedente.TipoInscricao  = pFisica then
+         TipoCedente := '01'
+      else
+         TipoSacado := '02';
+
       with ACBrBoleto do
       begin
          for I:= 0 to Mensagem.count-1 do
@@ -308,11 +315,11 @@ begin
          if length(MensagemCedente) > 60 then
             MensagemCedente:= copy(MensagemCedente,1,60);
           Result:= '1'                                            +  // ID Registro
-          TipoSacado                                              +  // Identificação do Tipo de Inscrição do Sacado 01 - CPF 02 - CNPJ
+          TipoCedente                                             +  // Identificação do Tipo de Inscrição do Sacado 01 - CPF 02 - CNPJ
           padR(onlyNumber(Cedente.CNPJCPF),14,'0')                +  // Número de Inscrição do Cedente
           padR(Cedente.Agencia, 4, '0')                           +  // Agência
           padR( Cedente.AgenciaDigito, 1, '0')                    +  // Agência digito
-          padR( Cedente.Conta+Cedente.ContaDigito, 9, '0')        +  // Conta Corrente c/ Dígito
+          padR( RightStr(Cedente.Conta,8)+Cedente.ContaDigito, 9, '0')        +  // Conta Corrente c/ Dígito
           padR( '0', 6, '0')                                      +  // Número do Convênio de Cobrança do Cedente fixo zeros: "000000"
           Space(25)                                               +  // Brancos
           padR( NossoNumero + DigitoNossoNumero, 12, '0')         +  // Nosso Número + //nosso numero com digito

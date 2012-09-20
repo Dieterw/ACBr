@@ -787,6 +787,24 @@ namespace ACBr.Net
 
 		#endregion Métodos Ativar/Desativar
 
+		#region Métodos ECF
+		public Boolean AcharECF(Boolean Modelo, Boolean Porta, int TimeOut)
+		{
+			int ret = ACBrDll.ECF_AcharECF(this.Handle, Modelo, Porta, TimeOut);
+			CheckResult(ret);
+
+			return Convert.ToBoolean(ret);
+		}
+
+		public Boolean AcharPorta(int TimeOut)
+		{
+			int ret = ACBrDll.ECF_AcharPorta(this.Handle, TimeOut);
+			CheckResult(ret);
+
+			return Convert.ToBoolean(ret);
+		}
+		#endregion
+
 		#region Métodos do Cupom Fiscal
 
 		public void IdentificaConsumidor(string cpfCnpj, string nome, string endereco)

@@ -9,6 +9,7 @@ uses
   ACBrECFDll,
   ACBrPAFDll,
   ACBrEADDll,
+  ACBrSintegraDll,
   ACBrBALDll,
   ACBrLCBDll,
   ACBrAACDll;

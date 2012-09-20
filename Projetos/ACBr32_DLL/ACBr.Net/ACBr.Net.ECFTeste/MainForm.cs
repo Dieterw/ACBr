@@ -294,6 +294,7 @@ namespace ACBr.Net.ECFTeste
 
 				messageToolStripStatusLabel.Text = acbrECF.Estado.ToString();
 				descriptionToolStripStatusLabel.Text = string.Empty;
+				chkAtivo.Checked = acbrECF.Ativo;
 
 				tabControl.SelectedTab = cmdTabPage;
 				WriteResp("Ativado: OK!");
@@ -331,6 +332,7 @@ namespace ACBr.Net.ECFTeste
 				WriteResp("Desativado: OK!");
 				messageToolStripStatusLabel.Text = "OK";
 				descriptionToolStripStatusLabel.Text = string.Empty;
+				chkAtivo.Checked = acbrECF.Ativo;
 			}
 			catch (NullReferenceException)
 			{

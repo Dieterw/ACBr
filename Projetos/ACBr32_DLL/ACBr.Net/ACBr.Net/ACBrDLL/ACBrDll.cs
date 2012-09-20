@@ -281,6 +281,14 @@ namespace ACBr.Net
 
 		#endregion Ativar/Desativar
 
+		#region Métodos ECF
+		[DllImport(ACBr32, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int ECF_AcharECF(IntPtr ecfHandle, Boolean Modelo, Boolean Porta, int TimeOut);
+
+		[DllImport(ACBr32, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int ECF_AcharPorta(IntPtr ecfHandle, int TimeOut);
+		#endregion
+
 		#region Propriedades do Componente
 
 		[DllImport(ACBr32, CallingConvention = CallingConvention.Cdecl)]

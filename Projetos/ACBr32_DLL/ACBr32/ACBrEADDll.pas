@@ -14,7 +14,7 @@ type TEventHandlers = class
    procedure GetChavePublica(var Chave : AnsiString);
 end;
 
-{Handle para o componente TACBrECF }
+{Handle para o componente TACBrEAD }
 type TEADHandle = record
   UltimoErro : String;
   EAD : TACBrEAD;
@@ -54,7 +54,7 @@ PADRONIZAÇÃO DAS FUNÇÕES:
 }
 
 {
-CRIA um novo componente TACBrPAF retornando o ponteiro para o objeto criado.
+CRIA um novo componente TACBrEAD retornando o ponteiro para o objeto criado.
 Este ponteiro deve ser armazenado pela aplicação que utiliza a DLL e informado
 em todas as chamadas de função relativas ao TACBrPAF.
 }
@@ -81,7 +81,7 @@ begin
 end;
 
 {
-DESTRÓI o objeto TACBrPAF e libera a memória utilizada.
+DESTRÓI o objeto TACBrEAD e libera a memória utilizada.
 Esta função deve SEMPRE ser chamada pela aplicação que utiliza a DLL
 quando o componente não mais for utilizado.
 }

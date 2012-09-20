@@ -4155,7 +4155,6 @@ Function ECF_GetDadosReducaoZClass(const ecfHandle: PECFHandle; var retDadosRZ :
 var
   I : integer;
   dadosRZ : TACBrECFDadosRZ;
-
 begin
 
   if (ecfHandle = nil) then
@@ -4341,6 +4340,52 @@ begin
          Result := -1;
          end
     end;
+  end;
+end;
+
+Function ECF_AcharECF(const ecfHandle: PECFHandle; const ProcuraModelo : Boolean; const ProcuraPorta  : Boolean; const TimeOut : Integer) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+begin
+
+  if (ecfHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+  try
+     if (ecfHandle^.ECF.AcharECF(ProcuraModelo, ProcuraPorta, TimeOut)) then
+       Result := 1
+     else
+       Result := 0;
+  except
+     on exception : Exception do
+     begin
+        ecfHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end;
+end;
+
+Function ECF_AcharPorta(const ecfHandle: PECFHandle; const TimeOut : Integer) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+begin
+
+  if (ecfHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+  try
+     if (ecfHandle^.ECF.AcharPorta(TimeOut))then
+       Result := 1
+     else
+       Result := 0;
+  except
+     on exception : Exception do
+     begin
+        ecfHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
   end;
 end;
 
@@ -5078,7 +5123,7 @@ ECF_TestaPodeAbrirCupom,
 ECF_Sangria, ECF_Suprimento,
 ECF_AbreNaoFiscal,
 ECF_RegistraItemNaoFiscal, ECF_SubtotalizaNaoFiscal, ECF_EfetuaPagamentoNaoFiscal,
-ECF_FechaNaoFiscal, ECF_CancelaNaoFiscal,
+ECF_FechaNaoFiscal, ECF_CancelaNaoFiscal, ECF_AcharECF, ECF_AcharPorta,
 
 ECF_AbreGaveta,
 {

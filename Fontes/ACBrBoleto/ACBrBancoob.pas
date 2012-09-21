@@ -213,7 +213,7 @@ begin
                Space(7)                                   + // Brancos
                padR( Agencia, 4 )                         + // Prefixo da Cooperativa
                padR( AgenciaDigito, 1 )                   + // Dígito Verificador do Prefixo
-               padR( trim(CodigoCedente), 9 )                   + // Código do Cliente/Cedente
+               padR( trim(CodigoCedente), 9,'0' )         + // Código do Cliente/Cedente
                Space(6)                                   + // Brancos
                padR( Nome, 30 )                           + // Nome do Cedente
                padL( '756BANCOOBCED', 18 )                + // Identificação do Banco: "756BANCOOBCED"  //Enviado pelo pessoal da homologação por email

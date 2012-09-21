@@ -682,7 +682,9 @@ end;
 procedure TWebServicesBase.DoNFeCartaCorrecao;
 var
   CCeNFe : TCCeNFe;
-  i : integer;
+  i, f : integer;
+  // Incluido por Italo em 21/09/2012
+  Eventos, Evento, Lote, EventosAssinados: AnsiString;
 begin
   CCeNFe := TCCeNFe.Create;
   CCeNFe.schema := TsPL006;
@@ -708,6 +710,51 @@ begin
 
   CCeNFe.GerarXML;
 
+  // Incluido por Italo em 21/09/2012
+
+  // Separa os grupos <evento> e coloca na variável Eventos
+  i       := Pos( '<evento ', CCeNFe.Gerador.ArquivoFormatoXML );
+  Lote    := Copy( CCeNFe.Gerador.ArquivoFormatoXML, 1, i - 1 );
+  Eventos := SeparaDados( CCeNFe.Gerador.ArquivoFormatoXML, 'envEvento' );
+  i       := Pos( '<evento ', Eventos );
+  Eventos := Copy( Eventos, i, length(Eventos) );
+
+  EventosAssinados := '';
+
+  // Realiza a assinatura para cada evento
+  while Eventos <> '' do
+   begin
+    f := Pos( '</evento>', Eventos );
+
+    if f > 0
+     then begin
+      Evento  := Copy( Eventos, 1, f + 8 );
+      Eventos := Copy( Eventos, f + 9, length(Eventos) );
+
+  {$IFDEF ACBrNFeOpenSSL}
+      if not(NotaUtil.Assinar(Evento, TConfiguracoes(FConfiguracoes).Certificados.Certificado , TConfiguracoes(FConfiguracoes).Certificados.Senha, FDadosMsg, FMsg)) then
+         begin
+           if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
+              TACBrNFe( FACBrNFe ).OnGerarLog('Falha ao assinar o Envio de Evento '+LineBreak+FMsg);
+           raise EACBrNFeException.Create('Falha ao assinar o Envio de Evento '+LineBreak+FMsg);
+         end;
+  {$ELSE}
+      if not(NotaUtil.Assinar(Evento, TConfiguracoes(FConfiguracoes).Certificados.GetCertificado , FDadosMsg, FMsg)) then
+         begin
+           if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
+              TACBrNFe( FACBrNFe ).OnGerarLog('Falha ao assinar o Envio de Evento '+LineBreak+FMsg);
+           raise EACBrNFeException.Create('Falha ao assinar o Envio de Evento '+LineBreak+FMsg);
+         end;
+  {$ENDIF}
+
+      EventosAssinados := EventosAssinados + FDadosMsg;
+     end
+     else Eventos := '';
+   end;
+
+  FDadosMsg := Lote + EventosAssinados + '</envEvento>';
+
+(*
   {$IFDEF ACBrNFeOpenSSL}
   if not(NotaUtil.Assinar(CCeNFe.Gerador.ArquivoFormatoXML, TConfiguracoes(FConfiguracoes).Certificados.Certificado , TConfiguracoes(FConfiguracoes).Certificados.Senha, FDadosMsg, FMsg)) then
      begin
@@ -723,6 +770,7 @@ begin
        raise EACBrNFeException.Create('Falha ao assinar Carta de Correção Eletrônica '+LineBreak+FMsg);
      end;
   {$ENDIF}
+*)
 
   if not(NotaUtil.Valida(FDadosMsg, FMsg, TACBrNFe( FACBrNFe ).Configuracoes.Geral.PathSchemas)) then
   //if not(NotaUtil.Valida(FDadosMsg, FMsg)) then

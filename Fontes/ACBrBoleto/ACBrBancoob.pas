@@ -305,7 +305,7 @@ begin
       if ACBrBoleto.Cedente.TipoInscricao  = pFisica then
          TipoCedente := '01'
       else
-         TipoSacado := '02';
+         TipoCedente := '02';
 
       with ACBrBoleto do
       begin

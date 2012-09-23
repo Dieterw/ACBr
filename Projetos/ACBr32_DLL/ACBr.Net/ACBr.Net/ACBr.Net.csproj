@@ -139,6 +139,8 @@
     <Compile Include="ACBrECF\ACBrECFRelatorioGerencial.cs" />
     <Compile Include="ACBrEAD\ACBrEAD.cs" />
     <Compile Include="ACBrPAF\ACBrPAF.cs" />
+    <Compile Include="ACBrPAF\Registros\ACBrPAFRegistroB1.cs" />
+    <Compile Include="ACBrPAF\Registros\ACBrPAFRegistroB2.cs" />
     <Compile Include="ACBrPAF\Registros\ACBrPAFRegistroC1.cs" />
     <Compile Include="ACBrPAF\Registros\ACBrPAFRegistroC2.cs" />
     <Compile Include="ACBrPAF\Registros\ACBrPAFRegistroD1.cs" />

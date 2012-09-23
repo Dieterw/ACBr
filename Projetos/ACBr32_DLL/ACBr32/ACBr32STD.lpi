@@ -10,7 +10,7 @@
         <MainUnitHasTitleStatement Value="False"/>
       </Flags>
       <MainUnit Value="0"/>
-      <Title Value="ACBr32"/>
+      <Title Value="ACBr32STD"/>
       <UseAppBundle Value="False"/>
       <ResourceType Value="res"/>
       <ActiveWindowIndexAtStart Value="0"/>
@@ -22,7 +22,7 @@
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MinorVersionNr Value="9"/>
-      <BuildNr Value="133"/>
+      <BuildNr Value="134"/>
       <Language Value="0416"/>
       <StringTable CompanyName="Projeto: Componentes ACBr " FileDescription="Projeto: Componentes ACBr " ProductName="ACBr32.DLL" ProductVersion="ACBr32.DLL"/>
     </VersionInfo>
@@ -217,7 +217,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="643"/>
         <CursorPos X="109" Y="1295"/>
-        <FoldState Value=" TCSN65 pibjCM66]9Z]9K3 TLnU0O T3oI0I4]OdjU0N[96T0K]9j5ja0:1[94kV0v2]9Rl40}u2s"/>
+        <FoldState Value=" TLnU0OX"/>
         <UsageCount Value="65"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>

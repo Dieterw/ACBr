@@ -10,7 +10,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.EAD_GetChavePrivada);
+				return GetString(ACBrDll.EAD_GetChavePrivada, 1024);
 			}
 			set
 			{
@@ -22,7 +22,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.EAD_GetChavePublica);
+				return GetString(ACBrDll.EAD_GetChavePublica, 512);
 			}
 			set
 			{
@@ -90,7 +90,7 @@ namespace ACBr.Net
 
 		public string CalcularHashArquivo(string Arquivo, EADDigest HashType)
 		{
-			const int BUFFER_LEN = 512;
+			const int BUFFER_LEN = 256;
 			StringBuilder Hash = new StringBuilder(BUFFER_LEN);
 			int ret = ACBrDll.EAD_CalcularHashArquivo(this.Handle, Arquivo, (int)HashType, Hash, BUFFER_LEN);
 			CheckResult(ret);
@@ -99,7 +99,7 @@ namespace ACBr.Net
 
 		public string CalcularEADArquivo(string Arquivo)
 		{
-			const int BUFFER_LEN = 512;
+			const int BUFFER_LEN = 256;
 			StringBuilder EAD = new StringBuilder(BUFFER_LEN);
 			int ret = ACBrDll.EAD_CalcularEADArquivo(this.Handle, Arquivo, EAD, BUFFER_LEN);
 			CheckResult(ret);

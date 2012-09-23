@@ -7,6 +7,7 @@ namespace ACBr.Net
 		#region Fields
 
 		private ACBrAAC aac;
+		private ACBrEAD ead;
 
 		#endregion Fields
 
@@ -81,6 +82,18 @@ namespace ACBr.Net
 			}
 		}
 
+		public string ChaveRSA
+		{
+			get
+			{
+				return GetString(ACBrDll.PAF_GetChaveRSA, 1024);
+			}
+			set
+			{
+				SetString(ACBrDll.PAF_SetChaveRSA, value);
+			}
+		}
+
 		public ACBrAAC AAC
 		{
 			get
@@ -106,6 +119,31 @@ namespace ACBr.Net
 			}
 		}
 
+		public ACBrEAD EAD
+		{
+			get
+			{
+				return this.ead;
+			}
+			set
+			{
+				if (value == null)
+				{
+					int ret = ACBrDll.PAF_SetEAD(this.Handle, IntPtr.Zero);
+					CheckResult(ret);
+
+					this.aac = null;
+				}
+				else
+				{
+					int ret = ACBrDll.PAF_SetEAD(this.Handle, value.Handle);
+					CheckResult(ret);
+
+					this.ead = value;
+				}
+			}
+		}
+
 		#endregion Properties
 
 		#region Methods
@@ -119,6 +157,39 @@ namespace ACBr.Net
 		#endregion AssinarArquivos
 
 		#region SaveFileTXT
+
+		public void SaveFileTXT_B(ACBrPAFRegistroB1 RegistroB1, ACBrPAFRegistroB2[] RegistroB2, string arquivo)
+		{
+			int i;
+
+			ACBrDll.RegistroHD1Rec RegistroB1Rec = new ACBrDll.RegistroHD1Rec();
+			ACBrDll.RegistroB2Rec[] RegistroB2Rec = new ACBrDll.RegistroB2Rec[RegistroB2.Length];
+
+			RegistroB1Rec.RAZAOSOCIAL = ToUTF8(RegistroB1.RazaoSocial);
+			RegistroB1Rec.CNPJ = ToUTF8(RegistroB1.CNPJ);
+			RegistroB1Rec.UF = ToUTF8(RegistroB1.UF);
+			RegistroB1Rec.IE = ToUTF8(RegistroB1.IE);
+			RegistroB1Rec.IM = ToUTF8(RegistroB1.IM);
+
+			for (i = 0; i < RegistroB2.Length; i++)
+			{
+				RegistroB2Rec[i].BOMBA = RegistroB2[i].BOMBA;
+				RegistroB2Rec[i].BICO = RegistroB2[i].BICO;
+				RegistroB2Rec[i].DATA = RegistroB2[i].DATA.ToOADate();
+				RegistroB2Rec[i].HORA = RegistroB2[i].HORA.ToOADate();
+				RegistroB2Rec[i].MOTIVO = RegistroB2[i].MOTIVO;
+				RegistroB2Rec[i].CNPJ_EMPRESA = RegistroB2[i].CNPJ_EMPRESA;
+				RegistroB2Rec[i].CPF_TECNICO = RegistroB2[i].CPF_TECNICO;
+				RegistroB2Rec[i].NRO_LACRE_ANTES = RegistroB2[i].NRO_LACRE_ANTES;
+				RegistroB2Rec[i].NRO_LACRE_APOS = RegistroB2[i].NRO_LACRE_ANTES;
+				RegistroB2Rec[i].ENCERRANTE_ANTES = RegistroB2[i].ENCERRANTE_ANTES;
+				RegistroB2Rec[i].ENCERRANTE_APOS = RegistroB2[i].ENCERRANTE_APOS;
+				RegistroB2Rec[i].RegistroValido = RegistroB2[i].RegistroValido;
+			}
+
+			int ret = ACBrDll.PAF_SaveFileTXT_B(this.Handle, RegistroB1Rec, RegistroB2Rec, RegistroB2.Length, ToUTF8(arquivo));
+			CheckResult(ret);
+		}
 
 		public void SaveFileTXT_C(ACBrPAFRegistroC1 RegistroC1, ACBrPAFRegistroC2[] RegistroC2, string arquivo)
 		{

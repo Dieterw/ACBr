@@ -12,7 +12,8 @@ uses
 
 {Classe que armazena os EventHandlers para o componente ACBr}
 type TEventHandlers = class
-
+   ChaveRSA : String;
+   procedure GetChaveRSA(var Chave : AnsiString);
 end;
 
 {Handle para o componente TACBrECF }
@@ -51,14 +52,13 @@ type TRegistroHD2Rec = record
 end;
 
 type TRegistroB2Rec = record
-   TANQUE           : array[0..15] of char;
-   BOMBA            : array[0..15] of char;
-   BICO             : array[0..15] of char;
+   BOMBA            : array[0..3] of char;
+   BICO             : array[0..3] of char;
    DATA             : Double;
    HORA             : Double;
-   MOTIVO           : array[0..15] of char;
-   CNPJ_EMPRESA     : array[0..15] of char;
-   CPF_TECNICO      : array[0..15] of char;
+   MOTIVO           : array[0..50] of char;
+   CNPJ_EMPRESA     : array[0..14] of char;
+   CPF_TECNICO      : array[0..11] of char;
    NRO_LACRE_ANTES  : array[0..15] of char;
    NRO_LACRE_APOS   : array[0..15] of char;
    ENCERRANTE_ANTES : Double;
@@ -325,6 +325,7 @@ begin
      New(pafHandle);
      pafHandle^.PAF := TACBrPAF.Create(nil);
      pafHandle^.EventHandlers := TEventHandlers.Create();
+     pafHandle^.PAF.OnPAFGetKeyRSA := pafHandle^.EventHandlers.GetChaveRSA;
      pafHandle^.UltimoErro:= '';
      Result := 0;
   except
@@ -383,6 +384,12 @@ begin
         Result := -1;
      end
   end;
+end;
+
+{Procedures}
+procedure TEventHandlers.GetChaveRSA(var Chave : AnsiString);
+begin
+  Chave := ChaveRSA;
 end;
 
 { Funções mapeando as propriedades do componente }
@@ -613,6 +620,41 @@ begin
 
 end;
 
+Function PAF_GetChaveRSA(const pafHandle: PPAFHandle; Buffer : pChar; const BufferLen : Integer) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+var
+  StrTmp : String;
+begin
+
+ try
+     StrTmp := pafHandle^.EventHandlers.ChaveRSA;
+     StrPLCopy(Buffer, StrTmp, BufferLen);
+     Result := length(StrTmp);
+  except
+     on exception : Exception do
+     begin
+        pafHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end;
+
+end;
+
+Function PAF_SetChaveRSA(const pafHandle: PPAFHandle; const Chave : pChar) : Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF}  export;
+begin
+
+  try
+     pafHandle^.EventHandlers.ChaveRSA := Chave;
+     Result := 0;
+  except
+     on exception : Exception do
+     begin
+        pafHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end;
+
+end;
+
 Function PAF_SetAAC(const pafHandle: PPAFHandle; const aacHandle : PAACHandle) : Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF}  export;
 begin
 
@@ -669,7 +711,66 @@ begin
   end;
 end;
 
-{Salvar arquivos PAF}
+{ Metodos do componente }
+Function PAF_SaveFileTXT_B(const pafHandle: PPAFHandle; const RegistroB1Rec : TRegistroHD1Rec;
+      const RegistroB2Rec : array of TRegistroB2Rec; const CountB2 : Integer; const Arquivo: pChar) : Integer ;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+var
+  i : Integer;
+  OldMask:string;
+begin
+  if (pafHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+  if(CountB2 <= 0) then
+  begin
+     pafHandle^.UltimoErro := 'O numero de Itens não pode ser Zero';
+     Result := -1;
+     Exit;
+  end;
+
+  try
+   pafHandle^.PAF.PAF_B.RegistroB1.RAZAOSOCIAL := RegistroB1Rec.RAZAOSOCIAL;
+   pafHandle^.PAF.PAF_B.RegistroB1.UF          := RegistroB1Rec.UF;
+   pafHandle^.PAF.PAF_B.RegistroB1.CNPJ        := RegistroB1Rec.CNPJ;
+   pafHandle^.PAF.PAF_B.RegistroB1.IE          := RegistroB1Rec.IE;
+   pafHandle^.PAF.PAF_B.RegistroB1.IM          := RegistroB1Rec.IM;
+
+   pafHandle^.PAF.PAF_B.RegistroB2.Clear;
+
+   for i := 0 to CountB2 - 1 do
+   begin
+   with pafHandle^.PAF.PAF_B.RegistroB2.New do
+   begin
+   BOMBA            := RegistroB2Rec[i].BOMBA;
+   BICO             := RegistroB2Rec[i].BICO;
+   DATA             := RegistroB2Rec[i].DATA;
+   HORA             := RegistroB2Rec[i].HORA;
+   MOTIVO           := RegistroB2Rec[i].MOTIVO;
+   CNPJ_EMPRESA     := RegistroB2Rec[i].CNPJ_EMPRESA;
+   CPF_TECNICO      := RegistroB2Rec[i].CPF_TECNICO;
+   NRO_LACRE_ANTES  := RegistroB2Rec[i].NRO_LACRE_ANTES;
+   NRO_LACRE_APOS   := RegistroB2Rec[i].NRO_LACRE_APOS;
+   ENCERRANTE_ANTES := RegistroB2Rec[i].ENCERRANTE_ANTES;
+   ENCERRANTE_APOS  := RegistroB2Rec[i].ENCERRANTE_APOS;
+   RegistroValido   := RegistroB2Rec[i].RegistroValido;
+   end;
+   end;
+
+   pafHandle^.PAF.SaveFileTXT_B(Arquivo);
+   Result := 0;
+  except
+  on exception : Exception do
+  begin
+  pafHandle^.UltimoErro := exception.Message;
+  pafHandle^.PAF.PAF_B.LimpaRegistros;
+  Result := -1;
+  end
+  end;
+end;
+
 Function PAF_SaveFileTXT_C(const pafHandle: PPAFHandle; const RegistroC1Rec : TRegistroHD1Rec;
       const RegistroC2Rec : array of TRegistroC2Rec; const CountC2 : Integer; const Arquivo: pChar) : Integer ;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
 var
@@ -1314,23 +1415,18 @@ end;
 exports
 
 { Funções }
-PAF_Create,
-PAF_Destroy,
-PAF_GetUltimoErro,
+PAF_Create, PAF_Destroy, PAF_GetUltimoErro,
 
 { Propriedades Componente }
 PAF_GetPath, PAF_SetPath,
-PAF_GetDelimitador, PAF_SetDelimitador,
-PAF_GetCurMascara, PAF_SetCurMascara,
-PAF_GetTrimString, PAF_SetTrimString,
-PAF_GetAssinarArquivo, PAF_SetAssinarArquivo,
-PAF_SetAAC,
+PAF_GetDelimitador, PAF_SetDelimitador, PAF_GetCurMascara, PAF_SetCurMascara,
+PAF_GetTrimString, PAF_SetTrimString, PAF_GetAssinarArquivo, PAF_SetAssinarArquivo,
+PAF_GetChaveRSA, PAF_SetChaveRSA, PAF_SetAAC, PAF_SetEAD,
 
 {Salvar Arquivos PAF}
-PAF_SaveFileTXT_C, PAF_SaveFileTXT_D,
-PAF_SaveFileTXT_E, PAF_SaveFileTXT_H,
-PAF_SaveFileTXT_P, PAF_SaveFileTXT_R,
-PAF_SaveFileTXT_T, PAF_AssinaArquivoComEAD;
+PAF_SaveFileTXT_B, PAF_SaveFileTXT_C, PAF_SaveFileTXT_D,
+PAF_SaveFileTXT_E, PAF_SaveFileTXT_H, PAF_SaveFileTXT_P,
+PAF_SaveFileTXT_R, PAF_SaveFileTXT_T, PAF_AssinaArquivoComEAD;
 
 end.
 

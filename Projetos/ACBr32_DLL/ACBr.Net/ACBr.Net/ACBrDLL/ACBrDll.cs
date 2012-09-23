@@ -1,5 +1,7 @@
-﻿#define X86
+﻿#region Defines
+#define X86
 //#define X64
+#endregion Defines
 
 using System;
 using System.Runtime.InteropServices;
@@ -9,12 +11,14 @@ namespace ACBr.Net
 {
 	internal static class ACBrDll
 	{
+		#region DLL
 #if X86
 		private const string ACBr = "ACBr32.dll";
 #endif
 #if X64
 		private const string ACBr = "ACBr64.dll";
 #endif
+		#endregion DLL
 
 		#region ACBrECF
 
@@ -1015,6 +1019,46 @@ namespace ACBr.Net
 		}
 
 		[StructLayout(LayoutKind.Sequential)]
+		public struct RegistroB2Rec
+		{
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+			public string BOMBA;
+			
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+			public string BICO;
+			
+			[MarshalAs(UnmanagedType.R8)]
+			public double DATA;
+			
+			[MarshalAs(UnmanagedType.R8)]
+			public double HORA;
+			
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 51)]
+			public string MOTIVO;
+			
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+			public string CNPJ_EMPRESA;
+			
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 12)]
+			public string CPF_TECNICO;
+			
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+			public string NRO_LACRE_ANTES;
+			
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+			public string NRO_LACRE_APOS;
+			
+			[MarshalAs(UnmanagedType.R8)]
+			public double ENCERRANTE_ANTES;
+			
+			[MarshalAs(UnmanagedType.R8)]
+			public double ENCERRANTE_APOS;
+
+			[MarshalAs(UnmanagedType.U1)]
+			public bool RegistroValido;
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
 		public struct RegistroC2Rec
 		{
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
@@ -1603,11 +1647,22 @@ namespace ACBr.Net
 		public static extern int PAF_SetAssinarArquivo(IntPtr pafHandle, Boolean Assinar);
 
 		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int PAF_GetChaveRSA(IntPtr aacHandle, StringBuilder buffer, int bufferLen);
+
+		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int PAF_SetChaveRSA(IntPtr aacHandle, string chave);
+
+		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
 		public static extern int PAF_SetAAC(IntPtr pafHandle, IntPtr aacHandle);
 
+		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int PAF_SetEAD(IntPtr pafHandle, IntPtr eadHandle);
 		#endregion Propriedades do Componente
 
 		#region Methods
+
+		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int PAF_SaveFileTXT_B(IntPtr pafHandle, RegistroHD1Rec RegistroB1, RegistroB2Rec[] RegistroB2, int CountB2, string Arquivo);
 
 		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
 		public static extern int PAF_SaveFileTXT_C(IntPtr pafHandle, RegistroHD1Rec RegistroC1, RegistroC2Rec[] RegistroC2, int CountC2, string Arquivo);

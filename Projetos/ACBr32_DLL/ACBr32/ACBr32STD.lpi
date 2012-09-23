@@ -22,7 +22,7 @@
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MinorVersionNr Value="9"/>
-      <BuildNr Value="132"/>
+      <BuildNr Value="133"/>
       <Language Value="0416"/>
       <StringTable CompanyName="Projeto: Componentes ACBr " FileDescription="Projeto: Componentes ACBr " ProductName="ACBr32.DLL" ProductVersion="ACBr32.DLL"/>
     </VersionInfo>
@@ -215,8 +215,8 @@
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1315"/>
-        <CursorPos X="40" Y="1323"/>
+        <TopLine Value="643"/>
+        <CursorPos X="109" Y="1295"/>
         <FoldState Value=" TCSN65 pibjCM66]9Z]9K3 TLnU0O T3oI0I4]OdjU0N[96T0K]9j5ja0:1[94kV0v2]9Rl40}u2s"/>
         <UsageCount Value="65"/>
         <Loaded Value="True"/>
@@ -517,7 +517,7 @@
     <Version Value="11"/>
     <PathDelim Value="\"/>
     <Target>
-      <Filename Value="x86\ACBr32"/>
+      <Filename Value="x86STD\ACBr32"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir);..\..\..\Fontes\ACBrComum"/>
@@ -532,6 +532,9 @@
     <CodeGeneration>
       <TargetCPU Value="i386"/>
       <TargetOS Value="win32"/>
+      <Optimizations>
+        <OptimizationLevel Value="3"/>
+      </Optimizations>
     </CodeGeneration>
     <Linking>
       <Debugging>
@@ -547,7 +550,7 @@
       <CompilerMessages>
         <UseMsgFile Value="True"/>
       </CompilerMessages>
-      <CustomOptions Value="-dCONSOLE -dCDECL"/>
+      <CustomOptions Value="-dCONSOLE -dSTDCALL"/>
       <CompilerPath Value="$(CompPath)"/>
     </Other>
   </CompilerOptions>

@@ -5,6 +5,32 @@ namespace ACBr.Net
 {
 	public class ACBrEAD : ACBrComponent, IDisposable
 	{
+		#region Propriedaes
+		public string ChavePrivada
+		{
+			get
+			{
+				return GetString(ACBrDll.EAD_GetChavePrivada);
+			}
+			set
+			{
+				SetString(ACBrDll.EAD_SetChavePrivada, value);
+			}
+		}
+
+		public string ChavePublica
+		{
+			get
+			{
+				return GetString(ACBrDll.EAD_GetChavePublica);
+			}
+			set
+			{
+				SetString(ACBrDll.EAD_SetChavePublica, value);
+			}
+		}
+		#endregion
+
 		#region Constructor
 
 		public ACBrEAD()
@@ -62,16 +88,31 @@ namespace ACBr.Net
 			CheckResult(ret);
 		}
 
-		public void CalcularHashArquivo(string Arquivo, EADDigest Hash)
+		public string CalcularHashArquivo(string Arquivo, EADDigest HashType)
 		{
-			int ret = ACBrDll.EAD_CalcularHashArquivo(this.Handle, Arquivo, (int)Hash);
+			const int BUFFER_LEN = 512;
+			StringBuilder Hash = new StringBuilder(BUFFER_LEN);
+			int ret = ACBrDll.EAD_CalcularHashArquivo(this.Handle, Arquivo, (int)HashType, Hash, BUFFER_LEN);
 			CheckResult(ret);
+			return Hash.ToString();
 		}
 
-		public void CalcularEADArquivo(string Arquivo)
+		public string CalcularEADArquivo(string Arquivo)
 		{
-			int ret = ACBrDll.EAD_CalcularEADArquivo(this.Handle, Arquivo);
+			const int BUFFER_LEN = 512;
+			StringBuilder EAD = new StringBuilder(BUFFER_LEN);
+			int ret = ACBrDll.EAD_CalcularEADArquivo(this.Handle, Arquivo, EAD, BUFFER_LEN);
 			CheckResult(ret);
+			return EAD.ToString();
+		}
+
+		public string CalcularChavePublica()
+		{
+			const int BUFFER_LEN = 512;
+			StringBuilder ChavePUB = new StringBuilder(BUFFER_LEN);
+			int ret = ACBrDll.EAD_CalcularChavePublica(this.Handle, ChavePUB, BUFFER_LEN);
+			CheckResult(ret);
+			return ChavePUB.ToString();
 		}
 
 		public void AssinarArquivoComEAD(string Arquivo, bool Remover)

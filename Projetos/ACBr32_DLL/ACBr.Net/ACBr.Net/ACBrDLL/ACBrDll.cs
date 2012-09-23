@@ -877,6 +877,22 @@ namespace ACBr.Net
 
 		#region ACBrEAD
 
+		#region Propriedades do Componente
+
+		[DllImport(ACBr32, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int EAD_GetChavePrivada(IntPtr aacHandle, StringBuilder buffer, int bufferLen);
+
+		[DllImport(ACBr32, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int EAD_SetChavePrivada(IntPtr aacHandle, string chave);
+
+		[DllImport(ACBr32, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int EAD_GetChavePublica(IntPtr aacHandle, StringBuilder buffer, int bufferLen);
+
+		[DllImport(ACBr32, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int EAD_SetChavePublica(IntPtr aacHandle, string chave);
+
+		#endregion Propriedades do Componente
+
 		#region Constructors/Erro Handler
 
 		[DllImport(ACBr32, CallingConvention = CallingConvention.Cdecl)]
@@ -899,6 +915,9 @@ namespace ACBr.Net
 		public static extern int EAD_CalcularModuloeExpoente(IntPtr eadHandle, StringBuilder Modulo, StringBuilder Expoente, int bufferLen);
 
 		[DllImport(ACBr32, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int EAD_CalcularChavePublica(IntPtr eadHandle, StringBuilder ChavePUB, int bufferLen);
+
+		[DllImport(ACBr32, CallingConvention = CallingConvention.Cdecl)]
 		public static extern int EAD_GerarXMLeECFc(IntPtr eadHandle, String NomeSH, String PathArquivo);
 
 		[DllImport(ACBr32, CallingConvention = CallingConvention.Cdecl)]
@@ -908,10 +927,10 @@ namespace ACBr.Net
 		public static extern int EAD_ConverteXMLeECFcParaOpenSSL(IntPtr eadHandle, String Arquivo);
 
 		[DllImport(ACBr32, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int EAD_CalcularHashArquivo(IntPtr eadHandle, String ChavePUB, int Hash);
+		public static extern int EAD_CalcularHashArquivo(IntPtr eadHandle, String Arquivo, int HashType, StringBuilder Hash, int bufferLen);
 
 		[DllImport(ACBr32, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int EAD_CalcularEADArquivo(IntPtr eadHandle, String Arquivo);
+		public static extern int EAD_CalcularEADArquivo(IntPtr eadHandle, String Arquivo, StringBuilder Hash, int bufferLen);
 
 		[DllImport(ACBr32, CallingConvention = CallingConvention.Cdecl)]
 		public static extern int EAD_AssinarArquivoComEAD(IntPtr eadHandle, String Arquivo, bool Remove);
@@ -1582,7 +1601,7 @@ namespace ACBr.Net
 
 		#endregion Propriedades do Componente
 
-		#region SaveFile
+		#region Methods
 
 		[DllImport(ACBr32, CallingConvention = CallingConvention.Cdecl)]
 		public static extern int PAF_SaveFileTXT_C(IntPtr pafHandle, RegistroHD1Rec RegistroC1, RegistroC2Rec[] RegistroC2, int CountC2, string Arquivo);
@@ -1602,7 +1621,9 @@ namespace ACBr.Net
 		[DllImport(ACBr32, CallingConvention = CallingConvention.Cdecl)]
 		public static extern int PAF_SaveFileTXT_R(IntPtr pafHandle, RegistroR1Rec RegsitroR1Rec, RegistroR2Rec[] RegsitroR2Rec, int CountR2, RegistroR3Rec[] RegsitroR3Rec, RegistroR4Rec[] RegsitroR4Rec, int CountR4, RegistroR5Rec[] RegsitroP5Rec, RegistroR6Rec[] RegsitroR6Rec, int CountR6, RegistroR7Rec[] RegsitroR7Rec, string Arquivo);
 
-		#endregion SaveFile
+		[DllImport(ACBr32, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int PAF_AssinarArquivoComEAD(IntPtr eadHandle, String Arquivo);
+		#endregion Methods
 
 		#endregion ACBrPAF
 

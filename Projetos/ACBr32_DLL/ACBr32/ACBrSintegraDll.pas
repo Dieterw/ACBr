@@ -125,6 +125,9 @@ begin
   end;
 end;
 
+{ Funções mapeando as propriedades do componente }
+
+
 exports
 { Funções }
 SIN_Create,

@@ -50,7 +50,23 @@ type TRegistroHD2Rec = record
    RegistroValido   : Boolean;
 end;
 
-type TregistroC2Rec = record
+type TRegistroB2Rec = record
+   TANQUE           : array[0..15] of char;
+   BOMBA            : array[0..15] of char;
+   BICO             : array[0..15] of char;
+   DATA             : Double;
+   HORA             : Double;
+   MOTIVO           : array[0..15] of char;
+   CNPJ_EMPRESA     : array[0..15] of char;
+   CPF_TECNICO      : array[0..15] of char;
+   NRO_LACRE_ANTES  : array[0..15] of char;
+   NRO_LACRE_APOS   : array[0..15] of char;
+   ENCERRANTE_ANTES : Double;
+   ENCERRANTE_APOS  : Double;
+   RegistroValido   : Boolean;
+end;
+
+type TRegistroC2Rec = record
    ID_ABASTECIMENTO      : array[0..15] of char;
    TANQUE                : array[0..3] of char;
    BOMBA                 : array[0..3] of char;
@@ -1275,6 +1291,26 @@ begin
   end
   end;
 end;
+
+Function PAF_AssinaArquivoComEAD(const pafHandle:PPAFHandle; const Arquivo: pChar) : Integer;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+begin
+  if (pafHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+  try
+   pafHandle^.PAF.AssinaArquivoComEAD(Arquivo);
+   Result := 0;
+  except
+  on exception : Exception do
+  begin
+  pafHandle^.UltimoErro := exception.Message;
+  Result := -1;
+  end
+  end;
+end;
+
 exports
 
 { Funções }
@@ -1294,7 +1330,7 @@ PAF_SetAAC,
 PAF_SaveFileTXT_C, PAF_SaveFileTXT_D,
 PAF_SaveFileTXT_E, PAF_SaveFileTXT_H,
 PAF_SaveFileTXT_P, PAF_SaveFileTXT_R,
-PAF_SaveFileTXT_T;
+PAF_SaveFileTXT_T, PAF_AssinaArquivoComEAD;
 
 end.
 

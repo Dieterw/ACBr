@@ -110,6 +110,14 @@ namespace ACBr.Net
 
 		#region Methods
 
+		#region AssinarArquivos
+		public void AssinarArquivoComEAD(string arquivo)
+		{
+			int ret = ACBrDll.PAF_AssinarArquivoComEAD(this.Handle, arquivo);
+			CheckResult(ret);
+		}
+		#endregion AssinarArquivos
+
 		#region SaveFileTXT
 
 		public void SaveFileTXT_C(ACBrPAFRegistroC1 RegistroC1, ACBrPAFRegistroC2[] RegistroC2, string arquivo)

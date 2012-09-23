@@ -10,6 +10,7 @@ uses
 
 {Classe que armazena os EventHandlers para o componente ACBr}
 type TEventHandlers = class
+   ChavePrivada, ChavePublica : String;
    procedure GetChavePrivada(var Chave : AnsiString);
    procedure GetChavePublica(var Chave : AnsiString);
 end;
@@ -131,15 +132,84 @@ end;
 {Procedures}
 procedure TEventHandlers.GetChavePrivada(var Chave : AnsiString);
 begin
-  //
+  Chave := ChavePrivada;
 end;
 
 procedure TEventHandlers.GetChavePublica(var Chave : AnsiString);
 begin
-  //
+  Chave := ChavePublica;
 end;
 
-{Propriedades}
+{ Funções mapeando as propriedades do componente }
+Function EAD_GetChavePrivada(const eadHandle: PEADHandle; Buffer : pChar; const BufferLen : Integer) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+var
+  StrTmp : String;
+begin
+
+ try
+     StrTmp := eadHandle^.EventHandlers.ChavePrivada;
+     StrPLCopy(Buffer, StrTmp, BufferLen);
+     Result := length(StrTmp);
+  except
+     on exception : Exception do
+     begin
+        eadHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end;
+
+end;
+
+Function EAD_SetChavePrivada(const eadHandle: PEADHandle; const Chave : pChar) : Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF}  export;
+begin
+
+  try
+     eadHandle^.EventHandlers.ChavePrivada := Chave;
+     Result := 0;
+  except
+     on exception : Exception do
+     begin
+        eadHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end;
+
+end;
+
+Function EAD_GetChavePublica(const eadHandle: PEADHandle; Buffer : pChar; const BufferLen : Integer) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+var
+  StrTmp : String;
+begin
+
+ try
+     StrTmp := eadHandle^.EventHandlers.ChavePublica;
+     StrPLCopy(Buffer, StrTmp, BufferLen);
+     Result := length(StrTmp);
+  except
+     on exception : Exception do
+     begin
+        eadHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end;
+
+end;
+
+Function EAD_SetChavePublica(const eadHandle: PEADHandle; const Chave : pChar) : Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF}  export;
+begin
+  try
+     eadHandle^.EventHandlers.ChavePublica := Chave;
+     Result := 0;
+  except
+     on exception : Exception do
+     begin
+        eadHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end;
+
+end;
+
 
 {Funções}
 function EAD_GerarChaves(const eadHandle: PEADHandle; ChavePUB, ChavePRI : pChar; const BufferLen : Integer): Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF}  export;
@@ -161,7 +231,7 @@ begin
 
      StrPLCopy(ChavePUB, ChavePublica, BufferLen);
      StrPLCopy(ChavePRI, ChavePrivada, BufferLen);
-     Result := 1;
+     Result := 0;
   except
      on exception : Exception do
      begin
@@ -188,7 +258,31 @@ begin
 
      StrPLCopy(ModuloBuffer, Modulo, BufferLen);
      StrPLCopy(ExpoenteBuffer, Expoente, BufferLen);
-     Result := 1;
+     Result := 0;
+  except
+     on exception : Exception do
+     begin
+        eadHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end
+end;
+
+function EAD_CalcularChavePublica(const eadHandle: PEADHandle; ChavePUB: pChar; const BufferLen : Integer): Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF}  export;
+var
+  Chave : AnsiString ;
+begin
+  try
+     if (eadHandle = nil) then
+     begin
+     Result := -2;
+     Exit;
+     end;
+
+     Chave :=  eadHandle^.EAD.CalcularChavePublica;
+     Chave := StringReplace( Chave, #10, sLineBreak, [rfReplaceAll] );
+     StrPLCopy(ChavePUB, Chave, BufferLen);
+     Result := 0;
   except
      on exception : Exception do
      begin
@@ -208,7 +302,7 @@ begin
      end;
 
      eadHandle^.EAD.GerarXMLeECFc(NomeSH, PathArquivo);
-     Result := 1;
+     Result := 0;
   except
      on exception : Exception do
      begin
@@ -228,7 +322,7 @@ begin
      end;
 
      eadHandle^.EAD.GerarXMLeECFc(NomeSH);
-     Result := 1;
+     Result := 0;
   except
      on exception : Exception do
      begin
@@ -248,7 +342,7 @@ begin
      end;
 
      eadHandle^.EAD.ConverteXMLeECFcParaOpenSSL(Arquivo);
-     Result := 1;
+     Result := 0;
   except
      on exception : Exception do
      begin
@@ -258,7 +352,9 @@ begin
   end
 end;
 
-function EAD_CalcularHashArquivo(const eadHandle: PEADHandle;const Arquivo: pChar; const Hash: Integer): Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF}  export;
+function EAD_CalcularHashArquivo(const eadHandle: PEADHandle; const Arquivo: pChar; const HashType: Integer; Hash : pChar; const BufferLen : Integer): Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF}  export;
+var
+  TempSTR : AnsiString ;
 begin
   try
      if (eadHandle = nil) then
@@ -267,8 +363,9 @@ begin
      Exit;
      end;
 
-     eadHandle^.EAD.CalcularHashArquivo(Arquivo, TACBrEADDgst(Hash));
-     Result := 1;
+     TempSTR := eadHandle^.EAD.CalcularHashArquivo(Arquivo, TACBrEADDgst(HashType));
+     StrPLCopy(Hash, TempSTR, BufferLen);
+     Result := 0;
   except
      on exception : Exception do
      begin
@@ -278,7 +375,9 @@ begin
   end
 end;
 
-function EAD_CalcularEADArquivo(const eadHandle: PEADHandle;const Arquivo: pChar): Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF}  export;
+function EAD_CalcularEADArquivo(const eadHandle: PEADHandle;const Arquivo: pChar; EAD : pChar; const BufferLen : Integer): Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF}  export;
+var
+  TempSTR : AnsiString ;
 begin
   try
      if (eadHandle = nil) then
@@ -287,8 +386,9 @@ begin
      Exit;
      end;
 
-     eadHandle^.EAD.CalcularEADArquivo(Arquivo);
-     Result := 1;
+     TempSTR := eadHandle^.EAD.CalcularEADArquivo(Arquivo);
+     StrPLCopy(EAD, TempSTR, BufferLen);
+     Result := 0;
   except
      on exception : Exception do
      begin
@@ -308,7 +408,7 @@ begin
      end;
 
      eadHandle^.EAD.AssinarArquivoComEAD(Arquivo, Remove);
-     Result := 1;
+     Result := 0;
   except
      on exception : Exception do
      begin
@@ -348,11 +448,15 @@ EAD_Create,
 EAD_Destroy,
 EAD_GetUltimoErro,
 
-{Chaves}
+{ Funções mapeando as propriedades do componente }
+EAD_GetChavePrivada, EAD_SetChavePrivada,
+EAD_GetChavePublica, EAD_SetChavePublica,
+
+{ Metodos do componente }
 EAD_GerarChaves, EAD_CalcularModuloeExpoente,
 EAD_GerarXMLeECFc, EAD_GerarXMLeECFc_NP,
 EAD_ConverteXMLeECFcParaOpenSSL,EAD_CalcularHashArquivo,
 EAD_CalcularEADArquivo, EAD_AssinarArquivoComEAD,
-EAD_VerificarEADArquivo;
+EAD_VerificarEADArquivo, EAD_CalcularChavePublica;
 
 end.

@@ -7,16 +7,26 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACBr.Net.ECFTeste", "ACBr.N
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C66AC69F-8537-46AD-A6DB-576A61670FA4}.Debug|x64.ActiveCfg = Debug|x64
+		{C66AC69F-8537-46AD-A6DB-576A61670FA4}.Debug|x64.Build.0 = Debug|x64
 		{C66AC69F-8537-46AD-A6DB-576A61670FA4}.Debug|x86.ActiveCfg = Debug|x86
 		{C66AC69F-8537-46AD-A6DB-576A61670FA4}.Debug|x86.Build.0 = Debug|x86
+		{C66AC69F-8537-46AD-A6DB-576A61670FA4}.Release|x64.ActiveCfg = Release|x64
+		{C66AC69F-8537-46AD-A6DB-576A61670FA4}.Release|x64.Build.0 = Release|x64
 		{C66AC69F-8537-46AD-A6DB-576A61670FA4}.Release|x86.ActiveCfg = Release|x86
 		{C66AC69F-8537-46AD-A6DB-576A61670FA4}.Release|x86.Build.0 = Release|x86
+		{7D3D0596-A97E-4E91-9EF9-AAC50A5DB9B2}.Debug|x64.ActiveCfg = Debug|x64
+		{7D3D0596-A97E-4E91-9EF9-AAC50A5DB9B2}.Debug|x64.Build.0 = Debug|x64
 		{7D3D0596-A97E-4E91-9EF9-AAC50A5DB9B2}.Debug|x86.ActiveCfg = Debug|x86
 		{7D3D0596-A97E-4E91-9EF9-AAC50A5DB9B2}.Debug|x86.Build.0 = Debug|x86
+		{7D3D0596-A97E-4E91-9EF9-AAC50A5DB9B2}.Release|x64.ActiveCfg = Release|x64
+		{7D3D0596-A97E-4E91-9EF9-AAC50A5DB9B2}.Release|x64.Build.0 = Release|x64
 		{7D3D0596-A97E-4E91-9EF9-AAC50A5DB9B2}.Release|x86.ActiveCfg = Release|x86
 		{7D3D0596-A97E-4E91-9EF9-AAC50A5DB9B2}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection

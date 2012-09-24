@@ -41,6 +41,11 @@ Símbolo : Significado
 
 20/06/2012
 ----------
+[*] Acertos para compilar e instalar no Delphi XE3.
+    por: Régys Silveira
+
+20/06/2012
+----------
 [+] Implementado recurso para instalar os pacotes de Danfe do Rave
     pelo próprio instalador.
     por: Isaque Pinheiro

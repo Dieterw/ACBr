@@ -2353,43 +2353,25 @@ object frmPrincipal: TfrmPrincipal
       Header.Subtitle.Font.Name = 'Tahoma'
       Header.Subtitle.Font.Style = []
       Caption = 'Pacotes'
-      object gbxFramePacotes: TGroupBox
+      inline frameDpk: TframePacotes
         AlignWithMargins = True
         Left = 3
         Top = 3
         Width = 548
         Height = 381
         Align = alClient
-        Caption = 'Marque os pacotes que deseja instalar'
+        Color = clBtnFace
+        ParentBackground = False
+        ParentColor = False
         TabOrder = 0
-        inline frameDpk: TframePacotes
-          AlignWithMargins = True
-          Left = 5
-          Top = 18
-          Width = 538
-          Height = 358
-          Align = alClient
-          Color = clBtnFace
-          ParentBackground = False
-          ParentColor = False
-          TabOrder = 0
-          ExplicitLeft = 5
-          ExplicitTop = 18
-          ExplicitWidth = 538
-          ExplicitHeight = 358
-          inherited pnlBotoesPacotes: TPanel
-            Top = 326
-            Width = 538
-            ExplicitTop = 326
-            ExplicitWidth = 538
-            inherited btnPacotesDesmarcarTodos: TSpeedButton
-              Left = 506
-              ExplicitLeft = 512
-            end
-            inherited btnPacotesMarcarTodos: TSpeedButton
-              Left = 474
-              ExplicitLeft = 480
-            end
+        inherited pnlBotoesPacotes: TPanel
+          Top = 349
+          Width = 548
+          inherited btnPacotesDesmarcarTodos: TSpeedButton
+            Left = 516
+          end
+          inherited btnPacotesMarcarTodos: TSpeedButton
+            Left = 484
           end
         end
       end
@@ -2545,11 +2527,10 @@ object frmPrincipal: TfrmPrincipal
           Left = 4
           Top = 4
           Width = 508
-          Height = 43
+          Height = 46
           Align = alClient
           AutoSize = False
           Caption = 'Linha 1'#13#10'Linha 2'#13#10'Linha 3'
-          ExplicitHeight = 46
         end
       end
     end
@@ -2730,6 +2711,7 @@ object frmPrincipal: TfrmPrincipal
         Cursor = crHandPoint
         Animate = True
         Center = True
+        FrameIndex = 4
         Image.Data = {
           688B00004749463839613F012800F70000FFFFFFFFFFE5FFFFCCF7FAFDFFFF99
           FFF7B9FFF9A9FFFA84EAFA9EFFF573FFF74AFFFF00FFF268F2F478FFF456E9F5

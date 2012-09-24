@@ -101,7 +101,6 @@ type
     ckbInstalarCapicom: TCheckBox;
     ckbInstalarOpenSSL: TCheckBox;
     wizPgPacotes: TJvWizardInteriorPage;
-    gbxFramePacotes: TGroupBox;
     frameDpk: TframePacotes;
     procedure imgPropaganda1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -528,6 +527,9 @@ begin
      // -- os prefixos dos nomes, para identificar se será compilado para VCL ou FMX
      if VersionNumberStr = 'd16' then
         Sender.Options.Add('-NSData.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;Winapi;System.Win');
+
+     if VersionNumberStr = 'd17' then
+        Sender.Options.Add('-NSWinapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell');
   end;
 end;
 
@@ -535,7 +537,7 @@ procedure TfrmPrincipal.FormCreate(Sender: TObject);
 var
   iFor: Integer;
 begin
-  iVersion := -1;
+  iVersion    := -1;
   sDirRoot    := '';
   sDirLibrary := '';
   sDirPackage := '';
@@ -570,7 +572,9 @@ begin
     else if oACBr.Installations[iFor].VersionNumberStr = 'd15' then
       edtDelphiVersion.Items.Add('Delphi XE')
     else if oACBr.Installations[iFor].VersionNumberStr = 'd16' then
-      edtDelphiVersion.Items.Add('Delphi XE2');
+      edtDelphiVersion.Items.Add('Delphi XE2')
+    else if oACBr.Installations[iFor].VersionNumberStr = 'd17' then
+      edtDelphiVersion.Items.Add('Delphi XE3');
 
     // -- Evento disparado antes de iniciar a execução do processo.
     oACBr.Installations[iFor].DCC32.OnBeforeExecute := BeforeExecute;
@@ -837,15 +841,13 @@ end;
 // quando trocar a versão verificar se libera ou não o combo
 // da plataforma de compilação
 procedure TfrmPrincipal.edtDelphiVersionChange(Sender: TObject);
-const
-  VXE2 = 'd16';
 begin
   iVersion := edtDelphiVersion.ItemIndex;
 
   // -- Plataforma só habilita para Delphi XE2
   // -- Desabilita para versão diferente de Delphi XE2
-  edtPlatform.Enabled := oACBr.Installations[iVersion].VersionNumberStr = VXE2;
-  if oACBr.Installations[iVersion].VersionNumberStr <> VXE2 then
+  edtPlatform.Enabled := oACBr.Installations[iVersion].VersionNumber >= 9;
+  if oACBr.Installations[iVersion].VersionNumber < 9 then
     edtPlatform.ItemIndex := 0;
 end;
 
@@ -892,6 +894,7 @@ procedure TfrmPrincipal.wizPgInstalacaoEnterPage(Sender: TObject;
   const FromPage: TJvWizardCustomPage);
 begin
   SetPlatformSelected;
+  lstMsgInstalacao.Clear;
 
   // para 64 bit somente compilar
   if tPlatform = bpWin32 then // Win32

@@ -126,13 +126,126 @@ begin
 end;
 
 { Funções mapeando as propriedades do componente }
+Function SIN_GetFileName(const sinHandle: PSINHandle; Buffer : pChar; const BufferLen : Integer) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+var
+  StrTmp : String;
+begin
 
+  if (sinHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+ try
+     StrTmp := sinHandle^.Sintegra.FileName;
+     StrPLCopy(Buffer, StrTmp, BufferLen);
+     Result := length(StrTmp);
+  except
+     on exception : Exception do
+     begin
+        sinHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end;
+
+end;
+
+Function SIN_SetFileName(const sinHandle: PSINHandle; const FileN : pChar) : Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF}  export;
+begin
+
+  if (sinHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+  try
+     sinHandle^.Sintegra.FileName := FileN;
+     Result := 0;
+  except
+     on exception : Exception do
+     begin
+        sinHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end;
+
+end;
+
+Function SIN_GetVersaoValidador(const sinHandle: PSINHandle) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+begin
+
+  if (sinHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+ try
+     Result := Integer(sinHandle^.Sintegra.VersaoValidador);
+  except
+     on exception : Exception do
+     begin
+        sinHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end;
+end;
+
+Function SIN_SetVersaoValidador(const sinHandle: PSINHandle; const Versao : Integer) : Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF}  export;
+begin
+  if (sinHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+  try
+     sinHandle^.Sintegra.VersaoValidador  := TVersaoValidador(Versao);
+     Result := 0;
+  except
+     on exception : Exception do
+     begin
+        sinHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end;
+end;
+
+Function SIN_GetAtivo(const sinHandle: PSINHandle) : Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF}  export;
+begin
+
+  if (sinHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+  try
+     if (sinHandle^.Sintegra.Ativo) then
+        Result := 1
+     else
+        Result := 0;
+  except
+     on exception : Exception do
+     begin
+        sinHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end;
+
+end;
 
 exports
 { Funções }
 SIN_Create,
 SIN_Destroy,
-SIN_GetUltimoErro;
+SIN_GetUltimoErro,
 
+{ Funções mapeando as propriedades do componente }
+SIN_GetFileName, SIN_SetFileName,
+SIN_GetVersaoValidador, SIN_SetVersaoValidador,
+SIN_GetAtivo;
 end.
 

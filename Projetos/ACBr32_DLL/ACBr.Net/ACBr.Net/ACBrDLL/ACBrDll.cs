@@ -890,16 +890,16 @@ namespace ACBr.Net
 		#region Propriedades do Componente
 
 		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int EAD_GetChavePrivada(IntPtr aacHandle, StringBuilder buffer, int bufferLen);
+		public static extern int EAD_GetChavePrivada(IntPtr eadHandle, StringBuilder buffer, int bufferLen);
 
 		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int EAD_SetChavePrivada(IntPtr aacHandle, string chave);
+		public static extern int EAD_SetChavePrivada(IntPtr eadHandle, string chave);
 
 		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int EAD_GetChavePublica(IntPtr aacHandle, StringBuilder buffer, int bufferLen);
+		public static extern int EAD_GetChavePublica(IntPtr eadHandle, StringBuilder buffer, int bufferLen);
 
 		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int EAD_SetChavePublica(IntPtr aacHandle, string chave);
+		public static extern int EAD_SetChavePublica(IntPtr eadHandle, string chave);
 
 		#endregion Propriedades do Componente
 
@@ -1687,6 +1687,45 @@ namespace ACBr.Net
 		#endregion Methods
 
 		#endregion ACBrPAF
+
+		#region ACBrSintegra
+
+		#region Propriedades do Componente
+
+		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int SIN_GetFileName(IntPtr sinHandle, StringBuilder buffer, int bufferLen);
+
+		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int SIN_SetFileName(IntPtr sinHandle, string filename);
+
+		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int SIN_GetVersaoValidador(IntPtr sinHandle);
+
+		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int SIN_SetVersaoValidador(IntPtr sinHandle, int Versao);
+
+		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int SIN_GetAtivo(IntPtr sinHandle);
+
+		#endregion Propriedades do Componente
+
+		#region Constructors/Erro Handler
+
+		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int SIN_Create(ref IntPtr sinHandle);
+
+		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int SIN_Destroy(ref IntPtr sinHandle);
+
+		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int SIN_GetUltimoErro(IntPtr sinHandle, StringBuilder buffer, int bufferLen);
+
+		#endregion Constructors/Erro Handler
+
+		#region Methods
+		#endregion Methods
+
+		#endregion ACBrSintegra
 
 		#region ACBrACC
 

@@ -606,11 +606,21 @@ end;
 function GetTimeFromStr(Value: string): TDateTime;
 var
   x: integer;
+  {$IFDEF VER240}
+    fs: TFormatSettings;
+  {$ENDIF}
 begin
   x := rpos(':', Value);
   if (x > 0) and ((Length(Value) - x) > 2) then
     Value := Copy(Value, 1, x + 2);
-  Value := ReplaceString(Value, ':', TimeSeparator);
+
+  {$IFDEF VER240}
+    fs := TFormatSettings.Create('');
+    Value := ReplaceString(Value, ':', fs.TimeSeparator);
+  {$ELSE}
+    Value := ReplaceString(Value, ':', TimeSeparator);
+  {$ENDIF}
+
   Result := -1;
   try
     Result := StrToTime(Value);
@@ -2060,10 +2070,19 @@ end;
 {==============================================================================}
 var
   n: integer;
+  {$IFDEF VER240}
+    fs: TFormatSettings;
+  {$ENDIF}
 begin
   for n :=  1 to 12 do
   begin
-    CustomMonthNames[n] := ShortMonthNames[n];
-    MyMonthNames[0, n] := ShortMonthNames[n];
+    {$IFDEF VER240}
+      fs := TFormatSettings.Create('');
+      CustomMonthNames[n] := fs.ShortMonthNames[n];
+      MyMonthNames[0, n]  := fs.ShortMonthNames[n];
+    {$ELSE}
+      CustomMonthNames[n] := ShortMonthNames[n];
+      MyMonthNames[0, n]  := ShortMonthNames[n];
+    {$ENDIF}
   end;
 end.

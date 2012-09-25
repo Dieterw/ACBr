@@ -267,7 +267,9 @@ var xBlockInput : function (Block: BOOL): BOOL; stdcall;
 {$ENDIF}
 
 implementation
-var Randomized : Boolean ;
+
+var
+  Randomized : Boolean ;
 
 {-----------------------------------------------------------------------------
   Todos os Fontes do ACBr usam Encoding CP1252, para manter compatibilidade com

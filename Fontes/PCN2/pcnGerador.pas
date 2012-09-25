@@ -47,6 +47,8 @@
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
+{$I ACBr.inc}
+
 unit pcnGerador;
 
 interface uses
@@ -476,7 +478,7 @@ const
 
 implementation
 
-uses DateUtils;
+uses DateUtils, ACBrConsts;
 
 { TGerador }
 

@@ -46,7 +46,7 @@ var
 
 implementation
 
-uses ECFTeste1, ACBrECF;
+uses ECFTeste1, ACBrECF, ACBrConsts;
 
 {$R *.dfm}
 

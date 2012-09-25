@@ -74,7 +74,7 @@ type
 
 implementation
 
-uses StrUtils;
+uses StrUtils, ACBrConsts;
 
 { TNFeR }
 

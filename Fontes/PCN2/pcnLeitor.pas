@@ -43,6 +43,8 @@
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
+{$I ACBr.inc}
+
 unit pcnLeitor;
 
 interface uses
@@ -76,6 +78,9 @@ type
   end;
 
 implementation
+
+uses
+  ACBrConsts;
 
 { TLeitor }
 

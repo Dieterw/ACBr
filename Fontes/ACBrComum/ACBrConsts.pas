@@ -48,6 +48,28 @@ interface
 Uses ACBrD5, Windows ;
 {$ENDIF}
 
+// delphi XE3 em diante não possui mais essas var, então criar e preencher
+{$IFDEF DELPHI17_UP}
+var
+  fmtst: TFormatSettings;
+  CurrencyString: string;
+  CurrencyFormat: Byte;
+  NegCurrFormat: Byte;
+  ThousandSeparator: Char;
+  DecimalSeparator: Char;
+  CurrencyDecimals: Byte;
+  DateSeparator: Char;
+  ShortDateFormat: string;
+  LongDateFormat: string;
+  TimeSeparator: Char;
+  TimeAMString: string;
+  TimePMString: string;
+  ShortTimeFormat: string;
+  LongTimeFormat: string;
+  TwoDigitYearCenturyWindow: Word = 50;
+  ListSeparator: Char;
+{$ENDIF}
+
 const
   {* Unit ACBrBase *}
   ACBR_VERSAO = '0.9.0a';
@@ -182,5 +204,27 @@ const
                                            'Valor do Arquivo: %m' ;
 
 implementation
+
+initialization
+  // delphi XE3 em diante não possui mais essas var, então criar e preencher
+  {$IFDEF DELPHI17_UP}
+    fmtst := TFormatSettings.Create('');
+    CurrencyString := fmtst.CurrencyString;
+    CurrencyFormat := fmtst.CurrencyFormat;
+    NegCurrFormat := fmtst.NegCurrFormat;
+    ThousandSeparator := fmtst.ThousandSeparator;
+    DecimalSeparator := fmtst.DecimalSeparator;
+    CurrencyDecimals := fmtst.CurrencyDecimals;
+    DateSeparator := fmtst.DateSeparator;
+    ShortDateFormat := fmtst.ShortDateFormat;
+    LongDateFormat := fmtst.LongDateFormat;
+    TimeSeparator := fmtst.TimeSeparator;
+    TimeAMString := fmtst.TimeAMString;
+    TimePMString := fmtst.TimePMString;
+    ShortTimeFormat := fmtst.ShortTimeFormat;
+    LongTimeFormat := fmtst.LongTimeFormat;
+    TwoDigitYearCenturyWindow := fmtst.TwoDigitYearCenturyWindow;
+    ListSeparator := fmtst.ListSeparator;
+  {$ENDIF}
 
 end.

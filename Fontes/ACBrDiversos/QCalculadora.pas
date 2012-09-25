@@ -106,7 +106,7 @@ type
 
 implementation
 
-uses Math ;
+uses Math, ACBrConsts ;
 
 {$R *.xfm}
 

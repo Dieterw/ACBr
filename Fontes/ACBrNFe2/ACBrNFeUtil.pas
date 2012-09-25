@@ -180,7 +180,7 @@ type
 implementation
 
 uses {$IFDEF ACBrNFeOpenSSL}libxml2, libxmlsec, libxslt, {$ELSE} ComObj, {$ENDIF} Sysutils,
-  Variants, ACBrUtil, ACBrNFe, pcnAuxiliar;
+  Variants, ACBrUtil, ACBrConsts, ACBrNFe, pcnAuxiliar;
 
 { NotaUtil }
 

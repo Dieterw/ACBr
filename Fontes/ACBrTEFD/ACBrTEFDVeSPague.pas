@@ -45,7 +45,7 @@ unit ACBrTEFDVeSPague;
 interface
 
 uses
-  Classes, SysUtils, ACBrTEFDClass,
+  Classes, SysUtils, ACBrTEFDClass, ACBrConsts,
   {$IFDEF VisualCLX}
      QControls, QForms, QDialogs,
   {$ELSE}

@@ -71,7 +71,7 @@
 unit ACBrECFUrano ;
 
 interface
-uses ACBrECFClass, ACBrDevice, ACBrUtil,
+uses ACBrECFClass, ACBrDevice, ACBrUtil, ACBrConsts,
      Classes ;
 
 const R = 'XXXXX' ;

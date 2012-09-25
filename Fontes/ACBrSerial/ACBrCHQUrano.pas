@@ -62,7 +62,7 @@ type TACBrCHQUrano = class( TACBrCHQClass )
 end ;
 
 implementation
-Uses ACBrUtil,
+Uses ACBrUtil, ACBrConsts,
      SysUtils
     {$IFDEF COMPILER6_UP}, DateUtils {$ENDIF} ;
 

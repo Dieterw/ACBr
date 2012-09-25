@@ -48,7 +48,7 @@
 unit ACBrRFD;
 
 interface
-uses ACBrBase,
+uses ACBrBase, ACBrConsts,
      SysUtils , Classes, Contnrs, ACBrEAD
      {$IFDEF LINUX}
        {$IFNDEF FPC}

@@ -45,7 +45,7 @@ unit ACBrTEFDCliSiTef;
 interface
 
 uses
-  Classes, SysUtils, ACBrTEFDClass,
+  Classes, SysUtils, ACBrTEFDClass, ACBrConsts,
   {$IFDEF VisualCLX}
      QControls, QDialogs
   {$ELSE}

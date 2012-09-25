@@ -43,7 +43,7 @@
 unit ACBrECFNCR ;
 
 interface
-uses ACBrECFClass, ACBrDevice, ACBrUtil, Synautil,
+uses ACBrECFClass, ACBrDevice, ACBrUtil, Synautil, ACBrConsts,
      Classes ;
 
 const  SOH = #01 ;

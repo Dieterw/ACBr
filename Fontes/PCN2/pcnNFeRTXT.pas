@@ -51,7 +51,8 @@ interface uses
 {$IFNDEF VER130}
   Variants,
 {$ENDIF}
-  pcnAuxiliar, pcnConversao, pcnNFe, pcnLayoutTXT;
+  pcnAuxiliar, pcnConversao, pcnNFe, pcnLayoutTXT,
+  ACBrConsts;
 
 type
 

@@ -93,7 +93,7 @@
 unit ACBrECFDataRegis ;
 
 interface
-uses ACBrECFClass, ACBrDevice, ACBrUtil,
+uses ACBrECFClass, ACBrDevice, ACBrUtil, ACBrConsts,
      Classes
      {$IFNDEF CONSOLE}
        {$IFDEF VisualCLX}, QDialogs, QControls, QForms {$ENDIF}

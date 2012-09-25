@@ -97,7 +97,7 @@
 unit ACBrUtil;
 
 interface
-Uses SysUtils, Math, Classes
+Uses SysUtils, Math, Classes, ACBrConsts
     {$IFDEF COMPILER6_UP} ,StrUtils, DateUtils {$ELSE} ,ACBrD5, FileCtrl {$ENDIF}
     {$IFDEF FPC}
       ,dynlibs

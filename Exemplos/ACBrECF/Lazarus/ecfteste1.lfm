@@ -173,9 +173,9 @@ object Form1: TForm1
     Height = 335
     Top = 0
     Width = 547
-    ActivePage = TabSheet2
+    ActivePage = tsTagsImpressao
     Align = alClient
-    TabIndex = 2
+    TabIndex = 4
     TabOrder = 0
     object TabSheet4: TTabSheet
       Caption = 'ECF'
@@ -576,6 +576,15 @@ object Form1: TForm1
           TabOrder = 1
           Value = 3
         end
+      end
+      object Button1: TButton
+        Left = 438
+        Height = 25
+        Top = 55
+        Width = 75
+        Caption = 'Button1'
+        OnClick = Button1Click
+        TabOrder = 21
       end
     end
     object TabSheet1: TTabSheet
@@ -1021,7 +1030,7 @@ object Form1: TForm1
     end
     object tsTagsImpressao: TTabSheet
       Caption = 'Tags de Impressao'
-      ClientHeight = 305
+      ClientHeight = 309
       ClientWidth = 539
       object speBarrasLargura: TSpinEdit
         Left = 12
@@ -1030,6 +1039,7 @@ object Form1: TForm1
         Width = 46
         AutoSize = False
         MaxValue = 6
+        OnChange = speBarrasLarguraChange
         TabOrder = 0
       end
       object BitBtn6: TBitBtn
@@ -1048,7 +1058,7 @@ object Form1: TForm1
       object MenTextoBarras: TMemo
         Left = 0
         Height = 204
-        Top = 90
+        Top = 105
         Width = 539
         Align = alBottom
         Lines.Strings = (
@@ -1124,13 +1134,14 @@ object Form1: TForm1
         Width = 46
         AutoSize = False
         MaxValue = 200
+        OnChange = speBarrasAlturaChange
         TabOrder = 4
       end
       object Label28: TLabel
         Left = 84
-        Height = 14
+        Height = 13
         Top = 24
-        Width = 35
+        Width = 34
         Caption = 'Altura'
         Font.CharSet = ANSI_CHARSET
         Font.Color = clBlack
@@ -1143,9 +1154,9 @@ object Form1: TForm1
       end
       object Label27: TLabel
         Left = 12
-        Height = 14
+        Height = 13
         Top = 24
-        Width = 45
+        Width = 44
         Caption = 'Largura'
         Font.CharSet = ANSI_CHARSET
         Font.Color = clBlack
@@ -1158,7 +1169,7 @@ object Form1: TForm1
       end
       object Label24: TLabel
         Left = 0
-        Height = 17
+        Height = 16
         Top = 0
         Width = 539
         Align = alTop
@@ -1185,7 +1196,7 @@ object Form1: TForm1
         Font.Name = 'MS Sans Serif'
         Font.Pitch = fpVariable
         Font.Style = [fsBold]
-        OnChange = chBarrasImprimeTextoChange
+        OnChange = chIgnorarTagsFormatacaoChange
         ParentFont = False
         TabOrder = 5
       end

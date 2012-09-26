@@ -101,8 +101,8 @@ Data: 26/09/2012
 -- ACBrECFEpson --
 [-] Correção para imprimir acentos corretamente quando usando a porta USB
     (pela DLL do Fabricante)       (por: DSA)
-[-] Ajuste para NAO imprimir TAGs de formatação quando usando a porta USB
-    (pela DLL do Fabricante)       (por: DSA)
+[-] Correção para imprimir TAGs de formatação e Cod.Brras quando usando a porta
+    USB (pela DLL do Fabricante)       (por: DSA)
 
 Data: 19/09/2012
 -- ACBrECFBematech, ACBrECFSwedaSTX --

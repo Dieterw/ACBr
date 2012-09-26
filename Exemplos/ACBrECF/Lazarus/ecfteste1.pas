@@ -55,6 +55,7 @@ type
     bACCVerificarGT : TButton ;
     bAACAtualizarGT : TButton ;
     btnMenuFiscalParametrosConfig: TButton;
+    Button1: TButton;
     CancelaCupom1: TMenuItem;
     CancelaImpressoCheque1: TMenuItem;
     CancelaNoFiscal1: TMenuItem;
@@ -437,16 +438,18 @@ type
     procedure btnMenuFiscalRelIdentPAFECFClick(Sender : TObject) ;
     procedure btnMenuFiscalRelMeiosPagtoClick(Sender : TObject) ;
     procedure btnMenuFiscalParametrosConfigClick(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
     procedure chAACFlushChange(Sender : TObject) ;
     procedure chAACUsarChange(Sender : TObject) ;
     procedure cbxModeloChange(Sender: TObject);
     procedure chArredondamentoItemMFDChange(Sender : TObject) ;
     procedure chArredondaPorQtdChange(Sender : TObject) ;
+    procedure chBarrasImprimeTextoChange(Sender: TObject);
     procedure chBloqueiaChange(Sender : TObject) ;
     procedure chDescricaoGrandeChange(Sender : TObject) ;
     procedure chExibeMsgChange(Sender : TObject) ;
     procedure chGavetaSinalInvertidoChange(Sender : TObject) ;
-    procedure chBarrasImprimeTextoChange(Sender : TObject) ;
+    procedure chIgnorarTagsFormatacaoChange(Sender: TObject);
     procedure chProcessMessagesChange(Sender : TObject) ;
     procedure chTentarChange(Sender : TObject) ;
     procedure mAchaCNFDescricaoClick(Sender : TObject) ;
@@ -528,6 +531,8 @@ type
     procedure seDecimaisQTDChange(Sender : TObject) ;
     procedure seMaxLinhasBufferChange(Sender : TObject) ;
     procedure seBandWidthChange(Sender : TObject) ;
+    procedure speBarrasAlturaChange(Sender: TObject);
+    procedure speBarrasLarguraChange(Sender: TObject);
     procedure Testar1Click(Sender: TObject);
     procedure ACBrECF1MsgAguarde(Mensagem : String);
     procedure DataHora1Click(Sender: TObject);
@@ -1228,6 +1233,17 @@ begin
 
 end;
 
+procedure TForm1.Button1Click(Sender: TObject);
+begin
+  if ACBrECF1.Estado <> estRelatorio then
+  begin
+    ACBrECF1.CorrigeEstadoErro ;
+    ACBrECF1.AbreRelatorioGerencial;
+  end ;
+
+  ACBrECF1.LinhaRelatorioGerencial( '<n>NEGRITO</N>' );
+end;
+
 procedure TForm1.chAACFlushChange(Sender : TObject) ;
 begin
    ACBrAAC1.EfetuarFlush := chAACFlush.Checked;
@@ -1399,6 +1415,11 @@ begin
   ACBrECF1.ArredondaPorQtd := chArredondaPorQtd.Checked ;
 end;
 
+procedure TForm1.chBarrasImprimeTextoChange(Sender: TObject);
+begin
+  ACBrECF1.ConfigBarras.MostrarCodigo := chBarrasImprimeTexto.Checked;
+end;
+
 procedure TForm1.chBloqueiaChange(Sender : TObject) ;
 begin
   ACBrECF1.BloqueiaMouseTeclado := chBloqueia.Checked ;
@@ -1419,9 +1440,9 @@ begin
   ACBrECF1.GavetaSinalInvertido := chGavetaSinalInvertido.Checked ;
 end;
 
-procedure TForm1.chBarrasImprimeTextoChange(Sender : TObject) ;
+procedure TForm1.chIgnorarTagsFormatacaoChange(Sender: TObject);
 begin
-  MenTextoBarras.Enabled  :=  chBarrasImprimeTexto.Enabled;
+  ACBrECF1.IgnorarTagsFormatacao := chIgnorarTagsFormatacao.Checked;
 end;
 
 procedure TForm1.chProcessMessagesChange(Sender : TObject) ;
@@ -2476,6 +2497,16 @@ end;
 procedure TForm1.seBandWidthChange(Sender : TObject) ;
 begin
   ACBrECF1.Device.MaxBandwidth := seBandWidth.Value ;
+end;
+
+procedure TForm1.speBarrasAlturaChange(Sender: TObject);
+begin
+  ACBrECF1.ConfigBarras.Altura := speBarrasAltura.Value;
+end;
+
+procedure TForm1.speBarrasLarguraChange(Sender: TObject);
+begin
+  ACBrECF1.ConfigBarras.LarguraLinha := speBarrasLargura.Value;
 end;
 
 procedure TForm1.Testar1Click(Sender: TObject);

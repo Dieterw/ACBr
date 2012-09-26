@@ -44,7 +44,7 @@ object Form1: TForm1
     Top = 0
     Width = 594
     Height = 330
-    ActivePage = tbsMenuFiscal
+    ActivePage = tsTagsImpressao
     Align = alClient
     TabOrder = 1
     object TabSheet4: TTabSheet
@@ -156,7 +156,7 @@ object Form1: TForm1
         Top = 25
         Width = 105
         Height = 21
-        ItemHeight = 13
+        ItemHeight = 0
         TabOrder = 1
         Text = 'Procurar'
         OnChange = cbxPortaChange
@@ -1052,6 +1052,186 @@ object Form1: TForm1
         Font.Style = []
         ParentFont = False
         TabOrder = 3
+      end
+    end
+    object tsTagsImpressao: TTabSheet
+      Caption = 'Tags de Impress'#227'o'
+      ImageIndex = 6
+      DesignSize = (
+        586
+        302)
+      object Label28: TLabel
+        Left = 84
+        Top = 24
+        Width = 34
+        Height = 13
+        Caption = 'Altura'
+        Color = clBtnFace
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Pitch = fpVariable
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+      end
+      object Label27: TLabel
+        Left = 12
+        Top = 24
+        Width = 44
+        Height = 13
+        Caption = 'Largura'
+        Color = clBtnFace
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Pitch = fpVariable
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+      end
+      object Label23: TLabel
+        Left = 0
+        Top = 0
+        Width = 586
+        Height = 16
+        Align = alTop
+        Alignment = taCenter
+        Caption = 'Tags de Formata'#231#227'o de Impress'#227'o e C'#243'digo de Barras'
+        Color = clBtnFace
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'MS Sans Serif'
+        Font.Pitch = fpVariable
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+      end
+      object speBarrasLargura: TSpinEdit
+        Left = 12
+        Top = 40
+        Width = 46
+        Height = 22
+        AutoSize = False
+        MaxValue = 6
+        MinValue = 0
+        TabOrder = 0
+        Value = 0
+        OnChange = speBarrasLarguraChange
+      end
+      object BitBtn6: TBitBtn
+        Left = 380
+        Top = 26
+        Width = 133
+        Height = 23
+        Anchors = [akTop, akRight]
+        Caption = 'Enviar Linha Gerencial'
+        Default = True
+        ModalResult = 1
+        TabOrder = 1
+        OnClick = BitBtn6Click
+      end
+      object MemoTesteTags: TMemo
+        Left = 0
+        Top = 98
+        Width = 586
+        Height = 204
+        Align = alBottom
+        Lines.Strings = (
+          'TEXTO LIVRE'
+          'At'#233' 600 caracteres'
+          #193#201#218#205#211#218#225#233#237#243#250#199#231#195#213#227#245
+          ''
+          '</linha_dupla>'
+          ''
+          '<CE>*** TAGS DE FORMATA'#199#195'O ***</CE>'
+          '<e>EXPANDIDO</e>'
+          '<N>Negrito</n>'
+          '<S>Sublinhado</s>'
+          '<C>CONDENSADO</C>'
+          '<i>ITALICO</I>'
+          '</linha_simples>'
+          ''
+          '<CE>*** TAGS DE C'#211'DIGO DE BARRAS ***</CE>'
+          'EAN 8:'
+          '<ean8>1234567</ean8>'
+          'EAN13:'
+          '<ean13>123456789012</ean13>'
+          'INT25:'
+          '<inter>1234567890</inter>'
+          'CODE39: '
+          '<code39>ABCDE12345</code39>'
+          'CODE93:'
+          '<code93>ABC123abc</code93>'
+          'CODE128:'
+          '<code128>$-=+ABC123abc</code128>'
+          'UPCA:'
+          '<upca>12345678901</upca>'
+          'CODABAR :'
+          '<codabar>$12345</codabar>'
+          '</linha_simples>'
+          ''
+          '<CE>*** TAGS DE FORMATA'#199#195'O ***</CE>'
+          '<ce>NO CENTRO</CE>'
+          '<AD>A Direira</ad>'
+          '</linha_simples>'
+          ''
+          '<CE>*** TESTE DE TAGS INV'#193'LIDAS ***</CE>'
+          '<ce> <>tags inv'#225'lidas no texto">">><<</CE>'
+          '<AD><da><ec></</A Direira</ad>'
+          ''
+          '</linha_dupla>')
+        ScrollBars = ssVertical
+        TabOrder = 2
+      end
+      object chBarrasImprimeTexto: TCheckBox
+        Left = 164
+        Top = 40
+        Width = 151
+        Height = 19
+        Caption = 'Imprime Texto na Barra'
+        Checked = True
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Pitch = fpVariable
+        Font.Style = [fsBold]
+        ParentFont = False
+        State = cbChecked
+        TabOrder = 3
+        OnClick = chBarrasImprimeTextoClick
+      end
+      object speBarrasAltura: TSpinEdit
+        Left = 84
+        Top = 40
+        Width = 46
+        Height = 22
+        AutoSize = False
+        MaxValue = 200
+        MinValue = 0
+        TabOrder = 4
+        Value = 0
+        OnChange = speBarrasAlturaChange
+      end
+      object chIgnorarTagsFormatacao: TCheckBox
+        Left = 164
+        Top = 66
+        Width = 183
+        Height = 19
+        Caption = 'Ignorar TAGs de Formata'#231#227'o'
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Pitch = fpVariable
+        Font.Style = [fsBold]
+        ParentFont = False
+        TabOrder = 5
+        OnClick = chIgnorarTagsFormatacaoClick
       end
     end
   end

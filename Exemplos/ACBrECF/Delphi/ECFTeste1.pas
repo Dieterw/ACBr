@@ -329,6 +329,16 @@ type
     NumerodeReduesZrestantes1: TMenuItem;
     btnMenuFiscalNotaPaulista: TButton;
     chArredondamentoItemMFD: TCheckBox;
+    tsTagsImpressao: TTabSheet;
+    speBarrasLargura: TSpinEdit;
+    BitBtn6: TBitBtn;
+    MemoTesteTags: TMemo;
+    chBarrasImprimeTexto: TCheckBox;
+    speBarrasAltura: TSpinEdit;
+    Label28: TLabel;
+    Label27: TLabel;
+    Label23: TLabel;
+    chIgnorarTagsFormatacao: TCheckBox;
     procedure cbxModeloChange(Sender: TObject);
     procedure Sair1Click(Sender: TObject);
     procedure bAtivarClick(Sender: TObject);
@@ -526,6 +536,11 @@ type
     procedure NumerodeReduesZrestantes1Click(Sender: TObject);
     procedure btnMenuFiscalNotaPaulistaClick(Sender: TObject);
     procedure chArredondamentoItemMFDClick(Sender: TObject);
+    procedure chBarrasImprimeTextoClick(Sender: TObject);
+    procedure chIgnorarTagsFormatacaoClick(Sender: TObject);
+    procedure BitBtn6Click(Sender: TObject);
+    procedure speBarrasLarguraChange(Sender: TObject);
+    procedure speBarrasAlturaChange(Sender: TObject);
   private
     { Private declarations }
     Function Converte( cmd : String) : String;
@@ -3791,6 +3806,42 @@ end;
 procedure TForm1.chArredondamentoItemMFDClick(Sender: TObject);
 begin
   ACBrECF1.ArredondaItemMFD := chArredondamentoItemMFD.Checked ;
+end;
+
+procedure TForm1.chBarrasImprimeTextoClick(Sender: TObject);
+begin
+  ACBrECF1.ConfigBarras.MostrarCodigo := chBarrasImprimeTexto.Checked;
+end;
+
+procedure TForm1.chIgnorarTagsFormatacaoClick(Sender: TObject);
+begin
+  ACBrECF1.IgnorarTagsFormatacao := chIgnorarTagsFormatacao.Checked;
+end;
+
+procedure TForm1.BitBtn6Click(Sender: TObject);
+begin
+  if ACBrECF1.Estado <> estRelatorio then
+  begin
+    ACBrECF1.CorrigeEstadoErro ;
+    ACBrECF1.AbreRelatorioGerencial;
+  end ;
+
+  ACBrECF1.ConfigBarras.LarguraLinha  := speBarrasLargura.Value;
+  ACBrECF1.ConfigBarras.Altura        := speBarrasAltura.Value;
+  ACBrECF1.ConfigBarras.MostrarCodigo := chBarrasImprimeTexto.Checked;
+  ACBrECF1.IgnorarTagsFormatacao      := chIgnorarTagsFormatacao.Checked;
+
+  ACBrECF1.LinhaRelatorioGerencial( MemoTesteTags.Text );
+end;
+
+procedure TForm1.speBarrasLarguraChange(Sender: TObject);
+begin
+  ACBrECF1.ConfigBarras.LarguraLinha  := speBarrasLargura.Value;
+end;
+
+procedure TForm1.speBarrasAlturaChange(Sender: TObject);
+begin
+  ACBrECF1.ConfigBarras.Altura := speBarrasAltura.Value;
 end;
 
 end.

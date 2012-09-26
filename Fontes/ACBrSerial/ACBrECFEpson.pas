@@ -536,7 +536,7 @@ begin
 
   { Montando pacote com Parametros }
   For I := 0 to fsParams.Count-1 do
-    Result := Result + '|'+ StringReplace( fsParams[I], '|','/',[rfReplaceAll] ) ;
+    Result := Result + '|'+ StringReplace( RemoveEsc(fsParams[I]), '|','/',[rfReplaceAll] ) ;
 end;
 
 
@@ -1070,7 +1070,6 @@ begin
    begin
      LoadDLLFunctions ;
      PaginaDeCodigo := 852;
-     fpIgnorarTagsFormatacao := True;
      AbrePortaSerialDLL;
      fsUsarDLL := True;
    end
@@ -3787,15 +3786,15 @@ const
     Altura, Largura, Mostrar : Integer ;
   begin
     Altura  := max(min(ConfigBarras.Altura,255),0);
-    Largura := ConfigBarras.LarguraLinha;
-    if Largura <> 0 then
-       Largura := max(min(Largura,6),2);
-    Mostrar := 0;
+    if (Altura = 0) and fpDevice.IsDLLPort then
+       Altura := 32;
+    Largura := max(min(ConfigBarras.LarguraLinha,6),2);
+    Mostrar := IfThen(fpDevice.IsDLLPort,2,0);
     if ConfigBarras.MostrarCodigo then
        Mostrar := 2;
 
     Result := cBarras + chr(ACodigo) + chr( Altura ) + chr( Largura ) +
-              chr( Mostrar ) + #0 ;
+              chr( Mostrar ) + #48;
   end;
 var
   TagNum, Cmd : Integer ;
@@ -3843,6 +3842,9 @@ begin
 
      if fsALSublinhado then
         Cmd := Cmd + cSublinhadoOn;
+
+     if fpDevice.IsDLLPort and (Cmd = C_OFF) then
+        Cmd := 32 ;
 
      Result := ESC + chr( Cmd );
   end ;

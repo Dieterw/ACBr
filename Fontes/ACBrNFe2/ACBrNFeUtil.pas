@@ -760,13 +760,40 @@ begin
 end;
 
 class function NotaUtil.FormatarFone(AValue: String): String;
+var
+  lTemp: string;
+  i: integer;
 begin
+  AValue := NotaUtil.LimpaNumero(IntToStr(StrToIntDef(AValue,0))); //remove zeros a esquerda
   Result := AValue;
+  lTemp := '';
+
+  if NotaUtil.NaoEstaVazio(AValue) then
+  begin
+    if Length(AValue) < 10 then
+      AValue := NotaUtil.Poem_Zeros(NotaUtil.LimpaNumero(AValue), 10);
+
+    Result := copy(AValue,Length(AValue)-7,4)+'-'+copy(AValue,Length(AValue)-3,4);
+
+    lTemp:=copy(AValue,1,Length(AValue)-8);
+    case length(AValue) of
+      10: Result := '('+lTemp+')'+Result;
+      else
+      begin
+        lTemp:=copy(AValue,Length(AValue)-8,1);
+        Result := lTemp+Result;
+        lTemp:=copy(AValue,1,Length(AValue)-9);
+        Result := '('+lTemp+')'+Result;
+      end;
+    end;
+  end;
+
+  {Result := AValue;
   if NotaUtil.NaoEstaVazio(AValue) then
   begin
     AValue := NotaUtil.Poem_Zeros(NotaUtil.LimpaNumero(AValue), 10);
     Result := '('+copy(AValue,1,2) + ')' + copy(AValue,3,8);
-  end;
+  end;}
 end;
 
 class function NotaUtil.FormatarNumeroDocumentoFiscal(

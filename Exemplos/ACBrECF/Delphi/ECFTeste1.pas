@@ -3753,7 +3753,7 @@ begin
       with FormasPagamento.New do
       begin
         Descricao := RandomFrom(arrayDescrFormaPagto);
-        Data      := StrToDate(RandomFrom(arrayDataLancamento));
+        Data      := StringToDateTime(RandomFrom(arrayDataLancamento), 'dd/mm/yyyy');
         Total     := RandomFrom(arrayValores);
         TipoDoc   := RandomFrom(arrayTipoDoc);
       end;

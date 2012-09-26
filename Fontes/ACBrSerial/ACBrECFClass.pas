@@ -525,6 +525,7 @@ TACBrECFClass = class
     fpArredondaPorQtd: Boolean;
     fpArredondaItemMFD : Boolean ;
     fpIgnorarErroSemPapel : Boolean ;
+    fpIgnorarTagsFormatacao : Boolean ;
     fpDecimaisPreco: Integer;
     fpDecimaisQtd: Integer;
     fpArqLOG: String;
@@ -658,6 +659,8 @@ TACBrECFClass = class
        write fpArredondaItemMFD ;
     property IgnorarErroSemPapel : Boolean read fpIgnorarErroSemPapel
        write fpIgnorarErroSemPapel;
+    property IgnorarTagsFormatacao : Boolean read fpIgnorarTagsFormatacao
+                write fpIgnorarTagsFormatacao default false ;
 
     property DecimaisPreco : Integer read fpDecimaisPreco
        write fpDecimaisPreco default 3 ;
@@ -1397,6 +1400,7 @@ begin
   fpArredondaPorQtd       := False ;
   fpArredondaItemMFD      := False ;
   fpIgnorarErroSemPapel   := False ;
+  fpIgnorarTagsFormatacao := False ;
   fpDecimaisPreco         := 3 ;
   fpDecimaisQtd           := 3 ;
   fpAliquotas             := nil ;
@@ -1478,7 +1482,8 @@ begin
             StringOfChar('-',80)+ sLineBreak +
             'ATIVAR - '+FormatDateTime('dd/mm/yy hh:nn:ss:zzz',now)+
             ' - Modelo: '+ModeloStr+
-            ' - Porta: '+fpDevice.Porta+ sLineBreak +
+            ' - Porta: '+fpDevice.Porta+
+            ' - TimeOut: '+IntToStr(TimeOut)+ sLineBreak +
             '         Device: '+fpDevice.DeviceToString(False) + sLineBreak +
             StringOfChar('-',80) + sLineBreak );
 

@@ -198,7 +198,6 @@ TACBrECF = class( TACBrComponent )
     fsOnPAFGetKeyRSA : TACBrEADGetChave ;
 
     fsGavetaSinalInvertido  : Boolean;
-    fsIgnorarTagsFormatacao : Boolean ;
     fsIdentificarOperador   : Boolean;
     fsNumSerieCache         : String ;
 
@@ -207,11 +206,13 @@ TACBrECF = class( TACBrComponent )
 
     function GetArredondaItemMFD : Boolean ;
     function GetIgnorarErroSemPapel : Boolean ;
+    function GetIgnorarTagsFormatacao: Boolean;
     function GetPaginaDeCodigoClass : Word ;
     function GetTipoUltimoDocumentoClass : TACBrECFTipoDocumento ;
     procedure SetArredondaItemMFD(const AValue : Boolean) ;
     procedure SetAtivo(const AValue: Boolean);
     procedure SetIgnorarErroSemPapel(AValue : Boolean) ;
+    procedure SetIgnorarTagsFormatacao(AValue: Boolean);
     procedure SetPaginaDeCodigoClass(const AValue : Word) ;
     procedure SetModelo(const AValue: TACBrECFModelo);
     procedure SetPorta(const AValue: String);
@@ -803,8 +804,8 @@ TACBrECF = class( TACBrComponent )
                  write SetDescricaoGrande default false ;
      property GavetaSinalInvertido : Boolean read fsGavetaSinalInvertido
                  write fsGavetaSinalInvertido default false ;
-     property IgnorarTagsFormatacao : Boolean read fsIgnorarTagsFormatacao
-                 write fsIgnorarTagsFormatacao default false ;
+     property IgnorarTagsFormatacao : Boolean read GetIgnorarTagsFormatacao
+                 write SetIgnorarTagsFormatacao default false ;
 
      property Operador   : String read GetOperador   write SetOperador ;
      property MsgAguarde : String read GetMsgAguarde write SetMsgAguarde ;
@@ -1025,7 +1026,6 @@ begin
   fsIdentificarOperador := True ;
   fsNumSerieCache   := '';
   fsGavetaSinalInvertido  := False;
-  fsIgnorarTagsFormatacao := False;
 
   FDAVItemCount := 0;
   FDAVTotal     := 0.00;
@@ -1155,6 +1155,7 @@ var wRetentar : Boolean ;   { Variaveis de Trabalho, usadas para transportar }
     wOnAguardandoRespostaChange : TNotifyEvent ;
     wDescricaoGrande : Boolean ;
     wIntervaloAposComando : Integer ;
+    wIgnorarTagsFormatacao: Boolean;
 begin
   if fsModelo = AValue then exit ;
 
@@ -1185,6 +1186,7 @@ begin
   wOnMsgRetentar        := OnMsgRetentar ;
   wDescricaoGrande      := DescricaoGrande ;
   wOnAguardandoRespostaChange := OnAguardandoRespostaChange ;
+  wIgnorarTagsFormatacao:= IgnorarTagsFormatacao;
 
   FreeAndNil( fsECF ) ;
 
@@ -1234,6 +1236,7 @@ begin
   OnMsgRetentar        := wOnMsgRetentar ;
   OnAguardandoRespostaChange := wOnAguardandoRespostaChange ;
   DescricaoGrande      := wDescricaoGrande ;
+  IgnorarTagsFormatacao:= wIgnorarTagsFormatacao;
 
   fsModelo := AValue;
 end;
@@ -1249,6 +1252,11 @@ end;
 procedure TACBrECF.SetIgnorarErroSemPapel(AValue : Boolean) ;
 begin
   fsECF.IgnorarErroSemPapel := AValue;
+end;
+
+procedure TACBrECF.SetIgnorarTagsFormatacao(AValue: Boolean);
+begin
+   fsECF.IgnorarTagsFormatacao := AValue;
 end;
 
 procedure TACBrECF.SetOnErrorSemPapel(AValue : TNotifyEvent) ;
@@ -1503,6 +1511,11 @@ end;
 function TACBrECF.GetIgnorarErroSemPapel : Boolean ;
 begin
   Result := fsECF.IgnorarErroSemPapel;
+end;
+
+function TACBrECF.GetIgnorarTagsFormatacao: Boolean;
+begin
+  Result := fsECF.IgnorarTagsFormatacao;
 end;
 
 function TACBrECF.GetOnErrorSemPapel : TNotifyEvent ;
@@ -4421,7 +4434,7 @@ begin
 
     if Tag2 = '' then
      begin
-       if fsIgnorarTagsFormatacao and (IndTag1 in TAGS_FORMATACAO) then
+       if IgnorarTagsFormatacao and (IndTag1 in TAGS_FORMATACAO) then
           Cmd := ''
        else
           Cmd := TraduzirTag( Tag1 ) ;
@@ -5713,10 +5726,10 @@ var
     if AData > 0 then
     begin
       Relatorio.Add('');
-      Relatorio.Add('<n>DATA DE ACUMULAÇÃO: ' + FormatDateTime('dd/mm/yyyy', AData) + '</n>');
+      Relatorio.Add(ACBrStr('<n>DATA DE ACUMULAÇÃO: ' + FormatDateTime('dd/mm/yyyy', AData) + '</n>'));
     end;
 
-    Relatorio.Add('Identificacao   Tipo                    Valor R$');
+    Relatorio.Add(ACBrStr('Identificação   Tipo                    Valor R$'));
     Relatorio.Add(
       padL('', 15, '-') + ' ' +
       padL('', 19, '-') + ' ' +
@@ -5809,7 +5822,7 @@ begin
         Relatorio.Add(padC(ATituloRelatorio, TamLin));
 
       Relatorio.Add('');
-      Relatorio.Add('Identificacao                           Valor R$');
+      Relatorio.Add(ACBrStr('Identificação                           Valor R$'));
       Relatorio.Add(
         PadR('', 27, '-') + ' ' +
         PadR('', 20, '-')  

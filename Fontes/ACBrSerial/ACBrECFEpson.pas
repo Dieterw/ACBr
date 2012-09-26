@@ -1069,6 +1069,8 @@ begin
   if fpDevice.IsDLLPort then
    begin
      LoadDLLFunctions ;
+     PaginaDeCodigo := 852;
+     fpIgnorarTagsFormatacao := True;
      AbrePortaSerialDLL;
      fsUsarDLL := True;
    end

@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 403
+  Left = 385
   Height = 418
-  Top = 221
+  Top = 216
   Width = 547
   Caption = 'Teste de Impressora Fiscal'
   ClientHeight = 398
@@ -3240,7 +3240,7 @@ object Form1: TForm1
     MsgAguarde = 'Aguardando a resposta da Impressora: %d segundos'
     MsgTrabalhando = 'Impressora está trabalhando'
     MsgRelatorio = 'Imprimindo %s  %dª Via '
-    MsgPausaRelatorio = 'Destaque a %dª via, <ENTER> proxima, %d seg.'
+    MsgPausaRelatorio = 'Destaque a %d� via, <ENTER> proxima, %d seg.'
     PaginaDeCodigo = 0
     FormMsgFonte.Color = clWhite
     FormMsgFonte.Height = 11

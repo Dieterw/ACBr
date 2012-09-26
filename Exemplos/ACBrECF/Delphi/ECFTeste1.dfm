@@ -44,7 +44,7 @@ object Form1: TForm1
     Top = 0
     Width = 594
     Height = 330
-    ActivePage = TabSheet4
+    ActivePage = tbsMenuFiscal
     Align = alClient
     TabOrder = 1
     object TabSheet4: TTabSheet

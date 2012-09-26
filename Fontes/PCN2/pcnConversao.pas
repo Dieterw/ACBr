@@ -100,8 +100,8 @@ type
                     tlRetConsReciCTe, tlRetConsSitCTe, tlRetEnvCTe, tlRetInutCTe,
                     tlEnvCTe, tlProcCancCTe, tlEnvDPEC, tlConsDPEC, tlConsStatServCTe,
                     tlCCeNFe, tlEnvCCeNFe, tlRetEnvCCeNFe, tlEnvEventoNFe, tlRetEnvEventoNFe,
-                    tlConsNFeDest, tlDownloadNFe,
-                    tlProcMDFe);
+                    tlConsNFeDest, tlDownloadNFe);
+//                    , tlProcMDFe);
 
   // Tipo tcDe6 incluido por Italo em 30/09/2010 (usado no CTe campo 435: vTar = valor da tarifa do modal Dutoviário)
   TpcnTipoCampo = (tcStr, tcInt, tcDat, tcDatHor, tcEsp, tcDe2, tcDe3, tcDe4, tcDe10,
@@ -111,12 +111,16 @@ type
 
   TpcnIndicadorPagamento = (ipVista, ipPrazo, ipOutras);
   TpcnTipoNFe = (tnEntrada, tnSaida);
-  TpcnTipoImpressao = (tiRetrato, tiPaisagem);
+  // Alterado por Italo em 24/09/2012 para contemplar a NFC-e
+  TpcnTipoImpressao = (tiSemGeracao, tiRetrato, tiPaisagem, tiSimplificado, tiNFCe, tiResumido, tiMsgEletronica);
+
   // Tipo teSVCRS, teSVCSP incluido por Italo em 03/08/2011 (usado no CTe versão 1.04)
-  TpcnTipoEmissao = (teNormal, teContingencia, teSCAN, teDPEC, teFSDA, teSVCRS, teSVCSP);
+  // Alterado por Italo em 24/09/2012 para contemplar a NFC-e
+  TpcnTipoEmissao = (teNormal, teContingencia, teSCAN, teDPEC, teFSDA, teSVCAN, teSVCRS, teSVCSP, teOffLine);
   TpcnTipoAmbiente = (taProducao, taHomologacao);
   TpcnSituacaoEmissor = (seHomologacao, seProducao);
-  TpcnFinalidadeNFe = (fnNormal, fnComplementar, fnAjuste);
+  // Alterado por Italo em 24/09/2012 para contemplar a NFC-e
+  TpcnFinalidadeNFe = (fnNormal, fnComplementar, fnAjuste, fnResumo);
   TpcnProcessoEmissao = (peAplicativoContribuinte, peAvulsaFisco, peAvulsaContribuinte, peContribuinteAplicativoFisco);
   TpcnTipoOperacao = (toVendaConcessionaria, toFaturamentoDireto, toVendaDireta, toOutros);
   TpcnCondicaoVeiculo = (cvAcabado, cvInacabado, cvSemiAcabado);
@@ -189,6 +193,16 @@ type
   TpcnSituacaoManifDest = (smdSemManifestacao, smdConfirmada, smdDesconhecida, smdOperacaoNaoRealizada, smdCiencia);
   TpcnTamanhoPapel = (tpA4, tpA5);
 
+  // Incluido por Italo em 24/09/2012
+  TpcnModeloDF = (moNFe, moNFCe);
+  TpcnDestinoOperacao = (doInterna, doInterestadual, doExterior);
+  TpcnConsumidorFinal = (cfNao, cfConsumidorFinal);
+  TpcnPresencaComprador = (pcNao, pcPresencial, pcInternet, pcTeleatendimento, pcOutros);
+  TpcnFormaPagamento = (fpDinheiro, fpCheque, fpCartaoCredito, fpCartaoDebito, fpCreditoLoja,
+                        fpValeAlimentacao, fpValeRefeicao, fpValePresente, fpValeCombustivel,
+                        fpOutro);
+  TpcnBandeiraCartao = (bcVisa, bcMasterCard, bcAmericanExpress, bcSorocred, bcOutros);
+
 const
   TpcnTpEventoString : array[0..6] of String =( '110110',
                                                 '110111',
@@ -220,13 +234,20 @@ const
   NFeConsNFeDest  = '1.01'; // Incluido por Italo em 17/07/2012
   NFeDownloadNFe  = '1.00'; // Incluido por Italo em 18/07/2012
 
-  MDFecabMsg       = '1.00';
-  MDFeconsStatServ = '1.00';
-  MDFeenviMDFe     = '1.00';
-  MDFeconsReciMDFe = '1.00';
-  MDFeconsSitMDFe  = '1.00';
+  MDFeCabMsg       = '1.00';
+  MDFeConsStatServ = '1.00';
+  MDFeEnviMDFe     = '1.00';
+  MDFeConsReciMDFe = '1.00';
+  MDFeConsSitMDFe  = '1.00';
   MDFeEventoMDFe   = '1.00';
   
+  // Incluido por Italo em 26/09/2012
+  MDFeModalRodo    = '1.00';
+  MDFeModalAereo   = '1.00';
+  MDFeModalAqua    = '1.00';
+  MDFeModalFerro   = '1.00';
+  MDFeModalDuto    = '1.00';
+
 // Alterado por Italo em 03/08/2011
 {$IFDEF PL_103}
   CTecabMsg       = '1.02';
@@ -237,8 +258,6 @@ const
   CTecancCTe      = '1.03';
   CTeinutCTe      = '1.03';
   CTeconsCad      = '2.00';  // Alterado por Italo em 17/10/2011
-  //CTeEnvDPEC      = '1.01';
-  //CTeConsDPEC     = '1.01';
 {$ENDIF}
 
 // Incluido por Italo em 03/08/2011
@@ -251,8 +270,6 @@ const
   CTecancCTe      = '1.04';
   CTeinutCTe      = '1.04';
   CTeconsCad      = '2.00';  // Alterado por Italo em 17/10/2011
-  //CTeEnvDPEC      = '1.01';
-  //CTeConsDPEC     = '1.01';
 {$ENDIF}
 
   LineBreak = #13#10;
@@ -418,6 +435,20 @@ function StrToSituacaoNFe(var ok: boolean; const s: string): TpcnSituacaoNFe;
 function SituacaoManifDestToStr(const t: TpcnSituacaoManifDest): string;
 function StrToSituacaoManifDest(var ok: boolean; const s: string): TpcnSituacaoManifDest;
 
+ // Incluido por Italo em 24/09/2012
+function ModeloDFToStr(const t: TpcnModeloDF): string;
+function StrToModeloDF(var ok: boolean; const s: string): TpcnModeloDF;
+function DestinoOperacaoToStr(const t: TpcnDestinoOperacao): string;
+function StrToDestinoOperacao(var ok: boolean; const s: string): TpcnDestinoOperacao;
+function ConsumidorFinalToStr(const t: TpcnConsumidorFinal): string;
+function StrToConsumidorFinal(var ok: boolean; const s: string): TpcnConsumidorFinal;
+function PresencaCompradorToStr(const t: TpcnPresencaComprador): string;
+function StrToPresencaComprador(var ok: boolean; const s: string): TpcnPresencaComprador;
+function FormaPagamentoToStr(const t: TpcnFormaPagamento): string;
+function StrToFormaPagamento(var ok: boolean; const s: string): TpcnFormaPagamento;
+function BandeiraCartaoToStr(const t: TpcnBandeiraCartao): string;
+function StrToBandeiraCartao(var ok: boolean; const s: string): TpcnBandeiraCartao;
+
 implementation
 
 function StrToEnumerado(var ok: boolean; const s: string; const AString:
@@ -469,12 +500,12 @@ begin
                                'RetCancNFe', 'RetConsCad', 'RetConsReciNFe', 'RetConsStatServ',
                                'RetConsSitNFe', 'RetEnvNFe', 'RetInutNFe', 'EnvNFe',
                                'ProcCancNFe', 'ConsStatServ', 'EnvCCeNFe', 'EnvEventoNFe',
-                               'ConsNFeDest', 'DownloadNFe', 'ProcMDFe'],
+                               'ConsNFeDest', 'DownloadNFe' {, 'ProcMDFe'}],
       [tlAtuCadEmiDFe, tlCadEmiDFe, tlCancCTe, tlConsCad, tlConsReciCTe, tlConsSitCTe,
        tlConsStatServ, tlInutCTe, tlCTe, tlProcCTe, tlProcInutCTe, tlRetAtuCadEmiDFe,
        tlRetCancCTe, tlRetConsCad, tlRetConsReciCTe, tlRetConsStatServ, tlRetConsSitCTe,
        tlRetEnvCTe, tlRetInutCTe, tlEnvCTe, tlProcCancCTe, tlConsStatServCTe, tlEnvCCeNFe,
-       tlEnvEventoNFe, tlConsNFeDest, tlDownloadNFe, tlProcMDFe]);
+       tlEnvEventoNFe, tlConsNFeDest, tlDownloadNFe{, tlProcMDFe}]);
 end;
 
 // Alterado por Italo em 17/07/2012
@@ -486,12 +517,12 @@ begin
                                    'RetCancNFe', 'RetConsCad', 'RetConsReciNFe', 'RetConsStatServ',
                                    'RetConsSitNFe', 'RetEnvNFe', 'RetInutNFe', 'EnvNFe',
                                    'ConsStatServ', 'EnvCCeNFe', 'EnvEventoNFe',
-                                   'ConsNFeDest', 'DownloadNFe', 'ProcMDFe'],
+                                   'ConsNFeDest', 'DownloadNFe'{, 'ProcMDFe'}],
       [tlAtuCadEmiDFe, tlCadEmiDFe, tlCancCTe, tlConsCad, tlConsReciCTe, tlConsSitCTe,
        tlConsStatServ, tlInutCTe, tlCTe, tlProcCTe, tlProcInutCTe, tlRetAtuCadEmiDFe,
        tlRetCancCTe, tlRetConsCad, tlRetConsReciCTe, tlRetConsStatServ, tlRetConsSitCTe,
        tlRetEnvCTe, tlRetInutCTe, tlEnvCTe, tlConsStatServCTe, tlEnvCCeNFe, tlEnvEventoNFe,
-       tlConsNFeDest, tlDownloadNFe, tlProcMDFe]);
+       tlConsNFeDest, tlDownloadNFe{, tlProcMDFe}]);
 end;
 
 // Indicador do Tipo de pagamento **********************************************
@@ -530,9 +561,17 @@ end;
 
 // B21 - Formato de Impressão do DANFE *****************************************
 
+// Alterado por Italo em 24/09/2012 para contemplar a NFC-e
 function TpImpToStr(const t: TpcnTipoImpressao): string;
 begin
-  result := EnumeradoToStr(t, ['1', '2'], [tiRetrato, tiPaisagem]);
+  result := EnumeradoToStr(t, ['0', '1', '2', '3', '4', '5', '6'],
+                              [tiSemGeracao, tiRetrato, tiPaisagem, tiSimplificado, tiNFCe, tiResumido, tiMsgEletronica]);
+end;
+
+function StrToTpImp(var ok: boolean; const s: string): TpcnTipoImpressao;
+begin
+  result := StrToEnumerado(ok, s, ['0', '1', '2', '3', '4', '5', '6'],
+                                  [tiSemGeracao, tiRetrato, tiPaisagem, tiSimplificado, tiNFCe, tiResumido, tiMsgEletronica]);
 end;
 
 function TpMaskToStrText(const t: TpcteMask): string;
@@ -547,21 +586,19 @@ begin
     [msk4x2, msk7x2, msk10x2, msk13x2, msk15x2, msk6x3, mskAliq]);
 end;
 
-function StrToTpImp(var ok: boolean; const s: string): TpcnTipoImpressao;
-begin
-  result := StrToEnumerado(ok, s, ['1', '2'], [tiRetrato, tiPaisagem]);
-end;
-
 // B22 - Forma de Emissão da NF-e **********************************************
 
+// Alterado por Italo em 24/09/2012 para contemplar a NFC-e
 function TpEmisToStr(const t: TpcnTipoEmissao): string;
 begin
-  result := EnumeradoToStr(t, ['1', '2', '3', '4', '5', '7', '8'], [teNormal, teContingencia, teSCAN, teDPEC, teFSDA, teSVCRS, teSVCSP]);
+  result := EnumeradoToStr(t, ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
+                              [teNormal, teContingencia, teSCAN, teDPEC, teFSDA, teSVCAN, teSVCRS, teSVCSP, teOffLine]);
 end;
 
 function StrToTpEmis(var ok: boolean; const s: string): TpcnTipoEmissao;
 begin
-  result := StrToEnumerado(ok, s, ['1', '2', '3', '4', '5', '7', '8'], [teNormal, teContingencia, teSCAN, teDPEC, teFSDA, teSVCRS, teSVCSP]);
+  result := StrToEnumerado(ok, s, ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
+                                  [teNormal, teContingencia, teSCAN, teDPEC, teFSDA, teSVCAN, teSVCRS, teSVCSP, teOffLine]);
 end;
 
 // B24 - Identificação do Ambiente *********************************************
@@ -590,14 +627,17 @@ end;
 
 // B25 - Finalidade de emissão da NF-e *****************************************
 
+// Alterado por Italo em 24/09/2012 para contemplar a NFC-e
 function FinNFeToStr(const t: TpcnFinalidadeNFe): string;
 begin
-  result := EnumeradoToStr(t, ['1', '2', '3'], [fnNormal, fnComplementar, fnAjuste]);
+  result := EnumeradoToStr(t, ['1', '2', '3', '4'],
+                              [fnNormal, fnComplementar, fnAjuste, fnResumo]);
 end;
 
 function StrToFinNFe(var ok: boolean; const s: string): TpcnFinalidadeNFe;
 begin
-  result := StrToEnumerado(ok, s, ['1', '2', '3'], [fnNormal, fnComplementar, fnAjuste]);
+  result := StrToEnumerado(ok, s, ['1', '2', '3', '4'],
+                                  [fnNormal, fnComplementar, fnAjuste, fnResumo]);
 end;
 
 // B26 - Processo de emissão da NF-e *******************************************
@@ -1349,6 +1389,83 @@ function StrToSituacaoManifDest(var ok: boolean; const s: string): TpcnSituacaoM
 begin
   result := StrToEnumerado(ok, s, ['0','1','2','3','4'],
                                   [smdSemManifestacao, smdConfirmada, smdDesconhecida, smdOperacaoNaoRealizada, smdCiencia]);
+end;
+
+// Incluido por Italo em 24/09/2012
+function ModeloDFToStr(const t: TpcnModeloDF): string;
+begin
+  result := EnumeradoToStr(t, ['55', '65'],
+                              [moNFe, moNFCe]);
+end;
+
+function StrToModeloDF(var ok: boolean; const s: string): TpcnModeloDF;
+begin
+  result := StrToEnumerado(ok, s, ['55', '65'],
+                                  [moNFe, moNFCe]);
+end;
+
+function DestinoOperacaoToStr(const t: TpcnDestinoOperacao): string;
+begin
+  result := EnumeradoToStr(t, ['1', '2', '3'],
+                              [doInterna, doInterestadual, doExterior]);
+end;
+
+function StrToDestinoOperacao(var ok: boolean; const s: string): TpcnDestinoOperacao;
+begin
+  result := StrToEnumerado(ok, s, ['1', '2', '3'],
+                                  [doInterna, doInterestadual, doExterior]);
+end;
+
+function ConsumidorFinalToStr(const t: TpcnConsumidorFinal): string;
+begin
+  result := EnumeradoToStr(t, ['0', '1'],
+                              [cfNao, cfConsumidorFinal]);
+end;
+
+function StrToConsumidorFinal(var ok: boolean; const s: string): TpcnConsumidorFinal;
+begin
+  result := StrToEnumerado(ok, s, ['0', '1'],
+                                  [cfNao, cfConsumidorFinal]);
+end;
+
+function PresencaCompradorToStr(const t: TpcnPresencaComprador): string;
+begin
+  result := EnumeradoToStr(t, ['0', '1', '2', '3', '9'],
+                              [pcNao, pcPresencial, pcInternet, pcTeleatendimento, pcOutros]);
+end;
+
+function StrToPresencaComprador(var ok: boolean; const s: string): TpcnPresencaComprador;
+begin
+  result := StrToEnumerado(ok, s, ['0', '1', '2', '3', '9'],
+                                  [pcNao, pcPresencial, pcInternet, pcTeleatendimento, pcOutros]);
+end;
+
+function FormaPagamentoToStr(const t: TpcnFormaPagamento): string;
+begin
+  result := EnumeradoToStr(t, ['01', '02', '03', '04', '05', '10', '11', '12', '13', '99'],
+                              [fpDinheiro, fpCheque, fpCartaoCredito, fpCartaoDebito, fpCreditoLoja,
+                               fpValeAlimentacao, fpValeRefeicao, fpValePresente, fpValeCombustivel,
+                               fpOutro]);
+end;
+
+function StrToFormaPagamento(var ok: boolean; const s: string): TpcnFormaPagamento;
+begin
+  result := StrToEnumerado(ok, s, ['01', '02', '03', '04', '05', '10', '11', '12', '13', '99'],
+                                  [fpDinheiro, fpCheque, fpCartaoCredito, fpCartaoDebito, fpCreditoLoja,
+                                   fpValeAlimentacao, fpValeRefeicao, fpValePresente, fpValeCombustivel,
+                                   fpOutro]);
+end;
+
+function BandeiraCartaoToStr(const t: TpcnBandeiraCartao): string;
+begin
+  result := EnumeradoToStr(t, ['01', '02', '03', '04', '99'],
+                              [bcVisa, bcMasterCard, bcAmericanExpress, bcSorocred, bcOutros]);
+end;
+
+function StrToBandeiraCartao(var ok: boolean; const s: string): TpcnBandeiraCartao;
+begin
+  result := StrToEnumerado(ok, s, ['01', '02', '03', '04', '99'],
+                                  [bcVisa, bcMasterCard, bcAmericanExpress, bcSorocred, bcOutros]);
 end;
 
 end.

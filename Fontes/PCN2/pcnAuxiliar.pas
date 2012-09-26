@@ -92,6 +92,9 @@ function SubStrEmSubStr(const SubStr1: string; SubStr2: string): boolean;
 function xml4line(texto: AnsiString): AnsiString;
 function RetornarPosEx(const SubStr, S: AnsiString; Offset: Cardinal = 1): Integer;
 
+// Incluido por Italo em 24/09/2012
+function DateTimeTodhUTC(DataHora: TDateTime; TZD: string): string;
+
 implementation
 
 function CodigoParaUF(const codigo: integer): string;
@@ -917,6 +920,22 @@ begin
     exit;
   s := Copy(Frase, i + length(Inicio), maxInt);
   result := Copy(s, 1, pos(Fim, s) - 1);
+end;
+
+// Incluido por Italo em 24/09/2012
+function DateTimeTodhUTC(DataHora: TDateTime; TZD: string): string;
+var
+  wAno, wMes, wDia, wHor, wMin, wSeg, wMil: word;
+begin
+  DecodeDate(DataHora, wAno, wMes, wDia);
+  DecodeTime(DataHora, wHor, wMin, wSeg, wMil);
+  Result := IntToStrZero(wAno, 4) + '-' +
+            IntToStrZero(wMes, 2) + '-' +
+            IntToStrZero(wDia, 2) + 'T' +
+            IntToStrZero(wHor, 2) + ':' +
+            IntToStrZero(wMin, 2) + ':' +
+            IntToStrZero(wSeg, 2) +
+            TZD;
 end;
 
 end.

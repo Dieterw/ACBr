@@ -165,12 +165,6 @@ const
   VM_Ferro_1_04 = 'versaoModal="1.04"';
   VM_Duto_1_04  = 'versaoModal="1.04"';
 
- // Incluido por Italo em 01/08/2012
-  VM_Rodo_1_00  = 'versaoModal="1.00"';
-  VM_Aereo_1_00 = 'versaoModal="1.00"';
-  VM_Aqua_1_00  = 'versaoModal="1.00"';
-  VM_Ferro_1_00 = 'versaoModal="1.00"';
-
   // NFE //
 
   DSC_AAMM = 'Ano e Mês';

@@ -764,7 +764,7 @@ var
   lTemp: string;
   i: integer;
 begin
-  AValue := NotaUtil.LimpaNumero(IntToStr(StrToIntDef(AValue,0))); //remove zeros a esquerda
+  AValue := IntToStr(StrToIntDef(NotaUtil.LimpaNumero(AValue),0)); //remove zeros a esquerda
   Result := AValue;
   lTemp := '';
 

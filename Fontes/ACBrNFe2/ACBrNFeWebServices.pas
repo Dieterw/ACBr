@@ -3880,7 +3880,8 @@ begin
   FRetDownloadNFe := TRetDownloadNFe.Create;
 
   try
-    TACBrNFe( FACBrNFe ).SetStatus( stNFeStatusServico );
+    // Alterado por Italo em 17/07/2012
+    TACBrNFe( FACBrNFe ).SetStatus( stDownloadNFe );
     if FConfiguracoes.Geral.Salvar then
      begin
        FPathArqEnv := FormatDateTime('yyyymmddhhnnss',Now)+'-ped-down-nfe.xml';

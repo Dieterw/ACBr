@@ -60,10 +60,11 @@ interface uses
 
 type
 
+  // Incluido o Status: stDownloadNFe, por Italo em 17/07/2012
   TStatusACBrNFe = ( stIdle, stNFeStatusServico, stNFeRecepcao, stNFeRetRecepcao,
                      stNFeConsulta, stNFeCancelamento, stNFeInutilizacao, stNFeRecibo,
                      stNFeCadastro, stNFeEmail, stNFeEnvDPEC, stNFeConsultaDPEC,
-                     stNFeCCe, stNFeEvento, stConsNFeDest);
+                     stNFeCCe, stNFeEvento, stConsNFeDest, stDownloadNFe);
 
   TStatusACBrCTe = ( stCTeIdle, stCTeStatusServico, stCTeRecepcao, stCTeRetRecepcao,
                      stCTeConsulta, stCTeCancelamento, stCTeInutilizacao, stCTeRecibo,

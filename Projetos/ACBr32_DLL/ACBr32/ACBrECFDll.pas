@@ -4834,7 +4834,7 @@ end
 end;
 end;
 
-{Paf RelMeiosPagamento}
+{Paf Rels}
 Function ECF_PafMF_RelMeiosPagamento(const ecfHandle: PECFHandle; const formasPagamento: array of TFormaPagamentoRec; const Index : Integer; const TituloRelatorio: pChar; const IndiceRelatorio: Integer) : Integer ;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
 var
   AFormasPagamento : TACBrECFFormasPagamento;
@@ -4876,6 +4876,26 @@ end
 end;
 end;
 
+
+Function PafMF_RelIdentificacaoPafECF(const ecfHandle: PECFHandle; const aacHandle : PAACHandle; const indiceRelatorio : Integer) : Integer ;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+begin
+if (ecfHandle = nil) then
+begin
+Result := -2;
+Exit;
+end;
+
+try
+ecfHandle^.ECF.PafMF_RelIdentificacaoPafECF(aacHandle^.AAC.IdentPAF, indiceRelatorio);
+Result := 0;
+except
+on exception : Exception do
+begin
+ecfHandle^.UltimoErro := exception.Message;
+Result := -1;
+end
+end;
+end;
 
 
 {
@@ -5182,8 +5202,9 @@ ECF_DAV_RegistrarItem,
 ECF_DAV_Fechar,
 ECF_PafMF_RelDAVEmitidos,
 
-{Paf RelMeiosPagamento}
-ECF_PafMF_RelMeiosPagamento;
+{Paf Rels}
+ECF_PafMF_RelMeiosPagamento,
+PafMF_RelIdentificacaoPafECF;
 
 {Não implementado}
 

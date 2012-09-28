@@ -576,7 +576,7 @@ namespace ACBr.Net.ECFTeste
 		{
 			try
 			{
-				WriteResp(string.Format("DadosUltimaReducaoZ:\n{0}", acbrECF.DadosUltimaReducaoZ));
+				WriteResp(string.Format("DadosUltimaReducaoZ:\n{0}", acbrECF.GetDadosUltimaReducaoZ()));
 				descriptionToolStripStatusLabel.Text = string.Empty;
 			}
 			catch (NullReferenceException)

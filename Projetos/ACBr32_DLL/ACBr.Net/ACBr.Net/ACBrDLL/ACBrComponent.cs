@@ -66,8 +66,29 @@ namespace ACBr.Net
 
 		protected void Destroy(DestroyEntryPointDelegate entryPoint)
 		{
-			var ret = entryPoint(ref this.handle);
-			CheckResult(ret);
+			#region Comments
+			//Rodando dentro do Visual Studio
+			//o Debugger causa um AccessViolationException
+			//ao inspecionar a chamada ao entryPoint do Destroy
+			//
+			//A exception é coletada no Try/Catch e não é disparada 
+			//caso o ambiente seja DEBUG
+			//
+			//Note que o erro ocorre apenas quando roda dentro do VS
+			//Tanto compilando em RELASE quanto DEBUG
+			#endregion Comments
+
+			try
+			{
+				var ret = entryPoint(ref this.handle);
+				CheckResult(ret);
+			}
+			catch (AccessViolationException)
+			{
+				#if !DEBUG
+				throw;
+				#endif
+			}
 		}
 
 		protected string ToUTF8(string value)

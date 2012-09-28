@@ -750,23 +750,6 @@ namespace ACBr.Net
 			}
 		}
 
-		public string DadosUltimaReducaoZ
-		{
-			get
-			{
-				const int BUFFER_LEN = 16384;
-				return GetString(ACBrDll.ECF_GetDadosUltimaReducaoZ, BUFFER_LEN);
-			}
-		}
-
-		public ACBrECFDadosRZ DadosReducaoZClass
-		{
-			get
-			{
-				return GetDadosReducaoZClass();
-			}
-		}
-
 		#endregion Properties
 
 		#region Methods
@@ -914,7 +897,7 @@ namespace ACBr.Net
 			CheckResult(ret);
 		}
 
-		private void PafMF_RelDAVEmitidos(ACBrECFDAVs[] DAVs, string TituloRelatorio, string IndiceRelatorio)
+		public void PafMF_RelDAVEmitidos(ACBrECFDAVs[] DAVs, string TituloRelatorio, string IndiceRelatorio)
 		{
 			ACBrDll.DAVsRec[] record = new ACBrDll.DAVsRec[DAVs.Length];
 			for (int i = 0; i < DAVs.Length; i++)
@@ -935,7 +918,7 @@ namespace ACBr.Net
 
 		#region PAF RelMeiosPagamento
 
-		private void PafMF_RelMeiosPagamento(ACBrECFFormaPagamento[] formasPagamento, string TituloRelatorio, int indiceRelatorio)
+		public void PafMF_RelMeiosPagamento(ACBrECFFormaPagamento[] formasPagamento, string TituloRelatorio, int indiceRelatorio)
 		{
 			ACBrDll.FormaPagamentoRec[] record = new ACBrDll.FormaPagamentoRec[formasPagamento.Length];
 			for (int i = 0; i < formasPagamento.Length; i++)
@@ -947,6 +930,12 @@ namespace ACBr.Net
 			}
 
 			int ret = ACBrDll.ECF_PafMF_RelMeiosPagamento(this.Handle, record, record.Length, ToUTF8(TituloRelatorio), indiceRelatorio);
+			CheckResult(ret);
+		}
+
+		public void PafMF_RelIdentificacaoPafECF(ACBrECFIdenticacaoPaf identificacaoPAF, int indiceRelatorio)
+		{
+			int ret = ACBrDll.ECF_PafMF_RelIdentificacaoPafECF(this.Handle, identificacaoPAF.Handle, indiceRelatorio);
 			CheckResult(ret);
 		}
 
@@ -1225,7 +1214,13 @@ namespace ACBr.Net
 			CheckResult(ret);
 		}
 
-		private ACBrECFDadosRZ GetDadosReducaoZClass()
+		public string GetDadosUltimaReducaoZ()
+		{
+			const int BUFFER_LEN = 16384;
+			return GetString(ACBrDll.ECF_GetDadosUltimaReducaoZ, BUFFER_LEN);
+		}
+
+		public ACBrECFDadosRZ GetDadosReducaoZClass()
 		{
 			IntPtr ptr;
 			int ret = ACBrDll.ECF_GetDadosReducaoZClass(this.Handle, out ptr);

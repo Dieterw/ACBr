@@ -198,7 +198,6 @@
   </Target>
   -->
   <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
+    <PreBuildEvent>copy ..\..\..\..\ACBr32\x86\ACBr32.dll</PreBuildEvent>
   </PropertyGroup>
 </Project>

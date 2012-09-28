@@ -1138,7 +1138,7 @@ namespace ACBr.Net
 
 		public void LeituraMemoriaFiscal(int reducaoInicial, int reducaoFinal)
 		{
-			LeituraMemoriaFiscal(reducaoFinal, reducaoFinal, false);
+			LeituraMemoriaFiscal(reducaoInicial, reducaoFinal, false);
 		}
 
 		public void LeituraMemoriaFiscal(int reducaoInicial, int reducaoFinal, bool simplificada)

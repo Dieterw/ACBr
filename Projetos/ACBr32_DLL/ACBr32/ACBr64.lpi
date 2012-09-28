@@ -22,7 +22,7 @@
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MinorVersionNr Value="9"/>
-      <BuildNr Value="135"/>
+      <BuildNr Value="137"/>
       <Language Value="0416"/>
       <StringTable CompanyName="Projeto: Componentes ACBr " FileDescription="Projeto: Componentes ACBr " ProductName="ACBr64.DLL" ProductVersion="ACBr64.DLL"/>
     </VersionInfo>
@@ -215,9 +215,8 @@
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1315"/>
-        <CursorPos X="40" Y="1323"/>
-        <FoldState Value=" TLnU0OX"/>
+        <TopLine Value="1472"/>
+        <CursorPos X="56" Y="1491"/>
         <UsageCount Value="65"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>

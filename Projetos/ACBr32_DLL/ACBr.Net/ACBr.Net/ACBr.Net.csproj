@@ -134,6 +134,9 @@
     <Compile Include="ACBrECF\ACBrECFAliquota.cs" />
     <Compile Include="ACBrECF\ACBrECFFormaPagamento.cs" />
     <Compile Include="ACBrEAD\EADDigest.cs" />
+    <Compile Include="ACBrPAF\Registros\ACBrPAFRegistroN1.cs" />
+    <Compile Include="ACBrPAF\Registros\ACBrPAFRegistroN2.cs" />
+    <Compile Include="ACBrPAF\Registros\ACBrPAFRegistroN3.cs" />
     <Compile Include="ACBrSintegra\VersaoEan.cs" />
     <Compile Include="ACBrSintegra\VersaoValidador.cs" />
     <Compile Include="ACBrLCB\ACBrLCB.cs" />

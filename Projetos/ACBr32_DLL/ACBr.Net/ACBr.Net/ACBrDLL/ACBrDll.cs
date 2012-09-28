@@ -1,6 +1,9 @@
 ﻿#region Defines
+
 #define X86
+
 //#define X64
+
 #endregion Defines
 
 using System;
@@ -12,12 +15,14 @@ namespace ACBr.Net
 	internal static class ACBrDll
 	{
 		#region DLL
+
 #if X86
 		private const string ACBr = "ACBr32.dll";
 #endif
 #if X64
 		private const string ACBr = "ACBr64.dll";
 #endif
+
 		#endregion DLL
 
 		#region ACBrECF
@@ -294,14 +299,17 @@ namespace ACBr.Net
 		#endregion Ativar/Desativar
 
 		#region Métodos ECF
+
 		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
 		public static extern int ECF_AcharECF(IntPtr ecfHandle, Boolean Modelo, Boolean Porta, int TimeOut);
 
 		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
 		public static extern int ECF_AcharPorta(IntPtr ecfHandle, int TimeOut);
-		#endregion
+
+		#endregion Métodos ECF
 
 		#region Propriedades do Componente
+
 		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
 		public static extern int ECF_GetModelo(IntPtr ecfHandle);
 
@@ -604,9 +612,10 @@ namespace ACBr.Net
 
 		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
 		public static extern int ECF_DestroyDadosReducaoZClass(IntPtr ecfHandle, ref IntPtr dadosRZ);
-		
+
 		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
 		public static extern int ECF_SetAAC(IntPtr ecfHandle, IntPtr aacHandle);
+
 		#endregion Propriedades do Componente
 
 		#region Cupom Fiscal
@@ -1023,34 +1032,34 @@ namespace ACBr.Net
 		{
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
 			public string BOMBA;
-			
+
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
 			public string BICO;
-			
+
 			[MarshalAs(UnmanagedType.R8)]
 			public double DATA;
-			
+
 			[MarshalAs(UnmanagedType.R8)]
 			public double HORA;
-			
+
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 51)]
 			public string MOTIVO;
-			
+
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
 			public string CNPJ_EMPRESA;
-			
+
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 12)]
 			public string CPF_TECNICO;
-			
+
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
 			public string NRO_LACRE_ANTES;
-			
+
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
 			public string NRO_LACRE_APOS;
-			
+
 			[MarshalAs(UnmanagedType.R8)]
 			public double ENCERRANTE_ANTES;
-			
+
 			[MarshalAs(UnmanagedType.R8)]
 			public double ENCERRANTE_APOS;
 
@@ -1262,6 +1271,32 @@ namespace ACBr.Net
 
 			[MarshalAs(UnmanagedType.U1)]
 			public bool RegistroValido;
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
+		public struct RegistroN2Rec
+		{
+			[MarshalAs(UnmanagedType.I4)]
+			public int QTD_N3;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+			public string LAUDO;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 51)]
+			public string NOME;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+			public string VERSAO;
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
+		public struct RegistroN3Rec
+		{
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 51)]
+			public string NOME_ARQUIVO;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
+			public string MD5;
 		}
 
 		[StructLayout(LayoutKind.Sequential)]
@@ -1657,6 +1692,7 @@ namespace ACBr.Net
 
 		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
 		public static extern int PAF_SetEAD(IntPtr pafHandle, IntPtr eadHandle);
+
 		#endregion Propriedades do Componente
 
 		#region Methods
@@ -1677,6 +1713,9 @@ namespace ACBr.Net
 		public static extern int PAF_SaveFileTXT_H(IntPtr pafHandle, RegistroHD2Rec RegsitroH1Rec, RegistroH2Rec[] RegsitroH2Rec, int CountH2, string Arquivo);
 
 		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int PAF_SaveFileTXT_N(IntPtr pafHandle, RegistroHD1Rec RegsitroN1Rec, RegistroN2Rec RegsitroN2Rec, RegistroN3Rec[] RegsitroN3Rec, string Arquivo);
+
+		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
 		public static extern int PAF_SaveFileTXT_P(IntPtr pafHandle, RegistroHD1Rec RegsitroP1Rec, RegistroP2Rec[] RegsitroP2Rec, int CountP2, string Arquivo);
 
 		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
@@ -1684,6 +1723,7 @@ namespace ACBr.Net
 
 		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
 		public static extern int PAF_AssinarArquivoComEAD(IntPtr eadHandle, String Arquivo);
+
 		#endregion Methods
 
 		#endregion ACBrPAF
@@ -1723,6 +1763,7 @@ namespace ACBr.Net
 		#endregion Constructors/Erro Handler
 
 		#region Methods
+
 		#endregion Methods
 
 		#endregion ACBrSintegra

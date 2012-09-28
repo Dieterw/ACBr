@@ -143,6 +143,18 @@ type TRegistroH2Rec = record
     RegistroValido   : boolean;
 end;
 
+type TRegistroN2Rec = record
+    QTD_N3 : Integer;
+    LAUDO  : array[0..10] of char;
+    NOME   : array[0..50] of char;
+    VERSAO : array[0..10] of char;
+end;
+
+type TRegistroN3Rec = record
+    NOME_ARQUIVO : array[0..50] of char;
+    MD5          : array[0..32] of char;
+end;
+
 type TRegistroP2Rec = record
    COD_MERC_SERV  : array[0..14] of char;
    DESC_MERC_SERV : array[0..50] of char;
@@ -353,7 +365,6 @@ begin
   end;
 
   try
-
     pafHandle^.PAF.Destroy();
     pafHandle^.PAF := nil;
 
@@ -1052,6 +1063,58 @@ begin
   end;
 end;
 
+Function PAF_SaveFileTXT_N(const pafHandle: PPAFHandle; const RegistroN1Rec : TRegistroHD2Rec;
+      const RegistroN2Rec : TRegistroN2Rec; const RegistroN3Rec : array of TRegistroN3Rec; const Arquivo: pChar) : Integer;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+var
+  i : Integer;
+begin
+  if (pafHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+  if(RegistroN2Rec.QTD_N3 <= 0) then
+  begin
+     pafHandle^.UltimoErro := 'O numero de Itens não pode ser Zero';
+     Result := -1;
+     Exit;
+  end;
+
+  try
+   pafHandle^.PAF.PAF_N.RegistroN1.RAZAOSOCIAL := RegistroN1Rec.RAZAOSOCIAL;
+   pafHandle^.PAF.PAF_N.RegistroN1.UF          := RegistroN1Rec.UF;
+   pafHandle^.PAF.PAF_N.RegistroN1.CNPJ        := RegistroN1Rec.CNPJ;
+   pafHandle^.PAF.PAF_N.RegistroN1.IE          := RegistroN1Rec.IE;
+   pafHandle^.PAF.PAF_N.RegistroN1.IM          := RegistroN1Rec.IM;
+
+   pafHandle^.PAF.PAF_N.RegistroN2.NOME  := RegistroN2Rec.NOME;
+   pafHandle^.PAF.PAF_N.RegistroN2.LAUDO := RegistroN2Rec.LAUDO;
+   pafHandle^.PAF.PAF_N.RegistroN2.VERSAO  := RegistroN2Rec.VERSAO;
+
+   pafHandle^.PAF.PAF_N.RegistroN3.Clear;
+
+   for i := 0 to RegistroN2Rec.QTD_N3 - 1 do
+   begin
+   with pafHandle^.PAF.PAF_N.RegistroN3.New do
+   begin
+   NOME_ARQUIVO := RegistroN3Rec[i].NOME_ARQUIVO;
+   MD5          := RegistroN3Rec[i].MD5;
+   end;
+   end;
+
+   pafHandle^.PAF.SaveFileTXT_N(Arquivo);
+   Result := 0;
+  except
+  on exception : Exception do
+  begin
+  pafHandle^.UltimoErro := exception.Message;
+  pafHandle^.PAF.PAF_N.LimpaRegistros;
+  Result := -1;
+  end
+  end;
+end;
+
 Function PAF_SaveFileTXT_P(const pafHandle: PPAFHandle; const RegistroP1Rec : TRegistroHD1Rec;
       const RegistroP2Rec : array of TRegistroP2Rec; const CountP2 : Integer; const Arquivo: pChar) : Integer;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
 var
@@ -1425,7 +1488,7 @@ PAF_GetChaveRSA, PAF_SetChaveRSA, PAF_SetAAC, PAF_SetEAD,
 
 {Salvar Arquivos PAF}
 PAF_SaveFileTXT_B, PAF_SaveFileTXT_C, PAF_SaveFileTXT_D,
-PAF_SaveFileTXT_E, PAF_SaveFileTXT_H, PAF_SaveFileTXT_P,
+PAF_SaveFileTXT_E, PAF_SaveFileTXT_H, PAF_SaveFileTXT_N, PAF_SaveFileTXT_P,
 PAF_SaveFileTXT_R, PAF_SaveFileTXT_T, PAF_AssinaArquivoComEAD;
 
 end.

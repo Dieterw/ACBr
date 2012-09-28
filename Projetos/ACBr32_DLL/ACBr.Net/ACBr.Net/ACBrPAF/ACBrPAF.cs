@@ -149,11 +149,13 @@ namespace ACBr.Net
 		#region Methods
 
 		#region AssinarArquivos
+
 		public void AssinarArquivoComEAD(string arquivo)
 		{
 			int ret = ACBrDll.PAF_AssinarArquivoComEAD(this.Handle, arquivo);
 			CheckResult(ret);
 		}
+
 		#endregion AssinarArquivos
 
 		#region SaveFileTXT
@@ -361,6 +363,35 @@ namespace ACBr.Net
 			}
 
 			int ret = ACBrDll.PAF_SaveFileTXT_H(this.Handle, RegistroH1Rec, RegistroH2Rec, RegistroH2.Length, ToUTF8(arquivo));
+			CheckResult(ret);
+		}
+
+		public void SaveFileTXT_N(ACBrPAFRegistroN1 RegistroN1, ACBrPAFRegistroN2 RegistroN2, ACBrPAFRegistroN3[] RegistroN3, string arquivo)
+		{
+			int i;
+
+			ACBrDll.RegistroHD1Rec RegistroN1Rec = new ACBrDll.RegistroHD1Rec();
+			ACBrDll.RegistroN2Rec RegistroN2Rec = new ACBrDll.RegistroN2Rec();
+			ACBrDll.RegistroN3Rec[] RegistroN3Rec = new ACBrDll.RegistroN3Rec[RegistroN3.Length];
+
+			RegistroN1Rec.RAZAOSOCIAL = ToUTF8(RegistroN1.RazaoSocial);
+			RegistroN1Rec.CNPJ = ToUTF8(RegistroN1.CNPJ);
+			RegistroN1Rec.UF = ToUTF8(RegistroN1.UF);
+			RegistroN1Rec.IE = ToUTF8(RegistroN1.IE);
+			RegistroN1Rec.IM = ToUTF8(RegistroN1.IM);
+
+			RegistroN2Rec.QTD_N3 = RegistroN3.Length;
+			RegistroN2Rec.NOME = RegistroN2.NOME;
+			RegistroN2Rec.LAUDO = RegistroN2.LAUDO;
+			RegistroN2Rec.VERSAO = RegistroN2.VERSAO;
+
+			for (i = 0; i < RegistroN3.Length; i++)
+			{
+				RegistroN3Rec[i].NOME_ARQUIVO = RegistroN3[i].NOME_ARQUIVO;
+				RegistroN3Rec[i].MD5 = RegistroN3[i].MD5;
+			}
+
+			int ret = ACBrDll.PAF_SaveFileTXT_N(this.Handle, RegistroN1Rec, RegistroN2Rec, RegistroN3Rec, ToUTF8(arquivo));
 			CheckResult(ret);
 		}
 

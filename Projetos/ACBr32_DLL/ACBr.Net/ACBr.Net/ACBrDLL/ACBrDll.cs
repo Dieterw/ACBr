@@ -1,11 +1,3 @@
-﻿#region Defines
-
-#define X86
-
-//#define X64
-
-#endregion Defines
-
 using System;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -16,12 +8,11 @@ namespace ACBr.Net
 	{
 		#region DLL
 
-#if X86
-		private const string ACBr = "ACBr32.dll";
-#endif
-#if X64
-		private const string ACBr = "ACBr64.dll";
-#endif
+		#if x86
+				private const string ACBr = "ACBr32.dll";
+		#elif x64
+				private const string ACBr = "ACBr64.dll";
+		#endif
 
 		#endregion DLL
 
@@ -684,6 +675,9 @@ namespace ACBr.Net
 
 		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
 		public static extern int ECF_PafMF_RelMeiosPagamento(IntPtr ecfHandle, FormaPagamentoRec[] formasPagamento, int count, string TituloRelatorio, int IndiceRelatorio);
+
+		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int ECF_PafMF_RelIdentificacaoPafECF(IntPtr ecfHandle, IntPtr aacHandle, int IndiceRelatorio);
 
 		#endregion PAF
 

@@ -66,17 +66,25 @@ namespace ACBr.Net
 
 		protected void Destroy(DestroyEntryPointDelegate entryPoint)
 		{
-			#region Comments
+			#region Comments (Exception on Disposing)
+
 			//Rodando dentro do Visual Studio
 			//o Debugger causa um AccessViolationException
 			//ao inspecionar a chamada ao entryPoint do Destroy
 			//
-			//A exception é coletada no Try/Catch e não é disparada 
+			//-----------------------------------------------------------------
+			//Isso é resolvido abrindo as propriedades do projeto EXECUTÁVEL,
+			//na aba "Debug" e marcando a opção "Enable unmanaged code debugging"
+			//-----------------------------------------------------------------
+			//
+			//Como a maioria dos usuários não adota esse procedimento,
+			//a exception é coletada no Try/Catch e não é disparada
 			//caso o ambiente seja DEBUG
 			//
-			//Note que o erro ocorre apenas quando roda dentro do VS
+			//Note que o erro ocorre apenas quando roda dentro do VS por causa do Debugger com código nativo
 			//Tanto compilando em RELASE quanto DEBUG
-			#endregion Comments
+
+			#endregion Comments (Exception on Disposing)
 
 			try
 			{
@@ -85,9 +93,9 @@ namespace ACBr.Net
 			}
 			catch (AccessViolationException)
 			{
-				#if !DEBUG
+#if !DEBUG
 				throw;
-				#endif
+#endif
 			}
 		}
 

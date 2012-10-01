@@ -180,6 +180,8 @@ var
 begin
   Result := False;
   try
+    i := -1;
+
     FXML := Self.Leitor.Arquivo;
     if (Leitor.rExtrai(1, 'retDownloadNFe') <> '') then
     begin
@@ -203,8 +205,9 @@ begin
       end;
       Result := True;
     end;
-    if i = 0
-     then FretNFe.Add;
+
+    if i = 0 then
+      FretNFe.Add;
   except
     result := False;
   end;

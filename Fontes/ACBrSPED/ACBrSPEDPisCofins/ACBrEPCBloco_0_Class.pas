@@ -516,8 +516,13 @@ begin
               LFill( strIND_APRO_CRED ) +
               LFill( strCOD_TIPO_CONT ) ) ;
        ///
-       if IND_APRO_CRED = indMetodoDeRateioProporcional then
-         WriteRegistro0111(Reg0001.Registro0110);
+       // O (se no registro 0110 o Campo “COD_INC_TRIB” = 1 ou 3 e o Campo “IND_APRO_CRED” = 2)
+       // N (se no registro 0110 o Campo “COD_INC_TRIB” = 2 ou     o Campo “IND_APRO_CRED” = 1)
+       if (COD_INC_TRIB = codEscrOpIncNaoCumulativo) or (COD_INC_TRIB = codEscrOpIncAmbos) then
+       begin
+          if IND_APRO_CRED = indMetodoDeRateioProporcional then
+             WriteRegistro0111(Reg0001.Registro0110);
+       end;
      end;
      Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
 
@@ -530,31 +535,19 @@ procedure TBloco_0.WriteRegistro0111(Reg0110: TRegistro0110) ;
 begin
   if Assigned(Reg0110.Registro0111) then
   begin
-    {Obrigatório este registro SE:
-    no registro 0110 o Campo “COD_INC_TRIB” = 1 ou 3 e o Campo “IND_APRO_CRED” = 2
-
-    e Não pode ser informado SE:
-    no registro 0110 o Campo “COD_INC_TRIB” = 2 ou o Campo “IND_APRO_CRED” =1
-}
-
-     if ((Reg0110.COD_INC_TRIB = codEscrOpIncNaoCumulativo) or (Reg0110.COD_INC_TRIB = codEscrOpIncAmbos)) and
-        (Reg0110.IND_APRO_CRED = indMetodoDeRateioProporcional) then
+     with Reg0110.Registro0111 do
      begin
-
-        with Reg0110.Registro0111 do
-        begin
-          Add( LFill('0111') +
-               LFill( REC_BRU_NCUM_TRIB_MI, 0, 2 ) +
-               LFill( REC_BRU_NCUM_NT_MI, 0, 2 ) +
-               LFill( REC_BRU_NCUM_EXP, 0, 2 ) +
-               LFill( REC_BRU_CUM, 0, 2 ) +
-               LFill( REC_BRU_TOTAL, 0, 2 ) ) ;
-        end;
-        Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
-
-        /// Variavél para armazenar a quantidade de registro do tipo.
-        FRegistro0111Count := FRegistro0111Count + 1;
+       Add( LFill('0111') +
+            LFill( REC_BRU_NCUM_TRIB_MI, 0, 2 ) +
+            LFill( REC_BRU_NCUM_NT_MI, 0, 2 ) +
+            LFill( REC_BRU_NCUM_EXP, 0, 2 ) +
+            LFill( REC_BRU_CUM, 0, 2 ) +
+            LFill( REC_BRU_TOTAL, 0, 2 ) ) ;
      end;
+     Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
+
+     /// Variavél para armazenar a quantidade de registro do tipo.
+     FRegistro0111Count := FRegistro0111Count + 1;
   end;
 end;
 

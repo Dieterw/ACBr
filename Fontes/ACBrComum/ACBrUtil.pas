@@ -1787,7 +1787,9 @@ var
    PCharStr : PChar ;
   {$endif}
   ConnectCommand : PChar;
-  FullCommand : AnsiString;
+  {$ifdef LINUX}
+   FullCommand : AnsiString;
+  {$endif}
 begin
   {$ifdef LINUX}
      FullCommand := Trim(Command + ' ' + Params) ;

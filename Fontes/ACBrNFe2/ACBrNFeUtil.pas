@@ -762,7 +762,7 @@ end;
 class function NotaUtil.FormatarFone(AValue: String): String;
 var
   lTemp: string;
-  i: integer;
+  //i: integer;
 begin
   AValue := IntToStr(StrToInt64Def(NotaUtil.LimpaNumero(AValue),0));
   Result := AValue;

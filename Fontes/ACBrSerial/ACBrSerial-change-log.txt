@@ -97,6 +97,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 01/10/2012
+-- ACBrECFDaruma --
+[-] Aplicação do patch feito por usuário do fórum
+    http://www.djsystem.com.br/acbr/forum/viewtopic.php?f=10&t=7484
+    (por: Regys Silveira)
+
 Data: 26/09/2012
 -- ACBrECFEpson --
 [-] Correção para imprimir acentos corretamente quando usando a porta USB

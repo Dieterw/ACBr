@@ -4825,13 +4825,13 @@ begin
       raise EACBrECFERRO.Create( ACBrStr( 'Erro na execução de rGerarEspelhoMFD_ECF_Daruma.'+sLineBreak+
                                        'Arquivo: "'+ ARQ_MFD_DLL +'" não gerado' )) ;
 
-    if PathDest <> NomeArquivo then
+    if AnsiUpperCase(PathDest) <> AnsiUpperCase(NomeArquivo) then
       CopyFileTo(PathDest, NomeArquivo) ;
   finally
     UnloadDLLFunctions;
     Ativo := OldAtivo;
 
-    if PathDest <> NomeArquivo then
+    if AnsiUpperCase(PathDest) <> AnsiUpperCase(NomeArquivo) then
       DeleteFile(PathDest);
   end;
 end;
@@ -4866,13 +4866,13 @@ begin
       raise EACBrECFERRO.Create( ACBrStr( 'Erro na execução de rGerarEspelhoMFD_ECF_Daruma.'+sLineBreak+
                               'Arquivo: "'+ ARQ_MFD_DLL +'" não gerado' )) ;
 
-    if PathDest <> NomeArquivo then
+    if AnsiUpperCase(PathDest) <> AnsiUpperCase(NomeArquivo) then
       CopyFileTo(PathDest, NomeArquivo);
   finally
     UnloadDLLFunctions;
     Ativo := OldAtivo;
 
-    if PathDest <> NomeArquivo then
+    if AnsiUpperCase(PathDest) <> AnsiUpperCase(NomeArquivo) then
       DeleteFile(PathDest);
   end;
 end;
@@ -4943,13 +4943,13 @@ begin
                                        'Modo: ' + IfThen(OldAtivo, 'On-Line', 'Off-Line') + sLineBreak +
                                        'Arquivo: "'+ NomeArq +'" não gerado' )) ;
 
-    if PathDest <> NomeArquivo then
+    if AnsiUpperCase(PathDest) <> AnsiUpperCase(NomeArquivo) then
       CopyFileTo(PathDest, NomeArquivo) ;
   finally
     UnloadDLLFunctions;
     Ativo := OldAtivo;
 
-    if PathDest <> NomeArquivo then
+    if AnsiUpperCase(PathDest) <> AnsiUpperCase(NomeArquivo) then
       DeleteFile(PathDest);
   end;
 end;
@@ -5013,13 +5013,13 @@ begin
                                        'Modo: ' + IfThen(OldAtivo, 'On-Line', 'Off-Line') + sLineBreak +
                                        'Arquivo: "'+ NomeArq +'" não gerado' )) ;
 
-    if PathDest <> NomeArquivo then
+    if AnsiUpperCase(PathDest) <> AnsiUpperCase(NomeArquivo) then
       CopyFileTo(PathDest, NomeArquivo) ;
   finally
     UnloadDLLFunctions;
     Ativo := OldAtivo;
 
-    if PathDest <> NomeArquivo then
+    if AnsiUpperCase(PathDest) <> AnsiUpperCase(NomeArquivo) then
       DeleteFile(PathDest);
   end;
 end;

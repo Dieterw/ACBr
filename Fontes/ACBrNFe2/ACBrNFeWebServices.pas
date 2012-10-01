@@ -752,7 +752,14 @@ begin
      else Eventos := '';
    end;
 
-  FDadosMsg := Lote + EventosAssinados + '</envEvento>';
+  //Corrigido por João Henrique em 28/09/2012
+  //<?xml version="1.0"?> não estava ficando no início do arquivo
+  //FDadosMsg := Lote + EventosAssinados + '</envEvento>';
+  f := Pos( '?>', EventosAssinados );
+  FDadosMsg := copy(EventosAssinados,1,f+1) +
+               Lote +
+               copy(EventosAssinados,f+2,Length(EventosAssinados)) +
+               '</envEvento>';
 
 (*
   {$IFDEF ACBrNFeOpenSSL}

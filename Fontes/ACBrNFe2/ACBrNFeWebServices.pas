@@ -1125,10 +1125,13 @@ begin
   //<?xml version="1.0"?> não estava ficando no início do arquivo
   //FDadosMsg := Lote + EventosAssinados + '</envEvento>';
   f := Pos( '?>', EventosAssinados );
-  FDadosMsg := copy(EventosAssinados,1,f+1) +
-               Lote +
-               copy(EventosAssinados,f+2,Length(EventosAssinados)) +
-               '</envEvento>';
+  if f <> 0 then
+    FDadosMsg := copy(EventosAssinados,1,f+1) +
+                 Lote +
+                 copy(EventosAssinados,f+2,Length(EventosAssinados)) +
+                 '</envEvento>'
+  else
+    FDadosMsg := Lote + EventosAssinados + '</envEvento>';
 
 (*
   {$IFDEF ACBrNFeOpenSSL}

@@ -14,11 +14,11 @@
 		{
 			get
 			{
-				return GetString(ACBrDll.AAC_IdentPaf_Empresa_GetRazaoSocial);
+				return GetString(ACBrAACInterop.AAC_IdentPaf_Empresa_GetRazaoSocial);
 			}
 			set
 			{
-				SetString(ACBrDll.AAC_IdentPaf_Empresa_SetRazaoSocial, value);
+				SetString(ACBrAACInterop.AAC_IdentPaf_Empresa_SetRazaoSocial, value);
 			}
 		}
 
@@ -26,11 +26,11 @@
 		{
 			get
 			{
-				return GetString(ACBrDll.AAC_IdentPaf_Empresa_GetCNPJ);
+				return GetString(ACBrAACInterop.AAC_IdentPaf_Empresa_GetCNPJ);
 			}
 			set
 			{
-				SetString(ACBrDll.AAC_IdentPaf_Empresa_SetCNPJ, value);
+				SetString(ACBrAACInterop.AAC_IdentPaf_Empresa_SetCNPJ, value);
 			}
 		}
 
@@ -38,11 +38,11 @@
 		{
 			get
 			{
-				return GetString(ACBrDll.AAC_IdentPaf_Empresa_GetIE);
+				return GetString(ACBrAACInterop.AAC_IdentPaf_Empresa_GetIE);
 			}
 			set
 			{
-				SetString(ACBrDll.AAC_IdentPaf_Empresa_SetIE, value);
+				SetString(ACBrAACInterop.AAC_IdentPaf_Empresa_SetIE, value);
 			}
 		}
 
@@ -50,11 +50,11 @@
 		{
 			get
 			{
-				return GetString(ACBrDll.AAC_IdentPaf_Empresa_GetIM);
+				return GetString(ACBrAACInterop.AAC_IdentPaf_Empresa_GetIM);
 			}
 			set
 			{
-				SetString(ACBrDll.AAC_IdentPaf_Empresa_SetIM, value);
+				SetString(ACBrAACInterop.AAC_IdentPaf_Empresa_SetIM, value);
 			}
 		}
 

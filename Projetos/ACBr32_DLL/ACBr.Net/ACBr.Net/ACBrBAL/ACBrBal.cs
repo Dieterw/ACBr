@@ -8,7 +8,7 @@ namespace ACBr.Net
 
 		public ACBrBal()
 		{
-			Create(ACBrDll.BAL_Create);
+			Create(ACBrBALInterop.BAL_Create);
 		}
 
 		#endregion Constructor
@@ -19,7 +19,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetBool(ACBrDll.BAL_GetAtivo);
+				return GetBool(ACBrBALInterop.BAL_GetAtivo);
 			}
 		}
 
@@ -27,11 +27,11 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return (ModeloBal)GetInt32(ACBrDll.BAL_GetModelo);
+				return (ModeloBal)GetInt32(ACBrBALInterop.BAL_GetModelo);
 			}
 			set
 			{
-				SetInt32(ACBrDll.BAL_SetModelo, (int)value);
+				SetInt32(ACBrBALInterop.BAL_SetModelo, (int)value);
 			}
 		}
 
@@ -39,7 +39,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.BAL_GetModeloStr);
+				return GetString(ACBrBALInterop.BAL_GetModeloStr);
 			}
 		}
 
@@ -47,11 +47,11 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.BAL_GetPorta);
+				return GetString(ACBrBALInterop.BAL_GetPorta);
 			}
 			set
 			{
-				SetString(ACBrDll.BAL_SetPorta, value);
+				SetString(ACBrBALInterop.BAL_SetPorta, value);
 			}
 		}
 
@@ -59,7 +59,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetDecimal(ACBrDll.BAL_GetUltimoPesoLido);
+				return GetDecimal(ACBrBALInterop.BAL_GetUltimoPesoLido);
 			}
 		}
 
@@ -67,7 +67,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.BAL_GetUltimaResposta);
+				return GetString(ACBrBALInterop.BAL_GetUltimaResposta);
 			}
 		}
 
@@ -77,13 +77,13 @@ namespace ACBr.Net
 
 		public void Ativar()
 		{
-			int ret = ACBrDll.BAL_Ativar(this.Handle);
+			int ret = ACBrBALInterop.BAL_Ativar(this.Handle);
 			CheckResult(ret);
 		}
 
 		public void Desativar()
 		{
-			int ret = ACBrDll.BAL_Desativar(this.Handle);
+			int ret = ACBrBALInterop.BAL_Desativar(this.Handle);
 			CheckResult(ret);
 		}
 
@@ -96,7 +96,7 @@ namespace ACBr.Net
 		public decimal LePeso(int timeout)
 		{
 			double peso = 0;
-			int ret = ACBrDll.BAL_LePeso(this.Handle, timeout, ref peso);
+			int ret = ACBrBALInterop.BAL_LePeso(this.Handle, timeout, ref peso);
 			CheckResult(ret);
 
 			return Convert.ToDecimal(peso);
@@ -110,7 +110,7 @@ namespace ACBr.Net
 			{
 				case -1:
 
-					string error = GetString(ACBrDll.BAL_GetUltimoErro);
+					string error = GetString(ACBrBALInterop.BAL_GetUltimoErro);
 					throw new ACBrECFException(error);
 
 				case -2:
@@ -123,7 +123,7 @@ namespace ACBr.Net
 		{
 			if (this.Handle != IntPtr.Zero)
 			{
-				Destroy(ACBrDll.BAL_Destroy);
+				Destroy(ACBrBALInterop.BAL_Destroy);
 			}
 		}
 

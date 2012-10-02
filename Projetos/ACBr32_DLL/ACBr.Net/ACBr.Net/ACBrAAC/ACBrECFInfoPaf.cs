@@ -16,11 +16,11 @@
 		{
 			get
 			{
-				return GetString(ACBrDll.AAC_IdentPaf_Paf_GetNome);
+				return GetString(ACBrAACInterop.AAC_IdentPaf_Paf_GetNome);
 			}
 			set
 			{
-				SetString(ACBrDll.AAC_IdentPaf_Paf_SetNome, value);
+				SetString(ACBrAACInterop.AAC_IdentPaf_Paf_SetNome, value);
 			}
 		}
 
@@ -28,11 +28,11 @@
 		{
 			get
 			{
-				return GetString(ACBrDll.AAC_IdentPaf_Paf_GetLinguagem);
+				return GetString(ACBrAACInterop.AAC_IdentPaf_Paf_GetLinguagem);
 			}
 			set
 			{
-				SetString(ACBrDll.AAC_IdentPaf_Paf_SetLinguagem, value);
+				SetString(ACBrAACInterop.AAC_IdentPaf_Paf_SetLinguagem, value);
 			}
 		}
 
@@ -40,11 +40,11 @@
 		{
 			get
 			{
-				return GetString(ACBrDll.AAC_IdentPaf_Paf_GetBancoDados);
+				return GetString(ACBrAACInterop.AAC_IdentPaf_Paf_GetBancoDados);
 			}
 			set
 			{
-				SetString(ACBrDll.AAC_IdentPaf_Paf_SetBancoDados, value);
+				SetString(ACBrAACInterop.AAC_IdentPaf_Paf_SetBancoDados, value);
 			}
 		}
 
@@ -52,11 +52,11 @@
 		{
 			get
 			{
-				return GetString(ACBrDll.AAC_IdentPaf_Paf_GetSistemaOperacional);
+				return GetString(ACBrAACInterop.AAC_IdentPaf_Paf_GetSistemaOperacional);
 			}
 			set
 			{
-				SetString(ACBrDll.AAC_IdentPaf_Paf_SetSistemaOperacional, value);
+				SetString(ACBrAACInterop.AAC_IdentPaf_Paf_SetSistemaOperacional, value);
 			}
 		}
 
@@ -64,11 +64,11 @@
 		{
 			get
 			{
-				return GetString(ACBrDll.AAC_IdentPaf_Paf_GetVersao);
+				return GetString(ACBrAACInterop.AAC_IdentPaf_Paf_GetVersao);
 			}
 			set
 			{
-				SetString(ACBrDll.AAC_IdentPaf_Paf_SetVersao, value);
+				SetString(ACBrAACInterop.AAC_IdentPaf_Paf_SetVersao, value);
 			}
 		}
 
@@ -76,11 +76,11 @@
 		{
 			get
 			{
-				return GetString(ACBrDll.AAC_IdentPaf_Paf_PrincipalExe_GetNome);
+				return GetString(ACBrAACInterop.AAC_IdentPaf_Paf_PrincipalExe_GetNome);
 			}
 			set
 			{
-				SetString(ACBrDll.AAC_IdentPaf_Paf_PrincipalExe_SetNome, value);
+				SetString(ACBrAACInterop.AAC_IdentPaf_Paf_PrincipalExe_SetNome, value);
 			}
 		}
 
@@ -88,11 +88,11 @@
 		{
 			get
 			{
-				return GetString(ACBrDll.AAC_IdentPaf_Paf_PrincipalExe_GetMD5);
+				return GetString(ACBrAACInterop.AAC_IdentPaf_Paf_PrincipalExe_GetMD5);
 			}
 			set
 			{
-				SetString(ACBrDll.AAC_IdentPaf_Paf_PrincipalExe_SetMD5, value);
+				SetString(ACBrAACInterop.AAC_IdentPaf_Paf_PrincipalExe_SetMD5, value);
 			}
 		}
 
@@ -104,11 +104,11 @@
 		{
 			get
 			{
-				return (ACBrPAFTipoFuncionamento)GetInt32(ACBrDll.AAC_IdentPaf_Paf_GetTipoFuncionamento);
+				return (ACBrPAFTipoFuncionamento)GetInt32(ACBrAACInterop.AAC_IdentPaf_Paf_GetTipoFuncionamento);
 			}
 			set
 			{
-				SetInt32(ACBrDll.AAC_IdentPaf_Paf_SetTipoFuncionamento, (int)value);
+				SetInt32(ACBrAACInterop.AAC_IdentPaf_Paf_SetTipoFuncionamento, (int)value);
 			}
 		}
 
@@ -116,11 +116,11 @@
 		{
 			get
 			{
-				return (ACBrPAFTipoIntegracao)GetInt32(ACBrDll.AAC_IdentPaf_Paf_GetIntegracaoPafECF);
+				return (ACBrPAFTipoIntegracao)GetInt32(ACBrAACInterop.AAC_IdentPaf_Paf_GetIntegracaoPafECF);
 			}
 			set
 			{
-				SetInt32(ACBrDll.AAC_IdentPaf_Paf_SetIntegracaoPafECF, (int)value);
+				SetInt32(ACBrAACInterop.AAC_IdentPaf_Paf_SetIntegracaoPafECF, (int)value);
 			}
 		}
 
@@ -128,11 +128,11 @@
 		{
 			get
 			{
-				return (ACBrPAFTipoDesenvolvimento)GetInt32(ACBrDll.AAC_IdentPaf_Paf_GetTipoDesenvolvimento);
+				return (ACBrPAFTipoDesenvolvimento)GetInt32(ACBrAACInterop.AAC_IdentPaf_Paf_GetTipoDesenvolvimento);
 			}
 			set
 			{
-				SetInt32(ACBrDll.AAC_IdentPaf_Paf_SetTipoDesenvolvimento, (int)value);
+				SetInt32(ACBrAACInterop.AAC_IdentPaf_Paf_SetTipoDesenvolvimento, (int)value);
 			}
 		}
 
@@ -144,11 +144,11 @@
 		{
 			get
 			{
-				return GetBool(ACBrDll.AAC_IdentPaf_Paf_GetRealizaPreVenda);
+				return GetBool(ACBrAACInterop.AAC_IdentPaf_Paf_GetRealizaPreVenda);
 			}
 			set
 			{
-				SetBool(ACBrDll.AAC_IdentPaf_Paf_SetRealizaPreVenda, value);
+				SetBool(ACBrAACInterop.AAC_IdentPaf_Paf_SetRealizaPreVenda, value);
 			}
 		}
 
@@ -156,11 +156,11 @@
 		{
 			get
 			{
-				return GetBool(ACBrDll.AAC_IdentPaf_Paf_GetRealizaDAVECF);
+				return GetBool(ACBrAACInterop.AAC_IdentPaf_Paf_GetRealizaDAVECF);
 			}
 			set
 			{
-				SetBool(ACBrDll.AAC_IdentPaf_Paf_SetRealizaDAVECF, value);
+				SetBool(ACBrAACInterop.AAC_IdentPaf_Paf_SetRealizaDAVECF, value);
 			}
 		}
 
@@ -168,11 +168,11 @@
 		{
 			get
 			{
-				return GetBool(ACBrDll.AAC_IdentPaf_Paf_GetRealizaDAVNaoFiscal);
+				return GetBool(ACBrAACInterop.AAC_IdentPaf_Paf_GetRealizaDAVNaoFiscal);
 			}
 			set
 			{
-				SetBool(ACBrDll.AAC_IdentPaf_Paf_SetRealizaDAVNaoFiscal, value);
+				SetBool(ACBrAACInterop.AAC_IdentPaf_Paf_SetRealizaDAVNaoFiscal, value);
 			}
 		}
 
@@ -180,11 +180,11 @@
 		{
 			get
 			{
-				return GetBool(ACBrDll.AAC_IdentPaf_Paf_GetRealizaDAVOS);
+				return GetBool(ACBrAACInterop.AAC_IdentPaf_Paf_GetRealizaDAVOS);
 			}
 			set
 			{
-				SetBool(ACBrDll.AAC_IdentPaf_Paf_SetRealizaDAVOS, value);
+				SetBool(ACBrAACInterop.AAC_IdentPaf_Paf_SetRealizaDAVOS, value);
 			}
 		}
 
@@ -192,11 +192,11 @@
 		{
 			get
 			{
-				return GetBool(ACBrDll.AAC_IdentPaf_Paf_GetRealizaLancamentoMesa);
+				return GetBool(ACBrAACInterop.AAC_IdentPaf_Paf_GetRealizaLancamentoMesa);
 			}
 			set
 			{
-				SetBool(ACBrDll.AAC_IdentPaf_Paf_SetRealizaLancamentoMesa, value);
+				SetBool(ACBrAACInterop.AAC_IdentPaf_Paf_SetRealizaLancamentoMesa, value);
 			}
 		}
 
@@ -204,11 +204,11 @@
 		{
 			get
 			{
-				return GetBool(ACBrDll.AAC_IdentPaf_Paf_GetDAVConfAnexoII);
+				return GetBool(ACBrAACInterop.AAC_IdentPaf_Paf_GetDAVConfAnexoII);
 			}
 			set
 			{
-				SetBool(ACBrDll.AAC_IdentPaf_Paf_SetDAVConfAnexoII, value);
+				SetBool(ACBrAACInterop.AAC_IdentPaf_Paf_SetDAVConfAnexoII, value);
 			}
 		}
 
@@ -220,11 +220,11 @@
 		{
 			get
 			{
-				return GetBool(ACBrDll.AAC_IdentPaf_Paf_GetIndiceTecnicoProd);
+				return GetBool(ACBrAACInterop.AAC_IdentPaf_Paf_GetIndiceTecnicoProd);
 			}
 			set
 			{
-				SetBool(ACBrDll.AAC_IdentPaf_Paf_SetIndiceTecnicoProd, value);
+				SetBool(ACBrAACInterop.AAC_IdentPaf_Paf_SetIndiceTecnicoProd, value);
 			}
 		}
 
@@ -232,11 +232,11 @@
 		{
 			get
 			{
-				return GetBool(ACBrDll.AAC_IdentPaf_Paf_GetBarSimilarECFRestaurante);
+				return GetBool(ACBrAACInterop.AAC_IdentPaf_Paf_GetBarSimilarECFRestaurante);
 			}
 			set
 			{
-				SetBool(ACBrDll.AAC_IdentPaf_Paf_SetBarSimilarECFRestaurante, value);
+				SetBool(ACBrAACInterop.AAC_IdentPaf_Paf_SetBarSimilarECFRestaurante, value);
 			}
 		}
 
@@ -244,11 +244,11 @@
 		{
 			get
 			{
-				return GetBool(ACBrDll.AAC_IdentPaf_Paf_GetBarSimilarECFComum);
+				return GetBool(ACBrAACInterop.AAC_IdentPaf_Paf_GetBarSimilarECFComum);
 			}
 			set
 			{
-				SetBool(ACBrDll.AAC_IdentPaf_Paf_SetBarSimilarECFComum, value);
+				SetBool(ACBrAACInterop.AAC_IdentPaf_Paf_SetBarSimilarECFComum, value);
 			}
 		}
 
@@ -256,11 +256,11 @@
 		{
 			get
 			{
-				return GetBool(ACBrDll.AAC_IdentPaf_Paf_GetBarSimilarBalanca);
+				return GetBool(ACBrAACInterop.AAC_IdentPaf_Paf_GetBarSimilarBalanca);
 			}
 			set
 			{
-				SetBool(ACBrDll.AAC_IdentPaf_Paf_SetBarSimilarBalanca, value);
+				SetBool(ACBrAACInterop.AAC_IdentPaf_Paf_SetBarSimilarBalanca, value);
 			}
 		}
 
@@ -268,11 +268,11 @@
 		{
 			get
 			{
-				return GetBool(ACBrDll.AAC_IdentPaf_Paf_GetUsaImpressoraNaoFiscal);
+				return GetBool(ACBrAACInterop.AAC_IdentPaf_Paf_GetUsaImpressoraNaoFiscal);
 			}
 			set
 			{
-				SetBool(ACBrDll.AAC_IdentPaf_Paf_SetUsaImpressoraNaoFiscal, value);
+				SetBool(ACBrAACInterop.AAC_IdentPaf_Paf_SetUsaImpressoraNaoFiscal, value);
 			}
 		}
 
@@ -280,11 +280,11 @@
 		{
 			get
 			{
-				return GetBool(ACBrDll.AAC_IdentPaf_Paf_GetDAVDiscrFormula);
+				return GetBool(ACBrAACInterop.AAC_IdentPaf_Paf_GetDAVDiscrFormula);
 			}
 			set
 			{
-				SetBool(ACBrDll.AAC_IdentPaf_Paf_SetDAVDiscrFormula, value);
+				SetBool(ACBrAACInterop.AAC_IdentPaf_Paf_SetDAVDiscrFormula, value);
 			}
 		}
 
@@ -296,11 +296,11 @@
 		{
 			get
 			{
-				return GetBool(ACBrDll.AAC_IdentPaf_Paf_GetTotalizaValoresLista);
+				return GetBool(ACBrAACInterop.AAC_IdentPaf_Paf_GetTotalizaValoresLista);
 			}
 			set
 			{
-				SetBool(ACBrDll.AAC_IdentPaf_Paf_SetTotalizaValoresLista, value);
+				SetBool(ACBrAACInterop.AAC_IdentPaf_Paf_SetTotalizaValoresLista, value);
 			}
 		}
 
@@ -308,11 +308,11 @@
 		{
 			get
 			{
-				return GetBool(ACBrDll.AAC_IdentPaf_Paf_GetTransfPreVenda);
+				return GetBool(ACBrAACInterop.AAC_IdentPaf_Paf_GetTransfPreVenda);
 			}
 			set
 			{
-				SetBool(ACBrDll.AAC_IdentPaf_Paf_SetTransfPreVenda, value);
+				SetBool(ACBrAACInterop.AAC_IdentPaf_Paf_SetTransfPreVenda, value);
 			}
 		}
 
@@ -320,11 +320,11 @@
 		{
 			get
 			{
-				return GetBool(ACBrDll.AAC_IdentPaf_Paf_GetTransfDAV);
+				return GetBool(ACBrAACInterop.AAC_IdentPaf_Paf_GetTransfDAV);
 			}
 			set
 			{
-				SetBool(ACBrDll.AAC_IdentPaf_Paf_SetTransfDAV, value);
+				SetBool(ACBrAACInterop.AAC_IdentPaf_Paf_SetTransfDAV, value);
 			}
 		}
 
@@ -332,11 +332,11 @@
 		{
 			get
 			{
-				return GetBool(ACBrDll.AAC_IdentPaf_Paf_GetRecompoeGT);
+				return GetBool(ACBrAACInterop.AAC_IdentPaf_Paf_GetRecompoeGT);
 			}
 			set
 			{
-				SetBool(ACBrDll.AAC_IdentPaf_Paf_SetRecompoeGT, value);
+				SetBool(ACBrAACInterop.AAC_IdentPaf_Paf_SetRecompoeGT, value);
 			}
 		}
 
@@ -344,11 +344,11 @@
 		{
 			get
 			{
-				return GetBool(ACBrDll.AAC_IdentPaf_Paf_GetEmitePED);
+				return GetBool(ACBrAACInterop.AAC_IdentPaf_Paf_GetEmitePED);
 			}
 			set
 			{
-				SetBool(ACBrDll.AAC_IdentPaf_Paf_SetEmitePED, value);
+				SetBool(ACBrAACInterop.AAC_IdentPaf_Paf_SetEmitePED, value);
 			}
 		}
 
@@ -356,11 +356,11 @@
 		{
 			get
 			{
-				return GetBool(ACBrDll.AAC_IdentPaf_Paf_GetCupomMania);
+				return GetBool(ACBrAACInterop.AAC_IdentPaf_Paf_GetCupomMania);
 			}
 			set
 			{
-				SetBool(ACBrDll.AAC_IdentPaf_Paf_SetCupomMania, value);
+				SetBool(ACBrAACInterop.AAC_IdentPaf_Paf_SetCupomMania, value);
 			}
 		}
 
@@ -368,11 +368,11 @@
 		{
 			get
 			{
-				return GetBool(ACBrDll.AAC_IdentPaf_Paf_GetMinasLegal);
+				return GetBool(ACBrAACInterop.AAC_IdentPaf_Paf_GetMinasLegal);
 			}
 			set
 			{
-				SetBool(ACBrDll.AAC_IdentPaf_Paf_SetMinasLegal, value);
+				SetBool(ACBrAACInterop.AAC_IdentPaf_Paf_SetMinasLegal, value);
 			}
 		}
 

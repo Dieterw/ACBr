@@ -4,18 +4,11 @@ namespace ACBr.Net
 {
 	public sealed class ACBrLCB : ACBrComponent, IDisposable
 	{
-		public static void OnLeCodigo(IntPtr v)
-		{
-		}
-
 		#region Constructor
 
 		public ACBrLCB()
 		{
-			Create(ACBrDll.LCB_Create);
-
-			int ret = ACBrDll.LCB_SetOnLeCodigo(this.Handle, OnLeCodigo);
-			CheckResult(ret);
+			Create(ACBrLCBInterop.LCB_Create);
 		}
 
 		#endregion Constructor
@@ -26,7 +19,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetBool(ACBrDll.LCB_GetAtivo);
+				return GetBool(ACBrLCBInterop.LCB_GetAtivo);
 			}
 		}
 
@@ -34,11 +27,11 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.LCB_GetPorta);
+				return GetString(ACBrLCBInterop.LCB_GetPorta);
 			}
 			set
 			{
-				SetString(ACBrDll.LCB_SetPorta, value);
+				SetString(ACBrLCBInterop.LCB_SetPorta, value);
 			}
 		}
 
@@ -48,13 +41,13 @@ namespace ACBr.Net
 
 		public void Ativar()
 		{
-			int ret = ACBrDll.LCB_Ativar(this.Handle);
+			int ret = ACBrLCBInterop.LCB_Ativar(this.Handle);
 			CheckResult(ret);
 		}
 
 		public void Desativar()
 		{
-			int ret = ACBrDll.LCB_Desativar(this.Handle);
+			int ret = ACBrLCBInterop.LCB_Desativar(this.Handle);
 			CheckResult(ret);
 		}
 
@@ -67,7 +60,7 @@ namespace ACBr.Net
 				case -1:
 
 					const int BUFFER_LEN = 1024;
-					string error = GetString(ACBrDll.LCB_GetUltimoErro, BUFFER_LEN);
+					string error = GetString(ACBrLCBInterop.LCB_GetUltimoErro, BUFFER_LEN);
 					throw new ACBrECFException(error);
 
 				case -2:
@@ -80,7 +73,7 @@ namespace ACBr.Net
 		{
 			if (this.Handle != IntPtr.Zero)
 			{
-				Destroy(ACBrDll.LCB_Destroy);
+				Destroy(ACBrLCBInterop.LCB_Destroy);
 			}
 		}
 

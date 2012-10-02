@@ -6,15 +6,16 @@ namespace ACBr.Net
 	public class ACBrEAD : ACBrComponent, IDisposable
 	{
 		#region Propriedaes
+
 		public string ChavePrivada
 		{
 			get
 			{
-				return GetString(ACBrDll.EAD_GetChavePrivada, 1024);
+				return GetString(ACBrEADInterop.EAD_GetChavePrivada, 1024);
 			}
 			set
 			{
-				SetString(ACBrDll.EAD_SetChavePrivada, value);
+				SetString(ACBrEADInterop.EAD_SetChavePrivada, value);
 			}
 		}
 
@@ -22,20 +23,21 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.EAD_GetChavePublica, 512);
+				return GetString(ACBrEADInterop.EAD_GetChavePublica, 512);
 			}
 			set
 			{
-				SetString(ACBrDll.EAD_SetChavePublica, value);
+				SetString(ACBrEADInterop.EAD_SetChavePublica, value);
 			}
 		}
-		#endregion
+
+		#endregion Propriedaes
 
 		#region Constructor
 
 		public ACBrEAD()
 		{
-			Create(ACBrDll.EAD_Create);
+			Create(ACBrEADInterop.EAD_Create);
 		}
 
 		#endregion Constructor
@@ -50,7 +52,7 @@ namespace ACBr.Net
 			StringBuilder ChavePUB = new StringBuilder(BUFFER_LEN);
 			StringBuilder ChavePRI = new StringBuilder(BUFFER_LEN);
 
-			int ret = ACBrDll.EAD_GerarChaves(this.Handle, ChavePUB, ChavePRI, BUFFER_LEN);
+			int ret = ACBrEADInterop.EAD_GerarChaves(this.Handle, ChavePUB, ChavePRI, BUFFER_LEN);
 			CheckResult(ret);
 
 			ChavePublica = FromUTF8(ChavePUB);
@@ -63,7 +65,7 @@ namespace ACBr.Net
 			StringBuilder Mod = new StringBuilder(BUFFER_LEN);
 			StringBuilder Expo = new StringBuilder(BUFFER_LEN);
 
-			int ret = ACBrDll.EAD_CalcularModuloeExpoente(this.Handle, Mod, Expo, BUFFER_LEN);
+			int ret = ACBrEADInterop.EAD_CalcularModuloeExpoente(this.Handle, Mod, Expo, BUFFER_LEN);
 			CheckResult(ret);
 
 			Modulo = FromUTF8(Mod);
@@ -72,19 +74,19 @@ namespace ACBr.Net
 
 		public void GerarXMLeECFc(string NomeSH, string CaminhoArquivo)
 		{
-			int ret = ACBrDll.EAD_GerarXMLeECFc(this.Handle, NomeSH, CaminhoArquivo);
+			int ret = ACBrEADInterop.EAD_GerarXMLeECFc(this.Handle, NomeSH, CaminhoArquivo);
 			CheckResult(ret);
 		}
 
 		public void GerarXMLeECFc(string NomeSH)
 		{
-			int ret = ACBrDll.EAD_GerarXMLeECFc_NP(this.Handle, NomeSH);
+			int ret = ACBrEADInterop.EAD_GerarXMLeECFc_NP(this.Handle, NomeSH);
 			CheckResult(ret);
 		}
 
 		public void ConverteXMLeECFcParaOpenSSL(string Arquivo)
 		{
-			int ret = ACBrDll.EAD_ConverteXMLeECFcParaOpenSSL(this.Handle, Arquivo);
+			int ret = ACBrEADInterop.EAD_ConverteXMLeECFcParaOpenSSL(this.Handle, Arquivo);
 			CheckResult(ret);
 		}
 
@@ -92,7 +94,7 @@ namespace ACBr.Net
 		{
 			const int BUFFER_LEN = 256;
 			StringBuilder Hash = new StringBuilder(BUFFER_LEN);
-			int ret = ACBrDll.EAD_CalcularHashArquivo(this.Handle, Arquivo, (int)HashType, Hash, BUFFER_LEN);
+			int ret = ACBrEADInterop.EAD_CalcularHashArquivo(this.Handle, Arquivo, (int)HashType, Hash, BUFFER_LEN);
 			CheckResult(ret);
 			return Hash.ToString();
 		}
@@ -101,7 +103,7 @@ namespace ACBr.Net
 		{
 			const int BUFFER_LEN = 256;
 			StringBuilder EAD = new StringBuilder(BUFFER_LEN);
-			int ret = ACBrDll.EAD_CalcularEADArquivo(this.Handle, Arquivo, EAD, BUFFER_LEN);
+			int ret = ACBrEADInterop.EAD_CalcularEADArquivo(this.Handle, Arquivo, EAD, BUFFER_LEN);
 			CheckResult(ret);
 			return EAD.ToString();
 		}
@@ -110,20 +112,20 @@ namespace ACBr.Net
 		{
 			const int BUFFER_LEN = 512;
 			StringBuilder ChavePUB = new StringBuilder(BUFFER_LEN);
-			int ret = ACBrDll.EAD_CalcularChavePublica(this.Handle, ChavePUB, BUFFER_LEN);
+			int ret = ACBrEADInterop.EAD_CalcularChavePublica(this.Handle, ChavePUB, BUFFER_LEN);
 			CheckResult(ret);
 			return ChavePUB.ToString();
 		}
 
 		public void AssinarArquivoComEAD(string Arquivo, bool Remover)
 		{
-			int ret = ACBrDll.EAD_AssinarArquivoComEAD(this.Handle, Arquivo, Remover);
+			int ret = ACBrEADInterop.EAD_AssinarArquivoComEAD(this.Handle, Arquivo, Remover);
 			CheckResult(ret);
 		}
 
 		public bool VerificarEADArquivo(string Arquivo)
 		{
-			int ret = ACBrDll.EAD_VerificarEADArquivo(this.Handle, Arquivo);
+			int ret = ACBrEADInterop.EAD_VerificarEADArquivo(this.Handle, Arquivo);
 			CheckResult(ret);
 
 			return Convert.ToBoolean(ret);
@@ -139,7 +141,7 @@ namespace ACBr.Net
 			{
 				case -1:
 
-					string error = GetString(ACBrDll.EAD_GetUltimoErro);
+					string error = GetString(ACBrEADInterop.EAD_GetUltimoErro);
 					throw new ACBrECFException(error);
 
 				case -2:
@@ -152,7 +154,7 @@ namespace ACBr.Net
 		{
 			if (this.Handle != IntPtr.Zero)
 			{
-				Destroy(ACBrDll.EAD_Destroy);
+				Destroy(ACBrEADInterop.EAD_Destroy);
 			}
 		}
 

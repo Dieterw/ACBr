@@ -19,7 +19,7 @@ namespace ACBr.Net
 
 		public ACBrECF()
 		{
-			Create(ACBrDll.ECF_Create);
+			Create(ACBrECFInterop.ECF_Create);
 		}
 
 		#endregion Constructor
@@ -30,11 +30,11 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return (ModeloECF)GetInt32(ACBrDll.ECF_GetModelo);
+				return (ModeloECF)GetInt32(ACBrECFInterop.ECF_GetModelo);
 			}
 			set
 			{
-				SetInt32(ACBrDll.ECF_SetModelo, (int)value);
+				SetInt32(ACBrECFInterop.ECF_SetModelo, (int)value);
 			}
 		}
 
@@ -42,11 +42,11 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.ECF_GetPorta);
+				return GetString(ACBrECFInterop.ECF_GetPorta);
 			}
 			set
 			{
-				SetString(ACBrDll.ECF_SetPorta, value);
+				SetString(ACBrECFInterop.ECF_SetPorta, value);
 			}
 		}
 
@@ -54,11 +54,11 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetInt32(ACBrDll.ECF_GetBaud);
+				return GetInt32(ACBrECFInterop.ECF_GetBaud);
 			}
 			set
 			{
-				SetInt32(ACBrDll.ECF_SetBaud, value);
+				SetInt32(ACBrECFInterop.ECF_SetBaud, value);
 			}
 		}
 
@@ -66,11 +66,11 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetInt32(ACBrDll.ECF_GetDataBits);
+				return GetInt32(ACBrECFInterop.ECF_GetDataBits);
 			}
 			set
 			{
-				SetInt32(ACBrDll.ECF_SetDataBits, value);
+				SetInt32(ACBrECFInterop.ECF_SetDataBits, value);
 			}
 		}
 
@@ -78,11 +78,11 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return (SerialParity)GetInt32(ACBrDll.ECF_GetParity);
+				return (SerialParity)GetInt32(ACBrECFInterop.ECF_GetParity);
 			}
 			set
 			{
-				SetInt32(ACBrDll.ECF_SetParity, (int)value);
+				SetInt32(ACBrECFInterop.ECF_SetParity, (int)value);
 			}
 		}
 
@@ -90,11 +90,11 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return (SerialStopBits)GetInt32(ACBrDll.ECF_GetStopBits);
+				return (SerialStopBits)GetInt32(ACBrECFInterop.ECF_GetStopBits);
 			}
 			set
 			{
-				SetInt32(ACBrDll.ECF_SetStopBits, (int)value);
+				SetInt32(ACBrECFInterop.ECF_SetStopBits, (int)value);
 			}
 		}
 
@@ -102,11 +102,11 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return (SerialHandShake)GetInt32(ACBrDll.ECF_GetHandShake);
+				return (SerialHandShake)GetInt32(ACBrECFInterop.ECF_GetHandShake);
 			}
 			set
 			{
-				SetInt32(ACBrDll.ECF_SetHandShake, (int)value);
+				SetInt32(ACBrECFInterop.ECF_SetHandShake, (int)value);
 			}
 		}
 
@@ -114,11 +114,11 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetBool(ACBrDll.ECF_GetHardFlow);
+				return GetBool(ACBrECFInterop.ECF_GetHardFlow);
 			}
 			set
 			{
-				SetBool(ACBrDll.ECF_SetHardFlow, value);
+				SetBool(ACBrECFInterop.ECF_SetHardFlow, value);
 			}
 		}
 
@@ -126,11 +126,11 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetBool(ACBrDll.ECF_GetSoftFlow);
+				return GetBool(ACBrECFInterop.ECF_GetSoftFlow);
 			}
 			set
 			{
-				SetBool(ACBrDll.ECF_SetSoftFlow, value);
+				SetBool(ACBrECFInterop.ECF_SetSoftFlow, value);
 			}
 		}
 
@@ -138,11 +138,11 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetInt32(ACBrDll.ECF_GetTimeOut);
+				return GetInt32(ACBrECFInterop.ECF_GetTimeOut);
 			}
 			set
 			{
-				SetInt32(ACBrDll.ECF_SetTimeOut, value);
+				SetInt32(ACBrECFInterop.ECF_SetTimeOut, value);
 			}
 		}
 
@@ -150,7 +150,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetBool(ACBrDll.ECF_GetAtivo);
+				return GetBool(ACBrECFInterop.ECF_GetAtivo);
 			}
 		}
 
@@ -158,7 +158,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetInt32(ACBrDll.ECF_GetColunas);
+				return GetInt32(ACBrECFInterop.ECF_GetColunas);
 			}
 		}
 
@@ -166,7 +166,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetBool(ACBrDll.ECF_GetAguardandoResposta);
+				return GetBool(ACBrECFInterop.ECF_GetAguardandoResposta);
 			}
 		}
 
@@ -174,11 +174,11 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.ECF_GetComandoLOG);
+				return GetString(ACBrECFInterop.ECF_GetComandoLOG);
 			}
 			set
 			{
-				SetString(ACBrDll.ECF_SetComandoLOG, value);
+				SetString(ACBrECFInterop.ECF_SetComandoLOG, value);
 			}
 		}
 
@@ -186,11 +186,11 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetBool(ACBrDll.ECF_GetAguardaImpressao);
+				return GetBool(ACBrECFInterop.ECF_GetAguardaImpressao);
 			}
 			set
 			{
-				SetBool(ACBrDll.ECF_SetAguardaImpressao, value);
+				SetBool(ACBrECFInterop.ECF_SetAguardaImpressao, value);
 			}
 		}
 
@@ -198,7 +198,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.ECF_GetModeloStr);
+				return GetString(ACBrECFInterop.ECF_GetModeloStr);
 			}
 		}
 
@@ -206,7 +206,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.ECF_GetRFDID);
+				return GetString(ACBrECFInterop.ECF_GetRFDID);
 			}
 		}
 
@@ -214,7 +214,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetDateTime(ACBrDll.ECF_GetDataHora);
+				return GetDateTime(ACBrECFInterop.ECF_GetDataHora);
 			}
 		}
 
@@ -222,7 +222,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.ECF_GetNumCupom);
+				return GetString(ACBrECFInterop.ECF_GetNumCupom);
 			}
 		}
 
@@ -230,7 +230,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.ECF_GetNumCOO);
+				return GetString(ACBrECFInterop.ECF_GetNumCOO);
 			}
 		}
 
@@ -238,7 +238,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.ECF_GetNumLoja);
+				return GetString(ACBrECFInterop.ECF_GetNumLoja);
 			}
 		}
 
@@ -246,7 +246,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.ECF_GetNumECF);
+				return GetString(ACBrECFInterop.ECF_GetNumECF);
 			}
 		}
 
@@ -254,7 +254,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.ECF_GetNumSerie);
+				return GetString(ACBrECFInterop.ECF_GetNumSerie);
 			}
 		}
 
@@ -262,7 +262,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.ECF_GetNumVersao);
+				return GetString(ACBrECFInterop.ECF_GetNumVersao);
 			}
 		}
 
@@ -270,7 +270,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetDateTime(ACBrDll.ECF_GetDataMovimento);
+				return GetDateTime(ACBrECFInterop.ECF_GetDataMovimento);
 			}
 		}
 
@@ -278,7 +278,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetDateTime(ACBrDll.ECF_GetDataHoraSB);
+				return GetDateTime(ACBrECFInterop.ECF_GetDataHoraSB);
 			}
 		}
 
@@ -286,7 +286,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.ECF_GetCNPJ);
+				return GetString(ACBrECFInterop.ECF_GetCNPJ);
 			}
 		}
 
@@ -294,7 +294,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.ECF_GetIE);
+				return GetString(ACBrECFInterop.ECF_GetIE);
 			}
 		}
 
@@ -302,7 +302,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.ECF_GetIM);
+				return GetString(ACBrECFInterop.ECF_GetIM);
 			}
 		}
 
@@ -310,7 +310,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.ECF_GetCliche);
+				return GetString(ACBrECFInterop.ECF_GetCliche);
 			}
 		}
 
@@ -318,7 +318,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.ECF_GetUsuarioAtual);
+				return GetString(ACBrECFInterop.ECF_GetUsuarioAtual);
 			}
 		}
 
@@ -326,7 +326,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.ECF_GetSubModeloECF);
+				return GetString(ACBrECFInterop.ECF_GetSubModeloECF);
 			}
 		}
 
@@ -334,7 +334,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.ECF_GetPAF);
+				return GetString(ACBrECFInterop.ECF_GetPAF);
 			}
 		}
 
@@ -342,7 +342,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.ECF_GetNumCRZ);
+				return GetString(ACBrECFInterop.ECF_GetNumCRZ);
 			}
 		}
 
@@ -350,7 +350,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.ECF_GetNumCRO);
+				return GetString(ACBrECFInterop.ECF_GetNumCRO);
 			}
 		}
 
@@ -358,7 +358,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.ECF_GetNumCCF);
+				return GetString(ACBrECFInterop.ECF_GetNumCCF);
 			}
 		}
 
@@ -366,7 +366,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.ECF_GetNumGNF);
+				return GetString(ACBrECFInterop.ECF_GetNumGNF);
 			}
 		}
 
@@ -374,7 +374,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.ECF_GetNumGRG);
+				return GetString(ACBrECFInterop.ECF_GetNumGRG);
 			}
 		}
 
@@ -382,7 +382,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.ECF_GetNumCDC);
+				return GetString(ACBrECFInterop.ECF_GetNumCDC);
 			}
 		}
 
@@ -390,7 +390,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.ECF_GetNumCOOInicial);
+				return GetString(ACBrECFInterop.ECF_GetNumCOOInicial);
 			}
 		}
 
@@ -398,7 +398,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetDecimal(ACBrDll.ECF_GetVendaBruta);
+				return GetDecimal(ACBrECFInterop.ECF_GetVendaBruta);
 			}
 		}
 
@@ -406,7 +406,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetDecimal(ACBrDll.ECF_GetGrandeTotal);
+				return GetDecimal(ACBrECFInterop.ECF_GetGrandeTotal);
 			}
 		}
 
@@ -414,7 +414,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetDecimal(ACBrDll.ECF_GetTotalCancelamentos);
+				return GetDecimal(ACBrECFInterop.ECF_GetTotalCancelamentos);
 			}
 		}
 
@@ -422,7 +422,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetDecimal(ACBrDll.ECF_GetTotalDescontos);
+				return GetDecimal(ACBrECFInterop.ECF_GetTotalDescontos);
 			}
 		}
 
@@ -430,7 +430,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetDecimal(ACBrDll.ECF_GetTotalAcrescimos);
+				return GetDecimal(ACBrECFInterop.ECF_GetTotalAcrescimos);
 			}
 		}
 
@@ -438,7 +438,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetDecimal(ACBrDll.ECF_GetTotalTroco);
+				return GetDecimal(ACBrECFInterop.ECF_GetTotalTroco);
 			}
 		}
 
@@ -446,7 +446,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetDecimal(ACBrDll.ECF_GetTotalSubstituicaoTributaria);
+				return GetDecimal(ACBrECFInterop.ECF_GetTotalSubstituicaoTributaria);
 			}
 		}
 
@@ -454,7 +454,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetDecimal(ACBrDll.ECF_GetTotalNaoTributado);
+				return GetDecimal(ACBrECFInterop.ECF_GetTotalNaoTributado);
 			}
 		}
 
@@ -462,7 +462,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetDecimal(ACBrDll.ECF_GetTotalIsencao);
+				return GetDecimal(ACBrECFInterop.ECF_GetTotalIsencao);
 			}
 		}
 
@@ -470,7 +470,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetDecimal(ACBrDll.ECF_GetTotalCancelamentosISSQN);
+				return GetDecimal(ACBrECFInterop.ECF_GetTotalCancelamentosISSQN);
 			}
 		}
 
@@ -478,7 +478,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetDecimal(ACBrDll.ECF_GetTotalDescontosISSQN);
+				return GetDecimal(ACBrECFInterop.ECF_GetTotalDescontosISSQN);
 			}
 		}
 
@@ -486,7 +486,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetDecimal(ACBrDll.ECF_GetTotalAcrescimosISSQN);
+				return GetDecimal(ACBrECFInterop.ECF_GetTotalAcrescimosISSQN);
 			}
 		}
 
@@ -494,7 +494,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetDecimal(ACBrDll.ECF_GetTotalSubstituicaoTributariaISSQN);
+				return GetDecimal(ACBrECFInterop.ECF_GetTotalSubstituicaoTributariaISSQN);
 			}
 		}
 
@@ -502,7 +502,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetDecimal(ACBrDll.ECF_GetTotalNaoTributadoISSQN);
+				return GetDecimal(ACBrECFInterop.ECF_GetTotalNaoTributadoISSQN);
 			}
 		}
 
@@ -510,7 +510,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetDecimal(ACBrDll.ECF_GetTotalIsencaoISSQN);
+				return GetDecimal(ACBrECFInterop.ECF_GetTotalIsencaoISSQN);
 			}
 		}
 
@@ -518,7 +518,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetDecimal(ACBrDll.ECF_GetTotalNaoFiscal);
+				return GetDecimal(ACBrECFInterop.ECF_GetTotalNaoFiscal);
 			}
 		}
 
@@ -526,7 +526,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetInt32(ACBrDll.ECF_GetNumUltItem);
+				return GetInt32(ACBrECFInterop.ECF_GetNumUltItem);
 			}
 		}
 
@@ -535,7 +535,7 @@ namespace ACBr.Net
 			get
 			{
 				const int DEFAULT_TIMEOUT = 1;
-				int ret = ACBrDll.ECF_GetEmLinha(this.Handle, DEFAULT_TIMEOUT);
+				int ret = ACBrECFInterop.ECF_GetEmLinha(this.Handle, DEFAULT_TIMEOUT);
 				CheckResult(ret);
 
 				return Convert.ToBoolean(ret);
@@ -546,7 +546,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetBool(ACBrDll.ECF_GetPoucoPapel);
+				return GetBool(ACBrECFInterop.ECF_GetPoucoPapel);
 			}
 		}
 
@@ -554,7 +554,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return (EstadoECF)GetInt32(ACBrDll.ECF_GetEstado);
+				return (EstadoECF)GetInt32(ACBrECFInterop.ECF_GetEstado);
 			}
 		}
 
@@ -562,7 +562,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetBool(ACBrDll.ECF_GetHorarioVerao);
+				return GetBool(ACBrECFInterop.ECF_GetHorarioVerao);
 			}
 		}
 
@@ -570,7 +570,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetBool(ACBrDll.ECF_GetArredonda);
+				return GetBool(ACBrECFInterop.ECF_GetArredonda);
 			}
 		}
 
@@ -578,7 +578,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetBool(ACBrDll.ECF_GetTermica);
+				return GetBool(ACBrECFInterop.ECF_GetTermica);
 			}
 		}
 
@@ -586,7 +586,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetBool(ACBrDll.ECF_GetMFD);
+				return GetBool(ACBrECFInterop.ECF_GetMFD);
 			}
 		}
 
@@ -594,7 +594,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetBool(ACBrDll.ECF_GetIdentificaConsumidorRodape);
+				return GetBool(ACBrECFInterop.ECF_GetIdentificaConsumidorRodape);
 			}
 		}
 
@@ -602,7 +602,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetDecimal(ACBrDll.ECF_GetSubTotal);
+				return GetDecimal(ACBrECFInterop.ECF_GetSubTotal);
 			}
 		}
 
@@ -610,7 +610,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetDecimal(ACBrDll.ECF_GetTotalPago);
+				return GetDecimal(ACBrECFInterop.ECF_GetTotalPago);
 			}
 		}
 
@@ -618,7 +618,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetBool(ACBrDll.ECF_GetGavetaAberta);
+				return GetBool(ACBrECFInterop.ECF_GetGavetaAberta);
 			}
 		}
 
@@ -626,7 +626,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetBool(ACBrDll.ECF_GetChequePronto);
+				return GetBool(ACBrECFInterop.ECF_GetChequePronto);
 			}
 		}
 
@@ -634,11 +634,11 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetInt32(ACBrDll.ECF_GetIntervaloAposComando);
+				return GetInt32(ACBrECFInterop.ECF_GetIntervaloAposComando);
 			}
 			set
 			{
-				SetInt32(ACBrDll.ECF_SetIntervaloAposComando, value);
+				SetInt32(ACBrECFInterop.ECF_SetIntervaloAposComando, value);
 			}
 		}
 
@@ -646,11 +646,11 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetBool(ACBrDll.ECF_GetDescricaoGrande);
+				return GetBool(ACBrECFInterop.ECF_GetDescricaoGrande);
 			}
 			set
 			{
-				SetBool(ACBrDll.ECF_SetDescricaoGrande, value);
+				SetBool(ACBrECFInterop.ECF_SetDescricaoGrande, value);
 			}
 		}
 
@@ -658,11 +658,11 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetBool(ACBrDll.ECF_GetGavetaSinalInvertido);
+				return GetBool(ACBrECFInterop.ECF_GetGavetaSinalInvertido);
 			}
 			set
 			{
-				SetBool(ACBrDll.ECF_SetGavetaSinalInvertido, value);
+				SetBool(ACBrECFInterop.ECF_SetGavetaSinalInvertido, value);
 			}
 		}
 
@@ -670,11 +670,11 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.ECF_GetOperador);
+				return GetString(ACBrECFInterop.ECF_GetOperador);
 			}
 			set
 			{
-				SetString(ACBrDll.ECF_SetOperador, value);
+				SetString(ACBrECFInterop.ECF_SetOperador, value);
 			}
 		}
 
@@ -682,11 +682,11 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetInt32(ACBrDll.ECF_GetLinhasEntreCupons);
+				return GetInt32(ACBrECFInterop.ECF_GetLinhasEntreCupons);
 			}
 			set
 			{
-				SetInt32(ACBrDll.ECF_SetLinhasEntreCupons, value);
+				SetInt32(ACBrECFInterop.ECF_SetLinhasEntreCupons, value);
 			}
 		}
 
@@ -694,11 +694,11 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetInt32(ACBrDll.ECF_GetDecimaisPreco);
+				return GetInt32(ACBrECFInterop.ECF_GetDecimaisPreco);
 			}
 			set
 			{
-				SetInt32(ACBrDll.ECF_SetDecimaisPreco, value);
+				SetInt32(ACBrECFInterop.ECF_SetDecimaisPreco, value);
 			}
 		}
 
@@ -706,11 +706,11 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetInt32(ACBrDll.ECF_GetDecimaisQtd);
+				return GetInt32(ACBrECFInterop.ECF_GetDecimaisQtd);
 			}
 			set
 			{
-				SetInt32(ACBrDll.ECF_SetDecimaisQtd, value);
+				SetInt32(ACBrECFInterop.ECF_SetDecimaisQtd, value);
 			}
 		}
 
@@ -746,7 +746,7 @@ namespace ACBr.Net
 			get
 			{
 				const int BUFFER_LEN = 16384;
-				return GetString(ACBrDll.ECF_GetDadosReducaoZ, BUFFER_LEN);
+				return GetString(ACBrECFInterop.ECF_GetDadosReducaoZ, BUFFER_LEN);
 			}
 		}
 
@@ -758,22 +758,23 @@ namespace ACBr.Net
 
 		public void Ativar()
 		{
-			int ret = ACBrDll.ECF_Ativar(this.Handle);
+			int ret = ACBrECFInterop.ECF_Ativar(this.Handle);
 			CheckResult(ret);
 		}
 
 		public void Desativar()
 		{
-			int ret = ACBrDll.ECF_Desativar(this.Handle);
+			int ret = ACBrECFInterop.ECF_Desativar(this.Handle);
 			CheckResult(ret);
 		}
 
 		#endregion Métodos Ativar/Desativar
 
 		#region Métodos ECF
+
 		public Boolean AcharECF(Boolean Modelo, Boolean Porta, int TimeOut)
 		{
-			int ret = ACBrDll.ECF_AcharECF(this.Handle, Modelo, Porta, TimeOut);
+			int ret = ACBrECFInterop.ECF_AcharECF(this.Handle, Modelo, Porta, TimeOut);
 			CheckResult(ret);
 
 			return Convert.ToBoolean(ret);
@@ -781,94 +782,95 @@ namespace ACBr.Net
 
 		public Boolean AcharPorta(int TimeOut)
 		{
-			int ret = ACBrDll.ECF_AcharPorta(this.Handle, TimeOut);
+			int ret = ACBrECFInterop.ECF_AcharPorta(this.Handle, TimeOut);
 			CheckResult(ret);
 
 			return Convert.ToBoolean(ret);
 		}
-		#endregion
+
+		#endregion Métodos ECF
 
 		#region Métodos do Cupom Fiscal
 
 		public void IdentificaConsumidor(string cpfCnpj, string nome, string endereco)
 		{
-			int ret = ACBrDll.ECF_IdentificaConsumidor(this.Handle, ToUTF8(cpfCnpj), ToUTF8(nome), ToUTF8(endereco));
+			int ret = ACBrECFInterop.ECF_IdentificaConsumidor(this.Handle, ToUTF8(cpfCnpj), ToUTF8(nome), ToUTF8(endereco));
 			CheckResult(ret);
 		}
 
 		public void AbreCupom(string cpfCnpj, string nome, string endereco)
 		{
-			int ret = ACBrDll.ECF_AbreCupom(this.Handle, ToUTF8(cpfCnpj), ToUTF8(nome), ToUTF8(endereco));
+			int ret = ACBrECFInterop.ECF_AbreCupom(this.Handle, ToUTF8(cpfCnpj), ToUTF8(nome), ToUTF8(endereco));
 			CheckResult(ret);
 		}
 
 		public void LegendaInmetroProximoItem()
 		{
-			int ret = ACBrDll.ECF_LegendaInmetroProximoItem(this.Handle);
+			int ret = ACBrECFInterop.ECF_LegendaInmetroProximoItem(this.Handle);
 			CheckResult(ret);
 		}
 
 		public void VendeItem(string codigo, string descricao, string aliquotaICMS, decimal qtd, decimal valorUnitario, decimal descontoPorc, string unidade, string tipoDescontoAcrescimo, string descontoAcrescimo)
 		{
-			int ret = ACBrDll.ECF_VendeItem(this.Handle, ToUTF8(codigo), ToUTF8(descricao), ToUTF8(aliquotaICMS), (double)qtd, (double)valorUnitario, (double)descontoPorc, ToUTF8(unidade), ToUTF8(tipoDescontoAcrescimo), ToUTF8(descontoAcrescimo));
+			int ret = ACBrECFInterop.ECF_VendeItem(this.Handle, ToUTF8(codigo), ToUTF8(descricao), ToUTF8(aliquotaICMS), (double)qtd, (double)valorUnitario, (double)descontoPorc, ToUTF8(unidade), ToUTF8(tipoDescontoAcrescimo), ToUTF8(descontoAcrescimo));
 			CheckResult(ret);
 		}
 
 		public void DescontoAcrescimoItemAnterior(decimal valorDesconto, string descontoAcrescimo)
 		{
-			int ret = ACBrDll.ECF_DescontoAcrescimoItemAnterior(this.Handle, (double)valorDesconto, ToUTF8(descontoAcrescimo));
+			int ret = ACBrECFInterop.ECF_DescontoAcrescimoItemAnterior(this.Handle, (double)valorDesconto, ToUTF8(descontoAcrescimo));
 			CheckResult(ret);
 		}
 
 		public void SubtotalizaCupom(decimal descontoAcrescimo, string mensagemRodape)
 		{
-			int ret = ACBrDll.ECF_SubtotalizaCupom(this.Handle, (double)descontoAcrescimo, ToUTF8(mensagemRodape));
+			int ret = ACBrECFInterop.ECF_SubtotalizaCupom(this.Handle, (double)descontoAcrescimo, ToUTF8(mensagemRodape));
 			CheckResult(ret);
 		}
 
 		public void EfetuaPagamento(string codFormaPagto, decimal valor, string observacao, bool imprimeVinculado)
 		{
-			int ret = ACBrDll.ECF_EfetuaPagamento(this.Handle, ToUTF8(codFormaPagto), (double)valor, ToUTF8(observacao), imprimeVinculado);
+			int ret = ACBrECFInterop.ECF_EfetuaPagamento(this.Handle, ToUTF8(codFormaPagto), (double)valor, ToUTF8(observacao), imprimeVinculado);
 			CheckResult(ret);
 		}
 
 		public void EstornaPagamento(string codFormaPagtoEstornar, string codFormaPagtoEfetivar, double valor, string observacao)
 		{
-			int ret = ACBrDll.ECF_EstornaPagamento(this.Handle, ToUTF8(codFormaPagtoEstornar), ToUTF8(codFormaPagtoEfetivar), valor, ToUTF8(observacao));
+			int ret = ACBrECFInterop.ECF_EstornaPagamento(this.Handle, ToUTF8(codFormaPagtoEstornar), ToUTF8(codFormaPagtoEfetivar), valor, ToUTF8(observacao));
 		}
 
 		public void FechaCupom(string observacao)
 		{
-			int ret = ACBrDll.ECF_FechaCupom(this.Handle, ToUTF8(observacao));
+			int ret = ACBrECFInterop.ECF_FechaCupom(this.Handle, ToUTF8(observacao));
 			CheckResult(ret);
 		}
 
 		public void CancelaCupom()
 		{
-			int ret = ACBrDll.ECF_CancelaCupom(this.Handle);
+			int ret = ACBrECFInterop.ECF_CancelaCupom(this.Handle);
 			CheckResult(ret);
 		}
 
 		public void CancelaItemVendido(int numItem)
 		{
-			int ret = ACBrDll.ECF_CancelaItemVendido(this.Handle, numItem);
+			int ret = ACBrECFInterop.ECF_CancelaItemVendido(this.Handle, numItem);
 			CheckResult(ret);
 		}
 
 		public void CancelaItemVendidoParcial(int numItem, decimal quantidade)
 		{
-			int ret = ACBrDll.ECF_CancelaItemVendidoParcial(this.Handle, numItem, (double)quantidade);
+			int ret = ACBrECFInterop.ECF_CancelaItemVendidoParcial(this.Handle, numItem, (double)quantidade);
 			CheckResult(ret);
 		}
 
 		public void CancelaDescontoAcrescimoItem(int numItem)
 		{
-			int ret = ACBrDll.ECF_CancelaDescontoAcrescimoItem(this.Handle, numItem);
+			int ret = ACBrECFInterop.ECF_CancelaDescontoAcrescimoItem(this.Handle, numItem);
 		}
 
 		public void CancelaDescontoAcrescimoSubTotal(string tipoAcrescimoDesconto)
 		{
-			int ret = ACBrDll.ECF_CancelaDescontoAcrescimoSubTotal(this.Handle, tipoAcrescimoDesconto[0]);
+			int ret = ACBrECFInterop.ECF_CancelaDescontoAcrescimoSubTotal(this.Handle, tipoAcrescimoDesconto[0]);
 			CheckResult(ret);
 		}
 
@@ -878,7 +880,7 @@ namespace ACBr.Net
 
 		public void DAV_Abrir(DateTime emissao, string decrdocumento, string numero, string situacao, string vendedor, string observacao, string cpfCnpj, string nome, string endereco)
 		{
-			int ret = ACBrDll.ECF_DAV_Abrir(this.Handle, emissao.ToOADate(), ToUTF8(decrdocumento),
+			int ret = ACBrECFInterop.ECF_DAV_Abrir(this.Handle, emissao.ToOADate(), ToUTF8(decrdocumento),
 				ToUTF8(numero), ToUTF8(situacao), ToUTF8(vendedor), ToUTF8(observacao),
 				ToUTF8(cpfCnpj), ToUTF8(nome), ToUTF8(endereco));
 			CheckResult(ret);
@@ -886,20 +888,20 @@ namespace ACBr.Net
 
 		public void DAV_RegistrarItem(string codigo, string descricao, string unidade, double quantidade, double vlrunitario, double desconto, double acrescimo, bool cancelado)
 		{
-			int ret = ACBrDll.ECF_DAV_RegistrarItem(this.Handle, ToUTF8(codigo), ToUTF8(descricao), ToUTF8(unidade),
+			int ret = ACBrECFInterop.ECF_DAV_RegistrarItem(this.Handle, ToUTF8(codigo), ToUTF8(descricao), ToUTF8(unidade),
 			quantidade, vlrunitario, desconto, acrescimo, cancelado);
 			CheckResult(ret);
 		}
 
 		public void DAV_Fechar(string observacao)
 		{
-			int ret = ACBrDll.ECF_DAV_Fechar(this.Handle, ToUTF8(observacao));
+			int ret = ACBrECFInterop.ECF_DAV_Fechar(this.Handle, ToUTF8(observacao));
 			CheckResult(ret);
 		}
 
 		public void PafMF_RelDAVEmitidos(ACBrECFDAVs[] DAVs, string TituloRelatorio, string IndiceRelatorio)
 		{
-			ACBrDll.DAVsRec[] record = new ACBrDll.DAVsRec[DAVs.Length];
+			ACBrECFInterop.DAVsRec[] record = new ACBrECFInterop.DAVsRec[DAVs.Length];
 			for (int i = 0; i < DAVs.Length; i++)
 			{
 				record[i].Numero = DAVs[i].Numero;
@@ -910,7 +912,7 @@ namespace ACBr.Net
 				record[i].Valor = DAVs[i].Valor;
 			}
 
-			int ret = ACBrDll.ECF_PafMF_RelDAVEmitidos(this.Handle, record, DAVs.Length, ToUTF8(TituloRelatorio), ToUTF8(IndiceRelatorio));
+			int ret = ACBrECFInterop.ECF_PafMF_RelDAVEmitidos(this.Handle, record, DAVs.Length, ToUTF8(TituloRelatorio), ToUTF8(IndiceRelatorio));
 			CheckResult(ret);
 		}
 
@@ -920,7 +922,7 @@ namespace ACBr.Net
 
 		public void PafMF_RelMeiosPagamento(ACBrECFFormaPagamento[] formasPagamento, string TituloRelatorio, int indiceRelatorio)
 		{
-			ACBrDll.FormaPagamentoRec[] record = new ACBrDll.FormaPagamentoRec[formasPagamento.Length];
+			ACBrECFInterop.FormaPagamentoRec[] record = new ACBrECFInterop.FormaPagamentoRec[formasPagamento.Length];
 			for (int i = 0; i < formasPagamento.Length; i++)
 			{
 				record[i].Indice = formasPagamento[i].Indice;
@@ -929,13 +931,13 @@ namespace ACBr.Net
 				record[i].Total = Convert.ToDouble(formasPagamento[i].Total);
 			}
 
-			int ret = ACBrDll.ECF_PafMF_RelMeiosPagamento(this.Handle, record, record.Length, ToUTF8(TituloRelatorio), indiceRelatorio);
+			int ret = ACBrECFInterop.ECF_PafMF_RelMeiosPagamento(this.Handle, record, record.Length, ToUTF8(TituloRelatorio), indiceRelatorio);
 			CheckResult(ret);
 		}
 
 		public void PafMF_RelIdentificacaoPafECF(ACBrECFIdenticacaoPaf identificacaoPAF, int indiceRelatorio)
 		{
-			int ret = ACBrDll.ECF_PafMF_RelIdentificacaoPafECF(this.Handle, identificacaoPAF.Handle, indiceRelatorio);
+			int ret = ACBrECFInterop.ECF_PafMF_RelIdentificacaoPafECF(this.Handle, identificacaoPAF.Handle, indiceRelatorio);
 			CheckResult(ret);
 		}
 
@@ -945,13 +947,13 @@ namespace ACBr.Net
 
 		public void PafMF_GerarCAT52(DateTime DataInicial, DateTime DataFinal, string CaminhoArquivo)
 		{
-			int ret = ACBrDll.ECF_PafMF_GerarCAT52(this.Handle, DataInicial.ToOADate(), DataFinal.ToOADate(), ToUTF8(CaminhoArquivo));
+			int ret = ACBrECFInterop.ECF_PafMF_GerarCAT52(this.Handle, DataInicial.ToOADate(), DataFinal.ToOADate(), ToUTF8(CaminhoArquivo));
 			CheckResult(ret);
 		}
 
 		public void PafMF_LX_Impressao()
 		{
-			int ret = ACBrDll.ECF_PafMF_LX_Impressao(this.Handle);
+			int ret = ACBrECFInterop.ECF_PafMF_LX_Impressao(this.Handle);
 			CheckResult(ret);
 		}
 
@@ -961,37 +963,37 @@ namespace ACBr.Net
 
 		public void PafMF_LMFC_Cotepe1704(DateTime DataInicial, DateTime DataFinal, string CaminhoArquivo)
 		{
-			int ret = ACBrDll.ECF_PafMF_LMFC_Cotepe1704(this.Handle, DataInicial.ToOADate(), DataFinal.ToOADate(), ToUTF8(CaminhoArquivo));
+			int ret = ACBrECFInterop.ECF_PafMF_LMFC_Cotepe1704(this.Handle, DataInicial.ToOADate(), DataFinal.ToOADate(), ToUTF8(CaminhoArquivo));
 			CheckResult(ret);
 		}
 
 		public void PafMF_LMFC_Cotepe1704(int CRZInicial, int CRZFinal, string CaminhoArquivo)
 		{
-			int ret = ACBrDll.ECF_PafMF_LMFC_Cotepe1704_CRZ(this.Handle, CRZInicial, CRZFinal, ToUTF8(CaminhoArquivo));
+			int ret = ACBrECFInterop.ECF_PafMF_LMFC_Cotepe1704_CRZ(this.Handle, CRZInicial, CRZFinal, ToUTF8(CaminhoArquivo));
 			CheckResult(ret);
 		}
 
 		public void PafMF_LMFC_Espelho(DateTime DataInicial, DateTime DataFinal, string CaminhoArquivo)
 		{
-			int ret = ACBrDll.ECF_PafMF_LMFC_Espelho(this.Handle, DataInicial.ToOADate(), DataFinal.ToOADate(), ToUTF8(CaminhoArquivo));
+			int ret = ACBrECFInterop.ECF_PafMF_LMFC_Espelho(this.Handle, DataInicial.ToOADate(), DataFinal.ToOADate(), ToUTF8(CaminhoArquivo));
 			CheckResult(ret);
 		}
 
 		public void PafMF_LMFC_Espelho(int CRZInicial, int CRZFinal, string CaminhoArquivo)
 		{
-			int ret = ACBrDll.ECF_PafMF_LMFC_Espelho_CRZ(this.Handle, CRZInicial, CRZFinal, ToUTF8(CaminhoArquivo));
+			int ret = ACBrECFInterop.ECF_PafMF_LMFC_Espelho_CRZ(this.Handle, CRZInicial, CRZFinal, ToUTF8(CaminhoArquivo));
 			CheckResult(ret);
 		}
 
 		public void PafMF_LMFC_Impressao(DateTime DataInicial, DateTime DataFinal)
 		{
-			int ret = ACBrDll.ECF_PafMF_LMFC_Impressao(this.Handle, DataInicial.ToOADate(), DataFinal.ToOADate());
+			int ret = ACBrECFInterop.ECF_PafMF_LMFC_Impressao(this.Handle, DataInicial.ToOADate(), DataFinal.ToOADate());
 			CheckResult(ret);
 		}
 
 		public void PafMF_LMFC_Impressao(int CRZInicial, int CRZFinal)
 		{
-			int ret = ACBrDll.ECF_PafMF_LMFC_Impressao_CRZ(this.Handle, CRZInicial, CRZFinal);
+			int ret = ACBrECFInterop.ECF_PafMF_LMFC_Impressao_CRZ(this.Handle, CRZInicial, CRZFinal);
 			CheckResult(ret);
 		}
 
@@ -1001,25 +1003,25 @@ namespace ACBr.Net
 
 		public void PafMF_LMFS_Espelho(DateTime DataInicial, DateTime DataFinal, string CaminhoArquivo)
 		{
-			int ret = ACBrDll.ECF_PafMF_LMFS_Espelho(this.Handle, DataInicial.ToOADate(), DataFinal.ToOADate(), ToUTF8(CaminhoArquivo));
+			int ret = ACBrECFInterop.ECF_PafMF_LMFS_Espelho(this.Handle, DataInicial.ToOADate(), DataFinal.ToOADate(), ToUTF8(CaminhoArquivo));
 			CheckResult(ret);
 		}
 
 		public void PafMF_LMFS_Espelho(int CRZInicial, int CRZFinal, string CaminhoArquivo)
 		{
-			int ret = ACBrDll.ECF_PafMF_LMFS_Espelho_CRZ(this.Handle, CRZInicial, CRZFinal, ToUTF8(CaminhoArquivo));
+			int ret = ACBrECFInterop.ECF_PafMF_LMFS_Espelho_CRZ(this.Handle, CRZInicial, CRZFinal, ToUTF8(CaminhoArquivo));
 			CheckResult(ret);
 		}
 
 		public void PafMF_LMFS_Impressao(DateTime DataInicial, DateTime DataFinal)
 		{
-			int ret = ACBrDll.ECF_PafMF_LMFS_Impressao(this.Handle, DataInicial.ToOADate(), DataFinal.ToOADate());
+			int ret = ACBrECFInterop.ECF_PafMF_LMFS_Impressao(this.Handle, DataInicial.ToOADate(), DataFinal.ToOADate());
 			CheckResult(ret);
 		}
 
 		public void PafMF_LMFS_Impressao(int CRZInicial, int CRZFinal)
 		{
-			int ret = ACBrDll.ECF_PafMF_LMFS_Impressao_CRZ(this.Handle, CRZInicial, CRZFinal);
+			int ret = ACBrECFInterop.ECF_PafMF_LMFS_Impressao_CRZ(this.Handle, CRZInicial, CRZFinal);
 			CheckResult(ret);
 		}
 
@@ -1029,13 +1031,13 @@ namespace ACBr.Net
 
 		public void PafMF_MFD_Cotepe1704(DateTime DataInicial, DateTime DataFinal, string CaminhoArquivo)
 		{
-			int ret = ACBrDll.ECF_PafMF_MFD_Cotepe1704(this.Handle, DataInicial.ToOADate(), DataFinal.ToOADate(), ToUTF8(CaminhoArquivo));
+			int ret = ACBrECFInterop.ECF_PafMF_MFD_Cotepe1704(this.Handle, DataInicial.ToOADate(), DataFinal.ToOADate(), ToUTF8(CaminhoArquivo));
 			CheckResult(ret);
 		}
 
 		public void PafMF_MFD_Cotepe1704(int COOInicial, int COOFinal, string CaminhoArquivo)
 		{
-			int ret = ACBrDll.ECF_PafMF_MFD_Cotepe1704_COO(this.Handle, COOInicial, COOFinal, ToUTF8(CaminhoArquivo));
+			int ret = ACBrECFInterop.ECF_PafMF_MFD_Cotepe1704_COO(this.Handle, COOInicial, COOFinal, ToUTF8(CaminhoArquivo));
 			CheckResult(ret);
 		}
 
@@ -1045,13 +1047,13 @@ namespace ACBr.Net
 
 		public void PafMF_MFD_Espelho(DateTime DataInicial, DateTime DataFinal, string CaminhoArquivo)
 		{
-			int ret = ACBrDll.ECF_PafMF_MFD_Espelho(this.Handle, DataInicial.ToOADate(), DataFinal.ToOADate(), ToUTF8(CaminhoArquivo));
+			int ret = ACBrECFInterop.ECF_PafMF_MFD_Espelho(this.Handle, DataInicial.ToOADate(), DataFinal.ToOADate(), ToUTF8(CaminhoArquivo));
 			CheckResult(ret);
 		}
 
 		public void PafMF_MFD_Espelho(int COOInicial, int COOFinal, string CaminhoArquivo)
 		{
-			int ret = ACBrDll.ECF_PafMF_MFD_Espelho_COO(this.Handle, COOInicial, COOFinal, ToUTF8(CaminhoArquivo));
+			int ret = ACBrECFInterop.ECF_PafMF_MFD_Espelho_COO(this.Handle, COOInicial, COOFinal, ToUTF8(CaminhoArquivo));
 			CheckResult(ret);
 		}
 
@@ -1061,25 +1063,25 @@ namespace ACBr.Net
 
 		public void LeituraX()
 		{
-			int ret = ACBrDll.ECF_LeituraX(this.Handle);
+			int ret = ACBrECFInterop.ECF_LeituraX(this.Handle);
 			CheckResult(ret);
 		}
 
 		public void ReducaoZ()
 		{
-			int ret = ACBrDll.ECF_ReducaoZ(this.Handle);
+			int ret = ACBrECFInterop.ECF_ReducaoZ(this.Handle);
 			CheckResult(ret);
 		}
 
 		public void AbreRelatorioGerencial(int indice)
 		{
-			int ret = ACBrDll.ECF_AbreRelatorioGerencial(this.Handle, indice);
+			int ret = ACBrECFInterop.ECF_AbreRelatorioGerencial(this.Handle, indice);
 			CheckResult(ret);
 		}
 
 		public void LinhaRelatorioGerencial(string linha, int indiceBMP)
 		{
-			int ret = ACBrDll.ECF_LinhaRelatorioGerencial(this.Handle, ToUTF8(linha), indiceBMP);
+			int ret = ACBrECFInterop.ECF_LinhaRelatorioGerencial(this.Handle, ToUTF8(linha), indiceBMP);
 			CheckResult(ret);
 		}
 
@@ -1091,37 +1093,37 @@ namespace ACBr.Net
 
 		public void AbreCupomVinculado(string coo, string codFormaPagto, decimal valor)
 		{
-			int ret = ACBrDll.ECF_AbreCupomVinculado(this.Handle, ToUTF8(coo), ToUTF8(codFormaPagto), (double)valor);
+			int ret = ACBrECFInterop.ECF_AbreCupomVinculado(this.Handle, ToUTF8(coo), ToUTF8(codFormaPagto), (double)valor);
 			CheckResult(ret);
 		}
 
 		public void AbreCupomVinculado(string coo, string codFormaPagto, string codComprovanteNaoFiscal, decimal valor)
 		{
-			int ret = ACBrDll.ECF_AbreCupomVinculadoCNF(this.Handle, ToUTF8(coo), ToUTF8(codFormaPagto), ToUTF8(codComprovanteNaoFiscal), (double)valor);
+			int ret = ACBrECFInterop.ECF_AbreCupomVinculadoCNF(this.Handle, ToUTF8(coo), ToUTF8(codFormaPagto), ToUTF8(codComprovanteNaoFiscal), (double)valor);
 			CheckResult(ret);
 		}
 
 		public void LinhaCupomVinculado(string linha)
 		{
-			int ret = ACBrDll.ECF_LinhaCupomVinculado(this.Handle, ToUTF8(linha));
+			int ret = ACBrECFInterop.ECF_LinhaCupomVinculado(this.Handle, ToUTF8(linha));
 			CheckResult(ret);
 		}
 
 		public void FechaRelatorio()
 		{
-			int ret = ACBrDll.ECF_FechaRelatorio(this.Handle);
+			int ret = ACBrECFInterop.ECF_FechaRelatorio(this.Handle);
 			CheckResult(ret);
 		}
 
 		public void PulaLinhas(int numLinhas)
 		{
-			int ret = ACBrDll.ECF_PulaLinhas(this.Handle, numLinhas);
+			int ret = ACBrECFInterop.ECF_PulaLinhas(this.Handle, numLinhas);
 			CheckResult(ret);
 		}
 
 		public void CortaPapel(bool corteParcial)
 		{
-			int ret = ACBrDll.ECF_CortaPapel(this.Handle, corteParcial);
+			int ret = ACBrECFInterop.ECF_CortaPapel(this.Handle, corteParcial);
 			CheckResult(ret);
 		}
 
@@ -1132,7 +1134,7 @@ namespace ACBr.Net
 
 		public void CorrigeEstadoErro(bool reducaoZ)
 		{
-			int ret = ACBrDll.ECF_CorrigeEstadoErro(this.Handle, reducaoZ);
+			int ret = ACBrECFInterop.ECF_CorrigeEstadoErro(this.Handle, reducaoZ);
 			CheckResult(ret);
 		}
 
@@ -1143,7 +1145,7 @@ namespace ACBr.Net
 
 		public void LeituraMemoriaFiscal(int reducaoInicial, int reducaoFinal, bool simplificada)
 		{
-			int ret = ACBrDll.ECF_LeituraMemoriaFiscalReducao(this.Handle, reducaoInicial, reducaoFinal, simplificada);
+			int ret = ACBrECFInterop.ECF_LeituraMemoriaFiscalReducao(this.Handle, reducaoInicial, reducaoFinal, simplificada);
 			CheckResult(ret);
 		}
 
@@ -1154,7 +1156,7 @@ namespace ACBr.Net
 
 		public void LeituraMemoriaFiscal(DateTime dataInicial, DateTime dataFinal, bool simplificada)
 		{
-			int ret = ACBrDll.ECF_LeituraMemoriaFiscalData(this.Handle, dataInicial.ToOADate(), dataFinal.ToOADate(), simplificada);
+			int ret = ACBrECFInterop.ECF_LeituraMemoriaFiscalData(this.Handle, dataInicial.ToOADate(), dataFinal.ToOADate(), simplificada);
 			CheckResult(ret);
 		}
 
@@ -1168,7 +1170,7 @@ namespace ACBr.Net
 			const int LEN = 10 * 1024;
 			StringBuilder buffer = new StringBuilder(LEN);
 
-			int ret = ACBrDll.ECF_LeituraMemoriaFiscalSerialReducao(this.Handle, reducaoInicial, reducaoFinal, simplificada, buffer, LEN);
+			int ret = ACBrECFInterop.ECF_LeituraMemoriaFiscalSerialReducao(this.Handle, reducaoInicial, reducaoFinal, simplificada, buffer, LEN);
 			CheckResult(ret);
 
 			buffer.Length = ret;
@@ -1185,7 +1187,7 @@ namespace ACBr.Net
 			const int LEN = 10 * 1024;
 			StringBuilder buffer = new StringBuilder(LEN);
 
-			int ret = ACBrDll.ECF_LeituraMemoriaFiscalSerialData(this.Handle, dataInicial.ToOADate(), dataFinal.ToOADate(), simplificada, buffer, LEN);
+			int ret = ACBrECFInterop.ECF_LeituraMemoriaFiscalSerialData(this.Handle, dataInicial.ToOADate(), dataFinal.ToOADate(), simplificada, buffer, LEN);
 			CheckResult(ret);
 
 			buffer.Length = ret;
@@ -1199,7 +1201,7 @@ namespace ACBr.Net
 
 		public void LeituraMemoriaFiscalSerial(int reducaoInicial, int reducaoFinal, string nomeArquivo, bool simplificada)
 		{
-			int ret = ACBrDll.ECF_LeituraMemoriaFiscalArquivoReducao(this.Handle, reducaoInicial, reducaoFinal, ToUTF8(nomeArquivo), simplificada);
+			int ret = ACBrECFInterop.ECF_LeituraMemoriaFiscalArquivoReducao(this.Handle, reducaoInicial, reducaoFinal, ToUTF8(nomeArquivo), simplificada);
 			CheckResult(ret);
 		}
 
@@ -1210,26 +1212,26 @@ namespace ACBr.Net
 
 		public void LeituraMemoriaFiscalSerial(DateTime dataInicial, DateTime dataFinal, string nomeArquivo, bool simplificada)
 		{
-			int ret = ACBrDll.ECF_LeituraMemoriaFiscalArquivoData(this.Handle, dataInicial.ToOADate(), dataFinal.ToOADate(), ToUTF8(nomeArquivo), simplificada);
+			int ret = ACBrECFInterop.ECF_LeituraMemoriaFiscalArquivoData(this.Handle, dataInicial.ToOADate(), dataFinal.ToOADate(), ToUTF8(nomeArquivo), simplificada);
 			CheckResult(ret);
 		}
 
 		public string GetDadosUltimaReducaoZ()
 		{
 			const int BUFFER_LEN = 16384;
-			return GetString(ACBrDll.ECF_GetDadosUltimaReducaoZ, BUFFER_LEN);
+			return GetString(ACBrECFInterop.ECF_GetDadosUltimaReducaoZ, BUFFER_LEN);
 		}
 
 		public ACBrECFDadosRZ GetDadosReducaoZClass()
 		{
 			IntPtr ptr;
-			int ret = ACBrDll.ECF_GetDadosReducaoZClass(this.Handle, out ptr);
+			int ret = ACBrECFInterop.ECF_GetDadosReducaoZClass(this.Handle, out ptr);
 			CheckResult(ret);
 
 			try
 			{
 				ACBrECFDadosRZ dadosRZ = new ACBrECFDadosRZ();
-				ACBrDll.DadosRZRec record = (ACBrDll.DadosRZRec)Marshal.PtrToStructure(ptr, typeof(ACBrDll.DadosRZRec));
+				ACBrECFInterop.DadosRZRec record = (ACBrECFInterop.DadosRZRec)Marshal.PtrToStructure(ptr, typeof(ACBrECFInterop.DadosRZRec));
 
 				dadosRZ.COO = record.COO;
 				dadosRZ.CFD = record.CFD;
@@ -1241,8 +1243,8 @@ namespace ACBr.Net
 				dadosRZ.TotalizadoresNaoFiscais = new ACBrECFComprovanteNaoFiscal[record.TotalizadoresNaoFiscaisLen];
 				for (int i = 0; i < record.TotalizadoresNaoFiscaisLen; i++)
 				{
-					IntPtr itemPtr = new IntPtr(record.TotalizadoresNaoFiscais.ToInt32() + (i * Marshal.SizeOf(typeof(ACBrDll.ComprovanteNaoFiscalRec))));
-					ACBrDll.ComprovanteNaoFiscalRec itemRec = (ACBrDll.ComprovanteNaoFiscalRec)Marshal.PtrToStructure(itemPtr, typeof(ACBrDll.ComprovanteNaoFiscalRec));
+					IntPtr itemPtr = new IntPtr(record.TotalizadoresNaoFiscais.ToInt32() + (i * Marshal.SizeOf(typeof(ACBrECFInterop.ComprovanteNaoFiscalRec))));
+					ACBrECFInterop.ComprovanteNaoFiscalRec itemRec = (ACBrECFInterop.ComprovanteNaoFiscalRec)Marshal.PtrToStructure(itemPtr, typeof(ACBrECFInterop.ComprovanteNaoFiscalRec));
 
 					ACBrECFComprovanteNaoFiscal item = new ACBrECFComprovanteNaoFiscal();
 					item.Indice = FromUTF8(itemRec.Indice);
@@ -1258,8 +1260,8 @@ namespace ACBr.Net
 				dadosRZ.ICMS = new ACBrECFAliquota[record.ICMSLen];
 				for (int i = 0; i < record.ICMSLen; i++)
 				{
-					IntPtr itemPtr = new IntPtr(record.ICMS.ToInt32() + (i * Marshal.SizeOf(typeof(ACBrDll.AliquotaRec))));
-					ACBrDll.AliquotaRec itemRec = (ACBrDll.AliquotaRec)Marshal.PtrToStructure(itemPtr, typeof(ACBrDll.AliquotaRec));
+					IntPtr itemPtr = new IntPtr(record.ICMS.ToInt32() + (i * Marshal.SizeOf(typeof(ACBrECFInterop.AliquotaRec))));
+					ACBrECFInterop.AliquotaRec itemRec = (ACBrECFInterop.AliquotaRec)Marshal.PtrToStructure(itemPtr, typeof(ACBrECFInterop.AliquotaRec));
 
 					ACBrECFAliquota item = new ACBrECFAliquota();
 					item.Indice = FromUTF8(itemRec.Indice);
@@ -1278,8 +1280,8 @@ namespace ACBr.Net
 				dadosRZ.RelatorioGerencial = new ACBrECFRelatorioGerencial[record.RelatorioGerencialLen];
 				for (int i = 0; i < record.RelatorioGerencialLen; i++)
 				{
-					IntPtr itemPtr = new IntPtr(record.RelatorioGerencial.ToInt32() + (i * Marshal.SizeOf(typeof(ACBrDll.RelatorioGerencialRec))));
-					ACBrDll.RelatorioGerencialRec itemRec = (ACBrDll.RelatorioGerencialRec)Marshal.PtrToStructure(itemPtr, typeof(ACBrDll.RelatorioGerencialRec));
+					IntPtr itemPtr = new IntPtr(record.RelatorioGerencial.ToInt32() + (i * Marshal.SizeOf(typeof(ACBrECFInterop.RelatorioGerencialRec))));
+					ACBrECFInterop.RelatorioGerencialRec itemRec = (ACBrECFInterop.RelatorioGerencialRec)Marshal.PtrToStructure(itemPtr, typeof(ACBrECFInterop.RelatorioGerencialRec));
 
 					ACBrECFRelatorioGerencial item = new ACBrECFRelatorioGerencial();
 					item.Indice = FromUTF8(itemRec.Indice);
@@ -1294,8 +1296,8 @@ namespace ACBr.Net
 				dadosRZ.ISSQN = new ACBrECFAliquota[record.ISSQNLen];
 				for (int i = 0; i < record.ISSQNLen; i++)
 				{
-					IntPtr itemPtr = new IntPtr(record.ISSQN.ToInt32() + (i * Marshal.SizeOf(typeof(ACBrDll.AliquotaRec))));
-					ACBrDll.AliquotaRec itemRec = (ACBrDll.AliquotaRec)Marshal.PtrToStructure(itemPtr, typeof(ACBrDll.AliquotaRec));
+					IntPtr itemPtr = new IntPtr(record.ISSQN.ToInt32() + (i * Marshal.SizeOf(typeof(ACBrECFInterop.AliquotaRec))));
+					ACBrECFInterop.AliquotaRec itemRec = (ACBrECFInterop.AliquotaRec)Marshal.PtrToStructure(itemPtr, typeof(ACBrECFInterop.AliquotaRec));
 
 					ACBrECFAliquota item = new ACBrECFAliquota();
 					item.Indice = FromUTF8(itemRec.Indice);
@@ -1336,8 +1338,8 @@ namespace ACBr.Net
 				dadosRZ.MeiosDePagamento = new ACBrECFFormaPagamento[record.MeiosDePagamentoLen];
 				for (int i = 0; i < record.MeiosDePagamentoLen; i++)
 				{
-					IntPtr itemPtr = new IntPtr(record.MeiosDePagamento.ToInt32() + (i * Marshal.SizeOf(typeof(ACBrDll.FormaPagamentoRec))));
-					ACBrDll.FormaPagamentoRec itemRec = (ACBrDll.FormaPagamentoRec)Marshal.PtrToStructure(itemPtr, typeof(ACBrDll.FormaPagamentoRec));
+					IntPtr itemPtr = new IntPtr(record.MeiosDePagamento.ToInt32() + (i * Marshal.SizeOf(typeof(ACBrECFInterop.FormaPagamentoRec))));
+					ACBrECFInterop.FormaPagamentoRec itemRec = (ACBrECFInterop.FormaPagamentoRec)Marshal.PtrToStructure(itemPtr, typeof(ACBrECFInterop.FormaPagamentoRec));
 
 					ACBrECFFormaPagamento item = new ACBrECFFormaPagamento();
 					item.Indice = FromUTF8(itemRec.Indice);
@@ -1360,7 +1362,7 @@ namespace ACBr.Net
 			}
 			finally
 			{
-				ret = ACBrDll.ECF_DestroyDadosReducaoZClass(this.Handle, ref ptr);
+				ret = ACBrECFInterop.ECF_DestroyDadosReducaoZClass(this.Handle, ref ptr);
 				CheckResult(ret);
 			}
 		}
@@ -1371,7 +1373,7 @@ namespace ACBr.Net
 
 		public void CarregaAliquotas()
 		{
-			int count = ACBrDll.ECF_CarregaAliquotas(this.Handle);
+			int count = ACBrECFInterop.ECF_CarregaAliquotas(this.Handle);
 			CheckResult(count);
 
 			CarregaAliquotas(count);
@@ -1383,8 +1385,8 @@ namespace ACBr.Net
 
 			for (int i = 0; i < count; i++)
 			{
-				var record = new ACBrDll.AliquotaRec();
-				int ret = ACBrDll.ECF_GetAliquota(this.Handle, ref record, i);
+				var record = new ACBrECFInterop.AliquotaRec();
+				int ret = ACBrECFInterop.ECF_GetAliquota(this.Handle, ref record, i);
 				CheckResult(ret);
 
 				ACBrECFAliquota aliquota = new ACBrECFAliquota();
@@ -1400,7 +1402,7 @@ namespace ACBr.Net
 
 		public void LerTotaisAliquota()
 		{
-			int count = ACBrDll.ECF_LerTotaisAliquota(this.Handle);
+			int count = ACBrECFInterop.ECF_LerTotaisAliquota(this.Handle);
 			CheckResult(count);
 
 			CarregaAliquotas(count);
@@ -1415,7 +1417,7 @@ namespace ACBr.Net
 		{
 			if (string.IsNullOrEmpty(tipo)) throw new ArgumentException();
 
-			int ret = ACBrDll.ECF_ProgramaAliquota(this.Handle, (double)aliquota, tipo[0], posicao);
+			int ret = ACBrECFInterop.ECF_ProgramaAliquota(this.Handle, (double)aliquota, tipo[0], posicao);
 			CheckResult(ret);
 		}
 
@@ -1425,7 +1427,7 @@ namespace ACBr.Net
 
 		public void CarregaFormasPagamento()
 		{
-			int count = ACBrDll.ECF_CarregaFormasPagamento(this.Handle);
+			int count = ACBrECFInterop.ECF_CarregaFormasPagamento(this.Handle);
 			CheckResult(count);
 
 			CarregaFormasPagamento(count);
@@ -1436,8 +1438,8 @@ namespace ACBr.Net
 			formasPagamento = new ACBrECFFormaPagamento[count];
 			for (int i = 0; i < count; i++)
 			{
-				var record = new ACBrDll.FormaPagamentoRec();
-				int ret = ACBrDll.ECF_GetFormaPagamento(this.Handle, ref record, i);
+				var record = new ACBrECFInterop.FormaPagamentoRec();
+				int ret = ACBrECFInterop.ECF_GetFormaPagamento(this.Handle, ref record, i);
 				CheckResult(ret);
 
 				ACBrECFFormaPagamento formaPagamento = new ACBrECFFormaPagamento();
@@ -1452,7 +1454,7 @@ namespace ACBr.Net
 
 		public void LerTotaisFormaPagamento()
 		{
-			int count = ACBrDll.ECF_LerTotaisFormaPagamento(this.Handle);
+			int count = ACBrECFInterop.ECF_LerTotaisFormaPagamento(this.Handle);
 			CheckResult(count);
 
 			CarregaFormasPagamento(count);
@@ -1465,7 +1467,7 @@ namespace ACBr.Net
 
 		public void ProgramaFormaPagamento(string descricao, bool permiteVinculado, string posicao)
 		{
-			int ret = ACBrDll.ECF_ProgramaFormaPagamento(this.Handle, ToUTF8(descricao), permiteVinculado, ToUTF8(posicao));
+			int ret = ACBrECFInterop.ECF_ProgramaFormaPagamento(this.Handle, ToUTF8(descricao), permiteVinculado, ToUTF8(posicao));
 			CheckResult(ret);
 		}
 
@@ -1475,7 +1477,7 @@ namespace ACBr.Net
 
 		public void CarregaComprovantesNaoFiscais()
 		{
-			int count = ACBrDll.ECF_CarregaComprovantesNaoFiscais(this.Handle);
+			int count = ACBrECFInterop.ECF_CarregaComprovantesNaoFiscais(this.Handle);
 			CheckResult(count);
 
 			CarregaComprovantesNaoFiscais(count);
@@ -1486,8 +1488,8 @@ namespace ACBr.Net
 			comprovantesNaoFiscais = new ACBrECFComprovanteNaoFiscal[count];
 			for (int i = 0; i < count; i++)
 			{
-				var record = new ACBrDll.ComprovanteNaoFiscalRec();
-				int ret = ACBrDll.ECF_GetComprovanteNaoFiscal(this.Handle, ref record, i);
+				var record = new ACBrECFInterop.ComprovanteNaoFiscalRec();
+				int ret = ACBrECFInterop.ECF_GetComprovanteNaoFiscal(this.Handle, ref record, i);
 				CheckResult(ret);
 
 				ACBrECFComprovanteNaoFiscal comprovanteNaoFiscal = new ACBrECFComprovanteNaoFiscal();
@@ -1504,7 +1506,7 @@ namespace ACBr.Net
 
 		public void LerTotaisComprovanteNaoFiscal()
 		{
-			int count = ACBrDll.ECF_LerTotaisComprovanteNaoFiscal(this.Handle);
+			int count = ACBrECFInterop.ECF_LerTotaisComprovanteNaoFiscal(this.Handle);
 			CheckResult(count);
 
 			CarregaComprovantesNaoFiscais(count);
@@ -1519,43 +1521,43 @@ namespace ACBr.Net
 		{
 			if (string.IsNullOrEmpty(tipo)) throw new ArgumentException();
 
-			int ret = ACBrDll.ECF_ProgramaComprovanteNaoFiscal(this.Handle, ToUTF8(descricao), ToUTF8(tipo), ToUTF8(posicao));
+			int ret = ACBrECFInterop.ECF_ProgramaComprovanteNaoFiscal(this.Handle, ToUTF8(descricao), ToUTF8(tipo), ToUTF8(posicao));
 			CheckResult(ret);
 		}
 
 		public void AbreNaoFiscal(string cpfCnpj)
 		{
-			int ret = ACBrDll.ECF_AbreNaoFiscal(this.Handle, ToUTF8(cpfCnpj));
+			int ret = ACBrECFInterop.ECF_AbreNaoFiscal(this.Handle, ToUTF8(cpfCnpj));
 			CheckResult(ret);
 		}
 
 		public void RegistraItemNaoFiscal(string codCNF, decimal value, string obs)
 		{
-			int ret = ACBrDll.ECF_RegistraItemNaoFiscal(this.Handle, ToUTF8(codCNF), Convert.ToDouble(value), ToUTF8(obs));
+			int ret = ACBrECFInterop.ECF_RegistraItemNaoFiscal(this.Handle, ToUTF8(codCNF), Convert.ToDouble(value), ToUTF8(obs));
 			CheckResult(ret);
 		}
 
 		public void SubtotalizaNaoFiscal(decimal descontoAcrescimo, string mensagemRodape)
 		{
-			int ret = ACBrDll.ECF_SubtotalizaNaoFiscal(this.Handle, Convert.ToDouble(descontoAcrescimo), ToUTF8(mensagemRodape));
+			int ret = ACBrECFInterop.ECF_SubtotalizaNaoFiscal(this.Handle, Convert.ToDouble(descontoAcrescimo), ToUTF8(mensagemRodape));
 			CheckResult(ret);
 		}
 
 		public void EfetuaPagamentoNaoFiscal(string codFormaPagto, decimal valor, string observacao, bool imprimeVinculado)
 		{
-			int ret = ACBrDll.ECF_EfetuaPagamentoNaoFiscal(this.Handle, codFormaPagto, Convert.ToDouble(valor), observacao, imprimeVinculado);
+			int ret = ACBrECFInterop.ECF_EfetuaPagamentoNaoFiscal(this.Handle, codFormaPagto, Convert.ToDouble(valor), observacao, imprimeVinculado);
 			CheckResult(ret);
 		}
 
 		public void FechaNaoFiscal(string observacao)
 		{
-			int ret = ACBrDll.ECF_FechaNaoFiscal(this.Handle, ToUTF8(observacao));
+			int ret = ACBrECFInterop.ECF_FechaNaoFiscal(this.Handle, ToUTF8(observacao));
 			CheckResult(ret);
 		}
 
 		public void CancelaNaoFiscal()
 		{
-			int ret = ACBrDll.ECF_CancelaNaoFiscal(this.Handle);
+			int ret = ACBrECFInterop.ECF_CancelaNaoFiscal(this.Handle);
 			CheckResult(ret);
 		}
 
@@ -1565,13 +1567,13 @@ namespace ACBr.Net
 
 		public void Suprimento(decimal valor, string obs)
 		{
-			int ret = ACBrDll.ECF_Suprimento(this.Handle, (double)valor, ToUTF8(obs));
+			int ret = ACBrECFInterop.ECF_Suprimento(this.Handle, (double)valor, ToUTF8(obs));
 			CheckResult(ret);
 		}
 
 		public void Sangria(decimal valor, string obs)
 		{
-			int ret = ACBrDll.ECF_Sangria(this.Handle, (double)valor, ToUTF8(obs));
+			int ret = ACBrECFInterop.ECF_Sangria(this.Handle, (double)valor, ToUTF8(obs));
 			CheckResult(ret);
 		}
 
@@ -1581,7 +1583,7 @@ namespace ACBr.Net
 
 		public void AbreGaveta()
 		{
-			int ret = ACBrDll.ECF_AbreGaveta(this.Handle);
+			int ret = ACBrECFInterop.ECF_AbreGaveta(this.Handle);
 			CheckResult(ret);
 		}
 
@@ -1591,7 +1593,7 @@ namespace ACBr.Net
 
 		public void IdentificaPAF(string nomeVersao, string md5)
 		{
-			int ret = ACBrDll.ECF_IdentificaPAF(this.Handle, ToUTF8(nomeVersao), ToUTF8(md5));
+			int ret = ACBrECFInterop.ECF_IdentificaPAF(this.Handle, ToUTF8(nomeVersao), ToUTF8(md5));
 			CheckResult(ret);
 		}
 
@@ -1609,14 +1611,14 @@ namespace ACBr.Net
 			{
 				if (value == null)
 				{
-					int ret = ACBrDll.ECF_SetAAC(this.Handle, IntPtr.Zero);
+					int ret = ACBrECFInterop.ECF_SetAAC(this.Handle, IntPtr.Zero);
 					CheckResult(ret);
 
 					this.aac = null;
 				}
 				else
 				{
-					int ret = ACBrDll.ECF_SetAAC(this.Handle, value.Handle);
+					int ret = ACBrECFInterop.ECF_SetAAC(this.Handle, value.Handle);
 					CheckResult(ret);
 
 					this.aac = value;
@@ -1634,7 +1636,7 @@ namespace ACBr.Net
 			{
 				case -1:
 
-					string error = GetString(ACBrDll.ECF_GetUltimoErro);
+					string error = GetString(ACBrECFInterop.ECF_GetUltimoErro);
 					throw new ACBrECFException(error);
 
 				case -2:
@@ -1647,7 +1649,7 @@ namespace ACBr.Net
 		{
 			if (this.Handle != IntPtr.Zero)
 			{
-				Destroy(ACBrDll.ECF_Destroy);
+				Destroy(ACBrECFInterop.ECF_Destroy);
 			}
 		}
 

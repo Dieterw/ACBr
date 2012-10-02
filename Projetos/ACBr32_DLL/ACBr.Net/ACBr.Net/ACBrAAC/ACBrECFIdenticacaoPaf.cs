@@ -26,11 +26,11 @@
 		{
 			get
 			{
-				return GetString(ACBrDll.AAC_IdentPaf_GetNumeroLaudo);
+				return GetString(ACBrAACInterop.AAC_IdentPaf_GetNumeroLaudo);
 			}
 			set
 			{
-				SetString(ACBrDll.AAC_IdentPaf_SetNumeroLaudo, value);
+				SetString(ACBrAACInterop.AAC_IdentPaf_SetNumeroLaudo, value);
 			}
 		}
 
@@ -38,11 +38,11 @@
 		{
 			get
 			{
-				return GetString(ACBrDll.AAC_IdentPaf_GetVersaoER);
+				return GetString(ACBrAACInterop.AAC_IdentPaf_GetVersaoER);
 			}
 			set
 			{
-				SetString(ACBrDll.AAC_IdentPaf_SetVersaoER, value);
+				SetString(ACBrAACInterop.AAC_IdentPaf_SetVersaoER, value);
 			}
 		}
 

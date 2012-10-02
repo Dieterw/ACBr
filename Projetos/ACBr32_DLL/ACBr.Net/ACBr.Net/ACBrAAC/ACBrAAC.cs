@@ -8,7 +8,7 @@ namespace ACBr.Net
 
 		public ACBrAAC()
 		{
-			Create(ACBrDll.AAC_Create);
+			Create(ACBrAACInterop.AAC_Create);
 			IdentPaf = new ACBrECFIdenticacaoPaf(this);
 		}
 
@@ -20,11 +20,11 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.AAC_GetNomeArquivoAux);
+				return GetString(ACBrAACInterop.AAC_GetNomeArquivoAux);
 			}
 			set
 			{
-				SetString(ACBrDll.AAC_SetNomeArquivoAux, value);
+				SetString(ACBrAACInterop.AAC_SetNomeArquivoAux, value);
 			}
 		}
 
@@ -32,11 +32,11 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.AAC_GetChave);
+				return GetString(ACBrAACInterop.AAC_GetChave);
 			}
 			set
 			{
-				SetString(ACBrDll.AAC_SetChave, value);
+				SetString(ACBrAACInterop.AAC_SetChave, value);
 			}
 		}
 
@@ -44,11 +44,11 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.AAC_GetArqLOG);
+				return GetString(ACBrAACInterop.AAC_GetArqLOG);
 			}
 			set
 			{
-				SetString(ACBrDll.AAC_SetArqLOG, value);
+				SetString(ACBrAACInterop.AAC_SetArqLOG, value);
 			}
 		}
 
@@ -56,11 +56,11 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.AAC_GetParams);
+				return GetString(ACBrAACInterop.AAC_GetParams);
 			}
 			set
 			{
-				SetString(ACBrDll.AAC_SetParams, value);
+				SetString(ACBrAACInterop.AAC_SetParams, value);
 			}
 		}
 
@@ -72,19 +72,19 @@ namespace ACBr.Net
 
 		public void AbrirArquivo()
 		{
-			int ret = ACBrDll.AAC_AbrirArquivo(this.Handle);
+			int ret = ACBrAACInterop.AAC_AbrirArquivo(this.Handle);
 			CheckResult(ret);
 		}
 
 		public void SalvarArquivo()
 		{
-			int ret = ACBrDll.AAC_SalvarArquivo(this.Handle);
+			int ret = ACBrAACInterop.AAC_SalvarArquivo(this.Handle);
 			CheckResult(ret);
 		}
 
 		public int VerificarGrandeTotal(string numSerie, double grandTotal)
 		{
-			int ret = ACBrDll.AAC_VerificarGTECF(this.Handle, numSerie, ref grandTotal);
+			int ret = ACBrAACInterop.AAC_VerificarGTECF(this.Handle, numSerie, ref grandTotal);
 
 			return ret;
 		}
@@ -93,7 +93,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				int ret = ACBrDll.AAC_IdentPaf_ECFsAutorizados_Count(this.Handle);
+				int ret = ACBrAACInterop.AAC_IdentPaf_ECFsAutorizados_Count(this.Handle);
 
 				CheckResult(ret);
 
@@ -108,7 +108,7 @@ namespace ACBr.Net
 			if (this.Handle != IntPtr.Zero)
 			{
 				this.IdentPaf.Dispose();
-				Destroy(ACBrDll.AAC_Destroy);
+				Destroy(ACBrAACInterop.AAC_Destroy);
 			}
 		}
 
@@ -118,7 +118,7 @@ namespace ACBr.Net
 			{
 				case -1:
 
-					string error = GetString(ACBrDll.AAC_GetUltimoErro);
+					string error = GetString(ACBrAACInterop.AAC_GetUltimoErro);
 					throw new ACBrECFException(error);
 
 				case -2:

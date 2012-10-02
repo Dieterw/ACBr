@@ -19,7 +19,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetInt32(ACBrDll.AAC_IdentPaf_ECFsAutorizados_Count);
+				return GetInt32(ACBrAACInterop.AAC_IdentPaf_ECFsAutorizados_Count);
 			}
 		}
 
@@ -38,26 +38,26 @@ namespace ACBr.Net
 
 		public void New(ACBrAACECF aacECF)
 		{
-			ACBrDll.TECFAutorizado item = new ACBrDll.TECFAutorizado();
+			ACBrAACInterop.TECFAutorizado item = new ACBrAACInterop.TECFAutorizado();
 			item.ValorGT = aacECF.ValorGT;
 			item.NumeroSerie = aacECF.NumeroSerie;
 			item.CNI = aacECF.CNI;
 			item.CRO = aacECF.CRO;
 
-			int ret = ACBrDll.AAC_IdentPaf_ECFsAutorizados_New(this.Handle, item);
+			int ret = ACBrAACInterop.AAC_IdentPaf_ECFsAutorizados_New(this.Handle, item);
 			CheckResult(ret);
 		}
 
 		public void Clear()
 		{
-			int ret = ACBrDll.AAC_IdentPaf_ECFsAutorizados_Clear(this.Handle);
+			int ret = ACBrAACInterop.AAC_IdentPaf_ECFsAutorizados_Clear(this.Handle);
 			CheckResult(ret);
 		}
 
 		private ACBrAACECF Get(int index)
 		{
-			ACBrDll.TECFAutorizado item = new ACBrDll.TECFAutorizado();
-			int ret = ACBrDll.AAC_IdentPaf_ECFsAutorizados_Get(this.Handle, ref item, index);
+			ACBrAACInterop.TECFAutorizado item = new ACBrAACInterop.TECFAutorizado();
+			int ret = ACBrAACInterop.AAC_IdentPaf_ECFsAutorizados_Get(this.Handle, ref item, index);
 			CheckResult(ret);
 
 			ACBrAACECF aacECF = new ACBrAACECF();

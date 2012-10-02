@@ -15,7 +15,7 @@ namespace ACBr.Net
 
 		public ACBrPAF()
 		{
-			Create(ACBrDll.PAF_Create);
+			Create(ACBrPAFInterop.PAF_Create);
 		}
 
 		#endregion Constructor
@@ -26,11 +26,11 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.PAF_GetPath);
+				return GetString(ACBrPAFInterop.PAF_GetPath);
 			}
 			set
 			{
-				SetString(ACBrDll.PAF_SetPath, value);
+				SetString(ACBrPAFInterop.PAF_SetPath, value);
 			}
 		}
 
@@ -38,11 +38,11 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.PAF_GetDelimitador);
+				return GetString(ACBrPAFInterop.PAF_GetDelimitador);
 			}
 			set
 			{
-				SetString(ACBrDll.PAF_SetDelimitador, value);
+				SetString(ACBrPAFInterop.PAF_SetDelimitador, value);
 			}
 		}
 
@@ -50,11 +50,11 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.PAF_GetCurMascara);
+				return GetString(ACBrPAFInterop.PAF_GetCurMascara);
 			}
 			set
 			{
-				SetString(ACBrDll.PAF_SetCurMascara, value);
+				SetString(ACBrPAFInterop.PAF_SetCurMascara, value);
 			}
 		}
 
@@ -62,11 +62,11 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetBool(ACBrDll.PAF_GetTrimString);
+				return GetBool(ACBrPAFInterop.PAF_GetTrimString);
 			}
 			set
 			{
-				SetBool(ACBrDll.PAF_SetTrimString, value);
+				SetBool(ACBrPAFInterop.PAF_SetTrimString, value);
 			}
 		}
 
@@ -74,11 +74,11 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetBool(ACBrDll.PAF_GetAssinarArquivo);
+				return GetBool(ACBrPAFInterop.PAF_GetAssinarArquivo);
 			}
 			set
 			{
-				SetBool(ACBrDll.PAF_SetAssinarArquivo, value);
+				SetBool(ACBrPAFInterop.PAF_SetAssinarArquivo, value);
 			}
 		}
 
@@ -86,11 +86,11 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.PAF_GetChaveRSA, 1024);
+				return GetString(ACBrPAFInterop.PAF_GetChaveRSA, 1024);
 			}
 			set
 			{
-				SetString(ACBrDll.PAF_SetChaveRSA, value);
+				SetString(ACBrPAFInterop.PAF_SetChaveRSA, value);
 			}
 		}
 
@@ -104,14 +104,14 @@ namespace ACBr.Net
 			{
 				if (value == null)
 				{
-					int ret = ACBrDll.PAF_SetAAC(this.Handle, IntPtr.Zero);
+					int ret = ACBrPAFInterop.PAF_SetAAC(this.Handle, IntPtr.Zero);
 					CheckResult(ret);
 
 					this.aac = null;
 				}
 				else
 				{
-					int ret = ACBrDll.PAF_SetAAC(this.Handle, value.Handle);
+					int ret = ACBrPAFInterop.PAF_SetAAC(this.Handle, value.Handle);
 					CheckResult(ret);
 
 					this.aac = value;
@@ -129,14 +129,14 @@ namespace ACBr.Net
 			{
 				if (value == null)
 				{
-					int ret = ACBrDll.PAF_SetEAD(this.Handle, IntPtr.Zero);
+					int ret = ACBrPAFInterop.PAF_SetEAD(this.Handle, IntPtr.Zero);
 					CheckResult(ret);
 
 					this.aac = null;
 				}
 				else
 				{
-					int ret = ACBrDll.PAF_SetEAD(this.Handle, value.Handle);
+					int ret = ACBrPAFInterop.PAF_SetEAD(this.Handle, value.Handle);
 					CheckResult(ret);
 
 					this.ead = value;
@@ -152,7 +152,7 @@ namespace ACBr.Net
 
 		public void AssinarArquivoComEAD(string arquivo)
 		{
-			int ret = ACBrDll.PAF_AssinarArquivoComEAD(this.Handle, arquivo);
+			int ret = ACBrPAFInterop.PAF_AssinarArquivoComEAD(this.Handle, arquivo);
 			CheckResult(ret);
 		}
 
@@ -164,8 +164,8 @@ namespace ACBr.Net
 		{
 			int i;
 
-			ACBrDll.RegistroHD1Rec RegistroB1Rec = new ACBrDll.RegistroHD1Rec();
-			ACBrDll.RegistroB2Rec[] RegistroB2Rec = new ACBrDll.RegistroB2Rec[RegistroB2.Length];
+			ACBrPAFInterop.RegistroHD1Rec RegistroB1Rec = new ACBrPAFInterop.RegistroHD1Rec();
+			ACBrPAFInterop.RegistroB2Rec[] RegistroB2Rec = new ACBrPAFInterop.RegistroB2Rec[RegistroB2.Length];
 
 			RegistroB1Rec.RAZAOSOCIAL = ToUTF8(RegistroB1.RazaoSocial);
 			RegistroB1Rec.CNPJ = ToUTF8(RegistroB1.CNPJ);
@@ -189,7 +189,7 @@ namespace ACBr.Net
 				RegistroB2Rec[i].RegistroValido = RegistroB2[i].RegistroValido;
 			}
 
-			int ret = ACBrDll.PAF_SaveFileTXT_B(this.Handle, RegistroB1Rec, RegistroB2Rec, RegistroB2.Length, ToUTF8(arquivo));
+			int ret = ACBrPAFInterop.PAF_SaveFileTXT_B(this.Handle, RegistroB1Rec, RegistroB2Rec, RegistroB2.Length, ToUTF8(arquivo));
 			CheckResult(ret);
 		}
 
@@ -197,8 +197,8 @@ namespace ACBr.Net
 		{
 			int i;
 
-			ACBrDll.RegistroHD1Rec RegistroC1Rec = new ACBrDll.RegistroHD1Rec();
-			ACBrDll.RegistroC2Rec[] RegistroC2Rec = new ACBrDll.RegistroC2Rec[RegistroC2.Length];
+			ACBrPAFInterop.RegistroHD1Rec RegistroC1Rec = new ACBrPAFInterop.RegistroHD1Rec();
+			ACBrPAFInterop.RegistroC2Rec[] RegistroC2Rec = new ACBrPAFInterop.RegistroC2Rec[RegistroC2.Length];
 
 			RegistroC1Rec.RAZAOSOCIAL = ToUTF8(RegistroC1.RazaoSocial);
 			RegistroC1Rec.CNPJ = ToUTF8(RegistroC1.CNPJ);
@@ -226,7 +226,7 @@ namespace ACBr.Net
 				RegistroC2Rec[i].RegistroValido = RegistroC2[i].RegistroValido;
 			}
 
-			int ret = ACBrDll.PAF_SaveFileTXT_C(this.Handle, RegistroC1Rec, RegistroC2Rec, RegistroC2.Length, ToUTF8(arquivo));
+			int ret = ACBrPAFInterop.PAF_SaveFileTXT_C(this.Handle, RegistroC1Rec, RegistroC2Rec, RegistroC2.Length, ToUTF8(arquivo));
 			CheckResult(ret);
 		}
 
@@ -240,9 +240,9 @@ namespace ACBr.Net
 				D3 += D2.RegistroD3.Count;
 			}
 
-			ACBrDll.RegistroHD1Rec RegistroD1Rec = new ACBrDll.RegistroHD1Rec();
-			ACBrDll.RegistroD2Rec[] RegistroD2Rec = new ACBrDll.RegistroD2Rec[RegistroD2.Length];
-			ACBrDll.RegistroD3Rec[] RegistroD3Rec = new ACBrDll.RegistroD3Rec[D3];
+			ACBrPAFInterop.RegistroHD1Rec RegistroD1Rec = new ACBrPAFInterop.RegistroHD1Rec();
+			ACBrPAFInterop.RegistroD2Rec[] RegistroD2Rec = new ACBrPAFInterop.RegistroD2Rec[RegistroD2.Length];
+			ACBrPAFInterop.RegistroD3Rec[] RegistroD3Rec = new ACBrPAFInterop.RegistroD3Rec[D3];
 
 			RegistroD1Rec.RAZAOSOCIAL = ToUTF8(RegistroD1.RazaoSocial);
 			RegistroD1Rec.CNPJ = ToUTF8(RegistroD1.CNPJ);
@@ -291,7 +291,7 @@ namespace ACBr.Net
 				}
 			}
 
-			int ret = ACBrDll.PAF_SaveFileTXT_D(this.Handle, RegistroD1Rec, RegistroD2Rec, RegistroD2.Length, RegistroD3Rec, ToUTF8(arquivo));
+			int ret = ACBrPAFInterop.PAF_SaveFileTXT_D(this.Handle, RegistroD1Rec, RegistroD2Rec, RegistroD2.Length, RegistroD3Rec, ToUTF8(arquivo));
 			CheckResult(ret);
 		}
 
@@ -299,8 +299,8 @@ namespace ACBr.Net
 		{
 			int i;
 
-			ACBrDll.RegistroHD2Rec RegistroE1Rec = new ACBrDll.RegistroHD2Rec();
-			ACBrDll.RegistroE2Rec[] RegistroE2Rec = new ACBrDll.RegistroE2Rec[RegistroE2.Length];
+			ACBrPAFInterop.RegistroHD2Rec RegistroE1Rec = new ACBrPAFInterop.RegistroHD2Rec();
+			ACBrPAFInterop.RegistroE2Rec[] RegistroE2Rec = new ACBrPAFInterop.RegistroE2Rec[RegistroE2.Length];
 
 			RegistroE1Rec.RAZAOSOCIAL = ToUTF8(RegistroE1.RazaoSocial);
 			RegistroE1Rec.CNPJ = ToUTF8(RegistroE1.CNPJ);
@@ -325,7 +325,7 @@ namespace ACBr.Net
 				RegistroE2Rec[i].RegistroValido = RegistroE2[i].RegistroValido;
 			}
 
-			int ret = ACBrDll.PAF_SaveFileTXT_E(this.Handle, RegistroE1Rec, RegistroE2Rec, RegistroE2.Length, ToUTF8(arquivo));
+			int ret = ACBrPAFInterop.PAF_SaveFileTXT_E(this.Handle, RegistroE1Rec, RegistroE2Rec, RegistroE2.Length, ToUTF8(arquivo));
 			CheckResult(ret);
 		}
 
@@ -333,8 +333,8 @@ namespace ACBr.Net
 		{
 			int i;
 
-			ACBrDll.RegistroHD2Rec RegistroH1Rec = new ACBrDll.RegistroHD2Rec();
-			ACBrDll.RegistroH2Rec[] RegistroH2Rec = new ACBrDll.RegistroH2Rec[RegistroH2.Length];
+			ACBrPAFInterop.RegistroHD2Rec RegistroH1Rec = new ACBrPAFInterop.RegistroHD2Rec();
+			ACBrPAFInterop.RegistroH2Rec[] RegistroH2Rec = new ACBrPAFInterop.RegistroH2Rec[RegistroH2.Length];
 
 			RegistroH1Rec.RAZAOSOCIAL = ToUTF8(RegistroH1.RazaoSocial);
 			RegistroH1Rec.CNPJ = ToUTF8(RegistroH1.CNPJ);
@@ -362,7 +362,7 @@ namespace ACBr.Net
 				RegistroH2Rec[i].RegistroValido = RegistroH2[i].RegistroValido;
 			}
 
-			int ret = ACBrDll.PAF_SaveFileTXT_H(this.Handle, RegistroH1Rec, RegistroH2Rec, RegistroH2.Length, ToUTF8(arquivo));
+			int ret = ACBrPAFInterop.PAF_SaveFileTXT_H(this.Handle, RegistroH1Rec, RegistroH2Rec, RegistroH2.Length, ToUTF8(arquivo));
 			CheckResult(ret);
 		}
 
@@ -370,9 +370,9 @@ namespace ACBr.Net
 		{
 			int i;
 
-			ACBrDll.RegistroHD1Rec RegistroN1Rec = new ACBrDll.RegistroHD1Rec();
-			ACBrDll.RegistroN2Rec RegistroN2Rec = new ACBrDll.RegistroN2Rec();
-			ACBrDll.RegistroN3Rec[] RegistroN3Rec = new ACBrDll.RegistroN3Rec[RegistroN3.Length];
+			ACBrPAFInterop.RegistroHD1Rec RegistroN1Rec = new ACBrPAFInterop.RegistroHD1Rec();
+			ACBrPAFInterop.RegistroN2Rec RegistroN2Rec = new ACBrPAFInterop.RegistroN2Rec();
+			ACBrPAFInterop.RegistroN3Rec[] RegistroN3Rec = new ACBrPAFInterop.RegistroN3Rec[RegistroN3.Length];
 
 			RegistroN1Rec.RAZAOSOCIAL = ToUTF8(RegistroN1.RazaoSocial);
 			RegistroN1Rec.CNPJ = ToUTF8(RegistroN1.CNPJ);
@@ -391,7 +391,7 @@ namespace ACBr.Net
 				RegistroN3Rec[i].MD5 = RegistroN3[i].MD5;
 			}
 
-			int ret = ACBrDll.PAF_SaveFileTXT_N(this.Handle, RegistroN1Rec, RegistroN2Rec, RegistroN3Rec, ToUTF8(arquivo));
+			int ret = ACBrPAFInterop.PAF_SaveFileTXT_N(this.Handle, RegistroN1Rec, RegistroN2Rec, RegistroN3Rec, ToUTF8(arquivo));
 			CheckResult(ret);
 		}
 
@@ -399,8 +399,8 @@ namespace ACBr.Net
 		{
 			int i;
 
-			ACBrDll.RegistroHD1Rec RegistroP1Rec = new ACBrDll.RegistroHD1Rec();
-			ACBrDll.RegistroP2Rec[] RegistroP2Rec = new ACBrDll.RegistroP2Rec[RegistroP2.Length];
+			ACBrPAFInterop.RegistroHD1Rec RegistroP1Rec = new ACBrPAFInterop.RegistroHD1Rec();
+			ACBrPAFInterop.RegistroP2Rec[] RegistroP2Rec = new ACBrPAFInterop.RegistroP2Rec[RegistroP2.Length];
 
 			RegistroP1Rec.RAZAOSOCIAL = RegistroP1.RazaoSocial;
 			RegistroP1Rec.CNPJ = RegistroP1.CNPJ;
@@ -421,7 +421,7 @@ namespace ACBr.Net
 				RegistroP2Rec[i].RegistroValido = RegistroP2[i].RegistroValido;
 			}
 
-			int ret = ACBrDll.PAF_SaveFileTXT_P(this.Handle, RegistroP1Rec, RegistroP2Rec, RegistroP2.Length, ToUTF8(arquivo));
+			int ret = ACBrPAFInterop.PAF_SaveFileTXT_P(this.Handle, RegistroP1Rec, RegistroP2Rec, RegistroP2.Length, ToUTF8(arquivo));
 			CheckResult(ret);
 		}
 
@@ -449,13 +449,13 @@ namespace ACBr.Net
 
 			#endregion Contadores
 
-			ACBrDll.RegistroR1Rec RegistroR1Rec = new ACBrDll.RegistroR1Rec();
-			ACBrDll.RegistroR2Rec[] RegistroR2Rec = new ACBrDll.RegistroR2Rec[RegistroR2.Length];
-			ACBrDll.RegistroR3Rec[] RegistroR3Rec = new ACBrDll.RegistroR3Rec[R3];
-			ACBrDll.RegistroR4Rec[] RegistroR4Rec = new ACBrDll.RegistroR4Rec[RegistroR4.Length];
-			ACBrDll.RegistroR5Rec[] RegistroR5Rec = new ACBrDll.RegistroR5Rec[R5];
-			ACBrDll.RegistroR6Rec[] RegistroR6Rec = new ACBrDll.RegistroR6Rec[RegistroR6.Length];
-			ACBrDll.RegistroR7Rec[] RegistroR7Rec = new ACBrDll.RegistroR7Rec[R7];
+			ACBrPAFInterop.RegistroR1Rec RegistroR1Rec = new ACBrPAFInterop.RegistroR1Rec();
+			ACBrPAFInterop.RegistroR2Rec[] RegistroR2Rec = new ACBrPAFInterop.RegistroR2Rec[RegistroR2.Length];
+			ACBrPAFInterop.RegistroR3Rec[] RegistroR3Rec = new ACBrPAFInterop.RegistroR3Rec[R3];
+			ACBrPAFInterop.RegistroR4Rec[] RegistroR4Rec = new ACBrPAFInterop.RegistroR4Rec[RegistroR4.Length];
+			ACBrPAFInterop.RegistroR5Rec[] RegistroR5Rec = new ACBrPAFInterop.RegistroR5Rec[R5];
+			ACBrPAFInterop.RegistroR6Rec[] RegistroR6Rec = new ACBrPAFInterop.RegistroR6Rec[RegistroR6.Length];
+			ACBrPAFInterop.RegistroR7Rec[] RegistroR7Rec = new ACBrPAFInterop.RegistroR7Rec[R7];
 
 			RegistroR1Rec.NUM_FAB = RegistroR1.NUM_FAB;
 			RegistroR1Rec.MF_ADICIONAL = RegistroR1.MF_ADICIONAL;
@@ -591,7 +591,7 @@ namespace ACBr.Net
 				}
 			}
 
-			int ret = ACBrDll.PAF_SaveFileTXT_R(this.Handle, RegistroR1Rec, RegistroR2Rec, RegistroR2.Length, RegistroR3Rec, RegistroR4Rec, RegistroR4.Length, RegistroR5Rec, RegistroR6Rec, RegistroR6.Length, RegistroR7Rec, ToUTF8(arquivo));
+			int ret = ACBrPAFInterop.PAF_SaveFileTXT_R(this.Handle, RegistroR1Rec, RegistroR2Rec, RegistroR2.Length, RegistroR3Rec, RegistroR4Rec, RegistroR4.Length, RegistroR5Rec, RegistroR6Rec, RegistroR6.Length, RegistroR7Rec, ToUTF8(arquivo));
 			CheckResult(ret);
 		}
 
@@ -605,7 +605,7 @@ namespace ACBr.Net
 			{
 				case -1:
 
-					string error = GetString(ACBrDll.PAF_GetUltimoErro);
+					string error = GetString(ACBrPAFInterop.PAF_GetUltimoErro);
 					throw new ACBrECFException(error);
 
 				case -2:
@@ -618,7 +618,7 @@ namespace ACBr.Net
 		{
 			if (this.Handle != IntPtr.Zero)
 			{
-				Destroy(ACBrDll.PAF_Destroy);
+				Destroy(ACBrPAFInterop.PAF_Destroy);
 			}
 		}
 

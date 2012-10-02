@@ -5,14 +5,15 @@ namespace ACBr.Net
 	public class ACBrSintegra : ACBrComponent, IDisposable
 	{
 		#region Fields
+
 		#endregion Fields
 
 		#region Constructor
 
 		public ACBrSintegra()
 		{
-			Create(ACBrDll.SIN_Create);
-		}		
+			Create(ACBrSintegraInterop.SIN_Create);
+		}
 
 		#endregion Constructor
 
@@ -22,11 +23,11 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.SIN_GetFileName);
+				return GetString(ACBrSintegraInterop.SIN_GetFileName);
 			}
 			set
 			{
-				SetString(ACBrDll.SIN_SetFileName, value);
+				SetString(ACBrSintegraInterop.SIN_SetFileName, value);
 			}
 		}
 
@@ -34,11 +35,11 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return (VersaoValidador)GetInt32(ACBrDll.SIN_GetVersaoValidador);
+				return (VersaoValidador)GetInt32(ACBrSintegraInterop.SIN_GetVersaoValidador);
 			}
 			set
 			{
-				SetInt32(ACBrDll.SIN_SetVersaoValidador, (int)value);
+				SetInt32(ACBrSintegraInterop.SIN_SetVersaoValidador, (int)value);
 			}
 		}
 
@@ -46,7 +47,7 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetBool(ACBrDll.SIN_GetAtivo);
+				return GetBool(ACBrSintegraInterop.SIN_GetAtivo);
 			}
 		}
 
@@ -62,7 +63,7 @@ namespace ACBr.Net
 			{
 				case -1:
 
-					string error = GetString(ACBrDll.SIN_GetUltimoErro);
+					string error = GetString(ACBrSintegraInterop.SIN_GetUltimoErro);
 					throw new ACBrECFException(error);
 
 				case -2:
@@ -75,7 +76,7 @@ namespace ACBr.Net
 		{
 			if (this.Handle != IntPtr.Zero)
 			{
-				Destroy(ACBrDll.SIN_Destroy);
+				Destroy(ACBrSintegraInterop.SIN_Destroy);
 			}
 		}
 

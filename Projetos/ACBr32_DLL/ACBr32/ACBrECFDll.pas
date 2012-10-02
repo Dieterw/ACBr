@@ -4877,7 +4877,7 @@ end;
 end;
 
 
-Function PafMF_RelIdentificacaoPafECF(const ecfHandle: PECFHandle; const aacHandle : PAACHandle; const indiceRelatorio : Integer) : Integer ;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+Function ECF_PafMF_RelIdentificacaoPafECF(const ecfHandle: PECFHandle; const aacHandle : PAACHandle; const indiceRelatorio : Integer) : Integer ;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
 begin
 if (ecfHandle = nil) then
 begin
@@ -5204,7 +5204,7 @@ ECF_PafMF_RelDAVEmitidos,
 
 {Paf Rels}
 ECF_PafMF_RelMeiosPagamento,
-PafMF_RelIdentificacaoPafECF;
+ECF_PafMF_RelIdentificacaoPafECF;
 
 {Não implementado}
 

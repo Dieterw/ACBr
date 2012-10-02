@@ -2,12 +2,12 @@
 {
 	public sealed class ACBrECFFormaPagamento
 	{
-		public string Indice { get; internal set; }
+		public string Indice { get; set; }
 
-		public string Descricao { get; internal set; }
+		public string Descricao { get; set; }
 
-		public bool PermiteVinculado { get; internal set; }
+		public bool PermiteVinculado { get; set; }
 
-		public decimal Total { get; internal set; }
+		public decimal Total { get; set; }
 	}
 }

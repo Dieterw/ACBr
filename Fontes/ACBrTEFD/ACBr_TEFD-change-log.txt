@@ -47,6 +47,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data:  02/10/2012 - 4.1.6  (por: DSA)
+[-] Correção no preenchimento de parcelas com valores inválidos, quando o G.P.
+    não as informa.   (por: DSA)
+
 Data:  19/09/2012 - 4.1.5  (por: DSA)
 -- ACBrTEFD --
 [-] Correção no algorítimo de ordenação do método: AgruparRespostasPendentes

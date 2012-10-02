@@ -55,7 +55,7 @@ uses
   {$ENDIF} ;
 
 const
-   CACBrTEFD_Versao      = '4.1.5' ;
+   CACBrTEFD_Versao      = '4.1.6' ;
    CACBrTEFD_EsperaSTS   = 7 ;
    CACBrTEFD_EsperaSleep = 250 ;
    CACBrTEFD_NumVias     = 2 ;
@@ -1246,7 +1246,7 @@ var
    Linha : TACBrTEFDLinha ;
    I     : Integer;
    Parc  : TACBrTEFDRespParcela;
-   TemReduzido : Boolean ;
+   TemReduzido, TemParcelas : Boolean ;
 
    function AjustaLinhaImagemComprovante( Linha: AnsiString ) : AnsiString;
    begin
@@ -1263,6 +1263,7 @@ begin
    fpImagemComprovante1aVia.Clear;
    fpImagemComprovante2aVia.Clear;
    TemReduzido := False;
+   TemParcelas := False;
 
    for I := 0 to Conteudo.Count - 1 do
    begin
@@ -1297,6 +1298,7 @@ begin
            end;
          end;
        18  : fpQtdParcelas                := Linha.Informacao.AsInteger;
+       19  : TemParcelas := True ;
        22  : fpDataHoraTransacaoComprovante := fpDataHoraTransacaoComprovante +
                                                Linha.Informacao.AsDate;
        23  : fpDataHoraTransacaoComprovante := fpDataHoraTransacaoComprovante +
@@ -1369,14 +1371,17 @@ begin
       fpImagemComprovante2aVia.AddStrings( fpImagemComprovante1aVia );
 
    fpParcelas.Clear;
-   for I := 1 to fpQtdParcelas do
+   if TemParcelas then
    begin
-      Parc := TACBrTEFDRespParcela.create;
-      Parc.Vencimento := LeInformacao( 19 , I).AsDate ;
-      Parc.Valor      := LeInformacao( 20 , I).AsFloat ;
-      Parc.NSUParcela := LeInformacao( 21 , I).AsString ;
+      for I := 1 to fpQtdParcelas do
+      begin
+         Parc := TACBrTEFDRespParcela.create;
+         Parc.Vencimento := LeInformacao( 19 , I).AsDate ;
+         Parc.Valor      := LeInformacao( 20 , I).AsFloat ;
+         Parc.NSUParcela := LeInformacao( 21 , I).AsString ;
 
-      fpParcelas.Add(Parc);
+         fpParcelas.Add(Parc);
+      end;
    end;
 
    // Tipo da transação se foi Crédito ou Débito

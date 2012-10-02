@@ -273,12 +273,15 @@ var
    Parc  : TACBrTEFDRespParcela;
    LinStr: AnsiString ;
    wTipoOperacao: Integer;
+   TemParcelas : Boolean ;
 begin
    fpValorTotal := 0 ;
    fpImagemComprovante1aVia.Clear;
    fpImagemComprovante2aVia.Clear;
-   fpDebito  := False;
-   fpCredito := False;
+   fpDebito    := False;
+   fpCredito   := False;
+   TemParcelas := False;
+
    for I := 0 to Conteudo.Count - 1 do
    begin
      Linha  := Conteudo.Linha[I];
@@ -331,6 +334,7 @@ begin
        {Entrada CDC}
        139 : fpValorEntradaCDC:= Linha.Informacao.AsFloat;
        140 : fpDataEntradaCDC := Linha.Informacao.AsDate;
+       141 : TemParcelas := True;
 
        156 : fpRede                        := LinStr;
        501 : fpTipoPessoa                  := AnsiChar(IfThen(Linha.Informacao.AsInteger = 0,'J','F')[1]);
@@ -379,13 +383,16 @@ begin
    fpQtdLinhasComprovante := fpImagemComprovante1aVia.Count;
 
    fpParcelas.Clear;
-   for I := 1 to fpQtdParcelas do
+   if TemParcelas then
    begin
-      Parc := TACBrTEFDRespParcela.create;
-      Parc.Vencimento := LeInformacao( 141, I).AsDate ;
-      Parc.Valor      := LeInformacao( 142, I).AsFloat ;
+      for I := 1 to fpQtdParcelas do
+      begin
+         Parc := TACBrTEFDRespParcela.create;
+         Parc.Vencimento := LeInformacao( 141, I).AsDate ;
+         Parc.Valor      := LeInformacao( 142, I).AsFloat ;
 
-      fpParcelas.Add(Parc);
+         fpParcelas.Add(Parc);
+      end;
    end;
 end;
 

@@ -1,0 +1,19 @@
+﻿==============================
+====    ACBrDefExporter  =====
+==============================
+
+Objetivos: Exportar as Definições de funções e tipos expostos pela DLL nativa em várias linguagens de programação.
+
+Motivação: Atualmente, o ACBr.NET contém todas as implementações de funções e tipos da DLL Nativa.
+Isso causa uma grande defasagem de recursos implementados entre o ACBr.Net e outras implementações como o jACBr e o ACBrActiveX.
+
+Um dos maiores problemas é manter as definições sempre atualizadas em todos os projetos, uma vez que uma nova função implementada
+na DLL nativa não é imediatamente implementada nos demais projetos.
+
+Solução: Este aplicativo é capaz de analisar os tipos que contém as funções de interoperabilidade implementadas em .NET 
+e gerar um arquivo contendo o código fonte das declarações nas seguintes linguagens: C/C++, VB6 e xBase (Clipper, FoxPro e Harbour)
+
+Ganhos: Será possível atualizar automaticamente os arquivos de definição de outras linguagens 
+toda vez que novas funções forem adicionadas à DLL nativa e ao ACBr.Net
+
+ 

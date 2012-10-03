@@ -93,9 +93,32 @@ type
   CTeUtil = class
   private
     // Estados Emissores pela Sefaz Virtual RS (Rio Grande do Sul):
-    // AC, AL, AP, AM, BA, CE, DF, ES, GO, MA, PA, PB, PR, PE, PI, RJ, RN,
+    // AC, AL, AP, AM, BA, CE, DF, ES, GO, MA, PA, PB, PE, PI, RJ, RN,
     // RO, RR, SC, SE, TO.
     class function GetURLSVRS(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+
+    // Incluido por Italo em 03/10/2012
+    class function GetURLAC(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+    class function GetURLAL(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+    class function GetURLAP(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+    class function GetURLAM(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+    class function GetURLBA(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+    class function GetURLCE(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+    class function GetURLDF(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+    class function GetURLES(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+    class function GetURLGO(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+    class function GetURLMA(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+    class function GetURLPA(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+    class function GetURLPB(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+    class function GetURLPE(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+    class function GetURLPI(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+    class function GetURLRJ(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+    class function GetURLRN(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+    class function GetURLRO(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+    class function GetURLRR(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+    class function GetURLSC(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+    class function GetURLSE(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+    class function GetURLTO(AAmbiente: Integer; ALayOut: TLayOut): WideString;
 
     class function GetURLMG(AAmbiente: Integer; ALayOut: TLayOut): WideString;
     class function GetURLRS(AAmbiente: Integer; ALayOut: TLayOut): WideString;
@@ -256,47 +279,49 @@ begin
              end;
              }
              case AUF of
-              12: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //AC - Acre
-              27: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //AL - Alagoas
-              16: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //AP - Amapá
-              13: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //AM - Amazonas
-              29: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //BA - Bahia
-              23: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //CE - Ceará
-              53: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //DF - Distrito Federal
-              32: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //ES - Espirito Santo
-              52: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //GO - Goiás
-              21: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //MA - Maranhão
+              // Alterados por Italo em 03/10/2012
+              12: Result := CTeUtil.GetURLAC(AAmbiente, ALayOut);               //AC - Acre
+              27: Result := CTeUtil.GetURLAL(AAmbiente, ALayOut);               //AL - Alagoas
+              16: Result := CTeUtil.GetURLAP(AAmbiente, ALayOut);               //AP - Amapá
+              13: Result := CTeUtil.GetURLAM(AAmbiente, ALayOut);               //AM - Amazonas
+              29: Result := CTeUtil.GetURLBA(AAmbiente, ALayOut);               //BA - Bahia
+              23: Result := CTeUtil.GetURLCE(AAmbiente, ALayOut);               //CE - Ceará
+              53: Result := CTeUtil.GetURLDF(AAmbiente, ALayOut);               //DF - Distrito Federal
+              32: Result := CTeUtil.GetURLES(AAmbiente, ALayOut);               //ES - Espirito Santo
+              52: Result := CTeUtil.GetURLGO(AAmbiente, ALayOut);               //GO - Goiás
+              21: Result := CTeUtil.GetURLMA(AAmbiente, ALayOut);               //MA - Maranhão
 
               51: Result := CTeUtil.GetURLMT(AAmbiente, ALayOut);               //MT - Mato Grosso
                   // Só Homologacao
               50: Result := CTeUtil.GetURLMS(AAmbiente, ALayOut);               //MS - Mato Grosso do Sul
               31: Result := CTeUtil.GetURLMG(AAmbiente, ALayOut);               //MG - Minas Gerais
-
-              15: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //PA - Pará
-              25: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //PB - Paraibá
-              41: Result := CTeUtil.GetURLPR(AAmbiente, ALayOut);             //PR - Paraná
+              // Alterados por Italo em 03/10/2012
+              15: Result := CTeUtil.GetURLPA(AAmbiente, ALayOut);               //PA - Pará
+              25: Result := CTeUtil.GetURLPB(AAmbiente, ALayOut);               //PB - Paraibá
+              41: Result := CTeUtil.GetURLPR(AAmbiente, ALayOut);               //PR - Paraná
 //              41: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //PR - Paraná
 
               // Alterado por Italo em 07/03/2012
               // conforme informações postadas no fórum por
               // Eliton.net e jek
-              26: Result := CTeUtil.GetURLSP(AAmbiente, ALayOut);               //PE - Pernambuco
+              26: Result := CTeUtil.GetURLPE(AAmbiente, ALayOut);               //PE - Pernambuco
 //              26: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //PE - Pernambuco
 
-              22: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //PI - Piauí
-              33: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //RJ - Rio de Janeiro
-              24: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //RN - Rio Grande do Norte
+              // Alterados por Italo em 03/10/2012
+              22: Result := CTeUtil.GetURLPI(AAmbiente, ALayOut);               //PI - Piauí
+              33: Result := CTeUtil.GetURLRJ(AAmbiente, ALayOut);               //RJ - Rio de Janeiro
+              24: Result := CTeUtil.GetURLRN(AAmbiente, ALayOut);               //RN - Rio Grande do Norte
 
               43: Result := CTeUtil.GetURLRS(AAmbiente, ALayOut);               //RS - Rio Grande do Sul
-
-              11: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //RO - Rondônia
-              14: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //RR - Roraima
-              42: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //SC - Santa Catarina
+              // Alterados por Italo em 03/10/2012
+              11: Result := CTeUtil.GetURLRO(AAmbiente, ALayOut);               //RO - Rondônia
+              14: Result := CTeUtil.GetURLRR(AAmbiente, ALayOut);               //RR - Roraima
+              42: Result := CTeUtil.GetURLSC(AAmbiente, ALayOut);               //SC - Santa Catarina
 
               35: Result := CTeUtil.GetURLSP(AAmbiente, ALayOut);               //SP - São Paulo
-
-              28: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //SE - Sergipe
-              17: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //TO - Tocantins
+              // Alterados por Italo em 03/10/2012
+              28: Result := CTeUtil.GetURLSE(AAmbiente, ALayOut);               //SE - Sergipe
+              17: Result := CTeUtil.GetURLTO(AAmbiente, ALayOut);               //TO - Tocantins
              end;
             end;
         3 : begin
@@ -345,9 +370,202 @@ begin
     LayCTeInutilizacao:  Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.rs.gov.br/ws/cteinutilizacao/cteinutilizacao.asmx'  , 'https://homologacao.cte.sefaz.rs.gov.br/ws/cteinutilizacao/cteinutilizacao.asmx');
     LayCTeConsultaCT:    Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.rs.gov.br/ws/cteconsulta/cteconsulta.asmx'          , 'https://homologacao.cte.sefaz.rs.gov.br/ws/cteconsulta/cteconsulta.asmx');
     LayCTeStatusServico: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.rs.gov.br/ws/ctestatusservico/ctestatusservico.asmx', 'https://homologacao.cte.sefaz.rs.gov.br/ws/ctestatusservico/ctestatusservico.asmx');
-//    LayCTeCadastro: Result      := CTeUtil.SeSenao(AAmbiente = 1, 'https://sef.sefaz.rs.gov.br/ws/CadConsultaCadastro/CadConsultaCadastro.asmx', 'https://sef.sefaz.rs.gov.br/ws/CadConsultaCadastro/CadConsultaCadastro.asmx');
+    LayCTeCadastro:      Result := CTeUtil.SeSenao(AAmbiente = 1, '', '');
   end;
 end;
+
+// Incluido por Italo em 03/10/2012
+class function CTeUtil.GetURLAC(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+begin
+  case ALayOut of
+   LayCTeCadastro: Result := CTeUtil.SeSenao(AAmbiente = 1, '', '');
+   else Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);
+  end;
+end;
+
+// Incluido por Italo em 03/10/2012
+class function CTeUtil.GetURLAL(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+begin
+  case ALayOut of
+   LayCTeCadastro: Result := CTeUtil.SeSenao(AAmbiente = 1, '', '');
+   else Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);
+  end;
+end;
+
+// Incluido por Italo em 03/10/2012
+class function CTeUtil.GetURLAP(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+begin
+  case ALayOut of
+   LayCTeCadastro: Result := CTeUtil.SeSenao(AAmbiente = 1, '', '');
+   else Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);
+  end;
+end;
+
+// Incluido por Italo em 03/10/2012
+class function CTeUtil.GetURLAM(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+begin
+  case ALayOut of
+   LayCTeCadastro: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.sefaz.am.gov.br/services2/services/cadconsultacadastro2', 'https://homnfe.sefaz.am.gov.br/services2/services/cadconsultacadastro2');
+   else Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);
+  end;
+end;
+
+// Incluido por Italo em 03/10/2012
+class function CTeUtil.GetURLBA(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+begin
+  case ALayOut of
+   LayCTeCadastro: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.sefaz.ba.gov.br/webservices/nfenw/CadConsultaCadastro2.asmx', 'https://hnfe.sefaz.ba.gov.br/webservices/nfenw/CadConsultaCadastro2.asmx');
+   else Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);
+  end;
+end;
+
+// Incluido por Italo em 03/10/2012
+class function CTeUtil.GetURLCE(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+begin
+  case ALayOut of
+   LayCTeCadastro: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.sefaz.ce.gov.br/nfe2/services/CadConsultaCadastro2', 'https://nfeh.sefaz.ce.gov.br/nfe2/services/CadConsultaCadastro2');
+   else Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);
+  end;
+end;
+
+// Incluido por Italo em 03/10/2012
+class function CTeUtil.GetURLDF(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+begin
+  case ALayOut of
+   LayCTeCadastro: Result := CTeUtil.SeSenao(AAmbiente = 1, '', '');
+   else Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);
+  end;
+end;
+
+// Incluido por Italo em 03/10/2012
+class function CTeUtil.GetURLES(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+begin
+  case ALayOut of
+   LayCTeCadastro: Result := CTeUtil.SeSenao(AAmbiente = 1, '', '');
+   else Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);
+  end;
+end;
+
+// Incluido por Italo em 03/10/2012
+class function CTeUtil.GetURLGO(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+begin
+  case ALayOut of
+   LayCTeCadastro: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.sefaz.go.gov.br/nfe/services/v2/CadConsultaCadastro2', 'https://homolog.sefaz.go.gov.br/nfe/services/v2/CadConsultaCadastro2');
+   else Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);
+  end;
+end;
+
+// Incluido por Italo em 03/10/2012
+class function CTeUtil.GetURLMA(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+begin
+  case ALayOut of
+   LayCTeCadastro: Result := CTeUtil.SeSenao(AAmbiente = 1, '', '');
+   else Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);
+  end;
+end;
+
+// Incluido por Italo em 03/10/2012
+class function CTeUtil.GetURLPA(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+begin
+  case ALayOut of
+   LayCTeCadastro: Result := CTeUtil.SeSenao(AAmbiente = 1, '', '');
+   else Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);
+  end;
+end;
+
+// Incluido por Italo em 03/10/2012
+class function CTeUtil.GetURLPB(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+begin
+  case ALayOut of
+   LayCTeCadastro: Result := CTeUtil.SeSenao(AAmbiente = 1, '', '');
+   else Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);
+  end;
+end;
+
+// Incluido por Italo em 03/10/2012
+class function CTeUtil.GetURLPE(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+begin
+  Result := CTeUtil.GetURLSP(AAmbiente, ALayOut);
+  {
+  case ALayOut of
+   LayCTeCadastro: Result := CTeUtil.SeSenao(AAmbiente = 1, '', '');
+   else Result := CTeUtil.GetURLSP(AAmbiente, ALayOut);
+  end;
+  }
+end;
+
+// Incluido por Italo em 03/10/2012
+class function CTeUtil.GetURLPI(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+begin
+  case ALayOut of
+   LayCTeCadastro: Result := CTeUtil.SeSenao(AAmbiente = 1, '', '');
+   else Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);
+  end;
+end;
+
+// Incluido por Italo em 03/10/2012
+class function CTeUtil.GetURLRJ(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+begin
+  case ALayOut of
+   LayCTeCadastro: Result := CTeUtil.SeSenao(AAmbiente = 1, '', '');
+   else Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);
+  end;
+end;
+
+// Incluido por Italo em 03/10/2012
+class function CTeUtil.GetURLRN(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+begin
+  case ALayOut of
+   LayCTeCadastro: Result := CTeUtil.SeSenao(AAmbiente = 1, '', '');
+   else Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);
+  end;
+end;
+
+// Incluido por Italo em 03/10/2012
+class function CTeUtil.GetURLRO(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+begin
+  case ALayOut of
+   LayCTeCadastro: Result := CTeUtil.SeSenao(AAmbiente = 1, '', '');
+   else Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);
+  end;
+end;
+
+// Incluido por Italo em 03/10/2012
+class function CTeUtil.GetURLRR(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+begin
+  case ALayOut of
+   LayCTeCadastro: Result := CTeUtil.SeSenao(AAmbiente = 1, '', '');
+   else Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);
+  end;
+end;
+
+// Incluido por Italo em 03/10/2012
+class function CTeUtil.GetURLSC(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+begin
+  case ALayOut of
+   LayCTeCadastro: Result := CTeUtil.SeSenao(AAmbiente = 1, '', '');
+   else Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);
+  end;
+end;
+
+// Incluido por Italo em 03/10/2012
+class function CTeUtil.GetURLSE(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+begin
+  case ALayOut of
+   LayCTeCadastro: Result := CTeUtil.SeSenao(AAmbiente = 1, '', '');
+   else Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);
+  end;
+end;
+
+// Incluido por Italo em 03/10/2012
+class function CTeUtil.GetURLTO(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+begin
+  case ALayOut of
+   LayCTeCadastro: Result := CTeUtil.SeSenao(AAmbiente = 1, '', '');
+   else Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);
+  end;
+end;
+
 
 class function CTeUtil.GetURLMG(AAmbiente: Integer;
   ALayOut: TLayOut): WideString;
@@ -359,6 +577,8 @@ begin
     LayCTeInutilizacao:  Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.mg.gov.br/cte/services/CteInutilizacao' , 'https://hcte.fazenda.mg.gov.br/cte/services/CteInutilizacao');
     LayCTeConsultaCT:    Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.mg.gov.br/cte/services/CteConsulta'     , 'https://hcte.fazenda.mg.gov.br/cte/services/CteConsulta');
     LayCTeStatusServico: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.mg.gov.br/cte/services/CteStatusServico', 'https://hcte.fazenda.mg.gov.br/cte/services/CteStatusServico');
+    // Incluido por Italo em 03/10/2012 conforme sugestão de Moacir
+    LayCTeCadastro:      Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.fazenda.mg.gov.br/nfe2/services/cadconsultacadastro2', 'https://hnfe.fazenda.mg.gov.br/nfe2/services/cadconsultacadastro2');
 //    LayCTeCadastro: Result      := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.mg.gov.br/cte/services/cadConsultaCadastro', 'https://hcte.fazenda.mg.gov.br/cte/services/cadConsultaCadastro');
   end;
 end;
@@ -390,7 +610,6 @@ begin
     LayCTeStatusServico: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.fazenda.sp.gov.br/cteWEB/services/cteStatusServico.asmx', 'https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteStatusServico.asmx');
     // Alterado por Italo em 17/10/2011
     LayCTeCadastro:      Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.fazenda.sp.gov.br/nfeweb/services/cadconsultacadastro2.asmx', 'https://homologacao.nfe.fazenda.sp.gov.br/nfeweb/services/cadconsultacadastro2.asmx');
-//    LayCTeCadastro: Result      := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.fazenda.sp.gov.br/nfeWEB/services/cadConsultaCadastro.asmx', 'https://homologacao.nfe.fazenda.sp.gov.br/nfeWEB/services/cadConsultaCadastro.asmx');
   end;
 end;
 
@@ -419,6 +638,8 @@ begin
     LayCTeInutilizacao:  Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.mt.gov.br/ctews/services/CteInutilizacao' , 'https://homologacao.sefaz.mt.gov.br/ctews/services/CteInutilizacao');
     LayCTeConsultaCT:    Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.mt.gov.br/ctews/services/CteConsulta'     , 'https://homologacao.sefaz.mt.gov.br/ctews/services/CteConsulta');
     LayCTeStatusServico: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.mt.gov.br/ctews/services/CteStatusServico', 'https://homologacao.sefaz.mt.gov.br/ctews/services/CteStatusServico'); //?WSDL
+    // Incluido por Italo em 03/10/2012 conforme sugestão de Moacir
+    LayCTeCadastro:      Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.sefaz.mt.gov.br/nfews/v2/services/CadConsultaCadastro2', 'https://homologacao.sefaz.mt.gov.br/nfews/v2/services/CadConsultaCadastro2');
 //    LayCTeCadastro: Result      := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.mt.gov.br/ctews/services/cadConsultaCadastro', 'https://homologacao.sefaz.mt.gov.br/ctews/services/cadConsultaCadastro');
   end;
 end;
@@ -434,6 +655,8 @@ begin
     LayCTeInutilizacao:  Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.pr.gov.br/cte/CteInutilizacao' , 'https://homologacao.cte.fazenda.pr.gov.br/cte/CteInutilizacao');
     LayCTeConsultaCT:    Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.pr.gov.br/cte/CteConsulta'     , 'https://homologacao.cte.fazenda.pr.gov.br/cte/CteConsulta');
     LayCTeStatusServico: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.pr.gov.br/cte/CteStatusServico', 'https://homologacao.cte.fazenda.pr.gov.br/cte/CteStatusServico'); //?WSDL
+    // Incluido por Italo em 03/10/2012 conforme sugestão de Moacir
+    LayCTeCadastro:      Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe2.fazenda.pr.gov.br/nfe/CadConsultaCadastro2', 'https://homologacao.nfe2.fazenda.pr.gov.br/nfe/CadConsultaCadastro2');
 //    LayCTeCadastro: Result      := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.mt.gov.br/ctews/services/cadConsultaCadastro', 'https://homologacao.sefaz.mt.gov.br/ctews/services/cadConsultaCadastro');
   end;
 end;
@@ -1266,12 +1489,6 @@ begin
 {$IFDEF ACBrCTeOpenSSL}
   Result := ValidaLibXML(AXML, AMsg, APathSchemas);
 {$ELSE}
-  // Alterado por Italo em 16/03/2012
-//  if pos('<infCanc', AXML) <> 0
-//   then Result := ValidaMSXML(AXML, AMsg, APathSchemas)
-//   else Result := ValidaMSXML(AXML, AMsg, APathSchemas) and
-//                  ValidaModalMSXML(AXML, AMsg, APathSchemas);
-
   // Alterado por Italo em 31/03/2012
   if pos('<infCTeNorm>', AXML) <> 0
    then Result := ValidaMSXML(AXML, AMsg, APathSchemas) and
@@ -1748,10 +1965,8 @@ end;
 {$ENDIF}
 
 {$IFDEF ACBrCTeOpenSSL}
-
 class function CTeUtil.Assinar(const AXML, ArqPFX, PFXSenha: AnsiString; out AXMLAssinado, FMensagem: AnsiString): Boolean;
 {$ELSE}
-
 class function CTeUtil.Assinar(const AXML: AnsiString; Certificado: ICertificate2; out AXMLAssinado, FMensagem: AnsiString): Boolean;
 {$ENDIF}
 begin

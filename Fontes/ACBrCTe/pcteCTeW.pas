@@ -1444,8 +1444,11 @@ begin
     Gerador.wGrupo('seg', '#306');
     Gerador.wCampo(tcStr, '#307', 'respSeg ', 01, 01, 1, TpRspSeguroToStr(CTe.InfSeg[i].respSeg), DSC_RESPSEG);
     Gerador.wCampo(tcStr, '#308', 'xSeg    ', 01, 30, 0, CTe.InfSeg[i].xSeg, DSC_XSEG);
-    Gerador.wCampo(tcStr, '#309', 'nApol   ', 01, 20, 0, SomenteNumeros(CTe.InfSeg[i].nApol), DSC_NAPOL);
-    Gerador.wCampo(tcStr, '#310', 'nAver   ', 20, 20, 0, SomenteNumeros(CTe.InfSeg[i].nAver), DSC_NAVER);
+    // Alterado por Italo em 04/10/2012 conforme sugestão de Geferson
+    Gerador.wCampo(tcStr, '#309', 'nApol   ', 01, 20, 0, CTe.InfSeg[i].nApol, DSC_NAPOL);
+    Gerador.wCampo(tcStr, '#310', 'nAver   ', 01, 20, 0, CTe.InfSeg[i].nAver, DSC_NAVER);
+//    Gerador.wCampo(tcStr, '#309', 'nApol   ', 01, 20, 0, SomenteNumeros(CTe.InfSeg[i].nApol), DSC_NAPOL);
+//    Gerador.wCampo(tcStr, '#310', 'nAver   ', 20, 20, 0, SomenteNumeros(CTe.InfSeg[i].nAver), DSC_NAVER);
 {$IFDEF PL_103}
     Gerador.wCampo(tcDe3, '#311', 'vMerc   ', 01, 15, 0, CTe.InfSeg[i].vMerc, DSC_VMERC);
 {$ENDIF}

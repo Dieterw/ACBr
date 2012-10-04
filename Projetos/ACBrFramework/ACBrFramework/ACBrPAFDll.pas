@@ -333,7 +333,6 @@ Function PAF_Create(var pafHandle: PPAFHandle): Integer; {$IFDEF STDCALL} stdcal
 begin
 
   try
-
      New(pafHandle);
      pafHandle^.PAF := TACBrPAF.Create(nil);
      pafHandle^.EventHandlers := TEventHandlers.Create();

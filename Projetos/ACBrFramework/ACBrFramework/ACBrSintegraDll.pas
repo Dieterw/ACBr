@@ -21,6 +21,21 @@ type TSintegraHandle = record
   EventHandlers : TEventHandlers;
 end;
 
+{ Registro }
+type TRegistro10Rec = record
+  CNPJ                : array[0..14] of char;
+  Inscricao           : array[0..14] of char;
+  RazaoSocial         : array[0..35] of char;
+  Cidade              : array[0..30] of char;
+  Estado              : array[0..2] of char;
+  Telefone            : array[0..10] of char;
+  DataInicial         : Double;
+  DataFinal           : Double;
+  CodigoConvenio      : Integer;
+  NaturezaInformacoes : Integer;
+  FinalidadeArquivo   : Integer;
+end;
+
 {Ponteiro para o Handle }
 type PSINHandle = ^TSintegraHandle;
 
@@ -237,6 +252,60 @@ begin
 
 end;
 
+{ FUnções do Componente}
+function SIN_LimparRegistros(const sinHandle: PSINHandle): Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF}  export;
+begin
+  if (sinHandle = nil) then
+    begin
+       Result := -2;
+       Exit;
+    end;
+try
+  sinHandle^.Sintegra.LimparRegistros;
+except
+   on exception : Exception do
+   begin
+      sinHandle^.UltimoErro := exception.Message;
+      Result := -1;
+   end
+end;
+end;
+
+function SIN_Registro10(const sinHandle: PSINHandle; const Registro10Rec : TRegistro10Rec): Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF}  export;
+begin
+  if (sinHandle = nil) then
+    begin
+       Result := -2;
+       Exit;
+    end;
+try
+  if sinHandle^.Sintegra.Ativo then
+  begin
+    with sinHandle^.Sintegra.Registro10 do
+    begin
+      CNPJ                := Registro10Rec.CNPJ;
+      Inscricao           := Registro10Rec.Inscricao;
+      RazaoSocial         := Registro10Rec.RazaoSocial;
+      Cidade              := Registro10Rec.Cidade;
+      Estado              := Registro10Rec.Estado;
+      Telefone            := Registro10Rec.Telefone;
+      DataInicial         := Registro10Rec.DataInicial;
+      DataFinal           := Registro10Rec.DataFinal;
+      CodigoConvenio      := IntToStr(Registro10Rec.CodigoConvenio);
+      NaturezaInformacoes := IntToStr(Registro10Rec.NaturezaInformacoes);
+      FinalidadeArquivo   := IntToStr(Registro10Rec.FinalidadeArquivo);
+    end;
+    Result := 0;
+    end;
+except
+   on exception : Exception do
+   begin
+      sinHandle^.UltimoErro := exception.Message;
+      Result := -1;
+   end
+end;
+end;
+
 exports
 { Funções }
 SIN_Create,
@@ -246,6 +315,8 @@ SIN_GetUltimoErro,
 { Funções mapeando as propriedades do componente }
 SIN_GetFileName, SIN_SetFileName,
 SIN_GetVersaoValidador, SIN_SetVersaoValidador,
-SIN_GetAtivo;
+SIN_GetAtivo,
+{ Funções do componente }
+SIN_LimparRegistros, SIN_Registro10;
 end.
 

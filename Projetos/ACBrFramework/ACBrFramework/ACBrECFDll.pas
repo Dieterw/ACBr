@@ -123,6 +123,12 @@ type TDadosRZRec = record
      TotalTroco: double;
 end;
 
+type TRelatoriosGerenciaisRec = record
+      Indice           : array[0..3] of char;
+      Descricao        : array[0..29] of char;
+      Contador         : Integer;
+end;
+
 {Ponteiro para o Handle }
 type PDadosRZRec = ^TDadosRZRec;
 
@@ -2877,48 +2883,6 @@ begin
   end;
 end;
 
-Function ECF_AbreRelatorioGerencial(const ecfHandle: PECFHandle; const Indice : Integer) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
-begin
-
-  if (ecfHandle = nil) then
-  begin
-     Result := -2;
-     Exit;
-  end;
-
-  try
-     ecfHandle^.ECF.AbreRelatorioGerencial(Indice);
-     Result := 0 ;
-  except
-     on exception : Exception do
-     begin
-        ecfHandle^.UltimoErro := exception.Message;
-        Result := -1;
-     end
-  end;
-end;
-
-Function ECF_LinhaRelatorioGerencial(const ecfHandle: PECFHandle; const Linha : pChar; const IndiceBMP : Integer) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
-begin
-
-  if (ecfHandle = nil) then
-  begin
-     Result := -2;
-     Exit;
-  end;
-
-  try
-     ecfHandle^.ECF.LinhaRelatorioGerencial(Linha, IndiceBMP);
-     Result := 0 ;
-  except
-     on exception : Exception do
-     begin
-        ecfHandle^.UltimoErro := exception.Message;
-        Result := -1;
-     end
-  end;
-end;
-
 Function ECF_AbreCupomVinculado(const ecfHandle: PECFHandle; const COO, CodFormaPagto : pChar; const Valor : Double) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
 begin
 
@@ -4874,7 +4838,6 @@ end
 end;
 end;
 
-
 Function ECF_PafMF_RelIdentificacaoPafECF(const ecfHandle: PECFHandle; const aacHandle : PAACHandle; const indiceRelatorio : Integer) : Integer ;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
 begin
 if (ecfHandle = nil) then
@@ -4895,6 +4858,109 @@ end
 end;
 end;
 
+{ Relatorio Gerencial }
+Function ECF_AbreRelatorioGerencial(const ecfHandle: PECFHandle; const Indice : Integer) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+begin
+
+  if (ecfHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+  try
+     ecfHandle^.ECF.AbreRelatorioGerencial(Indice);
+     Result := 0 ;
+  except
+     on exception : Exception do
+     begin
+        ecfHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end;
+end;
+
+Function ECF_LinhaRelatorioGerencial(const ecfHandle: PECFHandle; const Linha : pChar; const IndiceBMP : Integer) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+begin
+
+  if (ecfHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+  try
+     ecfHandle^.ECF.LinhaRelatorioGerencial(Linha, IndiceBMP);
+     Result := 0 ;
+  except
+     on exception : Exception do
+     begin
+        ecfHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end;
+end;
+
+Function ECF_ProgramaRelatoriosGerenciais(const ecfHandle: PECFHandle; const Descricao, Posicao: pChar) : Integer ;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+var
+  pDesc, pPosi : String;
+begin
+  if (ecfHandle = nil) then
+  begin
+          Result := -2;
+          Exit;
+  end;
+
+  try
+     pDesc := String(Descricao);
+     pPosi := String(Posicao);
+     ecfHandle^.ECF.ProgramaRelatoriosGerenciais(pDesc, pPosi);
+     Result := 0;
+  except
+    on exception : Exception do
+  begin
+  ecfHandle^.UltimoErro := exception.Message;
+  Result := -1;
+  end
+  end;
+end;
+
+Function ECF_GetRelatoriosGerenciais(const ecfHandle: PECFHandle; var retRelatorios : TRelatoriosGerenciaisRec; const index : Integer) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+var
+  relatorios : TACBrECFRelatorioGerencial;
+begin
+
+  if (ecfHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+   try
+
+      if (index >= 0) and (index < ecfHandle^.ECF.RelatoriosGerenciais.Count) then
+      begin
+
+              relatorios := ecfHandle^.ECF.RelatoriosGerenciais[index];
+
+              StrPLCopy(retRelatorios.Indice, relatorios.Indice, 4);
+              StrPLCopy(retRelatorios.Descricao, relatorios.Descricao, 30);
+              retRelatorios.Contador := relatorios.Contador;
+              Result := 0;
+      end
+      else
+      begin
+              Result := -3;
+      end;
+
+   except
+     on exception : Exception do
+     begin
+        ecfHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+   end;
+end;
 
 {
 NÀO IMPLEMENTADO

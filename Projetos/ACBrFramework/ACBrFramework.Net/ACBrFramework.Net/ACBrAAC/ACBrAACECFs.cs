@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-namespace ACBrFramework.Net
+namespace ACBrFramework
 {
 	public sealed class ACBrAACECFs : ACBrComposedComponent, IEnumerable<ACBrAACECF>
 	{

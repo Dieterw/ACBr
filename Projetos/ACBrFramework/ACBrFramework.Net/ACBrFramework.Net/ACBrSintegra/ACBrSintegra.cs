@@ -1,6 +1,6 @@
 using System;
 
-namespace ACBrFramework.Net
+namespace ACBrFramework
 {
 	public class ACBrSintegra : ACBrComponent, IDisposable
 	{
@@ -54,6 +54,31 @@ namespace ACBrFramework.Net
 		#endregion Properties
 
 		#region Methods
+
+		public void LimparRegistros()
+		{
+			int ret = ACBrSintegraInterop.SIN_LimparRegistros(this.Handle);
+			CheckResult(ret);
+		}
+
+		public void Registro10(SintegraRegistro10 registro10)
+		{
+			var record = new ACBrSintegraInterop.Registro10Rec();			
+			record.RazaoSocial = registro10.RazaoSocial;
+			record.CNPJ = registro10.CNPJ;
+			record.Inscricao = registro10.Inscricao;
+			record.Cidade = registro10.Cidade;
+			record.Estado = registro10.Estado;
+			record.Telefone = registro10.Telefone;
+			record.DataInicial = registro10.DataInicial.ToOADate();
+			record.DataFinal = registro10.DataFinal.ToOADate();
+			record.NaturezaInformacoes = registro10.NaturezaInformacoes;
+			record.FinalidadeArquivo = registro10.FinalidadeArquivo;
+			record.CodigoConvenio = registro10.CodigoConvenio;
+
+			int ret = ACBrSintegraInterop.SIN_Registro10(this.Handle, record);
+			CheckResult(ret);
+		}
 
 		#region Override Methods
 

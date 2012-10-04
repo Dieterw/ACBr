@@ -8,8 +8,8 @@
     <ProjectGuid>{7D3D0596-A97E-4E91-9EF9-AAC50A5DB9B2}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ACBrFramework.Net.ECFTeste</RootNamespace>
-    <AssemblyName>ACBrFramework.Net.ECFTeste</AssemblyName>
+    <RootNamespace>ACBrFramework.ECFTeste</RootNamespace>
+    <AssemblyName>ACBrFramework.ECFTeste</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>

@@ -2,7 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace ACBrFramework.Net
+namespace ACBrFramework
 {
 	public static class ACBrECFInterop
 	{
@@ -762,6 +762,12 @@ namespace ACBrFramework.Net
 
 		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
 		public static extern int ECF_LinhaRelatorioGerencial(IntPtr ecfHandle, string linha, int indiceBMP);
+
+		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int ECF_ProgramaRelatoriosGerenciais(IntPtr ecfHandle, string descricao, string posicao);
+
+		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int ECF_GetRelatoriosGerenciais(IntPtr ecfHandle, ref RelatorioGerencialRec relatorio, int index);
 
 		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
 		public static extern int ECF_AbreCupomVinculado(IntPtr ecfHandle, string coo, string codFormaPagto, double valor);

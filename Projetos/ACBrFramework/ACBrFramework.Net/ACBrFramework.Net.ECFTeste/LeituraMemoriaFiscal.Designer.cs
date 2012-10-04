@@ -1,4 +1,4 @@
-﻿namespace ACBrFramework.Net.ECFTeste
+﻿namespace ACBrFramework.ECFTeste
 {
 	partial class LeituraMemoriaFiscal
 	{

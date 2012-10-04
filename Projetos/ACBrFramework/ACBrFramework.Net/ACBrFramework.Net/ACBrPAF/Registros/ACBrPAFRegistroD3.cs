@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ACBrFramework.Net
+namespace ACBrFramework
 {
 	public class ACBrPAFRegistroD3
 	{

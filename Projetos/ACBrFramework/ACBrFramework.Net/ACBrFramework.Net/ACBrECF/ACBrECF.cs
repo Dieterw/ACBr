@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace ACBrFramework.Net
+namespace ACBrFramework
 {
 	public class ACBrECF : ACBrComponent, IDisposable
 	{
@@ -11,6 +11,7 @@ namespace ACBrFramework.Net
 		private ACBrECFAliquota[] aliquotas;
 		private ACBrECFFormaPagamento[] formasPagamento;
 		private ACBrECFComprovanteNaoFiscal[] comprovantesNaoFiscais;
+		private ACBrECFRelatorioGerencial[] relatoriosGerenciais;
 		private ACBrAAC aac;
 
 		#endregion Fields
@@ -1083,6 +1084,33 @@ namespace ACBrFramework.Net
 		{
 			int ret = ACBrECFInterop.ECF_LinhaRelatorioGerencial(this.Handle, ToUTF8(linha), indiceBMP);
 			CheckResult(ret);
+		}
+
+		public void ProgramaRelatoriosGerenciais(string descricao, string posicao)
+		{
+			int ret = ACBrECFInterop.ECF_ProgramaRelatoriosGerenciais(this.Handle, descricao, posicao);
+			CheckResult(ret);
+		}
+
+		private void CarregaRelatoriosGerenciais(int count)
+		{
+			relatoriosGerenciais = new ACBrECFRelatorioGerencial[count];
+
+			for (int i = 0; i < count; i++)
+			{
+				var record = new ACBrECFInterop.RelatorioGerencialRec();
+				int ret = ACBrECFInterop.ECF_GetRelatoriosGerenciais(this.Handle, ref record, i);
+				CheckResult(ret);
+
+				ACBrECFRelatorioGerencial relatorio = new ACBrECFRelatorioGerencial() 
+				{ 
+					Indice = FromUTF8(record.Indice), 
+					Descricao = FromUTF8(record.Indice), 
+					Contador = record.Contador 
+				};
+
+				relatoriosGerenciais[i] = relatorio;
+			}
 		}
 
 		public void AbreCupomVinculado(int coo, string codFormaPagto, decimal valor)

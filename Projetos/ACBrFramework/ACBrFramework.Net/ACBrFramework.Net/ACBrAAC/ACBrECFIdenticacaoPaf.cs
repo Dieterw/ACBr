@@ -1,4 +1,4 @@
-﻿namespace ACBrFramework.Net
+﻿namespace ACBrFramework
 {
 	public sealed class ACBrECFIdenticacaoPaf : ACBrComposedComponent
 	{

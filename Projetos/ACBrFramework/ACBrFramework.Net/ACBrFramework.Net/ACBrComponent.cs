@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace ACBrFramework.Net
+namespace ACBrFramework
 {
 	public abstract class ACBrComponent : IDisposable
 	{

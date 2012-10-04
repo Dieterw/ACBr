@@ -2,7 +2,7 @@
 using System.Reflection;
 using System.Windows.Forms;
 
-using ACBrFramework.Net;
+using ACBrFramework;
 
 namespace ACBrDefExporter
 {

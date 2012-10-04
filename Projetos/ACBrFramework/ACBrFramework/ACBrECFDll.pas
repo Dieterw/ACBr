@@ -123,12 +123,6 @@ type TDadosRZRec = record
      TotalTroco: double;
 end;
 
-type TRelatoriosGerenciaisRec = record
-      Indice           : array[0..3] of char;
-      Descricao        : array[0..29] of char;
-      Contador         : Integer;
-end;
-
 {Ponteiro para o Handle }
 type PDadosRZRec = ^TDadosRZRec;
 
@@ -4925,7 +4919,7 @@ begin
   end;
 end;
 
-Function ECF_GetRelatoriosGerenciais(const ecfHandle: PECFHandle; var retRelatorios : TRelatoriosGerenciaisRec; const index : Integer) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+Function ECF_GetRelatoriosGerenciais(const ecfHandle: PECFHandle; var retRelatorios : TRelatorioGerencialRec; const index : Integer) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
 var
   relatorios : TACBrECFRelatorioGerencial;
 begin

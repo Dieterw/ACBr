@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace ACBrFramework.Net.ECFTeste
+namespace ACBrFramework.ECFTeste
 {
 	public partial class LeituraMemoriaFiscal : Form
 	{

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ACBrFramework.Net
+namespace ACBrFramework
 {
 	public class ACBrPAFRegistroR4
 	{

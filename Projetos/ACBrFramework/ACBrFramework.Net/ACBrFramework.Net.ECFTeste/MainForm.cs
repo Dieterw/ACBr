@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 
-namespace ACBrFramework.Net.ECFTeste
+namespace ACBrFramework.ECFTeste
 {
 	public partial class MainForm : Form
 	{

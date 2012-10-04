@@ -2,7 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace ACBrFramework.Net
+namespace ACBrFramework
 {
 	public static class ACBrAACInterop
 	{

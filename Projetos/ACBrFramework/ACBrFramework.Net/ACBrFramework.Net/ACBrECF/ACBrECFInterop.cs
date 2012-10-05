@@ -75,6 +75,12 @@ namespace ACBrFramework
 
 			[MarshalAs(UnmanagedType.R8)]
 			public double Total;
+
+			[MarshalAs(UnmanagedType.R8)]
+			public double Data;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 30)]
+			public string TipoDoc;
 		}
 
 		[StructLayout(LayoutKind.Sequential)]

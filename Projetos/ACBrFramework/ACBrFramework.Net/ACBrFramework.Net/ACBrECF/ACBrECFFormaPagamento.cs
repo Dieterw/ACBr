@@ -1,4 +1,5 @@
-﻿namespace ACBrFramework
+﻿using System;
+namespace ACBrFramework
 {
 	public sealed class ACBrECFFormaPagamento
 	{
@@ -9,5 +10,9 @@
 		public bool PermiteVinculado { get; set; }
 
 		public decimal Total { get; set; }
+
+		public DateTime Data { get; set; }
+
+		public string TipoDoc { get; set; }
 	}
 }

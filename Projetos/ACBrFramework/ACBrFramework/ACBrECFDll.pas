@@ -52,6 +52,8 @@ type TFormaPagamentoRec = record
       Descricao        : array[0..29] of char;
       PermiteVinculado : boolean;
       Total            : double;
+      Data             : TDateTime;
+      TipoDoc          : array[0..29] of char;
 end;
 
 type TComprovanteNaoFiscalRec = record
@@ -3230,6 +3232,8 @@ begin
               StrPLCopy(retFormaPagamento.Descricao, formaPagamento.Descricao, 30);
               retFormaPagamento.PermiteVinculado := formaPagamento.PermiteVinculado;
               retFormaPagamento.Total := formaPagamento.Total;
+              retFormaPagamento.Data:= formaPagamento.Data;
+              StrPLCopy(retFormaPagamento.TipoDoc, formaPagamento.TipoDoc, 30);
               Result := 0;
       end
       else
@@ -4225,6 +4229,8 @@ begin
            StrPLCopy(retDadosRZ^.MeiosDePagamento[I].Descricao, dadosRZ.MeiosDePagamento[I].Descricao, 30);
            retDadosRZ^.MeiosDePagamento[I].PermiteVinculado := dadosRZ.MeiosDePagamento[I].PermiteVinculado;
            retDadosRZ^.MeiosDePagamento[I].Total := dadosRZ.MeiosDePagamento[I].Total;
+           retDadosRZ^.MeiosDePagamento[I].Data := dadosRZ.MeiosDePagamento[I].Data;
+           StrPLCopy(retDadosRZ^.MeiosDePagamento[I].TipoDoc, dadosRZ.MeiosDePagamento[I].TipoDoc, 30);
 
       end;
 
@@ -4816,6 +4822,8 @@ try
          Descricao           := formasPagamento[i].Descricao;
          PermiteVinculado    := formasPagamento[i].PermiteVinculado;
          Total               := formasPagamento[i].Total;
+         Data                := formasPagamento[i].Data;
+         TipoDoc             := formasPagamento[i].TipoDoc;
        end;
    end;
 

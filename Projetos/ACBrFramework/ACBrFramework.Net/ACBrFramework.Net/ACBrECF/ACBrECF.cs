@@ -928,9 +928,11 @@ namespace ACBrFramework
 			for (int i = 0; i < formasPagamento.Length; i++)
 			{
 				record[i].Indice = formasPagamento[i].Indice;
-				record[i].Descricao = formasPagamento[i].Descricao;
+				record[i].Descricao = ToUTF8(formasPagamento[i].Descricao);
 				record[i].PermiteVinculado = formasPagamento[i].PermiteVinculado;
 				record[i].Total = Convert.ToDouble(formasPagamento[i].Total);
+				record[i].Data = formasPagamento[i].Data.ToOADate();
+				record[i].TipoDoc = ToUTF8(formasPagamento[i].TipoDoc);
 			}
 
 			int ret = ACBrECFInterop.ECF_PafMF_RelMeiosPagamento(this.Handle, record, record.Length, ToUTF8(TituloRelatorio), indiceRelatorio);
@@ -1375,6 +1377,8 @@ namespace ACBrFramework
 					item.Descricao = FromUTF8(itemRec.Descricao);
 					item.PermiteVinculado = itemRec.PermiteVinculado;
 					item.Total = Convert.ToDecimal(itemRec.Total);
+					item.Data = DateTime.FromOADate(itemRec.Data);
+					item.TipoDoc = FromUTF8(itemRec.TipoDoc);
 
 					dadosRZ.MeiosDePagamento[i] = item;
 				}
@@ -1476,6 +1480,8 @@ namespace ACBrFramework
 				formaPagamento.Descricao = FromUTF8(record.Descricao);
 				formaPagamento.PermiteVinculado = record.PermiteVinculado;
 				formaPagamento.Total = Convert.ToDecimal(record.Total);
+				formaPagamento.Data = DateTime.FromOADate(record.Data);
+				formaPagamento.TipoDoc = FromUTF8(record.TipoDoc);
 
 				formasPagamento[i] = formaPagamento;
 			}

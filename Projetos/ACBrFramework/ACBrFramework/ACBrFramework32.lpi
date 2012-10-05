@@ -22,7 +22,7 @@
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MinorVersionNr Value="9"/>
-      <BuildNr Value="143"/>
+      <BuildNr Value="144"/>
       <Language Value="0416"/>
       <StringTable CompanyName="Projeto: Componentes ACBr " FileDescription="Projeto: Componentes ACBr " ProductName="ACBr32.DLL" ProductVersion="ACBr32.DLL"/>
     </VersionInfo>
@@ -70,7 +70,6 @@
         <WindowIndex Value="0"/>
         <TopLine Value="4916"/>
         <CursorPos X="43" Y="4943"/>
-        <FoldState Value=" TLk10O2 p0j*B0{@ T3kb0O4 piajY0J[94djP0K[94ZjM0J[96L[IAM[94gjV0N[j6T[I9[99[IEj6jc[962jY0M[{R6P[{96XjJ0J[99[R6O[{96f[+4[{I6S[96YjN0L[96M0J5 pj8jg0K114H"/>
         <UsageCount Value="109"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -422,7 +421,7 @@
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit39>
     </Units>
-    <JumpHistory Count="30" HistoryIndex="29">
+    <JumpHistory Count="29" HistoryIndex="28">
       <Position1>
         <Filename Value="ACBrECFDll.pas"/>
         <Caret Line="4937" Column="58" TopLine="4771"/>
@@ -533,20 +532,16 @@
       </Position27>
       <Position28>
         <Filename Value="ACBrECFDll.pas"/>
-        <Caret Line="95" Column="27" TopLine="103"/>
+        <Caret Line="2600" Column="57" TopLine="2426"/>
       </Position28>
       <Position29>
         <Filename Value="ACBrECFDll.pas"/>
-        <Caret Line="2600" Column="57" TopLine="2426"/>
-      </Position29>
-      <Position30>
-        <Filename Value="ACBrECFDll.pas"/>
         <Caret Line="2612" Column="58" TopLine="2448"/>
-      </Position30>
+      </Position29>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
-    <Version Value="11"/>
+    <Version Value="9"/>
     <PathDelim Value="\"/>
     <Target>
       <Filename Value="x86\ACBrFramework32"/>
@@ -567,7 +562,6 @@
     </CodeGeneration>
     <Linking>
       <Debugging>
-        <GenerateDebugInfo Value="False"/>
         <UseLineInfoUnit Value="False"/>
         <StripSymbols Value="True"/>
       </Debugging>

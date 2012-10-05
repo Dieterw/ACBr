@@ -358,14 +358,15 @@ begin
 end;
 
 procedure TACBrECFSwedaSTX.Ativar;
-Var RetCmd : AnsiString ;
-   LargFonte, AreaImp : Integer ;
+Var
+  RetCmd : AnsiString ;
+  LargFonte, AreaImp : Integer ;
 begin
   if not fpDevice.IsSerialPort  then
      raise EACBrECFERRO.Create(ACBrStr('A impressora: '+fpModeloStr+' requer'+sLineBreak+
                             'Porta Serial:  (COM1, COM2, COM3, ...)'));
 
-  fpDevice.HandShake := hsDTR_DSR ;
+  //fpDevice.HandShake := hsDTR_DSR ;
   inherited Ativar ; { Abre porta serial }
 
   fsVerProtocolo    := '' ;

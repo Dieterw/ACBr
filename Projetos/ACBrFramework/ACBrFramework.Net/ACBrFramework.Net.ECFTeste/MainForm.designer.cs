@@ -209,10 +209,10 @@
 			this.txtArqPubKey = new System.Windows.Forms.TextBox();
 			this.txtChavePub = new System.Windows.Forms.TextBox();
 			this.ativarCheckButton = new System.Windows.Forms.CheckBox();
-			this.acbrECF = new ACBrFramework.ACBrECF();
 			this.acbrAAC = new ACBrFramework.ACBrAAC();
-			this.acbrPAF = new ACBrFramework.ACBrPAF();
 			this.acbrEAD = new ACBrFramework.ACBrEAD();
+			this.acbrECF = new ACBrFramework.ACBrECF();
+			this.acbrPAF = new ACBrFramework.ACBrPAF();
 			this.statusStrip1.SuspendLayout();
 			this.menuStrip1.SuspendLayout();
 			this.tabControl.SuspendLayout();
@@ -2010,12 +2010,24 @@
 			this.ativarCheckButton.UseVisualStyleBackColor = true;
 			this.ativarCheckButton.CheckedChanged += new System.EventHandler(this.ativarCheckButton_CheckedChanged);
 			// 
+			// acbrAAC
+			// 
+			this.acbrAAC.Chave = "";
+			this.acbrAAC.NomeArquivoAuxiliar = "";
+			this.acbrAAC.NomeArquivoLog = "";
+			this.acbrAAC.Parametros = "";
+			// 
+			// acbrEAD
+			// 
+			this.acbrEAD.ChavePrivada = "";
+			this.acbrEAD.ChavePublica = "";
+			// 
 			// acbrECF
 			// 
 			this.acbrECF.AAC = this.acbrAAC;
 			this.acbrECF.AguardaImpressao = false;
 			this.acbrECF.Baud = 9600;
-			this.acbrECF.ComandoLog = "NumLoja";
+			this.acbrECF.ComandoLog = "VendaBruta";
 			this.acbrECF.DataBits = 8;
 			this.acbrECF.DecimaisPreco = 3;
 			this.acbrECF.DecimaisQtd = 3;
@@ -2033,13 +2045,6 @@
 			this.acbrECF.StopBits = ACBrFramework.SerialStopBits.One;
 			this.acbrECF.TimeOut = 3;
 			// 
-			// acbrAAC
-			// 
-			this.acbrAAC.Chave = "";
-			this.acbrAAC.NomeArquivoAuxiliar = "";
-			this.acbrAAC.NomeArquivoLog = "";
-			this.acbrAAC.Parametros = "";
-			// 
 			// acbrPAF
 			// 
 			this.acbrPAF.AAC = null;
@@ -2050,11 +2055,6 @@
 			this.acbrPAF.EAD = null;
 			this.acbrPAF.Path = "c:\\Program Files (x86)\\Microsoft Visual Studio 10.0\\Common7\\IDE\\";
 			this.acbrPAF.TrimString = true;
-			// 
-			// acbrEAD
-			// 
-			this.acbrEAD.ChavePrivada = "";
-			this.acbrEAD.ChavePublica = "";
 			// 
 			// MainForm
 			// 
@@ -2298,10 +2298,10 @@
 		private System.Windows.Forms.TextBox aacNomeArquivoTextbox;
 		private System.Windows.Forms.Label aacNomeArquivoLabel;
 		private System.Windows.Forms.CheckBox chkAtivo;
-		private ACBrECF acbrECF;
 		private ACBrAAC acbrAAC;
-		private ACBrPAF acbrPAF;
 		private ACBrEAD acbrEAD;
+		private ACBrECF acbrECF;
+		private ACBrPAF acbrPAF;
     }
 }
 

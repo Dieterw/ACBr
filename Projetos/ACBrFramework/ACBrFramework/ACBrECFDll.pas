@@ -4919,6 +4919,48 @@ begin
   end;
 end;
 
+Function ECF_CarregaRelatoriosGerenciais(const ecfHandle: PECFHandle) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+begin
+
+  if (ecfHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+   try
+     ecfHandle^.ECF.CarregaRelatoriosGerenciais;
+     Result := ecfHandle^.ECF.RelatoriosGerenciais.Count;
+   except
+     on exception : Exception do
+     begin
+        ecfHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+   end;
+end;
+
+Function ECF_LerTotaisRelatoriosGerenciais(const ecfHandle: PECFHandle) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+begin
+
+  if (ecfHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+   try
+     ecfHandle^.ECF.LerTotaisRelatoriosGerenciais;
+     Result := ecfHandle^.ECF.RelatoriosGerenciais.Count;
+   except
+     on exception : Exception do
+     begin
+        ecfHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+   end;
+end;
+
 Function ECF_GetRelatoriosGerenciais(const ecfHandle: PECFHandle; var retRelatorios : TRelatorioGerencialRec; const index : Integer) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
 var
   relatorios : TACBrECFRelatorioGerencial;

@@ -41,11 +41,13 @@ Símbolo : Significado
 
 Changelog
 
-05/10/2012
+05/10/2012 - ACBrFramework - 0.9.0.142
 [*] Projeto ACBrFramework.OCX Renomeado - Rafael Batiati.
 [*] Organização dos projetos do ACBrFramework
 [+] Criação de componentes visuais para o ACBrFramework.Net (agora é possível utilizar os componentes diretamente do Toolbox!) - Rafael Batiati.
 [+] Dll nativa embutida junto com o ACBrFramework.Net (não é mais necessário copiar a DLL junto do aplicativo) - Rafael Batiati.
+[+] Implementado o metodo ECF_CarregaRelatoriosGerenciais - ACBrFramework - Rafael Dias.
+[+] Implementado o metodo ECF_LerTotaisRelatoriosGerenciais - ACBrFramework - Rafael Dias.
 
 04/10/2012
 [+] Implementado o metodo ECF_GetRelatoriosGerenciais - ACBrFramework e ACBrFramework.net - Rafael Dias.

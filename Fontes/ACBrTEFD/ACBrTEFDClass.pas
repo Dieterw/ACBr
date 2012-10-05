@@ -55,7 +55,7 @@ uses
   {$ENDIF} ;
 
 const
-   CACBrTEFD_Versao      = '4.1.6' ;
+   CACBrTEFD_Versao      = '4.1.7' ;
    CACBrTEFD_EsperaSTS   = 7 ;
    CACBrTEFD_EsperaSleep = 250 ;
    CACBrTEFD_NumVias     = 2 ;
@@ -1302,7 +1302,7 @@ begin
        22  : fpDataHoraTransacaoComprovante := fpDataHoraTransacaoComprovante +
                                                Linha.Informacao.AsDate;
        23  : fpDataHoraTransacaoComprovante := fpDataHoraTransacaoComprovante +
-                                              Linha.Informacao.AsTime;
+                                               Linha.Informacao.AsTime;
        24  : fpDataPreDatado              := Linha.Informacao.AsDate;
        25  : fpNSUTransacaoCancelada      := Linha.Informacao.AsString;
        26  : fpDataHoraTransacaoCancelada := Linha.Informacao.AsTimeStamp;

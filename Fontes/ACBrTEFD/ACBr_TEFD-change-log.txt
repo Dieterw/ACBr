@@ -47,7 +47,13 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data:  04/10/2012 - 4.1.7  (por: DSA)
+-- ACBrTEFDCliSitef --
+[*] Adicionado mapeamento para as propriedades: DataHoraTransacaoLocal,
+    DataHoraTransacaoCancelada, NSUTransacaoCancelada
+
 Data:  02/10/2012 - 4.1.6  (por: DSA)
+-- ACBrTEFDClass --
 [-] Correção no preenchimento de parcelas com valores inválidos, quando o G.P.
     não as informa.   (por: DSA)
 

@@ -108,6 +108,7 @@ type
     edAAC_SH_IM : TEdit ;
     edAAC_ECF_GT : TDBEdit ;
     edAAC_SH_RazaoSocial : TEdit ;
+    sePaginaCodigo: TSpinEdit;
     edtDtInicial : TDateEdit ;
     edtDtFinal : TDateEdit ;
     Desativar1: TMenuItem;
@@ -183,6 +184,7 @@ type
     Label43 : TLabel ;
     Label44 : TLabel ;
     Label45 : TLabel ;
+    Label46: TLabel;
     mDataHoraSwBasico : TMenuItem ;
     mdsAACECF : TMemDataset ;
     mAACParams : TMemo ;
@@ -531,6 +533,7 @@ type
     procedure seDecimaisQTDChange(Sender : TObject) ;
     procedure seMaxLinhasBufferChange(Sender : TObject) ;
     procedure seBandWidthChange(Sender : TObject) ;
+    procedure sePaginaCodigoChange(Sender: TObject);
     procedure speBarrasAlturaChange(Sender: TObject);
     procedure speBarrasLarguraChange(Sender: TObject);
     procedure Testar1Click(Sender: TObject);
@@ -2439,6 +2442,7 @@ begin
      cbxPorta.Text         := ACBrECF1.Porta ;
      seDecimaisPreco.Value := ACBrECF1.DecimaisPreco;
      seDecimaisQTD.Value   := ACBrECF1.DecimaisQtd;
+     sePaginaCodigo.Value  := ACBrECF1.PaginaDeCodigo;
   end ;
 end;
 
@@ -2497,6 +2501,11 @@ end;
 procedure TForm1.seBandWidthChange(Sender : TObject) ;
 begin
   ACBrECF1.Device.MaxBandwidth := seBandWidth.Value ;
+end;
+
+procedure TForm1.sePaginaCodigoChange(Sender: TObject);
+begin
+   ACBrECF1.PaginaDeCodigo := sePaginaCodigo.Value;
 end;
 
 procedure TForm1.speBarrasAlturaChange(Sender: TObject);
@@ -2630,6 +2639,8 @@ procedure TForm1.FormasdePagamento1Click(Sender: TObject);
 var A : Integer ;
 begin
   ACBrECF1.CarregaFormasPagamento ;
+
+  mResp.Lines.Add(  'Num.Forma Pagto: '+IntToStr(ACBrECF1.FormasPagamento.Count) );
 
   for A := 0 to ACBrECF1.FormasPagamento.Count -1 do
   begin

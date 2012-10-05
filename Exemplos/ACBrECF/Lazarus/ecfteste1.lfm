@@ -173,9 +173,9 @@ object Form1: TForm1
     Height = 335
     Top = 0
     Width = 547
-    ActivePage = tsTagsImpressao
+    ActivePage = TabSheet4
     Align = alClient
-    TabIndex = 4
+    TabIndex = 0
     TabOrder = 0
     object TabSheet4: TTabSheet
       Caption = 'ECF'
@@ -585,6 +585,23 @@ object Form1: TForm1
         Caption = 'Button1'
         OnClick = Button1Click
         TabOrder = 21
+      end
+      object Label46: TLabel
+        Left = 14
+        Height = 13
+        Top = 286
+        Width = 87
+        Caption = 'Página de Código:'
+        ParentColor = False
+      end
+      object sePaginaCodigo: TSpinEdit
+        Left = 112
+        Height = 21
+        Top = 282
+        Width = 53
+        MaxValue = 9999999
+        OnChange = sePaginaCodigoChange
+        TabOrder = 22
       end
     end
     object TabSheet1: TTabSheet

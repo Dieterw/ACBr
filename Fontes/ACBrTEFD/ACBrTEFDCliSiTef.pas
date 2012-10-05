@@ -319,7 +319,9 @@ begin
          begin
            fpDataHoraTransacaoComprovante  := Linha.Informacao.AsTimeStampSQL;
            fpDataHoraTransacaoHost         := fpDataHoraTransacaoComprovante ;
+           fpDataHoraTransacaoLocal        := fpDataHoraTransacaoComprovante ;
          end;
+       120 : fpAutenticacao                := LinStr;
        121 : fpImagemComprovante1aVia.Text := StringReplace( StringToBinaryString( Linha.Informacao.AsString ), #10, sLineBreak, [rfReplaceAll] );
        122 : fpImagemComprovante2aVia.Text := StringReplace( StringToBinaryString( Linha.Informacao.AsString ), #10, sLineBreak, [rfReplaceAll] );
        130 :
@@ -330,33 +332,28 @@ begin
        131 : fpInstituicao                 := LinStr;
        133 : fpCodigoAutorizacaoTransacao  := Linha.Informacao.AsInteger;
        134 : fpNSU                         := LinStr;
-
-       {Entrada CDC}
-       139 : fpValorEntradaCDC:= Linha.Informacao.AsFloat;
-       140 : fpDataEntradaCDC := Linha.Informacao.AsDate;
-       141 : TemParcelas := True;
-
+       139 : fpValorEntradaCDC             := Linha.Informacao.AsFloat;
+       140 : fpDataEntradaCDC              := Linha.Informacao.AsDate;
+       141 : TemParcelas                   := True;
        156 : fpRede                        := LinStr;
        501 : fpTipoPessoa                  := AnsiChar(IfThen(Linha.Informacao.AsInteger = 0,'J','F')[1]);
        502 : fpDocumentoPessoa             := LinStr ;
        505 : fpQtdParcelas                 := Linha.Informacao.AsInteger ;
        506 : fpDataPreDatado               := Linha.Informacao.AsDate;
        511 : fpQtdParcelas                 := Linha.Informacao.AsInteger;  {Parcelas CDC - Neste caso o campo 505 não é retornado}
-       
-       //incluido por Evandro
-       627 : fpAgencia                     := LinStr;
-       628 : fpAgenciaDC                   := LinStr;
-       120 : fpAutenticacao                := LinStr;
-       626 : fpBanco                       := LinStr;
+       515 : fpDataHoraTransacaoCancelada  := Linha.Informacao.AsDate ;
+       516 : fpNSUTransacaoCancelada       := LinStr;
+       527 : fpDataVencimento              := Linha.Informacao.AsDate ; {Data Vencimento}
        613 :
         begin
           fpCheque                         := copy(LinStr, 21, 6);
           fpCMC7                           := LinStr;
         end;
+       626 : fpBanco                       := LinStr;
+       627 : fpAgencia                     := LinStr;
+       628 : fpAgenciaDC                   := LinStr;
        629 : fpConta                       := LinStr;
        630 : fpContaDC                     := LinStr;
-       527 : fpDataVencimento              := Linha.Informacao.AsDate ; {Data Vencimento}
-       //
 
        899 :  // Tipos de Uso Interno do ACBrTEFD
         begin

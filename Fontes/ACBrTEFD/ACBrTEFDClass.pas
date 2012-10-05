@@ -55,7 +55,7 @@ uses
   {$ENDIF} ;
 
 const
-   CACBrTEFD_Versao      = '4.1.7' ;
+   CACBrTEFD_Versao      = '4.2.0' ;
    CACBrTEFD_EsperaSTS   = 7 ;
    CACBrTEFD_EsperaSleep = 250 ;
    CACBrTEFD_NumVias     = 2 ;
@@ -2601,9 +2601,18 @@ begin
     SaldoAPagar := SaldoAPagar - InfoECFAsDouble(ineTotalAPagar,0);
     RespostasPendentes.SaldoAPagar := SaldoAPagar ;
 
-    if (Valor > RespostasPendentes.SaldoRestante ) then
-       raise Exception.Create( ACBrStr( 'Operação TEF deve ser limitada ao '+
-                                        'Saldo restante a Pagar' ) );
+    if TrocoMaximo <= 0 then
+     begin
+       if (Valor > RespostasPendentes.SaldoRestante ) then
+          raise Exception.Create( ACBrStr( 'Operação TEF deve ser limitada ao '+
+                                           'Saldo restante a Pagar' ) );
+     end
+    else
+     begin
+       if (Valor > RespostasPendentes.SaldoRestante + TrocoMaximo ) then
+          raise Exception.Create( ACBrStr( 'Operação TEF permite '+
+                                           'Troco Máximo de '+FormatCurr('0,00',TrocoMaximo) ) );
+     end ;
 
     if MultiplosCartoes and (NumeroMaximoCartoes > 0) and   // Tem multiplos Cartoes ?
        (Valor <> RespostasPendentes.SaldoRestante) and      // Valor é diferente do Saldo Restante a Pagar ?

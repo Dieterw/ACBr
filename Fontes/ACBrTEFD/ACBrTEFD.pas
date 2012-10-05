@@ -93,6 +93,7 @@ type
      fAutoFinalizarCupom : Boolean;
      fAutoEfetuarPagamento : Boolean;
      fCHQEmGerencial: Boolean;
+     fTrocoMaximo: Double;
      fEsperaSleep : Integer;
      fEstadoReq : TACBrTEFDReqEstado;
      fEstadoResp : TACBrTEFDRespEstado;
@@ -270,6 +271,7 @@ type
      property ArqLOG : String read fArqLOG write SetArqLOG ;
      property CHQEmGerencial : Boolean read fCHQEmGerencial
         write fCHQEmGerencial default False ;
+     property TrocoMaximo : Double read fTrocoMaximo write fTrocoMaximo ;
 
      property TEFDial    : TACBrTEFDDial     read fTefDial ;
      property TEFDisc    : TACBrTEFDDisc     read fTefDisc ;
@@ -394,6 +396,7 @@ begin
   fTecladoBloqueado     := False ;
   fArqLOG               := '' ;
   fCHQEmGerencial       := False;
+  fTrocoMaximo          := 0;
 
   fOnAguardaResp              := nil ;
   fOnAntesFinalizarRequisicao := nil ;

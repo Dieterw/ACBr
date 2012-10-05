@@ -47,6 +47,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data:  05/10/2012 - 4.2.0
+[+] Adicionada nova propriedade "TrocoMaximo: Double" valor Default 0, para
+    permitir o Troco em TEF conforme disposto no Requisito XIV, Item 4 do
+    PAF-ECF    (por: DSA)
+
 Data:  04/10/2012 - 4.1.7  (por: DSA)
 -- ACBrTEFDCliSitef --
 [*] Adicionado mapeamento para as propriedades: DataHoraTransacaoLocal,

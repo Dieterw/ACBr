@@ -1,8 +1,10 @@
 using System;
+using System.Drawing;
 using System.Text;
 
 namespace ACBrFramework
 {
+	[ToolboxBitmap(typeof(ACBrEAD), @"ACBrEAD.ico.bmp")]
 	public class ACBrEAD : ACBrComponent, IDisposable
 	{
 		#region Propriedaes
@@ -37,7 +39,6 @@ namespace ACBrFramework
 
 		public ACBrEAD()
 		{
-			Create(ACBrEADInterop.EAD_Create);
 		}
 
 		#endregion Constructor
@@ -135,6 +136,11 @@ namespace ACBrFramework
 
 		#region Override Methods
 
+		protected internal override void OnInitializeComponent()
+		{
+			CallCreate(ACBrEADInterop.EAD_Create);
+		}
+
 		protected internal override void CheckResult(int ret)
 		{
 			switch (ret)
@@ -154,7 +160,7 @@ namespace ACBrFramework
 		{
 			if (this.Handle != IntPtr.Zero)
 			{
-				Destroy(ACBrEADInterop.EAD_Destroy);
+				CallDestroy(ACBrEADInterop.EAD_Destroy);
 			}
 		}
 

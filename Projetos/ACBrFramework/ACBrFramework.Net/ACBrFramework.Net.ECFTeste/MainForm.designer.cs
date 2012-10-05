@@ -68,6 +68,7 @@
 			this.identificaPAFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.tabControl = new System.Windows.Forms.TabControl();
 			this.ecfTabPage = new System.Windows.Forms.TabPage();
+			this.chkAtivo = new System.Windows.Forms.CheckBox();
 			this.usarAACCheckBox = new System.Windows.Forms.CheckBox();
 			this.velocidadeComboBox = new System.Windows.Forms.ComboBox();
 			this.velocidadeLabel = new System.Windows.Forms.Label();
@@ -208,7 +209,10 @@
 			this.txtArqPubKey = new System.Windows.Forms.TextBox();
 			this.txtChavePub = new System.Windows.Forms.TextBox();
 			this.ativarCheckButton = new System.Windows.Forms.CheckBox();
-			this.chkAtivo = new System.Windows.Forms.CheckBox();
+			this.acbrECF = new ACBrFramework.ACBrECF();
+			this.acbrAAC = new ACBrFramework.ACBrAAC();
+			this.acbrPAF = new ACBrFramework.ACBrPAF();
+			this.acbrEAD = new ACBrFramework.ACBrEAD();
 			this.statusStrip1.SuspendLayout();
 			this.menuStrip1.SuspendLayout();
 			this.tabControl.SuspendLayout();
@@ -586,9 +590,23 @@
 			this.ecfTabPage.Text = "ECF";
 			this.ecfTabPage.UseVisualStyleBackColor = true;
 			// 
+			// chkAtivo
+			// 
+			this.chkAtivo.AutoSize = true;
+			this.chkAtivo.Enabled = false;
+			this.chkAtivo.Location = new System.Drawing.Point(9, 194);
+			this.chkAtivo.Name = "chkAtivo";
+			this.chkAtivo.Size = new System.Drawing.Size(50, 17);
+			this.chkAtivo.TabIndex = 14;
+			this.chkAtivo.TabStop = false;
+			this.chkAtivo.Text = "Ativo";
+			this.chkAtivo.UseVisualStyleBackColor = true;
+			// 
 			// usarAACCheckBox
 			// 
 			this.usarAACCheckBox.AutoSize = true;
+			this.usarAACCheckBox.Checked = true;
+			this.usarAACCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.usarAACCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.usarAACCheckBox.Location = new System.Drawing.Point(9, 171);
 			this.usarAACCheckBox.Name = "usarAACCheckBox";
@@ -1992,17 +2010,51 @@
 			this.ativarCheckButton.UseVisualStyleBackColor = true;
 			this.ativarCheckButton.CheckedChanged += new System.EventHandler(this.ativarCheckButton_CheckedChanged);
 			// 
-			// chkAtivo
+			// acbrECF
 			// 
-			this.chkAtivo.AutoSize = true;
-			this.chkAtivo.Enabled = false;
-			this.chkAtivo.Location = new System.Drawing.Point(9, 194);
-			this.chkAtivo.Name = "chkAtivo";
-			this.chkAtivo.Size = new System.Drawing.Size(50, 17);
-			this.chkAtivo.TabIndex = 14;
-			this.chkAtivo.TabStop = false;
-			this.chkAtivo.Text = "Ativo";
-			this.chkAtivo.UseVisualStyleBackColor = true;
+			this.acbrECF.AAC = this.acbrAAC;
+			this.acbrECF.AguardaImpressao = false;
+			this.acbrECF.Baud = 9600;
+			this.acbrECF.ComandoLog = "NumLoja";
+			this.acbrECF.DataBits = 8;
+			this.acbrECF.DecimaisPreco = 3;
+			this.acbrECF.DecimaisQtd = 3;
+			this.acbrECF.DescricaoGrande = false;
+			this.acbrECF.GavetaSinalInvertido = false;
+			this.acbrECF.HandShake = ACBrFramework.SerialHandShake.None;
+			this.acbrECF.HardFlow = false;
+			this.acbrECF.IntervaloAposComando = 100;
+			this.acbrECF.LinhasEntreCupons = 7;
+			this.acbrECF.Modelo = ACBrFramework.ModeloECF.Nenhum;
+			this.acbrECF.Operador = "";
+			this.acbrECF.Parity = ACBrFramework.SerialParity.None;
+			this.acbrECF.Porta = "COM1";
+			this.acbrECF.SoftFlow = false;
+			this.acbrECF.StopBits = ACBrFramework.SerialStopBits.One;
+			this.acbrECF.TimeOut = 3;
+			// 
+			// acbrAAC
+			// 
+			this.acbrAAC.Chave = "";
+			this.acbrAAC.NomeArquivoAuxiliar = "";
+			this.acbrAAC.NomeArquivoLog = "";
+			this.acbrAAC.Parametros = "";
+			// 
+			// acbrPAF
+			// 
+			this.acbrPAF.AAC = null;
+			this.acbrPAF.AssinarArquivo = true;
+			this.acbrPAF.ChaveRSA = "";
+			this.acbrPAF.CurMascara = "";
+			this.acbrPAF.Delimitador = "";
+			this.acbrPAF.EAD = null;
+			this.acbrPAF.Path = "c:\\Program Files (x86)\\Microsoft Visual Studio 10.0\\Common7\\IDE\\";
+			this.acbrPAF.TrimString = true;
+			// 
+			// acbrEAD
+			// 
+			this.acbrEAD.ChavePrivada = "";
+			this.acbrEAD.ChavePublica = "";
 			// 
 			// MainForm
 			// 
@@ -2246,6 +2298,10 @@
 		private System.Windows.Forms.TextBox aacNomeArquivoTextbox;
 		private System.Windows.Forms.Label aacNomeArquivoLabel;
 		private System.Windows.Forms.CheckBox chkAtivo;
+		private ACBrECF acbrECF;
+		private ACBrAAC acbrAAC;
+		private ACBrPAF acbrPAF;
+		private ACBrEAD acbrEAD;
     }
 }
 

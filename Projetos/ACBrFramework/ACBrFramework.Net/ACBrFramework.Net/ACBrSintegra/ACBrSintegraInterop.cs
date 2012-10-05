@@ -25,36 +25,36 @@ namespace ACBrFramework
 		{
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
 			public string CNPJ;
-			
+
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
 			public string Inscricao;
-			
+
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 36)]
 			public string RazaoSocial;
-			
+
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
 			public string Cidade;
-			
+
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 3)]
 			public string Estado;
-			
+
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
 			public string Telefone;
-			
+
 			[MarshalAs(UnmanagedType.R8)]
 			public double DataInicial;
-			
+
 			[MarshalAs(UnmanagedType.R8)]
-			public double DataFinal ;
-			
+			public double DataFinal;
+
 			[MarshalAs(UnmanagedType.I4)]
 			public int CodigoConvenio;
-			
+
 			[MarshalAs(UnmanagedType.I4)]
 			public int NaturezaInformacoes;
-			
+
 			[MarshalAs(UnmanagedType.I4)]
-			public int FinalidadeArquivo; 
+			public int FinalidadeArquivo;
 		}
 
 		#endregion Interop Types

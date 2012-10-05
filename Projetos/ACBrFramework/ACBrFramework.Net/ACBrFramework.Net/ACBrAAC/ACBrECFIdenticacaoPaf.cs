@@ -47,16 +47,5 @@
 		}
 
 		#endregion Properties
-
-		#region Methods
-
-		protected override void OnDisposing()
-		{
-			this.Empresa.Dispose();
-			this.Paf.Dispose();
-			this.ECFsAutorizados.Dispose();
-		}
-
-		#endregion Methods
 	}
 }

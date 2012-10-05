@@ -1,7 +1,9 @@
 using System;
+using System.Drawing;
 
 namespace ACBrFramework
 {
+	[ToolboxBitmap(typeof(ACBrSintegra), @"ACBrSintegra.ico.bmp")]
 	public class ACBrSintegra : ACBrComponent, IDisposable
 	{
 		#region Fields
@@ -12,7 +14,6 @@ namespace ACBrFramework
 
 		public ACBrSintegra()
 		{
-			Create(ACBrSintegraInterop.SIN_Create);
 		}
 
 		#endregion Constructor
@@ -63,7 +64,7 @@ namespace ACBrFramework
 
 		public void Registro10(SintegraRegistro10 registro10)
 		{
-			var record = new ACBrSintegraInterop.Registro10Rec();			
+			var record = new ACBrSintegraInterop.Registro10Rec();
 			record.RazaoSocial = registro10.RazaoSocial;
 			record.CNPJ = registro10.CNPJ;
 			record.Inscricao = registro10.Inscricao;
@@ -81,6 +82,11 @@ namespace ACBrFramework
 		}
 
 		#region Override Methods
+
+		protected internal override void OnInitializeComponent()
+		{
+			CallCreate(ACBrSintegraInterop.SIN_Create);
+		}
 
 		protected internal override void CheckResult(int ret)
 		{
@@ -101,7 +107,7 @@ namespace ACBrFramework
 		{
 			if (this.Handle != IntPtr.Zero)
 			{
-				Destroy(ACBrSintegraInterop.SIN_Destroy);
+				CallDestroy(ACBrSintegraInterop.SIN_Destroy);
 			}
 		}
 

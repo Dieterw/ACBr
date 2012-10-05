@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Text;
 
 namespace ACBrFramework
 {
+	[ToolboxBitmap(typeof(ACBrECF), @"ACBrECF.ico.bmp")]
 	public class ACBrECF : ACBrComponent, IDisposable
 	{
 		#region Fields
@@ -20,7 +22,6 @@ namespace ACBrFramework
 
 		public ACBrECF()
 		{
-			Create(ACBrECFInterop.ECF_Create);
 		}
 
 		#endregion Constructor
@@ -1102,11 +1103,11 @@ namespace ACBrFramework
 				int ret = ACBrECFInterop.ECF_GetRelatoriosGerenciais(this.Handle, ref record, i);
 				CheckResult(ret);
 
-				ACBrECFRelatorioGerencial relatorio = new ACBrECFRelatorioGerencial() 
-				{ 
-					Indice = FromUTF8(record.Indice), 
-					Descricao = FromUTF8(record.Indice), 
-					Contador = record.Contador 
+				ACBrECFRelatorioGerencial relatorio = new ACBrECFRelatorioGerencial()
+				{
+					Indice = FromUTF8(record.Indice),
+					Descricao = FromUTF8(record.Indice),
+					Contador = record.Contador
 				};
 
 				relatoriosGerenciais[i] = relatorio;
@@ -1658,6 +1659,11 @@ namespace ACBrFramework
 
 		#region Override Methods
 
+		protected internal override void OnInitializeComponent()
+		{
+			CallCreate(ACBrECFInterop.ECF_Create);
+		}
+
 		protected internal override void CheckResult(int ret)
 		{
 			switch (ret)
@@ -1677,7 +1683,7 @@ namespace ACBrFramework
 		{
 			if (this.Handle != IntPtr.Zero)
 			{
-				Destroy(ACBrECFInterop.ECF_Destroy);
+				CallDestroy(ACBrECFInterop.ECF_Destroy);
 			}
 		}
 

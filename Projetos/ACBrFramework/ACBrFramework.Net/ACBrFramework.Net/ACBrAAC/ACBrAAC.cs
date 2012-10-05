@@ -1,15 +1,15 @@
 ﻿using System;
+using System.Drawing;
 
 namespace ACBrFramework
 {
+	[ToolboxBitmap(typeof(ACBrAAC), @"ACBrAAC.ico.bmp")]
 	public class ACBrAAC : ACBrComponent, IDisposable
 	{
 		#region Constructor
 
 		public ACBrAAC()
 		{
-			Create(ACBrAACInterop.AAC_Create);
-			IdentPaf = new ACBrECFIdenticacaoPaf(this);
 		}
 
 		#endregion Constructor
@@ -107,8 +107,7 @@ namespace ACBrFramework
 		{
 			if (this.Handle != IntPtr.Zero)
 			{
-				this.IdentPaf.Dispose();
-				Destroy(ACBrAACInterop.AAC_Destroy);
+				CallDestroy(ACBrAACInterop.AAC_Destroy);
 			}
 		}
 
@@ -125,6 +124,12 @@ namespace ACBrFramework
 
 					throw new ACBrECFException("ACBr AAC não inicializado.");
 			}
+		}
+
+		protected internal override void OnInitializeComponent()
+		{
+			CallCreate(ACBrAACInterop.AAC_Create);
+			IdentPaf = new ACBrECFIdenticacaoPaf(this);
 		}
 
 		#endregion Overrides Methods

@@ -10,10 +10,6 @@ namespace ACBrFramework.ECFTeste
 	{
 		#region Fields
 
-		private ACBrECF acbrECF;
-		private ACBrAAC acbrAAC;
-		private ACBrPAF acbrPAF;
-		private ACBrEAD acbrEAD;
 		private const string NUM_FAB = "NUMFAB78901234567890";
 		private const string MF_ADICIONAL = "";
 		private const string TIPO_ECF = "ECF-IF";
@@ -27,11 +23,6 @@ namespace ACBrFramework.ECFTeste
 		public MainForm()
 		{
 			InitializeComponent();
-
-			this.acbrECF = new ACBrECF();
-			this.acbrAAC = new ACBrAAC();
-			this.acbrPAF = new ACBrPAF();
-			this.acbrEAD = new ACBrEAD();
 
 			Popular();
 			PopularAAC();

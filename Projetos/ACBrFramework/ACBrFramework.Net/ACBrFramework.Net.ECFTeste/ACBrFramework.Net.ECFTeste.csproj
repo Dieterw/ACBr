@@ -198,13 +198,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <PreBuildEvent>if $(PlatformName) == x86 (
-copy ..\..\..\..\ACBrFramework\x86\ACBrFramework32.dll
-) ELSE (
-copy ..\..\..\..\..\ACBrFramework\x64\ACBrFramework64.dll
-)
-
-
-</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
 </Project>

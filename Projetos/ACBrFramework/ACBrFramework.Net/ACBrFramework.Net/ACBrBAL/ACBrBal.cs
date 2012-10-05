@@ -1,14 +1,15 @@
 ﻿using System;
+using System.Drawing;
 
 namespace ACBrFramework
 {
-	public sealed class ACBrBal : ACBrComponent, IDisposable
+	[ToolboxBitmap(typeof(ACBrBAL), @"ACBrBAL.ico.bmp")]
+	public sealed class ACBrBAL : ACBrComponent, IDisposable
 	{
 		#region Constructor
 
-		public ACBrBal()
+		public ACBrBAL()
 		{
-			Create(ACBrBALInterop.BAL_Create);
 		}
 
 		#endregion Constructor
@@ -119,11 +120,16 @@ namespace ACBrFramework
 			}
 		}
 
+		protected internal override void OnInitializeComponent()
+		{
+			CallCreate(ACBrBALInterop.BAL_Create);
+		}
+
 		protected override void OnDisposing()
 		{
 			if (this.Handle != IntPtr.Zero)
 			{
-				Destroy(ACBrBALInterop.BAL_Destroy);
+				CallDestroy(ACBrBALInterop.BAL_Destroy);
 			}
 		}
 

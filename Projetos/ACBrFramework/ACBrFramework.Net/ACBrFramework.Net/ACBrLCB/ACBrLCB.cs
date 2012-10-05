@@ -1,14 +1,15 @@
 ﻿using System;
+using System.Drawing;
 
 namespace ACBrFramework
 {
+	[ToolboxBitmap(typeof(ACBrLCB), @"ACBrLCB.ico.bmp")]
 	public sealed class ACBrLCB : ACBrComponent, IDisposable
 	{
 		#region Constructor
 
 		public ACBrLCB()
 		{
-			Create(ACBrLCBInterop.LCB_Create);
 		}
 
 		#endregion Constructor
@@ -53,6 +54,11 @@ namespace ACBrFramework
 
 		#region Override Methods
 
+		protected internal override void OnInitializeComponent()
+		{
+			CallCreate(ACBrLCBInterop.LCB_Create);
+		}
+
 		protected internal override void CheckResult(int ret)
 		{
 			switch (ret)
@@ -73,7 +79,7 @@ namespace ACBrFramework
 		{
 			if (this.Handle != IntPtr.Zero)
 			{
-				Destroy(ACBrLCBInterop.LCB_Destroy);
+				CallDestroy(ACBrLCBInterop.LCB_Destroy);
 			}
 		}
 

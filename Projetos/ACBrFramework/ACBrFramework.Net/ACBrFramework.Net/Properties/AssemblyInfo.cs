@@ -4,12 +4,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ACBr.Net")]
-[assembly: AssemblyDescription("Projeto ACBr para .Net")]
+[assembly: AssemblyTitle("ACBrFramework.Net")]
+[assembly: AssemblyDescription("Projeto ACBrFramework para .Net")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("ACBr")]
-[assembly: AssemblyProduct("ACBr.Net")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2010")]
+[assembly: AssemblyProduct("ACBrFramework.Net")]
+[assembly: AssemblyCopyright("Copyright © Microsoft 2010-2012")]
 [assembly: AssemblyTrademark("http://acbr.sourceforge.net")]
 [assembly: AssemblyCulture("")]
 

@@ -2,7 +2,7 @@
 
 namespace ACBrFramework
 {
-	public abstract class ACBrComposedComponent : ACBrComponent
+	public abstract class ACBrComposedComponent : ACBrInteropBase
 	{
 		#region Properties
 
@@ -28,8 +28,6 @@ namespace ACBrFramework
 		#endregion Constructor
 
 		#region Methods
-
-		protected override void OnDisposing() { }
 
 		protected internal override void CheckResult(int result)
 		{

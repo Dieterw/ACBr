@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Drawing;
 
 namespace ACBrFramework
 {
+	[ToolboxBitmap(typeof(ACBrPAF), @"ACBrPAF.ico.bmp")]
 	public class ACBrPAF : ACBrComponent, IDisposable
 	{
 		#region Fields
@@ -15,7 +17,6 @@ namespace ACBrFramework
 
 		public ACBrPAF()
 		{
-			Create(ACBrPAFInterop.PAF_Create);
 		}
 
 		#endregion Constructor
@@ -599,6 +600,11 @@ namespace ACBrFramework
 
 		#region Override Methods
 
+		protected internal override void OnInitializeComponent()
+		{
+			CallCreate(ACBrPAFInterop.PAF_Create);
+		}
+
 		protected internal override void CheckResult(int ret)
 		{
 			switch (ret)
@@ -618,7 +624,7 @@ namespace ACBrFramework
 		{
 			if (this.Handle != IntPtr.Zero)
 			{
-				Destroy(ACBrPAFInterop.PAF_Destroy);
+				CallDestroy(ACBrPAFInterop.PAF_Destroy);
 			}
 		}
 

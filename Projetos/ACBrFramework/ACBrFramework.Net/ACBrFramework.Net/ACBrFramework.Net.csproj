@@ -8,7 +8,7 @@
     <ProjectGuid>{C66AC69F-8537-46AD-A6DB-576A61670FA4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ACBrFramework.Net</RootNamespace>
+    <RootNamespace>ACBrFramework</RootNamespace>
     <AssemblyName>ACBrFramework.Net</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -110,6 +110,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -127,7 +128,7 @@
     <Compile Include="ACBrAAC\ACBrECFEmpresa.cs" />
     <Compile Include="ACBrAAC\ACBrECFIdenticacaoPaf.cs" />
     <Compile Include="ACBrAAC\ACBrECFInfoPaf.cs" />
-    <Compile Include="ACBrBAL\ACBrBal.cs" />
+    <Compile Include="ACBrBAL\ACBrBAL.cs" />
     <Compile Include="ACBrBAL\ACBrBALInterop.cs" />
     <Compile Include="ACBrComponent.cs" />
     <Compile Include="ACBrComposedComponent.cs" />
@@ -180,12 +181,24 @@
     <Compile Include="ACBrPAF\Registros\ACBrPAFRegistroR5.cs" />
     <Compile Include="ACBrPAF\Registros\ACBrPAFRegistroR6.cs" />
     <Compile Include="ACBrPAF\Registros\ACBrPAFRegistroR7.cs" />
+    <Compile Include="ACBrInteropBase.cs" />
+    <Compile Include="Properties\Framework32.Designer.cs" Condition=" $(Platform) == x86 ">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Framework32.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Framework64.Designer.cs" Condition=" $(Platform) == x64 ">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Framework64.resx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ACBrECF\SerialHandShake.cs" />
     <Compile Include="ACBrECF\SerialParity.cs" />
     <Compile Include="ACBrECF\SerialStopBits.cs" />
     <Compile Include="ACBrPAF\ACBrPAFTipoDesenvolvimento.cs" />
     <Compile Include="ACBrPAF\ACBrPAFTipoFuncionamento.cs" />
+    <Compile Include="UnmanagedResources.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -204,7 +217,29 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="ACBrAAC\ico.bmp" />
+    <EmbeddedResource Include="Properties\Framework32.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Framework32.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Framework64.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Framework64.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ACBrBAL\ico.bmp" />
+    <EmbeddedResource Include="ACBrEAD\ico.bmp" />
+    <EmbeddedResource Include="ACBrECF\ico.bmp" />
+    <EmbeddedResource Include="ACBrLCB\ico.bmp" />
+    <EmbeddedResource Include="ACBrSintegra\ico.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ACBrPAF\ico.bmp" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

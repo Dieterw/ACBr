@@ -2153,7 +2153,8 @@ class function CTeUtil.IdentificaTipoSchema(const AXML: AnsiString; var I: integ
 var
  lTipoEvento: String;
 begin
-  I := pos('<infCTe',AXML) ;
+  // Corrigido por Italo em 05/10/2012
+  I := pos('<infCte',AXML) ;
   Result := 1;
   if I = 0  then
    begin

@@ -97,6 +97,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 05/10/2012
+-- ACBrECFSwedaSTX --
+[-] Correção para emissão da ReducaoZ quando último cupom permaneceu aberto e
+    ECF indica estado ecfRequerZ   (por: DSA)
+
 Data: 01/10/2012
 -- ACBrECFDaruma --
 [-] Aplicação do patch feito por usuário do fórum

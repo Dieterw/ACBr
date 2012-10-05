@@ -1376,8 +1376,21 @@ begin
      Cmd := Cmd + '|' + FormatDateTime('dd"/"mm"/"yyyy',DataHora) +
                   '|' + FormatDateTime('hh":"nn":"ss',DataHora) ;
 
-  AguardaImpressao := True ;
-  EnviaComando(Cmd,30) ;
+  try
+     AguardaImpressao := True ;
+     EnviaComando(Cmd,30) ;
+  except
+     on E : Exception do
+     begin
+        if (pos('0058',E.Message) <> 0) then   // Comando ou operação inválida!
+         begin                                 // Ficou algum Cupom aberto ?
+           CancelaCupom ;
+           ReducaoZ(DataHora);
+         end
+        else
+           raise ;
+    end ;
+  end;
 end;
 
 Procedure TACBrECFSwedaSTX.MudaHorarioVerao ;

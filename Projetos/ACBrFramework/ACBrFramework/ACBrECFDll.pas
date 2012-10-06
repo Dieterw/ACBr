@@ -126,6 +126,15 @@ type TDadosRZRec = record
      TotalTroco: double;
 end;
 
+type TRelatorioGerencial = record
+     Count : Integer;
+     Linhas : array of TRelatorioGerencialLinha;
+end
+
+type TRelatorioGerencialLinha = record
+     Linha : array[0...48] of char;
+end
+
 {Ponteiro para o Handle }
 type PDadosRZRec = ^TDadosRZRec;
 
@@ -5033,6 +5042,27 @@ begin
         Result := -1;
      end
    end;
+end;
+
+Function ECF_RelatorioGerencial(const ecfHandle: PECFHandle; const Indice : Integer) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+begin
+
+  if (ecfHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+  try
+     ecfHandle^.ECF.RelatorioGerencial();
+     Result := 0 ;
+  except
+     on exception : Exception do
+     begin
+        ecfHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end;
 end;
 
 {

@@ -36,6 +36,16 @@ type TRegistro10Rec = record
   FinalidadeArquivo   : Integer;
 end;
 
+type TRegistro11Rec = record
+  Responsavel : array[0..28] of char;
+  Bairro      : array[0..15] of char;
+  Cep         : array[0..8] of char;
+  Numero      : array[0..5] of char;
+  Complemento : array[0..22] of char;
+  Endereco    : array[0..34] of char;
+  Telefone    : array[0..12] of char;
+end;
+
 {Ponteiro para o Handle }
 type PSINHandle = ^TSintegraHandle;
 
@@ -297,6 +307,37 @@ try
     end;
     Result := 0;
     end;
+except
+   on exception : Exception do
+   begin
+      sinHandle^.UltimoErro := exception.Message;
+      Result := -1;
+   end
+end;
+end;
+
+function SIN_Registro11(const sinHandle: PSINHandle; const Registro11Rec : TRegistro11Rec): Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF}  export;
+begin
+  if (sinHandle = nil) then
+    begin
+       Result := -2;
+       Exit;
+    end;
+try
+  if sinHandle^.Sintegra.Ativo then
+  begin
+    with sinHandle^.Sintegra.Registro11 do
+    begin
+      Responsavel := Registro11Rec.Responsavel;
+      Bairro      := Registro11Rec.Bairro;
+      Cep         := Registro11Rec.Cep;
+      Numero      := Registro11Rec.Numero;
+      Complemento := Registro11Rec.Complemento;
+      Endereco    := Registro11Rec.Endereco;
+      Telefone    := Registro11Rec.Telefone;
+    end;
+    Result := 0;
+  end;
 except
    on exception : Exception do
    begin

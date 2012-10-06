@@ -1,5 +1,5 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
+Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACBrFramework.Net", "ACBrFramework.Net\ACBrFramework.Net.csproj", "{C66AC69F-8537-46AD-A6DB-576A61670FA4}"
 EndProject

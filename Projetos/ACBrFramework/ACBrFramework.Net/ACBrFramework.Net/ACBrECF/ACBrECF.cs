@@ -15,6 +15,7 @@ namespace ACBrFramework
 		private ACBrECFComprovanteNaoFiscal[] comprovantesNaoFiscais;
 		private ACBrECFRelatorioGerencial[] relatoriosGerenciais;
 		private ACBrAAC aac;
+        private ACBrEAD ead;
 
 		#endregion Fields
 
@@ -1075,46 +1076,7 @@ namespace ACBrFramework
 		{
 			int ret = ACBrECFInterop.ECF_ReducaoZ(this.Handle);
 			CheckResult(ret);
-		}
-
-		public void AbreRelatorioGerencial(int indice)
-		{
-			int ret = ACBrECFInterop.ECF_AbreRelatorioGerencial(this.Handle, indice);
-			CheckResult(ret);
-		}
-
-		public void LinhaRelatorioGerencial(string linha, int indiceBMP)
-		{
-			int ret = ACBrECFInterop.ECF_LinhaRelatorioGerencial(this.Handle, ToUTF8(linha), indiceBMP);
-			CheckResult(ret);
-		}
-
-		public void ProgramaRelatoriosGerenciais(string descricao, string posicao)
-		{
-			int ret = ACBrECFInterop.ECF_ProgramaRelatoriosGerenciais(this.Handle, descricao, posicao);
-			CheckResult(ret);
-		}
-
-		private void CarregaRelatoriosGerenciais(int count)
-		{
-			relatoriosGerenciais = new ACBrECFRelatorioGerencial[count];
-
-			for (int i = 0; i < count; i++)
-			{
-				var record = new ACBrECFInterop.RelatorioGerencialRec();
-				int ret = ACBrECFInterop.ECF_GetRelatoriosGerenciais(this.Handle, ref record, i);
-				CheckResult(ret);
-
-				ACBrECFRelatorioGerencial relatorio = new ACBrECFRelatorioGerencial()
-				{
-					Indice = FromUTF8(record.Indice),
-					Descricao = FromUTF8(record.Indice),
-					Contador = record.Contador
-				};
-
-				relatoriosGerenciais[i] = relatorio;
-			}
-		}
+		}		
 
 		public void AbreCupomVinculado(int coo, string codFormaPagto, decimal valor)
 		{
@@ -1402,6 +1364,65 @@ namespace ACBrFramework
 
 		#endregion Relatórios
 
+		#region Relatório Gerencial
+
+		public void AbreRelatorioGerencial(int indice)
+		{
+			int ret = ACBrECFInterop.ECF_AbreRelatorioGerencial(this.Handle, indice);
+			CheckResult(ret);
+		}
+
+		public void LinhaRelatorioGerencial(string linha, int indiceBMP)
+		{
+			int ret = ACBrECFInterop.ECF_LinhaRelatorioGerencial(this.Handle, ToUTF8(linha), indiceBMP);
+			CheckResult(ret);
+		}
+
+		public void ProgramaRelatoriosGerenciais(string descricao, string posicao)
+		{
+			int ret = ACBrECFInterop.ECF_ProgramaRelatoriosGerenciais(this.Handle, descricao, posicao);
+			CheckResult(ret);
+		}
+
+		public void CarregaRelatoriosGerenciais()
+		{
+			int count = ACBrECFInterop.ECF_CarregaRelatoriosGerenciais(this.Handle);
+			CheckResult(count);
+
+			CarregaRelatoriosGerenciais(count);
+		}
+
+		public void LerTotaisRelatoriosGerenciais()
+		{
+			int count = ACBrECFInterop.ECF_LerTotaisRelatoriosGerenciais(this.Handle);
+			CheckResult(count);
+
+			CarregaRelatoriosGerenciais(count);
+		}
+
+		private void CarregaRelatoriosGerenciais(int count)
+		{
+			relatoriosGerenciais = new ACBrECFRelatorioGerencial[count];
+
+			for (int i = 0; i < count; i++)
+			{
+				var record = new ACBrECFInterop.RelatorioGerencialRec();
+				int ret = ACBrECFInterop.ECF_GetRelatoriosGerenciais(this.Handle, ref record, i);
+				CheckResult(ret);
+
+				ACBrECFRelatorioGerencial relatorio = new ACBrECFRelatorioGerencial()
+				{
+					Indice = FromUTF8(record.Indice),
+					Descricao = FromUTF8(record.Indice),
+					Contador = record.Contador
+				};
+
+				relatoriosGerenciais[i] = relatorio;
+			}
+		}		
+
+		#endregion Relatório Gerencial
+
 		#region Alíquotas
 
 		public void CarregaAliquotas()
@@ -1663,9 +1684,38 @@ namespace ACBrFramework
 
 		#endregion AAC
 
-		#region Override Methods
+        #region EAD
 
-		protected internal override void OnInitializeComponent()
+        public ACBrEAD EAD
+        {
+            get
+            {
+                return this.ead;
+            }
+            set
+            {
+                if (value == null)
+                {
+                    int ret = ACBrECFInterop.ECF_SetEAD(this.Handle, IntPtr.Zero);
+                    CheckResult(ret);
+
+                    this.aac = null;
+                }
+                else
+                {
+                    int ret = ACBrECFInterop.ECF_SetEAD(this.Handle, value.Handle);
+                    CheckResult(ret);
+
+                    this.ead = value;
+                }
+            }
+        }
+
+        #endregion EAD
+
+        #region Override Methods
+
+        protected internal override void OnInitializeComponent()
 		{
 			CallCreate(ACBrECFInterop.ECF_Create);
 		}

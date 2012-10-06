@@ -10,6 +10,7 @@ uses
   ACBrDevice,
   ACBrUtil,
   ACBrAACDLL,
+  ACBrEADDll,
   ACBrPAFClass;
 
 {Classe que armazena os EventHandlers para o componente ACBr}
@@ -4305,6 +4306,34 @@ begin
   end;
 end;
 
+Function ECF_SetEAD(const ecfHandle: PECFHandle; const eadHandle : PEADHandle) : Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF}  export;
+begin
+
+  if (ecfHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+  if (eadHandle = nil) then
+  begin
+     ecfHandle^.ECF.EAD := nil;
+  end
+  else
+  begin
+
+    try
+       ecfHandle^.ECF.EAD := eadHandle^.EAD;
+       Result := 0;
+    except on exception : Exception do
+        begin
+         ecfHandle^.UltimoErro := exception.Message;
+         Result := -1;
+         end
+    end;
+  end;
+end;
+
 Function ECF_AcharECF(const ecfHandle: PECFHandle; const ProcuraModelo : Boolean; const ProcuraPorta  : Boolean; const TimeOut : Integer) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
 begin
 
@@ -5160,16 +5189,12 @@ end;
 exports
 
 { Funções }
-
-ECF_Create,
-ECF_Destroy,
-ECF_GetUltimoErro,
-ECF_Ativar, ECF_Desativar,
+ECF_Create, ECF_Destroy,
+ECF_GetUltimoErro, ECF_Ativar, ECF_Desativar,
 
 { Propriedades da porta serial }
 
 ECF_GetPorta, ECF_SetPorta,
-
 ECF_GetBaud, ECF_SetBaud,
 ECF_GetDataBits, ECF_SetDataBits,
 ECF_GetParity, ECF_SetParity,
@@ -5181,8 +5206,6 @@ ECF_GetSoftFlow, ECF_SetSoftFlow,
 ECF_GetTimeOut, ECF_SetTimeOut, ECF_GetAtivo,
 
 { Propriedades do Componente }
-
-
 ECF_GetModelo, ECF_SetModelo,
 
 ECF_GetColunas, ECF_GetAguardandoResposta, ECF_GetComandoEnviado, ECF_GetRespostaComando, ECF_GetComandoLOG, ECF_SetComandoLOG,
@@ -5227,19 +5250,22 @@ ECF_EfetuaPagamento, ECF_EstornaPagamento, ECF_FechaCupom, ECF_CancelaCupom,
 ECF_CancelaItemVendido, ECF_CancelaItemVendidoParcial,
 ECF_CancelaDescontoAcrescimoItem, ECF_CancelaDescontoAcrescimoSubTotal,
 
-ECF_LeituraX, ECF_ReducaoZ, ECF_AbreRelatorioGerencial,
-ECF_LinhaRelatorioGerencial, ECF_LinhaCupomVinculado,
+ECF_LeituraX, ECF_LinhaCupomVinculado,
 ECF_FechaRelatorio, ECF_PulaLinhas, ECF_CortaPapel,
 
 ECF_AbreCupomVinculado, ECF_AbreCupomVinculadoCNF,
 
+{ Aliquotas }
 ECF_GetAliquota, ECF_CarregaAliquotas, ECF_LerTotaisAliquota,
 ECF_GetAliquotasStr, ECF_LerTotaisAliquotaStr,
 ECF_ProgramaAliquota, ECF_AchaIcmsAliquota,
 
+{ Formas de Pagamento }
+
 ECF_GetFormaPagamento, ECF_CarregaFormasPagamento, ECF_LerTotaisFormaPagamento,
 ECF_GetFormasPagamentoStr, ECF_LerTotaisFormaPagamentoStr,
 ECF_ProgramaFormaPagamento,
+
 {ECF_AchaFPGDescricao,}
 
 ECF_GetComprovanteNaoFiscal, ECF_CarregaComprovantesNaoFiscais,
@@ -5263,56 +5289,49 @@ ECF_MudaHorarioVerao, ECF_MudaArredondamento,
 ECF_CorrigeEstadoErro,
 
 
-ECF_LeituraMemoriaFiscalReducao,
-ECF_LeituraMemoriaFiscalData,
-ECF_LeituraMemoriaFiscalSerialReducao,
-ECF_LeituraMemoriaFiscalSerialData,
-ECF_LeituraMemoriaFiscalArquivoReducao,
-ECF_LeituraMemoriaFiscalArquivoData,
+{ Leitura Memoria Fiscal }
+ECF_LeituraMemoriaFiscalReducao, ECF_LeituraMemoriaFiscalData,
+ECF_LeituraMemoriaFiscalSerialReducao, ECF_LeituraMemoriaFiscalSerialData,
+ECF_LeituraMemoriaFiscalArquivoReducao, ECF_LeituraMemoriaFiscalArquivoData,
 
-ECF_IdentificaPAF,
-ECF_GetDadosReducaoZ,
-ECF_GetDadosUltimaReducaoZ,
-ECF_GetDadosReducaoZClass,
-ECF_DestroyDadosReducaoZClass,
+{ Reduzão Z }
+ECF_GetDadosReducaoZ, ECF_GetDadosUltimaReducaoZ,
+ECF_GetDadosReducaoZClass, ECF_DestroyDadosReducaoZClass,
+ECF_ReducaoZ,
 
-ECF_SetAAC,
+{ Componentes ACBr }
+ECF_SetAAC, ECF_SetEAD,
+
+{ Relatorio Gerenciais }
+ECF_AbreRelatorioGerencial, ECF_LinhaRelatorioGerencial,
+ECF_GetRelatoriosGerenciais, ECF_LerTotaisRelatoriosGerenciais,
+ECF_ProgramaRelatoriosGerenciais, ECF_CarregaRelatoriosGerenciais,
 
 {PAF}
-ECF_PafMF_GerarCAT52,
-ECF_PafMF_LX_Impressao,
+ECF_PafMF_GerarCAT52, ECF_PafMF_LX_Impressao,
+ECF_IdentificaPAF,
 
 {PAF LMFC}
-ECF_PafMF_LMFC_Cotepe1704,
-ECF_PafMF_LMFC_Cotepe1704_CRZ,
-ECF_PafMF_LMFC_Espelho,
-ECF_PafMF_LMFC_Espelho_CRZ,
-ECF_PafMF_LMFC_Impressao,
-ECF_PafMF_LMFC_Impressao_CRZ,
+ECF_PafMF_LMFC_Cotepe1704, ECF_PafMF_LMFC_Cotepe1704_CRZ,
+ECF_PafMF_LMFC_Espelho, ECF_PafMF_LMFC_Espelho_CRZ,
+ECF_PafMF_LMFC_Impressao, ECF_PafMF_LMFC_Impressao_CRZ,
 
 {PAF LMFS}
-ECF_PafMF_LMFS_Espelho,
-ECF_PafMF_LMFS_Espelho_CRZ,
-ECF_PafMF_LMFS_Impressao,
-ECF_PafMF_LMFS_Impressao_CRZ,
+ECF_PafMF_LMFS_Espelho, ECF_PafMF_LMFS_Espelho_CRZ,
+ECF_PafMF_LMFS_Impressao, ECF_PafMF_LMFS_Impressao_CRZ,
 
 {PAF Espelho MFD}
-ECF_PafMF_MFD_Cotepe1704,
-ECF_PafMF_MFD_Cotepe1704_COO,
+ECF_PafMF_MFD_Cotepe1704, ECF_PafMF_MFD_Cotepe1704_COO,
 
 {PAF Arq. MFD}
-ECF_PafMF_MFD_Espelho,
-ECF_PafMF_MFD_Espelho_COO,
+ECF_PafMF_MFD_Espelho, ECF_PafMF_MFD_Espelho_COO,
 
 {DAV}
-ECF_DAV_Abrir,
-ECF_DAV_RegistrarItem,
-ECF_DAV_Fechar,
-ECF_PafMF_RelDAVEmitidos,
+ECF_DAV_Abrir, ECF_DAV_RegistrarItem,
+ECF_DAV_Fechar, ECF_PafMF_RelDAVEmitidos,
 
 {Paf Rels}
-ECF_PafMF_RelMeiosPagamento,
-ECF_PafMF_RelIdentificacaoPafECF;
+ECF_PafMF_RelMeiosPagamento, ECF_PafMF_RelIdentificacaoPafECF;
 
 {Não implementado}
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.ComponentModel.Design;
 
 namespace ACBrFramework
 {
@@ -63,8 +62,6 @@ namespace ACBrFramework
 
 		#region P/Invoke Helpers
 
-		protected internal virtual void OnInitializeComponent() { }
-
 		protected void CallCreate(CreateEntryPointDelegate entryPoint)
 		{
 			var ret = entryPoint(ref this.handle);
@@ -108,9 +105,15 @@ namespace ACBrFramework
 
 		#endregion P/Invoke Helpers
 
-		#region Dispose Methods
+		#region Abstract Methods
+
+		protected internal abstract void OnInitializeComponent();
 
 		protected abstract void OnDisposing();
+
+		#endregion Abstract Methods
+
+		#region Dispose Methods
 
 		private void Dispose(bool disposing)
 		{

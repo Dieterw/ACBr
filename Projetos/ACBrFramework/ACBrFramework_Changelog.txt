@@ -41,6 +41,7 @@ Símbolo : Significado
 
 Changelog
 06/10/2012 (ACBrFramework - 0.9.0.145)
+[*] Reorganizado o projeto ACBrFramework.OCX e alterado para utilizar as declarações da ACBrFramework32.DLL exportadas pelo ACBrDefExporter - Rafael Batiati
 [+] Implementado o metodo ECF_SetEAD - ACBrFramework e ACBrFramework.Net - Rafael Dias.
 [+] Implementado o metodo ECF_CarregaRelatoriosGerenciais - ACBrFramework e ACBrFramework.Net - Rafael Dias.
 [+] Implementado o metodo ECF_LerTotaisRelatoriosGerenciais - ACBrFramework e ACBrFramework.Net - Rafael Dias.

@@ -1,13 +1,13 @@
 Type=Exe
 Form=FormMain.frm
 Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#C:\WINDOWS\system32\stdole2.tlb#OLE Automation
-Object=*\AACBr_ActiveX.vbp
+Object={3AD7EC29-BB17-4F26-A4D0-E962E35FE505}#1.0#0; ACBrFramework.ocx
 IconForm="FormMain"
 Startup="FormMain"
 HelpFile=""
 Title="ACBr_VB6"
 Command32=""
-Name="ACBr_VB6"
+Name="ACBrFramework_Teste"
 HelpContextID="0"
 CompatibleMode="0"
 MajorVer=1

@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "*\AACBr_ActiveX.vbp"
+Object = "*\AACBrFramework.vbp"
 Begin VB.Form FormMain 
    Caption         =   "Form1"
    ClientHeight    =   4680
@@ -86,7 +86,7 @@ Begin VB.Form FormMain
       Top             =   360
       Width           =   1335
    End
-   Begin ACBr_ActiveX.ACBrECF ACBrECF1 
+   Begin ACBrFramework.ACBrECF ACBrECF1 
       Height          =   375
       Left            =   120
       TabIndex        =   0

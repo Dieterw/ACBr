@@ -82,6 +82,98 @@ namespace ACBrFramework
 			public string Telefone;
 		}
 
+		[StructLayout(LayoutKind.Sequential)]
+		public struct Registro50Rec
+		{
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+			public string CPFCNPJ;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+			public string Inscricao;
+			
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 3)]
+			public string UF;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2)]
+			public string Situacao;
+			
+			[MarshalAs(UnmanagedType.R8)]
+			public double Aliquota;
+			
+			[MarshalAs(UnmanagedType.R8)]
+			public double Isentas;
+			
+			[MarshalAs(UnmanagedType.R8)]
+			public double Icms;
+			
+			[MarshalAs(UnmanagedType.R8)]
+			public double ValorContabil;
+			
+			[MarshalAs(UnmanagedType.R8)]
+			public double BasedeCalculo;
+			
+			[MarshalAs(UnmanagedType.R8)]
+			public double Outras;
+			
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2)]
+			public string EmissorDocumento;
+			
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 5)]
+			public string Cfop;			
+			
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+			public string Serie;			
+			
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 3)]
+			public string Modelo;
+			
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 7)]
+			public string Numero;
+			
+			[MarshalAs(UnmanagedType.R8)]
+			public double DataDocumento;
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
+		public struct Registro51Rec
+		{
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+			public string CPFCNPJ;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+			public string Inscricao;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 3)]
+			public string Estado;
+	
+			[MarshalAs(UnmanagedType.R8)]
+			public double ValorIpi;
+			
+			[MarshalAs(UnmanagedType.R8)]
+			public double ValorContabil;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+			public string Serie;
+
+			[MarshalAs(UnmanagedType.R8)]
+			public double DataDocumento;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 5)]
+			public string Cfop;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 7)]
+			public string Numero;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2)]
+			public string Situacao;
+			
+			[MarshalAs(UnmanagedType.R8)]
+			public double ValorIsentas ;
+
+			[MarshalAs(UnmanagedType.R8)]
+			public double ValorOutras;			
+		}
+
 		#endregion Interop Types
 
 		#region Propriedades do Componente
@@ -126,6 +218,12 @@ namespace ACBrFramework
 
 		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
 		public static extern int SIN_Registro11(IntPtr sinHandle, Registro11Rec registro11);
+
+		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int SIN_Registro50(IntPtr sinHandle, Registro50Rec[] registro50, int count);
+
+		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int SIN_Registro51(IntPtr sinHandle, Registro51Rec[] registro51, int count);
 
 		#endregion Methods
 

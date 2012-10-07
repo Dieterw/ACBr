@@ -2027,11 +2027,12 @@
 			this.acbrECF.AAC = this.acbrAAC;
 			this.acbrECF.AguardaImpressao = false;
 			this.acbrECF.Baud = 9600;
-			this.acbrECF.ComandoLog = "VendaBruta";
+			this.acbrECF.ComandoLog = "Estado";
 			this.acbrECF.DataBits = 8;
 			this.acbrECF.DecimaisPreco = 3;
 			this.acbrECF.DecimaisQtd = 3;
 			this.acbrECF.DescricaoGrande = false;
+			this.acbrECF.EAD = this.acbrEAD;
 			this.acbrECF.GavetaSinalInvertido = false;
 			this.acbrECF.HandShake = ACBrFramework.SerialHandShake.None;
 			this.acbrECF.HardFlow = false;

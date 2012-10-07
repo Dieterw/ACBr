@@ -96,6 +96,56 @@ namespace ACBrFramework
 			CheckResult(ret);
 		}
 
+		public void Registro50(SintegraRegistro50[] registro50)
+		{
+			ACBrSintegraInterop.Registro50Rec[] record = new ACBrSintegraInterop.Registro50Rec[registro50.Length];
+			for (int i = 0; i < registro50.Length; i++)
+			{
+				record[i].CPFCNPJ = ToUTF8(registro50[i].CPFCNPJ.ToString());
+				record[i].Inscricao = ToUTF8(registro50[i].Inscricao.ToString());
+				record[i].UF = ToUTF8(registro50[i].UF);
+				record[i].Situacao = ToUTF8(registro50[i].Situacao);
+				record[i].Aliquota = registro50[i].Aliquota;
+				record[i].Isentas = registro50[i].Isentas;
+				record[i].Icms = registro50[i].Icms;
+				record[i].ValorContabil = registro50[i].ValorContabil;
+				record[i].BasedeCalculo = registro50[i].BasedeCalculo;
+				record[i].Outras = registro50[i].Outras;
+				record[i].EmissorDocumento = ToUTF8(registro50[i].EmissorDocumento);
+				record[i].Cfop = ToUTF8(registro50[i].Cfop);
+				record[i].Serie = ToUTF8(registro50[i].Serie);
+				record[i].Modelo = ToUTF8(registro50[i].Modelo);
+				record[i].Numero = ToUTF8(registro50[i].Numero.ToString());
+				record[i].DataDocumento = registro50[i].DataDocumento.ToOADate();
+			}
+
+			int ret = ACBrSintegraInterop.SIN_Registro50(this.Handle, record, registro50.Length);
+			CheckResult(ret);
+		}
+
+		public void Registro51(SintegraRegistro51[] registro51)
+		{
+			ACBrSintegraInterop.Registro51Rec[] record = new ACBrSintegraInterop.Registro51Rec[registro51.Length];
+			for (int i = 0; i < registro51.Length; i++)
+			{
+				record[i].CPFCNPJ = ToUTF8(registro51[i].CPFCNPJ.ToString());
+				record[i].Inscricao = ToUTF8(registro51[i].Inscricao.ToString());
+				record[i].Estado = ToUTF8(registro51[i].Estado);
+				record[i].ValorContabil = registro51[i].ValorContabil;
+				record[i].Cfop = ToUTF8(registro51[i].Cfop);
+				record[i].Serie = ToUTF8(registro51[i].Serie);
+				record[i].Numero = ToUTF8(registro51[i].Numero.ToString());
+				record[i].DataDocumento = registro51[i].DataDocumento.ToOADate();
+				record[i].ValorIpi  = registro51[i].ValorIpi;
+				record[i].Situacao = ToUTF8(registro51[i].Situacao);
+				record[i].ValorIsentas = registro51[i].ValorIsentas;
+				record[i].ValorOutras = registro51[i].ValorOutras;
+			}
+
+			int ret = ACBrSintegraInterop.SIN_Registro51(this.Handle, record, registro51.Length);
+			CheckResult(ret);
+		}
+
 		#region Override Methods
 
 		protected internal override void OnInitializeComponent()

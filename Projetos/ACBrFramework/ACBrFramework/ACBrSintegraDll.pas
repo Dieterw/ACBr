@@ -358,6 +358,9 @@ SIN_GetFileName, SIN_SetFileName,
 SIN_GetVersaoValidador, SIN_SetVersaoValidador,
 SIN_GetAtivo,
 { Funções do componente }
-SIN_LimparRegistros, SIN_Registro10;
+SIN_LimparRegistros,
+
+{ Registros }
+SIN_Registro10, SIN_Registro11;
 end.
 

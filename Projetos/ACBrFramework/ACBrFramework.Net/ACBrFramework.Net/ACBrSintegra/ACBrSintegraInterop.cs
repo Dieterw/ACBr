@@ -57,6 +57,31 @@ namespace ACBrFramework
 			public int FinalidadeArquivo;
 		}
 
+		[StructLayout(LayoutKind.Sequential)]
+		public struct Registro11Rec
+		{
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 29)]
+			public string Responsavel;
+			
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 14)]
+			public string Bairro;
+			
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+			public string Cep;
+			
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 6)]
+			public string Numero;
+			
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 23)]
+			public string Complemento;
+			
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 35)]
+			public string Endereco;
+			
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+			public string Telefone;
+		}
+
 		#endregion Interop Types
 
 		#region Propriedades do Componente
@@ -98,6 +123,9 @@ namespace ACBrFramework
 
 		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
 		public static extern int SIN_Registro10(IntPtr sinHandle, Registro10Rec registro10);
+
+		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int SIN_Registro11(IntPtr sinHandle, Registro11Rec registro11);
 
 		#endregion Methods
 

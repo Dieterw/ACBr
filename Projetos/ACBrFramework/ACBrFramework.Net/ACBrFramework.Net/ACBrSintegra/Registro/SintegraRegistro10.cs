@@ -4,9 +4,9 @@ namespace ACBrFramework
 {
 	public class SintegraRegistro10
 	{
-		public string CNPJ { get; set; }
+		public int CNPJ { get; set; }
 
-		public string Inscricao { get; set; }
+		public int Inscricao { get; set; }
 
 		public string RazaoSocial { get; set; }
 
@@ -14,7 +14,7 @@ namespace ACBrFramework
 
 		public string Estado { get; set; }
 
-		public string Telefone { get; set; }
+		public int Telefone { get; set; }
 
 		public DateTime DataInicial { get; set; }
 

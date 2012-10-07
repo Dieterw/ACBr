@@ -735,6 +735,15 @@ namespace ACBrFramework
 			}
 		}
 
+		public ACBrECFRelatorioGerencial[] RelatoriosGerenciais
+		{
+			get
+			{
+				if (relatoriosGerenciais == null) CarregaRelatoriosGerenciais();
+				return (ACBrECFRelatorioGerencial[])relatoriosGerenciais;
+			}
+		}
+
 		public ACBrECFComprovanteNaoFiscal[] ComprovantesNaoFiscais
 		{
 			get
@@ -790,6 +799,29 @@ namespace ACBrFramework
 
 			return Convert.ToBoolean(ret);
 		}
+
+		public void PulaLinhas(int numLinhas)
+		{
+			int ret = ACBrECFInterop.ECF_PulaLinhas(this.Handle, numLinhas);
+			CheckResult(ret);
+		}
+
+		public void CortaPapel(bool corteParcial)
+		{
+			int ret = ACBrECFInterop.ECF_CortaPapel(this.Handle, corteParcial);
+			CheckResult(ret);
+		}
+
+		public void CorrigeEstadoErro()
+		{
+			CorrigeEstadoErro(true);
+		}
+
+		public void CorrigeEstadoErro(bool reducaoZ)
+		{
+			int ret = ACBrECFInterop.ECF_CorrigeEstadoErro(this.Handle, reducaoZ);
+			CheckResult(ret);
+		}		
 
 		#endregion Métodos ECF
 
@@ -1064,72 +1096,7 @@ namespace ACBrFramework
 
 		#endregion PAF Arq. MFD
 
-		#region Relatórios
-
-		public void LeituraX()
-		{
-			int ret = ACBrECFInterop.ECF_LeituraX(this.Handle);
-			CheckResult(ret);
-		}
-
-		public void ReducaoZ()
-		{
-			int ret = ACBrECFInterop.ECF_ReducaoZ(this.Handle);
-			CheckResult(ret);
-		}		
-
-		public void AbreCupomVinculado(int coo, string codFormaPagto, decimal valor)
-		{
-			var cooStr = string.Format("{0:000000}", coo);
-			AbreCupomVinculado(cooStr, codFormaPagto, valor);
-		}
-
-		public void AbreCupomVinculado(string coo, string codFormaPagto, decimal valor)
-		{
-			int ret = ACBrECFInterop.ECF_AbreCupomVinculado(this.Handle, ToUTF8(coo), ToUTF8(codFormaPagto), (double)valor);
-			CheckResult(ret);
-		}
-
-		public void AbreCupomVinculado(string coo, string codFormaPagto, string codComprovanteNaoFiscal, decimal valor)
-		{
-			int ret = ACBrECFInterop.ECF_AbreCupomVinculadoCNF(this.Handle, ToUTF8(coo), ToUTF8(codFormaPagto), ToUTF8(codComprovanteNaoFiscal), (double)valor);
-			CheckResult(ret);
-		}
-
-		public void LinhaCupomVinculado(string linha)
-		{
-			int ret = ACBrECFInterop.ECF_LinhaCupomVinculado(this.Handle, ToUTF8(linha));
-			CheckResult(ret);
-		}
-
-		public void FechaRelatorio()
-		{
-			int ret = ACBrECFInterop.ECF_FechaRelatorio(this.Handle);
-			CheckResult(ret);
-		}
-
-		public void PulaLinhas(int numLinhas)
-		{
-			int ret = ACBrECFInterop.ECF_PulaLinhas(this.Handle, numLinhas);
-			CheckResult(ret);
-		}
-
-		public void CortaPapel(bool corteParcial)
-		{
-			int ret = ACBrECFInterop.ECF_CortaPapel(this.Handle, corteParcial);
-			CheckResult(ret);
-		}
-
-		public void CorrigeEstadoErro()
-		{
-			CorrigeEstadoErro(true);
-		}
-
-		public void CorrigeEstadoErro(bool reducaoZ)
-		{
-			int ret = ACBrECFInterop.ECF_CorrigeEstadoErro(this.Handle, reducaoZ);
-			CheckResult(ret);
-		}
+		#region Leitura Memoria Fiscal
 
 		public void LeituraMemoriaFiscal(int reducaoInicial, int reducaoFinal)
 		{
@@ -1208,6 +1175,50 @@ namespace ACBrFramework
 			int ret = ACBrECFInterop.ECF_LeituraMemoriaFiscalArquivoData(this.Handle, dataInicial.ToOADate(), dataFinal.ToOADate(), ToUTF8(nomeArquivo), simplificada);
 			CheckResult(ret);
 		}
+
+		#endregion Leitura Memoria Fiscal
+
+		#region Cupom Vinculado
+
+		public void AbreCupomVinculado(int coo, string codFormaPagto, decimal valor)
+		{
+			var cooStr = string.Format("{0:000000}", coo);
+			AbreCupomVinculado(cooStr, codFormaPagto, valor);
+		}
+
+		public void AbreCupomVinculado(string coo, string codFormaPagto, decimal valor)
+		{
+			int ret = ACBrECFInterop.ECF_AbreCupomVinculado(this.Handle, ToUTF8(coo), ToUTF8(codFormaPagto), (double)valor);
+			CheckResult(ret);
+		}
+
+		public void AbreCupomVinculado(string coo, string codFormaPagto, string codComprovanteNaoFiscal, decimal valor)
+		{
+			int ret = ACBrECFInterop.ECF_AbreCupomVinculadoCNF(this.Handle, ToUTF8(coo), ToUTF8(codFormaPagto), ToUTF8(codComprovanteNaoFiscal), (double)valor);
+			CheckResult(ret);
+		}
+
+		public void LinhaCupomVinculado(string linha)
+		{
+			int ret = ACBrECFInterop.ECF_LinhaCupomVinculado(this.Handle, ToUTF8(linha));
+			CheckResult(ret);
+		}
+
+		#endregion
+
+		#region Leitura X / Redução Z
+
+		public void LeituraX()
+		{
+			int ret = ACBrECFInterop.ECF_LeituraX(this.Handle);
+			CheckResult(ret);
+		}
+
+		public void ReducaoZ()
+		{
+			int ret = ACBrECFInterop.ECF_ReducaoZ(this.Handle);
+			CheckResult(ret);
+		}			
 
 		public string GetDadosUltimaReducaoZ()
 		{
@@ -1362,7 +1373,7 @@ namespace ACBrFramework
 			}
 		}
 
-		#endregion Relatórios
+		#endregion Leitura X / Redução Z
 
 		#region Relatório Gerencial
 
@@ -1419,7 +1430,28 @@ namespace ACBrFramework
 
 				relatoriosGerenciais[i] = relatorio;
 			}
-		}		
+		}
+
+		public void RelatorioGerencial(ACBrECFRelatorioGerencialRec Relatorio, int Vias, int Indice)
+		{
+			ACBrECFInterop.RelatorioGerencial record = new ACBrECFInterop.RelatorioGerencial();
+			ACBrECFInterop.RelatorioGerencialLinha[] record2 = new ACBrECFInterop.RelatorioGerencialLinha[Relatorio.Linhas.Length];
+
+			for (int i = 0; i < Relatorio.Linhas.Length; i++)
+				record2[i].Texto = Relatorio.Linhas[i];
+
+			record.Count = Relatorio.Linhas.Length;
+			record.Linhas = record2;
+
+			int ret = ACBrECFInterop.ECF_RelatorioGerencial(this.Handle, record, Vias, Indice);
+			CheckResult(ret);
+		}
+
+		public void FechaRelatorio()
+		{
+			int ret = ACBrECFInterop.ECF_FechaRelatorio(this.Handle);
+			CheckResult(ret);
+		}
 
 		#endregion Relatório Gerencial
 

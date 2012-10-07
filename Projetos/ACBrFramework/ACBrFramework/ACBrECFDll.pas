@@ -126,14 +126,14 @@ type TDadosRZRec = record
      TotalTroco: double;
 end;
 
+type TRelatorioGerencialLinha = record
+     Texto : array[0..48] of char;
+end;
+
 type TRelatorioGerencial = record
      Count : Integer;
      Linhas : array of TRelatorioGerencialLinha;
-end
-
-type TRelatorioGerencialLinha = record
-     Linha : array[0...48] of char;
-end
+end;
 
 {Ponteiro para o Handle }
 type PDadosRZRec = ^TDadosRZRec;
@@ -5044,7 +5044,10 @@ begin
    end;
 end;
 
-Function ECF_RelatorioGerencial(const ecfHandle: PECFHandle; const Indice : Integer) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+Function ECF_RelatorioGerencial(const ecfHandle: PECFHandle; const Relatorio : TRelatorioGerencial; const Vias : Integer; const Indice: Integer) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+var
+  i: Integer;
+  Lista: TStringList;
 begin
 
   if (ecfHandle = nil) then
@@ -5054,8 +5057,12 @@ begin
   end;
 
   try
-     ecfHandle^.ECF.RelatorioGerencial();
-     Result := 0 ;
+  for i := 0 to Relatorio.Count - 1 do
+  begin
+  Lista.Add(Relatorio.Linhas[i].Texto);
+  end;
+  ecfHandle^.ECF.RelatorioGerencial(Lista, Vias, Indice);
+  Result := 0 ;
   except
      on exception : Exception do
      begin
@@ -5336,6 +5343,7 @@ ECF_SetAAC, ECF_SetEAD,
 ECF_AbreRelatorioGerencial, ECF_LinhaRelatorioGerencial,
 ECF_GetRelatoriosGerenciais, ECF_LerTotaisRelatoriosGerenciais,
 ECF_ProgramaRelatoriosGerenciais, ECF_CarregaRelatoriosGerenciais,
+ECF_RelatorioGerencial,
 
 {PAF}
 ECF_PafMF_GerarCAT52, ECF_PafMF_LX_Impressao,

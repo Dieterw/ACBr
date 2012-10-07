@@ -65,12 +65,12 @@ namespace ACBrFramework
 		public void Registro10(SintegraRegistro10 registro10)
 		{
 			var record = new ACBrSintegraInterop.Registro10Rec();
-			record.RazaoSocial = registro10.RazaoSocial;
-			record.CNPJ = registro10.CNPJ;
-			record.Inscricao = registro10.Inscricao;
-			record.Cidade = registro10.Cidade;
-			record.Estado = registro10.Estado;
-			record.Telefone = registro10.Telefone;
+			record.RazaoSocial = ToUTF8(registro10.RazaoSocial);
+			record.CNPJ = ToUTF8(registro10.CNPJ.ToString());
+			record.Inscricao = ToUTF8(registro10.Inscricao.ToString());
+			record.Cidade = ToUTF8(registro10.Cidade);
+			record.Estado = ToUTF8(registro10.Estado);
+			record.Telefone = ToUTF8(registro10.Telefone.ToString());
 			record.DataInicial = registro10.DataInicial.ToOADate();
 			record.DataFinal = registro10.DataFinal.ToOADate();
 			record.NaturezaInformacoes = registro10.NaturezaInformacoes;
@@ -78,6 +78,21 @@ namespace ACBrFramework
 			record.CodigoConvenio = registro10.CodigoConvenio;
 
 			int ret = ACBrSintegraInterop.SIN_Registro10(this.Handle, record);
+			CheckResult(ret);
+		}
+
+		public void Registro11(SintegraRegistro11 registro11)
+		{
+			var record = new ACBrSintegraInterop.Registro11Rec();
+			record.Responsavel = ToUTF8(registro11.Responsavel);
+			record.Bairro = ToUTF8(registro11.Bairro);
+			record.Cep = ToUTF8(registro11.Cep.ToString());
+			record.Numero = ToUTF8(registro11.Numero.ToString());
+			record.Complemento = ToUTF8(registro11.Complemento);
+			record.Endereco = ToUTF8(registro11.Endereco);
+			record.Telefone = ToUTF8(registro11.Telefone.ToString());	
+
+			int ret = ACBrSintegraInterop.SIN_Registro11(this.Handle, record);
 			CheckResult(ret);
 		}
 

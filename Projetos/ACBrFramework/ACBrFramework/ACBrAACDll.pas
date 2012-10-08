@@ -1910,6 +1910,54 @@ begin
 end;
 
 ////////DADOS DA SOFTWARE HOUSE
+
+Function AAC_IdentPaf_Empresa_GetCNPJ(const aacHandle: PaacHandle; Buffer : pChar; const BufferLen : Integer) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+var
+  StrTmp : String;
+begin
+
+  if (aacHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+ try
+     StrTmp := aacHandle^.AAC.IdentPAF.Empresa.CNPJ;
+     StrPLCopy(Buffer, StrTmp, BufferLen);
+     Result := length(StrTmp);
+  except
+     on exception : Exception do
+     begin
+        aacHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end;
+
+end;
+
+Function AAC_IdentPaf_Empresa_SetCNPJ(const aacHandle: PaacHandle; const CNPJ : pChar) : Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF}  export;
+begin
+
+  if (aacHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+  try
+     aacHandle^.AAC.IdentPAF.Empresa.CNPJ := CNPJ;
+     Result := 0;
+  except
+     on exception : Exception do
+     begin
+        aacHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end;
+
+end;
+
 Function AAC_IdentPaf_Empresa_GetRazaoSocial(const aacHandle: PaacHandle; Buffer : pChar; const BufferLen : Integer) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
 var
   StrTmp : String;
@@ -1957,7 +2005,7 @@ begin
 
 end;
 
-Function AAC_IdentPaf_Empresa_GetCNPJ(const aacHandle: PaacHandle; Buffer : pChar; const BufferLen : Integer) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+Function AAC_IdentPaf_Empresa_GetEndereco(const aacHandle: PaacHandle; Buffer : pChar; const BufferLen : Integer) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
 var
   StrTmp : String;
 begin
@@ -1969,7 +2017,7 @@ begin
   end;
 
  try
-     StrTmp := aacHandle^.AAC.IdentPAF.Empresa.CNPJ;
+     StrTmp := aacHandle^.AAC.IdentPAF.Empresa.Endereco;
      StrPLCopy(Buffer, StrTmp, BufferLen);
      Result := length(StrTmp);
   except
@@ -1982,7 +2030,7 @@ begin
 
 end;
 
-Function AAC_IdentPaf_Empresa_SetCNPJ(const aacHandle: PaacHandle; const CNPJ : pChar) : Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF}  export;
+Function AAC_IdentPaf_Empresa_SetEndereco(const aacHandle: PaacHandle; const Endereco : pChar) : Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF}  export;
 begin
 
   if (aacHandle = nil) then
@@ -1992,7 +2040,289 @@ begin
   end;
 
   try
-     aacHandle^.AAC.IdentPAF.Empresa.CNPJ := CNPJ;
+     aacHandle^.AAC.IdentPAF.Empresa.Endereco := Endereco;
+     Result := 0;
+  except
+     on exception : Exception do
+     begin
+        aacHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end;
+
+end;
+
+Function AAC_IdentPaf_Empresa_GetCep(const aacHandle: PaacHandle; Buffer : pChar; const BufferLen : Integer) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+var
+  StrTmp : String;
+begin
+
+  if (aacHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+ try
+     StrTmp := aacHandle^.AAC.IdentPAF.Empresa.Cep;
+     StrPLCopy(Buffer, StrTmp, BufferLen);
+     Result := length(StrTmp);
+  except
+     on exception : Exception do
+     begin
+        aacHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end;
+
+end;
+
+Function AAC_IdentPaf_Empresa_SetCep(const aacHandle: PaacHandle; const Cep : pChar) : Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF}  export;
+begin
+
+  if (aacHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+  try
+     aacHandle^.AAC.IdentPAF.Empresa.Cep := Cep;
+     Result := 0;
+  except
+     on exception : Exception do
+     begin
+        aacHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end;
+
+end;
+
+Function AAC_IdentPaf_Empresa_GetCidade(const aacHandle: PaacHandle; Buffer : pChar; const BufferLen : Integer) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+var
+  StrTmp : String;
+begin
+
+  if (aacHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+ try
+     StrTmp := aacHandle^.AAC.IdentPAF.Empresa.Cidade;
+     StrPLCopy(Buffer, StrTmp, BufferLen);
+     Result := length(StrTmp);
+  except
+     on exception : Exception do
+     begin
+        aacHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end;
+
+end;
+
+Function AAC_IdentPaf_Empresa_SetCidade(const aacHandle: PaacHandle; const Cidade : pChar) : Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF}  export;
+begin
+
+  if (aacHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+  try
+     aacHandle^.AAC.IdentPAF.Empresa.Cidade := Cidade;
+     Result := 0;
+  except
+     on exception : Exception do
+     begin
+        aacHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end;
+
+end;
+
+Function AAC_IdentPaf_Empresa_GetUf(const aacHandle: PaacHandle; Buffer : pChar; const BufferLen : Integer) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+var
+  StrTmp : String;
+begin
+
+  if (aacHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+ try
+     StrTmp := aacHandle^.AAC.IdentPAF.Empresa.Uf;
+     StrPLCopy(Buffer, StrTmp, BufferLen);
+     Result := length(StrTmp);
+  except
+     on exception : Exception do
+     begin
+        aacHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end;
+
+end;
+
+Function AAC_IdentPaf_Empresa_SetUf(const aacHandle: PaacHandle; const Uf : pChar) : Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF}  export;
+begin
+
+  if (aacHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+  try
+     aacHandle^.AAC.IdentPAF.Empresa.Uf := Uf;
+     Result := 0;
+  except
+     on exception : Exception do
+     begin
+        aacHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end;
+
+end;
+
+Function AAC_IdentPaf_Empresa_GetTelefone(const aacHandle: PaacHandle; Buffer : pChar; const BufferLen : Integer) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+var
+  StrTmp : String;
+begin
+
+  if (aacHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+ try
+     StrTmp := aacHandle^.AAC.IdentPAF.Empresa.Telefone;
+     StrPLCopy(Buffer, StrTmp, BufferLen);
+     Result := length(StrTmp);
+  except
+     on exception : Exception do
+     begin
+        aacHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end;
+
+end;
+
+Function AAC_IdentPaf_Empresa_SetTelefone(const aacHandle: PaacHandle; const Telefone : pChar) : Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF}  export;
+begin
+
+  if (aacHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+  try
+     aacHandle^.AAC.IdentPAF.Empresa.Telefone := Telefone;
+     Result := 0;
+  except
+     on exception : Exception do
+     begin
+        aacHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end;
+
+end;
+
+Function AAC_IdentPaf_Empresa_GetContato(const aacHandle: PaacHandle; Buffer : pChar; const BufferLen : Integer) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+var
+  StrTmp : String;
+begin
+
+  if (aacHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+ try
+     StrTmp := aacHandle^.AAC.IdentPAF.Empresa.Contato;
+     StrPLCopy(Buffer, StrTmp, BufferLen);
+     Result := length(StrTmp);
+  except
+     on exception : Exception do
+     begin
+        aacHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end;
+
+end;
+
+Function AAC_IdentPaf_Empresa_SetContato(const aacHandle: PaacHandle; const Contato : pChar) : Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF}  export;
+begin
+
+  if (aacHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+  try
+     aacHandle^.AAC.IdentPAF.Empresa.Contato := Contato;
+     Result := 0;
+  except
+     on exception : Exception do
+     begin
+        aacHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end;
+
+end;
+
+Function AAC_IdentPaf_Empresa_GetEmail(const aacHandle: PaacHandle; Buffer : pChar; const BufferLen : Integer) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+var
+  StrTmp : String;
+begin
+
+  if (aacHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+ try
+     StrTmp := aacHandle^.AAC.IdentPAF.Empresa.Email;
+     StrPLCopy(Buffer, StrTmp, BufferLen);
+     Result := length(StrTmp);
+  except
+     on exception : Exception do
+     begin
+        aacHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end;
+
+end;
+
+Function AAC_IdentPaf_Empresa_SetEmail(const aacHandle: PaacHandle; const Email : pChar) : Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF}  export;
+begin
+
+  if (aacHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+  try
+     aacHandle^.AAC.IdentPAF.Empresa.Email := Email;
      Result := 0;
   except
      on exception : Exception do
@@ -2133,8 +2463,15 @@ AAC_IdentPaf_Paf_GetTipoFuncionamento,AAC_IdentPaf_Paf_SetTipoFuncionamento,
 AAC_IdentPaf_Paf_GetTipoDesenvolvimento,AAC_IdentPaf_Paf_SetTipoDesenvolvimento,
 AAC_IdentPaf_Paf_GetIntegracaoPafECF,AAC_IdentPaf_Paf_SetIntegracaoPafECF,
 //software house
-AAC_IdentPaf_Empresa_GetRazaoSocial,AAC_IdentPaf_Empresa_SetRazaoSocial,
 AAC_IdentPaf_Empresa_GetCNPJ, AAC_IdentPaf_Empresa_SetCNPJ,
+AAC_IdentPaf_Empresa_GetRazaoSocial,AAC_IdentPaf_Empresa_SetRazaoSocial,
+AAC_IdentPaf_Empresa_GetEndereco,AAC_IdentPaf_Empresa_SetEndereco,
+AAC_IdentPaf_Empresa_GetCep,AAC_IdentPaf_Empresa_SetCep,
+AAC_IdentPaf_Empresa_GetCidade,AAC_IdentPaf_Empresa_SetCidade,
+AAC_IdentPaf_Empresa_GetUf,AAC_IdentPaf_Empresa_SetUf,
+AAC_IdentPaf_Empresa_GetTelefone,AAC_IdentPaf_Empresa_SetTelefone,
+AAC_IdentPaf_Empresa_GetContato,AAC_IdentPaf_Empresa_SetContato,
+AAC_IdentPaf_Empresa_GetEmail,AAC_IdentPaf_Empresa_SetEmail,
 AAC_IdentPaf_Empresa_GetIE,AAC_IdentPaf_Empresa_SetIE,
 AAC_IdentPaf_Empresa_GetIM,AAC_IdentPaf_Empresa_SetIM,
 //aplicativo

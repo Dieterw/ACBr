@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.ComponentModel;
 
 namespace ACBrFramework
 {
@@ -64,6 +65,7 @@ namespace ACBrFramework
 			}
 		}
 
+		[Browsable(true)]
 		public ACBrECFIdenticacaoPaf IdentPaf { get; private set; }
 
 		#endregion Properties

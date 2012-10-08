@@ -631,7 +631,7 @@ namespace ACBrFramework
 		public static extern int ECF_SetAAC(IntPtr ecfHandle, IntPtr aacHandle);
 
         [DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
-        public static extern int ECF_SetEAD(IntPtr ecfHandle, IntPtr eadHandle);
+		public static extern int ECF_SetEAD(IntPtr ecfHandle, IntPtr eadHandle);
 
 		#endregion Propriedades do Componente
 

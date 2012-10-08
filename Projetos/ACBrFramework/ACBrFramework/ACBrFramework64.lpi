@@ -24,7 +24,7 @@
       <MinorVersionNr Value="9"/>
       <BuildNr Value="151"/>
       <Language Value="0416"/>
-      <StringTable CompanyName="Projeto: Componentes ACBr " FileDescription="Projeto: Componentes ACBr " ProductName="ACBr64.DLL" ProductVersion="ACBr64.DLL"/>
+      <StringTable CompanyName="Projeto: Componentes ACBr " FileDescription="Projeto: Componentes ACBr " ProductName="ACBrFramework" ProductVersion="ACBrFramework"/>
     </VersionInfo>
     <BuildModes Count="1" Active="Default">
       <Item1 Name="Default" Default="True"/>
@@ -41,7 +41,7 @@
     </RunParams>
     <Units Count="38">
       <Unit0>
-        <Filename Value="ACBr32.lpr"/>
+        <Filename Value="ACBrFramework.lpr"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="9"/>
         <WindowIndex Value="0"/>

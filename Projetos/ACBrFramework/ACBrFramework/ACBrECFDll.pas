@@ -5322,9 +5322,7 @@ ECF_ImprimeCheque, ECF_CancelaImpressaoCheque,
 }
 
 ECF_MudaHorarioVerao, ECF_MudaArredondamento,
-
 ECF_CorrigeEstadoErro,
-
 
 { Leitura Memoria Fiscal }
 ECF_LeituraMemoriaFiscalReducao, ECF_LeituraMemoriaFiscalData,

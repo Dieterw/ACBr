@@ -1,4 +1,5 @@
-﻿namespace ACBrFramework
+﻿using System.ComponentModel;
+namespace ACBrFramework
 {
 	public sealed class ACBrECFIdenticacaoPaf : ACBrComposedComponent
 	{
@@ -16,10 +17,13 @@
 
 		#region Properties
 
+		[Browsable(true)]
 		public ACBrECFEmpresa Empresa { get; private set; }
 
+		[Browsable(true)]
 		public ACBrECFInfoPaf Paf { get; private set; }
 
+		[Browsable(true)]
 		public ACBrAACECFs ECFsAutorizados { get; private set; }
 
 		public string NumeroLaudo

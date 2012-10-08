@@ -10,6 +10,18 @@
 
 		#region Properties
 
+		public string CNPJ
+		{
+			get
+			{
+				return GetString(ACBrAACInterop.AAC_IdentPaf_Empresa_GetCNPJ);
+			}
+			set
+			{
+				SetString(ACBrAACInterop.AAC_IdentPaf_Empresa_SetCNPJ, value);
+			}
+		}
+
 		public string RazaoSocial
 		{
 			get
@@ -22,15 +34,87 @@
 			}
 		}
 
-		public string CNPJ
+		public string Endereco
 		{
 			get
 			{
-				return GetString(ACBrAACInterop.AAC_IdentPaf_Empresa_GetCNPJ);
+				return GetString(ACBrAACInterop.AAC_IdentPaf_Empresa_GetEndereco);
 			}
 			set
 			{
-				SetString(ACBrAACInterop.AAC_IdentPaf_Empresa_SetCNPJ, value);
+				SetString(ACBrAACInterop.AAC_IdentPaf_Empresa_SetEndereco, value);
+			}
+		}
+
+		public string Cep
+		{
+			get
+			{
+				return GetString(ACBrAACInterop.AAC_IdentPaf_Empresa_GetCep);
+			}
+			set
+			{
+				SetString(ACBrAACInterop.AAC_IdentPaf_Empresa_SetCep, value);
+			}
+		}
+
+		public string Cidade
+		{
+			get
+			{
+				return GetString(ACBrAACInterop.AAC_IdentPaf_Empresa_GetCidade);
+			}
+			set
+			{
+				SetString(ACBrAACInterop.AAC_IdentPaf_Empresa_SetCidade, value);
+			}
+		}
+
+		public string Uf
+		{
+			get
+			{
+				return GetString(ACBrAACInterop.AAC_IdentPaf_Empresa_GetUf);
+			}
+			set
+			{
+				SetString(ACBrAACInterop.AAC_IdentPaf_Empresa_SetUf, value);
+			}
+		}
+
+		public string Telefone
+		{
+			get
+			{
+				return GetString(ACBrAACInterop.AAC_IdentPaf_Empresa_GetTelefone);
+			}
+			set
+			{
+				SetString(ACBrAACInterop.AAC_IdentPaf_Empresa_SetTelefone, value);
+			}
+		}
+
+		public string Contato
+		{
+			get
+			{
+				return GetString(ACBrAACInterop.AAC_IdentPaf_Empresa_GetContato);
+			}
+			set
+			{
+				SetString(ACBrAACInterop.AAC_IdentPaf_Empresa_SetContato, value);
+			}
+		}
+
+		public string Email
+		{
+			get
+			{
+				return GetString(ACBrAACInterop.AAC_IdentPaf_Empresa_GetEmail);
+			}
+			set
+			{
+				SetString(ACBrAACInterop.AAC_IdentPaf_Empresa_SetEmail, value);
 			}
 		}
 

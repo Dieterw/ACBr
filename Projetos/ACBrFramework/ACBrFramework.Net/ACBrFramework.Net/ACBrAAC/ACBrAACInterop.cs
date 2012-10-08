@@ -125,16 +125,58 @@ namespace ACBrFramework
 		#region Dados da SoftwareHouse
 
 		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int AAC_IdentPaf_Empresa_GetCNPJ(IntPtr aacHandle, StringBuilder buffer, int bufferLen);
+
+		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int AAC_IdentPaf_Empresa_SetCNPJ(IntPtr aacHandle, string cnpj);
+
+		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
 		public static extern int AAC_IdentPaf_Empresa_GetRazaoSocial(IntPtr aacHandle, StringBuilder buffer, int bufferLen);
 
 		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
 		public static extern int AAC_IdentPaf_Empresa_SetRazaoSocial(IntPtr aacHandle, string razaoSocial);
 
 		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int AAC_IdentPaf_Empresa_GetCNPJ(IntPtr aacHandle, StringBuilder buffer, int bufferLen);
+		public static extern int AAC_IdentPaf_Empresa_GetEndereco(IntPtr aacHandle, StringBuilder buffer, int bufferLen);
 
 		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int AAC_IdentPaf_Empresa_SetCNPJ(IntPtr aacHandle, string cnpj);
+		public static extern int AAC_IdentPaf_Empresa_SetEndereco(IntPtr aacHandle, string endereco);
+
+		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int AAC_IdentPaf_Empresa_GetCep(IntPtr aacHandle, StringBuilder buffer, int bufferLen);
+
+		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int AAC_IdentPaf_Empresa_SetCep(IntPtr aacHandle, string cep);
+
+		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int AAC_IdentPaf_Empresa_GetCidade(IntPtr aacHandle, StringBuilder buffer, int bufferLen);
+
+		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int AAC_IdentPaf_Empresa_SetCidade(IntPtr aacHandle, string cidade);
+
+		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int AAC_IdentPaf_Empresa_GetUf(IntPtr aacHandle, StringBuilder buffer, int bufferLen);
+
+		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int AAC_IdentPaf_Empresa_SetUf(IntPtr aacHandle, string uf);
+
+		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int AAC_IdentPaf_Empresa_GetTelefone(IntPtr aacHandle, StringBuilder buffer, int bufferLen);
+
+		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int AAC_IdentPaf_Empresa_SetTelefone(IntPtr aacHandle, string telefone);
+
+		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int AAC_IdentPaf_Empresa_GetContato(IntPtr aacHandle, StringBuilder buffer, int bufferLen);
+
+		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int AAC_IdentPaf_Empresa_SetContato(IntPtr aacHandle, string contato);
+
+		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int AAC_IdentPaf_Empresa_GetEmail(IntPtr aacHandle, StringBuilder buffer, int bufferLen);
+
+		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int AAC_IdentPaf_Empresa_SetEmail(IntPtr aacHandle, string email);
 
 		[DllImport(ACBr, CallingConvention = CallingConvention.Cdecl)]
 		public static extern int AAC_IdentPaf_Empresa_GetIE(IntPtr aacHandle, StringBuilder buffer, int bufferLen);

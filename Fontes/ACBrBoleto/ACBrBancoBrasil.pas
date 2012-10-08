@@ -235,7 +235,7 @@ begin
                aConta                                  + //59 a 70 - Número da conta do cedente
                padL(ContaDigito, 1, '0')               + //71 - Dígito da conta do cedente
                ' '                                     + //72 - Dígito verificador da agência / conta
-               padL(Nome, 30, ' ')                     + //73 a 102 - Nome do cedente
+               TiraAcentos(UpperCase(padL(Nome, 30, ' ')))                     + //73 a 102 - Nome do cedente
                padL('BANCO DO BRASIL', 30, ' ')        + //103 a 132 - Nome do banco
                padL('', 10, ' ')                       + //133 a 142 - Uso exclusivo FEBRABAN/CNAB
                '1'                                     + //143 - Código de Remessa (1) / Retorno (2)

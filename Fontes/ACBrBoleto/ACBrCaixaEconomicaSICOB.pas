@@ -486,7 +486,8 @@ begin
              '1'                                      + //   8 a   8 - Tipo de registro - Registro header de arquivo
              'R'                                      + //   9 a   9 - Tipo de operação: R (Remessa) ou T (Retorno)
              '01'                                     + //  10 a  11 - Tipo de serviço: 01 (Cobrança)
-             Space(2)                                 + //  12 a  13 - Uso Exclusivo FEBRABAN/CNAB
+             //Space(2)                                 + //  12 a  13 - Uso Exclusivo FEBRABAN/CNAB
+             '00'                                     + //  12 a  13 - Forma de lançamento
              '020'                                    + //  14 a  16 - Número da versão do layout do lote
              Space(1)                                 + //  17 a  17 - Uso exclusivo FEBRABAN/CNAB
              ATipoInscricao                           + //  18 a  18 - Tipo de inscrição da Empresa
@@ -684,7 +685,7 @@ begin
                     (DataProtesto > Vencimento), '1', '3')              + // 221 a 221 - Código de protesto: Protestar em XX dias corridos
              IfThen((DataProtesto <> null) and
                     (DataProtesto > Vencimento),
-                     padL(IntToStr(DaysBetween(DataProtesto,
+                     padR(IntToStr(DaysBetween(DataProtesto,
                      Vencimento)), 2, '0'), '00')                       + // 222 a 223 - Prazo para protesto (em dias corridos)
              '2'                                                        + // 224 a 224 - Código para baixa/devolução: Não baixar/não devolver
              padL('',3,'0')                                             + // 225 a 227 - Prazo para baixa/devolução (em dias corridos)
@@ -725,10 +726,10 @@ function TACBrCaixaEconomicaSICOB.GerarRegistroTrailler240( ARemessa : TStringLi
 begin
    {REGISTRO TRAILER DO LOTE}
    Result:= IntToStrZero(ACBrBanco.Numero, 3)                          + //    1 a   3 - Código do banco
-            '9999'                                                     + //    7 a   4 - Lote de Serviço
+            '0001'                                                     + //    7 a   4 - Lote de Serviço
             '5'                                                        + //    8 a   8 - Tipo do registro: Registro trailer do lote
             Space(9)                                                   + //    9 a  17 - Uso exclusivo FEBRABAN/CNAB
-            IntToStrZero(ARemessa.Count, 6)                            + //   18 a  23 - Quantidade de Registro no Lote
+            IntToStrZero((2 * ARemessa.Count), 6)                  + //   18 a  23 - Quantidade de Registro no Lote
             // Totalização Cobrança Simples
             padR('', 6, '0')                                           + //   24 a  29 - Quantidade títulos em cobrança (Somente retorno)
             padR('',17, '0')                                           + //   30 a  46 - Valor dos títulos em carteiras (Somente retorno)
@@ -751,7 +752,7 @@ begin
             '9'                                                        + //    8 a   8 - Tipo do registro: Registro trailer do arquivo
             space(9)                                                   + //    9 a  17 - Uso exclusivo FEBRABAN/CNAB}
             '000001'                                                   + //   18 a  23 - Quantidade de lotes do arquivo}
-            IntToStrZero(ARemessa.Count, 6)                            + //   24 a  29 - Quantidade de registros do arquivo, inclusive este registro que está sendo criado agora}
+            IntToStrZero((2 * ARemessa.Count + 2), 6)                  + //   24 a  29 - Quantidade de registros do arquivo, inclusive este registro que está sendo criado agora}
             space(6)                                                   + //   30 a  35 - Uso exclusivo FEBRABAN/CNAB}
             space(205);                                                  //   36 a 240 - Uso exclusivo FEBRABAN/CNAB}
 end;

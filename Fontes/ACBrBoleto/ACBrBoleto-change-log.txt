@@ -131,6 +131,8 @@ Versao 0.0.10a do FortesReport 06/07/11
 	
 	
 Versao 0.0.45a
+[+] Unit Sicred - Adiciona geração do arquivo remessa e leitura do arquivo retorno CNAB240.
+    (Felipe Sortica).  
 [-] Unit CaixaeconomicaSicob - Corrigida geração da remessa CNAB240.(Roger Mello)
 [-] Unit CaixaeconomicaSicob - Corrigida informação dos dias para Protesto na geração
    da remessa CNAB240.(Juliana Tamizou)
@@ -139,6 +141,7 @@ Versao 0.0.45a
    da remessa CNAB240.(Felipe Sortica)
 [-] Unit Banrisul - Correções nas funções de Montagem do Código do Cedente, Código de Barras
     e geração da remessa CNAB400.(Cleonir)
+[-] Unit Sibred - Correção na leitura do arquivo retorno CNAB400(Felipe Sortica)
 
 Versao 0.0.44a 
 [-] Unit Bancoob - Corrigido geração do arquivo Remessa CNAB400, formatado

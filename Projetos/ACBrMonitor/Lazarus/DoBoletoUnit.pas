@@ -97,6 +97,8 @@ begin
        begin
          Cmd.Resposta := ListaBancos();
        end
+      else if cmd.Metodo = 'tamnossonumero' then
+         Cmd.Resposta :=  IntToStr(Banco.TamanhoMaximoNossoNum)
 
       ELSE
          raise Exception.Create('Comando inválido ('+Cmd.Comando+')') ;

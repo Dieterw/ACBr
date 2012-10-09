@@ -4133,7 +4133,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       Top = 1
       Width = 569
       Height = 261
-      ActivePage = DANFE
+      ActivePage = WebService
       Align = alClient
       Style = tsFlatButtons
       TabOrder = 0
@@ -5718,6 +5718,8 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
     ReplyExceptionCode = 0
     ReplyTexts = <>
     ReplyUnknownCommand.NumericCode = 0
+    ReuseSocket = rsFalse
+    TerminateWaitTime = 25000
     Left = 41
     Top = 25
   end

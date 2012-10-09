@@ -63,7 +63,7 @@ Uses IniFiles, StrUtils, DateUtils,
   pcnInutNFe, pcnRetInutNFe,
   pcnRetEnvNFe, pcnConsReciNFe, pcnAuxiliar,
   pcnNFeRTXT, ACBrNFeNotasFiscais, pcnRetConsCad, StdCtrls, pcnProcNFe,
-  pcnRetCCeNFe, pcnNFeR;
+  pcnRetCCeNFe, pcnNFeR, pcnEventoNFe;
 
 Procedure DoACBrNFe( Cmd : TACBrNFeCmd ) ;
 var
@@ -189,7 +189,49 @@ begin
            if not ACBrNFe1.WebServices.Consulta.Executar then
               raise Exception.Create(ACBrNFe1.WebServices.Consulta.Msg);
 
-           ACBrNFe1.WebServices.Cancelamento.NFeChave      := ACBrNFe1.WebServices.Consulta.NFeChave;
+           ACBrNFe1.EventoNFe.Evento.Clear;
+           with ACBrNFe1.EventoNFe.Evento.Add do
+            begin
+              infEvento.CNPJ   := Cmd.Params(2);
+              if Trim(infEvento.CNPJ) = '' then
+                 infEvento.CNPJ   := copy(NotaUtil.LimpaNumero(ACBrNFe1.WebServices.Consulta.NFeChave),7,14)
+              else
+               begin
+                 if not ValidarCNPJ(Cmd.Params(2)) then
+                   raise Exception.Create('CNPJ '+Cmd.Params(2)+' inválido.')
+               end;
+
+              infEvento.dhEvento := now;
+              infEvento.tpEvento := teCancelamento;
+              infEvento.chNFe := ACBrNFe1.WebServices.Consulta.NFeChave;
+              infEvento.detEvento.nProt := ACBrNFe1.WebServices.Consulta.Protocolo;
+              infEvento.detEvento.xJust := Cmd.Params(1);
+            end;
+           try
+              ACBrNFe1.EnviarEventoNFe(StrToIntDef(Cmd.Params(3),1));
+
+              Cmd.Resposta := ACBrNFe1.WebServices.EnvEvento.EventoRetorno.xMotivo+sLineBreak+
+                              '[CANCELAMENTO]'+sLineBreak+
+                              'Versao='+ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.verAplic+sLineBreak+
+                              'TpAmb='+TpAmbToStr(ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.TpAmb)+sLineBreak+
+                              'VerAplic='+ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.VerAplic+sLineBreak+
+                              'CStat='+IntToStr(ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.cStat)+sLineBreak+
+                              'XMotivo='+ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.XMotivo+sLineBreak+
+                              'CUF='+IntToStr(ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.cOrgao)+sLineBreak+
+                              'ChNFe='+ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.chNFe+sLineBreak+
+                              'DhRecbto='+DateTimeToStr(ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.dhRegEvento)+sLineBreak+
+                              'NProt='+ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.nProt+sLineBreak+
+                              'tpEvento='+TpEventoToStr(ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.tpEvento)+sLineBreak+
+                              'xEvento='+ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.xEvento+sLineBreak+
+                              'nSeqEvento='+IntToStr(ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.nSeqEvento)+sLineBreak+
+                              'CNPJDest='+ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.CNPJDest+sLineBreak+
+                              'emailDest='+ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.emailDest+sLineBreak+
+                              'XML='+ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.XML+sLineBreak;
+           except
+              raise Exception.Create(ACBrNFe1.WebServices.EnvEvento.EventoRetorno.xMotivo);
+           end;
+
+         {  ACBrNFe1.WebServices.Cancelamento.NFeChave      := ACBrNFe1.WebServices.Consulta.NFeChave;
            ACBrNFe1.WebServices.Cancelamento.Protocolo     := ACBrNFe1.WebServices.Consulta.Protocolo;
            ACBrNFe1.WebServices.Cancelamento.Justificativa := Cmd.Params(1);
            try
@@ -208,7 +250,7 @@ begin
                               'NProt='+ACBrNFe1.WebServices.Cancelamento.Protocolo+sLineBreak;
            except
               raise Exception.Create(ACBrNFe1.WebServices.Cancelamento.Msg);
-           end;
+           end;        }
          end
 
         else if Cmd.Metodo = 'imprimirdanfe' then
@@ -283,6 +325,56 @@ begin
            except
               raise Exception.Create('Erro ao criar o arquivo PDF');
            end;
+         end
+
+        else if Cmd.Metodo = 'imprimirevento' then
+         begin
+           if ACBrNFe1.DANFE.MostrarPreview then
+            begin
+              Restaurar1.Click;
+              Application.BringToFront;
+            end;
+
+           ACBrNFe1.EventoNFe.Evento.Clear;
+           if FileExists(Cmd.Params(0)) or FileExists(PathWithDelim(ACBrNFe1.Configuracoes.Geral.PathSalvar)+Cmd.Params(0)) then
+            begin
+              if FileExists(Cmd.Params(0)) then
+                 ACBrNFe1.EventoNFe.LerXML(Cmd.Params(0))
+              else
+                 ACBrNFe1.EventoNFe.LerXML(PathWithDelim(ACBrNFe1.Configuracoes.Geral.PathSalvar)+Cmd.Params(0));
+            end
+           else
+              raise Exception.Create('Arquivo '+Cmd.Params(0)+' não encontrado.');
+
+           ACBrNFe1.NotasFiscais.Clear;
+           if FileExists(Cmd.Params(1)) or FileExists(PathWithDelim(ACBrNFe1.Configuracoes.Geral.PathSalvar)+Cmd.Params(1)) then
+            begin
+              if FileExists(Cmd.Params(1)) then
+                 ACBrNFe1.NotasFiscais.LoadFromFile(Cmd.Params(1))
+              else
+                 ACBrNFe1.NotasFiscais.LoadFromFile(PathWithDelim(ACBrNFe1.Configuracoes.Geral.PathSalvar)+Cmd.Params(1));
+            end
+           else
+            begin
+              if NotaUtil.NaoEstaVazio(Cmd.Params(1)) then
+                 raise Exception.Create('Arquivo '+Cmd.Params(1)+' não encontrado.');
+            end;
+
+           if NotaUtil.NaoEstaVazio(Cmd.Params(2)) then
+              ACBrNFe1.DANFE.Impressora := Cmd.Params(2)
+           else
+              ACBrNFe1.DANFE.Impressora := cbxImpressora.Text;
+
+           if NotaUtil.NaoEstaVazio(Cmd.Params(3)) then
+              ACBrNFe1.DANFE.NumCopias := StrToIntDef(Cmd.Params(3),1)
+           else
+              ACBrNFe1.DANFE.NumCopias := StrToIntDef(edtNumCopia.Text,1);
+
+
+           ACBrNFe1.ImprimirEvento;
+           Cmd.Resposta := 'Evento Impresso com sucesso';
+           if ACBrNFe1.DANFE.MostrarPreview then
+              Ocultar1.Click;
          end
 
         else if Cmd.Metodo = 'inutilizarnfe' then

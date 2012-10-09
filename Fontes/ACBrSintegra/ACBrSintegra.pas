@@ -1933,7 +1933,8 @@ var
   wregistro: string;
   i: Integer;
 begin
-Registros53.Sort(Sort53);
+
+//Registros53.Sort(Sort53);//removido temporariamente por questoes de erro de soma no validador. Provavelmente mesmo erro do Registro 50 (Veja GerarRegistros50)
 for i:=0 to Registros53.Count-1 do
 begin
   with Registros53[i] do

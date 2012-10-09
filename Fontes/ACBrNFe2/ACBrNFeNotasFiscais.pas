@@ -549,11 +549,9 @@ var
   XMLNFe: TStringStream;
 begin
   try
-    XMLNFe := TStringStream.Create;
+    XMLNFe := TStringStream.Create('');
     try
-      XMLNFe.Clear;
       XMLNFe.WriteString(AString);
-
       Result := LoadFromStream(XMLNFe);
     finally
       XMLNFe.Free;

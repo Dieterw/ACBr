@@ -546,19 +546,19 @@ end;
 
 function TNotasFiscais.LoadFromString(AString: String): boolean;
 var
-  XML: TStringStream;
+  XMLNFe: TStringStream;
 begin
   try
     Result := True;
 
-    XML := TStringStream;
+    XMLNFe := TStringStream.Create;
     try
-      XML.Clear;
-      XML.WriteString(AString);
+      XMLNFe.Clear;
+      XMLNFe.WriteString(AString);
 
-      Result := LoadFromStream(XML);
+      Result := LoadFromStream(XMLNFe);
     finally
-      XML.Free;
+      XMLNFe.Free;
     end;
   except
     Result := False;

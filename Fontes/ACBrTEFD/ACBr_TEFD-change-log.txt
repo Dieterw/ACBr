@@ -47,6 +47,13 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data:  09/10/2012 - 4.2.1
+-- ACBrTEFDCliSitef --
+[-] Correção para Confirmar a transação de cancelamento mesmo quando ocorrer
+    falha de impressão
+[-] Correção para a re-impressão de apenas 2a via (do lojista)
+http://www.djsystem.com.br/acbr/forum/viewtopic.php?p=41140#p41140
+
 Data:  05/10/2012 - 4.2.0
 [+] Adicionada nova propriedade "TrocoMaximo: Double" valor Default 0, para
     permitir o Troco em TEF conforme disposto no Requisito XIV, Item 4 do

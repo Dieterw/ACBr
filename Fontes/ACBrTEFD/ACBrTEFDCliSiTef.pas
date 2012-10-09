@@ -377,7 +377,8 @@ begin
      end;
    end ;
 
-   fpQtdLinhasComprovante := fpImagemComprovante1aVia.Count;
+   fpQtdLinhasComprovante := max( fpImagemComprovante1aVia.Count,
+                                  fpImagemComprovante2aVia.Count ) ;
 
    fpParcelas.Clear;
    if TemParcelas then
@@ -654,7 +655,7 @@ Procedure TACBrTEFDCliSiTef.ATV ;
 var
    Sts : Integer;
 begin
-  Sts := FazerRequisicao( fOperacaoATV, 'ATV' ) ;
+  Sts := FazerRequisicao( fOperacaoATV, 'ATV', 0, '999990' ) ;
 
   if Sts = 10000 then
      Sts := ContinuarRequisicao( CACBrTEFD_CliSiTef_ImprimeGerencialConcomitante ) ;
@@ -670,7 +671,7 @@ Function TACBrTEFDCliSiTef.ADM : Boolean;
 var
    Sts : Integer;
 begin
-  Sts := FazerRequisicao( fOperacaoADM, 'ADM' ) ;
+  Sts := FazerRequisicao( fOperacaoADM, 'ADM', 0, '999991', fRestricoes ) ;
 
   if Sts = 10000 then
      Sts := ContinuarRequisicao( CACBrTEFD_CliSiTef_ImprimeGerencialConcomitante ) ;
@@ -781,7 +782,7 @@ begin
   Respostas.Values['515'] := FormatDateTime('DDMMYYYY',DataHoraTransacao) ;
   Respostas.Values['516'] := NSU ;
 
-  Sts := FazerRequisicao( fOperacaoCNC, 'CNC' ) ;
+  Sts := FazerRequisicao( fOperacaoCNC, 'CNC', 0, '999992' ) ;
 
   if Sts = 10000 then
      Sts := ContinuarRequisicao( CACBrTEFD_CliSiTef_ImprimeGerencialConcomitante ) ;
@@ -1211,7 +1212,7 @@ begin
         if (ArqBackUp <> '') and FileExists( ArqBackUp ) then
            SysUtils.DeleteFile( ArqBackUp );
 
-        if HouveImpressao then
+        if HouveImpressao or fCancelamento then
            FinalizarTransacao( (ImpressaoOk or fCancelamento),
                                Resp.DocumentoVinculado );
 

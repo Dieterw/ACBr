@@ -268,7 +268,7 @@ var DANFeRave:TDANFeRave;
 
 implementation
 
-uses ACBrDANFeCBRavePaisagem, ACBrDANFeCBRaveRetrato, ACBrNFeDANFERaveCB, ACBrDANFeEventoRaveRetrato;
+uses ACBrDANFeCBRavePaisagem, ACBrDANFeCBRaveRetrato, ACBrNFeDANFERaveCB;
 
 procedure ImprimirDANFeRave(aACBrNFe:TACBrNFe;
                             aSite,
@@ -862,7 +862,7 @@ begin
 //    if Orientation=poLandScape then
 //       ImprimirPaisagem(Self)
 //    else
-       ImprimirEventoRetrato(Self);
+//       ImprimirEventoRetrato(Self);
   end;
 end;
 

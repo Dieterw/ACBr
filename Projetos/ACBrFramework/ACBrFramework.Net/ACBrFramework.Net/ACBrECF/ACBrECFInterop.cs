@@ -283,7 +283,6 @@ namespace ACBrFramework
 			[MarshalAs(UnmanagedType.I4)]
 			public int Count;
 			
-			[MarshalAs(UnmanagedType.LPArray)]
 			public RelatorioGerencialLinha[] Linhas;
 		}
 

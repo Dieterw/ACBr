@@ -58,6 +58,17 @@ namespace ACBrDefExporter
 		{
 			string defineName = string.Format("_{0}_H_", GetComponentName(interopType));
 
+			writer.WriteLine();
+			writer.WriteLine(@"#ifndef ACBr");
+			writer.WriteLine(@"#define ACBr");
+			writer.WriteLine();
+			writer.WriteLine("typedef void* INTPTR;");
+			writer.WriteLine("typedef char* PCHAR;");
+			writer.WriteLine("typedef char BOOL;");
+			writer.WriteLine();
+			writer.WriteLine(@"#endif");
+			writer.WriteLine();
+			writer.WriteLine();
 			writer.WriteLine(@"#ifndef {0}", defineName);
 			writer.WriteLine(@"#define {0}", defineName);
 			writer.WriteLine();
@@ -66,10 +77,6 @@ namespace ACBrDefExporter
 			writer.WriteLine(@"#else");
 			writer.WriteLine(@"#define DllImport extern");
 			writer.WriteLine(@"#endif");
-			writer.WriteLine();
-			writer.WriteLine("typedef void* INTPTR;");
-			writer.WriteLine("typedef char* PCHAR;");
-			writer.WriteLine("typedef char BOOL;");
 			writer.WriteLine();
 			writer.WriteLine();
 		}
@@ -153,12 +160,12 @@ namespace ACBrDefExporter
 				declaration.AppendFormat("const {0}", typeName);
 			}
 
+			declaration.AppendFormat(" {0}", param.Name);
+
 			if (param.ParameterType.IsArray)
 			{
 				declaration.Append("[]");
 			}
-
-			declaration.AppendFormat(" {0}", param.Name);
 
 			return declaration.ToString();
 		}

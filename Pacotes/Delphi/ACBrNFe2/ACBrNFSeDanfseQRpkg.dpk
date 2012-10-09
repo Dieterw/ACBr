@@ -1,0 +1,55 @@
+package ACBrNFSeDanfseQRpkg;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'ACBrNFSeDANFSeQR - (http://acbr.sourceforge.net/)'}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  vcl,
+  vclx,
+  bdertl,
+  dbrtl,
+  ACBr_NFSe,
+  PCN2,
+  ACBrComum,
+  designide,
+  vclactnband,
+  dsnap,
+  inet,
+  xmlrtl,
+  soaprtl,
+  synapse,
+  ACBrCapicom,
+  visualclx,
+  vcljpg,
+  QR5RunD7;
+
+contains
+  ACBrNFSeDANFSeQR in '..\..\..\Fontes\ACBrNFSe\ACBrNFSeDANFSeQR.pas' {fqrDANFSeQR},
+  ACBrNFSeDANFSeQRClass in '..\..\..\Fontes\ACBrNFSe\ACBrNFSeDANFSeQRClass.pas',
+  ACBrNFSeDANFSeQRReg in '..\..\..\Fontes\ACBrNFSe\ACBrNFSeDANFSeQRReg.pas',
+  ACBrNFSeDANFSeQRRetrato in '..\..\..\Fontes\ACBrNFSe\ACBrNFSeDANFSeQRRetrato.pas' {fqrDANFSeQRRetrato};
+
+end.

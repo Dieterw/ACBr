@@ -549,8 +549,6 @@ var
   XMLNFe: TStringStream;
 begin
   try
-    Result := True;
-
     XMLNFe := TStringStream.Create;
     try
       XMLNFe.Clear;

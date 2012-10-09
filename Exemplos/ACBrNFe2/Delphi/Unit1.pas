@@ -9,7 +9,7 @@ uses IniFiles, ShellAPI, pcnRetConsReciNFe,
   Dialogs, StdCtrls, ExtCtrls, Buttons, ComCtrls, OleCtrls, SHDocVw,
   ACBrNFe, pcnConversao, ACBrNFeDANFEClass, ACBrNFeDANFERave, ACBrUtil,
   pcnNFeW, pcnNFeRTXT, pcnAuxiliar,
-  XMLIntf, XMLDoc;
+  XMLIntf, XMLDoc, ACBrNFeDANFERaveCB;
 
 type
   TForm1 = class(TForm)
@@ -142,6 +142,9 @@ type
     TreeViewRetornoConsulta: TTreeView;
     btnManifDestConfirmacao: TButton;
     btnNfeDestinadas: TButton;
+    btnImprimirCCe: TButton;
+    ACBrNFeDANFERaveCB1: TACBrNFeDANFERaveCB;
+    btnEnviarEvento: TButton;
     procedure sbtnCaminhoCertClick(Sender: TObject);
     procedure sbtnLogoMarcaClick(Sender: TObject);
     procedure sbtnPathSalvarClick(Sender: TObject);
@@ -179,6 +182,8 @@ type
     procedure btnValidarAssinaturaClick(Sender: TObject);
     procedure btnManifDestConfirmacaoClick(Sender: TObject);
     procedure btnNfeDestinadasClick(Sender: TObject);
+    procedure btnImprimirCCeClick(Sender: TObject);
+    procedure btnEnviarEventoClick(Sender: TObject);
     
   private
     { Private declarations }
@@ -524,9 +529,9 @@ begin
        exit;
     if not(InputQuery('WebServices Eventos: Cancelamento', 'Justificativa', vAux)) then
        exit;
-    ACBrNFe1.EnvEvento.EnvEventoNFe.Evento.Clear;
-    ACBrNFe1.EnvEvento.EnvEventoNFe.idLote := StrToInt(idLote) ;
-    with ACBrNFe1.EnvEvento.EnvEventoNFe.Evento.Add do
+    ACBrNFe1.EventoNFe.Evento.Clear;
+    ACBrNFe1.EventoNFe.idLote := StrToInt(idLote) ;
+    with ACBrNFe1.EventoNFe.Evento.Add do
     begin
      infEvento.dhEvento := now;
      infEvento.tpEvento := teCancelamento;
@@ -575,9 +580,8 @@ begin
   if not(InputQuery('WebServices Eventos: Manif. Destinatario - Conf. Operacao', 'CNPJ ou o CPF do autor do Evento', CNPJ)) then
      exit;
 
-  ACBrNFe1.EnvEvento.EnvEventoNFe.Evento.Clear;
-  ACBrNFe1.EnvEvento.EnvEventoNFe.idLote := StrToInt(IDLote) ;
-  with ACBrNFe1.EnvEvento.EnvEventoNFe.Evento.Add do
+  ACBrNFe1.EventoNFe.Evento.Clear;
+  with ACBrNFe1.EventoNFe.Evento.Add do
    begin
      infEvento.chNFe := Chave;
      infEvento.CNPJ   := CNPJ;
@@ -722,6 +726,15 @@ begin
  MemoDados.Lines.Add('Recibo: '+ ACBrNFe1.WebServices.Retorno.Recibo);
  MemoDados.Lines.Add('Protocolo: '+ ACBrNFe1.WebServices.Retorno.Protocolo);
 // MemoDados.Lines.Add('cStat: '+ ACBrNFe1.WebServices.Retorno.NFeRetorno;
+
+{ ACBrNFe1.WebServices.Retorno.NFeRetorno.ProtNFe.Items[0].tpAmb
+ ACBrNFe1.WebServices.Retorno.NFeRetorno.ProtNFe.Items[0].verAplic
+ ACBrNFe1.WebServices.Retorno.NFeRetorno.ProtNFe.Items[0].chNFe
+ ACBrNFe1.WebServices.Retorno.NFeRetorno.ProtNFe.Items[0].dhRecbto
+ ACBrNFe1.WebServices.Retorno.NFeRetorno.ProtNFe.Items[0].nProt
+ ACBrNFe1.WebServices.Retorno.NFeRetorno.ProtNFe.Items[0].digVal
+ ACBrNFe1.WebServices.Retorno.NFeRetorno.ProtNFe.Items[0].cStat
+ ACBrNFe1.WebServices.Retorno.NFeRetorno.ProtNFe.Items[0].xMotivo }
 
   ACBrNFe1.NotasFiscais.Clear;
 end;
@@ -1018,7 +1031,7 @@ begin
   ACBrNFe1.WebServices.Recibo.Executar;
 
   MemoResp.Lines.Text :=  UTF8Encode(ACBrNFe1.WebServices.Recibo.RetWS);
-  memoRespWS.Lines.Text :=  UTF8Encode(ACBrNFe1.WebServices.Recibo.RetornoWS);  
+  memoRespWS.Lines.Text :=  UTF8Encode(ACBrNFe1.WebServices.Recibo.RetornoWS);
   LoadXML(MemoResp, WBResposta);
 end;
 
@@ -1782,6 +1795,7 @@ begin
      Ide.cUF       := NotaUtil.UFtoCUF(edtEmitUF.Text);
      Ide.cMunFG    := StrToInt(edtEmitCodCidade.Text);
      Ide.finNFe    := fnNormal;
+     Ide.tpImp     := ACBrNFe1.DANFE.TipoDANFE;
 
 //     Ide.dhCont := date;
 //     Ide.xJust  := 'Justificativa Contingencia';
@@ -2290,9 +2304,9 @@ begin
   if not(InputQuery('WebServices Eventos: Cancelamento', 'Justificativa do Cancelamento', Justificativa)) then
      exit;
 
-  ACBrNFe1.EnvEvento.EnvEventoNFe.Evento.Clear;
-  ACBrNFe1.EnvEvento.EnvEventoNFe.idLote := StrToInt(idLote) ;
-  with ACBrNFe1.EnvEvento.EnvEventoNFe.Evento.Add do
+  ACBrNFe1.EventoNFe.Evento.Clear;
+//  ACBrNFe1.EvnvEvento.EnvEventoNFe.idLote := StrToInt(idLote) ;
+  with ACBrNFe1.EventoNFe.Evento.Add do
    begin
      infEvento.chNFe := Chave;
      infEvento.CNPJ   := CNPJ;
@@ -2418,9 +2432,9 @@ begin
   Correcao := 'Correção a ser considerada, texto livre. A correção mais recente substitui as anteriores.';
   if not(InputQuery('WebServices Eventos: Carta de Correção', 'Correção a ser considerada', Correcao)) then
      exit;
-  ACBrNFe1.EnvEvento.EnvEventoNFe.Evento.Clear;
-   ACBrNFe1.EnvEvento.EnvEventoNFe.idLote := StrToInt(idLote) ;
-  with ACBrNFe1.EnvEvento.EnvEventoNFe.Evento.Add do
+  ACBrNFe1.EventoNFe.Evento.Clear;
+//   ACBrNFe1.EnvEvento.EnvEventoNFe.idLote := StrToInt(idLote) ;
+  with ACBrNFe1.EventoNFe.Evento.Add do
    begin
      infEvento.chNFe := Chave;
      infEvento.CNPJ   := CNPJ;
@@ -2432,7 +2446,7 @@ begin
   ACBrNFe1.EnviarEventoNFe(StrToInt(idLote));
 
   MemoResp.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.EnvEvento.RetWS);
-  memoRespWS.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.EnvEvento.RetornoWS);
+  //memoRespWS.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.EnvEvento.EventoRetorno);
 //  ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].XXXX
   LoadXML(MemoResp, WBResposta);
 end;
@@ -2453,6 +2467,84 @@ begin
       MemoDados.Lines.Add('Erro: '+Msg)
     else
       ShowMessage('Assinatura Válida');  
+  end;
+end;
+
+procedure TForm1.btnImprimirCCeClick(Sender: TObject);
+begin
+  OpenDialog1.Title := 'Selecione a NFE';
+  OpenDialog1.DefaultExt := '*.XML';
+  OpenDialog1.Filter := 'Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
+  OpenDialog1.InitialDir := ACBrNFe1.Configuracoes.Geral.PathSalvar;
+  if OpenDialog1.Execute then
+  begin
+    ACBrNFe1.NotasFiscais.Clear;
+    ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
+  end;
+    
+  OpenDialog1.Title := 'Selecione o Evento';
+  OpenDialog1.DefaultExt := '*.XML';
+  OpenDialog1.Filter := 'Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
+  OpenDialog1.InitialDir := ACBrNFe1.Configuracoes.Geral.PathSalvar;
+  if OpenDialog1.Execute then
+  begin
+    ACBrNFe1.EventoNFe.Evento.Clear;
+    ACBrNFe1.EventoNFe.LerXML(OpenDialog1.FileName) ;
+    ACBrNFe1.ImprimirEvento;
+  end;
+//  LoadXML(MemoResp, WBResposta);
+end;
+
+procedure TForm1.btnEnviarEventoClick(Sender: TObject);
+var
+ Para : String;
+ CC, Evento: Tstrings;
+begin
+  if not(InputQuery('Enviar Email', 'Email de destino', Para)) then
+    exit;
+    
+  OpenDialog1.Title := 'Selecione a NFE';
+  OpenDialog1.DefaultExt := '*.XML';
+  OpenDialog1.Filter := 'Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
+  OpenDialog1.InitialDir := ACBrNFe1.Configuracoes.Geral.PathSalvar;
+  if OpenDialog1.Execute then
+  begin
+    ACBrNFe1.NotasFiscais.Clear;
+    ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
+  end;
+
+  OpenDialog1.Title := 'Selecione ao Evento';
+  OpenDialog1.DefaultExt := '*.XML';
+  OpenDialog1.Filter := 'Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
+  OpenDialog1.InitialDir := ACBrNFe1.Configuracoes.Geral.PathSalvar;
+  if OpenDialog1.Execute then
+  begin
+    Evento := TStringList.Create;
+    Evento.Clear;
+    Evento.Add(OpenDialog1.FileName);
+    ACBrNFe1.EventoNFe.Evento.Clear;
+    ACBrNFe1.EventoNFe.LerXML(OpenDialog1.FileName) ;
+    CC:=TstringList.Create;
+    CC.Add('andrefmoraes@gmail.com'); //especifique um email válido
+    CC.Add('anfm@zipmail.com.br');    //especifique um email válido
+    ACBrNFe1.EnviarEmailEvento(edtSmtpHost.Text
+                             , edtSmtpPort.Text
+                             , edtSmtpUser.Text
+                             , edtSmtpPass.Text
+                             , edtSmtpUser.Text
+                             , Para
+                             , edtEmailAssunto.Text
+                             , mmEmailMsg.Lines
+                             , cbEmailSSL.Checked // SSL - Conexão Segura
+                             , True //Enviar PDF junto
+                             , CC //Lista com emails que serão enviado cópias - TStrings
+                             , Evento // Lista de anexos - TStrings
+                             , False  //Pede confirmação de leitura do email
+                             , False  //Aguarda Envio do Email(não usa thread)
+                             , 'ACBrNFe2' // Nome do Rementente
+                             , cbEmailSSL.Checked ); // Auto TLS
+    CC.Free;
+    Evento.Free;
   end;
 end;
 

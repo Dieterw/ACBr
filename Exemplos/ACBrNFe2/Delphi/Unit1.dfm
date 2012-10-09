@@ -1,9 +1,9 @@
 object Form1: TForm1
   Left = 269
   Top = 149
+  Width = 894
+  Height = 631
   Caption = 'ACBrNFe - Demonstra'#231#227'o'
-  ClientHeight = 593
-  ClientWidth = 878
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -368,6 +368,7 @@ object Form1: TForm1
               Font.Height = -13
               Font.Name = 'MS Sans Serif'
               Font.Style = []
+              ItemHeight = 16
               ItemIndex = 24
               ParentFont = False
               TabOrder = 1
@@ -779,6 +780,8 @@ object Form1: TForm1
       Width = 153
       Height = 25
       Caption = 'Salvar Configura'#231#245'es'
+      TabOrder = 1
+      OnClick = btnSalvarConfigClick
       Glyph.Data = {
         76010000424D7601000000000000760000002800000020000000100000000100
         04000000000000010000130B0000130B00001000000000000000000000000000
@@ -793,8 +796,6 @@ object Form1: TForm1
         99337F3FF7F3733777F30F08F0F0337999337F7737F73F7777330FFFF0039999
         93337FFFF7737777733300000033333333337777773333333333}
       NumGlyphs = 2
-      TabOrder = 1
-      OnClick = btnSalvarConfigClick
     end
   end
   object Panel2: TPanel
@@ -808,7 +809,7 @@ object Form1: TForm1
       Left = 1
       Top = 1
       Width = 579
-      Height = 242
+      Height = 272
       Align = alTop
       TabOrder = 0
       object btnImprimir: TButton
@@ -1027,13 +1028,31 @@ object Form1: TForm1
         TabOrder = 23
         OnClick = btnNfeDestinadasClick
       end
+      object btnImprimirCCe: TButton
+        Left = 8
+        Top = 240
+        Width = 177
+        Height = 25
+        Caption = 'Imprimir Evento'
+        TabOrder = 24
+        OnClick = btnImprimirCCeClick
+      end
+      object btnEnviarEvento: TButton
+        Left = 193
+        Top = 240
+        Width = 177
+        Height = 25
+        Caption = 'Enviar Evento Email'
+        TabOrder = 25
+        OnClick = btnEnviarEventoClick
+      end
     end
     object PageControl2: TPageControl
       Left = 1
-      Top = 243
+      Top = 273
       Width = 579
-      Height = 349
-      ActivePage = TabSheet11
+      Height = 319
+      ActivePage = TabSheet6
       Align = alClient
       TabOrder = 1
       object TabSheet5: TTabSheet
@@ -1055,11 +1074,11 @@ object Form1: TForm1
           Left = 0
           Top = 0
           Width = 571
-          Height = 321
+          Height = 291
           Align = alClient
           TabOrder = 0
           ControlData = {
-            4C000000043B00002D2100000000000000000000000000000000000000000000
+            4C000000043B0000131E00000000000000000000000000000000000000000000
             000000004C000000000000000000000001000000E0D057007335CF11AE690800
             2B2E126208000000000000004C0000000114020000000000C000000000000046
             8000000000000000000000000000000000000000000000000000000000000000
@@ -1086,7 +1105,7 @@ object Form1: TForm1
           Left = 0
           Top = 0
           Width = 571
-          Height = 321
+          Height = 291
           Align = alClient
           Indent = 19
           TabOrder = 0
@@ -1125,7 +1144,7 @@ object Form1: TForm1
           Left = 0
           Top = 0
           Width = 571
-          Height = 321
+          Height = 291
           Align = alClient
           Indent = 19
           TabOrder = 0
@@ -1150,13 +1169,12 @@ object Form1: TForm1
     Configuracoes.WebServices.IntervaloTentativas = 1000
     Configuracoes.WebServices.AjustaAguardaConsultaRet = True
     OnStatusChange = ACBrNFe1StatusChange
-    DANFE = ACBrNFeDANFERave1
+    DANFE = ACBrNFeDANFERaveCB1
     OnGerarLog = ACBrNFe1GerarLog
     Left = 723
     Top = 377
   end
   object ACBrNFeDANFERave1: TACBrNFeDANFERave
-    ACBrNFe = ACBrNFe1
     PathPDF = 'C:\Program Files\Borland\Delphi7\Bin\'
     MostrarPreview = True
     MostrarStatus = True
@@ -1184,5 +1202,35 @@ object Form1: TForm1
     TamanhoFonte_ANTT = 10
     Left = 758
     Top = 377
+  end
+  object ACBrNFeDANFERaveCB1: TACBrNFeDANFERaveCB
+    ACBrNFe = ACBrNFe1
+    Sistema = 'DJSYSTEM'
+    Usuario = 'Andr'#233
+    PathPDF = 'C:\Program Files\Borland\Delphi7\Bin\'
+    MostrarPreview = True
+    MostrarStatus = True
+    TipoDANFE = tiRetrato
+    NumCopias = 1
+    ImprimirDescPorc = False
+    ImprimirTotalLiquido = False
+    MargemInferior = 0.800000000000000000
+    MargemSuperior = 0.800000000000000000
+    MargemEsquerda = 0.600000000000000000
+    MargemDireita = 0.510000000000000000
+    CasasDecimais._qCom = 2
+    CasasDecimais._vUnCom = 2
+    ExibirResumoCanhoto = False
+    FormularioContinuo = False
+    TamanhoFonte_DemaisCampos = 10
+    ProdutosPorPagina = 0
+    ImprimirDetalhamentoEspecifico = True
+    NFeCancelada = False
+    TamanhoCampoCodigo = 0
+    TamanhoFonte_ANTT = 10
+    Fonte = ftCourier
+    EspessuraBorda = 2
+    Left = 726
+    Top = 409
   end
 end

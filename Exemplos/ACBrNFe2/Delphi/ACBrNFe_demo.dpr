@@ -3,7 +3,9 @@ program ACBrNFe_demo;
 uses
   Forms,
   Unit1 in 'Unit1.pas' {Form1},
-  ufrmStatus in 'ufrmStatus.pas' {frmStatus};
+  ufrmStatus in 'ufrmStatus.pas' {frmStatus},
+  ACBrDANFeEventoRaveRetrato in '..\..\..\Fontes\ACBrNFe2\ACBrDANFeEventoRaveRetrato.pas',
+  pcnEventoNFe in '..\..\..\Fontes\PCN2\pcnEventoNFe.pas';
 
 {$R *.res}
 

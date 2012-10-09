@@ -144,7 +144,7 @@ type
     sTo : String;
     sCC : TStrings;
     slmsg_Lines : TStrings;
-    constructor Create(AOwner: NotaFiscal);
+    constructor Create;
     destructor Destroy; override;
   protected
     procedure Execute; override;
@@ -272,23 +272,16 @@ procedure NotaFiscal.EnviarEmail(const sSmtpHost,
                                       NomeRemetente: String = '';
                                       TLS : Boolean = True);
 var
- ThreadSMTP : TSendMailThread;
- m:TMimemess;
- p: TMimepart;
- StreamNFe : TStringStream;
  NomeArq : String;
  i: Integer;
+ AnexosEmail:TStrings ;
 begin
- m:=TMimemess.create;
-
- ThreadSMTP := TSendMailThread.Create(Self) ;  // Não Libera, pois usa FreeOnTerminate := True ;
- StreamNFe  := TStringStream.Create('');
+ AnexosEmail := TStringList.Create;
  try
-    p := m.AddPartMultipart('mixed', nil);
-    if sMensagem <> nil then
-       m.AddPartText(sMensagem, p);
-    SaveToStream(StreamNFe) ;
-    m.AddPartBinary(StreamNFe,copy(NFe.infNFe.ID, (length(NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml', p);
+    AnexosEmail.Clear;
+    if Anexos <> nil then
+      AnexosEmail.Text := Anexos.Text;
+    AnexosEmail.Add(copy(NFe.infNFe.ID, (length(NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml');
     if (EnviaPDF) then
     begin
        if TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE <> nil then
@@ -296,58 +289,26 @@ begin
           TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.ImprimirDANFEPDF(NFe);
           NomeArq :=  StringReplace(NFe.infNFe.ID,'NFe', '', [rfIgnoreCase]);
           NomeArq := PathWithDelim(TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.PathPDF)+NomeArq+'.pdf';
-          m.AddPartBinaryFromFile(NomeArq, p);
+          AnexosEmail.Add(NomeArq);
        end;
     end;
-
-    if assigned(Anexos) then
-      for i := 0 to Anexos.Count - 1 do
-      begin
-        m.AddPartBinaryFromFile(Anexos[i], p);
-      end;
-
-    m.header.tolist.add(sTo);
-
-    if Trim(NomeRemetente) <> '' then
-      m.header.From := Format('%s<%s>', [NomeRemetente, sFrom])
-    else
-      m.header.From := sFrom;
-
-    m.header.subject:= sAssunto;
-    m.Header.ReplyTo := sFrom;
-    if PedeConfirma then
-       m.Header.CustomHeaders.Add('Disposition-Notification-To: '+sFrom);
-    m.EncodeMessage;
-
-    ThreadSMTP.sFrom := sFrom;
-    ThreadSMTP.sTo   := sTo;
-    if sCC <> nil then
-       ThreadSMTP.sCC.AddStrings(sCC);
-    ThreadSMTP.slmsg_Lines.AddStrings(m.Lines);
-
-    ThreadSMTP.smtp.UserName := sSmtpUser;
-    ThreadSMTP.smtp.Password := sSmtpPasswd;
-
-    ThreadSMTP.smtp.TargetHost := sSmtpHost;
-    if not NotaUtil.EstaVazio( sSmtpPort ) then     // Usa default
-       ThreadSMTP.smtp.TargetPort := sSmtpPort;
-
-    ThreadSMTP.smtp.FullSSL := SSL;
-    ThreadSMTP.smtp.AutoTLS := TLS;
-
-    TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).SetStatus( stNFeEmail );
-    ThreadSMTP.Resume; // inicia a thread
-    if AguardarEnvio then
-    begin
-      repeat
-        Sleep(1000);
-        Application.ProcessMessages;
-      until ThreadSMTP.Terminado;
-    end;
-    TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).SetStatus( stIdle );
+    TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).EnviaEmail(sSmtpHost,
+                sSmtpPort,
+                sSmtpUser,
+                sSmtpPasswd,
+                sFrom,
+                sTo,
+                sAssunto,
+                sMensagem,
+                SSL,
+                sCC,
+                AnexosEmail,
+                PedeConfirma,
+                AguardarEnvio,
+                NomeRemetente,
+                TLS);
  finally
-    m.free;
-    StreamNFe.Free ;
+    AnexosEmail.Free ;
  end;
 end;
 
@@ -626,6 +587,7 @@ begin
         loNFeW.Free;
       end;
     end;
+    
     if loSTR.Count > 0 then
     begin
       loSTR.Strings[0]:='NOTA FISCAL|'+IntToStr(Self.Count);
@@ -666,9 +628,8 @@ begin
     SysUtils.ShowException(FException, nil);
 end;
 
-constructor TSendMailThread.Create(AOwner: NotaFiscal);
+constructor TSendMailThread.Create;
 begin
-  FOwner      := AOwner;
   smtp        := TSMTPSend.Create;
   slmsg_Lines := TStringList.Create;
   sCC         := TStringList.Create;
@@ -729,7 +690,7 @@ begin
       Terminado := True;
     end;
   except
-    Terminado := True; // Alterado por Italo em 21/09/2010
+    Terminado := True; 
     HandleException;
   end;
 end;

@@ -152,6 +152,57 @@ type
      property NFeCancelada:boolean read FNFeCancelada write FNFeCancelada default false;
   end;
 
+  TEventoRave = class(TRvSystem)
+     procedure RaveBeforePrint(Sender: TObject);
+     procedure RaveDecodeImage(Sender: TObject; ImageStream: TStream;
+                  ImageType: String; Bitmap: Graphics.TBitmap);
+     procedure RavePrint(Sender: TObject);
+  private
+     FACBrNFe:TACBrNFe;
+     FEmail:String;
+     FSite:string;
+     FFax:String;
+     FSistema:String;
+     FUsuario:String;
+     FLogoMarca:TJPEGImage;
+     FImpressora:String;
+     FTamanhoFonte_DemaisCampos:integer;
+     FEspessuraBorda:integer;
+     FFormularioContinuo: boolean;
+     FExpandirLogoMarca: boolean;
+     FMostrarStatus: Boolean;
+  public
+     FCurrentPage, FPageNum, FNFIndex, FNumNFe:Integer;
+     FChaveNFe, FNumeroNF, FSerie: String;
+     FEspelho:Boolean;
+     FDetIndex:Integer;
+     FLastItens:Double;
+     FFirstX,FFirstY,FLastX,FLastY:double;
+     FontNameUsed : String;
+     FontSizeIdentDoc_Outros : Integer;
+     FColorBorders:TColor;
+     constructor Create(AOwner:TComponent); override;
+     destructor Destroy; override;
+     function GetFontHeigh:Double;
+     procedure SetFontTitle;
+     procedure SetFontText;
+     procedure Box(FlagsHideLine:TFlagsShowLine;aX,aY:Double; aWith,aHeight:Double;aTitle:String='';aText:String='';aAlignment:TAlignment=taLeftJustify;PositionNewLine:Boolean=False;Zebrado:Boolean=False;LarguraAutomatica:Boolean=True);
+     property ACBrNFe:TACBrNFe read FACBrNFe write FACBrNFe;
+     property EmailDoEmitente:String read FEmail write FEmail;
+     property SiteDoEmitente:String read FSite write FSite;
+     property FaxDoEmitente:String read FFax write FFax;
+     property NomeDoERP:String read FSistema write FSistema;
+     property NomeDoUsuario:String read FUsuario write FUsuario;
+     property LogoMarca:TJPEGImage read FLogoMarca write FLogoMarca;
+     property NomeDaImpressora:String read FImpressora write FImpressora;
+     property TamanhoFonte_DemaisCampos:integer read FTamanhoFonte_DemaisCampos write FTamanhoFonte_DemaisCampos;
+     property EspessuraBorda:integer read FEspessuraBorda write FEspessuraBorda;
+     property FormularioContinuo:boolean read FFormularioContinuo write FFormularioContinuo;
+     property ExpandirLogoMarca:boolean read FExpandirLogoMarca write FExpandirLogoMarca default false;
+     property MostrarStatus:boolean read FMostrarStatus write FMostrarStatus default true;
+  end;
+
+
 procedure ImprimirDANFeRave(aACBrNFe:TACBrNFe;
                             aSite,
                             aEmail,
@@ -189,11 +240,35 @@ procedure ImprimirDANFeRave(aACBrNFe:TACBrNFe;
                             aNFeCancelada:boolean=false;
                             NFE : TNFe = nil);
 
+procedure ImprimirEventoRave(aACBrNFe:TACBrNFe;
+                            aSite,
+                            aEmail,
+                            aFax,
+                            aNomeDoERP,
+                            aNomeDoUsuario:String;
+                            aLogoMarca:TJPEGImage;
+                            aOrientacaoPapel:TOrientation;
+                            aOpcaoDeSaida:TTipoSaida=tsPreview;
+                            aMostrarStatus:boolean=true;
+                            aNumeroDeCopias:Integer=1;
+                            aNomeImpressora:string='';
+                            aArquivoSaida:String='';
+                            aMargemInferior:double=8;
+                            aMargemSuperior:double=8;
+                            aMargemEsquerda:double=6;
+                            aMargemDireita:double=5.1;
+                            aTamanhoFonte_DemaisCampos:integer=10;
+                            aEspessuraBorda:integer=2;
+                            aFormularioContinuo:boolean=false;
+                            aExpadirLogoMarca:boolean=false;
+                            NFE : TNFe = nil);
+
 var DANFeRave:TDANFeRave;
+    EventoRave:TEventoRave;
 
 implementation
 
-uses ACBrDANFeCBRavePaisagem, ACBrDANFeCBRaveRetrato, ACBrNFeDANFERaveCB;
+uses ACBrDANFeCBRavePaisagem, ACBrDANFeCBRaveRetrato, ACBrNFeDANFERaveCB, ACBrDANFeEventoRaveRetrato;
 
 procedure ImprimirDANFeRave(aACBrNFe:TACBrNFe;
                             aSite,
@@ -261,7 +336,7 @@ begin
   rvPDF.OnDecodeImage:=DANFeRave.RaveDecodeImage;
   rvTXT:=TRvRenderText.Create(DANFeRave);
   rvHTML:=TRvRenderHTML.Create(DANFeRave);
-  {$IFNDEF VER150} 
+  {$IFNDEF VER150}
   rvHTML.OnDecodeImage:=DANFeRave.RaveDecodeImage;
   {$ENDIF}
   rvRTF:=TRvRenderRTF.Create(DANFeRave);
@@ -325,7 +400,7 @@ begin
     DANFeRave.SystemPrinter.Copies:=aNumeroDeCopias;
     DANFeRave.SystemPrinter.LinesPerInch:=20;
     DANFeRave.SystemPrinter.StatusFormat:='Imprimindo página %p';
-    DANFeRave.SystemPrinter.Title:='NFe - Impressão do DANFE';
+    DANFeRave.SystemPrinter.Title:='DANFE';
     DANFeRave.SystemPrinter.Units:=unMM;
     //DANFeRave.SystemPrinter.Collate := True;
     DANFeRave.SystemPrinter.UnitsFactor:=25.4;
@@ -353,6 +428,129 @@ begin
     FreeAndNil(rvHTML);
     FreeAndNil(rvRTF);
     FreeAndNil(DANFeRave);
+  end;
+end;
+
+procedure ImprimirEventoRave(aACBrNFe:TACBrNFe;
+                            aSite,
+                            aEmail,
+                            aFax,
+                            aNomeDoERP,
+                            aNomeDoUsuario:String;
+                            aLogoMarca:TJPEGImage;
+                            aOrientacaoPapel:TOrientation;
+                            aOpcaoDeSaida:TTipoSaida=tsPreview;
+                            aMostrarStatus:boolean=true;
+                            aNumeroDeCopias:Integer=1;
+                            aNomeImpressora:string='';
+                            aArquivoSaida:String='';
+                            aMargemInferior:double=8;
+                            aMargemSuperior:double=8;
+                            aMargemEsquerda:double=6;
+                            aMargemDireita:double=5.1;
+                            aTamanhoFonte_DemaisCampos:integer=10;
+                            aEspessuraBorda:integer=2;
+                            aFormularioContinuo:boolean=false;
+                            aExpadirLogoMarca:boolean=false;
+                            NFE : TNFe = nil);
+var EventoRave:TEventoRave;
+    rvPDF:TRvRenderPDF;
+    rvTXT:TRvRenderText;
+    rvHTML:TRvRenderHTML;
+    rvRTF:TRvRenderRTF;
+begin
+  EventoRave:=TEventoRave.Create(nil);
+  EventoRave.ACBrNFe := aACBrNFe;
+  EventoRave.FNumNFe := 1;
+
+  if TACBrNFeDANFERaveCB(aACBrNFe.DANFE).Fonte = ftCourier then
+     EventoRave.FontNameUsed := 'Courier New'
+  else
+     EventoRave.FontNameUsed := 'Times New Roman';
+  EventoRave.FontSizeIdentDoc_Outros := NotaUtil.SeSenao(Pos('Courier',EventoRave.FontNameUsed)>0,9,10);
+
+  rvPDF:=TRvRenderPDF.Create(DANFeRave);
+  rvPDF.OnDecodeImage:=DANFeRave.RaveDecodeImage;
+  rvTXT:=TRvRenderText.Create(DANFeRave);
+  rvHTML:=TRvRenderHTML.Create(DANFeRave);
+  {$IFNDEF VER150}
+  rvHTML.OnDecodeImage:=DANFeRave.RaveDecodeImage;
+  {$ENDIF}
+  rvRTF:=TRvRenderRTF.Create(DANFeRave);
+  {$IFNDEF VER150}
+  rvRTF.OnDecodeImage:=DANFeRave.RaveDecodeImage;
+  {$ENDIF}
+  try
+    rvPDF.EmbedFonts:=False;
+    rvPDF.ImageQuality:=90;
+    rvPDF.MetafileDPI:=300;
+    rvPDF.UseCompression:=False;
+    rvPDF.Active:=True;
+    EventoRave.EmailDoEmitente:=aEmail;
+    EventoRave.SiteDoEmitente:=aSite;
+    EventoRave.FaxDoEmitente:=aFax;
+    EventoRave.NomeDoERP:=aNomeDoERP;
+    EventoRave.NomeDoUsuario:=aNomeDoUsuario;
+    EventoRave.SystemPrinter.MarginTop:=aMargemSuperior;
+    EventoRave.SystemPrinter.MarginBottom:=aMargemInferior;
+    EventoRave.SystemPrinter.MarginLeft:=aMargemEsquerda;
+    EventoRave.SystemPrinter.MarginRight:=aMargemDireita;
+    EventoRave.TamanhoFonte_DemaisCampos:=aTamanhoFonte_DemaisCampos;
+    EventoRave.EspessuraBorda:=aEspessuraBorda;
+    EventoRave.FormularioContinuo:=aFormularioContinuo;
+    if aFormularioContinuo then
+       EventoRave.FColorBorders:=clWhite
+      else
+       EventoRave.FColorBorders:=clBlack;
+    EventoRave.ExpandirLogoMarca:=aExpadirLogoMarca;
+
+    if aLogoMarca<>nil then
+     begin
+       EventoRave.LogoMarca:=TJPEGImage.Create;
+       EventoRave.LogoMarca.Assign(aLogoMarca);
+     end;
+    EventoRave.NomeDaImpressora:=aNomeImpressora;
+    EventoRave.TitlePreview:='Visualizar EVENTO';
+    EventoRave.TitleSetup:='Configurações';
+    EventoRave.TitleStatus:='Status da Impressão';
+    EventoRave.SystemFiler.StatusFormat:='Gerando página %p';
+    EventoRave.SystemFiler.StreamMode:=smTempFile;
+    EventoRave.SystemOptions:=[soShowStatus,soAllowPrintFromPreview,{soAllowSaveFromPreview,}soPreviewModal];
+    if not aMostrarStatus then
+       EventoRave.SystemOptions:=DANFeRave.SystemOptions - [soShowStatus];
+    EventoRave.SystemPreview.FormState:=wsMaximized;
+    EventoRave.SystemPreview.ZoomFactor:=100;
+    EventoRave.SystemPrinter.Copies:=aNumeroDeCopias;
+    EventoRave.SystemPrinter.LinesPerInch:=20;
+    EventoRave.SystemPrinter.StatusFormat:='Imprimindo página %p';
+    EventoRave.SystemPrinter.Title:='DANFE';
+    EventoRave.SystemPrinter.Units:=unMM;
+    //EventoRave.SystemPrinter.Collate := True;
+    EventoRave.SystemPrinter.UnitsFactor:=25.4;
+    EventoRave.SystemPrinter.Orientation:=aOrientacaoPapel;
+    EventoRave.SystemSetups:=[ssAllowCopies,ssAllowCollate,ssAllowDuplex,ssAllowDestPreview,ssAllowDestPrinter,ssAllowDestFile,ssAllowPrinterSetup,ssAllowPreviewSetup];
+    case aOpcaoDeSaida of
+       tsPrint: EventoRave.DefaultDest:=rdPrinter;
+       tsPreview: EventoRave.DefaultDest:=rdPreview;
+      else begin
+       EventoRave.DefaultDest:=rdFile;
+       EventoRave.DoNativeOutput:= False;
+       EventoRave.OutputFileName:= aArquivoSaida;
+       case aOpcaoDeSaida of
+          tsPDF: EventoRave.RenderObject:=rvPDF;
+          tsText: EventoRave.RenderObject:=rvTXT;
+          tsHTML: EventoRave.RenderObject:=rvHTML;
+          tsRTF: EventoRave.RenderObject:=rvRTF;
+       end;
+      end
+    end;
+    EventoRave.Execute;
+  finally
+    FreeAndNil(rvPDF);
+    FreeAndNil(rvTXT);
+    FreeAndNil(rvHTML);
+    FreeAndNil(rvRTF);
+    FreeAndNil(EventoRave);
   end;
 end;
 
@@ -528,6 +726,156 @@ end;
 function TDANFeRave.IsPrintAllInfCpl: boolean;
 begin
   Result:=FMemoInfCpl.Empty;
+end;
+
+{ TEventoRave }
+
+procedure TEventoRave.Box(FlagsHideLine: TFlagsShowLine; aX, aY, aWith,
+  aHeight: Double; aTitle, aText: String; aAlignment: TAlignment;
+  PositionNewLine, Zebrado, LarguraAutomatica: Boolean);
+var XX,YY:Double;
+    printAlingment:TPrintJustify;
+begin
+  with BaseReport do begin
+    XX:=aX; YY:=aY;
+    if (PositionNewLine) and (LarguraAutomatica) then
+       aWith:=FLastX-XX;
+    if not (fsTop in FlagsHideLine) then begin
+       MoveTo(aX,aY);
+       LineTo(aX+aWith,aY);
+    end;
+    if not (fsBottom in FlagsHideLine) then begin
+       MoveTo(aX,aY+aHeight);
+       LineTo(aX+aWith,aY+aHeight);
+    end;
+    if not (fsLeft in FlagsHideLine) then begin
+       MoveTo(aX,aY+0.05);
+       LineTo(aX,aY+aHeight-0.05);
+    end;
+    if not (fsRigth in FlagsHideLine) then begin
+       MoveTo(aX+aWith,aY+0.05);
+       LineTo(aX+aWith,aY+aHeight-0.05);
+    end;
+
+    if aTitle<>'' then begin
+       SetFontTitle;
+       GotoXY(XX,YY);
+       NewLine;
+       PrintXY(XX+1,YPos-0.4,NotaUtil.UpperCase2(aTitle)); //deixa maiusculo
+       NewLine;
+       SetFontText;
+       GotoXY(XPos,YPos+0.4);
+       case aAlignment of
+         taRightJustify : printAlingment:=pjRight;
+         taCenter       : printAlingment:=pjCenter;
+        else
+         printAlingment:=pjLeft;
+       end;
+       ClearAllTabs;
+       SetTab(XX+1,printAlingment,aWith-2,0,0,NotaUtil.SeSenao(Zebrado,15,0));
+       aText:=Trim(aText);
+       PrintTab(aText);
+       Bold:=False;
+    end;
+    if PositionNewLine then
+       GotoXY(aX+aWith-aDiferentWidth,aY+aHeight-aDiferentHeigth)
+      else
+       GotoXY(aX+aWith-aDiferentWidth,aY);
+  end;
+end;
+
+constructor TEventoRave.Create(AOwner: TComponent);
+begin
+  inherited;
+  OnPrint:=RavePrint;
+  OnBeforePrint:=RaveBeforePrint;
+  OnDecodeImage:=RaveDecodeImage;
+end;
+
+destructor TEventoRave.Destroy;
+begin
+  FLogoMarca.Free;
+  inherited;
+end;
+
+function TEventoRave.GetFontHeigh: Double;
+var X,Y:Double;
+begin
+  with BaseReport do begin
+    X:=XPos;Y:=YPos;
+    GotoXY(PageWidth+PageWidth,PageHeight+PageHeight);
+    FontColor:=clWhite;
+    Print('A');
+    Result:=FontHeight;
+    FontColor:=clBlack;
+    GotoXY(X,Y);
+  end;
+end;
+
+procedure TEventoRave.RaveBeforePrint(Sender: TObject);
+begin
+  with BaseReport do begin
+    if Trim(FImpressora)<>'' then
+       SelectPrinter(FImpressora);
+    if FACBrNFe.EventoNFe.Evento.Items[0].InfEvento.tpEvento = teCCe then
+     begin
+       SelectPaper('A4');
+       SetPaperSize(DMPAPER_A4,0,0);
+       Orientation:=SystemPrinter.Orientation;
+     end
+    else
+     begin
+       SelectPaper('A5');
+       SetPaperSize(DMPAPER_A5,0,0);
+       Orientation:=poLandScape;
+     end;
+
+
+    FFirstX:=SystemPrinter.MarginLeft;
+    FLastX:=BaseReport.PageWidth-SystemPrinter.MarginRight;
+    FFirstY:=SystemPrinter.MarginTop;
+    FLastY:=BaseReport.PageHeight-SystemPrinter.MarginBottom;
+  end;
+end;
+
+procedure TEventoRave.RaveDecodeImage(Sender: TObject;
+  ImageStream: TStream; ImageType: String; Bitmap: Graphics.TBitmap);
+var Image: TJPEGImage;
+begin
+  If ImageType = 'JPG' then begin
+    Image := TJPEGImage.Create; // Create a TJPEGImage class
+    try
+      Image.LoadFromStream(ImageStream); // Load up JPEG image from ImageStream
+      Image.DIBNeeded; // Convert JPEG to bitmap format
+      Bitmap.Assign(Image);
+    finally
+      Image.Free;
+    end;
+  end;
+end;
+
+procedure TEventoRave.RavePrint(Sender: TObject);
+begin
+  with BaseReport  do begin
+    FNFIndex:=0;
+    FCurrentPage:=0;
+//    if Orientation=poLandScape then
+//       ImprimirPaisagem(Self)
+//    else
+       ImprimirEventoRetrato(Self);
+  end;
+end;
+
+procedure TEventoRave.SetFontText;
+begin
+  if FontSizeText = 0 then
+     FontSizeText := TamanhoFonte_DemaisCampos;
+  BaseReport.SetFont(FontNameUsed,FontSizeText);
+end;
+
+procedure TEventoRave.SetFontTitle;
+begin
+  BaseReport.SetFont(FontNameUsed,FontSizeTitle)
 end;
 
 end.

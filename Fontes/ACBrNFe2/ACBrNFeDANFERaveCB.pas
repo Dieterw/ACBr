@@ -69,6 +69,8 @@ type
     destructor Destroy; override;
     procedure ImprimirDANFE(NFE : TNFe = nil); override ;
     procedure ImprimirDANFEPDF(NFE : TNFe = nil); override ;
+    procedure ImprimirEVENTO(NFE : TNFe = nil); override ;
+    procedure ImprimirEVENTOPDF(NFE : TNFe = nil); override ;
   published
      property TamanhoCampoCodigo:integer read FTamanhoCampoCodigo write FTamanhoCampoCodigo;
      property TamanhoFonte_ANTT:integer read FTamanhoFonte_ANTT write FTamanhoFonte_ANTT;
@@ -237,6 +239,117 @@ begin
     end;
 end;
 
+
+procedure TACBrNFeDANFERaveCB.ImprimirEVENTO(NFE: TNFe);
+var
+ LogoMarcaEmpresa:TJPEGImage;
+ ExisteLogoMarca: Boolean;
+ vStringStream: TStringStream;
+begin
+    ExisteLogoMarca:=True;
+    LogoMarcaEmpresa:=TJPEGImage.Create;
+    try
+      if NotaUtil.NaoEstaVazio(Logo) then
+       begin
+         if FileExists(Logo) then
+            LogoMarcaEmpresa.LoadFromFile(Logo)
+         else
+         begin
+            vStringStream:= TStringStream.Create(Logo);
+            try
+               LogoMarcaEmpresa.LoadFromStream(vStringStream);
+            finally
+               vStringStream.Free;
+            end;
+         end;
+       end
+       else
+        ExisteLogoMarca:=False;
+
+      ImprimirEventoRave(TACBrNFe(ACBrNFe),
+                       Site,
+                       Email,
+                       Fax,
+                       Sistema,
+                       Usuario,
+                       SeSenaoJPEG(ExisteLogoMarca,LogoMarcaEmpresa,nil),
+                       NotaUtil.SeSenao((TipoDANFE=tiRetrato),poPortrait,poLandScape),
+                       NotaUtil.SeSenao(MostrarPreview,tsPreview,tsPrint),
+                       MostrarStatus,
+                       NumCopias,
+                       Impressora,
+                       '',
+                       MargemInferior*10,
+                       MargemSuperior*10,
+                       MargemEsquerda*10,
+                       MargemDireita*10,
+                       TamanhoFonte_DemaisCampos,
+                       EspessuraBorda,
+                       FormularioContinuo,
+                       ExpandirLogoMarca,
+                       NFe);
+    finally
+      LogoMarcaEmpresa.Free;
+    end;
+end;
+
+
+procedure TACBrNFeDANFERaveCB.ImprimirEVENTOPDF(NFE: TNFe);
+var
+ LogoMarcaEmpresa:TJPEGImage;
+ ExisteLogoMarca: Boolean;
+ vStringStream: TStringStream;
+ NomeArq : String;
+begin
+    ExisteLogoMarca:=True;
+    LogoMarcaEmpresa:=TJPEGImage.Create;
+    try
+      if NotaUtil.NaoEstaVazio(Logo) then
+       begin
+         if FileExists(Logo) then
+            LogoMarcaEmpresa.LoadFromFile(Logo)
+         else
+         begin
+            vStringStream:= TStringStream.Create(Logo);
+            try
+               LogoMarcaEmpresa.LoadFromStream(vStringStream);
+            finally
+               vStringStream.Free;
+            end;
+         end;
+       end
+       else
+        ExisteLogoMarca:=False;
+
+      NomeArq := StringReplace(TACBrNFe(ACBrNFe).EventoNFe.Evento[0].InfEvento.id,'ID', '', [rfIgnoreCase]);
+      NomeArq := PathWithDelim(Self.PathPDF)+NomeArq+'evento.pdf';
+
+      ImprimirEventoRave(TACBrNFe(ACBrNFe),
+                       Site,
+                       Email,
+                       Fax,
+                       Sistema,
+                       Usuario,
+                       SeSenaoJPEG(ExisteLogoMarca,LogoMarcaEmpresa,nil),
+                       NotaUtil.SeSenao((TipoDANFE=tiRetrato),poPortrait,poLandScape),
+                       tsPDF,
+                       MostrarStatus,
+                       NumCopias,
+                       Impressora,
+                       NomeArq,
+                       MargemInferior*10,
+                       MargemSuperior*10,
+                       MargemEsquerda*10,
+                       MargemDireita*10,
+                       TamanhoFonte_DemaisCampos,
+                       EspessuraBorda,
+                       FormularioContinuo,
+                       ExpandirLogoMarca,
+                       NFe);
+    finally
+      LogoMarcaEmpresa.Free;
+    end;
+end;
 
 function TACBrNFeDANFERaveCB.SeSenaoJPEG(ACondicao: Boolean; ATrue,
   AFalse: TJPEGImage): TJPEGImage;

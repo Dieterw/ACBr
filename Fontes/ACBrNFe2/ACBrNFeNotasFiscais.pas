@@ -125,6 +125,7 @@ type
     function GetNamePath: string; override ;
     function LoadFromFile(CaminhoArquivo: string): boolean;
     function LoadFromStream(Stream: TStringStream): boolean;
+    function LoadFromString(AString: String): boolean;
     function SaveToFile(PathArquivo: string = ''; SalvaTXT : Boolean = False): boolean;
     function SaveToTXT(PathArquivo: string = ''): boolean;
 
@@ -537,6 +538,27 @@ begin
        GerarNFe;       
     finally
        LocNFeR.Free
+    end;
+  except
+    Result := False;
+  end;
+end;
+
+function TNotasFiscais.LoadFromString(AString: String): boolean;
+var
+  XML: TStringStream;
+begin
+  try
+    Result := True;
+
+    XML := TStringStream;
+    try
+      XML.Clear;
+      XML.WriteString(AString);
+
+      Result := LoadFromStream(XML);
+    finally
+      XML.Free;
     end;
   except
     Result := False;

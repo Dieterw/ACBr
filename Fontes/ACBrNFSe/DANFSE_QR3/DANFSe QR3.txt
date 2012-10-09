@@ -1,0 +1,10 @@
+{******************************************************************************}
+{ Fontes do Componente ACBrNFSeDANFSeQR                                        }
+{                                                                              }
+{ Estes fontes foram gerados utilizando a versão 3.0 do Quick Report           }
+{                                                                              }
+{ Se você utiliza uma versão diferente da versão 5.02                          }
+{ então copie os fontes que estão dentro desta pasta para dentro da pasta      }
+{ ...\Fontes\ACBrNFSe e responda que SIM a pergunta se deseja substituir.      }
+{                                                                              }
+{******************************************************************************}

@@ -67,6 +67,7 @@ type
     FdigVal: string;
     FcStat: integer;
     FxMotivo: string;
+    FVersao: String;
   public
     constructor Create;
     destructor Destroy; override;
@@ -86,6 +87,7 @@ type
     property digVal: string read FdigVal write FdigVal;
     property cStat: integer read FcStat write FcStat;
     property xMotivo: string read FxMotivo write FxMotivo;
+    property Versao: String read FVersao write FVersao;
   end;
 
 implementation
@@ -134,8 +136,10 @@ var
 begin
   Result := False;
   ProtLido := False;
-  if retornarVersaoLayout(FSchema, tlProcNFe) = '1.10' then
-  begin
+  // Alterado por Italo em 28/09/2012
+
+//  if retornarVersaoLayout(FSchema, tlProcNFe) = '1.10' then
+//  begin
 
     XMLNFe := TStringList.Create;
     XMLinfProt := TStringList.Create;
@@ -203,8 +207,9 @@ begin
         else
            XMLinfProt2.Text:=RetornarConteudoEntre(XMLinfProt.text, '<infProt', '</infProt>');
 
+        // Alterado por Italo em 28/09/2012
         xProtNFe :=
-          (**)'<protNFe versao="2.00">' +
+          '<protNFe versao="' + Versao + '">' +
         (******)'<infProt>'+// + RetornarConteudoEntre(XMLinfProt.text, '<infProt', '<tpAmb>') +
         (*********)PreencherTAG('tpAmb', XMLinfProt.text) +
         (*********)PreencherTAG('verAplic', XMLinfProt.text) +
@@ -222,7 +227,7 @@ begin
     if ProtLido then
      begin
         xProtNFe :=
-          (**)'<protNFe versao="2.00">' +
+          '<protNFe versao="' + Versao + '">' +
         (******)'<infProt>'+
         (*********)'<tpAmb>'+TpAmbToStr(FtpAmb)+'</tpAmb>'+
         (*********)'<verAplic>'+FverAplic+'</verAplic>'+
@@ -242,9 +247,9 @@ begin
     begin
       Gerador.ArquivoFormatoXML := '';
       Gerador.wGrupo(ENCODING_UTF8, '', False);
-      Gerador.wGrupo('nfeProc ' + V2_00 + ' ' + NAME_SPACE, '');
+      Gerador.wGrupo('nfeProc versao="' + Versao + '" ' + NAME_SPACE, '');
       Gerador.wTexto('<NFe xmlns' + RetornarConteudoEntre(XMLNFE.Text, '<NFe xmlns', '</NFe>') + '</NFe>');
-      (**)Gerador.wTexto(xProtNFe);
+      Gerador.wTexto(xProtNFe);
       Gerador.wGrupo('/nfeProc');
     end;
 
@@ -253,7 +258,7 @@ begin
     XMLinfProt2.Free;
     Result := (Gerador.ListaDeAlertas.Count = 0);
 
-  end;
+//  end;
 end;
 
 end.

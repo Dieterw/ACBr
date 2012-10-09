@@ -45,7 +45,12 @@
 //              condicionado a manutenção deste cabeçalho junto ao código     //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
-
+{******************************************************************************
+|* Historico
+|*
+|* 28/09/2012: Italo
+|*  - Incluído constantes com as versões atuais dos WebServices
+******************************************************************************}
 {$I ACBr.inc}
 
 unit pcnConversao;
@@ -234,6 +239,21 @@ const
   NFeEventoNFe    = '1.00'; // Incluido por Italo em 09/04/2012
   NFeConsNFeDest  = '1.01'; // Incluido por Italo em 17/07/2012
   NFeDownloadNFe  = '1.00'; // Incluido por Italo em 18/07/2012
+
+  NFCeCabMsg       = '2.00';
+  NFCeConsStatServ = '3.00';
+  NFCeEnvi         = '3.00';
+  NFCeConsReci     = '3.00';
+  NFCeConsSit      = '3.00';
+  NFCeCanc         = '3.00';
+  NFCeInut         = '3.00';
+  NFCeConsCad      = '2.00';
+  NFCeEnvDPEC      = '1.01';
+  NFCeConsDPEC     = '1.01';
+  NFCeCCe          = '1.00';
+  NFCeEvento       = '1.00';
+  NFCeConsNFeDest  = '1.01';
+  NFCeDownloadNFe  = '1.00';
 
   MDFeCabMsg       = '1.00';
   MDFeConsStatServ = '1.00';

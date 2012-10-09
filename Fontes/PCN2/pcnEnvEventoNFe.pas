@@ -45,70 +45,19 @@
 ///
 unit pcnEnvEventoNFe;
 
-interface uses
+interface
 
-  SysUtils, Classes,
-{$IFNDEF VER130}
-  Variants,
-{$ENDIF}
-  pcnAuxiliar, pcnConversao, pcnGerador;
+uses SysUtils, Classes,
+     {$IFNDEF VER130}
+     Variants,
+     {$ENDIF}
+     pcnAuxiliar, pcnConversao, pcnGerador, pcnLeitor, pcnEventoNFe;
 
 type
-  TDetEvento = class ;
-  TInfEvento = class ;
   TInfEventoCollection  = class ;
   TInfEventoCollectionItem = class ;
   TEventoNFe = class ;
   EventoException = class(Exception);
-
-  TDetEvento = class
-  private
-    FCorrecao: String; //Carta de Correção
-    FCondUso: String; //Carta de Correção
-    FnProt: string; //Cancelamento
-    FxJust: string; //Cancelamento e Manif. Destinatario
-    procedure setCondUso(const Value: String);
-  public
-    property xCorrecao: String        read FCorrecao    write FCorrecao;
-    property xCondUso: String         read FCondUso     write setCondUso;
-    property nProt: String            read FnProt       write FnProt;
-    property xJust: String            read FxJust       write FxJust;
-  end;
-
-  TInfEvento = class
-  private
-    FID: String;
-    FtpAmbiente: TpcnTipoAmbiente;
-    FCNPJ: String;
-    FcOrgao: integer;
-    FChave: String;
-    FDataEvento: TDateTime;
-    FTpEvento: TpcnTpEvento;
-    FnSeqEvento: Integer;
-    FVersaoEvento: String;
-    FDetEvento: TDetEvento;
-
-    function getcOrgao: integer;
-    function getVersaoEvento: String;
-    function getDescEvento: string;
-    function getTipoEvento: string;
-  public
-    constructor Create;
-    destructor Destroy; override;
-
-    property id: String              read FID         write FID;
-    property cOrgao: integer         read getcOrgao   write FcOrgao;
-    property tpAmb: TpcnTipoAmbiente read FtpAmbiente write FtpAmbiente;
-    property CNPJ: String            read FCNPJ       write FCNPJ;
-    property chNFe: String           read FChave      write FChave;
-    property dhEvento: TDateTime     read FDataEvento write FDataEvento;
-    property tpEvento: TpcnTpEvento  read FTpEvento   write FTpEvento;
-    property nSeqEvento: Integer     read FnSeqEvento write FnSeqEvento;
-    property versaoEvento: String    read getVersaoEvento write FversaoEvento;
-    property detEvento: TDetEvento   read FDetEvento  write FDetEvento;
-    property DescEvento: string      read getDescEvento;
-    property TipoEvento: string      read getTipoEvento;
-  end;
 
   TInfEventoCollection = class(TCollection)
   private
@@ -123,11 +72,13 @@ type
   TInfEventoCollectionItem = class(TCollectionItem)
   private
     FInfEvento: TInfEvento;
+    FRetInfEvento: TRetInfEvento;
   public
     constructor Create; reintroduce;
     destructor Destroy; override;
   published
     property InfEvento: TInfEvento read FInfEvento write FInfEvento;
+    property RetInfEvento: TRetInfEvento read FRetInfEvento write FRetInfEvento;
   end;
 
   TEventoNFe = class(TPersistent)
@@ -141,6 +92,7 @@ type
     constructor Create;
     destructor Destroy; override;
     function GerarXML: boolean;
+    function LerXML(CaminhoArquivo: string): boolean;
     function ObterNomeArquivo(tpEvento: TpcnTpEvento): string;
   published
     property Gerador: TGerador  read FGerador write FGerador;
@@ -150,6 +102,8 @@ type
   end;
 
 implementation
+
+uses pcnRetEnvEventoNFe ;
 
 { TEventoNFe }
 
@@ -170,7 +124,6 @@ function TEventoNFe.ObterNomeArquivo(tpEvento: TpcnTpEvento): string;
 begin
  case tpEvento of
     teCCe                       : Result := IntToStr(Self.idLote) + '-cce.xml';     // Carta de Correção Eletrônica
-                                  // Alterado por Italo em 31/07/2012 -can-env.xml para -can-eve.xml
     teCancelamento              : Result := IntToStr(Self.idLote) + '-can-eve.xml'; // Cancelamento da NFe como Evento
     teManifDestCiencia,
     teManifDestConfirmacao,
@@ -259,92 +212,57 @@ begin
   FEvento.Assign(Value);
 end;
 
-{ TInfEvento }
-
-constructor TInfEvento.Create;
+function TEventoNFe.LerXML(CaminhoArquivo: string): boolean;
+var
+  ArqEvento    : TStringList;
+  RetEventoNFe : TRetEventoNFe;
 begin
-  inherited Create;
-  FDetEvento := TDetEvento.Create;
-end;
-
-destructor TInfEvento.Destroy;
-begin
-  FDetEvento.Free;
-  inherited;
-end;
-
-function TInfEvento.getcOrgao: integer;
-//  (AC,AL,AP,AM,BA,CE,DF,ES,GO,MA,MT,MS,MG,PA,PB,PR,PE,PI,RJ,RN,RS,RO,RR,SC,SP,SE,TO);
-//  (12,27,16,13,29,23,53,32,52,21,51,50,31,15,25,41,26,22,33,24,43,11,14,42,35,28,17);
-begin
-  if FcOrgao <> 0 then
-    Result := FcOrgao
-  else
-  begin
-    case fTpEvento of
-      teCCe,teCancelamento:
+  ArqEvento := TStringList.Create;
+  RetEventoNFe := TRetEventoNFe.Create;
+  try
+     ArqEvento.LoadFromFile(CaminhoArquivo);
+     RetEventoNFe.Leitor.Arquivo := ArqEvento.Text;
+     RetEventoNFe.LerXml;
+     with FEvento.Add do
       begin
-        Result := StrToInt(copy(FChave,1,2));
-        {Estados que utilizam a SVAN: ES, MA, PA, PI, RN => Devem utilizar 90}
-        if Result in [32,21,15,22,24] then
-          Result := 90;
-      end
-      else
-        Result := 91;
-    end;
+         infEvento.ID            := RetEventoNFe.InfEvento.id;
+         InfEvento.cOrgao        := RetEventoNFe.InfEvento.cOrgao;
+         infEvento.tpAmb         := RetEventoNFe.InfEvento.tpAmb;
+         infEvento.CNPJ          := RetEventoNFe.InfEvento.CNPJ;
+         infEvento.chNFe         := RetEventoNFe.InfEvento.chNFe;
+         infEvento.dhEvento      := RetEventoNFe.InfEvento.dhEvento;
+         infEvento.tpEvento      := RetEventoNFe.InfEvento.tpEvento;
+         infEvento.nSeqEvento    := RetEventoNFe.InfEvento.nSeqEvento;
+         infEvento.VersaoEvento  := RetEventoNFe.InfEvento.VersaoEvento;
+
+         infEvento.DetEvento.xCorrecao := RetEventoNFe.InfEvento.DetEvento.xCorrecao;
+         infEvento.DetEvento.xCondUso  := RetEventoNFe.InfEvento.DetEvento.xCondUso;
+         infEvento.DetEvento.nProt     := RetEventoNFe.InfEvento.DetEvento.nProt;
+         infEvento.DetEvento.xJust     := RetEventoNFe.InfEvento.DetEvento.xJust;
+
+
+        if RetEventoNFe.retEvento.Count > 0 then
+         begin
+           FRetInfEvento.Id := RetEventoNFe.retEvento.Items[0].RetInfEvento.Id;
+           FRetInfEvento.tpAmb := RetEventoNFe.retEvento.Items[0].RetInfEvento.tpAmb;
+           FRetInfEvento.verAplic := RetEventoNFe.retEvento.Items[0].RetInfEvento.verAplic;
+           FRetInfEvento.cOrgao := RetEventoNFe.retEvento.Items[0].RetInfEvento.cOrgao;
+           FRetInfEvento.cStat := RetEventoNFe.retEvento.Items[0].RetInfEvento.cStat;
+           FRetInfEvento.xMotivo := RetEventoNFe.retEvento.Items[0].RetInfEvento.xMotivo;
+           FRetInfEvento.chNFe := RetEventoNFe.retEvento.Items[0].RetInfEvento.chNFe;
+           FRetInfEvento.tpEvento := RetEventoNFe.retEvento.Items[0].RetInfEvento.tpEvento;
+           FRetInfEvento.xEvento := RetEventoNFe.retEvento.Items[0].RetInfEvento.xEvento;
+           FRetInfEvento.nSeqEvento := RetEventoNFe.retEvento.Items[0].RetInfEvento.nSeqEvento;
+           FRetInfEvento.CNPJDest := RetEventoNFe.retEvento.Items[0].RetInfEvento.CNPJDest;
+           FRetInfEvento.emailDest := RetEventoNFe.retEvento.Items[0].RetInfEvento.emailDest;
+           FRetInfEvento.dhRegEvento := RetEventoNFe.retEvento.Items[0].RetInfEvento.dhRegEvento;
+           FRetInfEvento.nProt := RetEventoNFe.retEvento.Items[0].RetInfEvento.nProt;
+         end;
+      end;
+  finally
+     ArqEvento.Free;
+     RetEventoNFe.Free;
   end;
-end;
-
-function TInfEvento.GetDescEvento: string;
-begin
-  case fTpEvento of
-    teCCe                      : Result := 'Carta de Correcao';
-    teCancelamento             : Result := 'Cancelamento';
-    teManifDestConfirmacao     : Result := 'Confirmacao da Operacao';
-    teManifDestCiencia         : Result := 'Ciencia da Operacao';
-    teManifDestDesconhecimento : Result := 'Desconhecimento da Operacao';
-    teManifDestOperNaoRealizada: Result := 'Operação nao Realizada';
-  else
-    raise EventoException.Create('Descrição do Evento não Implementado!');
-  end;
-end;
-
-function TInfEvento.getTipoEvento: string;
-begin
-  case FTpEvento of
-    teCCe: Result              := '110110';//CCe
-    teCancelamento: Result     := '110111';//Cancelamento
-    teManifDestConfirmacao     : Result := '210200';//Manif. Destinatario: Confirmacao da Operacao
-    teManifDestCiencia         : Result := '210210';//Manif. Destinatario: Ciencia da Operacao
-    teManifDestDesconhecimento : Result := '210220';//Manif. Destinatario: Desconhecimento da Operacao
-    teManifDestOperNaoRealizada: Result := '210240';//Manif. Destinatario: Operação nao Realizada
-  else
-    raise EventoException.Create('Tipo do Evento não Implementado!');
-  end;
-end;
-
-function TInfEvento.getVersaoEvento: String;
-begin
-  Result := '1.00';
-end;
-
-{ TDetEvento }
-
-procedure TDetEvento.setCondUso(const Value: String);
-begin
-  FCondUso := Value;
-
-  if FCondUso = '' then
-    FCondUso := 'A Carta de Correcao e disciplinada pelo paragrafo 1o-A do' +
-                ' art. 7o do Convenio S/N, de 15 de dezembro de 1970 e' +
-                ' pode ser utilizada para regularizacao de erro ocorrido na' +
-                ' emissao de documento fiscal, desde que o erro nao esteja' +
-                ' relacionado com: I - as variaveis que determinam o valor' +
-                ' do imposto tais como: base de calculo, aliquota, diferenca' +
-                ' de preco, quantidade, valor da operacao ou da prestacao;' +
-                ' II - a correcao de dados cadastrais que implique mudanca' +
-                ' do remetente ou do destinatario; III - a data de emissao ou' +
-                ' de saida.'
 end;
 
 { TInfEventoCollection }
@@ -377,11 +295,13 @@ end;
 constructor TInfEventoCollectionItem.Create;
 begin
   FInfEvento := TInfEvento.Create;
+  FRetInfEvento := TRetInfEvento.Create;
 end;
 
 destructor TInfEventoCollectionItem.Destroy;
 begin
   FInfEvento.Free;
+  FRetInfEvento.Free;
   inherited;
 end;
 

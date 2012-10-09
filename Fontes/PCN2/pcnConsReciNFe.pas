@@ -42,7 +42,13 @@
 //              condicionado a manutenção deste cabeçalho junto ao código     //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
-
+{******************************************************************************
+|* Historico
+|*
+|* 28/09/2012: Italo
+|*  - Revisado geração do XML e adicionado propriedade para controle de Versão 
+|*    do WebService Utilizado
+******************************************************************************}
 unit pcnConsReciNFe;
 
 interface uses
@@ -62,6 +68,7 @@ type
     FSchema: TpcnSchema;
     FtpAmb: TpcnTipoAmbiente;
     FnRec: string;
+    FVersao: String;
   public
     constructor Create;
     destructor Destroy; override;
@@ -72,6 +79,7 @@ type
     property schema: TpcnSchema read Fschema write Fschema;
     property tpAmb: TpcnTipoAmbiente read FtpAmb write FtpAmb;
     property nRec: string read FnRec write FnRec;
+    property Versao: String read FVersao write FVersao;
   end;
 
 implementation
@@ -96,26 +104,14 @@ end;
 
 function TConsReciNFe.GerarXML: boolean;
 begin
-  Result := False;
-  if retornarVersaoLayout(Fschema, tlConsReciNFe) = '1.10' then
-   begin
-     Gerador.ArquivoFormatoXML := '';
-     Gerador.wGrupo(ENCODING_UTF8, '', False);
-     Gerador.wGrupo('consReciNFe ' + NAME_SPACE + ' ' + V1_10);
-     Gerador.wCampo(tcStr, 'BP03', 'tpAmb', 001, 001, 1, tpAmbToStr(FtpAmb), DSC_TPAMB);
-     Gerador.wCampo(tcEsp, 'BP04', 'nRec ', 015, 015, 1, FnRec, DSC_NREC);
-     Gerador.wGrupo('/consReciNFe');
-     Result := (Gerador.ListaDeAlertas.Count = 0);
-   end
-  else if retornarVersaoLayout(Fschema, tlConsReciNFe) = '2.00' then
-   begin
-     Gerador.ArquivoFormatoXML := '';
-     Gerador.wGrupo('consReciNFe ' + NAME_SPACE + ' ' + V2_00);
-     Gerador.wCampo(tcStr, 'BP03', 'tpAmb', 001, 001, 1, tpAmbToStr(FtpAmb), DSC_TPAMB);
-     Gerador.wCampo(tcEsp, 'BP04', 'nRec ', 015, 015, 1, FnRec, DSC_NREC);
-     Gerador.wGrupo('/consReciNFe');
-     Result := (Gerador.ListaDeAlertas.Count = 0);
-   end;
+   Gerador.ArquivoFormatoXML := '';
+   Gerador.wGrupo('consReciNFe ' + NAME_SPACE + ' versao="' + Versao + '"');
+   Gerador.wCampo(tcStr, 'BP03', 'tpAmb', 001, 001, 1, tpAmbToStr(FtpAmb), DSC_TPAMB);
+   Gerador.wCampo(tcEsp, 'BP04', 'nRec ', 015, 015, 1, FnRec, DSC_NREC);
+   Gerador.wGrupo('/consReciNFe');
+
+   Result := (Gerador.ListaDeAlertas.Count = 0);
+
 end;
 
 end.

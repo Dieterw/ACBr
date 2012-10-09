@@ -42,7 +42,13 @@
 //              condicionado a manutenção deste cabeçalho junto ao código     //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
-
+{******************************************************************************
+|* Historico
+|*
+|* 28/09/2012: Italo
+|*  - Revisado geração do XML e adicionado propriedade para controle de Versão 
+|*    do WebService Utilizado
+******************************************************************************}
 unit pcnInutNFe;
 
 interface uses
@@ -69,6 +75,7 @@ type
     FnNFFin: integer;
     FxJust: string;
     FIDInutilizacao: string;
+    FVersao: String;
   public
     constructor Create;
     destructor Destroy; override;
@@ -87,6 +94,7 @@ type
     property nNFFin: integer read FnNFFin write FnNFFin;
     property xJust: string read FxJust write FxJust;
     property ID: string read FIDInutilizacao;
+    property Versao: String read FVersao write FVersao;
   end;
 
 implementation
@@ -111,70 +119,36 @@ end;
 
 function TinutNFe.GerarXML: boolean;
 begin
-  Result := False;
-  if RetornarVersaoLayout(FSchema, tlInutNFe) = '1.07' then
-   begin
-     FIDInutilizacao := 'ID' + IntToStrZero(FcUF, 2) +
-                        SomenteNumeros(FCNPJ) + IntToStrZero(Fmodelo, 2) + IntToStrZero(Fserie, 3) +
-                        IntToStrZero(FnNFIni, 9) + IntToStrZero(FnNFFin, 9);
+  FIDInutilizacao := 'ID' + IntToStrZero(FcUF, 2) +  IntToStrZero(Fano, 2)+
+                     SomenteNumeros(FCNPJ) + IntToStrZero(Fmodelo, 2) + IntToStrZero(Fserie, 3) +
+                     IntToStrZero(FnNFIni, 9) + IntToStrZero(FnNFFin, 9);
 
-     Gerador.ArquivoFormatoXML := '';
-     Gerador.wGrupo(ENCODING_UTF8, '', False);
-     Gerador.wGrupo('inutNFe ' + NAME_SPACE + ' ' + V1_07);
-     Gerador.wGrupo('infInut Id="' + FIDInutilizacao + '"');
-     if length(FIDInutilizacao) < 39 then
-       Gerador.wAlerta('DP04', 'ID', '', 'ID de inutilização inválido');
-     Gerador.wCampo(tcStr, 'DP05', 'tpAmb ', 001, 001, 1, tpAmbToStr(FtpAmb), DSC_TPAMB);
-     Gerador.wCampo(tcStr, 'DP06', 'xServ ', 010, 010, 1, 'INUTILIZAR', DSC_XSERV);
-     Gerador.wCampo(tcInt, 'DP07', 'cUF   ', 002, 002, 1, FcUF, DSC_CUF);
-     if not ValidarCodigoUF(FcUF) then
-       Gerador.wAlerta('DP07', 'cUF', DSC_CUF, ERR_MSG_INVALIDO);
-     Gerador.wCampo(tcInt, 'DP08', 'ano   ', 002, 002, 1, Fano, DSC_ANO);
-     Gerador.wCampo(tcStr, 'DP09', 'CNPJ  ', 014, 014, 1, SomenteNumeros(FCNPJ), DSC_CNPJ);
-     if not ValidarCNPJ(FCNPJ) then
-       Gerador.wAlerta('DP09', 'CNPJ', DSC_CNPJ, ERR_MSG_INVALIDO);
-     Gerador.wCampo(tcInt, 'DP10', 'mod   ', 002, 002, 1, Fmodelo, DSC_MOD);
-     Gerador.wCampo(tcInt, 'DP11', 'serie ', 001, 003, 1, Fserie, DSC_SERIE);
-     Gerador.wCampo(tcInt, 'DP12', 'nNFIni', 001, 009, 1, FnNFIni, DSC_NNFINI);
-     Gerador.wCampo(tcInt, 'DP13', 'nNFFin', 001, 009, 1, FnNFFin, DSC_NNFFIN);
-     if FnNFIni > FnNFFin then
-       Gerador.wAlerta('DP13', 'nNFFin', DSC_NNFFIN, ERR_MSG_FINAL_MENOR_INICIAL);
-     Gerador.wCampo(tcStr, 'CP14', 'xJust ', 015, 255, 1, FiltrarTextoXML(true, FxJust), DSC_XJUST);
-     Gerador.wGrupo('/infInut');
-     Gerador.wGrupo('/inutNFe');
-     Result := (Gerador.ListaDeAlertas.Count = 0);
-   end
-  else if RetornarVersaoLayout(FSchema, tlInutNFe) = '2.00' then
-   begin
-     FIDInutilizacao := 'ID' + IntToStrZero(FcUF, 2) +  IntToStrZero(Fano, 2)+
-                        SomenteNumeros(FCNPJ) + IntToStrZero(Fmodelo, 2) + IntToStrZero(Fserie, 3) +
-                        IntToStrZero(FnNFIni, 9) + IntToStrZero(FnNFFin, 9);
+  Gerador.ArquivoFormatoXML := '';
+  Gerador.wGrupo('inutNFe ' + NAME_SPACE + ' versao="' + Versao + '"');
+  Gerador.wGrupo('infInut Id="' + FIDInutilizacao + '"');
+  if length(FIDInutilizacao) < 43 then
+    Gerador.wAlerta('DP04', 'ID', '', 'ID de inutilização inválido');
+  Gerador.wCampo(tcStr, 'DP05', 'tpAmb ', 001, 001, 1, tpAmbToStr(FtpAmb), DSC_TPAMB);
+  Gerador.wCampo(tcStr, 'DP06', 'xServ ', 010, 010, 1, 'INUTILIZAR', DSC_XSERV);
+  Gerador.wCampo(tcInt, 'DP07', 'cUF   ', 002, 002, 1, FcUF, DSC_CUF);
+  if not ValidarCodigoUF(FcUF) then
+    Gerador.wAlerta('DP07', 'cUF', DSC_CUF, ERR_MSG_INVALIDO);
+  Gerador.wCampo(tcInt, 'DP08', 'ano   ', 002, 002, 1, Fano, DSC_ANO);
+  Gerador.wCampo(tcStr, 'DP09', 'CNPJ  ', 014, 014, 1, SomenteNumeros(FCNPJ), DSC_CNPJ);
+  if not ValidarCNPJ(FCNPJ) then
+    Gerador.wAlerta('DP09', 'CNPJ', DSC_CNPJ, ERR_MSG_INVALIDO);
+  Gerador.wCampo(tcInt, 'DP10', 'mod   ', 002, 002, 1, Fmodelo, DSC_MOD);
+  Gerador.wCampo(tcInt, 'DP11', 'serie ', 001, 003, 1, Fserie, DSC_SERIE);
+  Gerador.wCampo(tcInt, 'DP12', 'nNFIni', 001, 009, 1, FnNFIni, DSC_NNFINI);
+  Gerador.wCampo(tcInt, 'DP13', 'nNFFin', 001, 009, 1, FnNFFin, DSC_NNFFIN);
+  if FnNFIni > FnNFFin then
+    Gerador.wAlerta('DP13', 'nNFFin', DSC_NNFFIN, ERR_MSG_FINAL_MENOR_INICIAL);
+  Gerador.wCampo(tcStr, 'CP14', 'xJust ', 015, 255, 1, FiltrarTextoXML(true, FxJust), DSC_XJUST);
+  Gerador.wGrupo('/infInut');
+  Gerador.wGrupo('/inutNFe');
 
-     Gerador.ArquivoFormatoXML := '';
-     Gerador.wGrupo('inutNFe ' + NAME_SPACE + ' ' + V2_00);
-     Gerador.wGrupo('infInut Id="' + FIDInutilizacao + '"');
-     if length(FIDInutilizacao) < 43 then
-       Gerador.wAlerta('DP04', 'ID', '', 'ID de inutilização inválido');
-     Gerador.wCampo(tcStr, 'DP05', 'tpAmb ', 001, 001, 1, tpAmbToStr(FtpAmb), DSC_TPAMB);
-     Gerador.wCampo(tcStr, 'DP06', 'xServ ', 010, 010, 1, 'INUTILIZAR', DSC_XSERV);
-     Gerador.wCampo(tcInt, 'DP07', 'cUF   ', 002, 002, 1, FcUF, DSC_CUF);
-     if not ValidarCodigoUF(FcUF) then
-       Gerador.wAlerta('DP07', 'cUF', DSC_CUF, ERR_MSG_INVALIDO);
-     Gerador.wCampo(tcInt, 'DP08', 'ano   ', 002, 002, 1, Fano, DSC_ANO);
-     Gerador.wCampo(tcStr, 'DP09', 'CNPJ  ', 014, 014, 1, SomenteNumeros(FCNPJ), DSC_CNPJ);
-     if not ValidarCNPJ(FCNPJ) then
-       Gerador.wAlerta('DP09', 'CNPJ', DSC_CNPJ, ERR_MSG_INVALIDO);
-     Gerador.wCampo(tcInt, 'DP10', 'mod   ', 002, 002, 1, Fmodelo, DSC_MOD);
-     Gerador.wCampo(tcInt, 'DP11', 'serie ', 001, 003, 1, Fserie, DSC_SERIE);
-     Gerador.wCampo(tcInt, 'DP12', 'nNFIni', 001, 009, 1, FnNFIni, DSC_NNFINI);
-     Gerador.wCampo(tcInt, 'DP13', 'nNFFin', 001, 009, 1, FnNFFin, DSC_NNFFIN);
-     if FnNFIni > FnNFFin then
-       Gerador.wAlerta('DP13', 'nNFFin', DSC_NNFFIN, ERR_MSG_FINAL_MENOR_INICIAL);
-     Gerador.wCampo(tcStr, 'CP14', 'xJust ', 015, 255, 1, FiltrarTextoXML(true, FxJust), DSC_XJUST);
-     Gerador.wGrupo('/infInut');
-     Gerador.wGrupo('/inutNFe');
-     Result := (Gerador.ListaDeAlertas.Count = 0);
-   end
+  Result := (Gerador.ListaDeAlertas.Count = 0);
+
 end;
 
 end.

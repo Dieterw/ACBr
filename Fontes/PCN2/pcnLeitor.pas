@@ -42,7 +42,12 @@
 //              condicionado a manutenção deste cabeçalho junto ao código     //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
-
+{******************************************************************************
+|* Historico
+|*
+|* 30/09/2010: Italo
+|*  - Incluído tipo TcDe6
+******************************************************************************}
 {$I ACBr.inc}
 
 unit pcnLeitor;
@@ -210,7 +215,7 @@ begin
     tcDe2,
     tcDe3,
     tcDe4,
-    tcDe6,  // Incluido por Italo em 30/09/2010
+    tcDe6,  
     tcDe10    : result := StrToFloat(StringReplace('0' + ConteudoTag, '.', DecimalSeparator, []));
     tcEsp     : result := ConteudoTag;
     tcInt     : result := StrToInt('0' + Trim(SomenteNumeros(ConteudoTag)));

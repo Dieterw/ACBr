@@ -42,7 +42,18 @@
 //              condicionado a manutenção deste cabeçalho junto ao código     //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
-
+{******************************************************************************
+|* Historico
+|*
+|* 03/08/2011: Italo
+|*  - Tipos para LayOut do CT-e
+|* 09/04/2012: Italo
+|*  - Eventos da NFe
+|* 17/07/2012: Italo
+|*  - Consulta de NFe pelo destinatário e download da NFe
+|* 24/09/2012: Italo 
+|*  - Incluído Função DateTimeTodhUTC
+******************************************************************************}
 {$IFDEF FPC}
   {$MODE DELPHI}
 {$ENDIF}
@@ -91,8 +102,6 @@ function ValidarISUF(const ISUF: string): boolean;
 function SubStrEmSubStr(const SubStr1: string; SubStr2: string): boolean;
 function xml4line(texto: AnsiString): AnsiString;
 function RetornarPosEx(const SubStr, S: AnsiString; Offset: Cardinal = 1): Integer;
-
-// Incluido por Italo em 24/09/2012
 function DateTimeTodhUTC(DataHora: TDateTime; TZD: string): string;
 
 implementation
@@ -386,13 +395,11 @@ begin
                 tlEnvDPEC         : Result := '2.00';
                 tlConsDPEC        : Result := '2.00';
                 tlCCeNFe          : Result := '2.00';
-                // Incluido por Italo em 09/04/2012
                 tlEnvEventoNFe    : Result := '2.00';
-                // Incluido por Italo em 17/07/2012
                 tlConsNFeDest     : Result := '2.00';
                 tlDownloadNFe     : Result := '2.00';
               end;
-    // Incluido/Alterado por Italo em 03/08/2011
+
     // Tipos de LayOut para CT-e
     TsPL_CTe_103 :  case Layout of
                       tlConsStatServCTe : Result := '1.03';

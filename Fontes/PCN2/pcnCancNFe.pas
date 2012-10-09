@@ -42,6 +42,13 @@
 //              condicionado a manutenção deste cabeçalho junto ao código     //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
+{******************************************************************************
+|* Historico
+|*
+|* 28/09/2012: Italo
+|*  - Revisado geração do XML e adicionado propriedade para controle de Versão 
+|*    do WebService Utilizado
+******************************************************************************}
 
 unit pcnCancNFe;
 
@@ -59,6 +66,7 @@ type
     FchNFe: string;
     FnProt: string;
     FxJust: string;
+    FVersao: String;
   public
     constructor Create;
     destructor Destroy; override;
@@ -72,6 +80,7 @@ type
     property chNFe: string read FchNFe write FchNFe;
     property nProt: string read FnProt write FnProt;
     property xJust: string read FxJust write FxJust;
+    property Versao: String read FVersao write FVersao;
   end;
 
 implementation
@@ -96,41 +105,21 @@ end;
 
 function TcancNFe.GerarXML: boolean;
 begin
-  //PENDENTE// revisar e inserir as regras de geração e validação
-  Result := False;
-  if RetornarVersaoLayout(FSchema, tlCancNFe) = '1.07' then
-   begin
-     Gerador.ArquivoFormatoXML := '';
-     Gerador.wGrupo(ENCODING_UTF8, '', False);
-     Gerador.wGrupo('cancNFe ' + NAME_SPACE + ' ' + V1_07);
-     Gerador.wGrupo('infCanc Id="ID' + SomenteNumeros(FchNFe) + '"');
-     Gerador.wCampo(tcStr, 'CP05', 'tpAmb', 001, 001, 1, tpAmbToStr(FtpAmb), DSC_TPAMB);
-     Gerador.wCampo(tcStr, 'CP06', 'xServ', 008, 008, 1, 'CANCELAR', DSC_XSERV);
-     Gerador.wCampo(tcEsp, 'CP07', 'chNFe', 044, 044, 1, SomenteNumeros(FchNFe), DSC_CHNFE);
-     if not ValidarChave('NFe' + SomenteNumeros(FchNFe)) then
-       Gerador.wAlerta('CP07', 'chNFe', '', 'Chave de NFe inválida');
-     Gerador.wCampo(tcEsp, 'CP08', 'nProt', 015, 015, 1, SomenteNumeros(FnProt), DSC_NPROT);
-     Gerador.wCampo(tcStr, 'CP09', 'xJust', 015, 255, 1, FiltrarTextoXML(true, FxJust), DSC_XJUST);
-     Gerador.wGrupo('/infCanc');
-     Gerador.wGrupo('/cancNFe');
-     Result := (Gerador.ListaDeAlertas.Count = 0);
-   end
-  else if RetornarVersaoLayout(FSchema, tlCancNFe) = '2.00' then
-   begin
-     Gerador.ArquivoFormatoXML := '';
-     Gerador.wGrupo('cancNFe ' + NAME_SPACE + ' ' + V2_00);
-     Gerador.wGrupo('infCanc Id="ID' + SomenteNumeros(FchNFe) + '"');
-     Gerador.wCampo(tcStr, 'CP05', 'tpAmb', 001, 001, 1, tpAmbToStr(FtpAmb), DSC_TPAMB);
-     Gerador.wCampo(tcStr, 'CP06', 'xServ', 008, 008, 1, 'CANCELAR', DSC_XSERV);
-     Gerador.wCampo(tcEsp, 'CP07', 'chNFe', 044, 044, 1, SomenteNumeros(FchNFe), DSC_CHNFE);
-     if not ValidarChave('NFe' + SomenteNumeros(FchNFe)) then
-       Gerador.wAlerta('CP07', 'chNFe', '', 'Chave de NFe inválida');
-     Gerador.wCampo(tcEsp, 'CP08', 'nProt', 015, 015, 1, SomenteNumeros(FnProt), DSC_NPROT);
-     Gerador.wCampo(tcStr, 'CP09', 'xJust', 015, 255, 1, FiltrarTextoXML(true, FxJust), DSC_XJUST);
-     Gerador.wGrupo('/infCanc');
-     Gerador.wGrupo('/cancNFe');
-     Result := (Gerador.ListaDeAlertas.Count = 0);
-   end
+  Gerador.ArquivoFormatoXML := '';
+  Gerador.wGrupo('cancNFe ' + NAME_SPACE + ' versao="' + Versao + '"');
+  Gerador.wGrupo('infCanc Id="ID' + SomenteNumeros(FchNFe) + '"');
+  Gerador.wCampo(tcStr, 'CP05', 'tpAmb', 001, 001, 1, tpAmbToStr(FtpAmb), DSC_TPAMB);
+  Gerador.wCampo(tcStr, 'CP06', 'xServ', 008, 008, 1, 'CANCELAR', DSC_XSERV);
+  Gerador.wCampo(tcEsp, 'CP07', 'chNFe', 044, 044, 1, SomenteNumeros(FchNFe), DSC_CHNFE);
+  if not ValidarChave('NFe' + SomenteNumeros(FchNFe)) then
+    Gerador.wAlerta('CP07', 'chNFe', '', 'Chave de NFe inválida');
+  Gerador.wCampo(tcEsp, 'CP08', 'nProt', 015, 015, 1, SomenteNumeros(FnProt), DSC_NPROT);
+  Gerador.wCampo(tcStr, 'CP09', 'xJust', 015, 255, 1, FiltrarTextoXML(true, FxJust), DSC_XJUST);
+  Gerador.wGrupo('/infCanc');
+  Gerador.wGrupo('/cancNFe');
+
+  Result := (Gerador.ListaDeAlertas.Count = 0);
+
 end;
 
 end.

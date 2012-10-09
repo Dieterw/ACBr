@@ -42,7 +42,13 @@
 //              condicionado a manutenção deste cabeçalho junto ao código     //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
-
+{******************************************************************************
+|* Historico
+|*
+|* 28/09/2012: Italo
+|*  - Revisado geração do XML e adicionado propriedade para controle de Versão 
+|*    do WebService Utilizado
+******************************************************************************}
 unit pcnConsCad;
 
 interface uses
@@ -64,6 +70,7 @@ type
     FIE: string;
     FCNPJ: string;
     FCPF: string;
+    FVersao: String;
   public
     constructor Create;
     destructor Destroy; override;
@@ -75,6 +82,7 @@ type
     property IE: string read FIE write FIE;
     property CNPJ: string read FCNPJ write FCNPJ;
     property CPF: string read FCPF write FCPF;
+    property Versao: String read FVersao write FVersao;
   end;
 
 implementation
@@ -96,56 +104,29 @@ function TConsCad.GerarXML: boolean;
 var
   i: integer;
 begin
-  Result := False;
-  if retornarVersaoLayout(Fschema, tlConsCad) = '1.01' then
+  Gerador.ArquivoFormatoXML := '';
+  Gerador.wGrupo('ConsCad ' + NAME_SPACE + ' versao="' + Versao + '"');
+  Gerador.wGrupo('infCons');
+  Gerador.wCampo(tcStr, 'GP04', 'xServ ', 008, 008, 1, 'CONS-CAD', DSC_XSERV);
+  Gerador.wCampo(tcStr, 'GP05', 'UF    ', 002, 002, 1, FUF, DSC_UF);
+  i := 0;
+  if FIE <> EmptyStr then
    begin
-     Gerador.ArquivoFormatoXML := '';
-     Gerador.wGrupo(ENCODING_UTF8, '', False);
-     Gerador.wGrupo('ConsCad ' + NAME_SPACE + ' ' + V1_01);
-     Gerador.wGrupo('infCons');
-     Gerador.wCampo(tcStr, 'GP04', 'xServ ', 008, 008, 1, 'CONS-CAD', DSC_XSERV);
-     Gerador.wCampo(tcStr, 'GP05', 'UF    ', 002, 002, 1, FUF, DSC_UF);
-     i := 0;
-     if FIE <> EmptyStr then
-      begin
-        i := 1;
-        Gerador.wCampo(tcStr, 'GP06', 'IE  ', 002, 014, 1, FIE, DSC_IE);
-      end;
-     if (FCNPJ <> EmptyStr) and (i = 0) then
-      begin
-        i := 1;
-        Gerador.wCampoCNPJCPF('GP07', 'CNPJ', FCNPJ, CODIGO_BRASIL);
-      end;
-     if (FCPF <> EmptyStr) and (i = 0) then
-       Gerador.wCampoCNPJCPF('GP08', 'CPF ', FCPF, CODIGO_BRASIL);
-     Gerador.wGrupo('/infCons');
-     Gerador.wGrupo('/ConsCad');
-     Result := (Gerador.ListaDeAlertas.Count = 0);
-   end
-  else if retornarVersaoLayout(Fschema, tlConsCad) = '2.00' then
+     i := 1;
+     Gerador.wCampo(tcStr, 'GP06', 'IE  ', 002, 014, 1, FIE, DSC_IE);
+   end;
+  if (FCNPJ <> EmptyStr) and (i = 0) then
    begin
-     Gerador.ArquivoFormatoXML := '';
-     Gerador.wGrupo('ConsCad ' + NAME_SPACE + ' ' + V2_00);
-     Gerador.wGrupo('infCons');
-     Gerador.wCampo(tcStr, 'GP04', 'xServ ', 008, 008, 1, 'CONS-CAD', DSC_XSERV);
-     Gerador.wCampo(tcStr, 'GP05', 'UF    ', 002, 002, 1, FUF, DSC_UF);
-     i := 0;
-     if FIE <> EmptyStr then
-      begin
-        i := 1;
-        Gerador.wCampo(tcStr, 'GP06', 'IE  ', 002, 014, 1, FIE, DSC_IE);
-      end;
-     if (FCNPJ <> EmptyStr) and (i = 0) then
-      begin
-        i := 1;
-        Gerador.wCampoCNPJCPF('GP07', 'CNPJ', FCNPJ, CODIGO_BRASIL);
-      end;
-     if (FCPF <> EmptyStr) and (i = 0) then
-       Gerador.wCampoCNPJCPF('GP08', 'CPF ', FCPF, CODIGO_BRASIL);
-     Gerador.wGrupo('/infCons');
-     Gerador.wGrupo('/ConsCad');
-     Result := (Gerador.ListaDeAlertas.Count = 0);
-   end
+     i := 1;
+     Gerador.wCampoCNPJCPF('GP07', 'CNPJ', FCNPJ, CODIGO_BRASIL);
+   end;
+  if (FCPF <> EmptyStr) and (i = 0) then
+    Gerador.wCampoCNPJCPF('GP08', 'CPF ', FCPF, CODIGO_BRASIL);
+  Gerador.wGrupo('/infCons');
+  Gerador.wGrupo('/ConsCad');
+
+  Result := (Gerador.ListaDeAlertas.Count = 0);
+ 
 end;
 
 end.

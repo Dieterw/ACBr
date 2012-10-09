@@ -203,7 +203,7 @@ implementation
 
 { TRetCollection }
 
-function TRetCollection. Add: TRetCollectionItem;
+function TRetCollection.Add: TRetCollectionItem;
 begin
   Result := TRetCollectionItem(inherited Add);
   Result.create;

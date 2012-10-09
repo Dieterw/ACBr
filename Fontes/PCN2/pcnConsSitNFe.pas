@@ -42,7 +42,13 @@
 //              condicionado a manutenção deste cabeçalho junto ao código     //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
-
+{******************************************************************************
+|* Historico
+|*
+|* 28/09/2012: Italo
+|*  - Revisado geração do XML e adicionado propriedade para controle de Versão 
+|*    do WebService Utilizado
+******************************************************************************}
 unit pcnConsSitNFe;
 
 interface uses
@@ -62,6 +68,7 @@ type
     FSchema: TpcnSchema;
     FtpAmb: TpcnTipoAmbiente;
     FchNFe: string;
+    FVersao: String;
   public
     constructor Create;
     destructor Destroy; override;
@@ -72,6 +79,7 @@ type
     property schema: TpcnSchema read Fschema write Fschema;
     property tpAmb: TpcnTipoAmbiente read FtpAmb write FtpAmb;
     property chNFe: string read FchNFe write FchNFe;
+    property Versao: String read FVersao write FVersao;
   end;
 
 implementation
@@ -96,42 +104,15 @@ end;
 
 function TConsSitNFe.GerarXML: boolean;
 begin
-  Result := False;
-  if retornarVersaoLayout(Fschema, tlConsSitNFe) = '1.07' then
-   begin
-     Gerador.ArquivoFormatoXML := '';
-     Gerador.wGrupo(ENCODING_UTF8, '', False);
-     Gerador.wGrupo('consSitNFe ' + NAME_SPACE + ' ' + V1_07);
-     Gerador.wCampo(tcStr, 'EP03', 'tpAmb', 001, 001, 1, tpAmbToStr(FtpAmb), DSC_TPAMB);
-     Gerador.wCampo(tcStr, 'EP04', 'xServ', 009, 009, 1, 'CONSULTAR', DSC_XSERV);
-     Gerador.wCampo(tcEsp, 'EP05', 'chNFe', 044, 044, 1, FchNFe, DSC_CHNFe);
-     Gerador.wGrupo('/consSitNFe');
-     Result := (Gerador.ListaDeAlertas.Count = 0);
-   end
-  else if retornarVersaoLayout(Fschema, tlConsSitNFe) = '2.00' then
-   begin
-     Gerador.ArquivoFormatoXML := '';
-     Gerador.wGrupo('consSitNFe ' + NAME_SPACE + ' ' + V2_00);
-     Gerador.wCampo(tcStr, 'EP03', 'tpAmb', 001, 001, 1, tpAmbToStr(FtpAmb), DSC_TPAMB);
-     Gerador.wCampo(tcStr, 'EP04', 'xServ', 009, 009, 1, 'CONSULTAR', DSC_XSERV);
-     Gerador.wCampo(tcEsp, 'EP05', 'chNFe', 044, 044, 1, FchNFe, DSC_CHNFe);
-     Gerador.wGrupo('/consSitNFe');
-     Result := (Gerador.ListaDeAlertas.Count = 0);
-   end
-  else if retornarVersaoLayout(Fschema, tlConsSitNFe) = '2.01' then
-   begin
-     Gerador.ArquivoFormatoXML := '';
-     Gerador.wGrupo('consSitNFe ' + NAME_SPACE + ' ' + V2_01);
-     Gerador.wCampo(tcStr, 'EP03', 'tpAmb', 001, 001, 1, tpAmbToStr(FtpAmb), DSC_TPAMB);
-     Gerador.wCampo(tcStr, 'EP04', 'xServ', 009, 009, 1, 'CONSULTAR', DSC_XSERV);
-     Gerador.wCampo(tcEsp, 'EP05', 'chNFe', 044, 044, 1, FchNFe, DSC_CHNFe);
-     Gerador.wGrupo('/consSitNFe');
-     Result := (Gerador.ListaDeAlertas.Count = 0);
-   end
+  Gerador.ArquivoFormatoXML := '';
+  Gerador.wGrupo('consSitNFe ' + NAME_SPACE + ' versao="' + Versao + '"');
+  Gerador.wCampo(tcStr, 'EP03', 'tpAmb', 001, 001, 1, tpAmbToStr(FtpAmb), DSC_TPAMB);
+  Gerador.wCampo(tcStr, 'EP04', 'xServ', 009, 009, 1, 'CONSULTAR', DSC_XSERV);
+  Gerador.wCampo(tcEsp, 'EP05', 'chNFe', 044, 044, 1, FchNFe, DSC_CHNFe);
+  Gerador.wGrupo('/consSitNFe');
 
+  Result := (Gerador.ListaDeAlertas.Count = 0);
 
-   end;
-
-
+end;
 end.
 

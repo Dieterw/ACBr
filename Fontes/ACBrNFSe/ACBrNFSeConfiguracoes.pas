@@ -17,10 +17,60 @@ uses
 
 type
 
+ TProvedorClass = Class;
+
+ TConfigCidade = record
+    VersaoSoap: String;
+    CodigoSchemas: Integer;
+    CodigoURLs: Integer;
+    Prefixo2: String;
+    Prefixo3: String;
+    Prefixo4: String;
+    Identificador: String;
+    NameSpaceEnvelope: String;
+    AssinaRPS: Boolean;
+    AssinaLote: Boolean;
+ end;
+
+ TConfigSchema = record
+    VersaoCabecalho: String;
+    VersaoDados: String;
+    VersaoXML: String;
+    NameSpaceXML: String;
+    Cabecalho: String;
+    ServicoEnviar: String;
+    ServicoConSit: String;
+    ServicoConLot: String;
+    ServicoConRps: String;
+    ServicoConNfse: String;
+    ServicoCancelar: String;
+    ServicoGerar: String;
+    DefTipos: String;
+  end;
+
+ TConfigURL = record
+    HomNomeCidade:String;
+    HomRecepcaoLoteRPS: String;
+    HomConsultaLoteRPS: String;
+    HomConsultaNFSeRPS: String;
+    HomConsultaSitLoteRPS: String;
+    HomConsultaNFSe: String;
+    HomCancelaNFSe: String;
+    HomGerarNFSe: String;
+    ProNomeCidade:String;
+    ProRecepcaoLoteRPS: String;
+    ProConsultaLoteRPS: String;
+    ProConsultaNFSeRPS: String;
+    ProConsultaSitLoteRPS: String;
+    ProConsultaNFSe: String;
+    ProCancelaNFSe: String;
+    ProGerarNFSe: String;
+  end;
+
  TCertificadosConf = class(TComponent)
   private
-    FAssinarRPS: Boolean;
-    FAssinarLote: Boolean;
+    FAssinaLote: Boolean;
+    FAssinaRPS: Boolean;
     FSenhaCert: AnsiString;
     {$IFNDEF ACBrNFSeOpenSSL}
        FNumeroSerie: AnsiString;
@@ -39,17 +89,20 @@ type
   published
     {$IFNDEF ACBrNFSeOpenSSL}
        property NumeroSerie: AnsiString read GetNumeroSerie write SetNumeroSerie;
-       property DataVenc: TDateTime read GetDataVenc;
+       property DataVenc: TDateTime     read GetDataVenc;
     {$ELSE}
        property Certificado: AnsiString read FCertificado write FCertificado;
     {$ENDIF}
-    property AssinarRPS: Boolean read FAssinarRPS write FAssinarRPS default True;
-    property AssinarLote: Boolean read FAssinarLote write FAssinarLote default True;
-    property Senha: AnsiString read FSenhaCert write FSenhaCert;
+    property AssinaRPS: Boolean  read FAssinaRPS;
+    property AssinaLote: Boolean read FAssinaLote;
+    property Senha: AnsiString   read FSenhaCert write FSenhaCert;
   end;
 
  TWebServicesConf = Class(TComponent)
   private
+    FProvedorClass: TProvedorClass;
+
+    FSalvar: Boolean;
     FVisualizar : Boolean;
     FAmbiente: TpcnTipoAmbiente;
     FAmbienteCodigo: Integer;
@@ -57,7 +110,6 @@ type
     FProxyPort: String;
     FProxyUser: String;
     FProxyPass: String;
-    FPadraoLayout: TnfsePadraoLayout;
     FAguardarConsultaRet : Cardinal;
     FTentativas : Integer;
     FIntervaloTentativas : Cardinal;
@@ -66,13 +118,50 @@ type
     FPrefixo2: String;
     FPrefixo3: String;
     FPrefixo4: String;
-    FProvedor: String;
+    FProvedor: TnfseProvedor;
+    FxProvedor: String;
     FVersaoSoap: String;
-    FConfigSchemas: String;
-    FConfigURL: String;
+    FCodigoSchemas: Integer;
+    FCodigoURLs: Integer;
+
     FIdentificador: String;
     FNameSpace: String;
     FSenhaWeb: AnsiString;
+    FUserWeb: String;
+
+    // Schemas
+    FVersaoCabecalho: String;
+    FVersaoDados: String;
+    FVersaoXML: String;
+    FURL: String;
+    FCabecalho: String;
+    FServicoEnviar: String;
+    FServicoConSit: String;
+    FServicoConLot: String;
+    FServicoConRps: String;
+    FServicoConNfse: String;
+    FServicoCancelar: String;
+    FServicoGerar: String;
+    FDefTipos: String;
+
+    // URLs
+    FHomNomeCidade:String;
+    FHomRecepcaoLoteRPS: String;
+    FHomConsultaLoteRPS: String;
+    FHomConsultaNFSeRPS: String;
+    FHomConsultaSitLoteRPS: String;
+    FHomConsultaNFSe: String;
+    FHomCancelaNFSe: String;
+    FHomGerarNFSe: String;
+    FProNomeCidade:String;
+    FProRecepcaoLoteRPS: String;
+    FProConsultaLoteRPS: String;
+    FProConsultaNFSeRPS: String;
+    FProConsultaSitLoteRPS: String;
+    FProConsultaNFSe: String;
+    FProCancelaNFSe: String;
+    FProGerarNFSe: String;
+
     procedure SetAmbiente(AValue: TpcnTipoAmbiente);
     procedure SetTentativas(const Value: Integer);
     procedure SetIntervaloTentativas(const Value: Cardinal);
@@ -80,31 +169,66 @@ type
     constructor Create(AOwner: TComponent); override;
     procedure SetConfigMunicipio(aPath: String = '');
   published
-    property Visualizar: Boolean read FVisualizar write FVisualizar
-      default False;
-    property Ambiente: TpcnTipoAmbiente read FAmbiente write SetAmbiente
-      default taHomologacao;
-    property AmbienteCodigo: Integer read FAmbienteCodigo;
-    property ProxyHost: String read FProxyHost write FProxyHost;
-    property ProxyPort: String read FProxyPort write FProxyPort;
-    property ProxyUser: String read FProxyUser write FProxyUser;
-    property ProxyPass: String read FProxyPass write FProxyPass;
-    property PadraoLayout: TnfsePadraoLayout read FPadraoLayout write FPadraoLayout;
-    property AguardarConsultaRet : Cardinal read FAguardarConsultaRet write FAguardarConsultaRet;
+    property Salvar: Boolean               read FSalvar     write FSalvar     default False ;
+    property Visualizar: Boolean           read FVisualizar write FVisualizar default False;
+    property Ambiente: TpcnTipoAmbiente    read FAmbiente   write SetAmbiente default taHomologacao;
+    property AmbienteCodigo: Integer       read FAmbienteCodigo;
+    property ProxyHost: String             read FProxyHost  write FProxyHost;
+    property ProxyPort: String             read FProxyPort  write FProxyPort;
+    property ProxyUser: String             read FProxyUser  write FProxyUser;
+    property ProxyPass: String             read FProxyPass  write FProxyPass;
+    property AguardarConsultaRet: Cardinal read FAguardarConsultaRet write FAguardarConsultaRet;
     property Tentativas : Integer read FTentativas write SetTentativas default 18;
     property IntervaloTentativas : Cardinal read FIntervaloTentativas write SetIntervaloTentativas;
     property AjustaAguardaConsultaRet : Boolean read FAjustaAguardaConsultaRet write FAjustaAguardaConsultaRet;
     property CodigoMunicipio: Integer read FCodigoMunicipio write FCodigoMunicipio;
-    property Prefixo2: String read FPrefixo2 write FPrefixo2;
-    property Prefixo3: String read FPrefixo3 write FPrefixo3;
-    property Prefixo4: String read FPrefixo4 write FPrefixo4;
-    property Provedor: String read FProvedor write FProvedor;
-    property VersaoSoap: String read FVersaoSoap write FVersaoSoap;
-    property ConfigSchemas: String read FConfigSchemas write FConfigSchemas;
-    property ConfigURL: String read FConfigURL write FConfigURL;
-    property Identificador: String read FIdentificador write FIdentificador;
-    property NameSpace: String read FNameSpace write FNameSpace;
+    property Prefixo2: String read FPrefixo2;
+    property Prefixo3: String read FPrefixo3;
+    property Prefixo4: String read FPrefixo4;
+    property Provedor: TnfseProvedor read FProvedor;
+    property xProvedor: String read FxProvedor;
+    property VersaoSoap: String read FVersaoSoap;
+
+    property CodigoSchemas: Integer read FCodigoSchemas;
+    property CodigoURLs: Integer read FCodigoURLs;
+
+    property Identificador: String read FIdentificador;
+    property NameSpace: String read FNameSpace;
     property SenhaWeb: AnsiString read FSenhaWeb write FSenhaWeb;
+    property UserWeb: String read FUserWeb write FUserWeb;
+
+    // Schemas
+    property VersaoCabecalho: String read FVersaoCabecalho;
+    property VersaoDados: String read FVersaoDados;
+    property VersaoXML: String read FVersaoXML;
+    property URL: String read FURL;
+    property Cabecalho: String read FCabecalho;
+    property ServicoEnviar: String read FServicoEnviar;
+    property ServicoConSit: String read FServicoConSit;
+    property ServicoConLot: String read FServicoConLot;
+    property ServicoConRps: String read FServicoConRps;
+    property ServicoConNfse: String read FServicoConNfse;
+    property ServicoCancelar: String read FServicoCancelar;
+    property ServicoGerar: String read FServicoGerar;
+    property DefTipos: String read FDefTipos;
+
+    // URLs
+    property HomNomeCidade: String read FHomNomeCidade;
+    property HomRecepcaoLoteRPS: String read FHomRecepcaoLoteRPS;
+    property HomConsultaLoteRPS: String read FHomConsultaLoteRPS;
+    property HomConsultaNFSeRPS: String read FHomConsultaNFSeRPS;
+    property HomConsultaSitLoteRPS: String read FHomConsultaSitLoteRPS;
+    property HomConsultaNFSe: String read FHomConsultaNFSe;
+    property HomCancelaNFSe: String read FHomCancelaNFSe;
+    property HomGerarNFSe: String read FHomGerarNFSe;
+    property ProNomeCidade: String read FProNomeCidade;
+    property ProRecepcaoLoteRPS: String read FProRecepcaoLoteRPS;
+    property ProConsultaLoteRPS: String read FProConsultaLoteRPS;
+    property ProConsultaNFSeRPS: String read FProConsultaNFSeRPS;
+    property ProConsultaSitLoteRPS: String read FProConsultaSitLoteRPS;
+    property ProConsultaNFSe: String read FProConsultaNFSe;
+    property ProCancelaNFSe: String read FProCancelaNFSe;
+    property ProGerarNFSe: String read FProGerarNFSe;
   end;
 
  TGeralConf = class(TComponent)
@@ -165,10 +289,75 @@ type
     property Arquivos: TArquivosConf read FArquivos ;
   end;
 
+ TProvedorClass = Class
+  private
+
+  public
+   Constructor Create;
+
+   function GetConfigCidade(ACodigo, AAmbiente: Integer): TConfigCidade; Virtual; Abstract;
+   function GetConfigSchema(ACodigo: Integer): TConfigSchema; Virtual; Abstract;
+   function GetConfigURL(ACodigo: Integer): TConfigURL; Virtual; Abstract;
+   function GetURI(URI: String): String; Virtual; Abstract;
+   function GetAssinarXML(Acao: TnfseAcao): Boolean; Virtual; Abstract;
+   // Sugestão de Rodrigo Catelli
+   function GetValidarLote: Boolean; Virtual; Abstract;
+
+   function Gera_TagI(Acao: TnfseAcao; Prefixo3, Prefixo4, NameSpaceDad, Identificador, URI: String): AnsiString; Virtual; Abstract;
+   function Gera_CabMsg(Prefixo2, VersaoLayOut, VersaoDados, NameSpaceCab: String): AnsiString; Virtual; Abstract;
+   function Gera_DadosSenha(CNPJ, Senha: String): AnsiString; Virtual; Abstract;
+   function Gera_TagF(Acao: TnfseAcao; Prefixo3: String): AnsiString; Virtual; Abstract;
+
+   function Gera_DadosMsgEnviarLote(Prefixo3, Prefixo4, Identificador,
+                                    NameSpaceDad, VersaoDados, VersaoXML,
+                                    NumeroLote, CNPJ, IM, QtdeNotas: String;
+                                    Notas, TagI, TagF: AnsiString): AnsiString; Virtual; Abstract;
+   function Gera_DadosMsgConsSitLote(Prefixo3, Prefixo4, NameSpaceDad,
+                                     VersaoXML, Protocolo, CNPJ, IM: String;
+                                     TagI, TagF: AnsiString): AnsiString; Virtual; Abstract;
+   function Gera_DadosMsgConsLote(Prefixo3, Prefixo4, NameSpaceDad,
+                                  VersaoXML, Protocolo, CNPJ, IM: String;
+                                  TagI, TagF: AnsiString): AnsiString; Virtual; Abstract;
+   function Gera_DadosMsgConsNFSeRPS(Prefixo3, Prefixo4, VersaoXML,
+                                     NumeroRps, SerieRps, TipoRps, CNPJ, IM: String;
+                                     TagI, TagF: AnsiString): AnsiString; Virtual; Abstract;
+   function Gera_DadosMsgConsNFSe(Prefixo3, Prefixo4, VersaoXML,
+                                  CNPJ, IM: String;
+                                  DataInicial, DataFinal: TDateTime;
+                                  TagI, TagF: AnsiString): AnsiString; Virtual; Abstract;
+   function Gera_DadosMsgCancelarNFSe(Prefixo4, NumeroNFSe, CNPJ, IM,
+                                      CodMunicipio, CodCancelamento: String;
+                                      TagI, TagF: AnsiString): AnsiString; Virtual; Abstract;
+   function Gera_DadosMsgGerarNFSe(Prefixo3, Prefixo4, Identificador,
+                                   NameSpaceDad, VersaoDados, VersaoXML,
+                                   NumeroLote, CNPJ, IM, QtdeNotas: String;
+                                   Notas, TagI, TagF: AnsiString): AnsiString; Virtual; Abstract;
+
+   function GeraEnvelopeRecepcionarLoteRPS(URLNS: String; CabMsg, DadosMsg, DadosSenha: AnsiString): AnsiString; Virtual; Abstract;
+   function GeraEnvelopeConsultarSituacaoLoteRPS(URLNS: String; CabMsg, DadosMsg, DadosSenha: AnsiString): AnsiString; Virtual; Abstract;
+   function GeraEnvelopeConsultarLoteRPS(URLNS: String; CabMsg, DadosMsg, DadosSenha: AnsiString): AnsiString; Virtual; Abstract;
+   function GeraEnvelopeConsultarNFSeporRPS(URLNS: String; CabMsg, DadosMsg, DadosSenha: AnsiString): AnsiString; Virtual; Abstract;
+   function GeraEnvelopeConsultarNFSe(URLNS: String; CabMsg, DadosMsg, DadosSenha: AnsiString): AnsiString; Virtual; Abstract;
+   function GeraEnvelopeCancelarNFSe(URLNS: String; CabMsg, DadosMsg, DadosSenha: AnsiString): AnsiString; Virtual; Abstract;
+   function GeraEnvelopeGerarNFSe(URLNS: String; CabMsg, DadosMsg, DadosSenha: AnsiString): AnsiString; Virtual; Abstract;
+
+   function GetSoapAction(Acao: TnfseAcao; NomeCidade: String): String; Virtual; Abstract;
+   function GetRetornoWS(Acao: TnfseAcao; RetornoWS: AnsiString): AnsiString; Virtual; Abstract;
+
+   function GeraRetornoNFSe(Prefixo: String; RetNFSe: AnsiString; NomeCidade: String): AnsiString; Virtual; Abstract;
+
+  end;
+
 implementation
 
 uses
- IniFiles, DateUtils, Math, StrUtils, ACBrUtil, ACBrNFSe, ACBrNFSeUtil;
+ IniFiles, DateUtils, Math, StrUtils, ACBrUtil, ACBrNFSe, ACBrNFSeUtil,
+ ACBrProvedorGinfesV3, ACBrProvedorPublica, ACBrProvedorRJ,
+ ACBrProvedorTiplan, ACBrProvedorISSNet, ACBrProvedorWebISS,
+ ACBrProvedorProdemge, ACBrProvedorISSIntel, ACBrProvedorGovBR,
+ ACBrProvedorRecife, ACBrProvedorSimplISS, ACBrProvedorThema,
+ ACBrProvedorEquiplano, ACBrProvedorfintelISS, ACBrProvedorDigifred,
+ ACBrProvedorBetha, ACBrProvedorBetim, ACBrProvedorSaatri;
 
 { TConfiguracoes }
 
@@ -185,8 +374,6 @@ begin
 
  FCertificados      := TCertificadosConf.Create(self);
  FCertificados.Name := 'CertificadosConf';
- FCertificados.FAssinarRPS := False;
- FCertificados.FAssinarLote := True;
 
 {$IFDEF COMPILER6_UP}
   FCertificados.SetSubComponent( true ); { para gravar no DFM/XFM }
@@ -276,20 +463,19 @@ constructor TWebServicesConf.Create(AOwner: TComponent);
 begin
  Inherited Create( AOwner );
 
+ FSalvar     := False;
  FVisualizar := False;
  FAmbiente   := taHomologacao;
  if FAmbiente=taProducao
   then FAmbienteCodigo := 1
   else FAmbienteCodigo := 2;
 
- FPadraoLayout  := plABRASF;
  FPrefixo2      := 'ns2:';
  FPrefixo3      := 'ns3:';
  FPrefixo4      := 'ns4:';
- FProvedor      := '';
+ FProvedor      := proNenhum;
+ FxProvedor     := '';
  FVersaoSoap    := '';
- FConfigSchemas := '';
- FConfigURL     := '';
  FIdentificador := 'Id';
  FNameSpace     := '';
 end;
@@ -453,38 +639,91 @@ begin
 end;
 {$ENDIF}
 
-procedure TWebServicesConf.SetConfigMunicipio(aPath: String = '');
+Procedure TWebServicesConf.SetConfigMunicipio(aPath: String = '');
 var
- IniFile : String;
- Ini     : TIniFile;
+ Ok:           Boolean;
+ ConfigCidade: TConfigCidade;
+ ConfigSchema: TConfigSchema;
+ ConfigURL:    TConfigURL;
 begin
- if not NotaUtil.EstaVazio(aPath)
-  then aPath := PathWithDelim(aPath);
+ FxProvedor := CodCidadeToProvedor(FCodigoMunicipio);
+ FProvedor  := StrToProvedor(Ok, FxProvedor);
 
- IniFile := aPath + 'Config_Municipios.ini';
+ if Provedor = proNenhum
+  then raise Exception.Create('Código do Municipio ['+ IntToStr(FCodigoMunicipio) +'] não Encontrado.');
 
- Ini := TIniFile.Create( IniFile );
- try
-  if FAmbienteCodigo = 1
-   then FNameSpace := ini.ReadString(IntToStr(FCodigoMunicipio), 'ProNameSpace', '')
-   else FNameSpace := ini.ReadString(IntToStr(FCodigoMunicipio), 'HomNameSpace', '');
-  FPrefixo2      := ini.ReadString(IntToStr(FCodigoMunicipio), 'Prefixo2',       '');
-  FPrefixo3      := ini.ReadString(IntToStr(FCodigoMunicipio), 'Prefixo3',       '');
-  FPrefixo4      := ini.ReadString(IntToStr(FCodigoMunicipio), 'Prefixo4',       '');
-  FProvedor      := ini.ReadString(IntToStr(FCodigoMunicipio), 'Provedor',       '');
-  FVersaoSoap    := ini.ReadString(IntToStr(FCodigoMunicipio), 'VersaoSoap',     '');
-  FConfigSchemas := ini.ReadString(IntToStr(FCodigoMunicipio), 'Config_Schemas', '');
-  FConfigURL     := ini.ReadString(IntToStr(FCodigoMunicipio), 'Config_URL',     '');
-  FIdentificador := ini.ReadString(IntToStr(FCodigoMunicipio), 'Identificador',  'Id');
+ FProvedorClass.Free;
 
-  TConfiguracoes( Self.Owner ).Certificados.AssinarRPS  := (ini.ReadString(IntToStr(FCodigoMunicipio), 'AssinarRPS',  'N') = 'S');
-  TConfiguracoes( Self.Owner ).Certificados.AssinarLote := (ini.ReadString(IntToStr(FCodigoMunicipio), 'AssinarLote', 'N') = 'S');
- finally
-  Ini.Free;
+ case FProvedor of
+  proGINFES:    FProvedorClass := TProvedorGinfesV3.Create;
+  proPublica:   FProvedorClass := TProvedorPublica.Create;
+  proRJ:        FProvedorClass := TProvedorRJ.Create;
+  proTiplan:    FProvedorClass := TProvedorTiplan.Create;
+  proISSNet:    FProvedorClass := TProvedorISSNet.Create;
+  proWebISS:    FProvedorClass := TProvedorWebISS.Create;
+  proProdemge:  FProvedorClass := TProvedorProdemge.Create;
+  proISSIntel:  FProvedorClass := TProvedorISSIntel.Create;
+  proGovBR:     FProvedorClass := TProvedorGovBR.Create;
+  proRecife:    FProvedorClass := TProvedorRecife.Create;
+  proSimplISS:  FProvedorClass := TProvedorSimplISS.Create;
+  proThema:     FProvedorClass := TProvedorThema.Create;
+  proEquiplano: FProvedorClass := TProvedorEquiplano.Create;
+  profintelISS: FProvedorClass := TProvedorfintelISS.Create;
+  proDigifred:  FProvedorClass := TProvedorDigifred.Create;
+  proBetha:     FProvedorClass := TProvedorBetha.Create;
+  proBetim:     FProvedorClass := TProvedorBetim.Create;
+  proSaatri:    FProvedorClass := TProvedorSaatri.Create;
  end;
 
- if (FCodigoMunicipio>0) and (trim(FProvedor)='')
-  then raise Exception.Create('Código do Municipio ['+ IntToStr(FCodigoMunicipio) +'] não Encontrado.');
+ ConfigCidade   := FProvedorClass.GetConfigCidade(FCodigoMunicipio, FAmbienteCodigo);
+
+ FVersaoSoap    := ConfigCidade.VersaoSoap;
+ FCodigoSchemas := ConfigCidade.CodigoSchemas;
+ FCodigoURLs    := ConfigCidade.CodigoURLs;
+ FPrefixo2      := ConfigCidade.Prefixo2;
+ FPrefixo3      := ConfigCidade.Prefixo3;
+ FPrefixo4      := ConfigCidade.Prefixo4;
+ FIdentificador := ConfigCidade.Identificador;
+ FNameSpace     := ConfigCidade.NameSpaceEnvelope;
+
+ TConfiguracoes( Self.Owner ).Certificados.FAssinaRPS  := ConfigCidade.AssinaRPS;
+ TConfiguracoes( Self.Owner ).Certificados.FAssinaLote := ConfigCidade.AssinaLote;
+
+ ConfigSchema := FProvedorClass.GetConfigSchema(FCodigoSchemas);
+
+ FVersaoCabecalho := ConfigSchema.VersaoCabecalho;
+ FVersaoDados     := ConfigSchema.VersaoDados;
+ FVersaoXML       := ConfigSchema.VersaoXML;
+ FURL             := ConfigSchema.NameSpaceXML;
+ FCabecalho       := ConfigSchema.Cabecalho;
+ FServicoEnviar   := ConfigSchema.ServicoEnviar;
+ FServicoConSit   := ConfigSchema.ServicoConSit;
+ FServicoConLot   := ConfigSchema.ServicoConLot;
+ FServicoConRps   := ConfigSchema.ServicoConRps;
+ FServicoConNfse  := ConfigSchema.ServicoConNfse;
+ FServicoCancelar := ConfigSchema.ServicoCancelar;
+ FServicoGerar    := ConfigSchema.ServicoGerar;
+ FDefTipos        := ConfigSchema.DefTipos;
+
+ ConfigURL := FProvedorClass.GetConfigURL(FCodigoURLs);
+
+ FHomNomeCidade         := ConfigURL.HomNomeCidade;
+ FHomRecepcaoLoteRPS    := ConfigURL.HomRecepcaoLoteRPS;
+ FHomConsultaLoteRPS    := ConfigURL.HomConsultaLoteRPS;
+ FHomConsultaNFSeRPS    := ConfigURL.HomConsultaNFSeRPS;
+ FHomConsultaSitLoteRPS := ConfigURL.HomConsultaSitLoteRPS;
+ FHomConsultaNFSe       := ConfigURL.HomConsultaNFSe;
+ FHomCancelaNFSe        := ConfigURL.HomCancelaNFSe;
+ FHomGerarNFSe          := ConfigURL.HomGerarNFSe;
+
+ FProNomeCidade         := ConfigURL.ProNomeCidade;
+ FProRecepcaoLoteRPS    := ConfigURL.ProRecepcaoLoteRPS;
+ FProConsultaLoteRPS    := ConfigURL.ProConsultaLoteRPS;
+ FProConsultaNFSeRPS    := ConfigURL.ProConsultaNFSeRPS;
+ FProConsultaSitLoteRPS := ConfigURL.ProConsultaSitLoteRPS;
+ FProConsultaNFSe       := ConfigURL.ProConsultaNFSe;
+ FProCancelaNFSe        := ConfigURL.ProCancelaNFSe;
+ FProGerarNFSe          := ConfigURL.ProGerarNFSe;
 end;
 
 procedure TWebServicesConf.SetIntervaloTentativas(const Value: Cardinal);
@@ -621,6 +860,13 @@ begin
   then ForceDirectories(Dir);
 
  Result := Dir;
+end;
+
+{ TProvedorClass }
+
+constructor TProvedorClass.Create;
+begin
+ {----}
 end;
 
 end.

@@ -47,6 +47,18 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Alterações   20/07/2012 (Italo Jurisato Junior)
+---------------
+[+] Diponibilizado o pacote de instalação do DANFSE em Fortes Report, 
+    Fontes do componente escrito por Danilo D.C.F. o pacote de instalação escrito
+    por Rafael Muler.
+
+Alterações   03/04/2012 (Italo Jurisato Junior)
+---------------
+[*] Incluido dentro da função CancelaNFSe a chamada para a função ConsutaNFSeporRps
+    desta forma o XML da NFSe cancelada será atualizado com as tags referente ao
+    cancelamento.
+
 Alterações   12/09/2011 (Italo Jurisato Junior)
 ---------------
 [+] Implementado a função de Cancelamento de NFSe no padrão Ginfes e Abrasf.

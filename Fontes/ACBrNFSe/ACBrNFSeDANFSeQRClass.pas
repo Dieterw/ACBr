@@ -94,10 +94,13 @@ begin
   then begin
    for i:= 0 to TACBrNFSe(ACBrNFSe).NotasFiscais.Count-1 do
     begin
-     NomeArq :=  trim(TACBrNFSe(ACBrNFSe).NotasFiscais.Items[i].NomeArq);
-     if NomeArq=''
-      then NomeArq := StringReplace(TACBrNFSe(ACBrNFSe).NotasFiscais.Items[i].NFSe.Numero,'NFSe', '', [rfIgnoreCase]);
-     NomeArq := PathWithDelim(Self.PathPDF)+NomeArq+'.pdf';
+//     NomeArq :=  trim(TACBrNFSe(ACBrNFSe).NotasFiscais.Items[i].NomeArq);
+//     if NomeArq=''
+//      then begin
+       NomeArq := StringReplace(TACBrNFSe(ACBrNFSe).NotasFiscais.Items[i].NFSe.Numero,'NFSe', '', [rfIgnoreCase]);
+       NomeArq := PathWithDelim(Self.PathPDF)+NomeArq+'.pdf';
+//      end
+//      else NomeArq := StringReplace(NomeArq,'-nfse.xml', '.pdf', [rfIgnoreCase]);
 
      fqrDANFSeQRRetrato.SavePDF( NomeArq
                                , TACBrNFSe(ACBrNFSe).NotasFiscais.Items[i].NFSe

@@ -45,7 +45,7 @@ type
     constructor Create; reintroduce;
     destructor Destroy; override;
   published
-    property Codigo: string read FCodigo write FCodigo;
+    property Codigo: string   read FCodigo   write FCodigo;
     property Mensagem: string read FMensagem write FMensagem;
     property Correcao: string read FCorrecao write FCorrecao;
   end;
@@ -54,19 +54,19 @@ type
   private
     FLeitor: TLeitor;
     FInfCanc: TInfCanc;
-    FPrefixo3: String;
     FPrefixo2: String;
+    FPrefixo3: String;
     FPrefixo4: String;
   public
     constructor Create;
     destructor Destroy; override;
     function LerXml: boolean;
   published
-    property Leitor: TLeitor read FLeitor write FLeitor;
-    property InfCanc: TInfCanc read FInfCanc write FInfCanc;
-    property Prefixo2: String read FPrefixo2 write FPrefixo2;
-    property Prefixo3: String read FPrefixo3 write FPrefixo3;
-    property Prefixo4: String read FPrefixo4 write FPrefixo4;
+    property Leitor: TLeitor   read FLeitor   write FLeitor;
+    property InfCanc: TInfCanc read FInfCanc  write FInfCanc;
+    property Prefixo2: String  read FPrefixo2 write FPrefixo2;
+    property Prefixo3: String  read FPrefixo3 write FPrefixo3;
+    property Prefixo4: String  read FPrefixo4 write FPrefixo4;
   end;
 
 implementation
@@ -134,7 +134,7 @@ end;
 
 constructor TretCancNFSe.Create;
 begin
-  FLeitor := TLeitor.Create;
+  FLeitor  := TLeitor.Create;
   FInfCanc := TInfCanc.Create;
 end;
 
@@ -152,7 +152,8 @@ begin
   result := False;
   try
     Leitor.Grupo := Leitor.Arquivo;
-    if leitor.rExtrai(1, Prefixo3 + 'CancelarNfseResposta') <> '' then
+    // Alterado por Rodrigo Cantelli
+    if (leitor.rExtrai(1, Prefixo3 + 'CancelarNfseResposta') <> '') or (leitor.rExtrai(1, Prefixo3 + 'CancelarNfseReposta') <> '') then
     begin
       infCanc.DataHora                   := Leitor.rCampo(tcDatHor, Prefixo3 + 'DataHora');
       InfCanc.FPedido.InfID.ID           := Leitor.rAtributo('InfPedidoCancelamento Id=');

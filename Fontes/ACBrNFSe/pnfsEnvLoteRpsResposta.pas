@@ -21,10 +21,10 @@ type
   public
     constructor Create; reintroduce;
     destructor Destroy; override;
-    property NumeroLote: string         read FNumeroLote      write FNumeroLote;
-    property DataRecebimento: TDateTime read FDataRecebimento write FDataRecebimento;
-    property Protocolo: string          read FProtocolo       write FProtocolo;
-    property MsgRetorno: TMsgRetornoEnvCollection read FMsgRetorno write SetMsgRetorno;
+    property NumeroLote: string                   read FNumeroLote      write FNumeroLote;
+    property DataRecebimento: TDateTime           read FDataRecebimento write FDataRecebimento;
+    property Protocolo: string                    read FProtocolo       write FProtocolo;
+    property MsgRetorno: TMsgRetornoEnvCollection read FMsgRetorno      write SetMsgRetorno;
   end;
 
  TMsgRetornoEnvCollection = class(TCollection)
@@ -46,7 +46,7 @@ type
     constructor Create; reintroduce;
     destructor Destroy; override;
   published
-    property Codigo: string read FCodigo write FCodigo;
+    property Codigo: string   read FCodigo   write FCodigo;
     property Mensagem: string read FMensagem write FMensagem;
     property Correcao: string read FCorrecao write FCorrecao;
   end;
@@ -62,8 +62,8 @@ type
     destructor Destroy; override;
     function LerXml: boolean;
   published
-    property Leitor: TLeitor read FLeitor write FLeitor;
-    property InfRec: TInfRec read FInfRec write FInfRec;
+    property Leitor: TLeitor  read FLeitor   write FLeitor;
+    property InfRec: TInfRec  read FInfRec   write FInfRec;
     property Prefixo2: String read FPrefixo2 write FPrefixo2;
     property Prefixo3: String read FPrefixo3 write FPrefixo3;
   end;
@@ -171,24 +171,6 @@ begin
       end;
 
       Result := True;
-{    end
-    else begin
-     // Ler a Lista de Mensagens
-     if leitor.rExtrai(1, 'ListaMensagemRetorno') <> '' then
-      begin
-       i := 0;
-       while Leitor.rExtrai(2, prefixo2 + 'MensagemRetorno', '', i + 1) <> '' do
-        begin
-         InfRec.FMsgRetorno.Add;
-         InfRec.FMsgRetorno[i].FCodigo   := Leitor.rCampo(tcStr, prefixo2 + 'Codigo');
-         InfRec.FMsgRetorno[i].FMensagem := Leitor.rCampo(tcStr, prefixo2 + 'Mensagem');
-         InfRec.FMsgRetorno[i].FCorrecao := Leitor.rCampo(tcStr, prefixo2 + 'Correcao');
-
-         inc(i);
-        end;
-      end;
-
-     Result := True;}
     end;
   except
     result := False;

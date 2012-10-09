@@ -7,7 +7,7 @@ uses
   {$IFNDEF VER130}
     Variants,
   {$ENDIF}
-  pnfsConversao, pnfsSignature{, pcnProcNFSe};
+  pnfsConversao, pnfsSignature;
 
 type
 
@@ -76,7 +76,7 @@ type
     FValorInss: currency;
     FValorIr: currency;
     FValorCsll: currency;
-    FIssRetido: TnfseSimNao;
+    FIssRetido: TnfseSituacaoTributaria;
     FValorIss: currency;
     FOutrasRetencoes: currency;
     FBaseCalculo: currency;
@@ -93,7 +93,7 @@ type
     property ValorInss: currency read FValorInss write FValorInss;
     property ValorIr: currency read FValorIr write FValorIr;
     property ValorCsll: currency read FValorCsll write FValorCsll;
-    property IssRetido: TnfseSimNao read FIssRetido write FIssRetido;
+    property IssRetido: TnfseSituacaoTributaria read FIssRetido write FIssRetido;
     property ValorIss: currency read FValorIss write FValorIss;
     property OutrasRetencoes: currency read FOutrasRetencoes write FOutrasRetencoes;
     property BaseCalculo: currency read FBaseCalculo write FBaseCalculo;
@@ -136,8 +136,14 @@ type
     FCodigoTributacaoMunicipio: string;
     FDiscriminacao: string;
     FCodigoMunicipio: string;
-    FxItemListaServico: string;
+    FCodigoPais: Integer;
+    FExigibilidadeISS: TnfseExigibilidadeISS;
+    FMunicipioIncidencia: Integer;
+    FNumeroProcesso: string;
+    FxItemListaServico: ansistring;
     FItemServico: TItemServicoCollection;
+    FResponsavelRetencao: TnfseResponsavelRetencao;
+
     procedure SetItemServico(Value: TItemServicoCollection);
   public
     constructor Create;
@@ -149,8 +155,13 @@ type
     property CodigoTributacaoMunicipio: string read FCodigoTributacaoMunicipio write FCodigoTributacaoMunicipio;
     property Discriminacao: string read FDiscriminacao write FDiscriminacao;
     property CodigoMunicipio: string read FCodigoMunicipio write FCodigoMunicipio;
-    property xItemListaServico: string read FxItemListaServico write FxItemListaServico;
+    property CodigoPais: Integer read FCodigoPais write FCodigoPais;
+    property ExigibilidadeISS: TnfseExigibilidadeISS read FExigibilidadeISS write FExigibilidadeISS;
+    property MunicipioIncidencia: Integer read FMunicipioIncidencia write FMunicipioIncidencia;
+    property NumeroProcesso: string read FNumeroProcesso write FNumeroProcesso;
+    property xItemListaServico: ansistring read FxItemListaServico write FxItemListaServico;
     property ItemServico: TItemServicoCollection read FItemServico write SetItemServico;
+    property ResponsavelRetencao: TnfseResponsavelRetencao read FResponsavelRetencao write FResponsavelRetencao;
   end;
 
  TIdentificacaoPrestador = class(TPersistent)
@@ -172,6 +183,7 @@ type
     FUF: string;
     FCEP: string;
     FxMunicipio: string;
+    FCodigoPais: integer;
   published
     property Endereco: string read FEndereco write FEndereco;
     property Numero: string read FNumero write FNumero;
@@ -181,6 +193,7 @@ type
     property UF: string read FUF write FUF;
     property CEP: string read FCEP write FCEP;
     property xMunicipio: string read FxMunicipio write FxMunicipio;
+    property CodigoPais: integer read FCodigoPais write FCodigoPais; 
   end;
 
  TContato = class(TPersistent)
@@ -270,6 +283,7 @@ type
     FInfID: TInfID;
     FIdentificacaoRps: TIdentificacaoRps;
     FDataEmissao: TDateTime;
+    FDataEmissaoRps: TDateTime;
     FNaturezaOperacao: TnfseNaturezaOperacao;
     FRegimeEspecialTributacao: TnfseRegimeEspecialTributacao;
     FOptanteSimplesNacional: TnfseSimNao;
@@ -297,7 +311,10 @@ type
     FdhRecebimento: TDateTime;
     FSituacao: String;
 
+    FXML: AnsiString;
+
     FNfseCancelamento: TConfirmacaoCancelamento;
+    FNfseSubstituidora: String;
   public
     constructor Create;
     destructor Destroy; override;
@@ -306,6 +323,7 @@ type
     property InfID: TInfID read FInfID write FInfID;
     property IdentificacaoRps: TIdentificacaoRps read FIdentificacaoRps write FIdentificacaoRps;
     property DataEmissao: TDateTime read FDataEmissao write FDataEmissao;
+    property DataEmissaoRps: TDateTime read FDataEmissaoRps write FDataEmissaoRps;
     property NaturezaOperacao: TnfseNaturezaOperacao read FNaturezaOperacao write FNaturezaOperacao;
     property RegimeEspecialTributacao: TnfseRegimeEspecialTributacao read FRegimeEspecialTributacao write FRegimeEspecialTributacao;
     property OptanteSimplesNacional: TnfseSimNao read FOptanteSimplesNacional write FOptanteSimplesNacional;
@@ -332,7 +350,9 @@ type
     property Protocolo: String read FProtocolo write FProtocolo;
     property dhRecebimento: TDateTime read FdhRecebimento write FdhRecebimento;
     property Situacao: String read FSituacao write FSituacao;
+    property XML: AnsiString read FXML write FXML;
     property NfseCancelamento: TConfirmacaoCancelamento read FNfseCancelamento write FNfseCancelamento;
+    property NfseSubstituidora: String read FNfseSubstituidora write FNfseSubstituidora;
   end;
 
  TLoteRps = class(TPersistent)
@@ -425,7 +445,7 @@ begin
    FValorInss              := 0;
    FValorIr                := 0;
    FValorCsll              := 0;
-   FIssRetido              := snNao;
+   FIssRetido              := stNormal;
    FValorIss               := 0;
    FValorIssRetido         := 0;
    FOutrasRetencoes        := 0;
@@ -510,7 +530,7 @@ begin
  FIdentificacaoRps.FTipo       := trRPS;
  FDataEmissao                  := 0;
  FNaturezaOperacao             := noTributacaoNoMunicipio;
- FRegimeEspecialTributacao     := retMicroempresaMunicipal;
+ FRegimeEspecialTributacao     := retNenhum;
  FOptanteSimplesNacional       := snNao;
  FIncentivadorCultural         := snNao;
  FStatus                       := srNormal;
@@ -537,6 +557,7 @@ begin
 
  FNfseCancelamento             := TConfirmacaoCancelamento.Create;
  FNfseCancelamento.DataHora    := 0;
+ FNfseSubstituidora            := '';
 end;
 
 destructor TNFSe.Destroy;

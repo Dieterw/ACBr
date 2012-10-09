@@ -253,8 +253,7 @@ begin
  qrmPrefeitura.Lines.Add(StringReplace( FPrefeitura,
                          ';', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
 
- qrlNumNF0.Caption  := {FormatDateTime('yyyy', FNFSe.DataEmissao)+}
-                       FormatFloat('00000000000', StrToFloat(FNFSe.Numero));
+ qrlNumNF0.Caption  := FormatFloat('00000000000', StrToFloatDef(FNFSe.Numero, 0));
  qrlEmissao.Caption := NotaUtil.FormatDateTime(DateTimeToStr(FNFSe.DataEmissao));
  qrlCodVerificacao.Caption := FNFSe.CodigoVerificacao;
  t:=length(FNFSe.Competencia);
@@ -423,11 +422,25 @@ begin
   noIsencao                 : qrlNatOperacao.Caption := '3 - Isenção';
   noImune                   : qrlNatOperacao.Caption := '4 - Imune';
   noSuspensaDecisaoJudicial : qrlNatOperacao.Caption := '5 - Exigibilidade susp. por decisão judicial';
+
   noSuspensaProcedimentoAdministrativo : qrlNatOperacao.Caption := '6 - Exigibilidade susp. por proced. adm.';
+
+  noTributacaoNoMunicipio51         : qrlNatOperacao.Caption := '51- Imposto devido em São Leopoldo, com obrigação de retenção na fonte';     // alterado por Rafael Müller para o provedor thema
+  noTributacaoNoMunicipioSemISS52   : qrlNatOperacao.Caption := '52 - Imposto devido em São Leopoldo, sem obrigação de retenção na fonte';
+  noNaoTributa58                    : qrlNatOperacao.Caption := '58 - Não tributável';
+  noSimplesNacional59               : qrlNatOperacao.Caption := '59 - Imposto recolhido pelo regime único de arrecadação Simples Nacional';
+  noTributacaoNoMunicipio61         : qrlNatOperacao.Caption := '61 - Imposto devido em São Leopoldo, com obrigação de retenção na fonte';
+  noTributacaoNoMunicipioSemISS62   : qrlNatOperacao.Caption := '62 - Imposto devido em São Leopoldo, sem obrigação de retenção na fonte';
+  noTributacaoForaMunicipio63       : qrlNatOperacao.Caption := '63 - Imposto devido fora de São Leopoldo, com obrigação de retenção na fonte';
+  noTributacaoForaMunicipioSemISS64 : qrlNatOperacao.Caption := '64 - Imposto devido fora de São Leopoldo, sem obrigação de retenção na fonte';
+  noNaoTributa68                    : qrlNatOperacao.Caption := '68 - Não tributável';
+  noSimplesNacional69               : qrlNatOperacao.Caption := '69 - Imposto recolhido pelo regime único de arrecadação Simples Nacional';
+  noNaoTributa78                    : qrlNatOperacao.Caption := '78 - Não tributável';
  end;
 
  // TnfseRegimeEspecialTributacao = ( retNenhum, retMicroempresaMunicipal, retEstimativa, retSociedadeProfissionais, retCooperativa, retMicroempresarioIndividual, retMicroempresarioEmpresaPP )
  case FNFSe.RegimeEspecialTributacao of
+  retNenhum                    : qrlRegimeEspecial.Caption := '0 - Nenhum';
   retMicroempresaMunicipal     : qrlRegimeEspecial.Caption := '1 - Microempresa municipal';
   retEstimativa                : qrlRegimeEspecial.Caption := '2 - Estimativa';
   retSociedadeProfissionais    : qrlRegimeEspecial.Caption := '3 - Sociendade de profissionais';
@@ -455,8 +468,9 @@ begin
  qrlAliquota.Caption            := NotaUtil.FormatFloat( FNFSe.Servico.Valores.Aliquota );
  // TnfseSimNao = ( snSim, snNao )
  case FNFSe.Servico.Valores.IssRetido of
-  snSim : qrlISSReter.Caption := 'Sim';
-  snNao : qrlISSReter.Caption := 'Não';
+  stRetencao     : qrlISSReter.Caption := 'Sim';
+  stNormal       : qrlISSReter.Caption := 'Não';
+  stSubstituicao : qrlISSReter.Caption := 'ST';
  end;
  qrlValorISS.Caption := NotaUtil.FormatFloat( FNFSe.Servico.Valores.ValorIss );
 

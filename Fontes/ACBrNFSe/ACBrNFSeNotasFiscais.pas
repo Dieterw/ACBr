@@ -25,10 +25,12 @@ type
     FXML_Rps_Ass: AnsiString;
     FXML_LoteRps: AnsiString;
     FXML_LoteRps_Ass: AnsiString;
+    FXML_NFSe: AnsiString;
     FConfirmada : Boolean;
     FMsg : AnsiString ;
     FAlertas: AnsiString;
     FNomeArq: String;
+    FXML: AnsiString;
     function GetNFSeXML: AnsiString;
   public
     constructor Create(Collection2: TCollection); override;
@@ -58,10 +60,12 @@ type
     property XML_Rps_Ass: AnsiString read FXML_Rps_Ass write FXML_Rps_Ass;
     property XML_LoteRps: AnsiString read FXML_LoteRps write FXML_LoteRps;
     property XML_LoteRps_Ass: AnsiString read FXML_LoteRps_Ass write FXML_LoteRps_Ass;
+    property XML_NFSe: AnsiString read FXML_NFSe write FXML_NFSe;
     property Confirmada: Boolean  read FConfirmada write FConfirmada;
     property Msg: AnsiString  read FMsg write FMsg;
     property Alertas: AnsiString read FAlertas write FAlertas;
     property NomeArq: String read FNomeArq write FNomeArq;
+    property XML: AnsiString  read GetNFSeXML write FXML;
   end;
 
  TNotasFiscais = class(TOwnedCollection)
@@ -78,7 +82,7 @@ type
   public
     constructor Create(AOwner: TPersistent; ItemClass: TCollectionItemClass);
 
-    procedure GerarNFSe;
+    procedure GerarRPS;
     procedure Assinar;
     function AssinarLoteRps(nLote:Integer; vLote: WideString): WideString;
     procedure Valida;
@@ -172,7 +176,7 @@ begin
     if TACBrNFSe( TNotasFiscais( Collection ).ACBrNFSe ).DANFSE <> nil
      then begin
       TACBrNFSe( TNotasFiscais( Collection ).ACBrNFSe ).DANFSE.ImprimirDANFSEPDF(NFSe);
-      NomeArq :=  StringReplace(NFSe.Numero, 'NFSe', '', [rfIgnoreCase]);
+      NomeArq := StringReplace(NFSe.Numero, 'NFSe', '', [rfIgnoreCase]);
       NomeArq := PathWithDelim(TACBrNFSe( TNotasFiscais( Collection ).ACBrNFSe ).DANFSE.PathPDF) + NomeArq + '.pdf';
       m.AddPartBinaryFromFile(NomeArq, p);
      end;
@@ -238,9 +242,12 @@ begin
  try
   LocNFSeW.Provedor      := TACBrNFSe( TNotasFiscais( Collection ).ACBrNFSe ).Configuracoes.WebServices.Provedor;
   LocNFSeW.Prefixo4      := TACBrNFSe( TNotasFiscais( Collection ).ACBrNFSe ).Configuracoes.WebServices.Prefixo4;
-  LocNFSeW.CodigoSchema  := TACBrNFSe( TNotasFiscais( Collection ).ACBrNFSe ).Configuracoes.WebServices.ConfigSchemas;
-  LocNFSeW.PathSchema    := TACBrNFSe( TNotasFiscais( Collection ).ACBrNFSe ).Configuracoes.Geral.PathSchemas;
   LocNFSeW.Identificador := TACBrNFSe( TNotasFiscais( Collection ).ACBrNFSe ).Configuracoes.WebServices.Identificador;
+  LocNFSeW.URL           := TACBrNFSe( TNotasFiscais( Collection ).ACBrNFSe ).Configuracoes.WebServices.URL;
+  LocNFSeW.VersaoXML     := TACBrNFSe( TNotasFiscais( Collection ).ACBrNFSe ).Configuracoes.WebServices.VersaoXML;
+  LocNFSeW.DefTipos      := TACBrNFSe( TNotasFiscais( Collection ).ACBrNFSe ).Configuracoes.WebServices.DefTipos;
+  LocNFSeW.ServicoEnviar := TACBrNFSe( TNotasFiscais( Collection ).ACBrNFSe ).Configuracoes.WebServices.ServicoEnviar;
+
   LocNFSeW.GerarXml;
   Result := LocNFSeW.Gerador.ArquivoFormatoXML;
  finally
@@ -272,9 +279,11 @@ begin
   try
    LocNFSeW.Provedor      := TACBrNFSe( TNotasFiscais( Collection ).ACBrNFSe ).Configuracoes.WebServices.Provedor;
    LocNFSeW.Prefixo4      := TACBrNFSe( TNotasFiscais( Collection ).ACBrNFSe ).Configuracoes.WebServices.Prefixo4;
-   LocNFSeW.CodigoSchema  := TACBrNFSe( TNotasFiscais( Collection ).ACBrNFSe ).Configuracoes.WebServices.ConfigSchemas;
-   LocNFSeW.PathSchema    := TACBrNFSe( TNotasFiscais( Collection ).ACBrNFSe ).Configuracoes.Geral.PathSchemas;
    LocNFSeW.Identificador := TACBrNFSe( TNotasFiscais( Collection ).ACBrNFSe ).Configuracoes.WebServices.Identificador;
+   LocNFSeW.URL           := TACBrNFSe( TNotasFiscais( Collection ).ACBrNFSe ).Configuracoes.WebServices.URL;
+   LocNFSeW.VersaoXML     := TACBrNFSe( TNotasFiscais( Collection ).ACBrNFSe ).Configuracoes.WebServices.VersaoXML;
+   LocNFSeW.DefTipos      := TACBrNFSe( TNotasFiscais( Collection ).ACBrNFSe ).Configuracoes.WebServices.DefTipos;
+   LocNFSeW.ServicoEnviar := TACBrNFSe( TNotasFiscais( Collection ).ACBrNFSe ).Configuracoes.WebServices.ServicoEnviar;
    LocNFSeW.GerarXml;
 
    if NotaUtil.EstaVazio(CaminhoArquivo)
@@ -303,13 +312,22 @@ begin
   Result   := True;
   LocNFSeW := TNFSeW.Create(NFSe);
   try
+  (*
    LocNFSeW.Provedor      := TACBrNFSe( TNotasFiscais( Collection ).ACBrNFSe ).Configuracoes.WebServices.Provedor;
    LocNFSeW.Prefixo4      := TACBrNFSe( TNotasFiscais( Collection ).ACBrNFSe ).Configuracoes.WebServices.Prefixo4;
-   LocNFSeW.CodigoSchema  := TACBrNFSe( TNotasFiscais( Collection ).ACBrNFSe ).Configuracoes.WebServices.ConfigSchemas;
-   LocNFSeW.PathSchema    := TACBrNFSe( TNotasFiscais( Collection ).ACBrNFSe ).Configuracoes.Geral.PathSchemas;
    LocNFSeW.Identificador := TACBrNFSe( TNotasFiscais( Collection ).ACBrNFSe ).Configuracoes.WebServices.Identificador;
+   LocNFSeW.URL           := TACBrNFSe( TNotasFiscais( Collection ).ACBrNFSe ).Configuracoes.WebServices.URL;
+   LocNFSeW.VersaoXML     := TACBrNFSe( TNotasFiscais( Collection ).ACBrNFSe ).Configuracoes.WebServices.VersaoXML;
+   LocNFSeW.DefTipos      := TACBrNFSe( TNotasFiscais( Collection ).ACBrNFSe ).Configuracoes.WebServices.DefTipos;
+   LocNFSeW.ServicoEnviar := TACBrNFSe( TNotasFiscais( Collection ).ACBrNFSe ).Configuracoes.WebServices.ServicoEnviar;
    LocNFSeW.GerarXml;
    Stream.WriteString(LocNFSeW.Gerador.ArquivoFormatoXML);
+   *)
+   if XML_NFSe <> ''
+    then Stream.WriteString(XML_NFSe)
+    else if XML_RPS <> ''
+          then Stream.WriteString(XML_RPS)
+          else Stream.WriteString('');
   finally
    LocNFSeW.Free;
   end;
@@ -334,15 +352,17 @@ var
  Leitor    : TLeitor;
  FMsg      : AnsiString;
 begin
- for i:= 0 to Self.Count-1 do
+ for i := 0 to Self.Count-1 do
   begin
    LocNFSeW := TNFSeW.Create(Self.Items[i].NFSe);
    try
     LocNFSeW.Provedor      := self.Configuracoes.WebServices.Provedor;
     LocNFSeW.Prefixo4      := self.Configuracoes.WebServices.Prefixo4;
-    LocNFSeW.CodigoSchema  := self.Configuracoes.WebServices.ConfigSchemas;
-    LocNFSeW.PathSchema    := self.Configuracoes.Geral.PathSchemas;
     LocNFSeW.Identificador := self.Configuracoes.WebServices.Identificador;
+    LocNFSeW.URL           := self.Configuracoes.WebServices.URL;
+    LocNFSeW.VersaoXML     := self.Configuracoes.WebServices.VersaoXML;
+    LocNFSeW.DefTipos      := self.Configuracoes.WebServices.DefTipos;
+    LocNFSeW.ServicoEnviar := self.Configuracoes.WebServices.ServicoEnviar;
     LocNFSeW.GerarXml;
     Self.Items[i].Alertas := LocNFSeW.Gerador.ListaDeAlertas.Text;
     Self.Items[i].XML_Rps := LocNFSeW.Gerador.ArquivoFormatoXML;
@@ -350,17 +370,23 @@ begin
     if FConfiguracoes.Geral.Salvar
      then FConfiguracoes.Geral.Save(NotaUtil.PathWithDelim(FConfiguracoes.Arquivos.GetPathRPS) + Self.Items[i].NFSe.InfID.ID+'-Rps2.xml', LocNFSeW.Gerador.ArquivoFormatoXML);
 
-    if self.Configuracoes.Certificados.AssinarRPS
+    if self.Configuracoes.Certificados.AssinaRPS
      then begin
       {$IFDEF ACBrNFSeOpenSSL}
-        if not(NotaUtil.Assinar(LocNFSeW.Gerador.ArquivoFormatoXML, FConfiguracoes.Certificados.Certificado ,
-                 FConfiguracoes.Certificados.Senha, vAssinada, FMsg))
+        if not(NotaUtil.Assinar(LocNFSeW.Gerador.ArquivoFormatoXML,
+                                FConfiguracoes.Certificados.Certificado,
+                                FConfiguracoes.Certificados.Senha,
+                                vAssinada, FMsg))
          then raise Exception.Create('Falha ao assinar Nota Fiscal de Serviço Eletrônica '+
                                      Self.Items[i].NFSe.IdentificacaoRps.Numero + FMsg);
       {$ELSE}
-        if not(NotaUtil.Assinar(LocNFSeW.Gerador.ArquivoFormatoXML, FConfiguracoes.Certificados.GetCertificado,
-                                vAssinada, FMsg, False, FConfiguracoes.WebServices.Prefixo3,
-                                FConfiguracoes.WebServices.Prefixo4))
+        // Alterado por Italo em 12/07/2012
+        if not(NotaUtil.Assinar(LocNFSeW.Gerador.ArquivoFormatoXML,
+                                FConfiguracoes.Certificados.GetCertificado,
+                                vAssinada, FMsg, False,
+                                FConfiguracoes.WebServices.Prefixo3,
+                                FConfiguracoes.WebServices.Prefixo4,
+                                FConfiguracoes.WebServices.Provedor))
          then raise Exception.Create('Falha ao assinar Nota Fiscal de Serviço Eletrônica '+
                                      Self.Items[i].NFSe.IdentificacaoRps.Numero + FMsg);
       {$ENDIF}
@@ -400,15 +426,24 @@ var
  FMsg      : AnsiString;
 begin
  try
-  if FConfiguracoes.Certificados.AssinarLote
+  if FConfiguracoes.Certificados.AssinaLote
    then begin
     {$IFDEF ACBrNFSeOpenSSL}
-      if not(NotaUtil.Assinar(vLote, FConfiguracoes.Certificados.Certificado , FConfiguracoes.Certificados.Senha, vAssinada, FMsg, True))
+      if not(NotaUtil.Assinar(vLote,
+                              FConfiguracoes.Certificados.Certificado,
+                              FConfiguracoes.Certificados.Senha,
+                              vAssinada, FMsg, True))
        then raise Exception.Create('Falha ao assinar o Lote de RPS, '+ IntToStr(nLote) + FMsg);
     {$ELSE}
-      if not(NotaUtil.Assinar(vLote, FConfiguracoes.Certificados.GetCertificado ,
-                              vAssinada, FMsg, True, FConfiguracoes.WebServices.Prefixo3, FConfiguracoes.WebServices.Prefixo4))
-       then raise Exception.Create('Falha ao assinar o Lote de RPS, '+ IntToStr(nLote) + FMsg);
+      // Alterado por Italo em 24/07/2012
+      if not(NotaUtil.Assinar(vLote,
+                              FConfiguracoes.Certificados.GetCertificado,
+                              vAssinada, FMsg, True,
+                              FConfiguracoes.WebServices.Prefixo3,
+                              FConfiguracoes.WebServices.Prefixo4,
+                              FConfiguracoes.WebServices.Provedor))
+       then raise Exception.Create('Falha ao assinar o Lote de RPS, '+
+                                     IntToStr(nLote) + FMsg);
     {$ENDIF}
 
     vAssinada := StringReplace( vAssinada, '<'+ENCODING_UTF8_STD+'>', '', [rfReplaceAll] ) ;
@@ -454,20 +489,22 @@ begin
  FACBrNFSe     := TACBrNFSe( AOwner ) ;
 end;
 
-procedure TNotasFiscais.GerarNFSe;
+procedure TNotasFiscais.GerarRPS;
 var
  i        : Integer;
  LocNFSeW : TNFSeW;
 begin
- for i:= 0 to Self.Count-1 do
+ for i := 0 to Self.Count-1 do
   begin
    LocNFSeW := TNFSeW.Create(Self.Items[i].NFSe);
    try
     LocNFSeW.Provedor      := self.Configuracoes.WebServices.Provedor;
     LocNFSeW.Prefixo4      := self.Configuracoes.WebServices.Prefixo4;
-    LocNFSeW.CodigoSchema  := self.Configuracoes.WebServices.ConfigSchemas;
-    LocNFSeW.PathSchema    := self.Configuracoes.Geral.PathSchemas;
     LocNFSeW.Identificador := self.Configuracoes.WebServices.Identificador;
+    LocNFSeW.URL           := Self.Configuracoes.WebServices.URL;
+    LocNFSeW.VersaoXML     := self.Configuracoes.WebServices.VersaoXML;
+    LocNFSeW.DefTipos      := self.Configuracoes.WebServices.DefTipos;
+    LocNFSeW.ServicoEnviar := Self.Configuracoes.WebServices.ServicoEnviar;
     LocNFSeW.GerarXml;
     Self.Items[i].XML_RPS := LocNFSeW.Gerador.ArquivoFormatoXML;
     Self.Items[i].Alertas := LocNFSeW.Gerador.ListaDeAlertas.Text;
@@ -520,46 +557,6 @@ begin
   ArquivoXML.Text := StringReplace(StringReplace( ArquivoXML.Text, '&lt;', '<', [rfReplaceAll]), '&gt;', '>', [rfReplaceAll]);
   ArquivoXML.Text := NotaUtil.RetirarPrefixos(ArquivoXML.Text);
 
-
-  if pos('</ListaRps>', ArquivoXML.Text) > 0
-   then begin
-    while pos('</Rps>',ArquivoXML.Text) > 0 do
-     begin
-      XML             := copy(ArquivoXML.Text, 1, pos('</Rps>', ArquivoXML.Text) + 5);
-      ArquivoXML.Text := Trim(copy(ArquivoXML.Text, pos('</Rps>', ArquivoXML.Text) + 6, length(ArquivoXML.Text)));
-      LocNFSeR        := TNFSeR.Create(Self.Add.NFSe);
-      try
-       LocNFSeR.Leitor.Arquivo := XML;
-       LocNFSeR.VersaoXML      := NotaUtil.VersaoXML(XML);
-       LocNFSeR.LerXml;
-       Items[Self.Count-1].XML_Rps := LocNFSeR.Leitor.Arquivo;
-       Items[Self.Count-1].NomeArq := CaminhoArquivo;
-      finally
-       LocNFSeR.Free;
-      end;
-     end;
-   end;
-
-  if pos('</Rps>', ArquivoXML.Text) > 0
-   then begin
-    while pos('</Rps>', ArquivoXML.Text) > 0 do
-     begin
-      XML             := copy(ArquivoXML.Text, 1, pos('</Rps>', ArquivoXML.Text) + 5);
-      ArquivoXML.Text := Trim(copy(ArquivoXML.Text, pos('</Rps>',ArquivoXML.Text) + 6, length(ArquivoXML.Text)));
-      LocNFSeR        := TNFSeR.Create(Self.Add.NFSe);
-      try
-       LocNFSeR.Leitor.Arquivo := XML;
-       LocNFSeR.VersaoXML      := NotaUtil.VersaoXML(XML);
-       LocNFSeR.LerXml;
-       Items[Self.Count-1].XML_Rps := LocNFSeR.Leitor.Arquivo;
-       Items[Self.Count-1].NomeArq := CaminhoArquivo;
-//       GerarNFSe;
-      finally
-       LocNFSeR.Free;
-      end;
-     end;
-   end;
-
   if pos('</CompNfse>', ArquivoXML.Text) > 0
    then begin
     while pos('</CompNfse>', ArquivoXML.Text) > 0 do
@@ -570,12 +567,78 @@ begin
       try
        LocNFSeR.Leitor.Arquivo := XML;
        LocNFSeR.VersaoXML      := NotaUtil.VersaoXML(XML);
+//       LocNFSeR.Provedor       := FConfiguracoes.WebServices.Provedor;
        LocNFSeR.LerXml;
-       Items[Self.Count-1].XML_Rps := LocNFSeR.Leitor.Arquivo;
+       Items[Self.Count-1].XML_NFSe := LocNFSeR.Leitor.Arquivo;
+//       Items[Self.Count-1].XML_Rps := LocNFSeR.Leitor.Arquivo;
        Items[Self.Count-1].NomeArq := CaminhoArquivo;
       finally
        LocNFSeR.Free;
       end;
+     end;
+   end
+   else begin
+    if pos('</ComplNfse>', ArquivoXML.Text) > 0
+     then begin
+      while pos('</ComplNfse>', ArquivoXML.Text) > 0 do
+       begin
+        XML             := copy(ArquivoXML.Text, 1, pos('</ComplNfse>', ArquivoXML.Text) + 11);
+        ArquivoXML.Text := Trim(copy(ArquivoXML.Text, pos('</ComplNfse>', ArquivoXML.Text) + 12, length(ArquivoXML.Text)));
+        LocNFSeR        := TNFSeR.Create(Self.Add.NFSe);
+        try
+         LocNFSeR.Leitor.Arquivo := XML;
+         LocNFSeR.VersaoXML      := NotaUtil.VersaoXML(XML);
+//         LocNFSeR.Provedor       := FConfiguracoes.WebServices.Provedor;
+         LocNFSeR.LerXml;
+         Items[Self.Count-1].XML_NFSe := LocNFSeR.Leitor.Arquivo;
+//         Items[Self.Count-1].XML_Rps := LocNFSeR.Leitor.Arquivo;
+         Items[Self.Count-1].NomeArq := CaminhoArquivo;
+        finally
+         LocNFSeR.Free;
+        end;
+       end;
+     end
+     else begin
+      if pos('</ListaRps>', ArquivoXML.Text) > 0
+       then begin
+        while pos('</Rps>',ArquivoXML.Text) > 0 do
+         begin
+          XML             := copy(ArquivoXML.Text, 1, pos('</Rps>', ArquivoXML.Text) + 5);
+          ArquivoXML.Text := Trim(copy(ArquivoXML.Text, pos('</Rps>', ArquivoXML.Text) + 6, length(ArquivoXML.Text)));
+          LocNFSeR        := TNFSeR.Create(Self.Add.NFSe);
+          try
+           LocNFSeR.Leitor.Arquivo := XML;
+           LocNFSeR.VersaoXML      := NotaUtil.VersaoXML(XML);
+//           LocNFSeR.Provedor       := FConfiguracoes.WebServices.Provedor;
+           LocNFSeR.LerXml;
+           Items[Self.Count-1].XML_Rps := LocNFSeR.Leitor.Arquivo;
+           Items[Self.Count-1].NomeArq := CaminhoArquivo;
+          finally
+           LocNFSeR.Free;
+          end;
+         end;
+       end
+       else begin
+        if pos('</Rps>', ArquivoXML.Text) > 0
+         then begin
+          while pos('</Rps>', ArquivoXML.Text) > 0 do
+           begin
+            XML             := copy(ArquivoXML.Text, 1, pos('</Rps>', ArquivoXML.Text) + 5);
+            ArquivoXML.Text := Trim(copy(ArquivoXML.Text, pos('</Rps>',ArquivoXML.Text) + 6, length(ArquivoXML.Text)));
+            LocNFSeR        := TNFSeR.Create(Self.Add.NFSe);
+            try
+             LocNFSeR.Leitor.Arquivo := XML;
+             LocNFSeR.VersaoXML      := NotaUtil.VersaoXML(XML);
+//             LocNFSeR.Provedor       := FConfiguracoes.WebServices.Provedor;
+             LocNFSeR.LerXml;
+             Items[Self.Count-1].XML_Rps := LocNFSeR.Leitor.Arquivo;
+             Items[Self.Count-1].NomeArq := CaminhoArquivo;
+            finally
+             LocNFSeR.Free;
+            end;
+           end;
+         end;
+       end;
      end;
    end;
 
@@ -592,8 +655,8 @@ var
  ArquivoXML: TStringList;
 begin
  try
-  Result := True;
-  LocNFSeR := TNFSeR.Create(Self.Add.NFSe);
+  Result     := True;
+  LocNFSeR   := TNFSeR.Create(Self.Add.NFSe);
   ArquivoXML := TStringList.Create;
   try
    LocNFSeR.Leitor.CarregarArquivo(Stream);
@@ -601,12 +664,11 @@ begin
    ArquivoXML.Text := StringReplace(StringReplace( ArquivoXML.Text, '&lt;', '<', [rfReplaceAll]), '&gt;', '>', [rfReplaceAll]);
    ArquivoXML.Text := NotaUtil.RetirarPrefixos(ArquivoXML.Text);
 
-//   LocNFSeR.Identificador  := FConfiguracoes.WebServices.Identificador;
-   LocNFSeR.VersaoXML      := NotaUtil.VersaoXML(ArquivoXML.Text);
+   LocNFSeR.VersaoXML := NotaUtil.VersaoXML(ArquivoXML.Text);
    LocNFSeR.Leitor.CarregarArquivo(TStringStream.Create(ArquivoXML.Text));
    LocNFSeR.LerXml;
    Items[Self.Count-1].XML_Rps := LocNFSeR.Leitor.Arquivo;
-   GerarNFSe;
+   GerarRPS;
   finally
    LocNFSeR.Free
   end;
@@ -623,11 +685,12 @@ var
 begin
  Result := True;
  try
-  for i:= 0 to TACBrNFSe( FACBrNFSe ).NotasFiscais.Count-1 do
+  for i := 0 to TACBrNFSe( FACBrNFSe ).NotasFiscais.Count-1 do
    begin
     if NotaUtil.EstaVazio(PathArquivo)
      then PathArquivo := TACBrNFSe( FACBrNFSe ).Configuracoes.Geral.PathSalvar
      else PathArquivo := ExtractFilePath(PathArquivo);
+
     CaminhoArquivo := NotaUtil.PathWithDelim(PathArquivo) + (TACBrNFSe( FACBrNFSe ).NotasFiscais.NumeroLote)+'-LoteNFSe.xml';
     TACBrNFSe( FACBrNFSe ).NotasFiscais.Items[i].SaveToFile(CaminhoArquivo);
    end;
@@ -656,8 +719,10 @@ begin
 //   XML := '<Rps>' + RetornarConteudoEntre(Self.Items[i].XML_Rps_Ass, '<Rps', '</Rps>')+ '</Rps>';
    XML := Self.Items[i].XML_Rps;
 
-   if not(NotaUtil.Valida(XML, FMsg, Self.FConfiguracoes.Geral.PathSchemas,
-                          Self.FConfiguracoes.WebServices.ConfigSchemas))
+   if not(NotaUtil.Valida(XML, FMsg,
+                          Self.FConfiguracoes.Geral.PathSchemas,
+                          Self.FConfiguracoes.WebServices.URL,
+                          Self.FConfiguracoes.WebServices.ServicoEnviar))
     then raise Exception.Create('Falha na validação dos dados da nota ' +
                  Self.Items[i].NFSe.IdentificacaoRps.Numero + sLineBreak+Self.Items[i].Alertas+FMsg);
  end;

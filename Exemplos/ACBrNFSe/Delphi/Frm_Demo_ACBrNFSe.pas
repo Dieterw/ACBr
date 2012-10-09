@@ -424,8 +424,8 @@ begin
      DataEmissao := Date;
 
      // TnfseNaturezaOperacao = ( noTributacaoNoMunicipio, noTributacaoForaMunicipio, noIsencao, noImune, noSuspensaDecisaoJudicial, noSuspensaProcedimentoAdministrativo );
-//     NaturezaOperacao := noTributacaoNoMunicipio;
-     NaturezaOperacao := noTributacaoNoMunicipio51; 
+     NaturezaOperacao := noTributacaoNoMunicipio;
+//     NaturezaOperacao := noTributacaoNoMunicipio51; 
 
      // TnfseRegimeEspecialTributacao = ( retNenhum, retMicroempresaMunicipal, retEstimativa, retSociedadeProfissionais, retCooperativa, retMicroempresarioIndividual, retMicroempresarioEmpresaPP );
      RegimeEspecialTributacao := retMicroempresaMunicipal;

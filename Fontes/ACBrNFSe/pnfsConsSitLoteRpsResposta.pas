@@ -21,8 +21,8 @@ type
   public
     constructor Create; reintroduce;
     destructor Destroy; override;
-    property NumeroLote: string                read FNumeroLote write FNumeroLote;
-    property Situacao: string                  read FSituacao   write FSituacao;
+    property NumeroLote: string                   read FNumeroLote write FNumeroLote;
+    property Situacao: string                     read FSituacao   write FSituacao;
     property MsgRetorno: TMsgRetornoSitCollection read FMsgRetorno write SetMsgRetorno;
   end;
 
@@ -45,7 +45,7 @@ type
     constructor Create; reintroduce;
     destructor Destroy; override;
   published
-    property Codigo: string read FCodigo write FCodigo;
+    property Codigo: string   read FCodigo   write FCodigo;
     property Mensagem: string read FMensagem write FMensagem;
     property Correcao: string read FCorrecao write FCorrecao;
   end;
@@ -61,8 +61,8 @@ type
     destructor Destroy; override;
     function LerXml: boolean;
   published
-    property Leitor: TLeitor read FLeitor write FLeitor;
-    property InfSit: TInfSit read FInfSit write FInfSit;
+    property Leitor: TLeitor  read FLeitor   write FLeitor;
+    property InfSit: TInfSit  read FInfSit   write FInfSit;
     property Prefixo2: String read FPrefixo2 write FPrefixo2;
     property Prefixo3: String read FPrefixo3 write FPrefixo3;
   end;

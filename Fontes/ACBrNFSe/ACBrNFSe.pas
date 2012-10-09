@@ -13,10 +13,10 @@ uses
   Dialogs,
 {$ENDIF}
   ACBrNFSeNotasFiscais, ACBrNFSeConfiguracoes, ACBrNFSeWebServices,
-  ACBrNFSeUtil, ACBrNFSeDANFSeClass;
+  ACBrUtil, ACBrNFSeUtil, ACBrNFSeDANFSeClass;
 
 const
-  ACBrNFSe_VERSAO = '0.1.1a';
+  ACBrNFSe_VERSAO = '0.2.0';
 
 type
   TACBrNFSeAboutInfo = (ACBrNFSeAbout);
@@ -46,20 +46,18 @@ type
     function ConsutarNFSeporRps(ANumero, ASerie, ATipo, ACnpj, AInscricaoMunicipal: String): Boolean;
     function ConsutarNFSe(ACnpj, AInscricaoMunicipal: String; ADataInicial, ADataFinal: TDateTime): Boolean;
     function CancelarNFSe(ACodigoCancelamento: String): Boolean;
+    function Gerar(ARps: Integer): Boolean;
 
-    function Cancelamento(AJustificativa:WideString): Boolean;
-    function Consultar: Boolean;
-    property WebServices: TWebServices read FWebServices write FWebServices;
+    property WebServices: TWebServices   read FWebServices  write FWebServices;
     property NotasFiscais: TNotasFiscais read FNotasFiscais write FNotasFiscais;
-    property Status: TStatusACBrNFSe read FStatus;
+    property Status: TStatusACBrNFSe     read FStatus;
     procedure SetStatus( const stNewStatus : TStatusACBrNFSe );
   published
-    property Configuracoes: TConfiguracoes read FConfiguracoes write FConfiguracoes;
-    property OnStatusChange: TNotifyEvent read FOnStatusChange write FOnStatusChange;
-    property DANFSe: TACBrNFSeDANFSeClass read FDANFSe write SetDANFSe;
-    property AboutACBrNFSe : TACBrNFSeAboutInfo read fsAbout write fsAbout
-                          stored false;
-    property OnGerarLog : TACBrNFSeLog read FOnGerarLog write FOnGerarLog;
+    property Configuracoes: TConfiguracoes     read FConfiguracoes  write FConfiguracoes;
+    property OnStatusChange: TNotifyEvent      read FOnStatusChange write FOnStatusChange;
+    property DANFSe: TACBrNFSeDANFSeClass      read FDANFSe         write SetDANFSe;
+    property AboutACBrNFSe: TACBrNFSeAboutInfo read fsAbout         write fsAbout stored false;
+    property OnGerarLog: TACBrNFSeLog          read FOnGerarLog     write FOnGerarLog;
   end;
 
 procedure ACBrAboutDialog;
@@ -174,7 +172,6 @@ begin
   end;
 
  NotasFiscais.Assinar; // Assina os Rps
-// NotasFiscais.Valida;
 
  Result := WebServices.Envia(ALote);
 
@@ -199,9 +196,22 @@ end;
 function TACBrNFSe.ConsutarLoteRps(ANumLote, AProtocolo: String): Boolean;
 var
  aPath: String;
+ wAno, wMes, wDia: Word;
 begin
  aPath := FConfiguracoes.Geral.PathSalvar;
- NotasFiscais.LoadFromFile(aPath+ANumLote+'-env-lot.xml');
+
+ // Acrescentado por Endrigo Rodrigues
+ if FConfiguracoes.Arquivos.PastaMensal
+  then begin
+   DecodeDate(Now, wAno, wMes, wDia);
+   if Pos(IntToStr(wAno)+IntToStrZero(wMes,2),aPath) <= 0
+    then aPath := PathWithDelim(aPath)+IntToStr(wAno)+IntToStrZero(wMes,2) + '\';
+  end;
+
+ // Alterado por Rodrigo Cantelli
+ if FConfiguracoes.Arquivos.AdicionarLiteral
+  then NotasFiscais.LoadFromFile(aPath+'Ger\'+ANumLote+'-env-lot.xml')
+  else NotasFiscais.LoadFromFile(aPath+ANumLote+'-env-lot.xml');
 
  if NotasFiscais.Count <= 0
   then begin
@@ -217,6 +227,14 @@ end;
 function TACBrNFSe.ConsutarNFSeporRps(ANumero, ASerie, ATipo, ACnpj,
   AInscricaoMunicipal: String): Boolean;
 begin
+ if NotasFiscais.Count <= 0
+  then begin
+   if Assigned(Self.OnGerarLog)
+    then Self.OnGerarLog('ERRO: Nenhum RPS adicionado');
+   raise Exception.Create('ERRO: Nenhum RPS adicionado');
+   exit;
+  end;
+
  Result := WebServices.ConsutaNFSeporRps(ANumero, ASerie, ATipo, ACnpj, AInscricaoMunicipal);
 end;
 
@@ -238,47 +256,6 @@ begin
  Result := WebServices.CancelaNFSe(ACodigoCancelamento);
 end;
 
-function TACBrNFSe.Cancelamento(AJustificativa: WideString): Boolean;
-//var
-//  i : Integer;
-begin
-//  if Self.NotasFiscais.Count = 0 then
-//   begin
-//      if Assigned(Self.OnGerarLog) then
-//         Self.OnGerarLog('ERRO: Nenhuma Nota Fiscal de Serviço Eletrônica Informada!');
-//      raise Exception.Create('Nenhuma Nota Fiscal de Serviço Eletrônica Informada!');
-//   end;
-
-//  for i:= 0 to self.NotasFiscais.Count-1 do
-//  begin
-//    WebServices.Cancelamento.NFSeChave := copy(self.NotasFiscais.Items[i].NFSe.infNFSe.ID, (length(self.NotasFiscais.Items[i].NFSe.infNFSe.ID)-44)+1, 44);
-//    WebServices.Consulta.NFSeChave := WebServices.Cancelamento.NFSeChave;
-//    WebServices.Cancela(AJustificativa);
-//  end;
-
-  Result := true;
-end;
-
-function TACBrNFSe.Consultar: Boolean;
-//var
-//  i : Integer;
-begin
-//  if Self.NotasFiscais.Count = 0 then
-//   begin
-//     if Assigned(Self.OnGerarLog) then
-//        Self.OnGerarLog('ERRO: Nenhuma Nota Fiscal de Serviço Eletrônica Informada!');
-//     raise Exception.Create('Nenhuma Nota Fiscal de Serviço Eletrônica Informada!');
-//   end;
-
-//  for i := 0 to Self.NotasFiscais.Count-1 do
-//  begin
-//    WebServices.Consulta.NFSeChave := copy(self.NotasFiscais.Items[i].NFSe.infNFSe.ID, (length(self.NotasFiscais.Items[i].NFSe.infNFSe.ID)-44)+1, 44);
-//    WebServices.Consulta.Executar;
-//  end;
-
-  Result := True;
-end;
-
 procedure TACBrNFSe.SetStatus( const stNewStatus : TStatusACBrNFSe );
 begin
  if ( stNewStatus <> FStatus )
@@ -287,6 +264,31 @@ begin
    if Assigned(fOnStatusChange)
     then FOnStatusChange(Self);
   end;
+end;
+
+function TACBrNFSe.Gerar(ARps: Integer): Boolean;
+var
+ i: Integer;
+begin
+ if NotasFiscais.Count <= 0
+  then begin
+   if Assigned(Self.OnGerarLog)
+    then Self.OnGerarLog('ERRO: Nenhum RPS adicionado');
+   raise Exception.Create('ERRO: Nenhum RPS adicionado');
+   exit;
+  end;
+
+ if NotasFiscais.Count > 1
+  then begin
+   if Assigned(Self.OnGerarLog)
+    then Self.OnGerarLog('ERRO: Conjunto de RPS transmitidos (máximo de 1) excedido. Quantidade atual: '+IntToStr(NotasFiscais.Count));
+   raise Exception.Create('ERRO: Conjunto de RPS transmitidos (máximo de 1) excedido. Quantidade atual: '+IntToStr(NotasFiscais.Count));
+   exit;
+  end;
+
+ NotasFiscais.Assinar; // Assina os Rps
+
+ Result := WebServices.Gera(ARps);
 end;
 
 end.

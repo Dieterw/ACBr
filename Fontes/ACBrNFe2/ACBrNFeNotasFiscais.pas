@@ -171,9 +171,10 @@ begin
 
   FNFe.Ide.tpNF      := tnSaida;
   FNFe.Ide.indPag    := ipVista;
-  FNFe.Ide.verProc   := '1.0.0.0';
+  FNFe.Ide.verProc   := 'ACBrNFe2';
   FNFe.Ide.tpAmb     := TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).Configuracoes.WebServices.Ambiente  ;
   FNFe.Ide.tpEmis    := TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).Configuracoes.Geral.FormaEmissao ;
+  FNFe.Ide.tpImp     := TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.TipoDANFE ;  
 
   FNFe.Emit.EnderEmit.xPais := 'BRASIL';
   FNFe.Emit.EnderEmit.cPais := 1058;

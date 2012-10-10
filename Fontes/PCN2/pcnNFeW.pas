@@ -1545,7 +1545,7 @@ begin
     Gerador.wGrupo('dup', 'Y07');
     Gerador.wCampo(tcStr, 'Y08', 'nDup ', 01, 60, 0, nfe.Cobr.Dup[i].nDup, DSC_NDUP);
     Gerador.wCampo(tcDat, 'Y09', 'dVenc', 10, 10, 0, nfe.Cobr.Dup[i].dVenc, DSC_DVENC);
-    Gerador.wCampo(tcDe2, 'Y10', 'vDup ', 01, 15, 0, nfe.Cobr.Dup[i].vDup, DSC_VDUP);
+    Gerador.wCampo(tcDe2, 'Y10', 'vDup ', 01, 15, 1, nfe.Cobr.Dup[i].vDup, DSC_VDUP);
     Gerador.wGrupo('/dup');
   end;
   if nfe.Cobr.Dup.Count > 120 then
@@ -1663,7 +1663,7 @@ begin
   for i := 0 to nfe.Transp.Vol.Count - 1 do
   begin
     Gerador.wGrupo('vol', 'X26');
-    Gerador.wCampo(tcInt, 'X27', 'qVol  ', 01, 15, 0, nfe.Transp.Vol[i].qVol, DSC_QVOL);
+    Gerador.wCampo(tcInt, 'X27', 'qVol  ', 01, 15, 1, nfe.Transp.Vol[i].qVol, DSC_QVOL);
     Gerador.wCampo(tcStr, 'X28', 'esp   ', 01, 60, 0, nfe.Transp.vol[i].esp, DSC_ESP);
     Gerador.wCampo(tcStr, 'X29', 'marca ', 01, 60, 0, nfe.Transp.Vol[i].marca, DSC_MARCA);
     Gerador.wCampo(tcStr, 'X30', 'nVol  ', 01, 60, 0, nfe.Transp.Vol[i].nVol, DSC_NVOL);

@@ -167,7 +167,8 @@ begin
   FCTe.Ide.verProc := 'ACBrCTe';
   FCTe.Ide.tpAmb   := TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).Configuracoes.WebServices.Ambiente;
   FCTe.Ide.tpEmis  := TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).Configuracoes.Geral.FormaEmissao;
-  FCTe.Ide.tpImp   := TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).DACTe.TipoDACTE;
+  if Assigned(TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).DACTe) then
+     FCTe.Ide.tpImp   := TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).DACTe.TipoDACTE;
 end;
 
 destructor Conhecimento.Destroy;

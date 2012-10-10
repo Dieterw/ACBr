@@ -268,7 +268,7 @@ var DANFeRave:TDANFeRave;
 
 implementation
 
-uses ACBrDANFeCBRavePaisagem, ACBrDANFeCBRaveRetrato, ACBrNFeDANFERaveCB;
+uses ACBrDANFeCBRavePaisagem, ACBrDANFeCBRaveRetrato, ACBrNFeDANFERaveCB, ACBrDANFeEventoRaveRetrato;
 
 procedure ImprimirDANFeRave(aACBrNFe:TACBrNFe;
                             aSite,

@@ -670,14 +670,12 @@ begin
         cdsDocumentos.Append;
         // Alterado por Italo em 13/07/2012
         cdsDocumentosTIPO_1.AsString := 'NF-E ' + copy(chave, 26, 9);
-        // Alterado por Italo em 17/05/2011
         cdsDocumentosCNPJCPF_1.AsString := CTeUtil.FormatarChaveAcesso(chave, True);
       end
       else
       begin
         // Alterado por Italo em 13/07/2012
         cdsDocumentosTIPO_2.AsString := 'NF-E ' + copy(chave, 26, 9);
-        // Alterado por Italo em 17/05/2011
         cdsDocumentosCNPJCPF_2.AsString := CTeUtil.FormatarChaveAcesso(chave, True);
         cdsDocumentos.Post;
       end;
@@ -743,11 +741,9 @@ begin
     end;
   end;
  //Varrendo Documentos de Transporte anterior
- // Incluido / Alterado por Italo em 13/12/2010
   for I := 0 to (FCTe.infCTeNorm.emiDocAnt.Count - 1) do
   begin
     // Em Papel
-    // Alterado por Italo em 27/12/2010
     for J := 0 to (FCTe.infCTeNorm.emiDocAnt.Items[I].idDocAnt.Count - 1) do
     begin
       for K := 0 to (FCTe.infCTeNorm.emiDocAnt.Items[I].idDocAnt.Items[J].idDocAntPap.Count - 1) do
@@ -806,7 +802,6 @@ begin
     end;
 
     // Eletrônico
-    // Alterado por Italo em 27/12/2010
     for J := 0 to (FCTe.infCTeNorm.emiDocAnt.Items[I].idDocAnt.Count - 1) do
     begin
       for K := 0 to (FCTe.infCTeNorm.emiDocAnt.Items[I].idDocAnt.Items[J].idDocAntEle.Count - 1) do
@@ -818,13 +813,11 @@ begin
             cdsDocumentos.Append;
 
             cdsDocumentosTIPO_1.AsString := 'CT-E';
-            // Alterado por Italo em 17/05/2011
             cdsDocumentosCNPJCPF_1.AsString := CTeUtil.FormatarChaveAcesso(chave, True);
           end
           else
           begin
             cdsDocumentosTIPO_2.AsString := 'CT-E';
-            // Alterado por Italo em 17/05/2011
             cdsDocumentosCNPJCPF_2.AsString := CTeUtil.FormatarChaveAcesso(chave, True);
 
             cdsDocumentos.Post;
@@ -862,7 +855,6 @@ begin
   FTotalPages   := 1;
   nTotalItens   := 0;
 
-  // Incluido por Italo em 20/04/2011
   if (FCTe.Rem.InfNF.Count > 0)
    then nTotalItens := FCTe.Rem.InfNF.Count
    else begin
@@ -874,7 +866,6 @@ begin
      end;
    end;
 
-  // Incluido por Italo em 06/05/2011
   qrb_10_ModRodFracionado.Height := 0;
   qrb_11_ModRodLot103.Height     := 0;
   qrb_11_ModRodLot104.Height     := 0;
@@ -885,7 +876,6 @@ begin
 
   case FCTe.Ide.modal of
    mdRodoviario: begin
-                  // Incluido por Italo em 26/04/2011
                   if FCTe.Rodo.Lota = ltNao
                    then begin
                     qrb_10_ModRodFracionado.Height := 44;
@@ -913,7 +903,6 @@ begin
                  end;
   end;
 
-  // Alterado por Italo em 20/04/2011
   if (nTotalItens > (_NUM_ITEMS_PAGE1 + Fracionado)) then
   begin
     nRestItens := nTotalItens - (_NUM_ITEMS_PAGE1 + Fracionado);
@@ -933,23 +922,15 @@ begin
   QRCTe.Page.BottomMargin := FMargemInferior * 100;
   QRCTe.Page.LeftMargin   := FMargemEsquerda * 100;
   QRCTe.Page.RightMargin  := FMargemDireita  * 100;
-
-  // Incluido por Italo em 26/04/2011
-//  qrbObs.Height              := 72;
-//  qrbRecibo.Height           := 68;
-//  qrbSistema.Height          := 16;
-//  qrbDadosExcEmitente.Height := 40;
 end;
 
 procedure TfrmDACTeQRRetrato.qrb_01_ReciboBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
 begin
   inherited;
-  // Incluido/Alterado por Italo em 20/04/2011 / 27/04/2011
   PrintBand := (QRCTe.PageNumber = 1) and (FCTe.Ide.modal <> mdAereo) and (FPosRecibo = prCabecalho);
 
   qrlSerie2.Caption  := FormatFloat( '000', FCTe.Ide.serie);
   qrlNumCte2.Caption := FormatFloat( '000,000,000', FCTe.Ide.nCT );
-  // Incluido por Italo em 27/04/2011
   // TpcteTipoCTe = (tcNormal, tcComplemento, tcAnulacao, tcSubstituto);
   qrb_01_Recibo.Enabled := (FCTe.Ide.tpCTe = tcNormal);
 end;
@@ -968,8 +949,6 @@ var
  strChaveContingencia: string;
 begin
   inherited;
-  // Comentado por Italo em 20/04/2011
-//  PrintBand := QRCTe.PageNumber = 1;
 
   if Trim(FLogo) <> '' then
    begin
@@ -1009,15 +988,11 @@ begin
       qrmDadosEmitente.Lines.Clear;
       with EnderEmit do
       begin
-//      qrmDadosEmitente.Lines.Add(XLgr + IfThen(Nro = '0', '', ', ' + Nro) + ' ' + XCpl + ' ' + XBairro);
-        // Alterado por Italo em 10/03/2011
         qrmDadosEmitente.Lines.Add(XLgr + IfThen(Nro = '0', '', ', ' + Nro));
         if XCpl<>'' then qrmDadosEmitente.Lines.Add(XCpl);
         if XBairro<>'' then qrmDadosEmitente.Lines.Add(XBairro);
         qrmDadosEmitente.Lines.Add('CEP: ' + CTeUtil.FormatarCEP(FormatFloat( '00000000', CEP )) + ' - ' + XMun + ' - ' + UF);
       end;
-//    qrmDadosEmitente.Lines.Add('CNPJ: ' + CTeUtil.FormatarCNPJ(CNPJ) + ' INSCRIÇÃO ESTADUAL: ' + IE);
-      // Alterado por Italo em 10/03/2011
       qrmDadosEmitente.Lines.Add('CNPJ: ' + CTeUtil.FormatarCNPJ(CNPJ));
       qrmDadosEmitente.Lines.Add('INSCRIÇÃO ESTADUAL: ' + IE);
       qrmDadosEmitente.Lines.Add('TELEFONE: ' + CTeUtil.FormatarFone(EnderEmit.Fone));
@@ -1029,13 +1004,11 @@ begin
 
   qrlTipoCte.Caption := tpCTToStrText(FCTe.Ide.tpCTe);
   qrlTipoServico.Caption := TpServToStrText(FCTe.Ide.tpServ);
-  // Alterado por Italo em 30/12/2010
   if FCTe.Ide.Toma4.xNome = ''
    then qrlTomaServico.Caption := TpTomadorToStrText(FCTe.Ide.Toma03.Toma)
    else qrlTomaServico.Caption := TpTomadorToStrText(FCTe.Ide.Toma4.toma);
   qrlFormaPagamento.Caption := tpforPagToStrText(FCTe.Ide.forPag);
 
-  // As Linhas abaixo foram inseridas por Italo em 31/08/2010
   // Incluido os valores teSVCSP e teSVCRS por Italo em 19/09/2012
   // Normal **************************************************************
   if FCTe.Ide.tpEmis in [teNormal, teSCAN, teSVCSP, teSVCRS] then
@@ -1060,9 +1033,7 @@ begin
                                       DateTimeToStr(FCTe.procCTe.dhRecbto), '');
    end;
 
-  // As Linhas abaixo foram inseridas por Italo em 28/01/2011
   // Contingencia ********************************************************
-
   if FCTe.Ide.tpEmis in [teContingencia, teFSDA] then
    begin
     // Incluido por Italo em 20/04/2012
@@ -1113,7 +1084,6 @@ var
  i: Integer;
 begin
   inherited;
-  // Incluido por Italo em 20/04/2011
   PrintBand := QRCTe.PageNumber = 1;
 
   qrlNatOperacao.Caption := FormatFloat('0000', FCTe.Ide.CFOP) + ' - ' + FCTe.Ide.natOp;
@@ -1242,7 +1212,6 @@ begin
       CteUtil.FormatarValor(msk6x3, FCTe.InfCarga.InfQ.Items[i].qCarga) + '/' +
       FCTe.InfCarga.InfQ.Items[i].tpMed;
   }
-  // Incluido por Italo em 28/02/2011
   qrmQtdUnidMedida1.Lines.Clear;
   qrmQtdUnidMedida2.Lines.Clear;
   qrmQtdUnidMedida3.Lines.Clear;
@@ -1529,11 +1498,9 @@ procedure TfrmDACTeQRRetrato.qrb_04_DadosNotaFiscalBeforePrint(
   Sender: TQRCustomBand; var PrintBand: Boolean);
 begin
   inherited;
-  // Incluido por Italo em 20/04/2011
   PrintBand := QRCTe.PageNumber = 1;
 
   // Imprime os dados da da Nota Fiscal se o Tipo de CTe for Normal
-  // Incluido / Alterado por Italo e Doni em 24/09/2010
   qrb_04_DadosNotaFiscal.Enabled:=(FCTe.Ide.tpCTe = tcNormal);
 end;
 
@@ -1543,11 +1510,9 @@ var
  i: Integer;
 begin
   inherited;
-  // Incluido por Italo em 20/04/2011
   PrintBand := QRCTe.PageNumber = 1;
 
   // Imprime a lista dos CT-e Complementados se o Tipo de CTe for Complemento
-  // Incluido / Alterado por Italo e Doni em 24/09/2010
   qrmComplChave1.Lines.Clear;
   qrmComplValor1.Lines.Clear;
   qrmComplChave2.Lines.Clear;
@@ -1575,7 +1540,6 @@ procedure TfrmDACTeQRRetrato.qrb_06_ValorPrestacaoBeforePrint(
   Sender: TQRCustomBand; var PrintBand: Boolean);
 begin
   inherited;
-  // Incluido por Italo em 20/04/2011
   PrintBand := QRCTe.PageNumber = 1;
 end;
 
@@ -1584,8 +1548,6 @@ procedure TfrmDACTeQRRetrato.qrb_07_HeaderItensBeforePrint(
 begin
   inherited;
   // Imprime os Documentos Originários se o Tipo de CTe for Normal
-  // Incluido / Alterado por Italo e Doni em 24/09/2010
-  // qrbHeaderItens.Enabled:=(FCTe.Ide.tpCTe = tcNormal);
 end;
 
 procedure TfrmDACTeQRRetrato.qrb_08_ItensBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
@@ -1595,7 +1557,6 @@ begin
   inherited;
 
   // Imprime os Documentos Originários se o Tipo de CTe for Normal
-  // Incluido / Alterado por Italo e Doni em 24/09/2010
   // TpcteTipoCTe = (tcNormal, tcComplemento, tcAnulacao, tcSubstituto);
   qrb_08_Itens.Enabled:=(FCTe.Ide.tpCTe = tcNormal);
 
@@ -1654,16 +1615,13 @@ procedure TfrmDACTeQRRetrato.qrb_09_ObsBeforePrint(
   Sender: TQRCustomBand; var PrintBand: Boolean);
 begin
   inherited;
-  // Incluido por Italo em 20/04/2011
   PrintBand := QRCTe.PageNumber = 1;
 
-  qrmObs.Lines.BeginUpdate; // Linha inserida por Italo em 31/08/2010
+  qrmObs.Lines.BeginUpdate;
   qrmObs.Lines.Clear;
   //qrmObs.Lines.Text := FCTe.Compl.xObs;
   //qrmObs.Lines.Add(FCTe.Compl.xObs);
 
-  // Linha abaixo alterada por Italo em 27/08/2010
-  // para substituir os ponto e virgula por quebra de linha no quadro Observações
   qrmObs.Lines.Add(StringReplace( FCTe.Compl.xObs, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
 //  for i := 0 to FCTe.Compl.ObsCont.Count-1 do
 //   with FCTe.Compl.ObsCont.Items[i] do
@@ -1680,7 +1638,6 @@ begin
 //                       StringReplace( xTexto, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
 //    end;
 
-  // Linhas inseridas por Italo em 28/01/2011
   if FCTe.Ide.tpEmis in [teContingencia, teFSDA]
    then begin
     // Incluido por Italo em 20/04/2012
@@ -1691,11 +1648,9 @@ begin
   if FCTe.Ide.tpEmis = teDPEC
    then qrmObs.Lines.Add('DACTE em Contingência - DPEC regularmente recebida pela Receita Federal do Brasil');
 
-  // Linhas inseridas por Italo em 31/08/2010
   qrmObs.Lines.Text:=StringReplace(qrmObs.Lines.Text,';',#13,[rfReplaceAll]);
   qrmObs.Lines.EndUpdate;
 
-  // As Linhas abaixo foram inseridas por Italo em 31/08/2010
   // Mensagem para modo Homologacao.
   qrlMsgTeste.Visible := False;
   qrlMsgTeste.Enabled := False;
@@ -1748,20 +1703,10 @@ procedure TfrmDACTeQRRetrato.qrb_10_ModRodFracionadoBeforePrint(Sender: TQRCusto
   var PrintBand: Boolean);
 begin
   inherited;
-  // Incluido por Italo em 20/04/2011
   PrintBand := QRCTe.PageNumber = 1;
 
   // Imprime as Informações Especificas do Modal se o Tipo de CTe for Normal
-  // Incluido / Alterado por Italo e Doni em 24/09/2010
-  {*
-  ** Alterado por: Brian Collo Gonçalves e Eric Helfenstens
-  ** Data: 17/03/2011
-  ** Descrição: Incluida banda para os dados especificos do Modal Aéreo
-  ** e carregamento de suas respectivas informações.
-  *}
   qrb_10_ModRodFracionado.Enabled := (FCTe.Ide.tpCTe = tcNormal) and (FCTe.Ide.modal = mdRodoviario);
-
-  // Incluido / Alterado por Italo em 29/12/2010
   qrb_11_ModRodLot103.Enabled := False;
   qrb_11_ModRodLot104.Enabled := False;
 
@@ -1781,12 +1726,10 @@ begin
     qrlCIOT.Caption := CIOT;
 {$ENDIF}
 
-  // Incluido / Alterado por Italo em 29/12/2010
     case Lota of
       ltNao: begin
               qrlTituloLotacao.Caption     := 'DADOS ESPECÍFICOS DO MODAL RODOVIÁRIO - CARGA FRACIONADA';
               qrlLotacao.Caption           := 'NÃO';
-//              qrb_11_ModRodLot103.Enabled := False;
              end;
       ltsim: begin
               qrlTituloLotacao.Caption     := 'DADOS ESPECÍFICOS DO MODAL RODOVIÁRIO - LOTAÇÃO';
@@ -1807,10 +1750,8 @@ var
   i: integer;
 begin
   inherited;
-  // Incluido por Italo em 20/04/2011
   PrintBand := QRCTe.PageNumber = 1;
 
-  // Incluido / Alterado por Italo em 29/12/2010 e 30/12/2010
 {$IFDEF PL_103}
   qrlNumRegEsp.Caption := FCTe.Rodo.valePed.nroRE;
   case FCTe.Rodo.valePed.respPg of
@@ -1876,7 +1817,6 @@ var
 begin
   inherited;
 
-  // Incluido por Italo em 18/10/2011
   PrintBand := QRCTe.PageNumber = 1;
 
   qrmTipo2.Lines.Clear;
@@ -1926,14 +1866,7 @@ procedure TfrmDACTeQRRetrato.qrb_12_ModAereoBeforePrint(
   Sender: TQRCustomBand; var PrintBand: Boolean);
 begin
   inherited;
-  // Incluido por Italo em 06/05/2011
   PrintBand := QRCTe.PageNumber = 1;
-  {*
-  ** Alterado por: Brian Collo Gonçalves e Eric Helfenstens
-  ** Data: 17/03/2011
-  ** Descrição: Incluida banda para os dados especificos do Modal Aéreo
-  ** e carregamento de suas respectivas informações.
-  *}
   qrb_12_ModAereo.Enabled := (FCTe.Ide.tpCTe = tcNormal) and (FCTe.Ide.modal = mdAereo);
 
   qrlCaracAdServico.Caption    := FCTe.Compl.xCaracSer;
@@ -1967,7 +1900,6 @@ procedure TfrmDACTeQRRetrato.qrb_13_ModAquaviarioBeforePrint(
   Sender: TQRCustomBand; var PrintBand: Boolean);
 begin
   inherited;
-  // Incluido por Italo em 06/05/2011
   PrintBand := QRCTe.PageNumber = 1;
   qrb_13_ModAquaviario.Enabled := (FCTe.Ide.tpCTe = tcNormal) and (FCTe.Ide.modal = mdAquaviario);
 end;
@@ -1978,7 +1910,6 @@ var
  i: Integer;
 begin
   inherited;
-  // Incluido por Italo em 06/05/2011
   PrintBand := QRCTe.PageNumber = 1;
   qrb_14_ModFerroviario.Enabled := (FCTe.Ide.tpCTe = tcNormal) and (FCTe.Ide.modal = mdFerroviario);
 
@@ -2014,7 +1945,6 @@ procedure TfrmDACTeQRRetrato.qrb_15_ModDutoviarioBeforePrint(
   Sender: TQRCustomBand; var PrintBand: Boolean);
 begin
   inherited;
-  // Incluido por Italo em 06/05/2011
   PrintBand := QRCTe.PageNumber = 1;
   qrb_15_ModDutoviario.Enabled := (FCTe.Ide.tpCTe = tcNormal) and (FCTe.Ide.modal = mdDutoviario);
 end;
@@ -2025,10 +1955,9 @@ var
  i: Integer;
 begin
   inherited;
-  // Incluido por Italo em 20/04/2011
   PrintBand := QRCTe.PageNumber = 1;
 
-  qrmObsExcEmitente.Lines.BeginUpdate; // Linha inserida por Italo em 28/06/2011
+  qrmObsExcEmitente.Lines.BeginUpdate;
   qrmObsExcEmitente.Lines.Clear;
   qrmObsFisco.Lines.Clear;
   (*
@@ -2041,7 +1970,6 @@ begin
                   'informados e acondicionados para transporte aéreo.' );
    end;
 *)
-  // Incluido por Italo em 28/06/2011
   if FCTe.Ide.modal <> mdAereo
    then begin
     for i := 0 to FCTe.Compl.ObsCont.Count-1 do
@@ -2052,14 +1980,12 @@ begin
       end;
    end;
 
-  // Linhas inseridas por Italo em 28/06/2011
   qrmObsExcEmitente.Lines.Text := StringReplace( qrmObsExcEmitente.Lines.Text, ';', #13, [rfReplaceAll] );
   qrmObsExcEmitente.Lines.EndUpdate;
 
   // Incluido por Italo em 17/09/2012
   qrmObsFisco.Lines.Add( StringReplace( FCTe.Imp.infAdFisco , '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
 
-  // Linhas inseridas por Italo em 11/10/2011
   for i := 0 to FCTe.Compl.ObsFisco.Count-1 do
    with FCTe.Compl.ObsFisco.Items[i] do
     begin
@@ -2075,7 +2001,6 @@ procedure TfrmDACTeQRRetrato.qrb_17_SistemaBeforePrint(Sender: TQRCustomBand;
   var PrintBand: Boolean);
 begin
   inherited;
-  // Incluido por Italo em 20/04/2011
   PrintBand := QRCTe.PageNumber = 1;
 
   qrlblSistema.Caption := FSistema + ' - ' + FUsuario;
@@ -2085,14 +2010,11 @@ procedure TfrmDACTeQRRetrato.qrb_18_ReciboBeforePrint(
   Sender: TQRCustomBand; var PrintBand: Boolean);
 begin
   inherited;
-  // Incluido Novamente por Italo em 10/11/2011
-  // Incluido/Alterado por Italo em 20/04/2011 / 27/04/2011 / 04/07/2011
   PrintBand := (QRCTe.PageNumber = 1);
 
   qrlSerie3.Caption  := FormatFloat( '000', FCTe.Ide.serie);
   qrlNumCte3.Caption := FormatFloat( '000,000,000', FCTe.Ide.nCT );
 
-  // Incluido/Aterado por Italo em 27/04/2011 / 04/07/2011 / 10/05/2012
   // TpcteTipoCTe = (tcNormal, tcComplemento, tcAnulacao, tcSubstituto);
   if PrintBand
    then begin

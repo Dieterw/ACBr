@@ -46,16 +46,12 @@
 
 unit pcteRetConsCad;
 
-interface uses
+interface
+
+uses
   SysUtils, Classes, pcnAuxiliar, pcnConversao, pcnLeitor;
 
 type
-
-  //////////////////////////////////////////////////////////////////////////////
-  //                                                                          //
-  //    E M   D E S E N V O L V I M E N T O   -   N Ã O   T E S T A D O       //
-  //                                                                          //
-  //////////////////////////////////////////////////////////////////////////////
 
   TRetConsCad = class;
   TInfCadCollection = class;
@@ -238,7 +234,7 @@ begin
         (*GR17 *)InfCad[i].FdUltSit    := Leitor.rCampo(tcDat, 'dUltSit');
         (*GR18 *)InfCad[i].FdBaixa     := Leitor.rCampo(tcDat, 'dBaixa');
         (*GR20 *)InfCad[i].FIEUnica    := Leitor.rCampo(tcStr, 'IEUnica');
-        (*GR21 *)InfCad[i].FIEAtual    := Leitor.rCampo(tcStr, 'IEAtual'); // Alterado de tcDat por tcStr por Italo em 17/02/2011
+        (*GR21 *)InfCad[i].FIEAtual    := Leitor.rCampo(tcStr, 'IEAtual');
         (*GR23 *)InfCad[i].FxLgr       := Leitor.rCampo(tcStr, 'xLgr');
         (*GR24 *)InfCad[i].Fnro        := Leitor.rCampo(tcStr, 'nro');
         (*GR25 *)InfCad[i].FxCpl       := Leitor.rCampo(tcStr, 'xCpl');
@@ -250,14 +246,14 @@ begin
         inc(i);
       end;
       
-      if i = 0 then
-        InfCad.Add;
+      if i = 0 then InfCad.Add;
+
       Result := True;
     end;
-
   except
     Result := False;
   end;
 end;
+
 end.
 

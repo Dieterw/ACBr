@@ -50,12 +50,6 @@ interface uses
 
 type
 
-  //////////////////////////////////////////////////////////////////////////////
-  //                                                                          //
-  //    E M   D E S E N V O L V I M E N T O   -   N Ã O   T E S T A D O       //
-  //                                                                          //
-  //////////////////////////////////////////////////////////////////////////////
-
   TInfREC = class
   private
     FnRec: string;
@@ -129,7 +123,6 @@ begin
 
       Result := True;
     end;
-
   except
     result := false;
   end;

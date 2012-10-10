@@ -172,11 +172,9 @@ type
     class function TamanhoMenor(const AValue: string; const ATamanho: Integer): Boolean;
     class function ValidaUFCidade(const UF, Cidade: Integer): Boolean; overload;
     class procedure ValidaUFCidade(const UF, Cidade: Integer; const AMensagem: string); overload;
-    // Alterado por Italo em 17/05/2011
     class function FormatarChaveAcesso(AValue : String; Mascara: Boolean = False ): String;
     class function FormatarNumCTe(const AValue: Integer): string;
     class function FormatarValor(mask: TpcteMask; const AValue: real): string;
-    // Incluido por Italo em 28/01/2011
     class function GerarChaveContingencia(FCTe:TCTe): String;
     class function FormatarChaveContingencia(AValue: String): String;
     // Incluido por Italo em 10/02/2012
@@ -608,7 +606,6 @@ begin
     LayCTeInutilizacao:  Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.fazenda.sp.gov.br/cteWEB/services/cteInutilizacao.asmx' , 'https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteInutilizacao.asmx');
     LayCTeConsultaCT:    Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.fazenda.sp.gov.br/cteWEB/services/cteConsulta.asmx'     , 'https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteConsulta.asmx');
     LayCTeStatusServico: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.fazenda.sp.gov.br/cteWEB/services/cteStatusServico.asmx', 'https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteStatusServico.asmx');
-    // Alterado por Italo em 17/10/2011
     LayCTeCadastro:      Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.fazenda.sp.gov.br/nfeweb/services/cadconsultacadastro2.asmx', 'https://homologacao.nfe.fazenda.sp.gov.br/nfeweb/services/cadconsultacadastro2.asmx');
   end;
 end;
@@ -616,7 +613,6 @@ end;
 class function CTeUtil.GetURLMS(AAmbiente: Integer;
   ALayOut: TLayOut): WideString;
 begin
-  // Os links para o Ambiente de Produção devem ser checados
   case ALayOut of
     LayCTeRecepcao:      Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://producao.cte.ms.gov.br/cteWEB/CteRecepcao.asmx'        , 'https://homologacao.cte.ms.gov.br/cteWEB/CteRecepcao.asmx');
     LayCTeRetRecepcao:   Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://producao.cte.ms.gov.br/cteWEB/CteRetRecepcao.asmx'     , 'https://homologacao.cte.ms.gov.br/cteWEB/CteRetRecepcao.asmx');
@@ -2051,8 +2047,6 @@ begin
   else
      Result := Codigo;
 end;
-
-// Incluido por Italo em 28/01/2011
 
 class function CTeUtil.GerarChaveContingencia(FCTe:TCTe): string;
 

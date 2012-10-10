@@ -1,7 +1,7 @@
 {******************************************************************************}
 { Projeto: Componente ACBrCTe                                                  }
 {  Biblioteca multiplataforma de componentes Delphi para emissão de Nota Fiscal}
-{ eletrônica - CTe - http://www.CTe.fazenda.gov.br                          }
+{ eletrônica - CTe - http://www.CTe.fazenda.gov.br                             }
 {                                                                              }
 { Direitos Autorais Reservados (c) 2008 Wemerson Souto                         }
 {                                       Wiliam Zacarias da Silva Rosa          }
@@ -274,9 +274,7 @@ begin
      begin
        if Conhecimentos.Items[i].Confirmada and Imprimir then
        begin
-          // A linha abaixo foi comentada por Italo em 08/09/2010
-          // DaCTe.ProtocoloCTe:=WebServices.Retorno.CTeRetorno.ProtCTe.Items[i].nProt;
-          Conhecimentos.Items[i].Imprimir;
+         Conhecimentos.Items[i].Imprimir;
        end;
      end;
   end;

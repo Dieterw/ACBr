@@ -47,7 +47,9 @@
 
 unit pcteProcCTe;
 
-interface uses
+interface
+
+uses
   SysUtils, Classes, pcnAuxiliar, pcnConversao, pcnGerador, pcnLeitor;
 
 type
@@ -69,6 +71,7 @@ type
     FdigVal: string;
     FcStat: integer;
     FxMotivo: string;
+    FVersao: String;
   public
     constructor Create;
     destructor Destroy; override;
@@ -88,6 +91,7 @@ type
     property digVal: string read FdigVal write FdigVal;
     property cStat: integer read FcStat write FcStat;
     property xMotivo: string read FxMotivo write FxMotivo;
+    property Versao: String read FVersao write FVersao;
   end;
 
 implementation
@@ -136,78 +140,80 @@ var
 begin
   ProtLido := False;
 
-//  if retornarVersaoLayout(FSchema, tlProcCTe) = '1.03'
-//   then begin
-    XMLCTe := TStringList.Create;
-    XMLinfProt := TStringList.Create;
-    XMLinfProt2 := TStringList.Create;
-    xProtCTe := '';
-    FnProt := '';
+  XMLCTe := TStringList.Create;
+  XMLinfProt := TStringList.Create;
+  XMLinfProt2 := TStringList.Create;
+  xProtCTe := '';
+  FnProt := '';
 
-    // Arquivo CTe
-    if not FileExists(FPathCTe)
-     then Gerador.wAlerta('XR04', 'CTe', 'CTe', ERR_MSG_ARQUIVO_NAO_ENCONTRADO)
-     else XMLCTe.LoadFromFile(FPathCTe);
+  // Arquivo CTe
+  if not FileExists(FPathCTe)
+   then Gerador.wAlerta('XR04', 'CTe', 'CTe', ERR_MSG_ARQUIVO_NAO_ENCONTRADO)
+   else XMLCTe.LoadFromFile(FPathCTe);
 
-    FchCTe := RetornarConteudoEntre(XMLCTe.Text, 'Id="CTe', '"');
-    if trim(FchCTe) = ''
-     then Gerador.wAlerta('XR01', 'ID/CTe', 'Numero da chave do CTe', ERR_MSG_VAZIO);
+  FchCTe := RetornarConteudoEntre(XMLCTe.Text, 'Id="CTe', '"');
+  if trim(FchCTe) = ''
+   then Gerador.wAlerta('XR01', 'ID/CTe', 'Numero da chave do CTe', ERR_MSG_VAZIO);
 
-    if (FPathRetConsReciCTe = '') and (FPathRetConsSitCTe = '')
-     then begin
-      if (FchCTe = '') and (FnProt = '')
-       then Gerador.wAlerta('XR06', 'RECIBO/SITUAÇÃO', 'RECIBO/SITUAÇÃO', ERR_MSG_ARQUIVO_NAO_ENCONTRADO)
-       else ProtLido := True;
-     end;
+  if (FPathRetConsReciCTe = '') and (FPathRetConsSitCTe = '')
+   then begin
+    if (FchCTe = '') and (FnProt = '')
+     then Gerador.wAlerta('XR06', 'RECIBO/SITUAÇÃO', 'RECIBO/SITUAÇÃO', ERR_MSG_ARQUIVO_NAO_ENCONTRADO)
+     else ProtLido := True;
+   end;
 
-    // Gerar arquivo pelo Recibo do CTe
-    if (FPathRetConsReciCTe <> '') and (FPathRetConsSitCTe = '') and (not ProtLido)
-     then  begin
-      if not FileExists(FPathRetConsReciCTe)
-       then Gerador.wAlerta('XR06', 'PROTOCOLO', 'PROTOCOLO', ERR_MSG_ARQUIVO_NAO_ENCONTRADO)
-       else begin
-        // XMLinfProt.LoadFromFile(FPathRetConsReciCTe);
-        I := 0;
-        LocLeitor := TLeitor.Create;
-        LocLeitor.CarregarArquivo(FPathRetConsReciCTe);
-        while LocLeitor.rExtrai(1, 'protCTe', '', i + 1) <> '' do
-         begin
-           if LocLeitor.rCampo(tcStr, 'chCTe') = FchCTe
-            then FnProt := LocLeitor.rCampo(tcStr, 'nProt');
-           if trim(FnProt) = ''
-            then Gerador.wAlerta('XR01', 'PROTOCOLO/CTe', 'Numero do protocolo', ERR_MSG_VAZIO)
-            else begin
-             xProtCTe := LocLeitor.rExtrai(1, 'protCTe', '', i + 1)+'</protCTe>';
-             Gerador.ListaDeAlertas.Clear;
-             break;
-            end;
-            I := I + 1;
-         end;
-         LocLeitor.Free;
+  // Gerar arquivo pelo Recibo do CTe
+  if (FPathRetConsReciCTe <> '') and (FPathRetConsSitCTe = '') and (not ProtLido)
+   then  begin
+    if not FileExists(FPathRetConsReciCTe)
+     then Gerador.wAlerta('XR06', 'PROTOCOLO', 'PROTOCOLO', ERR_MSG_ARQUIVO_NAO_ENCONTRADO)
+     else begin
+      // XMLinfProt.LoadFromFile(FPathRetConsReciCTe);
+      I := 0;
+      LocLeitor := TLeitor.Create;
+      LocLeitor.CarregarArquivo(FPathRetConsReciCTe);
+      while LocLeitor.rExtrai(1, 'protCTe', '', i + 1) <> '' do
+       begin
+         if LocLeitor.rCampo(tcStr, 'chCTe') = FchCTe
+          then FnProt := LocLeitor.rCampo(tcStr, 'nProt');
+         if trim(FnProt) = ''
+          then Gerador.wAlerta('XR01', 'PROTOCOLO/CTe', 'Numero do protocolo', ERR_MSG_VAZIO)
+          else begin
+           xProtCTe := LocLeitor.rExtrai(1, 'protCTe', '', i + 1)+'</protCTe>';
+           Gerador.ListaDeAlertas.Clear;
+           break;
+          end;
+          I := I + 1;
        end;
-    end;
+       LocLeitor.Free;
+     end;
+   end;
 
-    // Gerar arquivo pelo arquivo de consulta da situação do CTe              //
-    if (FPathRetConsReciCTe = '') and (FPathRetConsSitCTe <> '') and (not ProtLido)
-     then begin
-      if not FileExists(FPathRetConsSitCTe)
-       then Gerador.wAlerta('XR06', 'SITUAÇÃO', 'SITUAÇÃO', ERR_MSG_ARQUIVO_NAO_ENCONTRADO)
-       else begin
-        XMLinfProt.LoadFromFile(FPathRetConsSitCTe);
+  // Gerar arquivo pelo arquivo de consulta da situação do CTe              //
+  if (FPathRetConsReciCTe = '') and (FPathRetConsSitCTe <> '') and (not ProtLido)
+   then begin
+    if not FileExists(FPathRetConsSitCTe)
+     then Gerador.wAlerta('XR06', 'SITUAÇÃO', 'SITUAÇÃO', ERR_MSG_ARQUIVO_NAO_ENCONTRADO)
+     else begin
+      XMLinfProt.LoadFromFile(FPathRetConsSitCTe);
 
-        wCstat:=RetornarConteudoEntre(XMLinfProt.text, '<cStat>', '</cStat>');
-        if trim(wCstat) = '101' then //esta cancelada
+      wCstat:=RetornarConteudoEntre(XMLinfProt.text, '<cStat>', '</cStat>');
+      if trim(wCstat) = '101'
+       then //esta cancelada
            XMLinfProt2.Text:=RetornarConteudoEntre(XMLinfProt.text, '<infCanc', '</infCanc>')
-        else
+       else
            XMLinfProt2.Text:=RetornarConteudoEntre(XMLinfProt.text, '<infProt', '</infProt>');
 
-        xProtCTe :=
+      xProtCTe :=
+           (*
            {$IFDEF PL_103}
               '<protCTe ' + V1_03 +'>' +
            {$ENDIF}
            {$IFDEF PL_104}
               '<protCTe ' + V1_04 +'>' +
            {$ENDIF}
+           *)
+              '<protCTe versao="' + Versao + '">' +
                 '<infProt>' +
                   PreencherTAG('tpAmb', XMLinfProt.text) +
                   PreencherTAG('verAplic', XMLinfProt.text) +
@@ -219,18 +225,21 @@ begin
                   PreencherTAG('xMotivo', XMLinfProt.text) +
                 '</infProt>' +
               '</protCTe>';
-      end;
-    end;
+     end;
+   end;
 
-    if ProtLido
-     then begin
-      xProtCTe :=
+  if ProtLido
+   then begin
+    xProtCTe :=
+           (*
            {$IFDEF PL_103}
             '<protCTe ' + V1_03 + '>' +
            {$ENDIF}
            {$IFDEF PL_104}
             '<protCTe ' + V1_04 + '>' +
            {$ENDIF}
+           *)
+            '<protCTe versao="' + Versao + '">' +
               '<infProt>' +
                 '<tpAmb>'+TpAmbToStr(FtpAmb)+'</tpAmb>'+
                 '<verAplic>'+FverAplic+'</verAplic>'+
@@ -242,30 +251,32 @@ begin
                 '<xMotivo>'+FxMotivo+'</xMotivo>'+
               '</infProt>'+
             '</protCTe>';
-     end;
+   end;
 
-    // Gerar arquivo
-    if Gerador.ListaDeAlertas.Count = 0 then
-    begin
-      Gerador.ArquivoFormatoXML := '';
-      Gerador.wGrupo(ENCODING_UTF8, '', False);
+  // Gerar arquivo
+  if Gerador.ListaDeAlertas.Count = 0
+   then begin
+    Gerador.ArquivoFormatoXML := '';
+    Gerador.wGrupo(ENCODING_UTF8, '', False);
+    (*
     {$IFDEF PL_103}
       Gerador.wGrupo('cteProc ' + V1_03 + ' ' + NAME_SPACE_CTE, '');
     {$ENDIF}
     {$IFDEF PL_104}
       Gerador.wGrupo('cteProc ' + V1_04 + ' ' + NAME_SPACE_CTE, '');
     {$ENDIF}
-      Gerador.wTexto('<CTe xmlns' + RetornarConteudoEntre(XMLCTe.Text, '<CTe xmlns', '</CTe>') + '</CTe>');
-      Gerador.wTexto(xProtCTe);
-      Gerador.wGrupo('/cteProc');
-    end;
+    *)
+    Gerador.wGrupo('cteProc versao="' + Versao + '" ' + NAME_SPACE_CTE, '');
+    Gerador.wTexto('<CTe xmlns' + RetornarConteudoEntre(XMLCTe.Text, '<CTe xmlns', '</CTe>') + '</CTe>');
+    Gerador.wTexto(xProtCTe);
+    Gerador.wGrupo('/cteProc');
+   end;
 
-    XMLCTe.Free;
-    XMLinfProt.Free;
-    XMLinfProt2.Free;
-    Result := (Gerador.ListaDeAlertas.Count = 0);
+  XMLCTe.Free;
+  XMLinfProt.Free;
+  XMLinfProt2.Free;
 
-//  end;
+  Result := (Gerador.ListaDeAlertas.Count = 0);
 end;
 
 end.

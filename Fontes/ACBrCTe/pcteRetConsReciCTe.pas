@@ -46,16 +46,12 @@
 
 unit pcteRetConsReciCTe;
 
-interface uses
+interface
+
+uses
   SysUtils, Classes, pcnAuxiliar, pcnConversao, pcnLeitor;
 
 type
-
-  //////////////////////////////////////////////////////////////////////////////
-  //                                                                          //
-  //    E M   D E S E N V O L V I M E N T O   -   N Ã O   T E S T A D O       //
-  //                                                                          //
-  //////////////////////////////////////////////////////////////////////////////
 
   TRetConsReciCTe = class;
   TProtCTeCollection = class;
@@ -201,11 +197,10 @@ begin
         inc(i);
       end;
       
-      if i = 0 then
-        ProtCTe.Add;
+      if i = 0 then ProtCTe.Add;
+
       Result := True;
     end;
-
   except
     result := False;
   end;

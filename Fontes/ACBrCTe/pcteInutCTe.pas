@@ -47,8 +47,9 @@
 
 unit pcteInutCTe;
 
-interface uses
+interface
 
+uses
   SysUtils, Classes,
 {$IFNDEF VER130}
   Variants,

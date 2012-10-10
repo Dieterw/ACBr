@@ -47,7 +47,9 @@
 
 unit pcteCancCTe;
 
-interface uses
+interface
+
+uses
   SysUtils, Classes, pcnAuxiliar, pcnConversao, pcnGerador;
 
 type

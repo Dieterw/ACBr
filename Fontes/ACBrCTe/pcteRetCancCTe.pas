@@ -45,16 +45,12 @@
 
 unit pcteRetCancCTe;
 
-interface uses
+interface
+
+uses
   SysUtils, Classes, pcnAuxiliar, pcnConversao, pcnLeitor;
 
 type
-
-  //////////////////////////////////////////////////////////////////////////////
-  //                                                                          //
-  //    E M   D E S E N V O L V I M E N T O   -   N Ã O   T E S T A D O       //
-  //                                                                          //
-  //////////////////////////////////////////////////////////////////////////////
 
   TRetCancCTe = class(TPersistent)
   private
@@ -118,10 +114,8 @@ begin
         (*CR10 *)FdhRecbto := Leitor.rCampo(tcDatHor, 'dhRecbto');
         (*CR11 *)FnProt    := Leitor.rCampo(tcStr, 'nProt');
       end;
-      
       Result := True;
     end;
-
   except
     Result := False;
   end;

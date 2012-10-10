@@ -45,16 +45,13 @@
 
 unit pcteRetConsSitCTe;
 
-interface uses
-  SysUtils, Classes, pcnAuxiliar, pcnConversao, pcnLeitor, pcteProcCTe, pcteRetCancCTe;
+interface
+
+uses
+  SysUtils, Classes, pcnAuxiliar, pcnConversao, pcnLeitor, pcteProcCTe,
+  pcteRetCancCTe;
 
 type
-
-  //////////////////////////////////////////////////////////////////////////////
-  //                                                                          //
-  //    E M   D E S E N V O L V I M E N T O   -   N Ã O   T E S T A D O       //
-  //                                                                          //
-  //////////////////////////////////////////////////////////////////////////////
 
   TRetConsSitCTe = class(TPersistent)
   private
@@ -115,9 +112,8 @@ begin
       (*ER05 *)FcStat    := leitor.rCampo(tcInt, 'cStat');
       (*ER06 *)FxMotivo  := leitor.rCampo(tcStr, 'xMotivo');
       (*ER07 *)FcUF      := leitor.rCampo(tcInt, 'cUF');
-//      (*ER07a*)FchCTe    := leitor.rCampo(tcStr, 'chCTe'); // Comentado por Italo em 28/08/2010
 
-      if FcStat in  [100,101] then
+      if FcStat in  [100, 101] then
        begin
          if (Leitor.rExtrai(1, 'protCTe') <> '') or (Leitor.rExtrai(1, 'infProt') <> '') then
           begin
@@ -129,8 +125,6 @@ begin
             protCTe.digVal   := Leitor.rCampo(tcStr, 'digVal');
             protCTe.cStat    := Leitor.rCampo(tcInt, 'cStat');
             protCTe.xMotivo  := Leitor.rCampo(tcStr, 'xMotivo');
-
-            // Incluido por Italo em 09/03/2011
             FchCTe           := protCTe.chCTe;
          end;
        end;
@@ -147,15 +141,11 @@ begin
             retCancCTe.chCTe    := Leitor.rCampo(tcStr, 'chCTe');
             retCancCTe.dhRecbto := Leitor.rCampo(tcDatHor, 'dhRecbto');
             retCancCTe.nProt    := Leitor.rCampo(tcStr, 'nProt');
-
-            // Incluido por Italo em 09/03/2011
-            FchCTe           := retCancCTe.chCTe;
+            FchCTe              := retCancCTe.chCTe;
          end;
        end;
-
       Result := True;
     end;
-    
   except
     Result := False;
   end;

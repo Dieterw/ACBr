@@ -1,7 +1,7 @@
 {******************************************************************************}
 { Projeto: Componente ACBrCTe                                                  }
 {  Biblioteca multiplataforma de componentes Delphi para emissão de Nota Fiscal}
-{ eletrônica - CTe - http://www.CTe.fazenda.gov.br                          }
+{ eletrônica - CTe - http://www.CTe.fazenda.gov.br                             }
 {                                                                              }
 { Direitos Autorais Reservados (c) 2008 Wemerson Souto                         }
 {                                       Daniel Simoes de Almeida               }
@@ -93,7 +93,7 @@ type
                                 NomeRemetente: String = '';
                                 TLS : Boolean = True);
     property CTe: TCTe  read FCTe write FCTe;
-    property XML: AnsiString  read GetCTeXML write FXML;  // Alterada por Italo em 30/09/2010
+    property XML: AnsiString  read GetCTeXML write FXML;
     property Confirmada: Boolean  read FConfirmada write FConfirmada;
     property Msg: AnsiString  read FMsg write FMsg;
     property Alertas: AnsiString read FAlertas write FAlertas;
@@ -164,9 +164,10 @@ begin
   FCTe.Ide.tpCTe  := tcNormal;
   FCTe.Ide.modelo := '57';
 
-  FCTe.Ide.verProc := '1.0.0.0';
-  FCTe.Ide.tpAmb   := TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).Configuracoes.WebServices.Ambiente  ;
-  FCTe.Ide.tpEmis  := TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).Configuracoes.Geral.FormaEmissao ;
+  FCTe.Ide.verProc := 'ACBrCTe';
+  FCTe.Ide.tpAmb   := TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).Configuracoes.WebServices.Ambiente;
+  FCTe.Ide.tpEmis  := TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).Configuracoes.Geral.FormaEmissao;
+  FCTe.Ide.tpImp   := TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).DACTe.TipoDACTE;
 end;
 
 destructor Conhecimento.Destroy;
@@ -428,7 +429,6 @@ begin
  {$IFDEF PL_104}
        LocCTeW.schema := TsPL_CTe_104;
  {$ENDIF}
-//       LocCTeW.schema := TsPL005c;
        LocCTeW.GerarXml;
        Self.Items[i].XML     := LocCTeW.Gerador.ArquivoFormatoXML;
        Self.Items[i].Alertas := LocCTeW.Gerador.ListaDeAlertas.Text;
@@ -669,7 +669,7 @@ begin
       Terminado := True;
     end;
   except
-    Terminado := True; // Alterado por Italo em 21/09/2010
+    Terminado := True;
     HandleException;
   end;
 end;

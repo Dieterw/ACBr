@@ -127,10 +127,8 @@ begin
         (*DR16 *)FdhRecbto := Leitor.rCampo(tcDatHor, 'dhRecbto');
         (*DR17 *)FnProt    := Leitor.rCampo(tcStr, 'nProt');
       end;
-      
       Result := True;
     end;
-
   except
     result := False;
   end;

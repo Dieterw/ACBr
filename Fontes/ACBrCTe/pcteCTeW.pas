@@ -50,8 +50,9 @@
 
 unit pcteCTeW;
 
-interface uses
+interface
 
+uses
   SysUtils, Classes, pcnAuxiliar, pcnConversao, pcnGerador, pcteCTe;
 
 type
@@ -64,6 +65,7 @@ type
     FCTe: TCTe;
     FSchema: TpcnSchema;
     FOpcoes: TGeradorOpcoes;
+
     procedure GerarInfCTe;     // Nivel 0
 
     procedure GerarIde;        // Nivel 1
@@ -267,6 +269,7 @@ begin
   Gerador.ArquivoFormatoTXT := '';
 
   Gerador.wGrupo(ENCODING_UTF8, '', False);
+(*
 {$IFDEF PL_103}
   if CTe.procCTe.nProt <> ''
    then Gerador.wGrupo('cteProc ' + V1_03 + ' ' + NAME_SPACE_CTE, '');
@@ -279,6 +282,12 @@ begin
   Gerador.wGrupo('CTe ' + NAME_SPACE_CTE);
   Gerador.wGrupo('infCte ' + V1_04 + ' Id="' + CTe.infCTe.ID + '"');
 {$ENDIF}
+*)
+  if CTe.procCTe.nProt <> ''
+   then Gerador.wGrupo('cteProc versao="' + CTeenviCTe + '" ' + NAME_SPACE_CTE, '');
+  Gerador.wGrupo('CTe ' + NAME_SPACE_CTE);
+  Gerador.wGrupo('infCte versao="' + CTeenviCTe + '" Id="' + CTe.infCTe.ID + '"');
+
   (**)GerarInfCTe;
   Gerador.wGrupo('/infCte');
   //
@@ -302,12 +311,15 @@ begin
   if CTe.procCTe.nProt <> '' then
    begin
      xProtCTe :=
+(*
 {$IFDEF PL_103}
            '<protCTe ' + V1_03 + '>' +
 {$ENDIF}
 {$IFDEF PL_104}
            '<protCTe ' + V1_04 + '>' +
 {$ENDIF}
+*)
+           '<protCTe versao="' + CTeenviCTe + '">' +
              '<infProt>'+
                '<tpAmb>'+TpAmbToStr(CTe.procCTe.tpAmb)+'</tpAmb>'+
                '<verAplic>'+CTe.procCTe.verAplic+'</verAplic>'+
@@ -446,7 +458,6 @@ begin
     Gerador.wCampo(tcStr, '#038', 'toma ', 01, 01, 1, TpTomadorToStr(CTe.ide.Toma4.Toma), DSC_TOMA);
     Gerador.wCampoCNPJCPF('#039', '#040', CTe.ide.Toma4.CNPJCPF, CTe.Ide.Toma4.EnderToma.cPais);
 
-    // Alterado por Italo em 15/06/2011
     if CTe.Ide.Toma4.IE <> ''
      then begin
       if Trim(CTe.Ide.Toma4.IE) = 'ISENTO'
@@ -629,7 +640,7 @@ begin
   Gerador.wGrupo('emit', '#097');
   Gerador.wCampoCNPJ('#098', CTe.Emit.CNPJ, CODIGO_BRASIL, True);
   Gerador.wCampo(tcStr, '#099', 'IE    ', 02, 14, 1, SomenteNumeros(CTe.Emit.IE), DSC_IE);
-  // Incluido por Italo em 14/10/2011
+
   if (FOpcoes.ValidarInscricoes)
    then if not ValidarIE(CTe.Emit.IE, CTe.Emit.enderEmit.UF) then
          Gerador.wAlerta('#099', 'IE', DSC_IE, ERR_MSG_INVALIDO);
@@ -679,17 +690,13 @@ begin
       Gerador.wGrupo('rem', '#112');
       Gerador.wCampoCNPJCPF('#113', '#114', CTe.Rem.CNPJCPF, CODIGO_BRASIL);
 
-      // Alterado por Italo em 15/06/2011
-//      if CTe.Rem.IE <> ''
-//       then begin
-        if Trim(CTe.Rem.IE) = 'ISENTO'
-         then Gerador.wCampo(tcStr, '#115', 'IE ', 00, 14, 1, CTe.Rem.IE, DSC_IE)
-         else Gerador.wCampo(tcStr, '#115', 'IE ', 00, 14, 0, SomenteNumeros(CTe.Rem.IE), DSC_IE);
+      if Trim(CTe.Rem.IE) = 'ISENTO'
+       then Gerador.wCampo(tcStr, '#115', 'IE ', 00, 14, 1, CTe.Rem.IE, DSC_IE)
+       else Gerador.wCampo(tcStr, '#115', 'IE ', 00, 14, 0, SomenteNumeros(CTe.Rem.IE), DSC_IE);
 
-        if (FOpcoes.ValidarInscricoes)
-         then if not ValidarIE(CTe.Rem.IE, CTe.Rem.EnderReme.UF) then
-          Gerador.wAlerta('#115', 'IE', DSC_IE, ERR_MSG_INVALIDO);
-//       end;
+      if (FOpcoes.ValidarInscricoes)
+       then if not ValidarIE(CTe.Rem.IE, CTe.Rem.EnderReme.UF) then
+        Gerador.wAlerta('#115', 'IE', DSC_IE, ERR_MSG_INVALIDO);
 
       if CTe.Ide.tpAmb = taHomologacao
        then Gerador.wCampo(tcStr, '#116', 'xNome  ', 01, 60, 1, xRazao, DSC_XNOME)
@@ -840,17 +847,13 @@ begin
     Gerador.wGrupo('exped', '#167');
     Gerador.wCampoCNPJCPF('#168', '#169', CTe.Exped.CNPJCPF, CODIGO_BRASIL);
 
-    // Alterado por Italo em 15/06/2011
-//    if CTe.Exped.IE <> ''
-//     then begin
-      if Trim(CTe.Exped.IE) = 'ISENTO'
-       then Gerador.wCampo(tcStr, '#170', 'IE ', 00, 14, 1, CTe.Exped.IE, DSC_IE)
-       else Gerador.wCampo(tcStr, '#170', 'IE ', 00, 14, 0, SomenteNumeros(CTe.Exped.IE), DSC_IE);
+    if Trim(CTe.Exped.IE) = 'ISENTO'
+     then Gerador.wCampo(tcStr, '#170', 'IE ', 00, 14, 1, CTe.Exped.IE, DSC_IE)
+     else Gerador.wCampo(tcStr, '#170', 'IE ', 00, 14, 0, SomenteNumeros(CTe.Exped.IE), DSC_IE);
 
-      if (FOpcoes.ValidarInscricoes)
-       then if not ValidarIE(CTe.Exped.IE, CTe.Exped.EnderExped.UF) then
-        Gerador.wAlerta('#170', 'IE', DSC_IE, ERR_MSG_INVALIDO);
-//     end;
+    if (FOpcoes.ValidarInscricoes)
+     then if not ValidarIE(CTe.Exped.IE, CTe.Exped.EnderExped.UF) then
+      Gerador.wAlerta('#170', 'IE', DSC_IE, ERR_MSG_INVALIDO);
 
     if CTe.Ide.tpAmb = taHomologacao
      then Gerador.wCampo(tcStr, '#171', 'xNome  ', 01, 60, 1, xRazao, DSC_XNOME)
@@ -901,17 +904,13 @@ begin
     Gerador.wGrupo('receb', '#185');
     Gerador.wCampoCNPJCPF('#186', '#187', CTe.Receb.CNPJCPF, CODIGO_BRASIL);
 
-    // Alterado por Italo em 15/06/2011
-//    if CTe.Receb.IE <> ''
-//     then begin
-      if Trim(CTe.Receb.IE) = 'ISENTO'
-       then Gerador.wCampo(tcStr, '#188', 'IE ', 00, 14, 1, CTe.Receb.IE, DSC_IE)
-       else Gerador.wCampo(tcStr, '#188', 'IE ', 00, 14, 0, SomenteNumeros(CTe.Receb.IE), DSC_IE);
+    if Trim(CTe.Receb.IE) = 'ISENTO'
+     then Gerador.wCampo(tcStr, '#188', 'IE ', 00, 14, 1, CTe.Receb.IE, DSC_IE)
+     else Gerador.wCampo(tcStr, '#188', 'IE ', 00, 14, 0, SomenteNumeros(CTe.Receb.IE), DSC_IE);
 
-      if (FOpcoes.ValidarInscricoes)
-       then if not ValidarIE(CTe.Receb.IE, CTe.Receb.EnderReceb.UF) then
-        Gerador.wAlerta('#188', 'IE', DSC_IE, ERR_MSG_INVALIDO);
-//     end;
+    if (FOpcoes.ValidarInscricoes)
+     then if not ValidarIE(CTe.Receb.IE, CTe.Receb.EnderReceb.UF) then
+      Gerador.wAlerta('#188', 'IE', DSC_IE, ERR_MSG_INVALIDO);
 
     if CTe.Ide.tpAmb = taHomologacao
      then Gerador.wCampo(tcStr, '#189', 'xNome  ', 01, 60, 1, xRazao, DSC_XNOME)
@@ -962,7 +961,6 @@ begin
       Gerador.wGrupo('dest', '#203');
       Gerador.wCampoCNPJCPF('#204', '#205', CTe.Dest.CNPJCPF, CODIGO_BRASIL);
 
-      // Alterado por Italo em 15/06/2011
       if CTe.Dest.IE <> ''
        then begin
         if Trim(CTe.Dest.IE) = 'ISENTO'
@@ -1257,8 +1255,6 @@ end;
 
 procedure TCTeW.GerarInfCTeNorm;
 begin
-  // A checagem da condição abaixo incluida por Italo em 22/09/2010
-  // Alterada por Italo em 06/06/2011
   if (CTe.Ide.tpCTe = tcNormal) or (CTe.Ide.tpCTe = tcSubstituto) then
   begin
     Gerador.wGrupo('infCTeNorm', 'K01');
@@ -1371,20 +1367,11 @@ begin
     Gerador.wGrupo('emiDocAnt', '#291');
     Gerador.wCampoCNPJCPF('#292', '#293', CTe.infCTeNorm.emiDocAnt[i].CNPJCPF, CODIGO_BRASIL);
 
-    // Alterado por Italo em 15/06/2011
-//    if CTe.infCTeNorm.emiDocAnt[i].IE <> ''
-//     then begin
-//      if CTe.infCTeNorm.emiDocAnt[i].IE = 'ISENTO'
-//       then Gerador.wCampo(tcStr, '#294', 'IE ', 00, 14, 1, CTe.infCTeNorm.emiDocAnt[i].IE, DSC_IE)
-//       else
+    Gerador.wCampo(tcStr, '#294', 'IE ', 02, 14, 1, SomenteNumeros(CTe.infCTeNorm.emiDocAnt[i].IE), DSC_IE);
 
-      // Alterado por Italo em 14/10/2011
-      Gerador.wCampo(tcStr, '#294', 'IE ', 02, 14, 1, SomenteNumeros(CTe.infCTeNorm.emiDocAnt[i].IE), DSC_IE);
-
-      if (FOpcoes.ValidarInscricoes)
-       then if not ValidarIE(CTe.infCTeNorm.emiDocAnt[i].IE, CTe.infCTeNorm.emiDocAnt[i].UF) then
-        Gerador.wAlerta('#294', 'IE', DSC_IE, ERR_MSG_INVALIDO);
-//     end;
+    if (FOpcoes.ValidarInscricoes)
+     then if not ValidarIE(CTe.infCTeNorm.emiDocAnt[i].IE, CTe.infCTeNorm.emiDocAnt[i].UF) then
+      Gerador.wAlerta('#294', 'IE', DSC_IE, ERR_MSG_INVALIDO);
 
     Gerador.wCampo(tcStr, '#295', 'UF    ', 02, 02, 1, CTe.infCTeNorm.emiDocAnt[i].UF, '');
     if not ValidarUF(CTe.infCTeNorm.emiDocAnt[i].UF) then
@@ -1476,7 +1463,6 @@ begin
   (**)GerarCTRB;
   (**)GerarOCC;
 
-  // Alterado por Italo em 22/07/2011
   if CTe.Rodo.Lota = ltSim
    then begin
     (**)GerarValePed;
@@ -1484,7 +1470,6 @@ begin
    end;
   (**)GerarLacre;
 
-  // Alterado por Italo em 22/07/2011
   if CTe.Rodo.Lota = ltSim then
    (**)GerarMoto;
 
@@ -1522,20 +1507,11 @@ begin
     Gerador.wCampoCNPJ('#11', CTe.Rodo.Occ[i].EmiOCC.CNPJ, CODIGO_BRASIL, True);
     Gerador.wCampo(tcStr, '#12', 'cInt   ', 01, 10, 0, CTe.Rodo.Occ[i].EmiOCC.cInt, DSC_CINT);
 
-    // Alterado por Italo em 15/06/2011
-//    if CTe.Rodo.Occ[i].EmiOCC.IE <> ''
-//     then begin
-//      if CTe.Rodo.Occ[i].EmiOCC.IE = 'ISENTO'
-//       then Gerador.wCampo(tcStr, '#13', 'IE ', 00, 14, 1, CTe.Rodo.Occ[i].EmiOCC.IE, DSC_IE)
-//       else
+    Gerador.wCampo(tcStr, '#13', 'IE ', 02, 14, 1, SomenteNumeros(CTe.Rodo.Occ[i].EmiOCC.IE), DSC_IE);
 
-      // Alterado por Italo em 14/10/2011
-      Gerador.wCampo(tcStr, '#13', 'IE ', 02, 14, 1, SomenteNumeros(CTe.Rodo.Occ[i].EmiOCC.IE), DSC_IE);
-
-      if (FOpcoes.ValidarInscricoes)
-       then if not ValidarIE(CTe.Rodo.Occ[i].EmiOCC.IE, CTe.Rodo.Occ[i].EmiOCC.UF) then
-        Gerador.wAlerta('#13', 'IE', DSC_IE, ERR_MSG_INVALIDO);
-//     end;
+    if (FOpcoes.ValidarInscricoes)
+     then if not ValidarIE(CTe.Rodo.Occ[i].EmiOCC.IE, CTe.Rodo.Occ[i].EmiOCC.UF) then
+      Gerador.wAlerta('#13', 'IE', DSC_IE, ERR_MSG_INVALIDO);
 
     Gerador.wCampo(tcStr, '#14', 'UF   ', 02, 02, 1, CTe.Rodo.Occ[i].EmiOCC.UF, DSC_CUF);
     if not ValidarUF(CTe.Rodo.Occ[i].EmiOCC.UF) then
@@ -1570,7 +1546,6 @@ begin
   Gerador.wCampo(tcDe2, 'L25', 'vTValePed ', 01, 15, 0, CTe.Rodo.valePed.vTValePed, '');
   Gerador.wCampo(tcStr, 'L26', 'respPg    ', 01, 01, 1, RspPagPedagioToStr(CTe.Rodo.valePed.respPg), '');
 
-  // Alterado por Italo em 22/07/2011
   if (CTe.Rodo.valePed.nroRE='')
    then begin
     for i := 0 to CTe.Rodo.valePed.disp.Count - 1 do
@@ -1870,14 +1845,8 @@ begin
     Gerador.wCampoCNPJ('O07', CTe.Ferrov.ferroSub.CNPJ, CODIGO_BRASIL, True);
     Gerador.wCampo(tcStr, 'O08', 'cInt   ', 01, 10, 0, CTe.Ferrov.ferroSub.cInt, '');
 
-    // Alterado por Italo em 15/06/2011
     if CTe.Ferrov.ferroSub.IE <> ''
      then begin
-      // Alterado por Italo em 14/10/2011
-//      if CTe.Ferrov.ferroSub.IE = 'ISENTO'
-//       then Gerador.wCampo(tcStr, 'O09', 'IE ', 00, 14, 1, CTe.Ferrov.ferroSub.IE, DSC_IE)
-//       else
-
       Gerador.wCampo(tcStr, 'O09', 'IE ', 02, 14, 1, SomenteNumeros(CTe.Ferrov.ferroSub.IE), DSC_IE);
 
       if (FOpcoes.ValidarInscricoes)
@@ -1900,11 +1869,6 @@ begin
 
     if CTe.Ferrov.ferroEnv.IE <> ''
      then begin
-      // Alterado por Italo em 14/10/2011
-//      if CTe.Ferrov.ferroEnv.IE = 'ISENTO'
-//       then Gerador.wCampo(tcStr, '#12', 'IE ', 00, 14, 1, CTe.Ferrov.ferroEnv.IE, DSC_IE)
-//       else
-
       Gerador.wCampo(tcStr, '#12', 'IE ', 02, 14, 1, SomenteNumeros(CTe.Ferrov.ferroEnv.IE), DSC_IE);
 
       if (FOpcoes.ValidarInscricoes)

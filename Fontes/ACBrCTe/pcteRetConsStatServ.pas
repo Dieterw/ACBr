@@ -50,12 +50,6 @@ interface uses
 
 type
 
-  //////////////////////////////////////////////////////////////////////////////
-  //                                                                          //
-  //    E M   D E S E N V O L V I M E N T O   -   N Ã O   T E S T A D O       //
-  //                                                                          //
-  //////////////////////////////////////////////////////////////////////////////
-
   TRetConsStatServ = class(TPersistent)
   private
     FLeitor: TLeitor;
@@ -122,7 +116,6 @@ begin
 
       Result := True;
     end;
-
   except
     Result := False;
   end;

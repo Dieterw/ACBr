@@ -48,6 +48,11 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   10/10/12 (João Henrique)
+---------------
+[*] Ajustes na Impressão do Danfe (Rave Arquivo e Code Base) de acordo com a 
+    NT 2012.003b onde prevê que o Cancelamento pode ter cStat como 101 e 151.
+
 Alterações   08/05/12 (beretta)
 ---------------
 [-] Acerto para impressão da quantidade e unidade tributaveis e comercial 

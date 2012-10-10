@@ -169,7 +169,7 @@ begin
         FontRotation:=33;
         Print('AMBIENTE DE HOMOLOGAÇÃO - SEM VALOR FISCAL');
       end
-     else if ((procNFe.cStat = 101) or (NFeCancelada)) then
+     else if ((procNFe.cStat in [101,151]) or (NFeCancelada)) then
       begin // cancelada
         SetFont(FontNameUsed,28);
         FontColor:=clRed;
@@ -448,7 +448,7 @@ begin
             if NotaUtil.EstaVazio(aProtocolo) then
                aProtocolo:=Trim(procNFe.nProt)+' '+NotaUtil.SeSenao(procNFe.dhRecbto<>0,DateTimeToStr(procNFe.dhRecbto),'');
             if ((NFeCancelada) or
-                (ACBrNFe.NotasFiscais.Items[FNFIndex].NFe.procNFe.cStat=101)) then
+                (ACBrNFe.NotasFiscais.Items[FNFIndex].NFe.procNFe.cStat in [101,151])) then
                Box([fsLeft,fsTop],PosX,YPos,aWidth,aHeigthPadrao,'PROTOCOLO DE HOMOLOGAÇÃO DO CANCELAMENTO',aProtocolo,taCenter,True)
             else
             if (ACBrNFe.NotasFiscais.Items[FNFIndex].NFe.procNFe.cStat=110) then

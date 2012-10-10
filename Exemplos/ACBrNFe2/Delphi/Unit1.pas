@@ -1795,7 +1795,8 @@ begin
      Ide.cUF       := NotaUtil.UFtoCUF(edtEmitUF.Text);
      Ide.cMunFG    := StrToInt(edtEmitCodCidade.Text);
      Ide.finNFe    := fnNormal;
-     Ide.tpImp     := ACBrNFe1.DANFE.TipoDANFE;
+     if  Assigned( ACBrNFe1.DANFE ) then
+        Ide.tpImp     := ACBrNFe1.DANFE.TipoDANFE;
 
 //     Ide.dhCont := date;
 //     Ide.xJust  := 'Justificativa Contingencia';
@@ -2433,7 +2434,7 @@ begin
   if not(InputQuery('WebServices Eventos: Carta de Correção', 'Correção a ser considerada', Correcao)) then
      exit;
   ACBrNFe1.EventoNFe.Evento.Clear;
-//   ACBrNFe1.EnvEvento.EnvEventoNFe.idLote := StrToInt(idLote) ;
+//  ACBrNFe1.EnvEvento.EnvEventoNFe..idLote := StrToInt(idLote) ;
   with ACBrNFe1.EventoNFe.Evento.Add do
    begin
      infEvento.chNFe := Chave;

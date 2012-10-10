@@ -64,6 +64,7 @@ type
     FSchema: TpcnSchema;
     FtpAmb: TpcnTipoAmbiente;
     FnRec: string;
+    FVersao: string;
   public
     constructor Create;
     destructor Destroy; override;
@@ -74,6 +75,7 @@ type
     property schema: TpcnSchema read Fschema write Fschema;
     property tpAmb: TpcnTipoAmbiente read FtpAmb write FtpAmb;
     property nRec: string read FnRec write FnRec;
+    property Versao: string read FVersao write FVersao;
   end;
 
 implementation
@@ -98,24 +100,21 @@ end;
 
 function TConsReciCTe.GerarXML: boolean;
 begin
-//  Result := False;
-//  if retornarVersaoLayout(Fschema, tlConsReciCTe) = '1.03' then
-//  begin
-    Gerador.ArquivoFormatoXML := '';
-
-//    Gerador.wGrupo(ENCODING_UTF8, '', False);
+  Gerador.ArquivoFormatoXML := '';
+ (*
  {$IFDEF PL_103}
     Gerador.wGrupo('consReciCTe ' + NAME_SPACE_CTE + ' ' + V1_03);
  {$ENDIF}
  {$IFDEF PL_104}
     Gerador.wGrupo('consReciCTe ' + NAME_SPACE_CTE + ' ' + V1_04);
  {$ENDIF}
-    Gerador.wCampo(tcStr, 'BP03', 'tpAmb  ', 001, 001, 1, tpAmbToStr(FtpAmb), DSC_TPAMB);
-    Gerador.wCampo(tcEsp, 'BP04', 'nRec   ', 015, 015, 1, FnRec, DSC_NREC);
-    Gerador.wGrupo('/consReciCTe');
+ *)
+  Gerador.wGrupo('consReciCTe ' + NAME_SPACE_CTE + ' versao="' + Versao + '"');
+  Gerador.wCampo(tcStr, 'BP03', 'tpAmb  ', 001, 001, 1, tpAmbToStr(FtpAmb), DSC_TPAMB);
+  Gerador.wCampo(tcEsp, 'BP04', 'nRec   ', 015, 015, 1, FnRec, DSC_NREC);
+  Gerador.wGrupo('/consReciCTe');
 
-    Result := (Gerador.ListaDeAlertas.Count = 0);
-//  end;
+  Result := (Gerador.ListaDeAlertas.Count = 0);
 end;
 
 end.

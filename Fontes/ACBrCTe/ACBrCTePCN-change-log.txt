@@ -48,6 +48,10 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   10/10/2012 (Italo Jurisato Junior)
+---------------
+[*] Melhorias e simplificação em vários fontes do componente.
+
 Alterações   17/05/2012 (Italo Jurisato Junior)
 ---------------
 [*] Se a propriedade ExpandirLogoMarca for TRUE não imprime os dados do emitente

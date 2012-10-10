@@ -483,6 +483,8 @@ begin
   CancCTe.tpAmb  := TpcnTipoAmbiente(FConfiguracoes.WebServices.AmbienteCodigo-1);
   CancCTe.nProt  := TCTeCancelamento(Self).Protocolo;
   CancCTe.xJust  := TCTeCancelamento(Self).Justificativa;
+  CancCTe.Versao := CTecancCTe;
+  
   CancCTe.GerarXML;
 
 {$IFDEF ACBrCTeOpenSSL}
@@ -530,6 +532,8 @@ begin
  {$ENDIF}
   ConsSitCTe.TpAmb  := TpcnTipoAmbiente(FConfiguracoes.WebServices.AmbienteCodigo-1);
   ConsSitCTe.chCTe  := TCTeConsulta(Self).CTeChave;
+  ConsSitCTe.Versao := CTeconsSitCTe;
+
   ConsSitCTe.GerarXML;
 
   FDadosMsg := ConsSitCTe.Gerador.ArquivoFormatoXML;
@@ -560,6 +564,8 @@ begin
   InutCTe.nCTIni := TCTeInutilizacao(Self).NumeroInicial;
   InutCTe.nCTFin := TCTeInutilizacao(Self).NumeroFinal;
   InutCTe.xJust  := TCTeInutilizacao(Self).Justificativa;
+  InutCTe.Versao := CTeinutCTe;
+
   InutCTe.GerarXML;
 
 {$IFDEF ACBrCTeOpenSSL}
@@ -595,6 +601,7 @@ begin
   Cabecalho             := TCabecalho.Create;
   Cabecalho.Versao      := CTecabMsg;  // Alterado de NFecabMsg por CTecabMsg por Italo em 18/03/2011
   Cabecalho.VersaoDados := CTeconsCad; // Alterado de NFeconsCad por CTeconsCad por Italo em 18/03/2011
+  
   Cabecalho.GerarXML;
 
   FCabMsg := Cabecalho.Gerador.ArquivoFormatoXML;
@@ -612,6 +619,8 @@ begin
   ConCadCTe.IE     := TCTeConsultaCadastro(Self).IE;
   ConCadCTe.CNPJ   := TCTeConsultaCadastro(Self).CNPJ;
   ConCadCTe.CPF    := TCTeConsultaCadastro(Self).CPF;
+  ConCadCTe.Versao := CTeconsCad;
+  
   ConCadCTe.GerarXML;
 
   FDadosMsg := ConCadCTe.Gerador.ArquivoFormatoXML;
@@ -660,6 +669,8 @@ begin
  {$ENDIF}
   ConsReciCTe.tpAmb  := TpcnTipoAmbiente(FConfiguracoes.WebServices.AmbienteCodigo-1);
   ConsReciCTe.nRec   := TCTeRetRecepcao(Self).Recibo;
+  ConsReciCTe.Versao := CTeconsReciCTe;
+
   ConsReciCTe.GerarXML;
 
   FDadosMsg := ConsReciCTe.Gerador.ArquivoFormatoXML;
@@ -680,6 +691,7 @@ begin
   Cabecalho             := TCabecalho.Create;
   Cabecalho.Versao      := CTecabMsg;
   Cabecalho.VersaoDados := CTeconsReciCTe;
+
   Cabecalho.GerarXML;
 
   FCabMsg := Cabecalho.Gerador.ArquivoFormatoXML;
@@ -695,6 +707,8 @@ begin
  {$ENDIF}
   ConsReciCTe.tpAmb  := TpcnTipoAmbiente(FConfiguracoes.WebServices.AmbienteCodigo-1);
   ConsReciCTe.nRec   := TCTeRecibo(Self).Recibo;
+  ConsReciCTe.Versao := CTeconsReciCTe;
+  
   ConsReciCTe.GerarXML;
 
   FDadosMsg := ConsReciCTe.Gerador.ArquivoFormatoXML;
@@ -714,6 +728,7 @@ begin
  {$ENDIF}
   ConsStatServ.TpAmb  := TpcnTipoAmbiente(FConfiguracoes.WebServices.AmbienteCodigo-1);
   ConsStatServ.CUF    := FConfiguracoes.WebServices.UFCodigo;
+  ConsStatServ.Versao := CTeconsStatServ;
 
   ConsStatServ.GerarXML;
 

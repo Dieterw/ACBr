@@ -61,6 +61,7 @@ type
     FchCTe: string;
     FnProt: string;
     FxJust: string;
+    FVersao: string;
   public
     constructor Create;
     destructor Destroy; override;
@@ -74,6 +75,7 @@ type
     property chCTe: string read FchCTe write FchCTe;
     property nProt: string read FnProt write FnProt;
     property xJust: string read FxJust write FxJust;
+    property Versao: string read FVersao write FVersao;
   end;
 
 implementation
@@ -98,32 +100,28 @@ end;
 
 function TcancCTe.GerarXML: boolean;
 begin
-  //PENDENTE// revisar e inserir as regras de geração e validação
-//  Result := False;
-//  if RetornarVersaoLayout(FSchema, tlCancCTe) = '1.03' then
-//  begin
-    Gerador.ArquivoFormatoXML := '';
-
-//    Gerador.wGrupo(ENCODING_UTF8, '', False);
+  Gerador.ArquivoFormatoXML := '';
+  (*
  {$IFDEF PL_103}
     Gerador.wGrupo('cancCTe ' + NAME_SPACE_CTE + ' ' + V1_03);
  {$ENDIF}
  {$IFDEF PL_104}
     Gerador.wGrupo('cancCTe ' + NAME_SPACE_CTE + ' ' + V1_04);
  {$ENDIF}
-    Gerador.wGrupo('infCanc Id="ID' + SomenteNumeros(FchCTe) + '"');
-    Gerador.wCampo(tcStr, 'CP05', 'tpAmb', 001, 001, 1, tpAmbToStr(FtpAmb), DSC_TPAMB);
-    Gerador.wCampo(tcStr, 'CP06', 'xServ', 008, 008, 1, 'CANCELAR', DSC_XSERV);
-    Gerador.wCampo(tcEsp, 'CP07', 'chCTe', 044, 044, 1, SomenteNumeros(FchCTe), DSC_CHCTe);
-    if not ValidarChave('CTe' + SomenteNumeros(FchCTe)) then
+ *)
+  Gerador.wGrupo('cancCTe ' + NAME_SPACE_CTE + ' versao="' + Versao + '"');
+  Gerador.wGrupo('infCanc Id="ID' + SomenteNumeros(FchCTe) + '"');
+  Gerador.wCampo(tcStr, 'CP05', 'tpAmb', 001, 001, 1, tpAmbToStr(FtpAmb), DSC_TPAMB);
+  Gerador.wCampo(tcStr, 'CP06', 'xServ', 008, 008, 1, 'CANCELAR', DSC_XSERV);
+  Gerador.wCampo(tcEsp, 'CP07', 'chCTe', 044, 044, 1, SomenteNumeros(FchCTe), DSC_CHCTe);
+  if not ValidarChave('CTe' + SomenteNumeros(FchCTe)) then
       Gerador.wAlerta('CP07', 'chCTe', '', 'Chave do CTe inválida');
-    Gerador.wCampo(tcEsp, 'CP08', 'nProt', 015, 015, 1, SomenteNumeros(FnProt), DSC_NPROT);
-    Gerador.wCampo(tcStr, 'CP09', 'xJust', 015, 255, 1, FiltrarTextoXML(true, FxJust), DSC_XJUST);
-    Gerador.wGrupo('/infCanc');
-    Gerador.wGrupo('/cancCTe');
+  Gerador.wCampo(tcEsp, 'CP08', 'nProt', 015, 015, 1, SomenteNumeros(FnProt), DSC_NPROT);
+  Gerador.wCampo(tcStr, 'CP09', 'xJust', 015, 255, 1, FiltrarTextoXML(true, FxJust), DSC_XJUST);
+  Gerador.wGrupo('/infCanc');
+  Gerador.wGrupo('/cancCTe');
 
-    Result := (Gerador.ListaDeAlertas.Count = 0);
-//  end;
+  Result := (Gerador.ListaDeAlertas.Count = 0);
 end;
 
 end.

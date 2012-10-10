@@ -64,6 +64,7 @@ type
     FSchema: TpcnSchema;
     FtpAmb: TpcnTipoAmbiente;
     FcUF: integer;
+    FVersao: string;
   public
     constructor Create;
     destructor Destroy; override;
@@ -74,6 +75,7 @@ type
     property schema: TpcnSchema read Fschema write Fschema;
     property tpAmb: TpcnTipoAmbiente read FtpAmb write FtpAmb;
     property cUF: integer read FcUF write FcUF;
+    property Versao: string read FVersao write FVersao;
   end;
 
 implementation
@@ -107,23 +109,21 @@ end;
 
 function TConsStatServ.GerarXML: boolean;
 begin
-//  Result := False;
-//  if retornarVersaoLayout(Fschema, tlConsStatServCTe) = '1.03' then
-//  begin
-    Gerador.ArquivoFormatoXML := '';
-
+  Gerador.ArquivoFormatoXML := '';
+ (*
  {$IFDEF PL_103}
     Gerador.wGrupo('consStatServCte ' + NAME_SPACE_CTE + ' ' + V1_03);
  {$ENDIF}
  {$IFDEF PL_104}
     Gerador.wGrupo('consStatServCte ' + NAME_SPACE_CTE + ' ' + V1_04);
  {$ENDIF}
-    Gerador.wCampo(tcStr, 'FP03', 'tpAmb', 001, 001, 1, tpAmbToStr(FtpAmb), DSC_TPAMB);
-    Gerador.wCampo(tcStr, 'FP04', 'xServ', 006, 006, 1, 'STATUS', DSC_XSERV);
-    Gerador.wGrupo('/consStatServCte');
+ *)
+  Gerador.wGrupo('consStatServCte ' + NAME_SPACE_CTE + ' versao="' + Versao + '"');
+  Gerador.wCampo(tcStr, 'FP03', 'tpAmb', 001, 001, 1, tpAmbToStr(FtpAmb), DSC_TPAMB);
+  Gerador.wCampo(tcStr, 'FP04', 'xServ', 006, 006, 1, 'STATUS', DSC_XSERV);
+  Gerador.wGrupo('/consStatServCte');
 
-    Result := (Gerador.ListaDeAlertas.Count = 0);
-//  end;
+  Result := (Gerador.ListaDeAlertas.Count = 0);
 end;
 
 end.

@@ -1007,9 +1007,10 @@ begin
   ConsReciNFe.schema := TsPL006;
   ConsReciNFe.tpAmb  := TpcnTipoAmbiente(FConfiguracoes.WebServices.AmbienteCodigo-1);
   ConsReciNFe.nRec   := TNFeRetRecepcao(Self).Recibo;
-  ConsReciNFe.GerarXML;
 
   ConsReciNFe.Versao := NFeConsReciNFe;
+
+  ConsReciNFe.GerarXML;
 
   FDadosMsg := ConsReciNFe.Gerador.ArquivoFormatoXML;
   ConsReciNFe.Free;

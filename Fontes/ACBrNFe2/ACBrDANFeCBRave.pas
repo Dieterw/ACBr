@@ -517,7 +517,7 @@ begin
     EventoRave.SystemFiler.StreamMode:=smTempFile;
     EventoRave.SystemOptions:=[soShowStatus,soAllowPrintFromPreview,{soAllowSaveFromPreview,}soPreviewModal];
     if not aMostrarStatus then
-       EventoRave.SystemOptions:=DANFeRave.SystemOptions - [soShowStatus];
+       EventoRave.SystemOptions:=EventoRave.SystemOptions - [soShowStatus];
     EventoRave.SystemPreview.FormState:=wsMaximized;
     EventoRave.SystemPreview.ZoomFactor:=100;
     EventoRave.SystemPrinter.Copies:=aNumeroDeCopias;
@@ -859,10 +859,7 @@ begin
   with BaseReport  do begin
     FNFIndex:=0;
     FCurrentPage:=0;
-//    if Orientation=poLandScape then
-//       ImprimirPaisagem(Self)
-//    else
-//       ImprimirEventoRetrato(Self);
+    ImprimirEventoRetrato(Self);
   end;
 end;
 

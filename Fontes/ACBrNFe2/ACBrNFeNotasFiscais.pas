@@ -276,15 +276,24 @@ procedure NotaFiscal.EnviarEmail(const sSmtpHost,
                                       TLS : Boolean = True);
 var
  NomeArq : String;
- i: Integer;
  AnexosEmail:TStrings ;
+ StreamNFe : TStringStream;
 begin
  AnexosEmail := TStringList.Create;
+ StreamNFe  := TStringStream.Create('');
  try
     AnexosEmail.Clear;
     if Anexos <> nil then
       AnexosEmail.Text := Anexos.Text;
-    AnexosEmail.Add(copy(NFe.infNFe.ID, (length(NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml');
+    if NomeArq <> '' then
+     begin
+       SaveToFile(NomeArq);
+       AnexosEmail.Add(NomeArq);
+     end
+    else
+     begin
+       SaveToStream(StreamNFe) ;
+     end;
     if (EnviaPDF) then
     begin
        if TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE <> nil then
@@ -309,9 +318,12 @@ begin
                 PedeConfirma,
                 AguardarEnvio,
                 NomeRemetente,
-                TLS);
+                TLS,
+                StreamNFe,
+                copy(NFe.infNFe.ID, (length(NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml');
  finally
     AnexosEmail.Free ;
+    StreamNFe.Free ;
  end;
 end;
 

@@ -162,7 +162,9 @@ type
                                 PedeConfirma: Boolean = False;
                                 AguardarEnvio: Boolean = False;
                                 NomeRemetente: String = '';
-                                TLS : Boolean = True);
+                                TLS : Boolean = True;
+                                StreamNFe : TStringStream = nil;
+                                NomeArq : String = '');
 
   published
     property Configuracoes: TConfiguracoes read FConfiguracoes write FConfiguracoes;
@@ -485,7 +487,7 @@ end;
 procedure TACBrNFe.EnviaEmail(const sSmtpHost, sSmtpPort, sSmtpUser,
   sSmtpPasswd, sFrom, sTo, sAssunto: String; sMensagem: TStrings;
   SSL: Boolean; sCC, Anexos: TStrings; PedeConfirma,
-  AguardarEnvio: Boolean; NomeRemetente: String; TLS: Boolean);
+  AguardarEnvio: Boolean; NomeRemetente: String; TLS: Boolean; StreamNFe : TStringStream; NomeArq : String);
 var
  ThreadSMTP : TSendMailThread;
  m:TMimemess;
@@ -499,6 +501,9 @@ begin
     p := m.AddPartMultipart('mixed', nil);
     if sMensagem <> nil then
        m.AddPartText(sMensagem, p);
+
+    if StreamNFe <> nil then
+      m.AddPartBinary(StreamNFe,NomeArq, p);
 
     if assigned(Anexos) then
       for i := 0 to Anexos.Count - 1 do

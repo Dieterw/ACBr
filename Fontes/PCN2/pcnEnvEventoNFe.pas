@@ -92,7 +92,8 @@ type
     constructor Create;
     destructor Destroy; override;
     function GerarXML: boolean;
-    function LerXML(CaminhoArquivo: string): boolean;
+    function LerXML(const CaminhoArquivo: string): boolean;
+    function LerXMLFromString(const AXML: String): boolean;
     function ObterNomeArquivo(tpEvento: TpcnTpEvento): string;
   published
     property Gerador: TGerador  read FGerador write FGerador;
@@ -212,16 +213,26 @@ begin
   FEvento.Assign(Value);
 end;
 
-function TEventoNFe.LerXML(CaminhoArquivo: string): boolean;
+function TEventoNFe.LerXML(const CaminhoArquivo: string): boolean;
 var
   ArqEvento    : TStringList;
-  RetEventoNFe : TRetEventoNFe;
 begin
   ArqEvento := TStringList.Create;
-  RetEventoNFe := TRetEventoNFe.Create;
   try
      ArqEvento.LoadFromFile(CaminhoArquivo);
-     RetEventoNFe.Leitor.Arquivo := ArqEvento.Text;
+     LerXMLFromString(ArqEvento.Text);
+  finally
+     ArqEvento.Free;
+  end;
+end;
+
+function TEventoNFe.LerXMLFromString(const AXML: String): boolean;
+var
+  RetEventoNFe : TRetEventoNFe;
+begin
+  RetEventoNFe := TRetEventoNFe.Create;
+  try
+     RetEventoNFe.Leitor.Arquivo := AXML;
      RetEventoNFe.LerXml;
      with FEvento.Add do
       begin
@@ -260,7 +271,6 @@ begin
          end;
       end;
   finally
-     ArqEvento.Free;
      RetEventoNFe.Free;
   end;
 end;

@@ -73,6 +73,9 @@ Versao 0.0.10a do FastReport 13/08/12
 
 
 	
+Versao 0.0.10a do FastReport 13/10/12
+[+] Corrigida impressão do DV da Agência quando o mesmo for superior a 9.(Leonardo)	
+
 Versao 0.0.09a do FastReport 02/07/12
 [+] Lançado a 1a versão para impressão dos boletos em FastReport.
     (por: Isaque Pinheiro)	

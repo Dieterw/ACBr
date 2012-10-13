@@ -48,7 +48,7 @@ unit ACBrBoletoFCFR;
 interface
 
 uses
-  SysUtils, Classes, DB, DBClient, ACBrBase, ACBrBoleto,
+  SysUtils, Classes, DB, DBClient, ACBrBase, ACBrBoleto, StrUtils,
   frxClass, frxDBSet, frxBarcode, frxExportHTML, frxExportPDF;
 
 const
@@ -274,7 +274,8 @@ begin
       begin
          Append;
          FieldByName('Numero').AsString  := FormatFloat('000', Banco.Numero);
-         FieldByName('Digito').AsInteger := Banco.Digito;
+         FieldByName('Digito').AsString := IfThen(Banco.Digito >= 10, 'X',
+                                                  IntToStrZero(Banco.Digito, 1));
          FieldByName('Nome').AsString    := Banco.Nome;
          FieldByName('DirLogo').AsString := DirLogo;
          Post;

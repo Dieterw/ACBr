@@ -76,6 +76,10 @@ contains
   ACBrProvedorSimplISS in '..\..\..\Fontes\ACBrNFSe\ACBrProvedorSimplISS.pas',
   ACBrProvedorThema in '..\..\..\Fontes\ACBrNFSe\ACBrProvedorThema.pas',
   ACBrProvedorTiplan in '..\..\..\Fontes\ACBrNFSe\ACBrProvedorTiplan.pas',
-  ACBrProvedorWebISS in '..\..\..\Fontes\ACBrNFSe\ACBrProvedorWebISS.pas';
+  ACBrProvedorWebISS in '..\..\..\Fontes\ACBrNFSe\ACBrProvedorWebISS.pas',
+  ACBrProvedorBetim in '..\..\..\Fontes\ACBrNFSe\ACBrProvedorBetim.pas',
+  ACBrProvedorFISSLEX in '..\..\..\Fontes\ACBrNFSe\ACBrProvedorfISSLex.pas',
+  ACBrProvedorSaatri in '..\..\..\Fontes\ACBrNFSe\ACBrProvedorSaatri.pas',
+  pnfsGerarNfseResposta in '..\..\..\Fontes\ACBrNFSe\pnfsGerarNfseResposta.pas';
 
 end.

@@ -640,7 +640,8 @@ begin
          : Provedor := 'Tiplan';
 
   3148103, // Patrocinio/MG
-  3503307  // Araras/SP
+  3503307, // Araras/SP
+  3541406  // Presidente Prudente/SP
          : Provedor := 'SimplISS';
 
   4108403  // Francisco Beltrao/PR
@@ -816,6 +817,7 @@ begin
   3533908: Cidade := 'Olimpia/SP';
   3536505: Cidade := 'Paulinia/SP';
   3538006: Cidade := 'Pindamonhangaba/SP';
+  3541406: Cidade := 'Presidente Prudente/SP';
   3542602: Cidade := 'Registro/SP';
   3543402: Cidade := 'Ribeirão Preto/SP';
   3543907: Cidade := 'Rio Claro/SP';

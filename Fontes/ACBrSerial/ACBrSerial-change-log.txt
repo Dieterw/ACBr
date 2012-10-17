@@ -97,6 +97,13 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+
+Data: 17/10/2012
+-- ACBrBal --
+[+] Adicionado o modelo de balança Megellan conforme contribuição do tópico.
+    http://www.djsystem.com.br/acbr/forum/viewtopic.php?f=10&t=7711
+    (por: Regys Silveira)    
+
 Data: 05/10/2012
 -- ACBrECFSwedaSTX --
 [-] Correção para emissão da ReducaoZ quando último cupom permaneceu aberto e

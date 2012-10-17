@@ -203,7 +203,8 @@ object Form1: TForm1
         'Toledo2180'
         'Urano'
         'LucasTec'
-        'Magna')
+        'Magna'
+		'Magellan')
     end
     object cmbPortaSerial: TComboBox
       Left = 16

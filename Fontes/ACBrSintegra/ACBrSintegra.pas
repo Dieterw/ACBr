@@ -73,6 +73,11 @@
 |   - Adição dos registros 88STES e 88STITNF por Wilson Camargo
 |* 23/02/2012: EMBarbosa
 |   * Correção do contador (88STES e 88STITNF) por Wilson Camargo
+|* 17/10/2012: EMBarbosa
+|   - Agora é possível lançar mais de uma redução Z no mesmo dia (60M) e ainda
+|     assim, ter a ordenação de registros 60 filhos corretamente. Para isso,
+|     crie os registros dentro do 60M, usando seus respectivos correspondentes
+|     Regs60A, Regs60D, Regs60I.
 *******************************************************************************}
 
 {$I ACBr.inc}
@@ -84,7 +89,7 @@ interface
 uses Classes, SysUtils, Contnrs, ACBrBase, ACBrConsts, StrUtils;
 
 type
-  TVersaoValidador = (vv523,vv524);
+  TVersaoValidador = (vv523, vv524);
   TVersaoEan = (eanIndefinido, ean8, ean12, ean13, ean14);
 
 
@@ -1481,7 +1486,7 @@ type
     procedure GerarRegistros55;
 
     procedure GerarRegistros60M(Registro60M: TRegistro60M);
-    procedure GerarRegistros60A(Registros60A: TRegistros60A);
+    procedure GerarRegistros60A(vRegistros60A: TRegistros60A);
     procedure GerarRegistros60D(Registros60D: TRegistros60D);
     procedure GerarRegistros60I(Registros60I: TRegistros60I);
     procedure GerarRegistros60R;
@@ -1607,10 +1612,20 @@ begin
   FRegistros55:=TRegistros55.Create(True);
   FRegistros56:=TRegistros56.Create(True);
   FRegistros60M:=TRegistros60M.Create(True);
-  FRegistros60A:=TRegistros60A.Create(True);
-  FRegistros60D:=TRegistros60D.Create(True);
-  FRegistros60I:=TRegistros60I.Create(True);
-  FRegistros60R:=TRegistros60R.Create(True);
+
+  //Os registros abaixo são criados com AOwnsObject = False.
+  // Seus itens então precisarão ser destruídos manualmente.
+  // Veja: http://stackoverflow.com/questions/10410019/use-of-tlist-and-tobjectlist
+  // AOwnsObject é False para que, ao gerar um arquivo da FVersaoValidador = vv574,
+  //  o TACBrSintegra possa jogar os itens das propriedade Registros60A(D)(I)(R)
+  //  dentro do Registro60M nas propriedades equivalentes,
+  //  (a saber FRegs60A, FRegs60D e FRegs60I),  e não cause Access Violation
+  //  ao tentar destruir os registros novamente;
+  FRegistros60A:=TRegistros60A.Create(False);
+  FRegistros60D:=TRegistros60D.Create(False);
+  FRegistros60I:=TRegistros60I.Create(False);
+  FRegistros60R:=TRegistros60R.Create(False);
+
   FRegistros61:=TRegistros61.Create(True);
   FRegistros61R:=TRegistros61R.Create(True);
   FRegistros70:=TRegistros70.Create(True);
@@ -2030,19 +2045,19 @@ end;
 end;
 end;
 
-procedure TACBrSintegra.GerarRegistros60A(Registros60A: TRegistros60A);
+procedure TACBrSintegra.GerarRegistros60A(vRegistros60A: TRegistros60A);
 var
   wregistro: string;
   i: Integer;
 begin
-for i:=0 to Registros60A.Count -1 do
+for i:=0 to vRegistros60A.Count -1 do
 begin
   wregistro:='60A';
-  wregistro:=wregistro+FormatDateTime('yyyymmdd',Registros60A[i].Emissao);
-  wregistro:=wregistro+Padl(Trim(Registros60A[i].NumSerie),20);
-  wregistro:=wregistro+Padl(TiraPontos(Registros60A[i].StAliquota),4);
+  wregistro:=wregistro+FormatDateTime('yyyymmdd',vRegistros60A[i].Emissao);
+  wregistro:=wregistro+Padl(Trim(vRegistros60A[i].NumSerie),20);
+  wregistro:=wregistro+Padl(TiraPontos(vRegistros60A[i].StAliquota),4);
   wregistro:=wregistro+TbStrZero(TiraPontos(
-    FormatFloat('#,##0.00',Registros60A[i].Valor)),12);
+    FormatFloat('#,##0.00',vRegistros60A[i].Valor)),12);
   wregistro:=wregistro+space(79);
   WriteRecord(wregistro);
 end;
@@ -2273,9 +2288,11 @@ end;
 procedure TACBrSintegra.GerarRegistros90;
 var
   wregistro: string;
+  WTotal60A, WTotal60D, WTotal60I : Integer;
   wtotal88: Integer;
-  WTotal90:integer;
-  WSeque90:integer;
+  WTotal90: integer;
+  WSeque90: integer;
+  I: Integer;
 begin
 
 wregistro:='90'+TBStrZero(TiraPontos(Registro10.CNPJ),14);
@@ -2293,9 +2310,29 @@ if Registros55.Count>0 then
 if Registros56.Count>0 then
   wregistro:=wregistro+'56'+TBStrZero(IntToStr(Registros56.Count),8);
 
+  if FVersaoValidador = vv524 then
+  begin
+    WTotal60A := 0;
+    WTotal60D := 0;
+    WTotal60I := 0;
+    for I := 0 to (Registros60M.Count -1) do
+    begin
+      WTotal60A := WTotal60A + Registros60M[I].Regs60A.Count;
+      WTotal60D := WTotal60D + Registros60M[I].Regs60D.Count;
+      WTotal60I := WTotal60I + Registros60M[I].Regs60I.Count;
+    end;
+  end
+  else
+  begin
+    WTotal60A := Registros60A.Count;
+    WTotal60D := Registros60D.Count;
+    WTotal60I := Registros60I.Count;
+  end;
+
 if Registros60M.Count>0 then
-  wregistro:=wregistro+'60'+TBStrZero(IntToStr(Registros60M.Count+Registros60A.Count+
-    Registros60D.Count+Registros60I.Count+Registros60R.Count),8);
+  wregistro:=wregistro+'60'+TBStrZero(IntToStr(Registros60M.Count+WTotal60A+
+    WTotal60D+WTotal60I+Registros60R.Count),8);
+
 if Registros61.Count>0 then
   wregistro:=wregistro+'61'+TBStrZero(IntToStr(Registros61.Count+Registros61R.Count),8);
 if Registros70.Count>0 then
@@ -2366,7 +2403,7 @@ wregistro:='90'+TBStrZero(TiraPontos(Registro10.CNPJ),14);
 wregistro:=wregistro+Padl(TiraPontos(Registro10.Inscricao),14);
 wregistro:=wregistro+'99'+TBStrZero(IntToStr(Registros50.Count+Registros51.Count+
   Registros53.Count+Registros54.Count+Registros55.Count+registros56.count+
-  (Registros60M.Count+Registros60A.Count+Registros60D.Count+Registros60I.Count+Registros60R.Count)+
+  (Registros60M.Count+WTotal60A+WTotal60D+WTotal60I+Registros60R.Count)+
   (Registros61.Count+Registros61R.Count)+Registros70.Count+Registros71.Count+
   Registros74.Count+Registros75.Count+Registros76.Count+Registros77.Count+
   Registros85.Count+Registros86.Count+wtotal88+wtotal90),8);
@@ -2401,9 +2438,18 @@ FRegistros54.Clear;
 FRegistros55.Clear;
 FRegistros56.Clear;
 FRegistros60M.Clear;
+
+if FVersaoValidador = vv523 then //Caso esteja usando vv523, destruir os componentes
+  FRegistros60A.OwnsObjects := True;
 FRegistros60A.Clear;
+if FVersaoValidador = vv523 then 
+  FRegistros60D.OwnsObjects := True;
 FRegistros60D.Clear;
+if FVersaoValidador = vv523 then 
+  FRegistros60I.OwnsObjects := True;
 FRegistros60I.Clear;
+if FVersaoValidador = vv523 then 
+  FRegistros60R.OwnsObjects := True;
 FRegistros60R.Clear;
 FRegistros61.Clear;
 FRegistros61R.Clear;
@@ -3281,13 +3327,25 @@ var
 begin
   witem1 := TRegistro60M(Item1);
   witem2 := TRegistro60M(Item2);
+
   if witem1.Emissao>witem2.Emissao then
   begin
     Result:=1
   end
   else if witem1.Emissao = witem2.Emissao then
   begin
-    Result:=0;
+    if witem1.CRZ >witem2.CRZ  then
+    begin
+      Result := 1;
+    end
+    else if witem1.CRZ =witem2.CRZ  then
+    begin
+      Result := 0;
+    end
+    else
+    begin
+      Result := -1;
+    end;
   end
   else
   begin
@@ -3357,16 +3415,18 @@ end;
 constructor TRegistro60M.Create;
 begin
   inherited Create;
-FRegs60A:=TRegistros60A.Create(False);
-FRegs60D:=TRegistros60D.Create(False);
-FRegs60I:=TRegistros60I.Create(False);
+  FRegs60A := TRegistros60A.Create(True);
+  FRegs60D := TRegistros60D.Create(True);
+  FRegs60I := TRegistros60I.Create(True);
 end;
 
 destructor TRegistro60M.Destroy;
+var
+ i: Integer;
 begin
-  FreeAndNil(FRegs60A);
-  FreeAndNil(FRegs60D);
-  FreeAndNil(FRegs60I);
+  FRegs60A.Free;
+  FRegs60D.Free;
+  FRegs60I.Free;
   inherited;
 end;
 

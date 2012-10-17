@@ -2167,6 +2167,10 @@ begin
   while FRetCompNfse <> '' do
    begin
     j := Pos('</' + Prefixo3 + 'Nfse>', FRetCompNfse);
+    // Incluido por Italo em 17/10/2012
+    if j = 0
+     then j := Pos('</' + Prefixo4 + 'Nfse>', FRetCompNfse);
+
     if j > 0
      then begin
       FRetNfse := FRetCompNfse;

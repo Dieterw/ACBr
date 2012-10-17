@@ -324,7 +324,7 @@ begin
                   Space(1)                                                +  // 326 a 326 - Filler - Brancos
                   padL( OnlyNumber(Sacado.CEP), 8 )                       +  // 327 a 334 - CEP do sacado
                   padL('', 5, '0')                                        +  // 335 a 339 - Código do sacado junto ao cliente (zeros quando inexistente)
-                  padL('', 14, '0')                                       +  // 340 a 353 - CIC/CGC do sacador avalista
+                  padL('', 14, ' ')                                       +  // 340 a 353 - CIC/CGC do sacador avalista
                   Space(41)                                               +  // 354 a 394 - Nome do sacador avalista
                   IntToStrZero( ListadeBoletos.IndexOf(ACBrTitulo)+2, 6 );   // 395 a 400 - Número sequencial do registro
 

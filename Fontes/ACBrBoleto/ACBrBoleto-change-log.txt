@@ -133,6 +133,10 @@ Versao 0.0.10a do FortesReport 06/07/11
 
 	
 	
+Versao 0.0.46a
+[-] Unit Sicred - Corrigida geração do arquivo remessa CNAB400. Apesar do Manual do Banco
+    informar o campo CPF/CNPJ do Avalista como Numérico, o arquivo só é validado se o campo
+    tiver conteúdo vazio(quando não existe Sacador/Avalista). (Juliana Tamizou)	
 Versao 0.0.45a
 [+] Unit Sicred - Adiciona geração do arquivo remessa e leitura do arquivo retorno CNAB240.
     (Felipe Sortica).  

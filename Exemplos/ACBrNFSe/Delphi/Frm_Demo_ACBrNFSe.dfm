@@ -323,6 +323,7 @@ object frmDemo_ACBrNFSe: TfrmDemo_ACBrNFSe
               'Criciuma/4204608/SC'
               'Cuiaba/5103403/MT'
               'Diadema/3513801/SP'
+              'Duque de Caxias/3301702/RJ'
               'Eunapolis/2910727/BA'
               'Fazenda Rio Grande/4107652/PR'
               'Feira de Santana/2910800/BA'

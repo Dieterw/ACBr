@@ -636,6 +636,7 @@ begin
   3304557  // Rio de Janeiro/RJ
          : Provedor := 'RJ';
 
+  3301702, // Duque de Caxias/RJ
   3501608  // Americana/SP
          : Provedor := 'Tiplan';
 
@@ -788,6 +789,7 @@ begin
 
   3300456: Cidade := 'Belford Roxo/RJ';
   3301009: Cidade := 'Campos dos Goytacazes/RJ';
+  3301702: Cidade := 'Duque de Caxias/RJ';
   3302254: Cidade := 'Itatiaia/RJ';
   3302700: Cidade := 'Marica/RJ';
   3303302: Cidade := 'Niteroi/RJ';

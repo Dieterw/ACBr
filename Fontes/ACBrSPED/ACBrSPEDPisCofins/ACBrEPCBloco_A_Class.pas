@@ -53,7 +53,7 @@ unit ACBrEPCBloco_A_Class;
 interface
 
 uses SysUtils, Classes, DateUtils, ACBrSped, ACBrEPCBloco_A, ACBrEPCBlocos,
-     ACBrTXTClass, ACBrEPCBloco_0_Class;
+     ACBrTXTClass, ACBrEPCBloco_0_Class, Dialogs;
 
 type
   /// TBloco_A - Abertura, Identificação e Referências
@@ -300,7 +300,7 @@ begin
           /// Tratamento NFs canceladas 02 - 19-ago-2011
           if Pos(strCOD_SIT,'02') > 0 then
           begin
-            COD_PART       := '';
+            //COD_PART       := ''; Correção Mário Mesquita - programador Criare Informática
             CHV_NFSE       := '';
             DT_DOC         := 0;
             DT_EXE_SERV    := 0;
@@ -309,7 +309,6 @@ begin
           end
           else
             booNFCancelada := false;
-
 
           case IND_PGTO of
             tpVista        : strIND_PGTO := '0';

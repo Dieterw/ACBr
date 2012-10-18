@@ -193,6 +193,7 @@ type
      procedure VerificarIniciouRequisicao; override;
 
      Function SuportaDesconto : Boolean ;
+     Function HMS : String ;
 
    public
      property Respostas : TStringList read fRespostas ;
@@ -655,7 +656,7 @@ Procedure TACBrTEFDCliSiTef.ATV ;
 var
    Sts : Integer;
 begin
-  Sts := FazerRequisicao( fOperacaoATV, 'ATV', 0, '999990' ) ;
+  Sts := FazerRequisicao( fOperacaoATV, 'ATV', 0, HMS ) ;
 
   if Sts = 10000 then
      Sts := ContinuarRequisicao( CACBrTEFD_CliSiTef_ImprimeGerencialConcomitante ) ;
@@ -671,7 +672,7 @@ Function TACBrTEFDCliSiTef.ADM : Boolean;
 var
    Sts : Integer;
 begin
-  Sts := FazerRequisicao( fOperacaoADM, 'ADM', 0, '999991', fRestricoes ) ;
+  Sts := FazerRequisicao( fOperacaoADM, 'ADM', 0, HMS, fRestricoes ) ;
 
   if Sts = 10000 then
      Sts := ContinuarRequisicao( CACBrTEFD_CliSiTef_ImprimeGerencialConcomitante ) ;
@@ -782,7 +783,7 @@ begin
   Respostas.Values['515'] := FormatDateTime('DDMMYYYY',DataHoraTransacao) ;
   Respostas.Values['516'] := NSU ;
 
-  Sts := FazerRequisicao( fOperacaoCNC, 'CNC', 0, '999992' ) ;
+  Sts := FazerRequisicao( fOperacaoCNC, 'CNC', 0, HMS ) ;
 
   if Sts = 10000 then
      Sts := ContinuarRequisicao( CACBrTEFD_CliSiTef_ImprimeGerencialConcomitante ) ;
@@ -1202,33 +1203,32 @@ begin
 
          until Result <> 10000;
       finally
-        if GerencialAberto then
-        try
-           ComandarECF( opeFechaGerencial );
-        except
-           ImpressaoOk := False ;
-        end;
+         if GerencialAberto then
+         try
+            ComandarECF( opeFechaGerencial );
+         except
+            ImpressaoOk := False ;
+         end;
 
-        if (ArqBackUp <> '') and FileExists( ArqBackUp ) then
-           SysUtils.DeleteFile( ArqBackUp );
+         if (ArqBackUp <> '') and FileExists( ArqBackUp ) then
+            SysUtils.DeleteFile( ArqBackUp );
 
-        if HouveImpressao or fCancelamento then
-           FinalizarTransacao( (ImpressaoOk or fCancelamento),
-                               Resp.DocumentoVinculado );
+         if HouveImpressao or ( ImprimirComprovantes and fCancelamento) then
+            FinalizarTransacao( ImpressaoOk, Resp.DocumentoVinculado );
 
-        BloquearMouseTeclado( False );
+         BloquearMouseTeclado( False );
 
-        { Transfere valore de "Conteudo" para as propriedades }
-        // DEBUG
-        //GravaLog( Self.Resp.Conteudo.Conteudo.Text );
-        TACBrTEFDRespCliSiTef( Self.Resp ).ConteudoToProperty ;
+         { Transfere valore de "Conteudo" para as propriedades }
+         // DEBUG
+         //GravaLog( Self.Resp.Conteudo.Conteudo.Text );
+         TACBrTEFDRespCliSiTef( Self.Resp ).ConteudoToProperty ;
 
-        if (HouveImpressao and fCancelamento) then
-           DoExibeMsg( opmOK,
-                       Format( CACBrTEFD_CliSiTef_TransacaoEfetuadaReImprimir,
-                               [Resp.NSU]) ) ;
+         if (HouveImpressao and fCancelamento) then
+            DoExibeMsg( opmOK,
+                        Format( CACBrTEFD_CliSiTef_TransacaoEfetuadaReImprimir,
+                                [Resp.NSU]) ) ;
 
-        fpAguardandoResposta := False ;
+         fpAguardandoResposta := False ;
       end;
    end ;
 end;
@@ -1266,24 +1266,32 @@ procedure TACBrTEFDCliSiTef.FinalizarTransacao( Confirma : Boolean;
    DocumentoVinculado : AnsiString);
 Var
    DataStr, HoraStr : AnsiString;
+   Finalizacao : Integer;
 begin
    fRespostas.Clear;
    fIniciouRequisicao := False;
 
-   if (fReimpressao) or (pos(DocumentoVinculado, fDocumentosProcessados) > 0) then
+   { Re-Impressão não precisa de Finalização }
+   if fReimpressao then
+      exit ;
+
+   { Já Finalizou este Documento por outra Transação ? }
+   if (pos(DocumentoVinculado, fDocumentosProcessados) > 0) then
       exit;
 
   fDocumentosProcessados := fDocumentosProcessados + DocumentoVinculado + '|' ;
 
-  DataStr := FormatDateTime('YYYYMMDD',Now);
-  HoraStr := FormatDateTime('HHNNSS',Now);
+  DataStr     := FormatDateTime('YYYYMMDD',Now);
+  HoraStr     := FormatDateTime('HHNNSS',Now);
+  Finalizacao := ifthen(Confirma or fCancelamento,1,0)
 
-  GravaLog( '*** FinalizaTransacaoSiTefInterativo. Confirma: '+IfThen(Confirma,'SIM','NAO')+
+  GravaLog( '*** FinalizaTransacaoSiTefInterativo. Confirma: '+
+                                          IfThen(Finalizacao = 1,'SIM','NAO')+
                                           ' Documento: ' +DocumentoVinculado+
                                           ' Data: '      +DataStr+
                                           ' Hora: '      +HoraStr ) ;
 
-  xFinalizaTransacaoSiTefInterativo( IfThen(Confirma or fCancelamento,1,0),
+  xFinalizaTransacaoSiTefInterativo( Finalizacao,
                                      PAnsiChar( DocumentoVinculado ),
                                      PAnsiChar( DataStr ),
                                      PAnsiChar( HoraStr ) ) ;
@@ -1404,6 +1412,11 @@ begin
                Assigned( OnComandaECFSubtotaliza ) and
                (not AutoEfetuarPagamento) ;
   end;
+end;
+
+function TACBrTEFDCliSiTef.HMS: String;
+begin
+   Result := FormatDateTime('hhmmss',Now);
 end;
 
 end.

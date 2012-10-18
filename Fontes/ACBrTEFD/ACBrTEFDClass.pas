@@ -55,7 +55,7 @@ uses
   {$ENDIF} ;
 
 const
-   CACBrTEFD_Versao      = '4.2.1' ;
+   CACBrTEFD_Versao      = '4.2.2' ;
    CACBrTEFD_EsperaSTS   = 7 ;
    CACBrTEFD_EsperaSleep = 250 ;
    CACBrTEFD_NumVias     = 2 ;
@@ -2253,7 +2253,7 @@ begin
   GravaLog( Name +' ImprimirRelatorio: '+Req.Header );
 
   if fpSalvarArquivoBackup then
-    CopiarResposta ;
+     CopiarResposta ;
 
   ImpressaoOk  := False ;
   RemoverMsg   := False ;

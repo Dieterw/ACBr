@@ -47,6 +47,15 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data:  18/10/2012 - 4.2.2
+-- ACBrTEFDCliSitef --
+[*] Envio do Parametro Documento Vinculado em transações administrativas usando
+    HHMMSS e não um valor fixo.    (por: DSA)
+[-] Corrigido Bug introduzudo nas versões 3.3.0 e 4.2.1, que modificou o fluxo
+    de Impressão dos Comprovantes. Causando problemas na Confirmação de
+    transações ADM           (por: DSA)
+
+
 Data:  09/10/2012 - 4.2.1
 -- ACBrTEFDCliSitef --
 [-] Correção para Confirmar a transação de cancelamento mesmo quando ocorrer

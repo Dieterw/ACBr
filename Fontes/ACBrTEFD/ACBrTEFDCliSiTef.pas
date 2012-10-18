@@ -1283,7 +1283,7 @@ begin
 
   DataStr     := FormatDateTime('YYYYMMDD',Now);
   HoraStr     := FormatDateTime('HHNNSS',Now);
-  Finalizacao := ifthen(Confirma or fCancelamento,1,0)
+  Finalizacao := ifthen(Confirma or fCancelamento,1,0);
 
   GravaLog( '*** FinalizaTransacaoSiTefInterativo. Confirma: '+
                                           IfThen(Finalizacao = 1,'SIM','NAO')+

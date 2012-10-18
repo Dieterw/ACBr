@@ -10,8 +10,7 @@ uses
   Classes, SysUtils,
   Forms, Controls, Graphics, Dialogs,
   StdCtrls, ExtCtrls, Buttons, ComCtrls, ACBrECF, ACBrDevice, ACBrTEFD,
-  ACBrTEFDClass, ACBrUtil , ACBrTEFDCliSiTef, ACBrTEFDCliDTEF, ACBrECFClass,
-  ACBrBase;
+  ACBrTEFDClass, ACBrUtil , ACBrTEFDCliSiTef, ACBrBase;
 
 type
 
@@ -117,6 +116,8 @@ type
      ckCliSiTef: TCheckBox;
     ckAuttar: TCheckBox;
     sAuttar: TShape;
+    lMeuAcresDesc: TLabel;
+    edValorDescAcre: TEdit;
      procedure ACBrECF1MsgPoucoPapel(Sender : TObject) ;
      procedure ACBrTEFD1AguardaResp(Arquivo : String;
         SegundosTimeOut : Integer; var Interromper : Boolean);
@@ -351,7 +352,7 @@ var
    Linha: String;
    Valor: Double;
 begin
-  Result := 0;
+  Result := 0 ;
 
   { Adicionando valores de Pagamentos a Fazer }
   For I := 0 to mPagamentos.Lines.Count-1 do
@@ -365,7 +366,7 @@ end;
 function TForm1.CalculaSaldoRestante: Double;
 begin
   // Lendo Valor do Saldo do ECF //
-  Result := ACBrECF1.Subtotal ;
+  Result := ACBrECF1.Subtotal + StringToFloatDef(edValorDescAcre.Text, 0);
   Result := Result - ACBrECF1.TotalPago ;
   Result := Result - CalculaTotalPago  ;
 
@@ -517,7 +518,7 @@ procedure TForm1.bVendeItemClick(Sender : TObject);
 Var
   Valor : Double ;
 begin
-  Valor := StrToFloat(edValorECF.Text);
+  Valor := StringToFloatDef(edValorECF.Text, 0);
 
   try
     bVendeItem.Enabled := False ;
@@ -576,7 +577,7 @@ begin
       ACBrTEFD1.NCN( AForm.cbxRede.Text,
                      AForm.edNSU.Text,
                      AForm.edFinalizacao.Text,
-                     StrToFloat( AForm.edValor.Text ) );
+                     StringToFloatDef( AForm.edValor.Text, 0 ) );
       Memo1.Lines.Add('NCN executado com sucesso');
     end;
   finally
@@ -761,7 +762,8 @@ begin
      ineSubTotal :
        begin
          ASubTotal := ACBrECF1.Subtotal ;
-         ASubTotal := ASubTotal - ACBrECF1.TotalPago ;
+         ASubTotal := ASubTotal - ACBrECF1.TotalPago +
+                      StringToFloatDef(edValorDescAcre.Text, 0);
 
          RetornoECF := FloatToStr( ASubTotal ) ;
        end;
@@ -840,7 +842,7 @@ begin
   if StringToFloatDef(edValorECF.Text,0) = 0 then
      exit ;
 
-  ACBrECF1.EfetuaPagamento( CodFormaPagamento, StrToFloat(edValorECF.Text) );
+  ACBrECF1.EfetuaPagamento( CodFormaPagamento, StringToFloatDef(edValorECF.Text, 0) );
   Memo1.Lines.Add('ACBrECF.EfetuaPagamento');
   Memo1.Lines.Add( 'Pagamento: '+CodFormaPagamento+' no valor: R$ '+edValorECF.Text+
                    ' registrado');
@@ -1003,7 +1005,7 @@ procedure TForm1.bAbreVendeSubTotalizaClick(Sender : TObject);
 Var
   Valor : Double ;
 begin
-  Valor := StrToFloat(edValorECF.Text);
+  Valor := StringToFloatDef(edValorECF.Text, 0);
 
   try
     self.Enabled := False ;
@@ -1023,7 +1025,7 @@ end;
 
 procedure TForm1.bCHQClick(Sender : TObject);
 begin
-  ACBrTEFD1.CHQ( StrToFloat(edValorTEF.Text) ,edFPGCheque.Text, ACBrECF1.NumCOO);
+  ACBrTEFD1.CHQ( StringToFloatDef(edValorTEF.Text, 0) ,edFPGCheque.Text, ACBrECF1.NumCOO);
   MostraSaldoRestante;
 end;
 
@@ -1053,7 +1055,7 @@ begin
       ACBrTEFD1.CNC( AForm.cbxRede.Text,
                      AForm.edNSU.Text,
                      DT,
-                     StrToFloat( AForm.edValor.Text ) );
+                     StringToFloatDef( AForm.edValor.Text, 0 ) );
       Memo1.Lines.Add('CNC executado com sucesso');
 
     end;
@@ -1089,7 +1091,7 @@ end;
 
 procedure TForm1.bCRTClick(Sender : TObject);
 begin
-   ACBrTEFD1.CRT( StrToFloat(edValorTEF.Text) ,edFPGCartao.Text, ACBrECF1.NumCOO);
+   ACBrTEFD1.CRT( StringToFloatDef(edValorTEF.Text, 0) ,edFPGCartao.Text, ACBrECF1.NumCOO);
    MostraSaldoRestante;
 end;
 
@@ -1336,17 +1338,22 @@ procedure TForm1.ACBrTEFD1ComandaECFSubtotaliza(DescAcre: Double;
    var RetornoECF: Integer);
 Var
    Est : TACBrECFEstado ;
+   MeuAcresDesc : Double ;
 begin
   Memo1.Lines.Add('ComandaECFSubtotaliza: DescAcre: ' + FormatFloat('0.00',DescAcre) );
 
+  MeuAcresDesc := StringToFloatDef( edValorDescAcre.Text, 0 );
   try
     Est := ACBrECF1.Estado;
 
     if Est = estNaoFiscal then
-       ACBrECF1.SubtotalizaNaoFiscal( DescAcre, 'Projeto ACBr|http://acbr.sf.net' )
+       ACBrECF1.SubtotalizaNaoFiscal( DescAcre + MeuAcresDesc, 'Projeto ACBr|http://acbr.sf.net' )
     else
-       ACBrECF1.SubtotalizaCupom( DescAcre, 'Projeto ACBr|http://acbr.sf.net' );
+       ACBrECF1.SubtotalizaCupom( DescAcre + MeuAcresDesc, 'Projeto ACBr|http://acbr.sf.net' );
 
+    { Remove o Desconto pois já foi aplicado, caso contrário iria influenciar o
+      retorno de ineSubTotal }
+    edValorDescAcre.Text := '0,00';
     RetornoECF := 1 ;
   except
     RetornoECF := 0 ;

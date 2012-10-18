@@ -61,9 +61,9 @@ object Form1: TForm1
       end
       object Panel5: TPanel
         Left = 1
-        Top = 160
+        Top = 128
         Width = 168
-        Height = 33
+        Height = 65
         Align = alBottom
         ParentShowHint = False
         ShowHint = True
@@ -240,12 +240,31 @@ object Form1: TForm1
             B200EEC5AC00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00}
           OnClick = spbAdicionaPagamento1Click
         end
+        object lMeuAcresDesc: TLabel
+          Left = 25
+          Top = 42
+          Width = 54
+          Height = 13
+          Alignment = taRightJustify
+          Caption = 'Acrec/Desc'
+          Color = clBtnFace
+          ParentColor = False
+        end
+        object edValorDescAcre: TEdit
+          Left = 86
+          Top = 34
+          Width = 72
+          Height = 25
+          AutoSize = False
+          TabOrder = 0
+          Text = '0,00'
+        end
       end
       object mPagamentos: TMemo
         Left = 1
         Top = 14
         Width = 168
-        Height = 146
+        Height = 114
         Align = alClient
         ReadOnly = True
         TabOrder = 1

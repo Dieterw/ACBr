@@ -1323,6 +1323,8 @@ begin
 
 {$IFDEF PL_104}
   Tipo := 0;
+  // Incluido por Italo em 19/10/2012
+  XML := SeparaDados( XML, 'infModal' );
 
   if pos( '<aereo>', XML ) <> 0
    then begin

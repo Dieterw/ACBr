@@ -338,6 +338,8 @@ begin
   inherited create( AOwner ) ;
 
   fpDevice.HandShake := hsDTR_DSR ;
+  fpPaginaDeCodigo   := 1252 ;
+
   { Variaveis internas dessa classe }
   fsVerProtocolo     := '' ;
   fsSubModelo        := '';

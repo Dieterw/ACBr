@@ -98,6 +98,13 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Data: 22/10/2012
+-- ACBrECFBematech --
+[*] Ajuste no método ArquivoMFD_DLL para nova versão da DLL 6.1.1.1  (por: DSA)
+
+-- ACBrECFSwedaSTX --
+[*] Adicionado suporte a página de código 1252 como default  (por: DSA)
+
 Data: 17/10/2012
 -- ACBrBal --
 [+] Adicionado o modelo de balança Megellan conforme contribuição do tópico.

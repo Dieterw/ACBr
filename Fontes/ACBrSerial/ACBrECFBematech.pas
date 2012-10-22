@@ -357,6 +357,8 @@ TACBrECFBematech = class( TACBrECFClass )
     function GetTotalizadoresParciais : String ;
     procedure CRZToCOO(const ACRZIni, ACRZFim: Integer; var ACOOIni,
       ACOOFim: Integer);
+    procedure FinalidadeToTipoPrefixo( AFinalidade : TACBrECFFinalizaArqMFD;
+       var Tipo: Integer; var Prefixo: String) ;
 
  protected
     property TotalizadoresParciais : String read GetTotalizadoresParciais ;
@@ -3714,8 +3716,8 @@ begin
  {$ENDIF}
 end;
 
-procedure TACBrECFBematech.PafMF_GerarCAT52(const DataInicial,
-  DataFinal: TDateTime; const DirArquivos: string);
+procedure TACBrECFBematech.PafMF_GerarCAT52(const DataInicial: TDateTime;
+   const DataFinal: TDateTime; const DirArquivos: string);
 var
   Resp: Integer;
   FilePath, DiaIni, DiaFim, NumUsu: AnsiString;
@@ -3789,22 +3791,14 @@ procedure TACBrECFBematech.ArquivoMFD_DLL(DataInicial, DataFinal: TDateTime;
 Var
   Arquivos : TStringList ;
   Resp, Tipo : Integer ;
-  DiaIni, DiaFim, Prop, FileMask, FilePath : AnsiString ;
+  DiaIni, DiaFim, Prop, Prefixo, FileMask, FilePath : AnsiString ;
   OldAtivo : Boolean ;
   {$IFDEF LINUX} Cmd, ArqTmp : String ; {$ENDIF}
 begin
   Prop     := IntToStr( StrToIntDef( UsuarioAtual, 1) ) ;
   FilePath := ExtractFilePath( NomeArquivo );
 
-  case Finalidade of
-    finMF:  Tipo := 0;
-    finMFD: Tipo := 1;
-    finTDM: Tipo := 2;
-    finRZ:  Tipo := 3;
-    finRFD: Tipo := 4;
-  else
-    Tipo := 2;
-  end;
+  FinalidadeToTipoPrefixo( Finalidade, Tipo, Prefixo );
 
  {$IFDEF LINUX}
   ArqTmp := FilePath +'ACBr.mfd';
@@ -3840,13 +3834,15 @@ begin
 
   DiaIni   := FormatDateTime('dd"/"mm"/"yyyy', DataInicial) ;
   DiaFim   := FormatDateTime('dd"/"mm"/"yyyy', DataFinal) ;
-  FileMask := FilePath + LeftStr(Trim(NumSerie),15) + '*_'+
-              OnlyNumber(DiaIni)+'_'+OnlyNumber(DiaFim)+'.TXT';
+  FileMask := FilePath + Prefixo + Trim(NumSerie) + '_' +
+              FormatDateTime('yyyymmdd',Now ) + '_*.TXT';
 
   Arquivos := TStringList.Create;
   OldAtivo := Ativo ;
   try
-     DeleteFile(NomeArquivo);
+     DeleteFile( NomeArquivo );
+     DeleteFiles( FileMask );
+
      AbrePortaSerialDLL( fpDevice.Porta, FilePath ) ;
 
      Resp := xBematech_FI_ArquivoMFD( '', DiaIni, DiaFim, 'D', Prop, Tipo,
@@ -3877,7 +3873,7 @@ procedure TACBrECFBematech.ArquivoMFD_DLL( ContInicial, ContFinal : Integer;
 Var
   Arquivos : TStringList ;
   Resp, Tipo : Integer ;
-  Prop, COOIni, COOFim, FileMask, FilePath : AnsiString ;
+  Prop, COOIni, COOFim, Prefixo, FileMask, FilePath : AnsiString ;
   OldAtivo : Boolean ;
   {$IFDEF LINUX} Cmd, ArqTmp : String ; {$ENDIF}
 begin
@@ -3886,15 +3882,7 @@ begin
   if TipoContador = tpcCRZ then
     CRZToCOO(ContInicial, ContFinal, ContInicial, ContFinal) ;
 
-  case Finalidade of
-    finMF:  Tipo := 0;
-    finMFD: Tipo := 1;
-    finTDM: Tipo := 2;
-    finRZ:  Tipo := 3;
-    finRFD: Tipo := 4;
-  else
-    Tipo := 2;
-  end;
+  FinalidadeToTipoPrefixo( Finalidade, Tipo, Prefixo );
 
   Prop   := IntToStr( StrToIntDef( UsuarioAtual, 1) ) ;
   COOIni := IntToStrZero( ContInicial, 6 ) ;
@@ -3929,13 +3917,15 @@ begin
  {$ELSE}
   LoadDLLFunctions;
 
-  FileMask := FilePath + LeftStr(Trim(NumSerie),15) + '*_'+
-              COOIni+'_'+COOFim+'.TXT';
+  FileMask := FilePath + Prefixo + Trim(NumSerie) + '_' +
+              FormatDateTime('yyyymmdd',Now ) + '_*.TXT';
 
   Arquivos := TStringList.Create;
   OldAtivo := Ativo ;
   try
-     DeleteFile(NomeArquivo);
+     DeleteFile( NomeArquivo );
+     DeleteFiles( FileMask );
+
      AbrePortaSerialDLL( fpDevice.Porta, FilePath ) ;
 
      Resp := xBematech_FI_ArquivoMFD( '', COOIni, COOFim, 'C', Prop, Tipo,
@@ -4017,6 +4007,36 @@ begin
              'CRZ Final: '+IntToStr(ACRZFim)+' - COO: '+IntToStr(ACOOFim) );
   finally
     Retorno.Free;
+  end;
+end;
+
+procedure TACBrECFBematech.FinalidadeToTipoPrefixo(
+   AFinalidade: TACBrECFFinalizaArqMFD; var Tipo: Integer; var Prefixo: String);
+begin
+  Tipo    := 2;
+  Prefixo := 'TDM';
+
+  case AFinalidade of
+    finMF:
+      begin
+        Prefixo := 'MF' ;
+        Tipo    := 0;
+      end;
+    finMFD:
+      begin
+        Prefixo := 'MFD' ;
+        Tipo    := 1;
+      end;
+    finRZ:
+      begin
+        Prefixo := 'RZ' ;
+        Tipo    := 3;
+      end;
+    finRFD:
+      begin
+        Prefixo := 'RFD' ;
+        Tipo    := 4;
+      end;
   end;
 end;
 

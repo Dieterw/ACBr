@@ -97,6 +97,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 22/10/2012
+-- ACBrBal --
+[+] Adicionada a impressão do Nota Legal (DF)
+    Ver propriedade InfoRodapeCupom.NotaLegal e suas subpropriedades.
+    Adicionada a expressão "NL" ao MD5 para o DF.
+    (por: Regys Silveira)  
 
 Data: 22/10/2012
 -- ACBrECFBematech --

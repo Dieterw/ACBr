@@ -38,6 +38,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+22/10/2012
+-- ACBrEAD --
+[+] Adicionado a impressão do nota legal no relatório de configurações 
+    do Paf-ECF. (por: Regys Silveira)
+
 13/09/2012
 -- ACBrUtil --
 [-] Corrigido Bug de perda de acentos em sistemas com Unicode na

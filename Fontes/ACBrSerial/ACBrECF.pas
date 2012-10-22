@@ -377,6 +377,8 @@ TACBrECF = class( TACBrComponent )
     function GetInfoRodapeCupom: TACBrECFRodape;
     procedure SetInfoRodapeCupom(const Value: TACBrECFRodape);
     function GetRespostasComandoClass: TACBrInformacoes;
+    function GetRodape: String;
+    function GetRodapeUF: String;
   protected
     fpUltimoEstadoObtido: TACBrECFEstado;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
@@ -2983,51 +2985,7 @@ begin
   Observacao := StringReplace(Observacao,'|',#10,[rfReplaceAll]) ;
 
   { montar o rodape quando as informações de rodapé forem passadas }
-  RodapePafECF := EmptyStr;
-
-  // atende ao requisito do Paf-ECF
-  if Trim(InfoRodapeCupom.MD5) <> EmptyStr then
-    RodapePafECF := 'MD-5:' + Trim(InfoRodapeCupom.MD5);
-
-  // atende ao requisito do paf-ECF V item 2
-  if Trim(InfoRodapeCupom.PreVenda) <> EmptyStr then
-    RodapePafECF := RodapePafECF + 'PV' + Trim(InfoRodapeCupom.PreVenda);
-
-  // atende ao requisito do paf-ECF VI item 5
-  if Trim(InfoRodapeCupom.Dav) <> EmptyStr then
-    RodapePafECF := RodapePafECF + 'DAV' + Trim(InfoRodapeCupom.Dav);
-
-  // atende ao requisito do paf-ECF XLI item 1
-  if Trim(InfoRodapeCupom.DavOs) <> EmptyStr then
-    RodapePafECF := RodapePafECF + 'DAV-OS' + Trim(InfoRodapeCupom.DavOs);
-
-  // atende ao requisito VII-A 2-A (Cupom Mania [RJ])
-  if InfoRodapeCupom.CupomMania then
-  begin
-    RodapePafECF := RodapePafECF + #10 + 'CUPOM MANIA, CONCORRA A PRÊMIOS';
-    RodapePafECF := RodapePafECF + #10 + 'ENVIE SMS P/ 6789: ' +
-      Copy(OnlyNumber(fsECF.IE), 1, 8) +    // 8 primeiros digitos da Inscr.Estadual
-      FormatDateTime('ddmmyy', Date) +      // data atual
-      Format('%6.6d', [StrToInt(NumCOO)]) + // numero do coo do cupom
-      Format('%3.3d', [StrToInt(NumECF)]);  // numero do ecf
-
-    RodapePafECF := RodapePafECF + #10 + 'PROCON – R da Ajuda 5 – RJ – (21) 151';
-    RodapePafECF := RodapePafECF + #10 + 'ALERJ – R 1º de Março s/n – RJ – (21) 25881418';
-  end;
-
-  // atende ao requisito VII-A 2 (Minas Legal [MG])
-  // (Retificação http://www.fazenda.gov.br/confaz/confaz/atos/atos_cotepe/2011/AC039_11%20retifica%C3%A7%C3%A3o.htm)
-  if InfoRodapeCupom.MinasLegal then
-  begin
-    RodapePafECF := RodapePafECF + #10 + Format(
-      'MINAS LEGAL: %s %s %s', [
-      OnlyNumber(Self.CNPJ),
-      FormatDateTime('ddmmyyyy', Self.DataHora),
-      IntToStr(TruncFix(Self.Subtotal * 100))
-    ]);
-  end;
-
-  RodapePafECF := Trim(RodapePafECF);
+  RodapePafECF := Trim(GetRodape);
   if RodapePafECF <> EmptyStr then
     Observacao := RodapePafECF + #10 + Observacao;
 
@@ -3071,6 +3029,78 @@ begin
   InfoRodapeCupom.Clear;
 end;
 
+function TACBrECF.GetRodape: String;
+begin
+  Result := EmptyStr;
+
+  // atende ao requisito do Paf-ECF
+  if Trim(InfoRodapeCupom.MD5) <> EmptyStr then
+    Result := 'MD-5:' + Trim(InfoRodapeCupom.MD5);
+
+  // atende ao requisito do paf-ECF V item 2
+  if Trim(InfoRodapeCupom.PreVenda) <> EmptyStr then
+    Result := Result + 'PV' + Trim(InfoRodapeCupom.PreVenda);
+
+  // atende ao requisito do paf-ECF VI item 5
+  if Trim(InfoRodapeCupom.Dav) <> EmptyStr then
+    Result := Result + 'DAV' + Trim(InfoRodapeCupom.Dav);
+
+  // atende ao requisito do paf-ECF XLI item 1
+  if Trim(InfoRodapeCupom.DavOs) <> EmptyStr then
+    Result := Result + 'DAV-OS' + Trim(InfoRodapeCupom.DavOs);
+
+  Result := Trim(Result) + sLineBreak + Trim(GetRodapeUF);
+  Result := Trim(Result);
+end;
+
+function TACBrECF.GetRodapeUF: String;
+begin
+  Result := EmptyStr;
+
+  if InfoRodapeCupom.CupomMania then
+  begin
+    // atende ao requisito VII-A 2-A (Cupom Mania [RJ])
+
+    Result := Result + #10 + 'CUPOM MANIA, CONCORRA A PRÊMIOS';
+    Result := Result + #10 + 'ENVIE SMS P/ 6789: ' +
+      Copy(OnlyNumber(fsECF.IE), 1, 8) +    // 8 primeiros digitos da Inscr.Estadual
+      FormatDateTime('ddmmyy', Date) +      // data atual
+      Format('%6.6d', [StrToInt(NumCOO)]) + // numero do coo do cupom
+      Format('%3.3d', [StrToInt(NumECF)]);  // numero do ecf
+
+    Result := Result + #10 + 'PROCON – R da Ajuda 5 – RJ – (21) 151';
+    Result := Result + #10 + 'ALERJ – R 1º de Março s/n – RJ – (21) 25881418';
+  end
+  else if InfoRodapeCupom.MinasLegal then
+  begin
+    // atende ao requisito VII-A 2 (Minas Legal [MG])
+    // (Retificação http://www.fazenda.gov.br/confaz/confaz/atos/atos_cotepe/2011/AC039_11%20retifica%C3%A7%C3%A3o.htm)
+
+    Result := Result + #10 + Format(
+      'MINAS LEGAL: %s %s %s', [
+      OnlyNumber(Self.CNPJ),
+      FormatDateTime('ddmmyyyy', Self.DataHora),
+      IntToStr(TruncFix(Self.Subtotal * 100))
+    ]);
+  end
+  else if InfoRodapeCupom.NotaLegalDF.Imprimir then
+  begin
+    if InfoRodapeCupom.NotaLegalDF.ProgramaDeCredito then
+    begin
+      Result := Result + #10 +
+        'ESTABELECIMENTO INCLUÍDO NO PROGRAMA DE'#10 +
+        'CONCESSÃO DE CRÉDITOS - LEI 4.159/08.';
+    end;
+
+    Result := Result + #10 + '<n>NOTA LEGAL:</n>';
+
+    if InfoRodapeCupom.NotaLegalDF.ValorICMS > 0.00 then
+      Result := Result + ' ICMS = ' + FormatFloat(',#0.00', InfoRodapeCupom.NotaLegalDF.ValorICMS);
+
+    if InfoRodapeCupom.NotaLegalDF.ValorISS > 0.00 then
+      Result := Result + ' ISS = ' + FormatFloat(',#0.00', InfoRodapeCupom.NotaLegalDF.ValorISS);
+  end;
+end;
 
 procedure TACBrECF.Sangria(Valor: Double; Obs: AnsiString;
    DescricaoCNF: String; DescricaoFPG: String; IndiceBMP: Integer ) ;
@@ -5473,6 +5503,10 @@ begin
   // acertar para que saia o texto "MD-5" antes do numero
   MD5Texto := 'MD-5:' + copy(MD5, P, Length(MD5) );
 
+  // "NL" adicionado conforme requisito VIII-B item 6, somente para o DF
+  if InfoRodapeCupom.NotaLegalDF.Imprimir then
+    MD5Texto := MD5Texto + '"NL"';
+
   try
      fsECF.IdentificaPAF(NomeVersao, MD5Texto);
   except
@@ -6191,6 +6225,7 @@ begin
     Relatorio.Add('<n>Req. VIII-A</n>');
     Relatorio.Add(padL('ITEM 2 : MINAS LEGAL', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.MinasLegal ));
     Relatorio.Add(padL('ITEM 2A: CUPOM MANIA', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.CupomMania ));
+    Relatorio.Add(padL('ITEM 2B: NOTA LEGAL', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.NotaLegalDF ));
 
     Relatorio.Add('<n>REQUISITO XIV</n>');
     Relatorio.Add(padL('ITEM 4: TROCO EM CARTÃO', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.TrocoEmCartao ));

@@ -69,6 +69,19 @@ EACBrECFErro            = class(Exception) ;
 
 { TACBrECFRodape }
 
+TACBrECFRodapeNotaLegalDF = class
+  private
+    fsProgramaDeCredito: Boolean;
+    fsValorICMS: Double;
+    fsValorISS: Double;
+    fsImprimir: Boolean;
+  published
+    property Imprimir: Boolean read fsImprimir write fsImprimir;
+    property ProgramaDeCredito: Boolean read fsProgramaDeCredito write fsProgramaDeCredito;
+    property ValorICMS: Double read fsValorICMS write fsValorICMS;
+    property ValorISS: Double read fsValorISS write fsValorISS;
+end;
+
 TACBrECFRodape = class
   private
     fsPreVenda: String;
@@ -77,17 +90,21 @@ TACBrECFRodape = class
     fsDav: String;
     fsMinasLegal: Boolean;
     fsCupomMania: Boolean;
+    fsNotaLegalDF: TACBrECFRodapeNotaLegalDF;
     procedure SetMD5(AValue : String) ;
   public
     constructor Create;
+    destructor Destroy; override;
+
     procedure Clear;
   published
-    property MD5        : String  read fsMD5        write SetMD5;
-    property Dav        : String  read fsDav        write fsDav;
-    property DavOs      : String  read fsDavOs      write fsDavOs;
-    property PreVenda   : String  read fsPreVenda   write fsPreVenda;
-    property CupomMania : Boolean read fsCupomMania write fsCupomMania;
-    property MinasLegal : Boolean read fsMinasLegal write fsMinasLegal;
+    property MD5         : String  read fsMD5         write SetMD5;
+    property Dav         : String  read fsDav         write fsDav;
+    property DavOs       : String  read fsDavOs       write fsDavOs;
+    property PreVenda    : String  read fsPreVenda    write fsPreVenda;
+    property CupomMania  : Boolean read fsCupomMania  write fsCupomMania;
+    property MinasLegal  : Boolean read fsMinasLegal  write fsMinasLegal;
+    property NotaLegalDF : TACBrECFRodapeNotaLegalDF read fsNotaLegalDF write fsNotaLegalDF;
 end;
 
 { Definindo novo tipo para armazenar Aliquota de ICMS }
@@ -4070,7 +4087,11 @@ begin
   else if LeftStr(UpValue,3) = 'MD5' then
      P := 4 ;
 
-  fsMD5 := copy(AValue,P,Length(AValue)) ;
+  fsMD5 := copy(AValue,P,Length(AValue));
+
+  // "NL" adicionado conforme requisito VIII-B item 6, somente para o DF
+  if NotaLegalDF.Imprimir then
+    fsMD5 := fsMD5+ '"NL"'
 end ;
 
 constructor TACBrECFRodape.Create;
@@ -4078,8 +4099,19 @@ begin
   fsMD5        := EmptyStr;
   fsCupomMania := False;
   fsMinasLegal := False;
+  fsNotaLegalDF := TACBrECFRodapeNotaLegalDF.Create;
+
+  // colocado somente no create para não perder as configurações no clear
+  fsNotaLegalDF.Imprimir := False;
+  fsNotaLegalDF.fsProgramaDeCredito := False;
 
   Self.Clear;
+end;
+
+destructor TACBrECFRodape.Destroy;
+begin
+  FreeAndNil(fsNotaLegalDF);
+  inherited;
 end;
 
 procedure TACBrECFRodape.Clear;
@@ -4087,6 +4119,10 @@ begin
   fsDav        := EmptyStr;
   fsDavOs      := EmptyStr;
   fsPreVenda   := EmptyStr;
+
+  // restante dos dados do nota legal DF não deve limpar
+  fsNotaLegalDF.fsValorICMS := 0.00;
+  fsNotaLegalDF.fsValorISS  := 0.00;
 end;
 
 end.

@@ -339,6 +339,8 @@ type
     Label27: TLabel;
     Label23: TLabel;
     chIgnorarTagsFormatacao: TCheckBox;
+    cbxUF: TComboBox;
+    Label29: TLabel;
     procedure cbxModeloChange(Sender: TObject);
     procedure Sair1Click(Sender: TObject);
     procedure bAtivarClick(Sender: TObject);
@@ -1222,8 +1224,16 @@ begin
      ACBrECF1.InfoRodapeCupom.Dav := '0000000001';
      ACBrECF1.InfoRodapeCupom.DavOs := '0000000002';
      ACBrECF1.InfoRodapeCupom.PreVenda := '0000000003';
-     ACBrECF1.InfoRodapeCupom.CupomMania := True;
-     ACBrECF1.InfoRodapeCupom.MinasLegal := True;
+     ACBrECF1.InfoRodapeCupom.CupomMania := cbxUF.Text = 'MG';
+     ACBrECF1.InfoRodapeCupom.MinasLegal := cbxUF.Text = 'RJ';
+     ACBrECF1.InfoRodapeCupom.NotaLegalDF.Imprimir := cbxUF.Text = 'DF';
+
+     if ACBrECF1.InfoRodapeCupom.NotaLegalDF.Imprimir then
+     begin
+       ACBrECF1.InfoRodapeCupom.NotaLegalDF.ProgramaDeCredito := True;
+       ACBrECF1.InfoRodapeCupom.NotaLegalDF.ValorICMS := 123456.99;
+       ACBrECF1.InfoRodapeCupom.NotaLegalDF.ValorISS  := 123456.88;
+     end;
 
      Obs := StringReplace(Obs,'|',#10,[rfReplaceAll,rfIgnoreCase]) ;
      ACBrECF1.FechaCupom( Obs, StrToIntDef(IndiceBMP, 0) );
@@ -3506,7 +3516,7 @@ end;
 
 procedure TForm1.btnIdentificaPafECFClick(Sender: TObject);
 begin
-  ACBrECF1.IdentificaPAF('MD5: AXAXAXAXAXAXAXAXAXAXAXAXAXAXAXAX', 'Demo ACBrECF');
+  ACBrECF1.IdentificaPAF('Demo ACBrECF', 'AXAXAXAXAXAXAXAXAXAXAXAXAXAXAXAX');
   ShowMessage('Identificação feita com sucesso.');
 end;
 
@@ -3551,6 +3561,7 @@ begin
       Parametros.EmitePED                     := True;
       Parametros.CupomMania                   := True;
       Parametros.MinasLegal                   := True;
+      Parametros.NotaLegalDF                  := True;
       Parametros.TrocoEmCartao                := True;
 
       ACBrECF1.PafMF_RelParametrosConfiguracao(Parametros);

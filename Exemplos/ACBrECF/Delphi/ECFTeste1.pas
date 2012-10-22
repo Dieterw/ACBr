@@ -1226,6 +1226,7 @@ begin
      ACBrECF1.InfoRodapeCupom.PreVenda := '0000000003';
      ACBrECF1.InfoRodapeCupom.CupomMania := cbxUF.Text = 'MG';
      ACBrECF1.InfoRodapeCupom.MinasLegal := cbxUF.Text = 'RJ';
+     ACBrECF1.InfoRodapeCupom.ParaibaLegal := cbxUF.Text = 'PB';
      ACBrECF1.InfoRodapeCupom.NotaLegalDF.Imprimir := cbxUF.Text = 'DF';
 
      if ACBrECF1.InfoRodapeCupom.NotaLegalDF.Imprimir then
@@ -3562,6 +3563,7 @@ begin
       Parametros.CupomMania                   := True;
       Parametros.MinasLegal                   := True;
       Parametros.NotaLegalDF                  := True;
+      Parametros.ParaibaLegal                 := True;
       Parametros.TrocoEmCartao                := True;
 
       ACBrECF1.PafMF_RelParametrosConfiguracao(Parametros);

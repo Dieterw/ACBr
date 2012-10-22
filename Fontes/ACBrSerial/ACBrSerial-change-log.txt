@@ -98,10 +98,12 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 Data: 22/10/2012
--- ACBrBal --
+-- ACBrECF --
 [+] Adicionada a impressão do Nota Legal (DF)
     Ver propriedade InfoRodapeCupom.NotaLegal e suas subpropriedades.
-    Adicionada a expressão "NL" ao MD5 para o DF.
+[+] Adicionada a expressão "NL" ao MD5 para o DF.
+[+] Adicionado a impressão do Paraíba Legal no rodapé do cupom fiscal
+    ver propriedade InfoRodapeCupom.ParaibaLegal
     (por: Regys Silveira)  
 
 Data: 22/10/2012

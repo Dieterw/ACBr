@@ -358,7 +358,7 @@ TACBrECFBematech = class( TACBrECFClass )
     procedure CRZToCOO(const ACRZIni, ACRZFim: Integer; var ACOOIni,
       ACOOFim: Integer);
     procedure FinalidadeToTipoPrefixo( AFinalidade : TACBrECFFinalizaArqMFD;
-       var Tipo: Integer; var Prefixo: String) ;
+       var Tipo: Integer; var Prefixo: AnsiString) ;
 
  protected
     property TotalizadoresParciais : String read GetTotalizadoresParciais ;
@@ -4011,7 +4011,7 @@ begin
 end;
 
 procedure TACBrECFBematech.FinalidadeToTipoPrefixo(
-   AFinalidade: TACBrECFFinalizaArqMFD; var Tipo: Integer; var Prefixo: String);
+   AFinalidade: TACBrECFFinalizaArqMFD; var Tipo: Integer; var Prefixo: AnsiString);
 begin
   Tipo    := 2;
   Prefixo := 'TDM';

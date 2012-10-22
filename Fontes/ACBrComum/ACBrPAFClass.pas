@@ -185,6 +185,7 @@ type
     fsLinguagem: String;
     FTrocoEmCartao: Boolean;
     FNotaLegalDF: Boolean;
+    FParaibaLegal: Boolean;
     procedure SetVersao(const AValue : String) ;
   public
     constructor Create;
@@ -240,6 +241,7 @@ type
     property CupomMania: Boolean read FCupomMania write FCupomMania;
     property MinasLegal: Boolean read FMinasLegal write FMinasLegal;
     property NotaLegalDF: Boolean read FNotaLegalDF write FNotaLegalDF;
+    property ParaibaLegal: Boolean read FParaibaLegal write FParaibaLegal;
     property TrocoEmCartao: Boolean read FTrocoEmCartao write FTrocoEmCartao;
   end;
 

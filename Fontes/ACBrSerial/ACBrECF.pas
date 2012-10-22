@@ -3059,8 +3059,6 @@ begin
 
   if InfoRodapeCupom.CupomMania then
   begin
-    // atende ao requisito VII-A 2-A (Cupom Mania [RJ])
-
     Result := Result + #10 + 'CUPOM MANIA, CONCORRA A PRÊMIOS';
     Result := Result + #10 + 'ENVIE SMS P/ 6789: ' +
       Copy(OnlyNumber(fsECF.IE), 1, 8) +    // 8 primeiros digitos da Inscr.Estadual
@@ -3073,15 +3071,24 @@ begin
   end
   else if InfoRodapeCupom.MinasLegal then
   begin
-    // atende ao requisito VII-A 2 (Minas Legal [MG])
-    // (Retificação http://www.fazenda.gov.br/confaz/confaz/atos/atos_cotepe/2011/AC039_11%20retifica%C3%A7%C3%A3o.htm)
-
     Result := Result + #10 + Format(
       'MINAS LEGAL: %s %s %s', [
       OnlyNumber(Self.CNPJ),
       FormatDateTime('ddmmyyyy', Self.DataHora),
       IntToStr(TruncFix(Self.Subtotal * 100))
     ]);
+  end
+  else if InfoRodapeCupom.ParaibaLegal then
+  begin
+    Result := Result + #10 +
+      'PARAÍBA LEGAL – RECEITA CIDADÃ' + #10 +
+      Format(
+        'TORPEDO PREMIADO: %s %s %s %s', [
+        OnlyNumber(Self.CNPJ),
+        FormatDateTime('ddmmyyyy', Self.DataHora),
+        IntToStr(TruncFix(Self.Subtotal * 100)),
+        OnlyNumber(Consumidor.Documento)
+      ]);
   end
   else if InfoRodapeCupom.NotaLegalDF.Imprimir then
   begin
@@ -6226,6 +6233,7 @@ begin
     Relatorio.Add(padL('ITEM 2 : MINAS LEGAL', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.MinasLegal ));
     Relatorio.Add(padL('ITEM 2A: CUPOM MANIA', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.CupomMania ));
     Relatorio.Add(padL('ITEM 2B: NOTA LEGAL', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.NotaLegalDF ));
+    Relatorio.Add(padL('ITEM 2C: PARAIBA LEGAL', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.ParaibaLegal ));
 
     Relatorio.Add('<n>REQUISITO XIV</n>');
     Relatorio.Add(padL('ITEM 4: TROCO EM CARTÃO', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.TrocoEmCartao ));

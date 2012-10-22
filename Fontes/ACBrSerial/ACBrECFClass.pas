@@ -91,6 +91,7 @@ TACBrECFRodape = class
     fsMinasLegal: Boolean;
     fsCupomMania: Boolean;
     fsNotaLegalDF: TACBrECFRodapeNotaLegalDF;
+    fsParaibaLegal: Boolean;
     procedure SetMD5(AValue : String) ;
   public
     constructor Create;
@@ -104,6 +105,7 @@ TACBrECFRodape = class
     property PreVenda    : String  read fsPreVenda    write fsPreVenda;
     property CupomMania  : Boolean read fsCupomMania  write fsCupomMania;
     property MinasLegal  : Boolean read fsMinasLegal  write fsMinasLegal;
+    property ParaibaLegal: Boolean read fsParaibaLegal write fsParaibaLegal;
     property NotaLegalDF : TACBrECFRodapeNotaLegalDF read fsNotaLegalDF write fsNotaLegalDF;
 end;
 

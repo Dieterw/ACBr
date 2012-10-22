@@ -311,7 +311,8 @@ begin
           FieldByName('TXTSITTRIB').AsString := CSTICMSToStr(cst90) + '-' + CSTICMSToStrTagPosText(cst90);
           FieldByName('pRedBC').AsFloat := FCTe.Imp.ICMS.ICMS90.pRedBC;
           FieldByName('vBC').AsFloat := FCTe.Imp.ICMS.ICMS90.vBC;
-          FieldByName('pICMS').AsFloat := FCTe.Imp.ICMS.ICMS90.pRedBC;
+          // Alterado por Italo em 22/10/2012  
+          FieldByName('pICMS').AsFloat := FCTe.Imp.ICMS.ICMS90.pICMS;
           FieldByName('vICMS').AsFloat := FCTe.Imp.ICMS.ICMS90.vICMS;
           FieldByName('vCredito').AsFloat := FCTe.Imp.ICMS.ICMS90.vCred;
         end;

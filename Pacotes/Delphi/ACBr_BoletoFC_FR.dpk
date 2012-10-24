@@ -43,6 +43,7 @@ requires
 {$IFDEF VER210} fs14, frx14, frxe14, frxDB14, {$ENDIF} // D2010
 {$IFDEF VER220} fs15, frx15, frxe15, frxDB15, {$ENDIF} // XE
 {$IFDEF VER230} fs16, frx16, frxe16, frxDB16, {$ENDIF} // XE2
+{$IFDEF VER240} fs17, frx17, frxe17, frxDB17, {$ENDIF} // XE3
   ACBr_Boleto;
 
 contains

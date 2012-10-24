@@ -620,6 +620,7 @@ begin
   3143302, // Montes Claros/MG
   3202405, // Guarapari/ES
   3305505, // Saquarema/RJ
+  3541505, // Presidente Venceslau/SP
   4205902, // Gaspar/SC
   4309407  // Guapore/RS
          : Provedor := 'GovBR';
@@ -820,6 +821,7 @@ begin
   3536505: Cidade := 'Paulinia/SP';
   3538006: Cidade := 'Pindamonhangaba/SP';
   3541406: Cidade := 'Presidente Prudente/SP';
+  3541505: Cidade := 'Presidente Venceslau/SP';
   3542602: Cidade := 'Registro/SP';
   3543402: Cidade := 'Ribeirão Preto/SP';
   3543907: Cidade := 'Rio Claro/SP';

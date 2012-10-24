@@ -97,6 +97,7 @@ begin
   3202405:ConfigCidade.CodigoURLs := 04; // Guarapari/ES
   4205902:ConfigCidade.CodigoURLs := 05; // Gaspar/SC
   4309407:ConfigCidade.CodigoURLs := 06; // Guapore/RS
+  3541505:ConfigCidade.CodigoURLs := 07; // Presidente Venceslau/SP
  end;
  ConfigCidade.Prefixo2      := '';
  ConfigCidade.Prefixo3      := '';
@@ -239,6 +240,23 @@ begin
        ConfigURL.ProConsultaSitLoteRPS := 'http://177.20.255.244/NFSEWS/Services.svc';
        ConfigURL.ProConsultaNFSe       := 'http://177.20.255.244/NFSEWS/Services.svc';
        ConfigURL.ProCancelaNFSe        := 'http://177.20.255.244/NFSEWS/Services.svc';
+      end;
+  07: begin
+       ConfigURL.HomNomeCidade         := '';
+       ConfigURL.HomRecepcaoLoteRPS    := 'http://mail.presidentevenceslau.sp.gov.br/NFSEWSTESTE/Services.svc';
+       ConfigURL.HomConsultaLoteRPS    := 'http://mail.presidentevenceslau.sp.gov.br/NFSEWSTESTE/Services.svc';
+       ConfigURL.HomConsultaNFSeRPS    := 'http://mail.presidentevenceslau.sp.gov.br/NFSEWSTESTE/Services.svc';
+       ConfigURL.HomConsultaSitLoteRPS := 'http://mail.presidentevenceslau.sp.gov.br/NFSEWSTESTE/Services.svc';
+       ConfigURL.HomConsultaNFSe       := 'http://mail.presidentevenceslau.sp.gov.br/NFSEWSTESTE/Services.svc';
+       ConfigURL.HomCancelaNFSe        := 'http://mail.presidentevenceslau.sp.gov.br/NFSEWSTESTE/Services.svc';
+
+       ConfigURL.ProNomeCidade         := '';
+       ConfigURL.ProRecepcaoLoteRPS    := 'http://nfse.presidentevenceslau.sp.gov.br/NFSEWS/Services.svc';
+       ConfigURL.ProConsultaLoteRPS    := 'http://nfse.presidentevenceslau.sp.gov.br/NFSEWS/Services.svc';
+       ConfigURL.ProConsultaNFSeRPS    := 'http://nfse.presidentevenceslau.sp.gov.br/NFSEWS/Services.svc';
+       ConfigURL.ProConsultaSitLoteRPS := 'http://nfse.presidentevenceslau.sp.gov.br/NFSEWS/Services.svc';
+       ConfigURL.ProConsultaNFSe       := 'http://nfse.presidentevenceslau.sp.gov.br/NFSEWS/Services.svc';
+       ConfigURL.ProCancelaNFSe        := 'http://nfse.presidentevenceslau.sp.gov.br/NFSEWS/Services.svc';
       end;
  end;
 

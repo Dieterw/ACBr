@@ -27,8 +27,7 @@ package ACBr_NFSe;
 
 requires
   rtl,
-  vcl,
-  visualclx,
+  vcl,  
   ACBrComum,
   designide,
   vclactnband,

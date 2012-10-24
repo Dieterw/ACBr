@@ -51,8 +51,16 @@
 |*  - Eventos da NFe
 |* 17/07/2012: Italo
 |*  - Consulta de NFe pelo destinatário e download da NFe
-|* 24/09/2012: Italo 
+|* 24/09/2012: Italo
 |*  - Incluído Função DateTimeTodhUTC
+|* 23/10/2012: Alan - http://www.djsystem.com.br/acbr/forum/viewtopic.php?f=6&t=4754
+|*  - Incluído Função GetUTC
+|*  - Incluído Função IsHorarioDeVerao
+|*  - Incluído Função GetTerceiroDomingoDoMes
+|*  - Incluído Função GetInicioDoHorarioDeVerao
+|*  - Incluído Função GetFimDoHorarioDeVerao
+|*  - Incluído Função GetDataDoCarnaval
+|*  - Incluído Função GetDataDaPascoa
 ******************************************************************************}
 {$IFDEF FPC}
   {$MODE DELPHI}
@@ -103,8 +111,18 @@ function SubStrEmSubStr(const SubStr1: string; SubStr2: string): boolean;
 function xml4line(texto: AnsiString): AnsiString;
 function RetornarPosEx(const SubStr, S: AnsiString; Offset: Cardinal = 1): Integer;
 function DateTimeTodhUTC(DataHora: TDateTime; TZD: string): string;
+function GetUTC(const UF: string; const dataHora: TDateTime): string;
+function IsHorarioDeVerao(const UF: string; const dataHora: TDateTime): Boolean;
+function GetTerceiroDomingoDoMes(const ano, mes: Integer): TDateTime;
+function GetInicioDoHorarioDeVerao(const ano: Integer): TDateTime;
+function GetFimDoHorarioDeVerao(const ano: Integer): TDateTime;
+function GetDataDoCarnaval(const ano: Integer): TDateTime;
+function GetDataDaPascoa(const ano: Integer): TDateTime;
 
 implementation
+
+uses
+  DateUtils;
 
 function CodigoParaUF(const codigo: integer): string;
 const
@@ -929,7 +947,6 @@ begin
   result := Copy(s, 1, pos(Fim, s) - 1);
 end;
 
-// Incluido por Italo em 24/09/2012
 function DateTimeTodhUTC(DataHora: TDateTime; TZD: string): string;
 var
   wAno, wMes, wDia, wHor, wMin, wSeg, wMil: word;
@@ -944,5 +961,141 @@ begin
             IntToStrZero(wSeg, 2) +
             TZD;
 end;
+
+function GetUTC(const UF: string; const dataHora: TDateTime): string;
+const
+  UTC4 = '.AC.AM.RR.RO.MT.MS.';
+  UTC3 = '.AP.PA.MA.PI.TO.GO.CE.RN.PB.PE.AL.SE.BA.MG.ES.RJ.SP.PR.SC.RS.DF.';
+var
+  HorarioDeVerao: Boolean;
+begin
+  HorarioDeVerao := IsHorarioDeVerao(UF, dataHora);
+
+  if AnsiPos('.' + UF + '.', UTC4) > 0 then
+  begin
+    Result := '-04:00';
+    if HorarioDeVerao then
+      Result := '-03:00';
+  end
+  else
+  if AnsiPos('.' + UF + '.', UTC3) > 0 then
+  begin
+    Result := '-03:00';
+    if IsHorarioDeVerao(UF, dataHora) then
+      Result := '-02:00';
+  end;
+end;
+
+function IsHorarioDeVerao(const UF: string; const dataHora: TDateTime): Boolean;
+const
+  UFHV = '.MT.MS.GO.MG.ES.RJ.SP.PR.SC.RS.DF.';
+var
+  dia: word;
+  mes: word;
+  ano: word;
+  anoInicio: integer;
+  anoFim: integer;
+begin
+  DecodeDate(dataHora, ano, mes, dia);
+
+  { Mês de inicio do horário de verão: Outubro;
+    Mês de fim do horário de verão: Fevereiro;
+
+   * Se a data verificada for de um mês menor que outubro: Ex: 10/08/2010 (Agosto)
+       O inicio do horário de verão será OUTUBRO do ano anterior (10/2009);
+       O fim do horário de verão será FEVEREIRO do mesmo ano (02/2010);
+
+   * Se a data verificada for de um mês maior ou igual outubro: Ex: 10/11/2010 (Novembro)
+       O inicio do horário de verão será OUTUBRO do mesmo ano (10/2010);
+       O fim do horário de verão será FEVEREIRO do ano seguinte (02/2011);      }
+
+  anoInicio := ano;
+  anoFim := ano;
+  if mes < 10 then begin
+    anoInicio := ano - 1;
+  end else begin
+    anoFim := ano + 1;
+  end;
+
+  Result := False;
+  if (GetInicioDoHorarioDeVerao(anoInicio) <= dataHora) and
+     (GetFimDoHorarioDeVerao(anoFim) >= dataHora) and
+     (AnsiPos(UF, UFHV) > 0) then begin
+    Result := True;
+  end;
+end;
+
+function GetInicioDoHorarioDeVerao(const ano: Integer): TDateTime;
+begin
+  {O inicio do horário de verão é no terceiro domingo do mes de outubro}
+  Result := GetTerceiroDomingoDoMes(ano, 10);
+end;
+
+function GetTerceiroDomingoDoMes(const ano, mes: Integer): TDateTime;
+var
+  i: integer;
+begin
+  {O laço vai até 7 pois até o dia 7 tem que ter passado pelo menos um domingo.
+   Achado o primeiro domingo, é somado a ele 14 dias para encontrar o terceiro domingo.}
+  result := 0;
+  for i := 1 to 7 do begin
+    if DayOfWeek(EncodeDate(ano, mes, i)) = 1 then begin
+      result := EncodeDate(ano, mes, i + 14);
+      break;
+    end;
+  end;
+end;
+
+function GetFimDoHorarioDeVerao(const ano: Integer): TDateTime;
+var
+  domingoCarnaval: TDateTime;
+  terceiroDomingoFevereiro: TDateTime;
+begin
+  domingoCarnaval := getDataDoCarnaval(ano) - 2; //Carnaval é na terça - 2 = Domingo
+  terceiroDomingoFevereiro := getTerceiroDomingoDoMes(ano, 2);
+  if domingoCarnaval <> terceiroDomingoFevereiro then begin
+    result := terceiroDomingoFevereiro;
+  end else begin
+    result := IncDay(terceiroDomingoFevereiro, 7);
+  end;
+end;
+
+function GetDataDoCarnaval(const ano: Integer): TDateTime;
+var
+  pascoa: TDateTime;
+begin
+  pascoa := getDataDaPascoa(ano);
+  result := IncDay(pascoa, -47);
+end;
+
+function GetDataDaPascoa(const ano: Integer): TDateTime;
+var
+  x: integer;
+  y: integer;
+  a: integer;
+  b: integer;
+  c: integer;
+  d: integer;
+  e: integer;
+  dia: word;
+  mes: word;
+begin
+  x := 24;
+  y := 5;
+  a := ano MOD 19;
+  b := ano MOD 4;
+  c := ano MOD 7;
+  d := (19 * a + x) MOD 30;
+  e := (2 * b + 4 * c + 6 * d + y) MOD 7;
+  if (d + e) > 9 then begin
+    dia := (d + e - 9);
+    mes := 4;
+  end else begin
+    dia := (d + e + 22);
+    mes := 3;
+  end;
+  result :=  EncodeDate(ano, mes, dia);
+end;
+
 
 end.

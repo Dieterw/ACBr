@@ -57,10 +57,8 @@ type
   TConsStatServ = class(TPersistent)
   private
     FGerador: TGerador;
-    FSchema: TpcnSchema;
     FtpAmb: TpcnTipoAmbiente;
     FcUF: integer;
-    FVersao: string;
   public
     constructor Create;
     destructor Destroy; override;
@@ -68,10 +66,8 @@ type
     function ObterNomeArquivo: string;
   published
     property Gerador: TGerador read FGerador write FGerador;
-    property schema: TpcnSchema read Fschema write Fschema;
     property tpAmb: TpcnTipoAmbiente read FtpAmb write FtpAmb;
     property cUF: integer read FcUF write FcUF;
-    property Versao: string read FVersao write FVersao;
   end;
 
 implementation
@@ -106,15 +102,8 @@ end;
 function TConsStatServ.GerarXML: boolean;
 begin
   Gerador.ArquivoFormatoXML := '';
- (*
- {$IFDEF PL_103}
-    Gerador.wGrupo('consStatServCte ' + NAME_SPACE_CTE + ' ' + V1_03);
- {$ENDIF}
- {$IFDEF PL_104}
-    Gerador.wGrupo('consStatServCte ' + NAME_SPACE_CTE + ' ' + V1_04);
- {$ENDIF}
- *)
-  Gerador.wGrupo('consStatServCte ' + NAME_SPACE_CTE + ' versao="' + Versao + '"');
+
+  Gerador.wGrupo('consStatServCte ' + NAME_SPACE_CTE + ' versao="' + CTeconsStatServ + '"');
   Gerador.wCampo(tcStr, 'FP03', 'tpAmb', 001, 001, 1, tpAmbToStr(FtpAmb), DSC_TPAMB);
   Gerador.wCampo(tcStr, 'FP04', 'xServ', 006, 006, 1, 'STATUS', DSC_XSERV);
   Gerador.wGrupo('/consStatServCte');

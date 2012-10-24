@@ -719,16 +719,9 @@ procedure TWebServicesBase.DoCTeStatusServico;
 var
   ConsStatServ: TConsStatServ;
 begin
-  ConsStatServ        := TConsStatServ.create;
- {$IFDEF PL_103}
-  ConsStatServ.schema := TsPL_CTe_103;
- {$ENDIF}
- {$IFDEF PL_104}
-  ConsStatServ.schema := TsPL_CTe_104;
- {$ENDIF}
-  ConsStatServ.TpAmb  := TpcnTipoAmbiente(FConfiguracoes.WebServices.AmbienteCodigo-1);
-  ConsStatServ.CUF    := FConfiguracoes.WebServices.UFCodigo;
-  ConsStatServ.Versao := CTeconsStatServ;
+  ConsStatServ       := TConsStatServ.create;
+  ConsStatServ.TpAmb := TpcnTipoAmbiente(FConfiguracoes.WebServices.AmbienteCodigo-1);
+  ConsStatServ.CUF   := FConfiguracoes.WebServices.UFCodigo;
 
   ConsStatServ.GerarXML;
 

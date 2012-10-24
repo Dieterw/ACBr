@@ -112,6 +112,21 @@ object framePacotes: TframePacotes
     Font.Style = []
     ParentFont = False
   end
+  object Label8: TLabel
+    AlignWithMargins = True
+    Left = 367
+    Top = 96
+    Width = 100
+    Height = 13
+    Margins.Left = 5
+    Caption = 'Nota fiscal eletr'#244'nica'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clMaroon
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
   object pnlBotoesPacotes: TPanel
     Left = 0
     Top = 335
@@ -160,7 +175,6 @@ object framePacotes: TframePacotes
       ParentShowHint = False
       ShowHint = True
       OnClick = btnPacotesDesmarcarTodosClick
-      ExplicitLeft = 463
     end
     object btnPacotesMarcarTodos: TSpeedButton
       AlignWithMargins = True
@@ -200,7 +214,6 @@ object framePacotes: TframePacotes
       ParentShowHint = False
       ShowHint = True
       OnClick = btnPacotesMarcarTodosClick
-      ExplicitLeft = 431
     end
   end
   object synapse_dpk: TCheckBox
@@ -721,6 +734,26 @@ object framePacotes: TframePacotes
     Font.Style = []
     ParentFont = False
     TabOrder = 25
+    OnClick = VerificarCheckboxes
+  end
+  object ACBr_NFSe_dpk: TCheckBox
+    AlignWithMargins = True
+    Left = 387
+    Top = 117
+    Width = 116
+    Height = 17
+    Margins.Left = 25
+    Margins.Top = 0
+    Margins.Right = 0
+    Margins.Bottom = 0
+    Caption = 'ACBr_NFSe.dpk'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 26
     OnClick = VerificarCheckboxes
   end
 end

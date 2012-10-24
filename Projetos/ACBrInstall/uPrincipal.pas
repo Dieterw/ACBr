@@ -102,6 +102,7 @@ type
     ckbInstalarOpenSSL: TCheckBox;
     wizPgPacotes: TJvWizardInteriorPage;
     frameDpk: TframePacotes;
+    ckbUtilizarOpenSSL: TCheckBox;
     procedure imgPropaganda1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -335,6 +336,7 @@ begin
     ckbFecharTortoise.Checked  := ArqIni.ReadBool('CONFIG', 'FecharTortoise', True);
     ckbInstalarCapicom.Checked := ArqIni.ReadBool('CONFIG', 'InstalarCapicom', True);
     ckbInstalarOpenSSL.Checked := ArqIni.ReadBool('CONFIG', 'InstalarOpenSSL', True);
+    ckbUtilizarOpenSSL.Checked := ArqIni.ReadBool('CONFIG', 'UtilizarOpenSSL', True);
 
     if Trim(edtDelphiVersion.Text) = '' then
       edtDelphiVersion.ItemIndex := 0;
@@ -362,6 +364,7 @@ begin
     ArqIni.WriteBool('CONFIG', 'FecharTortoise', ckbFecharTortoise.Checked);
     ArqIni.WriteBool('CONFIG', 'InstalarCapicom', ckbInstalarCapicom.Checked);
     ArqIni.WriteBool('CONFIG', 'InstalarOpenSSL', ckbInstalarOpenSSL.Checked);
+    ArqIni.WriteBool('CONFIG', 'UtilizarOpenSSL', ckbInstalarOpenSSL.Checked);
 
     for I := 0 to frameDpk.Pacotes.Count - 1 do
       ArqIni.WriteBool('PACOTES', frameDpk.Pacotes[I].Caption, frameDpk.Pacotes[I].Checked);
@@ -895,6 +898,7 @@ procedure TfrmPrincipal.wizPgInstalacaoEnterPage(Sender: TObject;
 begin
   SetPlatformSelected;
   lstMsgInstalacao.Clear;
+  pgbInstalacao.Position := 0;
 
   // para 64 bit somente compilar
   if tPlatform = bpWin32 then // Win32

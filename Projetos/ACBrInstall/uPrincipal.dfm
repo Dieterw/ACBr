@@ -1,7 +1,7 @@
 object frmPrincipal: TfrmPrincipal
   Left = 0
   Top = 0
-  ActiveControl = wizPgInicio
+  ActiveControl = lstMsgInstalacao
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'Instalador ACBr'
@@ -24,7 +24,7 @@ object frmPrincipal: TfrmPrincipal
     Top = 0
     Width = 720
     Height = 500
-    ActivePage = wizPgInicio
+    ActivePage = wizPgInstalacao
     ButtonBarHeight = 42
     ButtonStart.Caption = 'Para o in'#237'cio'
     ButtonStart.NumGlyphs = 1
@@ -2332,6 +2332,14 @@ object frmPrincipal: TfrmPrincipal
         Caption = 'Instalar OpenSSL'
         TabOrder = 4
       end
+      object ckbUtilizarOpenSSL: TCheckBox
+        Left = 17
+        Top = 168
+        Width = 304
+        Height = 17
+        Caption = 'Utilizar o OpenSSL ao inv'#233's da Capicom na NF-e e similares'
+        TabOrder = 5
+      end
     end
     object wizPgPacotes: TJvWizardInteriorPage
       Header.Visible = False
@@ -2689,7 +2697,7 @@ object frmPrincipal: TfrmPrincipal
       object Label9: TLabel
         Left = 14
         Top = 19
-        Width = 312
+        Width = 313
         Height = 19
         Caption = 'Assistente de instala'#231#227'o do Projeto ACBr'
         Color = clWhite
@@ -2711,7 +2719,7 @@ object frmPrincipal: TfrmPrincipal
         Cursor = crHandPoint
         Animate = True
         Center = True
-        FrameIndex = 4
+        FrameIndex = 3
         Image.Data = {
           688B00004749463839613F012800F70000FFFFFFFFFFE5FFFFCCF7FAFDFFFF99
           FFF7B9FFF9A9FFFA84EAFA9EFFF573FFF74AFFFF00FFF268F2F478FFF456E9F5

@@ -20,7 +20,8 @@ uses
   uMenuFiscal in 'uMenuFiscal.pas' {frmMenuFiscal},
   uTesteModoPreVenda in 'uTesteModoPreVenda.pas' {frmTesteModoPreVenda},
   uDAV in 'uDAV.pas' {frmDAV},
-  uDAVOS in 'uDAVOS.pas' {frmDAVOS};
+  uDAVOS in 'uDAVOS.pas' {frmDAVOS},
+  uImpressaoCheque in 'uImpressaoCheque.pas' {frmImpressaoCheque};
 
 {$R *.res}
 

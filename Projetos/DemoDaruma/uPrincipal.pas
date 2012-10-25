@@ -59,6 +59,8 @@ type
     DAV1: TMenuItem;
     DAV2: TMenuItem;
     DAVOS1: TMenuItem;
+    Utilitrios1: TMenuItem;
+    ImpressodeCheques1: TMenuItem;
     procedure btnAtivarDesativarClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure cbxPortaComunicacaoChange(Sender: TObject);
@@ -90,6 +92,7 @@ type
     procedure RelatriosGerenciaisCadastrados1Click(Sender: TObject);
     procedure DAV2Click(Sender: TObject);
     procedure DAVOS1Click(Sender: TObject);
+    procedure ImpressodeCheques1Click(Sender: TObject);
   private
     FBobinaCupom: TStringList;
     function GetIniFileName: String;
@@ -117,7 +120,8 @@ uses
   IniFiles, uGeracaoArquivos, uIdentificacaoPafECF, uProgramarBitmap,
   uSuprimento, uSangria, uRelatorioGerencial, uComprNaoFiscalCompleto,
   uComprNaoFiscal, uCupomFiscal, uRelatorioGerencialFormatado,
-  uLeituraXArquivo, uBasicoModal, uMenuFiscal, uTesteModoPreVenda, uDAV, uDAVOS;
+  uLeituraXArquivo, uBasicoModal, uMenuFiscal, uTesteModoPreVenda, uDAV, uDAVOS,
+  uImpressaoCheque;
 
 procedure TfrmPrincipal.AtivarMenus(const ALigar: Boolean);
 var
@@ -419,6 +423,11 @@ end;
 procedure TfrmPrincipal.IdentificaodoPafECF1Click(Sender: TObject);
 begin
   AbrirFormularioModal(TfrmIdentificacaoPafECF);
+end;
+
+procedure TfrmPrincipal.ImpressodeCheques1Click(Sender: TObject);
+begin
+  AbrirFormularioModal(TfrmImpressaoCheque);
 end;
 
 procedure TfrmPrincipal.Geraodearquivos1Click(Sender: TObject);

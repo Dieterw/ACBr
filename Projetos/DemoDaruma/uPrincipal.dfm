@@ -1163,5 +1163,12 @@ object frmPrincipal: TfrmPrincipal
         OnClick = DAVOS1Click
       end
     end
+    object Utilitrios1: TMenuItem
+      Caption = 'Utilit'#225'rios'
+      object ImpressodeCheques1: TMenuItem
+        Caption = 'Impress'#227'o de Cheques'
+        OnClick = ImpressodeCheques1Click
+      end
+    end
   end
 end

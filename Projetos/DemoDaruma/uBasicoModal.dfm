@@ -30,11 +30,15 @@ object frmBasicoModal: TfrmBasicoModal
     Height = 30
     Align = alBottom
     TabOrder = 1
+    DesignSize = (
+      564
+      30)
     object btnExecutar: TButton
       Left = 363
       Top = 1
       Width = 100
       Height = 28
+      Anchors = [akTop, akRight]
       Caption = 'Executar'
       TabOrder = 0
       OnClick = btnExecutarClick
@@ -44,6 +48,7 @@ object frmBasicoModal: TfrmBasicoModal
       Top = 1
       Width = 100
       Height = 28
+      Anchors = [akTop, akRight]
       Cancel = True
       Caption = 'Cancelar'
       TabOrder = 1

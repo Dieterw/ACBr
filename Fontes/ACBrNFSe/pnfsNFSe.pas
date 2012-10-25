@@ -119,6 +119,14 @@ type
     FDescricao : String;
     FQuantidade : Integer;
     FValorUnitario : currency;
+    FAliquota: currency;
+    FValorIss: currency;
+    FBaseCalculo: currency;
+    FValorDeducoes: currency;
+    FValorServicos: currency;
+    FDescontoCondicionado: currency;
+    FDescontoIncondicionado: currency;
+    FDiscriminacao: string;
   public
     constructor Create; reintroduce;
     destructor Destroy; override;
@@ -126,6 +134,14 @@ type
     property Descricao: string read FDescricao write FDescricao;
     property Quantidade: Integer read FQuantidade write FQuantidade;
     property ValorUnitario: currency read FValorUnitario write FValorUnitario;
+    property ValorServicos: currency read FValorServicos write FValorServicos;
+    property ValorDeducoes: currency read FValorDeducoes write FValorDeducoes;
+    property ValorIss: currency read FValorIss write FValorIss;
+    property Aliquota: currency read FAliquota write FAliquota;
+    property BaseCalculo: currency read FBaseCalculo write FBaseCalculo;
+    property DescontoCondicionado: currency read FDescontoCondicionado write FDescontoCondicionado;
+    property DescontoIncondicionado: currency read FDescontoIncondicionado write FDescontoIncondicionado;
+    property Discriminacao: string read FDiscriminacao write FDiscriminacao;
   end;
 
  TDadosServico = class(TPersistent)

@@ -165,7 +165,7 @@ begin
    acConsLote:    Result := False;
    acConsNFSeRps: Result := False;
    acConsNFSe:    Result := False;
-   acCancelar:    Result := False;
+   acCancelar:    Result := True;
    acGerar:       Result := False;
    else           Result := False;
  end;
@@ -420,9 +420,11 @@ begin
               '<' + Prefixo4 + 'Numero>' +
                 NumeroNFse +
               '</' + Prefixo4 + 'Numero>' +
-              '<' + Prefixo4 + 'Cnpj>' +
-                Cnpj +
-              '</' + Prefixo4 + 'Cnpj>' +
+              '<' + Prefixo4 + 'CpfCnpj>' +
+               '<' + Prefixo4 + 'Cnpj>' +
+                 Cnpj +
+               '</' + Prefixo4 + 'Cnpj>' +
+              '</' + Prefixo4 + 'CpfCnpj>' +
               '<' + Prefixo4 + 'InscricaoMunicipal>' +
                 IM +
               '</' + Prefixo4 + 'InscricaoMunicipal>' +
@@ -442,7 +444,8 @@ begin
               '</' + Prefixo4 + 'CodigoCancelamento>' +
              '</' + Prefixo4 + 'InfPedidoCancelamento>';
 
- Result := TagI + DadosMsg + TagF;
+ Result := DadosMsg;
+// Result := TagI + DadosMsg + TagF;
 end;
 
 function TProvedorfintelISS.Gera_DadosMsgGerarNFSe(Prefixo3, Prefixo4,

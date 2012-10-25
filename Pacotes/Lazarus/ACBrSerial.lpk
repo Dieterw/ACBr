@@ -31,7 +31,7 @@ ACBrECF, ACBrRFD, ACBrDIS, ACBrGAV, ACBrCHQ, ACBrETQ, ACBrLCB, ACBrTER
     <License Value="LGPL
 "/>
     <Version Minor="9"/>
-    <Files Count="55">
+    <Files Count="56">
       <Item1>
         <Filename Value="..\..\Fontes\ACBrSerial\ACBrCHQ.pas"/>
         <UnitName Value="ACBrCHQ"/>
@@ -253,6 +253,10 @@ ACBrECF, ACBrRFD, ACBrDIS, ACBrGAV, ACBrCHQ, ACBrETQ, ACBrLCB, ACBrTER
         <Filename Value="..\..\Fontes\ACBrSerial\ACBrDISSmakTeclado.pas"/>
         <UnitName Value="ACBrDISSmakTeclado"/>
       </Item55>
+      <Item56>
+        <Filename Value="..\..\Fontes\ACBrSerial\ACBrECFEscECF.pas"/>
+        <UnitName Value="ACBrECFEscECF"/>
+      </Item56>
     </Files>
     <Type Value="RunAndDesignTime"/>
     <RequiredPkgs Count="5">

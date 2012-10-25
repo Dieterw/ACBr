@@ -60,7 +60,7 @@ type
 TACBrECFModelo = (ecfNenhum, ecfNaoFiscal, ecfBematech, ecfSweda, ecfDaruma,
                   ecfSchalter, ecfMecaf, ecfYanco, ecfDataRegis, ecfUrano,
                   ecfICash, ecfQuattro, ecfFiscNET, ecfEpson, ecfNCR,
-                  ecfSwedaSTX );
+                  ecfSwedaSTX, ecfEscECF );
                   
 TACBrECFEventoOnError = procedure( var Tratado : Boolean) of object ;
 TACBrECFOnAbreCupom = procedure(const CPF_CNPJ, Nome, Endereco : String ) of object ;
@@ -1008,7 +1008,7 @@ implementation
 Uses ACBrUtil, ACBrECFBematech, ACBrECFNaoFiscal, ACBrECFDaruma, ACBrECFSchalter,
      ACBrECFMecaf, ACBrECFSweda, ACBrECFDataRegis, ACBrECFUrano, ACBrECFYanco,
      ACBrECFICash, ACBrECFQuattro, ACBrECFFiscNET, ACBrECFEpson, ACBrECFNCR,
-     ACBrECFSwedaSTX, {ACBrECFSCU, }
+     ACBrECFSwedaSTX, ACBrECFEscECF,
     {$IFDEF COMPILER6_UP} StrUtils {$ELSE}ACBrD5 ,Windows {$ENDIF}, Math,
     IniFiles ;
 
@@ -1209,6 +1209,7 @@ begin
     ecfEpson     : fsECF := TACBrECFEpson.create( Self ) ;
     ecfNCR       : fsECF := TACBrECFNCR.create( Self ) ;
     ecfSwedaSTX  : fsECF := TACBrECFSwedaSTX.Create( self );
+    ecfEscECF    : fsECF := TACBrECFEscECF.Create( self );
   else
      fsECF := TACBrECFClass.create( Self ) ;
   end;
@@ -1771,7 +1772,8 @@ end;
 
 function TACBrECF.GetNumCupomClass: String;
 begin
-  ComandoLOG := 'NumCupom' ;
+  if ComandoLOG = '' then
+     ComandoLOG := 'NumCupom' ;
   Result := fsECF.NumCupom ;
 end;
 

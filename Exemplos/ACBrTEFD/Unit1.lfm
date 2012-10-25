@@ -290,9 +290,9 @@ object Form1: TForm1
     Height = 208
     Top = 0
     Width = 731
-    ActivePage = tsOperacao
+    ActivePage = tsConfig
     Align = alTop
-    TabIndex = 1
+    TabIndex = 0
     TabOrder = 1
     object tsConfig: TTabSheet
       Caption = 'Configuração'

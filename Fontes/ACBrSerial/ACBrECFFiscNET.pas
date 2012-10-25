@@ -725,13 +725,16 @@ begin
                       FiscNETResposta.Params.Values['NomeErro'] + #10 +
                       FiscNETResposta.Params.Values['Circunstancia'] ;
      except
-        ErroMsg := 'Resposta do ECF inválida' ;
+        On E : Exception do
+        begin
+           ErroMsg := 'Resposta do ECF inválida' + sLineBreak + E.Message ;
+        end ;
      end ;
 
      if ErroMsg <> '' then
       begin
-        ErroMsg := ACBrStr('Erro retornado pela Impressora: '+fpModeloStr+#10+#10+
-                   ErroMsg ) ;
+        ErroMsg := ACBrStr('Erro retornado pela Impressora: '+fpModeloStr+
+                           sLineBreak+sLineBreak + ErroMsg ) ;
 
         if (FiscNETResposta.CodRetorno = 7003) or
            (FiscNETResposta.CodRetorno = 7004) or

@@ -97,6 +97,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 24/10/2012
+-- ACBrECF --
+[+] Adicionado novo modelo de ECF, ecfEscECF, que contempla o protocolo EscECF,
+    de acordo com o Convênio ICMS 09/09,  (experimental)    (por: DSA)
+
 Data: 22/10/2012
 -- ACBrECF --
 [+] Adicionada a impressão do Nota Legal (DF)

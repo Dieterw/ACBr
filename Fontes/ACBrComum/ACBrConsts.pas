@@ -75,26 +75,28 @@ var
 const
   {* Unit ACBrBase *}
   ACBR_VERSAO = '0.9.0a';
-  NUL = #00  ;
-  STX = #02  ;
-  ETX = #03  ;
-  ENQ = #05  ;
-  ACK = #06  ;
-  BELL= #07  ;
-  TAB = #09  ;
-  BS  = #08  ;
-  LF  = #10  ;
-  FF  = #12  ;
-  CR  = #13  ;
-  SO  = #14  ;
-  SI  = #15  ;
-  DC2 = #18  ;
-  NAK = #21  ;
-  ESC = #27  ;
-  FS  = #28  ;
-  GS  = #29  ;
-  CTRL_Z = #26;
-  CRLF = CR + LF;
+  NUL = #00 ;
+  SOH = #01 ;
+  STX = #02 ;
+  ETX = #03 ;
+  ENQ = #05 ;
+  ACK = #06 ;
+  BELL= #07 ;
+  TAB = #09 ;
+  BS  = #08 ;
+  LF  = #10 ;
+  FF  = #12 ;
+  CR  = #13 ;
+  SO  = #14 ;
+  SI  = #15 ;
+  WAK = #17 ;
+  DC2 = #18 ;
+  NAK = #21 ;
+  ESC = #27 ;
+  FS  = #28 ;
+  GS  = #29 ;
+  CTRL_Z = #26 ;
+  CRLF = CR + LF ;
 
   cTimeout = 3 ;  { Tempo PADRAO para msg de falha de comunicacao }
 

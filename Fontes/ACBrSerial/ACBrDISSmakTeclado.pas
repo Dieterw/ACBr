@@ -104,7 +104,6 @@ begin
 end;
 
 procedure TACBrDISSmakTeclado.PosicionarCursor(Linha, Coluna: Integer);
-Var Pos : Byte;
 begin
   TxKeyboard( $096 );
   TxKeyboard( min(Coluna, Colunas) );

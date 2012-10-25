@@ -982,6 +982,7 @@ end;
 procedure TForm1.spbLimpaPagamentosClick(Sender: TObject);
 begin
    mPagamentos.Lines.Clear;
+   edValorDescAcre.Text := '0,00';
 end;
 
 procedure TForm1.spRemovePagamentoClick(Sender: TObject);

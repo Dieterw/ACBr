@@ -668,7 +668,6 @@ end;
 procedure TACBrDIS.LimparLinha(Linha: Integer);
 Var
   wAtivo : Boolean ;
-  A : Integer ;
 begin
   if (Linha < 1) or (Linha > LinhasCount) then exit;
 

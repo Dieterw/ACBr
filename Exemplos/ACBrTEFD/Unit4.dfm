@@ -12,6 +12,7 @@ object Form4: TForm4
   Font.Style = []
   OldCreateOrder = True
   Position = poOwnerFormCenter
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 24
   object Splitter1: TSplitter

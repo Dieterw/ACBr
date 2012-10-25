@@ -1579,7 +1579,6 @@ begin
        finally
           AguardandoResposta  := False ;
           IgnorarErroSemPapel := False;
-          GravaLog('                TX -> '+fpComandoEnviado, True);
           GravaLog('   '+FormatDateTime('hh:nn:ss:zzz',now)+' RX <- '+fpRespostaComando, True);
        end ;
     except
@@ -1615,18 +1614,17 @@ begin
 
         case AString[I] of
            NUL   : Ch := '[NUL]' ;
+           SOH   : Ch := '[SOH]' ;
            STX   : Ch := '[STX]' ;
            ETX   : Ch := '[ETX]' ;
            ENQ   : Ch := '[ENQ]' ;
            ACK   : Ch := '[ACK]' ;
-           BELL  : Ch := '[BEL]' ;
            TAB   : Ch := '[TAB]' ;
            BS    : Ch := '[BS]' ;
            LF    : Ch := '[LF]' ;
            FF    : Ch := '[FF]' ;
            CR    : Ch := '[CR]' ;
-           SO    : Ch := '[SO]' ;
-           DC2   : Ch := '[DC2]' ;
+           WAK   : Ch := '[WAK]' ;
            NAK   : Ch := '[NAK]' ;
            ESC   : Ch := '[ESC]' ;
            FS    : Ch := '[FS]' ;
@@ -1807,7 +1805,8 @@ begin
   Result := True ;
 
   try
-     fpDevice.EnviaString( cmd );   { Eviando o comando }
+     fpDevice.EnviaString( Cmd );   { Eviando o comando }
+     GravaLog('                TX -> '+Cmd, True);
   except
      if not DoOnMsgRetentar(Format(cACBrECFCmdSemRespostaException, [ ModeloStr ]),
        'TransmitirComando') then

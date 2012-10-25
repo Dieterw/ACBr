@@ -12,18 +12,21 @@
       <Title Value="ECFTeste"/>
       <ResourceType Value="res"/>
       <UseXPManifest Value="True"/>
+      <XPManifest>
+        <DpiAware Value="True"/>
+      </XPManifest>
       <ActiveWindowIndexAtStart Value="0"/>
     </General>
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MinorVersionNr Value="9"/>
-      <BuildNr Value="36"/>
+      <BuildNr Value="38"/>
       <Language Value="0416"/>
       <CharSet Value="04B0"/>
       <StringTable ProductVersion=""/>
     </VersionInfo>
-    <BuildModes Count="3" Active="Release">
+    <BuildModes Count="3" Active="Debug">
       <Item1 Name="Debug" Default="True"/>
       <Item2 Name="Release">
         <CompilerOptions>
@@ -157,8 +160,8 @@
         <UnitName Value="ECFTeste1"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="2638"/>
-        <CursorPos X="25" Y="2646"/>
+        <TopLine Value="3271"/>
+        <CursorPos X="3" Y="3275"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -181,13 +184,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="EfetuaPagamento"/>
-        <EditorIndex Value="7"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
-        <CursorPos X="11" Y="7"/>
+        <CursorPos X="12" Y="6"/>
         <UsageCount Value="201"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit3>
       <Unit4>
         <Filename Value="relatorio.pas"/>
@@ -218,12 +218,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="VendeItem"/>
-        <EditorIndex Value="6"/>
         <WindowIndex Value="0"/>
         <TopLine Value="74"/>
         <CursorPos X="29" Y="87"/>
         <UsageCount Value="201"/>
-        <Loaded Value="True"/>
       </Unit6>
       <Unit7>
         <Filename Value="uDAV.pas"/>
@@ -287,31 +285,10 @@
         <DisplayStyle Value="wdfString"/>
       </Item1>
     </Watches>
-    <Exceptions Count="8" IgnoreAll="True">
+    <Exceptions Count="1">
       <Item1>
-        <Name Value="ESynaSerError"/>
-      </Item1>
-      <Item2>
-        <Name Value="EACBrECFErro"/>
-      </Item2>
-      <Item3>
-        <Name Value="EACBrECFNaoInicializado"/>
-      </Item3>
-      <Item4>
-        <Name Value="Exception"/>
-      </Item4>
-      <Item5>
-        <Name Value="EStringListError"/>
-      </Item5>
-      <Item6>
         <Name Value="EACBrECFSemResposta"/>
-      </Item6>
-      <Item7>
-        <Name Value="EACBrECFCMDInvalido"/>
-      </Item7>
-      <Item8>
-        <Name Value="EInOutError"/>
-      </Item8>
+      </Item1>
     </Exceptions>
   </Debugging>
   <EditorMacros Count="0"/>

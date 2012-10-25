@@ -2189,7 +2189,8 @@ end;
 
 function TACBrECFEpson.AchaICMSAliquota( var AliquotaICMS: String):
    TACBrECFAliquota;
-  Var AliquotaStr : String ;
+Var
+  AliquotaStr : String ;
 begin
   AliquotaStr := '' ;
   Result      := nil ;

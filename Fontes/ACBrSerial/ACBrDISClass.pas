@@ -212,8 +212,6 @@ begin
 end;
 
 procedure TACBrDISClass.TxKeyboard(B: Byte);
-Var
-  I : Integer ;
 begin
   WaitForKeyBoard;
 

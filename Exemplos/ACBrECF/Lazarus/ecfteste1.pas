@@ -55,7 +55,6 @@ type
     bACCVerificarGT : TButton ;
     bAACAtualizarGT : TButton ;
     btnMenuFiscalParametrosConfig: TButton;
-    Button1: TButton;
     CancelaCupom1: TMenuItem;
     CancelaImpressoCheque1: TMenuItem;
     CancelaNoFiscal1: TMenuItem;
@@ -440,7 +439,6 @@ type
     procedure btnMenuFiscalRelIdentPAFECFClick(Sender : TObject) ;
     procedure btnMenuFiscalRelMeiosPagtoClick(Sender : TObject) ;
     procedure btnMenuFiscalParametrosConfigClick(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
     procedure chAACFlushChange(Sender : TObject) ;
     procedure chAACUsarChange(Sender : TObject) ;
     procedure cbxModeloChange(Sender: TObject);
@@ -1234,17 +1232,6 @@ begin
     IdentPaf.Free;
   end;
 
-end;
-
-procedure TForm1.Button1Click(Sender: TObject);
-begin
-  if ACBrECF1.Estado <> estRelatorio then
-  begin
-    ACBrECF1.CorrigeEstadoErro ;
-    ACBrECF1.AbreRelatorioGerencial;
-  end ;
-
-  ACBrECF1.LinhaRelatorioGerencial( '<n>NEGRITO</N>' );
 end;
 
 procedure TForm1.chAACFlushChange(Sender : TObject) ;

@@ -272,7 +272,8 @@ begin
     FXML := Self.Leitor.Arquivo;
     if (Leitor.rExtrai(1, 'retConsNFeDest') <> '') then
     begin
-      (*IR02 *)Fversao   := Leitor.rCampo(tcStr, 'versao');
+      (*IR02 *)Fversao   := Leitor.rAtributo('versao');
+//      (*IR02 *)Fversao   := Leitor.rCampo(tcStr, 'versao');
       (*IR03 *)FtpAmb    := StrToTpAmb(ok, Leitor.rCampo(tcStr, 'tpAmb'));
       (*IR04 *)FverAplic := Leitor.rCampo(tcStr, 'verAplic');
       (*IR05 *)FcStat    := Leitor.rCampo(tcInt, 'cStat');
@@ -287,7 +288,8 @@ begin
 
         if (Leitor.rExtrai(3, 'resNFe') <> '') then
         begin
-          (*IR12 *)Fret.Items[i].FresNFe.FNSU       := Leitor.rCampo(tcStr, 'NSU');
+          (*IR12 *)Fret.Items[i].FresNFe.FNSU       := Leitor.rAtributo('NSU');
+//          (*IR12 *)Fret.Items[i].FresNFe.FNSU       := Leitor.rCampo(tcStr, 'NSU');
           (*IR13 *)Fret.Items[i].FresNFe.chNFe      := Leitor.rCampo(tcStr, 'chNFe');
           (*IR14 *)Fret.Items[i].FresNFe.FCNPJCPF   := Leitor.rCampo(tcStr, 'CNPJ');
           if Fret.Items[i].FresNFe.FCNPJCPF = '' then
@@ -303,9 +305,28 @@ begin
           (*IR24 *)Fret.Items[i].FresNFe.FcSitConf  := StrToSituacaoManifDest(ok, Leitor.rCampo(tcStr, 'cSitConf'));
         end;
 
+        if (Leitor.rExtrai(3, 'resCanc') <> '') then
+        begin
+          (*IR26 *)Fret.Items[i].FresCanc.FNSU       := Leitor.rAtributo('NSU');
+          (*IR27 *)Fret.Items[i].FresCanc.chNFe      := Leitor.rCampo(tcStr, 'chNFe');
+          (*IR28 *)Fret.Items[i].FresCanc.FCNPJCPF   := Leitor.rCampo(tcStr, 'CNPJ');
+          if Fret.Items[i].FresCanc.FCNPJCPF = '' then
+            (*IR29 *)Fret.Items[i].FresCanc.FCNPJCPF := Leitor.rCampo(tcStr, 'CPF');
+          (*IR30 *)Fret.Items[i].FresCanc.FxNome     := Leitor.rCampo(tcStr, 'xNome');
+          (*IR31 *)Fret.Items[i].FresCanc.FIE        := Leitor.rCampo(tcStr, 'IE');
+          (*IR32 *)Fret.Items[i].FresCanc.FdEmi      := Leitor.rCampo(tcDat, 'dEmi');
+          (*IR33 *)Fret.Items[i].FresCanc.FtpNF      := StrToTpNF(ok, Leitor.rCampo(tcStr, 'tpNF'));
+          (*IR34 *)Fret.Items[i].FresCanc.FvNF       := Leitor.rCampo(tcDe2, 'vNF');
+          (*IR35 *)Fret.Items[i].FresCanc.FdigVal    := Leitor.rCampo(tcStr, 'digVal');
+          (*IR36 *)Fret.Items[i].FresCanc.FdhRecbto  := Leitor.rCampo(tcDatHor, 'dhRecbto');
+          (*IR37 *)Fret.Items[i].FresCanc.FcSitNFe   := StrToSituacaoNFe(ok, Leitor.rCampo(tcStr, 'cSitNFe'));
+          (*IR38 *)Fret.Items[i].FresCanc.FcSitConf  := StrToSituacaoManifDest(ok, Leitor.rCampo(tcStr, 'cSitConf'));
+        end;
+
         if (Leitor.rExtrai(3, 'resCCe') <> '') then
         begin
-          (*IR40 *)Fret.Items[i].FresCCe.FNSU        := Leitor.rCampo(tcStr, 'NSU');
+          (*IR40 *)Fret.Items[i].FresCCe.FNSU        := Leitor.rAtributo('NSU');
+//          (*IR40 *)Fret.Items[i].FresCCe.FNSU        := Leitor.rCampo(tcStr, 'NSU');
           (*IR41 *)Fret.Items[i].FresCCe.chNFe       := Leitor.rCampo(tcStr, 'chNFe');
           (*IR42 *)Fret.Items[i].FresCCe.FdhEvento   := Leitor.rCampo(tcDatHor, 'dhEvento');
           (*IR43 *)Fret.Items[i].FresCCe.FtpEvento   := StrToTpEvento(ok, Leitor.rCampo(tcStr, 'tpEvento'));
@@ -318,6 +339,10 @@ begin
 
         inc(i);
       end;
+
+      if i = 0
+       then Fret.Add;
+
       Result := True;
     end;
   except

@@ -1,5 +1,5 @@
 {==============================================================================|
-| Project : Ararat Synapse                                       | 004.015.001 |
+| Project : Ararat Synapse                                       | 004.015.002 |
 |==============================================================================|
 | Content: support procedures and functions                                    |
 |==============================================================================|
@@ -47,19 +47,11 @@
 
 {:@abstract(Support procedures and functions)}
 
-{$IFDEF FPC}
-  {$MODE DELPHI}
-{$ENDIF}
+{$I jedi.inc} // load common compiler defines
+
 {$Q-}
 {$R-}
 {$H+}
-
-//old Delphi does not have MSWINDOWS define.
-{$IFDEF WIN32}
-  {$IFNDEF MSWINDOWS}
-    {$DEFINE MSWINDOWS}
-  {$ENDIF}
-{$ENDIF}
 
 {$IFDEF UNICODE}
   {$WARN IMPLICIT_STRING_CAST OFF}
@@ -606,21 +598,11 @@ end;
 function GetTimeFromStr(Value: string): TDateTime;
 var
   x: integer;
-  {$IFDEF VER240}
-    fs: TFormatSettings;
-  {$ENDIF}
 begin
   x := rpos(':', Value);
   if (x > 0) and ((Length(Value) - x) > 2) then
     Value := Copy(Value, 1, x + 2);
-
-  {$IFDEF VER240}
-    fs := TFormatSettings.Create('');
-    Value := ReplaceString(Value, ':', fs.TimeSeparator);
-  {$ELSE}
-    Value := ReplaceString(Value, ':', TimeSeparator);
-  {$ENDIF}
-
+  Value := ReplaceString(Value, ':', {$IFDEF DELPHIXE_UP}FormatSettings.{$ENDIF}TimeSeparator);
   Result := -1;
   try
     Result := StrToTime(Value);
@@ -2070,19 +2052,10 @@ end;
 {==============================================================================}
 var
   n: integer;
-  {$IFDEF VER240}
-    fs: TFormatSettings;
-  {$ENDIF}
 begin
   for n :=  1 to 12 do
   begin
-    {$IFDEF VER240}
-      fs := TFormatSettings.Create('');
-      CustomMonthNames[n] := fs.ShortMonthNames[n];
-      MyMonthNames[0, n]  := fs.ShortMonthNames[n];
-    {$ELSE}
-      CustomMonthNames[n] := ShortMonthNames[n];
-      MyMonthNames[0, n]  := ShortMonthNames[n];
-    {$ENDIF}
+    CustomMonthNames[n] := {$IFDEF DELPHIXE_UP}FormatSettings.{$ENDIF}ShortMonthNames[n];
+    MyMonthNames[0, n] := {$IFDEF DELPHIXE_UP}FormatSettings.{$ENDIF}ShortMonthNames[n];
   end;
 end.

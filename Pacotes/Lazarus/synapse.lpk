@@ -8,7 +8,7 @@
       <Version Value="11"/>
       <PathDelim Value="\"/>
       <SearchPaths>
-        <IncludeFiles Value="..\..\Fontes\synalist"/>
+        <IncludeFiles Value="..\..\Fontes\synalist;..\..\Fontes\ACBrComum"/>
         <OtherUnitFiles Value="..\..\Fontes\synalist"/>
         <UnitOutputDirectory Value="..\..\Fontes\synalist\lib\$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
@@ -174,5 +174,8 @@
       <Version Value="2"/>
       <IgnoreBinaries Value="False"/>
     </PublishOptions>
+    <CustomOptions Items="ExternHelp" Version="2">
+      <_ExternHelp Items="Count"/>
+    </CustomOptions>
   </Package>
 </CONFIG>

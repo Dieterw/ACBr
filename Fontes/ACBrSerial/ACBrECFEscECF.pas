@@ -409,8 +409,8 @@ var
    AHexStr: String;
 begin
   AHexStr := IntToHex(AInteger,4);
-  Result  := chr( StrToInt('$'+copy(AHexStr,3,2) ) ) +
-             chr( StrToInt('$'+copy(AHexStr,1,2) ) ) ;
+  Result  := AnsiChar(chr( StrToInt('$'+copy(AHexStr,3,2) ) )) +
+             AnsiChar(chr( StrToInt('$'+copy(AHexStr,1,2) ) )) ;
 end;
 
 
@@ -486,10 +486,11 @@ begin
 
   BCD := '' ;
   For I := 0 to fsParams.Count-1 do
-    BCD := BCD + BinaryStringToString( fsParams[I] ) + '|';
+    BCD := BCD + StringToBinaryString( AnsiString(fsParams[I]) ) + '|';
   TBC := Length( BCD ) ;
 
-  Buffer := chr(fsSEQ) + chr(fsCMD) + chr(fsEXT) + Int2TB(TBC) + BCD ;
+  Buffer := AnsiChar(chr(fsSEQ)) + AnsiChar(chr(fsCMD)) + AnsiChar(chr(fsEXT)) +
+            Int2TB(TBC) + BCD ;
 
   Soma := 0 ;
   LenCmd := Length( Buffer ) ;
@@ -497,7 +498,7 @@ begin
      Soma := Soma + ord( Buffer[I] ) ;
   CHK := Soma mod 256  ;
 
-  Result := SOH + Buffer + AnsiChar( Chr( CHK ) ) ;
+  Result := SOH + Buffer + AnsiChar(Chr( CHK )) ;
 end;
 
 procedure TACBrECFEscECFComando.AddParamString(AString: AnsiString);
@@ -509,7 +510,7 @@ begin
 
   { Convertendo caracteres de comando para Hexa para poder armazenar
     corretamente no TStringList }
-  Buf := StringToBinaryString( AString );
+  Buf := BinaryStringToString( AString );
 
   fsParams.Add( TrimRight( Buf ) ) ;
 end;

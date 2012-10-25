@@ -1585,7 +1585,7 @@ begin
        On E: Exception do
        begin
           GravaLog('----------------- ERRO -----------------' + sLineBreak +
-                   E.Message + sLineBreak +
+                   ACBrStrToAnsi( E.Message ) + sLineBreak +
                    '----------------------------------------' + sLineBreak );
           raise ;
        end ;

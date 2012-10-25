@@ -62,7 +62,6 @@ type
   private
     FLeitor: TLeitor;
     FCTe: TCTe;
-    FSchema: TpcnSchema;
   public
     constructor Create(AOwner: TCTe);
     destructor Destroy; override;
@@ -70,7 +69,6 @@ type
   published
     property Leitor: TLeitor read FLeitor write FLeitor;
     property CTe: TCTe read FCTe write FCTe;
-    property schema: TpcnSchema read Fschema write Fschema;
   end;
 
   ////////////////////////////////////////////////////////////////////////////////

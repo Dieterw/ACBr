@@ -63,7 +63,6 @@ type
   private
     FGerador: TGerador;
     FCTe: TCTe;
-    FSchema: TpcnSchema;
     FOpcoes: TGeradorOpcoes;
 
     procedure GerarInfCTe;     // Nivel 0
@@ -174,7 +173,6 @@ type
   published
     property Gerador: TGerador read FGerador write FGerador;
     property CTe: TCTe read FCTe write FCTe;
-    property schema: TpcnSchema read Fschema write Fschema;
     property Opcoes: TGeradorOpcoes read FOpcoes write FOpcoes;
   end;
 
@@ -269,20 +267,7 @@ begin
   Gerador.ArquivoFormatoTXT := '';
 
   Gerador.wGrupo(ENCODING_UTF8, '', False);
-(*
-{$IFDEF PL_103}
-  if CTe.procCTe.nProt <> ''
-   then Gerador.wGrupo('cteProc ' + V1_03 + ' ' + NAME_SPACE_CTE, '');
-  Gerador.wGrupo('CTe ' + NAME_SPACE_CTE);
-  Gerador.wGrupo('infCte ' + V1_03 + ' Id="' + CTe.infCTe.ID + '"');
-{$ENDIF}
-{$IFDEF PL_104}
-  if CTe.procCTe.nProt <> ''
-   then Gerador.wGrupo('cteProc ' + V1_04 + ' ' + NAME_SPACE_CTE, '');
-  Gerador.wGrupo('CTe ' + NAME_SPACE_CTE);
-  Gerador.wGrupo('infCte ' + V1_04 + ' Id="' + CTe.infCTe.ID + '"');
-{$ENDIF}
-*)
+
   if CTe.procCTe.nProt <> ''
    then Gerador.wGrupo('cteProc versao="' + CTeenviCTe + '" ' + NAME_SPACE_CTE, '');
   Gerador.wGrupo('CTe ' + NAME_SPACE_CTE);
@@ -311,14 +296,6 @@ begin
   if CTe.procCTe.nProt <> '' then
    begin
      xProtCTe :=
-(*
-{$IFDEF PL_103}
-           '<protCTe ' + V1_03 + '>' +
-{$ENDIF}
-{$IFDEF PL_104}
-           '<protCTe ' + V1_04 + '>' +
-{$ENDIF}
-*)
            '<protCTe versao="' + CTeenviCTe + '">' +
              '<infProt>'+
                '<tpAmb>'+TpAmbToStr(CTe.procCTe.tpAmb)+'</tpAmb>'+
@@ -1266,11 +1243,11 @@ begin
 
 {$IFDEF PL_104}
     case StrToInt(TpModalToStr(CTe.Ide.modal)) of
-     01: Gerador.wGrupo('infModal ' + VM_Rodo_1_04, '#312');
-     02: Gerador.wGrupo('infModal ' + VM_Aereo_1_04, '#312');
-     03: Gerador.wGrupo('infModal ' + VM_Aqua_1_04, '#312');
-     04: Gerador.wGrupo('infModal ' + VM_Ferro_1_04, '#312');
-     05: Gerador.wGrupo('infModal ' + VM_Duto_1_04, '#312');
+     01: Gerador.wGrupo('infModal versaoModal="' + CTeModalRodo + '"', '#312');
+     02: Gerador.wGrupo('infModal versaoModal="' + CTeModalAereo + '"', '#312');
+     03: Gerador.wGrupo('infModal versaoModal="' + CTeModalAqua + '"', '#312');
+     04: Gerador.wGrupo('infModal versaoModal="' + CTeModalFerro + '"', '#312');
+     05: Gerador.wGrupo('infModal versaoModal="' + CTeModalDuto + '"', '#312');
     end;
 {$ENDIF}
     case StrToInt(TpModalToStr(CTe.Ide.modal)) of

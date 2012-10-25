@@ -57,13 +57,11 @@ type
   TcancCTe = class(TPersistent)
   private
     FGerador: TGerador;
-    FSchema: TpcnSchema;
     FChave: string;
     FtpAmb: TpcnTipoAmbiente;
     FchCTe: string;
     FnProt: string;
     FxJust: string;
-    FVersao: string;
   public
     constructor Create;
     destructor Destroy; override;
@@ -71,13 +69,11 @@ type
     function ObterNomeArquivo: string;
   published
     property Gerador: TGerador read FGerador write FGerador;
-    property Schema: TpcnSchema read FSchema write FSchema;
     property Chave: string read FChave write FChave;
     property tpAmb: TpcnTipoAmbiente read FtpAmb write FtpAmb;
     property chCTe: string read FchCTe write FchCTe;
     property nProt: string read FnProt write FnProt;
     property xJust: string read FxJust write FxJust;
-    property Versao: string read FVersao write FVersao;
   end;
 
 implementation
@@ -103,15 +99,8 @@ end;
 function TcancCTe.GerarXML: boolean;
 begin
   Gerador.ArquivoFormatoXML := '';
-  (*
- {$IFDEF PL_103}
-    Gerador.wGrupo('cancCTe ' + NAME_SPACE_CTE + ' ' + V1_03);
- {$ENDIF}
- {$IFDEF PL_104}
-    Gerador.wGrupo('cancCTe ' + NAME_SPACE_CTE + ' ' + V1_04);
- {$ENDIF}
- *)
-  Gerador.wGrupo('cancCTe ' + NAME_SPACE_CTE + ' versao="' + Versao + '"');
+
+  Gerador.wGrupo('cancCTe ' + NAME_SPACE_CTE + ' versao="' + CTecancCTe + '"');
   Gerador.wGrupo('infCanc Id="ID' + SomenteNumeros(FchCTe) + '"');
   Gerador.wCampo(tcStr, 'CP05', 'tpAmb', 001, 001, 1, tpAmbToStr(FtpAmb), DSC_TPAMB);
   Gerador.wCampo(tcStr, 'CP06', 'xServ', 008, 008, 1, 'CANCELAR', DSC_XSERV);

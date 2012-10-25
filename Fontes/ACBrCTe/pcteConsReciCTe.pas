@@ -57,10 +57,8 @@ type
   TConsReciCTe = class(TPersistent)
   private
     FGerador: TGerador;
-    FSchema: TpcnSchema;
     FtpAmb: TpcnTipoAmbiente;
     FnRec: string;
-    FVersao: string;
   public
     constructor Create;
     destructor Destroy; override;
@@ -68,10 +66,8 @@ type
     function ObterNomeArquivo: string;
   published
     property Gerador: TGerador read FGerador write FGerador;
-    property schema: TpcnSchema read Fschema write Fschema;
     property tpAmb: TpcnTipoAmbiente read FtpAmb write FtpAmb;
     property nRec: string read FnRec write FnRec;
-    property Versao: string read FVersao write FVersao;
   end;
 
 implementation
@@ -97,15 +93,8 @@ end;
 function TConsReciCTe.GerarXML: boolean;
 begin
   Gerador.ArquivoFormatoXML := '';
- (*
- {$IFDEF PL_103}
-    Gerador.wGrupo('consReciCTe ' + NAME_SPACE_CTE + ' ' + V1_03);
- {$ENDIF}
- {$IFDEF PL_104}
-    Gerador.wGrupo('consReciCTe ' + NAME_SPACE_CTE + ' ' + V1_04);
- {$ENDIF}
- *)
-  Gerador.wGrupo('consReciCTe ' + NAME_SPACE_CTE + ' versao="' + Versao + '"');
+
+  Gerador.wGrupo('consReciCTe ' + NAME_SPACE_CTE + ' versao="' + CTeconsReciCTe + '"');
   Gerador.wCampo(tcStr, 'BP03', 'tpAmb  ', 001, 001, 1, tpAmbToStr(FtpAmb), DSC_TPAMB);
   Gerador.wCampo(tcEsp, 'BP04', 'nRec   ', 015, 015, 1, FnRec, DSC_NREC);
   Gerador.wGrupo('/consReciCTe');

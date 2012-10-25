@@ -61,7 +61,6 @@ type
   TinutCTe = class(TPersistent)
   private
     FGerador: TGerador;
-    FSchema: TpcnSchema;
     FtpAmb: TpcnTipoAmbiente;
     FcUF: integer;
     Fano: integer;
@@ -72,7 +71,6 @@ type
     FnCTFin: integer;
     FxJust: string;
     FIDInutilizacao: string;
-    FVersao: string;
   public
     constructor Create;
     destructor Destroy; override;
@@ -80,7 +78,6 @@ type
     function ObterNomeArquivo: string;
   published
     property Gerador: TGerador read FGerador write FGerador;
-    property schema: TpcnSchema read Fschema write Fschema;
     property tpAmb: TpcnTipoAmbiente read FtpAmb write FtpAmb;
     property cUF: integer read FcUF write FcUF;
     property ano: integer read Fano write Fano;
@@ -91,7 +88,6 @@ type
     property nCTFin: integer read FnCTFin write FnCTFin;
     property xJust: string read FxJust write FxJust;
     property ID: string read FIDInutilizacao;
-    property Versao: string read FVersao write FVersao;
   end;
 
 implementation
@@ -121,15 +117,8 @@ begin
     IntToStrZero(FnCTIni, 9) + IntToStrZero(FnCTFin, 9);
 
   Gerador.ArquivoFormatoXML := '';
- (*
- {$IFDEF PL_103}
-    Gerador.wGrupo('inutCTe ' + NAME_SPACE_CTE + ' ' + V1_03);
- {$ENDIF}
- {$IFDEF PL_104}
-    Gerador.wGrupo('inutCTe ' + NAME_SPACE_CTE + ' ' + V1_04);
- {$ENDIF}
- *)
-  Gerador.wGrupo('inutCTe ' + NAME_SPACE_CTE + ' versao="' + Versao + '"');
+
+  Gerador.wGrupo('inutCTe ' + NAME_SPACE_CTE + ' versao="' + CTeinutCTe + '"');
   Gerador.wGrupo('infInut Id="' + FIDInutilizacao + '"');
   if length(FIDInutilizacao) < 39 then
     Gerador.wAlerta('DP04', 'ID', '', 'ID de inutilização inválido');

@@ -201,7 +201,6 @@ begin
      Result  := True;
      LocCTeW := TCTeW.Create(CTe);
      try
-        LocCTeW.schema := TsPL005c;
         LocCTeW.GerarXml;
         if CTeUtil.EstaVazio(CaminhoArquivo) then
            CaminhoArquivo := PathWithDelim(TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).Configuracoes.Geral.PathSalvar)+copy(CTe.inFCTe.ID, (length(CTe.inFCTe.ID)-44)+1, 44)+'-cte.xml';
@@ -226,7 +225,6 @@ begin
      Result  := True;
      LocCTeW := TCTeW.Create(CTe);
      try
-        LocCTeW.schema := TsPL005c;
         LocCTeW.GerarXml;
         Stream.WriteString(LocCTeW.Gerador.ArquivoFormatoXML);
      finally
@@ -338,7 +336,6 @@ var
 begin
  LocCTeW := TCTeW.Create(Self.CTe);
  try
-    LocCTeW.schema := TsPL005c;
     LocCTeW.GerarXml;
     Result := LocCTeW.Gerador.ArquivoFormatoXML;
  finally
@@ -379,7 +376,6 @@ begin
    begin
      LocCTeW := TCTeW.Create(Self.Items[i].CTe);
      try
-        LocCTeW.schema := TsPL005c;
         LocCTeW.GerarXml;
         Self.Items[i].Alertas := LocCTeW.Gerador.ListaDeAlertas.Text;
 {$IFDEF ACBrCTeOpenSSL}
@@ -424,12 +420,6 @@ begin
   begin
     LocCTeW := TCTeW.Create(Self.Items[i].CTe);
     try
- {$IFDEF PL_103}
-       LocCTeW.schema := TsPL_CTe_103;
- {$ENDIF}
- {$IFDEF PL_104}
-       LocCTeW.schema := TsPL_CTe_104;
- {$ENDIF}
        LocCTeW.GerarXml;
        Self.Items[i].XML     := LocCTeW.Gerador.ArquivoFormatoXML;
        Self.Items[i].Alertas := LocCTeW.Gerador.ListaDeAlertas.Text;

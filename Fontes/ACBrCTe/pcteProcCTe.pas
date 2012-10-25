@@ -59,7 +59,6 @@ type
   TProcCTe = class(TPersistent)
   private
     FGerador: TGerador;
-    FSchema: TpcnSchema;
     FPathCTe: string;
     FPathRetConsReciCTe: string;
     FPathRetConsSitCTe: string;
@@ -71,7 +70,6 @@ type
     FdigVal: string;
     FcStat: integer;
     FxMotivo: string;
-    FVersao: String;
   public
     constructor Create;
     destructor Destroy; override;
@@ -79,7 +77,6 @@ type
     function ObterNomeArquivo(const PadraoNome: TPcnPadraoNomeProcCTe = tpnPrivado): string;
   published
     property Gerador: TGerador read FGerador write FGerador;
-    property Schema: TpcnSchema read Fschema write Fschema;
     property PathCTe: string read FPathCTe write FPathCTe;
     property PathRetConsReciCTe: string read FPathRetConsReciCTe write FPathRetConsReciCTe;
     property PathRetConsSitCTe: string read FPathRetConsSitCTe write FPathRetConsSitCTe;
@@ -91,7 +88,6 @@ type
     property digVal: string read FdigVal write FdigVal;
     property cStat: integer read FcStat write FcStat;
     property xMotivo: string read FxMotivo write FxMotivo;
-    property Versao: String read FVersao write FVersao;
   end;
 
 implementation
@@ -110,14 +106,11 @@ begin
 end;
 
 function TProcCTe.ObterNomeArquivo(const PadraoNome: TPcnPadraoNomeProcCTe = tpnPrivado): string;
-var
-  s: string;
 begin
   Result := FchCTe + '-procCTe.xml';
   if PadraoNome = tpnPublico then
   begin
-    s := '00' + retornarVersaoLayout(FSchema, tlProcCTe);
-    Result := FnProt + '_v' + copy(s, length(s) - 4, 5) + '-procCTe.xml';
+    Result := FnProt + '_v' + CTeenviCTe + '-procCTe.xml';
   end;
 end;
 
@@ -205,15 +198,7 @@ begin
            XMLinfProt2.Text:=RetornarConteudoEntre(XMLinfProt.text, '<infProt', '</infProt>');
 
       xProtCTe :=
-           (*
-           {$IFDEF PL_103}
-              '<protCTe ' + V1_03 +'>' +
-           {$ENDIF}
-           {$IFDEF PL_104}
-              '<protCTe ' + V1_04 +'>' +
-           {$ENDIF}
-           *)
-              '<protCTe versao="' + Versao + '">' +
+              '<protCTe versao="' + CTeenviCTe + '">' +
                 '<infProt>' +
                   PreencherTAG('tpAmb', XMLinfProt.text) +
                   PreencherTAG('verAplic', XMLinfProt.text) +
@@ -231,15 +216,7 @@ begin
   if ProtLido
    then begin
     xProtCTe :=
-           (*
-           {$IFDEF PL_103}
-            '<protCTe ' + V1_03 + '>' +
-           {$ENDIF}
-           {$IFDEF PL_104}
-            '<protCTe ' + V1_04 + '>' +
-           {$ENDIF}
-           *)
-            '<protCTe versao="' + Versao + '">' +
+            '<protCTe versao="' + CTeenviCTe + '">' +
               '<infProt>' +
                 '<tpAmb>'+TpAmbToStr(FtpAmb)+'</tpAmb>'+
                 '<verAplic>'+FverAplic+'</verAplic>'+
@@ -258,15 +235,7 @@ begin
    then begin
     Gerador.ArquivoFormatoXML := '';
     Gerador.wGrupo(ENCODING_UTF8, '', False);
-    (*
-    {$IFDEF PL_103}
-      Gerador.wGrupo('cteProc ' + V1_03 + ' ' + NAME_SPACE_CTE, '');
-    {$ENDIF}
-    {$IFDEF PL_104}
-      Gerador.wGrupo('cteProc ' + V1_04 + ' ' + NAME_SPACE_CTE, '');
-    {$ENDIF}
-    *)
-    Gerador.wGrupo('cteProc versao="' + Versao + '" ' + NAME_SPACE_CTE, '');
+    Gerador.wGrupo('cteProc versao="' + CTeenviCTe + '" ' + NAME_SPACE_CTE, '');
     Gerador.wTexto('<CTe xmlns' + RetornarConteudoEntre(XMLCTe.Text, '<CTe xmlns', '</CTe>') + '</CTe>');
     Gerador.wTexto(xProtCTe);
     Gerador.wGrupo('/cteProc');

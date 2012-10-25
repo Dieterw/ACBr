@@ -473,17 +473,10 @@ var
   CancCTe: TcancCTe;
 begin
   CancCTe        := TcancCTe.Create;
- {$IFDEF PL_103}
-  CancCTe.schema := TsPL_CTe_103;
- {$ENDIF}
- {$IFDEF PL_104}
-  CancCTe.schema := TsPL_CTe_104;
- {$ENDIF}
   CancCTe.chCTe  := TCTeCancelamento(Self).CTeChave;
   CancCTe.tpAmb  := TpcnTipoAmbiente(FConfiguracoes.WebServices.AmbienteCodigo-1);
   CancCTe.nProt  := TCTeCancelamento(Self).Protocolo;
   CancCTe.xJust  := TCTeCancelamento(Self).Justificativa;
-  CancCTe.Versao := CTecancCTe;
   
   CancCTe.GerarXML;
 
@@ -524,15 +517,8 @@ var
   ConsSitCTe : TConsSitCTe;
 begin
   ConsSitCTe        := TConsSitCTe.Create;
- {$IFDEF PL_103}
-  ConsSitCTe.schema := TsPL_CTe_103;
- {$ENDIF}
- {$IFDEF PL_104}
-  ConsSitCTe.schema := TsPL_CTe_104;
- {$ENDIF}
   ConsSitCTe.TpAmb  := TpcnTipoAmbiente(FConfiguracoes.WebServices.AmbienteCodigo-1);
   ConsSitCTe.chCTe  := TCTeConsulta(Self).CTeChave;
-  ConsSitCTe.Versao := CTeconsSitCTe;
 
   ConsSitCTe.GerarXML;
 
@@ -549,12 +535,6 @@ var
   InutCTe: TinutCTe;
 begin
   InutCTe        := TinutCTe.Create;
- {$IFDEF PL_103}
-  InutCTe.schema := TsPL_CTe_103;
- {$ENDIF}
- {$IFDEF PL_104}
-  InutCTe.schema := TsPL_CTe_104;
- {$ENDIF}
   InutCTe.tpAmb  := TpcnTipoAmbiente(FConfiguracoes.WebServices.AmbienteCodigo-1);
   InutCTe.cUF    := FConfiguracoes.WebServices.UFCodigo;
   InutCTe.ano    := TCTeInutilizacao(Self).Ano;
@@ -564,7 +544,6 @@ begin
   InutCTe.nCTIni := TCTeInutilizacao(Self).NumeroInicial;
   InutCTe.nCTFin := TCTeInutilizacao(Self).NumeroFinal;
   InutCTe.xJust  := TCTeInutilizacao(Self).Justificativa;
-  InutCTe.Versao := CTeinutCTe;
 
   InutCTe.GerarXML;
 
@@ -601,32 +580,28 @@ begin
   Cabecalho             := TCabecalho.Create;
   Cabecalho.Versao      := CTecabMsg;
   Cabecalho.VersaoDados := CTeconsCad;
-  
+
   Cabecalho.GerarXML;
 
   FCabMsg := Cabecalho.Gerador.ArquivoFormatoXML;
   Cabecalho.Free;
-  // Italo
+
   FCabMsg := StringReplace( FCabMsg, '<'+ENCODING_UTF8_STD+'>', '', [rfReplaceAll] ) ;
   FCabMsg := StringReplace( FCabMsg, '<'+ENCODING_UTF8+'>', '', [rfReplaceAll] ) ;
   FCabMsg := StringReplace( FCabMsg, '<?xml version="1.0"?>', '', [rfReplaceAll] ) ;
 
   ConCadCTe        := TConsCad.Create;
-  // Alterado por Italo em 14/03/2012
-  ConCadCTe.schema := TsPL006;
-//  ConCadCTe.schema := TsPL005c;
   ConCadCTe.UF     := TCTeConsultaCadastro(Self).UF;
   ConCadCTe.IE     := TCTeConsultaCadastro(Self).IE;
   ConCadCTe.CNPJ   := TCTeConsultaCadastro(Self).CNPJ;
   ConCadCTe.CPF    := TCTeConsultaCadastro(Self).CPF;
-  ConCadCTe.Versao := CTeconsCad;
-  
+
   ConCadCTe.GerarXML;
 
   FDadosMsg := ConCadCTe.Gerador.ArquivoFormatoXML;
 
   ConCadCTe.Free;
-  // Italo
+
   FDadosMsg := StringReplace( FDadosMsg, '<'+ENCODING_UTF8_STD+'>', '', [rfReplaceAll] ) ;
   FDadosMsg := StringReplace( FDadosMsg, '<'+ENCODING_UTF8+'>', '', [rfReplaceAll] ) ;
   FDadosMsg := StringReplace( FDadosMsg, '<?xml version="1.0"?>', '', [rfReplaceAll] ) ;
@@ -661,15 +636,8 @@ var
   ConsReciCTe: TConsReciCTe;
 begin
   ConsReciCTe        := TConsReciCTe.Create;
- {$IFDEF PL_103}
-  ConsReciCTe.schema := TsPL_CTe_103;
- {$ENDIF}
- {$IFDEF PL_104}
-  ConsReciCTe.schema := TsPL_CTe_104;
- {$ENDIF}
   ConsReciCTe.tpAmb  := TpcnTipoAmbiente(FConfiguracoes.WebServices.AmbienteCodigo-1);
   ConsReciCTe.nRec   := TCTeRetRecepcao(Self).Recibo;
-  ConsReciCTe.Versao := CTeconsReciCTe;
 
   ConsReciCTe.GerarXML;
 
@@ -686,8 +654,6 @@ var
   Cabecalho: TCabecalho;
   ConsReciCTe: TConsReciCTe;
 begin
-  // Janis
-  // Inicio
   Cabecalho             := TCabecalho.Create;
   Cabecalho.Versao      := CTecabMsg;
   Cabecalho.VersaoDados := CTeconsReciCTe;
@@ -696,19 +662,11 @@ begin
 
   FCabMsg := Cabecalho.Gerador.ArquivoFormatoXML;
   Cabecalho.Free;
-  // Fim
 
   ConsReciCTe        := TConsReciCTe.Create;
- {$IFDEF PL_103}
-  ConsReciCTe.schema := TsPL_CTe_103;
- {$ENDIF}
- {$IFDEF PL_104}
-  ConsReciCTe.schema := TsPL_CTe_104;
- {$ENDIF}
   ConsReciCTe.tpAmb  := TpcnTipoAmbiente(FConfiguracoes.WebServices.AmbienteCodigo-1);
   ConsReciCTe.nRec   := TCTeRecibo(Self).Recibo;
-  ConsReciCTe.Versao := CTeconsReciCTe;
-  
+
   ConsReciCTe.GerarXML;
 
   FDadosMsg := ConsReciCTe.Gerador.ArquivoFormatoXML;
@@ -1228,7 +1186,6 @@ begin
                AProcCTe := TProcCTe.Create;
                AProcCTe.PathCTe := PathWithDelim(FConfiguracoes.Geral.PathSalvar)+AInfProt.Items[i].chCTe+'-cte.xml';
                AProcCTe.PathRetConsReciCTe := PathWithDelim(FConfiguracoes.Geral.PathSalvar)+FCTeRetorno.nRec+'-pro-rec.xml';
-               AProcCTe.Versao := CTeenviCTe;
                AProcCTe.GerarXML;
                if CTeUtil.NaoEstaVazio(AProcCTe.Gerador.ArquivoFormatoXML) then
                 begin
@@ -1691,7 +1648,6 @@ begin
 //    FprotCTe    := CTeRetorno.protCTe;    //Arrumar
 //    FretCancCTe := CTeRetorno.retCancCTe; //Arrumar
 
-    FprotCTe.Schema             := CTeRetorno.protCTe.Schema;
     FprotCTe.PathCTe            := CTeRetorno.protCTe.PathCTe;
     FprotCTe.PathRetConsReciCTe := CTeRetorno.protCTe.PathRetConsReciCTe;
     FprotCTe.PathRetConsSitCTe  := CTeRetorno.protCTe.PathRetConsSitCTe;
@@ -1774,7 +1730,6 @@ begin
              else
                 AProcCTe.PathCTe := PathWithDelim(FConfiguracoes.Geral.PathSalvar)+FCTeChave+'-cte.xml';
              AProcCTe.PathRetConsSitCTe := PathWithDelim(FConfiguracoes.Geral.PathSalvar)+FCTeChave+'-sit.xml';
-             AProcCTe.Versao := CTeenviCTe;
              AProcCTe.GerarXML;
              if CTeUtil.NaoEstaVazio(AProcCTe.Gerador.ArquivoFormatoXML) then
                 AProcCTe.Gerador.SalvarArquivo(AProcCTe.PathCTe);
@@ -1804,7 +1759,6 @@ begin
              AProcCTe := TProcCTe.Create;
              AProcCTe.PathCTe := PathWithDelim(FConfiguracoes.Geral.PathSalvar)+FCTeChave+'-cte.xml';
              AProcCTe.PathRetConsSitCTe := PathWithDelim(FConfiguracoes.Geral.PathSalvar)+FCTeChave+'-sit.xml';
-             AProcCTe.Versao := CTeenviCTe;
              AProcCTe.GerarXML;
              if CTeUtil.NaoEstaVazio(AProcCTe.Gerador.ArquivoFormatoXML) then
                 AProcCTe.Gerador.SalvarArquivo(AProcCTe.PathCTe);

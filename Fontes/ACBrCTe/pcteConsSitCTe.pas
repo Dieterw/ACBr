@@ -57,10 +57,8 @@ type
   TConsSitCTe = class(TPersistent)
   private
     FGerador: TGerador;
-    FSchema: TpcnSchema;
     FtpAmb: TpcnTipoAmbiente;
     FchCTe: string;
-    FVersao: string;
   public
     constructor Create;
     destructor Destroy; override;
@@ -68,10 +66,8 @@ type
     function ObterNomeArquivo: string;
   published
     property Gerador: TGerador read FGerador write FGerador;
-    property schema: TpcnSchema read Fschema write Fschema;
     property tpAmb: TpcnTipoAmbiente read FtpAmb write FtpAmb;
     property chCTe: string read FchCTe write FchCTe;
-    property Versao: string read FVersao write FVersao;
   end;
 
 implementation
@@ -97,15 +93,8 @@ end;
 function TConsSitCTe.GerarXML: boolean;
 begin
   Gerador.ArquivoFormatoXML := '';
-  (*
- {$IFDEF PL_103}
-    Gerador.wGrupo('consSitCTe ' + NAME_SPACE_CTE + ' ' + V1_03);
- {$ENDIF}
- {$IFDEF PL_104}
-    Gerador.wGrupo('consSitCTe ' + NAME_SPACE_CTE + ' ' + V1_04);
- {$ENDIF}
- *)
-  Gerador.wGrupo('consSitCTe ' + NAME_SPACE_CTE + ' versao="' + Versao + '"');
+
+  Gerador.wGrupo('consSitCTe ' + NAME_SPACE_CTE + ' versao="' + CTeconsSitCTe + '"');
   Gerador.wCampo(tcStr, 'EP03', 'tpAmb', 001, 001, 1, tpAmbToStr(FtpAmb), DSC_TPAMB);
   Gerador.wCampo(tcStr, 'EP04', 'xServ', 009, 009, 1, 'CONSULTAR', DSC_XSERV);
   Gerador.wCampo(tcEsp, 'EP05', 'chCTe', 044, 044, 1, SomenteNumeros(FchCTe), DSC_CHCTe);

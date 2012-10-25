@@ -55,24 +55,20 @@ type
   TConsCad = class(TPersistent)
   private
     FGerador: TGerador;
-    FSchema: TpcnSchema;
     FUF: string;
     FIE: string;
     FCNPJ: string;
     FCPF: string;
-    FVersao: string;
   public
     constructor Create;
     destructor Destroy; override;
     function GerarXML: boolean;
   published
     property Gerador: TGerador read FGerador write FGerador;
-    property schema: TpcnSchema read Fschema write Fschema;
     property UF: string read FUF write FUF;
     property IE: string read FIE write FIE;
     property CNPJ: string read FCNPJ write FCNPJ;
     property CPF: string read FCPF write FCPF;
-    property Versao: string read FVersao write FVersao;
   end;
 
 implementation
@@ -95,18 +91,8 @@ var
   i: integer;
 begin
   Gerador.ArquivoFormatoXML := '';
-  (*
-  if retornarVersaoLayout(Fschema, tlConsCad) = '1.01' then
-   begin
-    Gerador.wGrupo(ENCODING_UTF8, '', False);
-    Gerador.wGrupo('ConsCad ' + NAME_SPACE + ' ' + V1_01);
-   end;
-  if retornarVersaoLayout(Fschema, tlConsCad) = '2.00' then
-   begin
-    Gerador.wGrupo('ConsCad ' + NAME_SPACE + ' ' + V2_00);
-   end;
-  *)
-  Gerador.wGrupo('ConsCad ' + NAME_SPACE + ' versao="' + Versao + '"');
+
+  Gerador.wGrupo('ConsCad ' + NAME_SPACE + ' versao="' + CTeconsCad + '"');
   Gerador.wGrupo('infCons');
   Gerador.wCampo(tcStr, 'GP04', 'xServ ', 008, 008, 1, 'CONS-CAD', DSC_XSERV);
   Gerador.wCampo(tcStr, 'GP05', 'UF    ', 002, 002, 1, FUF, DSC_UF);

@@ -293,6 +293,13 @@ const
   CTeconsCad      = '2.00';  // Alterado por Italo em 17/10/2011
 {$ENDIF}
 
+  // Incluido por Italo em 25/10/2012
+  CTeModalRodo    = '1.04';
+  CTeModalAereo   = '1.04';
+  CTeModalAqua    = '1.04';
+  CTeModalFerro   = '1.04';
+  CTeModalDuto    = '1.04';
+
   LineBreak = #13#10;
 
 function StrToEnumerado(var ok: boolean; const s: string; const AString: array of string;

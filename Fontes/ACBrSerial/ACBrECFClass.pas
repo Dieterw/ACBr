@@ -69,7 +69,7 @@ EACBrECFErro            = class(Exception) ;
 
 { TACBrECFRodape }
 
-TACBrECFRodapeNotaLegalDF = class
+TACBrECFRodapeNotaLegalDF = class( TPersistent )
   private
     fsProgramaDeCredito: Boolean;
     fsValorICMS: Double;
@@ -82,7 +82,7 @@ TACBrECFRodapeNotaLegalDF = class
     property ValorISS: Double read fsValorISS write fsValorISS;
 end;
 
-TACBrECFRodape = class
+TACBrECFRodape = class( TPersistent )
   private
     fsPreVenda: String;
     fsDavOs: String;

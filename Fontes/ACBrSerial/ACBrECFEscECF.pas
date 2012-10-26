@@ -46,6 +46,9 @@ interface
 uses ACBrECFClass, ACBrUtil, ACBrDevice, ACBrConsts,
      Classes ;
 
+const
+    cEscECFMaxBuffer = 4096 ;
+
 type
 
 { TACBrECFEscECFRET }
@@ -122,6 +125,8 @@ TACBrECFEscECFResposta = class
     constructor create ;
     destructor Destroy ; override ;
 
+    procedure Clear( ClearParams: Boolean = True ) ;
+
     property Resposta : AnsiString  read fsResposta write SetResposta ;
     property Params   : TStringList read fsParams ;
     property SEQ      : Byte        read fsSEQ ;
@@ -138,6 +143,7 @@ TACBrECFEscECFResposta = class
  { Classe filha de TACBrECFClass com implementaçao para EscECF }
 TACBrECFEscECF = class( TACBrECFClass )
  private
+    fsSPR            : Byte;
     fsNumVersao      : String ;
     fsVersaoEscECF   : String ;
     fsNumECF         : String ;
@@ -291,7 +297,7 @@ TACBrECFEscECF = class( TACBrECFClass )
     //procedure CancelaItemVendidoParcial( NumItem : Integer; Quantidade : Double) ; override ;
     procedure CancelaDescontoAcrescimoItem( NumItem : Integer) ; override ;
 
-    { Procedimentos de Cupom Não Fiscal }
+    { TODO: Procedimentos de Cupom Não Fiscal }
     Procedure NaoFiscalCompleto( CodCNF : String; Valor : Double;
        CodFormaPagto  : String; Obs : AnsiString = ''; IndiceBMP : Integer = 0 ) ; override ;
     Procedure AbreNaoFiscal( CPF_CNPJ: String = ''; Nome: String = '';
@@ -320,13 +326,9 @@ TACBrECFEscECF = class( TACBrECFClass )
     Procedure LeituraX ; override ;
     Procedure LeituraXSerial( Linhas : TStringList) ; override ;
     Procedure ReducaoZ( DataHora : TDateTime = 0 ) ; override ;
-    Procedure RelatorioGerencial(Relatorio : TStrings; Vias : Integer = 1; Indice: Integer = 0) ;
     Procedure AbreRelatorioGerencial(Indice: Integer = 0) ; override ;
     Procedure LinhaRelatorioGerencial( Linha : AnsiString; IndiceBMP: Integer = 0 ) ; override ;
 
-    Procedure CupomVinculado(COO, CodFormaPagto, CodComprovanteNaoFiscal :
-       String; Valor : Double;  Relatorio : TStrings;
-       Vias : Integer = 1) ;
     Procedure AbreCupomVinculado(COO, CodFormaPagto, CodComprovanteNaoFiscal :
        String; Valor : Double) ; override ;
     Procedure LinhaCupomVinculado( Linha : AnsiString ) ; override ;
@@ -335,7 +337,6 @@ TACBrECFEscECF = class( TACBrECFClass )
     procedure ReimpressaoVinculado; override;
 
     Procedure FechaRelatorio ; override ;
-    Procedure PulaLinhas( NumLinhas : Integer = 0 ) ; override ;
     Procedure CortaPapel( const CorteParcial : Boolean = false) ; override ;
 
     { Cheques }
@@ -348,11 +349,7 @@ TACBrECFEscECF = class( TACBrECFClass )
     Procedure MudaHorarioVerao ; overload ; override ;
     Procedure MudaHorarioVerao( EHorarioVerao : Boolean ) ; overload ; override ;
     Procedure MudaArredondamento( Arredondar : Boolean ) ; override ;
-    Procedure PreparaTEF ; override ; { Carrega as Formas, de Pagamento e CNF,
-                            verifica por Vinculos, etc Particular de cada ECF }
-    Procedure CorrigeEstadoErro( Reducao: Boolean = True ) ; override ; { Verifica o estado da impressora e
-                                              tenta deixar em estado Livre }
-    Procedure ImpactoAgulhas( NivelForca : Integer = 2) ; override ;
+
     Procedure LeituraMemoriaFiscal( DataInicial, DataFinal : TDateTime;
        Simplificada : Boolean = False ) ; overload ; override ;
     Procedure LeituraMemoriaFiscal( ReducaoInicial, ReducaoFinal : Integer;
@@ -364,28 +361,14 @@ TACBrECFEscECF = class( TACBrECFClass )
        Linhas : TStringList; Simplificada : Boolean = False ) ;
        overload ; override ;
 
-    Procedure LeituraMFDSerial( DataInicial, DataFinal : TDateTime;
-       Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
-    Procedure LeituraMFDSerial( COOInicial, COOFinal : Integer;
-       Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
-
-    Procedure EspelhoMFD_DLL( DataInicial, DataFinal : TDateTime;
-       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ; override ;
-    Procedure EspelhoMFD_DLL( COOInicial, COOFinal : Integer;
-       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ; override ;
-    Procedure ArquivoMFD_DLL( DataInicial, DataFinal : TDateTime;
-       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos];
-       Finalidade: TACBrECFFinalizaArqMFD = finMFD  ) ; overload ; override ;
-    Procedure ArquivoMFD_DLL( ContInicial, ContFinal : Integer;
-       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos];
-       Finalidade: TACBrECFFinalizaArqMFD = finMFD;
-       TipoContador: TACBrECFTipoContador = tpcCOO ) ; overload ; override ;
-
-    procedure PafMF_GerarCAT52(const DataInicial, DataFinal: TDateTime;
-      const DirArquivos: String); override;
+    //Procedure LeituraMFDSerial( DataInicial, DataFinal : TDateTime;
+       //Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
+    //Procedure LeituraMFDSerial( COOInicial, COOFinal : Integer;
+       //Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
 
     Procedure IdentificaOperador(Nome : String); override;
     Procedure IdentificaPAF( NomeVersao, MD5 : String) ; override ;
+
     Function RetornaInfoECF( Registrador: String) : AnsiString; override ;
  end ;
 
@@ -487,6 +470,7 @@ begin
   BCD := '' ;
   For I := 0 to fsParams.Count-1 do
     BCD := BCD + StringToBinaryString( AnsiString(fsParams[I]) ) + '|';
+  BCD := LeftStr( BCD, cEscECFMaxBuffer);
   TBC := Length( BCD ) ;
 
   Buffer := AnsiChar(chr(fsSEQ)) + AnsiChar(chr(fsCMD)) + AnsiChar(chr(fsEXT)) +
@@ -565,12 +549,11 @@ begin
   inherited destroy ;
 end;
 
-procedure TACBrECFEscECFResposta.SetResposta(const Value: AnsiString);
-Var
-  Soma, I, F, LenCmd : Integer ;
-  CHK  : Byte ;
+procedure TACBrECFEscECFResposta.Clear(ClearParams: Boolean);
 begin
-  fsParams.Clear ;
+  if ClearParams then
+     fsParams.Clear ;
+
   fsRET.Clear;
   fsSEQ := 0 ;
   fsCMD := 0 ;
@@ -579,6 +562,14 @@ begin
   fsTBR := 0  ;
   fsBRS := '' ;
   fsCHK := 0 ;
+end;
+
+procedure TACBrECFEscECFResposta.SetResposta(const Value: AnsiString);
+Var
+  Soma, I, F, LenCmd : Integer ;
+  CHK  : Byte ;
+begin
+  Clear( False ) ;    // Não Zera Params, pois pode acumular 2 retornos
 
   if Value = '' then exit ;
 
@@ -622,11 +613,14 @@ begin
   begin
      F := PosEx('|',fsBRS,I) ;
      if F < I then
-        exit ;
+        Break ;
 
      fsParams.Add( Copy(fsBRS, I, F-I) ) ;
      I := F+1;
   end ;
+
+  if (I < fsTBR) and (fsTBR > 0) then   // Resposta sem último '|'
+     fsParams.Add( copy( fsBRS, I, fsTBR+1-I ) ) ;
 end;
 
 { ----------------------------- TACBrECFEscECF ------------------------------ }
@@ -720,6 +714,7 @@ begin
   if cmd <> '' then
      cmd := PreparaCmd(cmd) ;  // Ajusta e move para EscECFcomando
 
+  EscECFResposta.Clear ;       // Zera toda a Resposta
   cmd := EscECFComando.Comando ;
 
   Result                  := '' ;
@@ -788,8 +783,8 @@ var
 
    procedure PedeStatus( SPR: Byte );
    begin
-      GravaLog( '         Status TX -> '+ENQ+chr(SPR), True);
-      fpDevice.Serial.SendBlock( ENQ + chr(SPR) ); // ACK ok, Pede Resposta
+      GravaLog( '         Status TX -> '+ENQ+chr(fsSPR), True);
+      fpDevice.Serial.SendBlock( ENQ + chr(fsSPR) ); // ACK ok, Pede Resposta
       Retorno := '';
       TempoLimite := IncSecond(now, TimeOut);
    end;
@@ -814,6 +809,7 @@ begin
 
     ACK :
       begin
+        fsSPR := 0;
         GravaLog( '                RX <- '+Retorno, True);
         PedeStatus( EscECFComando.SEQ ) ;
       end;
@@ -847,13 +843,27 @@ begin
      end ;
   end ;
 
-  if Result and (Byte1 = WAK) then // Ocupado, aguarde e solicite novo Status
+  if Result then
   begin
-    GravaLog('                RX <- '+Retorno, True);
-    Sleep( 150 );
-    PedeStatus( EscECFResposta.RET.SPR );
-    Result := False;
+     if (Byte1 = WAK) then // Ocupado, aguarde e solicite novo Status
+      begin
+        GravaLog('                RX <- '+Retorno, True);
+        Sleep( 150 );
+        PedeStatus( EscECFResposta.RET.SPR );
+        Result := False;
+      end
+     else if Byte1 = SOH then
+      begin
+        if not TestBit( EscECFResposta.RET.ECF, 0 ) then
+        begin
+          GravaLog('     '+IntToStrZero(EscECFResposta.TBR,4)+' bytes RX <- '+Retorno, True);
+          Inc( fsSPR );
+          PedeStatus( EscECFResposta.RET.SPR );
+          Result := False;
+        end;
+      end;
   end;
+
 end;
 
 function TACBrECFEscECF.GetModeloStr: String;
@@ -1252,8 +1262,20 @@ begin
 end;
 
 procedure TACBrECFEscECF.LeituraXSerial(Linhas: TStringList);
+Var
+  Buffer : AnsiString;
+  I: Integer;
 begin
-   inherited LeituraXSerial(Linhas);
+  EscECFComando.CMD := 20;
+  EscECFComando.AddParamInteger(1); // Envia pela Serial
+  EnviaComando;
+
+  Buffer := '';
+  For I := 0 to EscECFResposta.Params.Count-1 do
+     Buffer := Buffer + EscECFResposta.Params[I] ;
+
+  Linhas.Clear;
+  Linhas.Text := Buffer;
 end;
 
 Procedure TACBrECFEscECF.AbreGaveta ;
@@ -1291,35 +1313,81 @@ begin
   
 end;
 
-procedure TACBrECFEscECF.RelatorioGerencial(Relatorio: TStrings; Vias: Integer;
-   Indice: Integer);
-begin
-
-end;
-
 procedure TACBrECFEscECF.AbreRelatorioGerencial(Indice: Integer);
 begin
-   inherited AbreRelatorioGerencial(Indice);
+  Indice := max(Indice,1) ;
+
+  EscECFComando.CMD := 12;
+  EscECFComando.AddParamInteger(Indice);
+  EnviaComando;
+
+  RespostasComando.AddField( 'COO',        EscECFResposta.Params[0] );
+  RespostasComando.AddField( 'DataHora',   EscECFResposta.Params[1] );
+  RespostasComando.AddField( 'VendaBruta', EscECFResposta.Params[2] );
+  RespostasComando.AddField( 'NumSerie',   EscECFResposta.Params[3] );
 end;
 
 procedure TACBrECFEscECF.LinhaRelatorioGerencial(Linha: AnsiString;
    IndiceBMP: Integer);
+var
+  P, Espera: Integer;
+  Buffer   : AnsiString ;
+  MaxChars : Integer ;
 begin
-   inherited LinhaRelatorioGerencial(Linha, IndiceBMP);
-end;
+  Linha := AjustaLinhas( Linha, Colunas );  { Formata as Linhas de acordo com "Coluna" }
 
-procedure TACBrECFEscECF.CupomVinculado(COO, CodFormaPagto,
-   CodComprovanteNaoFiscal: String; Valor: Double; Relatorio: TStrings;
-   Vias: Integer);
-begin
+  while Length( Linha ) > 0 do
+  begin
+     P := Length( Linha ) ;
+     if P > cEscECFMaxBuffer then    { Acha o fim de Linha mais próximo do limite máximo }
+        P := PosLast(#10, LeftStr(Linha,cEscECFMaxBuffer) ) ;
 
+     if P = 0 then
+        P := Colunas ;
+
+     Buffer := copy( Linha, 1, P)  ;
+     Espera := Trunc( CountStr( Buffer, #10 ) / 4) ;
+
+     EscECFComando.CMD := 9                                ;
+     EscECFComando.TimeOut := Espera ;
+     EscECFComando.AddParamString(Buffer);
+     EnviaComando;
+
+     { ficou apenas um LF sozinho ? }
+     if (P = Colunas) and (RightStr( Buffer, 1) <> #10) and
+        (copy( Linha, P+1, 1) = #10) then
+        P := P + 1 ;
+
+     Linha  := copy( Linha, P+1, Length(Linha) ) ;   // O Restante
+  end ;
 end;
 
 procedure TACBrECFEscECF.AbreCupomVinculado(COO, CodFormaPagto,
    CodComprovanteNaoFiscal: String; Valor: Double);
 begin
-   inherited AbreCupomVinculado(COO, CodFormaPagto, CodComprovanteNaoFiscal,
-      Valor);
+  with EscECFComando do
+  begin
+     CMD := 8;
+     AddParamInteger(1) ;   // TODO: Achar a Sequencia do Pagamento...
+     AddParamString(CodFormaPagto) ;
+     AddParamInteger(1) ;   // Qtd Parcelas ??
+     AddParamInteger(1) ;   // Num Parcela ??
+     AddParamString(LeftStr(OnlyNumber(Consumidor.Documento),14)) ;
+     AddParamString(LeftStr(Consumidor.Nome,30)) ;
+     AddParamString(LeftStr(Consumidor.Endereco,79)) ;
+  end;
+  EnviaComando;
+
+  RespostasComando.AddField( 'COO',            EscECFResposta.Params[0] );
+  RespostasComando.AddField( 'DataHora',       EscECFResposta.Params[1] );
+  RespostasComando.AddField( 'VendaBruta',     EscECFResposta.Params[2] );
+  RespostasComando.AddField( 'NumSerie',       EscECFResposta.Params[3] );
+  RespostasComando.AddField( 'SeqPagto',       EscECFResposta.Params[4] );
+  RespostasComando.AddField( 'NumParcela',     EscECFResposta.Params[5] );
+  RespostasComando.AddField( 'NumParcelaFalta',EscECFResposta.Params[6] );
+
+  Consumidor.Enviado := True ;
+  fsEmPagamento := false ;
 end;
 
 Procedure TACBrECFEscECF.MudaHorarioVerao ;
@@ -1339,91 +1407,76 @@ begin
    inherited MudaArredondamento(Arredondar);
 end;
 
-procedure TACBrECFEscECF.PreparaTEF;
-begin
-   inherited PreparaTEF;
-end;
-
-procedure TACBrECFEscECF.CorrigeEstadoErro(Reducao: Boolean);
-begin
-   inherited CorrigeEstadoErro(Reducao);
-end;
-
-procedure TACBrECFEscECF.ImpactoAgulhas(NivelForca: Integer);
-begin
-   inherited ImpactoAgulhas(NivelForca);
-end;
-
 procedure TACBrECFEscECF.LeituraMemoriaFiscal(DataInicial,
    DataFinal: TDateTime; Simplificada: Boolean);
 begin
-   inherited LeituraMemoriaFiscal(DataInicial, DataFinal, Simplificada);
+  EscECFComando.CMD := 22;
+  EscECFComando.AddParamInteger( 0 ); // Imprime no ECF
+  EscECFComando.AddParamInteger( ifthen(Simplificada,2,1) );
+  EscECFComando.AddParamInteger( 1 );   // Por Data
+  EscECFComando.AddParamDateTime( DataInicial );
+  EscECFComando.AddParamDateTime( DataFinal );
+
+  EnviaComando;
 end;
 
 procedure TACBrECFEscECF.LeituraMemoriaFiscal(ReducaoInicial,
    ReducaoFinal: Integer; Simplificada: Boolean);
 begin
-   inherited LeituraMemoriaFiscal(ReducaoInicial, ReducaoFinal, Simplificada);
+  EscECFComando.CMD := 22;
+  EscECFComando.AddParamInteger( 0 ); // Imprime no ECF
+  EscECFComando.AddParamInteger( ifthen(Simplificada,2,1) );
+  EscECFComando.AddParamInteger( 2 );   // Por CRZ
+  EscECFComando.AddParamInteger( ReducaoInicial );
+  EscECFComando.AddParamInteger( ReducaoFinal );
+
+  EnviaComando;
 end;
 
 procedure TACBrECFEscECF.LeituraMemoriaFiscalSerial(DataInicial,
    DataFinal: TDateTime; Linhas: TStringList; Simplificada: Boolean);
+var
+   Buffer: String;
+   I: Integer;
 begin
-   inherited LeituraMemoriaFiscalSerial(DataInicial, DataFinal, Linhas,
-      Simplificada);
+  EscECFComando.CMD := 22;
+  EscECFComando.AddParamInteger( 1 ); // Pela Serial
+  EscECFComando.AddParamInteger( ifthen(Simplificada,2,1) );
+  EscECFComando.AddParamInteger( 1 );   // Por Data
+  EscECFComando.AddParamDateTime( DataInicial );
+  EscECFComando.AddParamDateTime( DataFinal );
+
+  EnviaComando;
+
+  Buffer := '';
+  For I := 0 to EscECFResposta.Params.Count-1 do
+     Buffer := Buffer + EscECFResposta.Params[I] ;
+
+  Linhas.Clear;
+  Linhas.Text := Buffer;
 end;
 
 procedure TACBrECFEscECF.LeituraMemoriaFiscalSerial(ReducaoInicial,
    ReducaoFinal: Integer; Linhas: TStringList; Simplificada: Boolean);
+var
+   Buffer: String;
+   I: Integer;
 begin
-   inherited LeituraMemoriaFiscalSerial(ReducaoInicial, ReducaoFinal, Linhas,
-      Simplificada);
-end;
+  EscECFComando.CMD := 22;
+  EscECFComando.AddParamInteger( 1 ); // Pela Serial
+  EscECFComando.AddParamInteger( ifthen(Simplificada,2,1) );
+  EscECFComando.AddParamInteger( 2 );   // Por CRZ
+  EscECFComando.AddParamInteger( ReducaoInicial );
+  EscECFComando.AddParamInteger( ReducaoFinal );
 
-procedure TACBrECFEscECF.LeituraMFDSerial(DataInicial, DataFinal: TDateTime;
-   Linhas: TStringList; Documentos: TACBrECFTipoDocumentoSet);
-begin
-   inherited LeituraMFDSerial(DataInicial, DataFinal, Linhas, Documentos);
-end;
+  EnviaComando;
 
-procedure TACBrECFEscECF.LeituraMFDSerial(COOInicial, COOFinal: Integer;
-   Linhas: TStringList; Documentos: TACBrECFTipoDocumentoSet);
-begin
-   inherited LeituraMFDSerial(COOInicial, COOFinal, Linhas, Documentos);
-end;
+  Buffer := '';
+  For I := 0 to EscECFResposta.Params.Count-1 do
+     Buffer := Buffer + EscECFResposta.Params[I] ;
 
-procedure TACBrECFEscECF.EspelhoMFD_DLL(DataInicial, DataFinal: TDateTime;
-   NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet);
-begin
-   inherited EspelhoMFD_DLL(DataInicial, DataFinal, NomeArquivo, Documentos);
-end;
-
-procedure TACBrECFEscECF.EspelhoMFD_DLL(COOInicial, COOFinal: Integer;
-   NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet);
-begin
-   inherited EspelhoMFD_DLL(COOInicial, COOFinal, NomeArquivo, Documentos);
-end;
-
-procedure TACBrECFEscECF.ArquivoMFD_DLL(DataInicial, DataFinal: TDateTime;
-   NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet;
-   Finalidade: TACBrECFFinalizaArqMFD);
-begin
-   inherited ArquivoMFD_DLL(DataInicial, DataFinal, NomeArquivo, Documentos,
-      Finalidade);
-end;
-
-procedure TACBrECFEscECF.ArquivoMFD_DLL(ContInicial, ContFinal: Integer;
-   NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet;
-   Finalidade: TACBrECFFinalizaArqMFD; TipoContador: TACBrECFTipoContador);
-begin
-   inherited ArquivoMFD_DLL(ContInicial, ContFinal, NomeArquivo, Documentos,
-      Finalidade, TipoContador);
-end;
-
-procedure TACBrECFEscECF.PafMF_GerarCAT52(const DataInicial,
-   DataFinal: TDateTime; const DirArquivos: String);
-begin
-   inherited PafMF_GerarCAT52(DataInicial, DataFinal, DirArquivos);
+  Linhas.Clear;
+  Linhas.Text := Buffer;
 end;
 
 procedure TACBrECFEscECF.IdentificaOperador(Nome: String);
@@ -1940,30 +1993,37 @@ end;
 
 procedure TACBrECFEscECF.LinhaCupomVinculado(Linha: AnsiString);
 begin
+  LinhaRelatorioGerencial(Linha);
 end;
 
 procedure TACBrECFEscECF.SegundaViaVinculado;
 begin
-   inherited SegundaViaVinculado;
+  EscECFComando.CMD := 14;
+  EnviaComando;
 end;
 
 procedure TACBrECFEscECF.ReimpressaoVinculado;
 begin
-   inherited ReimpressaoVinculado;
+  EscECFComando.CMD := 15;
+  EnviaComando;
 end;
 
 procedure TACBrECFEscECF.FechaRelatorio;
 begin
-end;
+  EscECFComando.CMD := 10;
+  EscECFComando.AddParamInteger( 1 );  // Aciona a Guilhotina
+  EnviaComando;
 
-procedure TACBrECFEscECF.PulaLinhas(NumLinhas: Integer);
-begin
-   inherited PulaLinhas(NumLinhas);
+  RespostasComando.AddField( 'COO',        EscECFResposta.Params[0] );
+  RespostasComando.AddField( 'DataHora',   EscECFResposta.Params[1] );
+  RespostasComando.AddField( 'VendaBruta', EscECFResposta.Params[2] );
+  fsEmPagamento := false ;
 end;
 
 procedure TACBrECFEscECF.CortaPapel(const CorteParcial: Boolean);
 begin
-   inherited CortaPapel(CorteParcial);
+  EscECFComando.CMD := 11;
+  EnviaComando;
 end;
 
 procedure TACBrECFEscECF.ImprimeCheque(Banco: String; Valor: Double;

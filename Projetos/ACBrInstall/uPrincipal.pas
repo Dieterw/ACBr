@@ -152,6 +152,7 @@ type
     function RegistrarActiveXServer(const AServerLocation: string;
       const ARegister: Boolean): Boolean;
     procedure CopiarArquivoToSystem(const ANomeArquivo: String);
+    procedure ConfigurarParaUtilizarOpenSSL(const AUtilizar: Boolean);
   public
 
   end;
@@ -166,6 +167,57 @@ uses
   {$WARNINGS off} FileCtrl, {$WARNINGS on} ShellApi, IniFiles;
 
 {$R *.dfm}
+
+// configuraração para utilizar ou não o openssl ao compilar
+procedure TfrmPrincipal.ConfigurarParaUtilizarOpenSSL(const AUtilizar: Boolean);
+var
+  F: TStringList;
+  PathArquivo: String;
+
+  function BuscarTexto(const ATextoBusca: String; var ALinha: Integer): Boolean;
+  var
+    I: Integer;
+  begin
+    Result := False;
+    for I := 0 to F.Count - 1 do
+    begin
+      if Pos(UpperCase(ATextoBusca), UpperCase(F.Strings[I])) > 0 then
+      begin
+        ALinha := I;
+        Result := True;
+        Exit;
+      end;
+    end;
+  end;
+
+  procedure ComentarLinha(const ATextoBusca: String; const AComentar: Boolean);
+  var
+    Linha: Integer;
+  begin
+    if BuscarTexto(ATextoBusca, Linha) then
+    begin
+      if AComentar then
+        F.Strings[Linha] := '//' + RemoveString('/', F.Strings[Linha])
+      else
+        F.Strings[Linha] := RemoveString('/', F.Strings[Linha]);
+    end;
+  end;
+
+begin
+  PathArquivo := IncludeTrailingPathDelimiter(edtDirDestino.Text) + 'ACBr.inc';
+
+  F := TStringList.Create;
+  try
+    F.LoadFromFile(PathArquivo);
+    ComentarLinha('{$DEFINE ACBrNFeOpenSSL}', not(AUtilizar));
+    ComentarLinha('{$DEFINE ACBrCTeOpenSSL}', not(AUtilizar));
+    ComentarLinha('{$DEFINE ACBrNFSeOpenSSL}', not(AUtilizar));
+
+    WriteToTXT(PathArquivo, F.Text, False, True);
+  finally
+    F.Free;
+  end;
+end;
 
 // retornar o path do aplicativo
 function TfrmPrincipal.PathApp: String;
@@ -336,7 +388,7 @@ begin
     ckbFecharTortoise.Checked  := ArqIni.ReadBool('CONFIG', 'FecharTortoise', True);
     ckbInstalarCapicom.Checked := ArqIni.ReadBool('CONFIG', 'InstalarCapicom', True);
     ckbInstalarOpenSSL.Checked := ArqIni.ReadBool('CONFIG', 'InstalarOpenSSL', True);
-    ckbUtilizarOpenSSL.Checked := ArqIni.ReadBool('CONFIG', 'UtilizarOpenSSL', True);
+    ckbUtilizarOpenSSL.Checked := ArqIni.ReadBool('CONFIG', 'UtilizarOpenSSL', False);
 
     if Trim(edtDelphiVersion.Text) = '' then
       edtDelphiVersion.ItemIndex := 0;
@@ -627,12 +679,19 @@ begin
 
     // setar barra de progresso
     pgbInstalacao.Position := 0;
-    pgbInstalacao.Max := (frameDpk.Pacotes.Count * 2) + 3;
+    pgbInstalacao.Max := (frameDpk.Pacotes.Count * 2) + 4;
 
     // Seta a plataforna selecionada
     SetPlatformSelected;
     pgbInstalacao.Position := pgbInstalacao.Position + 1;
     lstMsgInstalacao.Items.Add('Setando parâmetros de plataforma...');
+    Application.ProcessMessages;
+    ACBrUtil.WriteToTXT(AnsiString(PathArquivoLog), AnsiString('Setando parâmetros de plataforma...'));
+
+    // configurar o ACBr para utilizar o OpenSSL
+    ConfigurarParaUtilizarOpenSSL(ckbUtilizarOpenSSL.Checked);
+    pgbInstalacao.Position := pgbInstalacao.Position + 1;
+    lstMsgInstalacao.Items.Add('Configurando a utilização do OpenSSL...');
     Application.ProcessMessages;
     ACBrUtil.WriteToTXT(AnsiString(PathArquivoLog), AnsiString('Setando parâmetros de plataforma...'));
 

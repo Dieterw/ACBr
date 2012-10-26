@@ -1336,7 +1336,10 @@ begin
            ReducaoZ(0)                              // Tenta sem DataHora
         else if (pos('5-1',E.Message) <> 0) then    // Comando inválido para o documento atual.
          begin                                      //  Ficou algum Cupom aberto ?
-           CancelaCupom ;
+           // Cancelando o Cupom em aberto
+           EscECFComando.CMD := 31;
+           EnviaComando;
+
            ReducaoZ(DataHora);
          end 
         else

@@ -2287,7 +2287,7 @@ begin
   with EscECFComando do
   begin
      CMD := 13;
-     AddParamInteger( UltimoCOO ) ;   // TODO: Achar a Sequencia do Pagamento...
+     AddParamInteger( UltimoCOO ) ;
      AddParamString(LeftStr(OnlyNumber(Consumidor.Documento),14)) ;
      AddParamString(LeftStr(Consumidor.Nome,30)) ;
      AddParamString(LeftStr(Consumidor.Endereco,79)) ;

@@ -303,6 +303,7 @@ object frmDemo_ACBrNFSe: TfrmDemo_ACBrNFSe
               'Araraquara/3503208/SP'
               'Araras/3503307/SP'
               'Arcos/3104205/MG'
+              'Bage/4301602/RS'
               'Barbacena/3105608/MG'
               'Barroso/3105905/MG'
               'Belford Roxo/3300456/RJ'

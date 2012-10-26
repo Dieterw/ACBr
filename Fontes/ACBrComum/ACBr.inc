@@ -51,6 +51,12 @@
 |*    Régys Borges da Silveira
 ******************************************************************************}
 
+// Para Usar os componentes de nota fiscal com openssl descomente as linhas abaixo
+//--------------------------------------------------------------------------------
+//{$DEFINE ACBrNFeOpenSSL}  
+//{$DEFINE ACBrCTeOpenSSL}
+//{$DEFINE ACBrNFSeOpenSSL}
+
 // Ajusta FreePascal para o modo Delphi
 //------------------------------------------------------------------------------
 {$IFDEF FPC}
@@ -69,11 +75,6 @@
 // da jedi, essa mudança permite uma evolução melhor do arquivo.
 //------------------------------------------------------------------------------
 {$I jedi.inc}
-
-// Para Usar OpenSSL no ACBrNFe em Delphi, descomente estas duas linhas.
-//------------------------------------------------------------------------------
-//{$DEFINE ACBrNFeOpenSSL}  
-//{$DEFINE ACBrCTeOpenSSL}
 
 // Para usar CLX no Windows / Delphi descomente essa linha
 //------------------------------------------------------------------------------
@@ -179,11 +180,6 @@
 // Descomente a linha abaixo caso o Quick Report tenha suporte a PDF
 //------------------------------------------------------------------------------
 //{$DEFINE QReport_PDF}
-
-// Definições para o componente ACBrNFSe
-// Descomente a linha abaixo para Usar OpenSSL no ACBrNFSe em Delphi
-//------------------------------------------------------------------------------
-//{$DEFINE ACBrNFSeOpenSSL}
 
 // Definições para o compomente ACBrCTe
 // Define o Pacote de Liberação / Descomente o pacote a ser utilizado 

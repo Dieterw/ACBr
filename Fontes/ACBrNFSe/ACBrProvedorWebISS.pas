@@ -99,6 +99,7 @@ begin
   5107909: ConfigCidade.CodigoURLs := 06; // Sinop/MT
   3105608: ConfigCidade.CodigoURLs := 07; // Barbacena/MG
   3105905: ConfigCidade.CodigoURLs := 08; // Barroso/MG
+  4301602: ConfigCidade.CodigoURLs := 09; // Bage/RS
  end;
  ConfigCidade.Prefixo2      := '';
  ConfigCidade.Prefixo3      := '';
@@ -141,36 +142,40 @@ var
 begin
  case ACodigo of
   01: begin
-       ConfigURL.HomNomeCidade         := 'feiradesantanaba';
-       ConfigURL.ProNomeCidade         := 'feiradesantanaba';
+       ConfigURL.HomNomeCidade := 'feiradesantanaba';
+       ConfigURL.ProNomeCidade := 'feiradesantanaba';
       end;
   02: begin
-       ConfigURL.HomNomeCidade         := 'arcosmg';
-       ConfigURL.ProNomeCidade         := 'arcosmg';
+       ConfigURL.HomNomeCidade := 'arcosmg';
+       ConfigURL.ProNomeCidade := 'arcosmg';
       end;
   03: begin
-       ConfigURL.HomNomeCidade         := 'formigamg';
-       ConfigURL.ProNomeCidade         := 'formigamg';
+       ConfigURL.HomNomeCidade := 'formigamg';
+       ConfigURL.ProNomeCidade := 'formigamg';
       end;
   04: begin
-       ConfigURL.HomNomeCidade         := 'Uberaba';
-       ConfigURL.ProNomeCidade         := 'Uberaba';
+       ConfigURL.HomNomeCidade := 'Uberaba';
+       ConfigURL.ProNomeCidade := 'Uberaba';
       end;
   05: begin
-       ConfigURL.HomNomeCidade         := 'rjniteroi';
-       ConfigURL.ProNomeCidade         := 'rjniteroi';
+       ConfigURL.HomNomeCidade := 'rjniteroi';
+       ConfigURL.ProNomeCidade := 'rjniteroi';
       end;
   06: begin
-       ConfigURL.HomNomeCidade         := 'sinop';
-       ConfigURL.ProNomeCidade         := 'sinop';
+       ConfigURL.HomNomeCidade := 'sinop';
+       ConfigURL.ProNomeCidade := 'sinop';
       end;
   07:	begin
-       ConfigURL.HomNomeCidade         := 'mgbarbacena';
-       ConfigURL.ProNomeCidade         := 'mgbarbacena';
+       ConfigURL.HomNomeCidade := 'mgbarbacena';
+       ConfigURL.ProNomeCidade := 'mgbarbacena';
       end;
   08: begin
-       ConfigURL.HomNomeCidade         := 'barrosomg';
-       ConfigURL.ProNomeCidade         := 'barrosomg';
+       ConfigURL.HomNomeCidade := 'barrosomg';
+       ConfigURL.ProNomeCidade := 'barrosomg';
+      end;
+  09: begin
+       ConfigURL.HomNomeCidade := 'bagers';
+       ConfigURL.ProNomeCidade := 'bagers';
       end;
  end;
 
@@ -178,7 +183,8 @@ begin
   02,
   03,
   04,
-  08: begin
+  08,
+  09: begin
        ConfigURL.HomRecepcaoLoteRPS    := 'https://www1.webiss.com.br/' + ConfigURL.HomNomeCidade + '_wsnfse_homolog/NfseServices.svc';
        ConfigURL.HomConsultaLoteRPS    := 'https://www1.webiss.com.br/' + ConfigURL.HomNomeCidade + '_wsnfse_homolog/NfseServices.svc';
        ConfigURL.HomConsultaNFSeRPS    := 'https://www1.webiss.com.br/' + ConfigURL.HomNomeCidade + '_wsnfse_homolog/NfseServices.svc';

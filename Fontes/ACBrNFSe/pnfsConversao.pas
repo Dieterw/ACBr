@@ -613,6 +613,7 @@ begin
   3126109, // Formiga/MG
   3170107, // Uberaba/MG
   3303302, // Niteroi/RJ
+  4301602, // Bage/RS
   5107909  // Sinop/MT
          : Provedor := 'WebISS';
 
@@ -902,6 +903,7 @@ begin
   4219606: Cidade := 'Xavantina/SC';
   4219705: Cidade := 'Xaxim/SC';
 
+  4301602: Cidade := 'Bage/RS';
   4302105: Cidade := 'Bento Gonçalves/RS';
   4305801: Cidade := 'Constantina/RS';
   4308508: Cidade := 'Frederico Westphalen/RS';

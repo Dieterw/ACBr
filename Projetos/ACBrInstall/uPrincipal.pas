@@ -672,13 +672,13 @@ begin
           sDirBPLPath,
           sDirDCPpath) then
         begin
-          lstMsgInstalacao.Items.Add(Format('Pacote "%s" compilado com sucesso.', [sDirPackage + NomePacote]));
+          lstMsgInstalacao.Items.Add(Format('Pacote "%s" compilado com sucesso.', [NomePacote]));
           lstMsgInstalacao.ItemIndex := lstMsgInstalacao.Count - 1;
         end
         else
         begin
           Inc(FCountErros);
-          lstMsgInstalacao.Items.Add(Format('Erro ao compilar o pacote "%s".', [sDirPackage + NomePacote]));
+          lstMsgInstalacao.Items.Add(Format('Erro ao compilar o pacote "%s".', [NomePacote]));
           lstMsgInstalacao.ItemIndex := lstMsgInstalacao.Count - 1;
         end;
       end;
@@ -721,13 +721,13 @@ begin
                   sDirBPLPath,
                   sDirDCPpath) then
                 begin
-                  lstMsgInstalacao.Items.Add(Format('Pacote "%s" instalado com sucesso.', [sDirPackage + NomePacote]));
+                  lstMsgInstalacao.Items.Add(Format('Pacote "%s" instalado com sucesso.', [NomePacote]));
                   lstMsgInstalacao.ItemIndex := lstMsgInstalacao.Count - 1;
                 end
                 else
                 begin
                   Inc(FCountErros);
-                  lstMsgInstalacao.Items.Add(Format('Ocorreu um erro ao instalar o pacote "%s".', [sDirPackage + NomePacote]));
+                  lstMsgInstalacao.Items.Add(Format('Ocorreu um erro ao instalar o pacote "%s".', [NomePacote]));
                   lstMsgInstalacao.ItemIndex := lstMsgInstalacao.Count - 1;
                 end;
               end

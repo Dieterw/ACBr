@@ -245,7 +245,9 @@ begin
     // se o usuario informar -1 o código numerico será gerado atravéz da função
     // GerarCódigoNumerico baseado no numero do documento fiscal.
     if codigoNumerico = -1 then
-      codigoNumerico := GerarCodigoNumerico(Numero);
+      codigoNumerico := GerarCodigoNumerico(Numero)
+    else if codigoNumerico = -2 then
+      codigoNumerico := 0;
     //
     DecodeDate(emissao, wAno, wMes, wDia);
     chave := 'NFe' +

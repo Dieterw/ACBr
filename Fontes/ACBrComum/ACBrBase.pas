@@ -422,11 +422,16 @@ end;
 function TACBrInformacoes.AddField(const ANome,
   AValor: String): TACBrInformacao;
 begin
-  Result := Self.Add;
-  with Result do
-  begin
-    Nome     := AnsiString(ANome);
-    AsString := AnsiString(AValor);
+  try
+     Result := FieldByName(ANome);
+     Result.AsString := AValor;
+  except
+     Result := Self.Add;
+     with Result do
+     begin
+       Nome     := AnsiString(ANome);
+       AsString := AnsiString(AValor);
+     end;
   end;
 end;
 

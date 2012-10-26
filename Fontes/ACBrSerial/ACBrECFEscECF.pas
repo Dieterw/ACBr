@@ -713,17 +713,16 @@ begin
   if cmd <> '' then
      cmd := PreparaCmd(cmd) ;  // Ajusta e move para EscECFcomando
 
-  EscECFResposta.Clear ;       // Zera toda a Resposta
+  EscECFResposta.Clear( True ) ;       // Zera toda a Resposta
   cmd := EscECFComando.Comando ;
 
-  fsSPR                   := 0 ;
-  Result                  := '' ;
-  ErroMsg                 := '' ;
-  fpComandoEnviado        := '' ;
-  fpRespostaComando       := '' ;
-  EscECFResposta.Resposta := '' ;
-  OldTimeOut              := TimeOut ;
-  TimeOut                 := max(EscECFComando.TimeOut, TimeOut) ;
+  fsSPR             := 0 ;
+  Result            := '' ;
+  ErroMsg           := '' ;
+  fpComandoEnviado  := '' ;
+  fpRespostaComando := '' ;
+  OldTimeOut        := TimeOut ;
+  TimeOut           := max(EscECFComando.TimeOut, TimeOut) ;
 
   try
      fpDevice.Serial.DeadlockTimeout := 2000 ; { Timeout p/ Envio }
@@ -745,7 +744,8 @@ begin
      LeResposta ;
 
      Try
-        EscECFResposta.Resposta := fpRespostaComando ;
+        //EscECFResposta.Resposta := fpRespostaComando ;
+        // Resposta já foi atribuida em VerificaFimLeitura();
 
         ErroMsg := '' ;
         if EscECFResposta.CAT > 0 then
@@ -852,7 +852,7 @@ begin
         PedeStatus;
         Result := False;
       end
-     else if Byte1 = SOH then
+     else if (Byte1 = SOH) and (EscECFResposta.CAT = 0) then
       begin
         if not TestBit( EscECFResposta.RET.ECF, 0 ) then
         begin
@@ -1219,7 +1219,12 @@ end;
 
 function TACBrECFEscECF.GetSubTotal: Double;
 begin
-  Result := 0 ;  // TODO: Como fazer para Ler o SubTotal ?
+  // TODO: Como fazer para Ler o SubTotal ?
+  try
+     Result := RespostasComando.FieldByName('SubTotal').AsFloat;
+  except
+     Result := 0;
+  end;
 end;
 
 function TACBrECFEscECF.GetEstado: TACBrECFEstado;
@@ -1927,7 +1932,7 @@ begin
   N := Trunc(EscECFResposta.Params.Count / 2) - 1;
   For I := 0 to N do
   begin
-    FPG := AchaFPGIndice( EscECFResposta.Params[ 2*I ] ) ;
+    FPG := AchaFPGIndice( IntToStr(StrToInt(EscECFResposta.Params[ 2*I ])) ) ;
     if Assigned( FPG ) then
        FPG.Total := StrToInt( EscECFResposta.Params[ 2*I + 1 ] ) / 100;
   end;
@@ -2344,9 +2349,13 @@ function TACBrECFEscECF.GetTotalIsencao: Double;
   var
      StrValue: String;
   begin
+    Result := 0;
     RetornaInfoECF( '6|'+IntToStr(Indice) ) ;
-    StrValue := EscECFResposta.Params[4] ;
-    Result   := StrToInt( StrValue ) / 100;
+    if EscECFResposta.Params.Count > 3 then
+    begin
+       StrValue := EscECFResposta.Params[3] ;
+       Result   := StrToInt( StrValue ) / 100;
+    end;
   end;
 begin
   Result := GetTotalIsencaoN( 1 ) +
@@ -2359,9 +2368,13 @@ function TACBrECFEscECF.GetTotalNaoTributado: Double;
   var
      StrValue: String;
   begin
+    Result := 0;
     RetornaInfoECF( '6|'+IntToStr(Indice) ) ;
-    StrValue := EscECFResposta.Params[6] ;
-    Result   := StrToInt( StrValue ) / 100;
+    if EscECFResposta.Params.Count > 5 then
+    begin
+       StrValue := EscECFResposta.Params[5] ;
+       Result   := StrToInt( StrValue ) / 100;
+    end;
   end;
 begin
   Result := GetTotalNaoTributadoN( 1 ) +
@@ -2374,9 +2387,13 @@ function TACBrECFEscECF.GetTotalSubstituicaoTributaria: Double;
   var
      StrValue: String;
   begin
+    Result := 0;
     RetornaInfoECF( '6|'+IntToStr(Indice) ) ;
-    StrValue := EscECFResposta.Params[1] ;
-    Result   := StrToInt( StrValue ) / 100;
+    if EscECFResposta.Params.Count > 1 then
+    begin
+       StrValue := EscECFResposta.Params[1] ;
+       Result   := StrToInt( StrValue ) / 100;
+    end;
   end;
 begin
   Result := GetTotalSubstituicaoTributariaN( 1 ) +

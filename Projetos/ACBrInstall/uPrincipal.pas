@@ -687,7 +687,7 @@ begin
       Application.ProcessMessages;
     end;
 
-    // instalar os pacotes somente se não ocorreu erro na compilação
+    // instalar os pacotes somente se não ocorreu erro na compilação e plataforma for Win32
     if (edtPlatform.ItemIndex = 0) then
     begin
       if (FCountErros <= 0) then

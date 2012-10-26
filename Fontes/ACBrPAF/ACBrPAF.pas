@@ -63,7 +63,8 @@ uses
    ACBrPAF_R, ACBrPAF_R_Class,
    ACBrPAF_T, ACBrPAF_T_Class,
    ACBrPAF_C, ACBrPAF_C_Class,
-   ACBrPAF_N, ACBrPAF_N_Class;
+   ACBrPAF_N, ACBrPAF_N_Class,
+   ACBrPAF_TITP, ACBrPAF_TITP_Class;
 
 const
    CACBrPAF_Versao = '0.09' ;
@@ -99,6 +100,7 @@ type
     FPAF_N: TPAF_N;
     fsOnPAFCalcEAD: TACBrEADCalc;
     fsOnPAFGetKeyRSA : TACBrEADGetChave ;
+    FPAF_TITP: TPAF_TITP;
 
     function GetAbout: String;
     function GetDelimitador: String;
@@ -128,6 +130,7 @@ type
     function SaveFileTXT_P(Arquivo: String): Boolean; // Método que escreve o arquivo texto no caminho passado como parâmetro
     function SaveFileTXT_R(Arquivo: String): Boolean; // Método que escreve o arquivo texto no caminho passado como parâmetro
     function SaveFileTXT_T(Arquivo: String): Boolean; // Método que escreve o arquivo texto no caminho passado como parâmetro
+    function SaveFileTXT_TITP(Arquivo: String): Boolean;
 
     property PAF_B: TPAF_B read FPAF_B write FPAF_B;
     property PAF_C: TPAF_C read FPAF_C write FPAF_C;
@@ -138,6 +141,7 @@ type
     property PAF_P: TPAF_P read FPAF_P write FPAF_P;
     property PAF_R: TPAF_R read FPAF_R write FPAF_R;
     property PAF_T: TPAF_T read FPAF_T write FPAF_T;
+    property PAF_TITP: TPAF_TITP read FPAF_TITP write FPAF_TITP;
 
     Function GetACBrEAD : TACBrEAD ;
     function AssinaArquivoComEAD(Arquivo: String): Boolean;
@@ -190,6 +194,7 @@ begin
   FPAF_T := TPAF_T.Create;
   FPAF_C := TPAF_C.Create;
   FPAF_N := TPAF_N.Create( Self );
+  FPAF_TITP := TPAF_TITP.Create;
   // Define o delimitador com o padrão PAF
   SetDelimitador('');
   // Define a mascara dos campos numéricos com o padrão PAF
@@ -218,6 +223,7 @@ begin
   FPAF_T.Free;
   FPAF_C.Free;
   FPAF_N.Free;
+  FPAF_TITP.Free;
 
   if Assigned( fsEADInterno ) then
      FreeAndNil( fsEADInterno );
@@ -248,6 +254,7 @@ begin
   FPAF_T.Delimitador := Value;
   FPAF_C.Delimitador := Value;
   FPAF_N.Delimitador := Value;
+  FPAF_TITP.Delimitador := Value;
 end;
 
 function TACBrPAF.GetCurMascara: String;
@@ -268,6 +275,7 @@ begin
   FPAF_P.CurMascara := Value;
   FPAF_R.CurMascara := Value;
   FPAF_T.CurMascara := Value;
+  FPAF_TITP.CurMascara := Value;
 end;
 
 function TACBrPAF.GetTrimString: boolean;
@@ -288,6 +296,7 @@ begin
   FPAF_P.TrimString := Value;
   FPAF_R.TrimString := Value;
   FPAF_T.TrimString := Value;
+  FPAF_TITP.TrimString := Value;
 end;
 
 function TACBrPAF.GetOnError: TErrorEvent;
@@ -308,6 +317,7 @@ begin
   FPAF_P.OnError := Value;
   FPAF_R.OnError := Value;
   FPAF_T.OnError := Value;
+  FPAF_TITP.OnError := Value;
 end;
 
 procedure TACBrPAF.SetEAD(const AValue : TACBrEAD) ;
@@ -565,6 +575,55 @@ begin
 
     // Limpa de todos os Blocos as listas de todos os registros.
     FPAF_T.LimpaRegistros;
+  except
+    on E: Exception do
+    begin
+      raise Exception.Create(E.Message);
+    end;
+  end;
+end;
+
+function TACBrPAF.SaveFileTXT_TITP(Arquivo: String): Boolean;
+var
+  txtFile: TextFile;
+begin
+  Result := True;
+
+  if (Trim(Arquivo) = '') or (Trim(fPath) = '') then
+    raise Exception.Create('Caminho ou nome do arquivo não informado!');
+
+  try
+    AssignFile(txtFile, fPath + Arquivo);
+    try
+      Rewrite(txtFile);
+
+      if Trim(FPAF_TITP.Titulo) <> '' then
+      begin
+        WriteLn(txtFile, FPAF_TITP.Titulo);
+        WriteLn(txtFile, LinhaSimples(116));
+      end;
+
+      WriteLn(txtFile, FPAF_TITP.WriteMercadorias);
+
+      WriteLn(txtFile, LinhaSimples(116));
+
+      if FPAF_TITP.DataHora < 0 then
+        FPAF_TITP.DataHora := NOW;
+
+      WriteLn(txtFile, Format('Arquivo gerado em: %s %52d mercadoria(s) listada(s)', [
+        FormatDateTime('dd/mm/yyyy "às" hh:mm', FPAF_TITP.DataHora),
+        FPAF_TITP.Mercadorias.Count])
+      );
+    finally
+      CloseFile(txtFile);
+    end;
+
+    // Assinatura EAD
+    if FAssinar then
+      AssinaArquivoComEAD(fPath + Arquivo);
+
+    // Limpa de todos os Blocos as listas de todos os registros.
+    FPAF_B.LimpaRegistros;
   except
     on E: Exception do
     begin

@@ -47,7 +47,10 @@ contains
   ACBrPAF_N in '..\..\Fontes\ACBrPAF\ACBrPAF_N.pas',
   ACBrPAF_N_Class in '..\..\Fontes\ACBrPAF\ACBrPAF_N_Class.pas',
   ACBrPAF_C in '..\..\Fontes\ACBrPAF\ACBrPAF_C.pas',
-  ACBrPAF_C_Class in '..\..\Fontes\ACBrPAF\ACBrPAF_C_Class.pas';
+  ACBrPAF_C_Class in '..\..\Fontes\ACBrPAF\ACBrPAF_C_Class.pas',
+  ACBrPAF_TITP_Class in '..\..\Fontes\ACBrPAF\ACBrPAF_TITP_Class.pas',
+  ACBrPAF_TITP in '..\..\Fontes\ACBrPAF\ACBrPAF_TITP.pas';
 
 end.
+
 

@@ -4,7 +4,7 @@ object Form6: TForm6
   BorderStyle = bsDialog
   Caption = 'Demo do ACBrPAF'
   ClientHeight = 386
-  ClientWidth = 417
+  ClientWidth = 578
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,7 +19,7 @@ object Form6: TForm6
   object Image1: TImage
     Left = 0
     Top = 346
-    Width = 417
+    Width = 578
     Height = 40
     Align = alBottom
     AutoSize = True
@@ -227,7 +227,7 @@ object Form6: TForm6
   object GroupBox1: TGroupBox
     Left = 0
     Top = 0
-    Width = 417
+    Width = 578
     Height = 121
     Align = alTop
     Caption = 'Identifica'#231#227'o do Estabelecimento Usu'#225'rio do PAF-ECF'
@@ -311,7 +311,7 @@ object Form6: TForm6
   object GroupBox2: TGroupBox
     Left = 0
     Top = 189
-    Width = 417
+    Width = 578
     Height = 157
     Align = alBottom
     Caption = 'Log de erros'
@@ -319,7 +319,7 @@ object Form6: TForm6
     object logErros: TMemo
       Left = 2
       Top = 15
-      Width = 413
+      Width = 574
       Height = 140
       Align = alClient
       ScrollBars = ssVertical
@@ -397,6 +397,15 @@ object Form6: TForm6
     Caption = 'Tipo H'
     TabOrder = 9
     OnClick = btnHClick
+  end
+  object btnTITP: TButton
+    Left = 357
+    Top = 142
+    Width = 204
+    Height = 25
+    Caption = 'Tabela de Indice T'#233'cnico de Produ'#231#227'o'
+    TabOrder = 10
+    OnClick = btnTITPClick
   end
   object ACBrPAF: TACBrPAF
     Path = '.\'

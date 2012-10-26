@@ -47,6 +47,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+26/10/2012
+[+] Adicinado a geração da Tabela de Indice Tecnico de Producao.
+    Como não existe um layout definido, então fizemos um layout padronizado
+    até que se defina corretamente o layout.
+    por: Regys Silveira
 
 13/06/2012
 [+] http://djsystem.com.br/acbr/forum/viewtopic.php?f=8&t=6155&p=32501#p32501

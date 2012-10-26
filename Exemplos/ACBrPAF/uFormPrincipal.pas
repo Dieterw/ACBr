@@ -75,6 +75,7 @@ type
     ACBrEAD: TACBrEAD;
     Image1: TImage;
     btnH: TButton;
+    btnTITP: TButton;
     procedure btnDClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure PreencherHeader(Header: TRegistroX1);
@@ -88,6 +89,7 @@ type
     procedure btnCClick(Sender: TObject);
     procedure btnNClick(Sender: TObject);
     procedure btnHClick(Sender: TObject);
+    procedure btnTITPClick(Sender: TObject);
   private
     { Private declarations }
     function QualquerNumero: Integer;
@@ -501,6 +503,49 @@ begin
        end;
      end;
      ACBrPAF.SaveFileTXT_T('PAF_T.txt');
+end;
+
+procedure TForm6.btnTITPClick(Sender: TObject);
+var
+  iProduto: Integer;
+  iInsumo: Integer;
+begin
+  // Tabela de indice tecnico de produção
+
+  ACBrPAF.PAF_TITP.Titulo   := 'Tabela de indice tecnico de produção';
+  ACBrPAF.PAF_TITP.DataHora := NOW;
+
+  for iProduto := 0 to 10 - 1 do
+  begin
+    with ACBrPAF.PAF_TITP.Mercadorias.New do
+    begin
+      Codigo      := IntToStr(iProduto);
+      Ean         := StringOfChar(Codigo[1], 13);
+      Descricao   := Format('Descricao do produto %d', [iProduto]);
+      Unidade     := 'UN';
+      CST         := '000';
+      Aliquota    := 7.00;
+      VlrUnitario := 1.23;
+      Quantidade  := 10.00;
+
+      for iInsumo := 0 to 3 - 1 do
+      begin
+        with Insumos.New do
+        begin
+          Codigo      := IntToStr(iInsumo) + '/' + IntToStr(iProduto);
+          Ean         := '';
+          Descricao   := Format('Descricao do insumo %d do produto %d', [iInsumo, iProduto]);
+          Unidade     := 'UN';
+          CST         := '000';
+          Aliquota    := 7.00;
+          VlrUnitario := 0.23;
+          Quantidade  := 2.00;
+        end;
+      end;
+    end;
+  end;
+
+  ACBrPAF.SaveFileTXT_TITP('PAF_TITP.TXT');
 end;
 
 procedure TForm6.ACBrPAFMsnError(const MsnError: String);

@@ -1224,8 +1224,8 @@ begin
      ACBrECF1.InfoRodapeCupom.Dav := '0000000001';
      ACBrECF1.InfoRodapeCupom.DavOs := '0000000002';
      ACBrECF1.InfoRodapeCupom.PreVenda := '0000000003';
-     ACBrECF1.InfoRodapeCupom.CupomMania := cbxUF.Text = 'MG';
-     ACBrECF1.InfoRodapeCupom.MinasLegal := cbxUF.Text = 'RJ';
+     ACBrECF1.InfoRodapeCupom.CupomMania := cbxUF.Text = 'RJ';
+     ACBrECF1.InfoRodapeCupom.MinasLegal := cbxUF.Text = 'MG';
      ACBrECF1.InfoRodapeCupom.ParaibaLegal := cbxUF.Text = 'PB';
      ACBrECF1.InfoRodapeCupom.NotaLegalDF.Imprimir := cbxUF.Text = 'DF';
 

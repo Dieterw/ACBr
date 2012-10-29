@@ -111,7 +111,7 @@ function SubStrEmSubStr(const SubStr1: string; SubStr2: string): boolean;
 function xml4line(texto: AnsiString): AnsiString;
 function RetornarPosEx(const SubStr, S: AnsiString; Offset: Cardinal = 1): Integer;
 function DateTimeTodhUTC(DataHora: TDateTime; TZD: string): string;
-function GetUTC(const UF: string; const dataHora: TDateTime): string;
+function GetUTC(UF: string; const dataHora: TDateTime): string;
 function IsHorarioDeVerao(const UF: string; const dataHora: TDateTime): Boolean;
 function GetTerceiroDomingoDoMes(const ano, mes: Integer): TDateTime;
 function GetInicioDoHorarioDeVerao(const ano: Integer): TDateTime;
@@ -964,13 +964,16 @@ begin
             TZD;
 end;
 
-function GetUTC(const UF: string; const dataHora: TDateTime): string;
+function GetUTC(UF: string; const dataHora: TDateTime): string;
 const
   UTC4 = '.AC.AM.RR.RO.MT.MS.';
   UTC3 = '.AP.PA.MA.PI.TO.GO.CE.RN.PB.PE.AL.SE.BA.MG.ES.RJ.SP.PR.SC.RS.DF.';
 var
   HorarioDeVerao: Boolean;
 begin
+  if (UF = '90') or (UF = '91') then
+     UF := 'DF';  
+
   HorarioDeVerao := IsHorarioDeVerao(UF, dataHora);
 
   if AnsiPos('.' + UF + '.', UTC4) > 0 then

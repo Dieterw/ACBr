@@ -72,6 +72,7 @@ type
    function GetRetornoWS(Acao: TnfseAcao; RetornoWS: AnsiString): AnsiString; OverRide;
 
    function GeraRetornoNFSe(Prefixo: String; RetNFSe: AnsiString; NomeCidade: String): AnsiString; OverRide;
+   function GetLinkNFSe(ACodMunicipio, ANumeroNFSe: Integer; ACodVerificacao: String): String; OverRide;
   end;
 
 implementation
@@ -581,6 +582,12 @@ begin
            '<ComplNfse xmlns="http://www.betha.com.br/e-nota-contribuinte-ws">' +
              RetNfse +
            '</ComplNfse>';
+end;
+
+function TProvedorBetha.GetLinkNFSe(ACodMunicipio, ANumeroNFSe: Integer;
+  ACodVerificacao: String): String;
+begin
+ Result := '';
 end;
 
 end.

@@ -72,6 +72,7 @@ type
    function GetRetornoWS(Acao: TnfseAcao; RetornoWS: AnsiString): AnsiString; OverRide;
 
    function GeraRetornoNFSe(Prefixo: String; RetNFSe: AnsiString; NomeCidade: String): AnsiString; OverRide;
+   function GetLinkNFSe(ACodMunicipio, ANumeroNFSe: Integer; ACodVerificacao: String): String; OverRide;
   end;
 
 implementation
@@ -638,6 +639,12 @@ begin
            '<CompNfse xmlns:tc="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_complexos.xsd">' +
              RetNfse +
            '</CompNfse>';
+end;
+
+function TProvedorISSNet.GetLinkNFSe(ACodMunicipio, ANumeroNFSe: Integer;
+  ACodVerificacao: String): String;
+begin
+ Result := '';
 end;
 
 end.

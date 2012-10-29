@@ -72,6 +72,7 @@ type
    function GetRetornoWS(Acao: TnfseAcao; RetornoWS: AnsiString): AnsiString; OverRide;
 
    function GeraRetornoNFSe(Prefixo: String; RetNFSe: AnsiString; NomeCidade: String): AnsiString; OverRide;
+   function GetLinkNFSe(ACodMunicipio, ANumeroNFSe: Integer; ACodVerificacao: String): String; OverRide;
   end;
 
 implementation
@@ -652,6 +653,16 @@ begin
            '<' + Prefixo + 'CompNfse xmlns="http://www.abrasf.org.br/nfse.xsd">' +
              RetNfse +
            '</' + Prefixo + 'CompNfse>';
+end;
+
+function TProvedorSaatri.GetLinkNFSe(ACodMunicipio, ANumeroNFSe: Integer;
+  ACodVerificacao: String): String;
+begin
+ case ACodMunicipio of
+  1400100: Result := 'https://boavista.saatri.com.br/VisualizarNotaFiscal?numero=' +
+                     IntToStr(ANumeroNFSe) + '&codigoVerificacao=' + ACodVerificacao;
+ else Result := '';                    
+ end;
 end;
 
 end.

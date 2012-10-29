@@ -72,6 +72,7 @@ type
    function GetRetornoWS(Acao: TnfseAcao; RetornoWS: AnsiString): AnsiString; OverRide;
 
    function GeraRetornoNFSe(Prefixo: String; RetNFSe: AnsiString; NomeCidade: String): AnsiString; OverRide;
+   function GetLinkNFSe(ACodMunicipio, ANumeroNFSe: Integer; ACodVerificacao: String): String; OverRide;
   end;
 
 implementation
@@ -599,6 +600,12 @@ begin
            '<' + Prefixo + 'CompNfse xmlns="http://www.abrasf.org.br/nfse">' +
              RetNfse +
            '</' + Prefixo + 'CompNfse>';
+end;
+
+function TProvedorDigifred.GetLinkNFSe(ACodMunicipio, ANumeroNFSe: Integer;
+  ACodVerificacao: String): String;
+begin
+ Result := '';
 end;
 
 end.

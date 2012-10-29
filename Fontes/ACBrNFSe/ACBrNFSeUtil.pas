@@ -113,7 +113,13 @@ type
     class function PathWithDelim( const APath : String ) : String;
     class function RetornarConteudoEntre(const Frase, Inicio, Fim: string): string;
 
-    class function AssinarXML(AXML, FURI, FTagI, FTagF: AnsiString; Certificado : ICertificate2; out AXMLAssinado, FMensagem: AnsiString): Boolean;
+    // Alterado por Italo em 29/10/2012
+    {$IFDEF ACBrNFSeOpenSSL}
+     class function AssinarXML(AXML, FURI, FTagI, FTagF, ArqPFX, PFXSenha: AnsiString;
+                             out AXMLAssinado, FMensagem: AnsiString): Boolean;
+    {$ELSE}
+     class function AssinarXML(AXML, FURI, FTagI, FTagF: AnsiString; Certificado : ICertificate2; out AXMLAssinado, FMensagem: AnsiString): Boolean;
+    {$ENDIF}
     class function RetirarPrefixos(AXML: String): String;
     class function VersaoXML(AXML: String): String;
 
@@ -1532,6 +1538,93 @@ begin
   result := Copy(s, 1, pos(Fim, s) - 1);
 end;
 
+{$IFDEF ACBrNFSeOpenSSL}
+class function AssinarXML(AXML, FURI, FTagI, FTagF, ArqPFX, PFXSenha: AnsiString;
+                             out AXMLAssinado, FMensagem: AnsiString): Boolean;
+var
+ I, Tipo, PosIni, PosFim : Integer;
+ XmlAss : AnsiString;
+ Cert: TMemoryStream;
+ Cert2: TStringStream;
+begin
+  Tipo := 1;
+  I    := pos( '<EnviarLoteRpsEnvio', AXML );
+
+  if I = 0  then
+   begin
+     I := pos( '<Rps', AXML );
+     if I > 0 then
+        Tipo := 2;
+   end;
+
+  AXML := AXML+'<Signature xmlns="http://www.w3.org/2000/09/xmldsig#"'+
+                     NotaUtil.SeSenao(FURI = '', '',' Id="Ass_'+ FURI +'"')+'>'+
+                 '<SignedInfo>'+
+                  '<CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />'+
+                  '<SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />'+
+                  '<Reference URI="'+NotaUtil.SeSenao(FURI = '', '','#'+FURI)+'">'+
+                   '<Transforms>'+
+                    '<Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />'+
+                    '<Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />'+
+                   '</Transforms>'+
+                   '<DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />'+
+                   '<DigestValue></DigestValue>'+
+                  '</Reference>'+
+                 '</SignedInfo>'+
+                 '<SignatureValue></SignatureValue>'+
+                 '<KeyInfo>'+
+                  '<X509Data>'+
+                    '<X509Certificate></X509Certificate>'+
+                  '</X509Data>'+
+                 '</KeyInfo>'+
+                '</Signature>';
+
+  AXML := FTagI + AXML + FTagF;
+
+  //// Adicionando Cabeçalho DTD, necessário para xmlsec encontrar o ID ////
+  I := pos( '?>', AXML );
+
+  case Tipo of
+   1: AXML := copy(AXML, 1, StrToInt(VarToStr(NotaUtil.SeSenao(I>0, I+1, I)))) +
+              cDTDLote +
+              copy(AXML, StrToInt(VarToStr(NotaUtil.SeSenao(I>0, I+2, I))), Length(AXML));
+   2: AXML := copy(AXML, 1, StrToInt(VarToStr(NotaUtil.SeSenao(I>0, I+1, I)))) +
+              cDTDRps +
+              copy(AXML, StrToInt(VarToStr(NotaUtil.SeSenao(I>0, I+2, I))), Length(AXML));
+  end;
+
+  if FileExists(ArqPFX) then
+    XmlAss := NotaUtil.sign_file( PChar(AXML), PChar(ArqPFX), PChar(PFXSenha) )
+  else
+   begin
+    Cert  := TMemoryStream.Create;
+    Cert2 := TStringStream.Create(ArqPFX);
+
+    Cert.LoadFromStream(Cert2);
+
+    XmlAss := NotaUtil.sign_memory( PChar(AXML), PChar(ArqPFX), PChar(PFXSenha), Cert.Size, Cert.Memory );
+  end;
+
+  // Removendo quebras de linha //
+  XmlAss := StringReplace( XmlAss, #10, '', [rfReplaceAll] );
+  XmlAss := StringReplace( XmlAss, #13, '', [rfReplaceAll] );
+
+  // Removendo DTD //
+  case Tipo of
+   1: XmlAss := StringReplace( XmlAss, cDTDLote, '', [] );
+   2: XmlAss := StringReplace( XmlAss, cDTDRps , '', [] );
+  end;
+
+  PosIni := Pos( '<X509Certificate>', XmlAss ) -1;
+  PosFim := NotaUtil.PosLast( '<X509Certificate>', XmlAss );
+
+  XmlAss := copy( XmlAss, 1, PosIni ) + copy( XmlAss, PosFim, length(XmlAss) );
+
+  AXMLAssinado := XmlAss;
+
+  Result := True;
+end;
+{$ELSE}
 class function NotaUtil.AssinarXML(AXML, FURI, FTagI, FTagF: AnsiString; Certificado : ICertificate2; out AXMLAssinado, FMensagem: AnsiString): Boolean;
 var
  I, PosIni, PosFim : Integer;
@@ -1656,6 +1749,7 @@ begin
 
  Result := True;
 end;
+{$ENDIF}
 
 class function NotaUtil.RetirarPrefixos(AXML: String): String;
 begin

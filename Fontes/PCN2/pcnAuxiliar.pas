@@ -971,7 +971,7 @@ const
 var
   HorarioDeVerao: Boolean;
 begin
-  if (UF = '90') or (UF = '91') then
+  if (UF = '90') or (UF = '91') or (UF = '') then
      UF := 'DF';  
 
   HorarioDeVerao := IsHorarioDeVerao(UF, dataHora);

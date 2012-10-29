@@ -1244,17 +1244,17 @@ begin
          uTON: begin
                 if uppercase(trim(FCTe.InfCarga.InfQ.Items[i].tpMed))='PESO BRUTO'
                 then qrmQtdUnidMedida1.Lines.Add(CteUtil.FormatarValor(msk6x3,
-                        FCTe.InfCarga.InfQ.Items[i].qCarga))
+                        FCTe.InfCarga.InfQ.Items[i].qCarga * 1000))
                 else
                 if uppercase(trim(FCTe.InfCarga.InfQ.Items[i].tpMed))='PESO BASE DE CALCULO'
                 then qrmQtdUnidMedida2.Lines.Add(CteUtil.FormatarValor(msk6x3,
-                        FCTe.InfCarga.InfQ.Items[i].qCarga))
+                        FCTe.InfCarga.InfQ.Items[i].qCarga * 1000))
                 else
                 if uppercase(trim(FCTe.InfCarga.InfQ.Items[i].tpMed))='PESO BC'
                 then qrmQtdUnidMedida2.Lines.Add(CteUtil.FormatarValor(msk6x3,
-                        FCTe.InfCarga.InfQ.Items[i].qCarga))
+                        FCTe.InfCarga.InfQ.Items[i].qCarga * 1000))
                 else qrmQtdUnidMedida3.Lines.Add(CteUtil.FormatarValor(msk6x3,
-                        FCTe.InfCarga.InfQ.Items[i].qCarga));
+                        FCTe.InfCarga.InfQ.Items[i].qCarga * 1000));
                end;
      uUNIDADE: qrmQtdUnidMedida5.Lines.Add(CteUtil.FormatarValor(msk6x3,
                  FCTe.InfCarga.InfQ.Items[i].qCarga) + '/' + FCTe.InfCarga.InfQ.Items[i].tpMed);

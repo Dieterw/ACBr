@@ -2081,10 +2081,32 @@ var
    wd,wm,wa: word;
    Digito: integer;
 begin
+   // Alterado por Italo em 29/10/2012
+   // Conforme NT 2012/007
    //UF
-   if FCTe.Dest.EnderDest.UF = 'EX'
-    then wchave := '99' //exterior
-    else wchave := copy(inttostr(FCTe.Dest.EnderDest.cMun),1,2);
+   // TpcteTomador = ( tmRemetente, tmExpedidor, tmRecebedor, tmDestinatario, tmOutros);
+   if FCTe.Ide.toma4.CNPJCPF<>''
+    then begin
+     if FCTe.Ide.toma4.enderToma.UF = 'EX'
+      then wchave := '99' //exterior
+      else wchave := copy(inttostr(FCTe.Ide.toma4.enderToma.cMun),1,2);
+    end
+    else begin
+     case FCTe.Ide.toma03.Toma of
+      tmRemetente: if FCTe.Rem.enderReme.UF = 'EX'
+                    then wchave := '99' //exterior
+                    else wchave := copy(inttostr(FCTe.Rem.enderReme.cMun),1,2);
+      tmExpedidor: if FCTe.Exped.enderExped.UF = 'EX'
+                    then wchave := '99' //exterior
+                    else wchave := copy(inttostr(FCTe.Exped.enderExped.cMun),1,2);
+      tmRecebedor: if FCTe.Receb.enderReceb.UF = 'EX'
+                    then wchave := '99' //exterior
+                    else wchave := copy(inttostr(FCTe.Receb.enderReceb.cMun),1,2);
+      tmDestinatario: if FCTe.Dest.EnderDest.UF = 'EX'
+                       then wchave := '99' //exterior
+                       else wchave := copy(inttostr(FCTe.Dest.EnderDest.cMun),1,2);
+     end;
+    end;
 
    //TIPO DE EMISSAO
    if FCTe.Ide.tpEmis = teContingencia
@@ -2094,9 +2116,28 @@ begin
           else wchave := wchave + '0'; //esta valor caracteriza ERRO, valor tem q ser  2 ou 5
 
    //CNPJ OU CPF
-   if (FCTe.Dest.EnderDest.UF='EX')
-    then wchave:=wchave+CTeUtil.Poem_Zeros('0',14)
-    else wchave:=wchave+CTeUtil.Poem_Zeros(FCTe.Dest.CNPJCPF,14);
+   if FCTe.Ide.toma4.CNPJCPF<>''
+    then begin
+     if FCTe.Ide.toma4.enderToma.UF = 'EX'
+      then wchave:=wchave+CTeUtil.Poem_Zeros('0',14)
+      else wchave:=wchave+CTeUtil.Poem_Zeros(FCTe.Ide.toma4.CNPJCPF,14);
+    end
+    else begin
+     case FCTe.Ide.toma03.Toma of
+      tmRemetente: if (FCTe.Rem.enderReme.UF='EX')
+                    then wchave:=wchave+CTeUtil.Poem_Zeros('0',14)
+                    else wchave:=wchave+CTeUtil.Poem_Zeros(FCTe.Rem.CNPJCPF,14);
+      tmExpedidor: if (FCTe.Exped.enderExped.UF='EX')
+                    then wchave:=wchave+CTeUtil.Poem_Zeros('0',14)
+                    else wchave:=wchave+CTeUtil.Poem_Zeros(FCTe.Exped.CNPJCPF,14);
+      tmRecebedor: if (FCTe.Receb.enderReceb.UF='EX')
+                    then wchave:=wchave+CTeUtil.Poem_Zeros('0',14)
+                    else wchave:=wchave+CTeUtil.Poem_Zeros(FCTe.Receb.CNPJCPF,14);
+      tmDestinatario: if (FCTe.Dest.EnderDest.UF='EX')
+                       then wchave:=wchave+CTeUtil.Poem_Zeros('0',14)
+                       else wchave:=wchave+CTeUtil.Poem_Zeros(FCTe.Dest.CNPJCPF,14);
+     end;
+    end;
 
    //VALOR DA CT-e
    wchave := wchave + CTeUtil.Poem_Zeros(CTeUtil.LimpaNumero(FloatToStrf(FCTe.vPrest.vTPrest, ffFixed,18,2)),14);

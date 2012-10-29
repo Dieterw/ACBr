@@ -617,7 +617,7 @@ type
       read GetObject write SetObject; default;
   end;
 
-  TTipoReceita = (trPropria, trTerceiros);
+  TTipoReceita = (trPropria, trTerceiros, trRessarcimento);
 
   TRegistro76 = class
   private

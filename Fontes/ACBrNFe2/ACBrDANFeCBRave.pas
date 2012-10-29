@@ -469,16 +469,16 @@ begin
      EventoRave.FontNameUsed := 'Times New Roman';
   EventoRave.FontSizeIdentDoc_Outros := NotaUtil.SeSenao(Pos('Courier',EventoRave.FontNameUsed)>0,9,10);
 
-  rvPDF:=TRvRenderPDF.Create(DANFeRave);
-  rvPDF.OnDecodeImage:=DANFeRave.RaveDecodeImage;
-  rvTXT:=TRvRenderText.Create(DANFeRave);
-  rvHTML:=TRvRenderHTML.Create(DANFeRave);
+  rvPDF:=TRvRenderPDF.Create(EventoRave);
+  rvPDF.OnDecodeImage:=EventoRave.RaveDecodeImage;
+  rvTXT:=TRvRenderText.Create(EventoRave);
+  rvHTML:=TRvRenderHTML.Create(EventoRave);
   {$IFNDEF VER150}
-  rvHTML.OnDecodeImage:=DANFeRave.RaveDecodeImage;
+  rvHTML.OnDecodeImage:=EventoRave.RaveDecodeImage;
   {$ENDIF}
-  rvRTF:=TRvRenderRTF.Create(DANFeRave);
+  rvRTF:=TRvRenderRTF.Create(EventoRave);
   {$IFNDEF VER150}
-  rvRTF.OnDecodeImage:=DANFeRave.RaveDecodeImage;
+  rvRTF.OnDecodeImage:=EventoRave.RaveDecodeImage;
   {$ENDIF}
   try
     rvPDF.EmbedFonts:=False;

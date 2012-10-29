@@ -3278,7 +3278,7 @@ end;
 
 function TNFeCartaCorrecao.Executar: Boolean;
 var
-  aMsg: string;
+  aMsg, NomeArq: string;
   Texto : String;
   Acao  : TStringList ;
   Stream: TMemoryStream;
@@ -3436,10 +3436,15 @@ begin
 
               CCeRetorno.retEvento.Items[j].RetInfEvento.XML:=wProc.Text;
 
+              NomeArq := FCCe.Evento.Items[i].InfEvento.chNFe +
+                         '110110' +
+                         IntToStr(FCCe.Evento.Items[i].InfEvento.nSeqEvento) +
+                         '-ProcEventoNFe.xml';
+
               if FConfiguracoes.Geral.Salvar then
-                 FConfiguracoes.Geral.Save(FCCe.Evento.Items[i].InfEvento.chNFe + '-ProcEventoNFe.xml', wProc.Text);
+                 FConfiguracoes.Geral.Save(NomeArq, wProc.Text);
               if FConfiguracoes.Arquivos.Salvar then
-                 FConfiguracoes.Geral.Save(FCCe.Evento.Items[i].InfEvento.chNFe + '-ProcEventoNFe.xml', wProc.Text, FConfiguracoes.Arquivos.GetPathCCe);
+                 FConfiguracoes.Geral.Save(NomeArq, wProc.Text, FConfiguracoes.Arquivos.GetPathCCe);
               wProc.Free;
               break;
             end;
@@ -3477,7 +3482,7 @@ end;
 
 function TNFeEnvEvento.Executar: Boolean;
 var
-  aMsg: string;
+  aMsg, NomeArq: string;
   Texto : String;
   Acao  : TStringList ;
   Stream: TMemoryStream;
@@ -3639,14 +3644,21 @@ begin
 
               EventoRetorno.retEvento.Items[j].RetInfEvento.XML:=wProc.Text;
 
+
+
+              NomeArq := FEvento.Evento.Items[i].InfEvento.chNFe +
+                         FEvento.Evento.Items[i].InfEvento.TipoEvento +
+                         IntToStr(FEvento.Evento.Items[i].InfEvento.nSeqEvento) +
+                         '-ProcEventoNFe.xml';
+
               if FConfiguracoes.Geral.Salvar then
-                 FConfiguracoes.Geral.Save(FEvento.Evento.Items[i].InfEvento.chNFe + '-ProcEventoNFe.xml', wProc.Text);
+                 FConfiguracoes.Geral.Save(NomeArq, wProc.Text);
               if FConfiguracoes.Arquivos.Salvar then
                begin
                  if FEvento.Evento.Items[0].InfEvento.tpEvento = teCCe then
-                    FConfiguracoes.Geral.Save(FEvento.Evento.Items[i].InfEvento.chNFe + '-ProcEventoNFe.xml', wProc.Text, FConfiguracoes.Arquivos.GetPathCCe)
+                    FConfiguracoes.Geral.Save(NomeArq, wProc.Text, FConfiguracoes.Arquivos.GetPathCCe)
                  else
-                    FConfiguracoes.Geral.Save(FEvento.Evento.Items[i].InfEvento.chNFe + '-ProcEventoNFe.xml', wProc.Text, FConfiguracoes.Arquivos.GetPathEvento);
+                    FConfiguracoes.Geral.Save(NomeArq, wProc.Text, FConfiguracoes.Arquivos.GetPathEvento);
                end;
               wProc.Free;
               break;

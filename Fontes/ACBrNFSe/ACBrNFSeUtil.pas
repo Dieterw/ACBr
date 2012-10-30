@@ -1539,7 +1539,7 @@ begin
 end;
 
 {$IFDEF ACBrNFSeOpenSSL}
-class function AssinarXML(AXML, FURI, FTagI, FTagF, ArqPFX, PFXSenha: AnsiString;
+class function NotaUtil.AssinarXML(AXML, FURI, FTagI, FTagF, ArqPFX, PFXSenha: AnsiString;
                              out AXMLAssinado, FMensagem: AnsiString): Boolean;
 var
  I, Tipo, PosIni, PosFim : Integer;

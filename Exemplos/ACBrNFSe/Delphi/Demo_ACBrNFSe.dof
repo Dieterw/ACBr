@@ -135,9 +135,10 @@ ProductName=
 ProductVersion=1.0.0.0
 Comments=
 [HistoryLists\hlConditionals]
-Count=2
+Count=3
 Item0=ACBrNFSeCAPICOM
-Item1=ACBrCTeCAPICOM
+Item1=ACBrNFSeOpenSSL
+Item2=ACBrCTeCAPICOM
 [HistoryLists\hlUnitAliases]
 Count=1
 Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;

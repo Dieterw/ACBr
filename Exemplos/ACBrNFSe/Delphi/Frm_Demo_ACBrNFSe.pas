@@ -662,7 +662,7 @@ begin
  if not(InputQuery('Consultar Lote', 'Número do Protocolo', Protocolo))
   then exit;
 
- ACBrNFSe1.ConsutarLoteRps(Lote, Protocolo);
+ ACBrNFSe1.ConsultarLoteRps(Lote, Protocolo);
 
  MemoResp.Lines.Text   := UTF8Encode(ACBrNFSe1.WebServices.ConsLote.RetWS);
  memoRespWS.Lines.Text := UTF8Encode(ACBrNFSe1.WebServices.ConsLote.RetWS);
@@ -715,7 +715,7 @@ begin
  if not(InputQuery('Consultar Situação do Lote', 'Número do Protocolo', Protocolo))
   then exit;
 
- ACBrNFSe1.ConsutarSituacao(edtEmitCNPJ.Text, edtEmitIM.Text, Protocolo);
+ ACBrNFSe1.ConsultarSituacao(edtEmitCNPJ.Text, edtEmitIM.Text, Protocolo);
 
  MemoResp.Lines.Text   := UTF8Encode(ACBrNFSe1.WebServices.ConsSitLote.RetWS);
  memoRespWS.Lines.Text := UTF8Encode(ACBrNFSe1.WebServices.ConsSitLote.RetWS);
@@ -840,7 +840,7 @@ begin
    ACBrNFSe1.NotasFiscais.Clear;
    ACBrNFSe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
 
-   ACBrNFSe1.ConsutarNFSeporRps(ACBrNFSe1.NotasFiscais.Items[0].NFSe.IdentificacaoRps.Numero,
+   ACBrNFSe1.ConsultarNFSeporRps(ACBrNFSe1.NotasFiscais.Items[0].NFSe.IdentificacaoRps.Numero,
                                 ACBrNFSe1.NotasFiscais.Items[0].NFSe.IdentificacaoRps.Serie,
                                 TipoRPSToStr(ACBrNFSe1.NotasFiscais.Items[0].NFSe.IdentificacaoRps.Tipo),
                                 ACBrNFSe1.NotasFiscais.Items[0].NFSe.Prestador.Cnpj,
@@ -861,7 +861,7 @@ begin
  if not(InputQuery('Consultar NFSe por Período', 'Data Final (DD/MM/AAAA):', DataFinal))
   then exit;
 
- ACBrNFSe1.ConsutarNFSe(edtEmitCNPJ.Text, edtEmitIM.Text, StrToDate(DataInicial), StrToDate(DataFinal));
+ ACBrNFSe1.ConsultarNFSe(edtEmitCNPJ.Text, edtEmitIM.Text, StrToDate(DataInicial), StrToDate(DataFinal));
 
  MemoResp.Lines.Text   := UTF8Encode(ACBrNFSe1.WebServices.ConsNfse.RetWS);
  memoRespWS.Lines.Text := UTF8Encode(ACBrNFSe1.WebServices.ConsNfse.RetWS);

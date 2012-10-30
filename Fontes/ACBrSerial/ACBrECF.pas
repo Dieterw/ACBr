@@ -45,7 +45,9 @@ uses ACBrBase, ACBrDevice, ACBrECFClass, ACBrPAFClass, ACBrRFD, ACBrAAC, ACBrEAD
         {$IFDEF VisualCLX}, QControls, QForms, QDialogs, QGraphics, QStdCtrls{$ENDIF}
         {$IFDEF VCL}, Controls, Forms, Dialogs, Graphics, StdCtrls {$ENDIF}
      {$ENDIF} ;
-
+{$IFDEF FRAMEWORK}
+{$UNDEF CONSOLE}
+{$ENDIF}
 const
    CACBrECF_Versao = '1.0.0' ;
 
@@ -113,10 +115,12 @@ TACBrECF = class( TACBrComponent )
     fsSubTotalPagto :Double;
     fsIndiceGerencial : Integer ;
     {$IFNDEF CONSOLE}
+      {$IFNDEF FRAMEWORK}
       fsFormMsgColor : TColor ;
       fsFormMsgFont  : TFont ;
-      fsMemoOperacao : String ;
       fsMemoBobina: TMemo ;
+      {$ENDIF}
+      fsMemoOperacao : String ;
       fsMemoParams: TStrings;
       fsOnBobinaAdicionaLinhas: TACBrECFBobinaAdicionaLinhas;
       fsMemoColunas: Integer ;
@@ -283,8 +287,10 @@ TACBrECF = class( TACBrComponent )
     function GetMaxLinhasBuffer: Integer;
     procedure SetMaxLinhasBuffer(const AValue: Integer);
     {$IFNDEF CONSOLE}
+      {$IFNDEF FRAMEWORK}
       procedure SetFormMsgFonte(const AValue: TFont);
       procedure SetMemoBobina(const AValue: TMemo);
+      {$ENDIF}
       procedure SetMemoParams(const AValue: TStrings);
       procedure MemoAdicionaLinha( Linhas : String ) ;
 
@@ -838,8 +844,10 @@ TACBrECF = class( TACBrComponent )
                  write SetPaginaDeCodigoClass;
 
     {$IFNDEF CONSOLE}
+    {$IFNDEF FRAMEWORK}
        property FormMsgFonte : TFont read  fsFormMsgFont  write SetFormMsgFonte ;
        property FormMsgColor: TColor read  fsFormMsgColor write fsFormMsgColor ;
+    {$ENDIF}
     {$ENDIF}
 
      property OnMsgAguarde : TACBrECFMsgAguarde   read  GetOnMsgAguarde
@@ -988,7 +996,9 @@ TACBrECF = class( TACBrComponent )
         write SetDecimaisQtd default 3 ;
 
     {$IFNDEF CONSOLE}
+    {$IFNDEF FRAMEWORK}
        property MemoBobina : TMemo    read fsMemoBobina write SetMemoBobina ;
+     {$ENDIF}
        property MemoParams : TStrings read fsMemoParams write SetMemoParams ;
        property OnBobinaAdicionaLinhas : TACBrECFBobinaAdicionaLinhas
           read  fsOnBobinaAdicionaLinhas write fsOnBobinaAdicionaLinhas ;
@@ -1048,10 +1058,13 @@ begin
   fsDevice.Porta := 'COM1';
 
   {$IFNDEF CONSOLE}
+  {$IFNDEF FRAMEWORK}
     fsFormMsgFont  := TFont.create ;
     fsFormMsgColor :=  {$IFDEF VisualCLX} clNormalHighlight {$ELSE}
                                           clHighlight      {$ENDIF};
+
     fsMemoBobina := nil ;
+    {$ENDIF}
 
     fsMemoItens     := 0 ;
     {$IFDEF MSWINDOWS}
@@ -1123,7 +1136,9 @@ begin
   FreeAndNil( fsDevice ) ;
 
   {$IFNDEF CONSOLE}
+  {$IFNDEF FRAMEWORK}
     fsFormMsgFont.Free ;
+  {$ENDIF}
     fsMemoParams.Free ;
   {$ENDIF}
 
@@ -1635,10 +1650,12 @@ begin
 end;
 
 {$IFNDEF CONSOLE}
+{$IFNDEF FRAMEWORK}
   procedure TACBrECF.SetFormMsgFonte(const AValue: TFont);
   begin
     fsFormMsgFont.Assign( AValue ) ;
   end;
+{$ENDIF}
 {$ENDIF}
 
 function TACBrECF.GetOnMsgAguarde: TACBrECFMsgAguarde;
@@ -1707,7 +1724,11 @@ begin
 
      Msg := ACBrStr(Msg);
      {$IFNDEF CONSOLE}
+     {$IFNDEF FRAMEWORK}
        MessageDlg(Msg, mtInformation ,[mbOk],0) ;
+     {$ELSE}
+       writeln( Msg ) ;
+     {$ENDIF}
      {$ELSE}
        writeln( Msg ) ;
      {$ENDIF}
@@ -4884,8 +4905,12 @@ begin
         TimeOut := ATimeOut ;
 
      {$IFNDEF CONSOLE}
+     {$IFNDEF FRAMEWORK}
        fsECF.FormMsgControla := False ;
        fsECF.FormMsgDoProcedure( DoAcharPorta, ord('C') ) ;
+     {$ELSE}
+       DoAcharPorta ;
+     {$ENDIF}
      {$ELSE}
        DoAcharPorta ;
      {$ENDIF}
@@ -4899,7 +4924,9 @@ begin
      Result := (Porta <> '') ;
   finally
      {$IFNDEF CONSOLE}
+     {$IFNDEF FRAMEWORK}
        fsECF.FormMsgControla := True ;
+     {$ENDIF}
      {$ENDIF}
      fsProcurandoPorta := false ;
      TimeOut := wTimeOut ;
@@ -4931,9 +4958,11 @@ procedure TACBrECF.DoAcharPorta ;
                   ' Pressione <C> para cancelar' ;
 
         {$IFNDEF CONSOLE}
+        {$IFNDEF FRAMEWORK}
           fsECF.FormMsgPinta( Msg ) ;
           if not (fsECF.FormMsgEstado = fmsProcessando) then
              exit ;
+        {$ENDIF}
         {$ENDIF}
 
         Ativar ;      { Se não Ativar gera uma Exceção }
@@ -4956,7 +4985,7 @@ begin
 
         I := 0 ;
         while (I < SL.Count) and (not Achou)
-          {$IFNDEF CONSOLE} and (fsECF.FormMsgEstado = fmsProcessando) {$ENDIF} do
+          {$IFNDEF CONSOLE}{$IFNDEF FRAMEWORK} and (fsECF.FormMsgEstado = fmsProcessando) {$ENDIF}{$ENDIF} do
         begin
            Porta := SL[I] ;
            Achou := AtivarECF ;
@@ -4973,15 +5002,18 @@ begin
   begin
      sleep(200) ;
      {$IFNDEF CONSOLE}
+     {$IFNDEF FRAMEWORK}
        if fsECF.FormMsgEstado = fmsAbortado then
           Porta := 'abortado'
        else
+     {$ENDIF}
      {$ENDIF}
           Porta := '' ;
   end ;
 end;
 
 {$IFNDEF CONSOLE}
+{$IFNDEF FRAMEWORK}
  procedure TACBrECF.SetMemoBobina(const AValue: TMemo);
  begin
    if AValue <> fsMemoBobina then
@@ -4995,6 +5027,7 @@ end;
          AValue.FreeNotification(self);
    end ;
  end;
+{$ENDIF}
 
  procedure TACBrECF.SetMemoParams(const AValue: TStrings);
  begin
@@ -5017,7 +5050,7 @@ end;
 
  function TACBrECF.MemoAssigned: Boolean;
  begin
-   Result := Assigned( fsMemoBobina ) or Assigned( fsOnBobinaAdicionaLinhas ) ;
+   Result := {$IFNDEF FRAMEWORK}Assigned( fsMemoBobina ) or {$ENDIF}Assigned( fsOnBobinaAdicionaLinhas ) ;
  end;
 
  procedure TACBrECF.MemoSubtotaliza(DescontoAcrescimo: Double );
@@ -5247,8 +5280,10 @@ end;
       SL.Free ;
    end ;
 
+   {$IFNDEF FRAMEWORK}
    if Assigned( fsMemoBobina ) then
       fsMemoBobina.Lines.Add( NewLinhas ) ;
+   {$ENDIF}
 
    if Assigned( fsOnBobinaAdicionaLinhas ) then
       fsOnBobinaAdicionaLinhas( NewLinhas, fsMemoOperacao ) ;
@@ -5298,10 +5333,12 @@ begin
   inherited Notification(AComponent, Operation);
 
   {$IFNDEF CONSOLE}
+  {$IFNDEF FRAMEWORK}
    if (Operation = opRemove) and (fsMemoBobina <> nil) and (AComponent is TMemo) then
    begin
       fsMemoBobina := nil ;
    end ;
+  {$ENDIF}
   {$ENDIF}
 
   if (Operation = opRemove) and (AComponent is TACBrRFD) and (fsRFD <> nil) then
@@ -6419,5 +6456,8 @@ begin
   FDAVTotal     := 0.00;
 end;
 
+{$IFDEF FRAMEWORK}
+{$DEF CONSOLE}
+{$ENDIF}
 end.
 

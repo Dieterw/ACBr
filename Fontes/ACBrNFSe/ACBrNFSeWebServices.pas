@@ -640,10 +640,19 @@ begin
 
  if FProvedorClass.GetAssinarXML(acConsSit)
   then begin
+  {$IFDEF ACBrNFSeOpenSSL}
+   if not(NotaUtil.AssinarXML(FDadosMsg, URI, FTagI, FTagF,
+                   FConfiguracoes.Certificados.Certificado,
+                   FConfiguracoes.Certificados.Senha,
+                   FvAssinada, FMsg))
+    then raise Exception.Create('Falha ao assinar o XML ' + FMsg)
+    else FDadosMsg := FvAssinada;
+  {$ELSE}
    if not(NotaUtil.AssinarXML(FDadosMsg, URI, FTagI, FTagF,
                    FConfiguracoes.Certificados.GetCertificado, FvAssinada, FMsg))
     then raise Exception.Create('Falha ao assinar o XML ' + FMsg)
     else FDadosMsg := FvAssinada;
+  {$ENDIF}
   end;
 end;
 
@@ -727,10 +736,19 @@ begin
 
  if FProvedorClass.GetAssinarXML(acConsLote)
   then begin
+  {$IFDEF ACBrNFSeOpenSSL}
+   if not(NotaUtil.AssinarXML(FDadosMsg, URI, FTagI, FTagF,
+                   FConfiguracoes.Certificados.Certificado,
+                   FConfiguracoes.Certificados.Senha,
+                   FvAssinada, FMsg))
+    then raise Exception.Create('Falha ao assinar o XML ' + FMsg)
+    else FDadosMsg := FvAssinada;
+  {$ELSE}
    if not(NotaUtil.AssinarXML(FDadosMsg, URI, FTagI, FTagF,
                    FConfiguracoes.Certificados.GetCertificado, FvAssinada, FMsg))
     then raise Exception.Create('Falha ao assinar o XML ' + FMsg)
     else FDadosMsg := FvAssinada;
+  {$ENDIF}
   end;
 end;
 
@@ -809,10 +827,19 @@ begin
 
  if FProvedorClass.GetAssinarXML(acConsNFSeRps)
   then begin
+  {$IFDEF ACBrNFSeOpenSSL}
+   if not(NotaUtil.AssinarXML(FDadosMsg, URI, FTagI, FTagF,
+                   FConfiguracoes.Certificados.Certificado,
+                   FConfiguracoes.Certificados.Senha,
+                   FvAssinada, FMsg))
+    then raise Exception.Create('Falha ao assinar o XML ' + FMsg)
+    else FDadosMsg := FvAssinada;
+  {$ELSE}
    if not(NotaUtil.AssinarXML(FDadosMsg, URI, FTagI, FTagF,
                    FConfiguracoes.Certificados.GetCertificado, FvAssinada, FMsg))
     then raise Exception.Create('Falha ao assinar o XML ' + FMsg)
     else FDadosMsg := FvAssinada;
+  {$ENDIF}
   end;
 
 end;
@@ -891,10 +918,19 @@ begin
 
  if FProvedorClass.GetAssinarXML(acConsNFSe)
   then begin
+  {$IFDEF ACBrNFSeOpenSSL}
+   if not(NotaUtil.AssinarXML(FDadosMsg, URI, FTagI, FTagF,
+                   FConfiguracoes.Certificados.Certificado,
+                   FConfiguracoes.Certificados.Senha,
+                   FvAssinada, FMsg))
+    then raise Exception.Create('Falha ao assinar o XML ' + FMsg)
+    else FDadosMsg := FvAssinada;
+  {$ELSE}
    if not(NotaUtil.AssinarXML(FDadosMsg, URI, FTagI, FTagF,
                    FConfiguracoes.Certificados.GetCertificado, FvAssinada, FMsg))
     then raise Exception.Create('Falha ao assinar o XML ' + FMsg)
     else FDadosMsg := FvAssinada;
+  {$ENDIF}
   end;
 
 end;
@@ -993,10 +1029,19 @@ begin
 
  if FProvedorClass.GetAssinarXML(acCancelar)
   then begin
+  {$IFDEF ACBrNFSeOpenSSL}
+   if not(NotaUtil.AssinarXML(FDadosMsg, URI, FTagI, FTagF,
+                   FConfiguracoes.Certificados.Certificado,
+                   FConfiguracoes.Certificados.Senha,
+                   FvAssinada, FMsg))
+    then raise Exception.Create('Falha ao assinar o XML ' + FMsg)
+    else FDadosMsg := FvAssinada;
+  {$ELSE}
    if not(NotaUtil.AssinarXML(FDadosMsg, URI, FTagI, FTagF,
                    FConfiguracoes.Certificados.GetCertificado, FvAssinada, FMsg))
     then raise Exception.Create('Falha ao assinar o XML ' + FMsg)
     else FDadosMsg := FvAssinada;
+  {$ENDIF}
   end;
 end;
 

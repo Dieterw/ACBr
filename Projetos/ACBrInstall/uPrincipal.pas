@@ -204,7 +204,9 @@ var
   end;
 
 begin
-  PathArquivo := IncludeTrailingPathDelimiter(edtDirDestino.Text) + 'ACBr.inc';
+  PathArquivo :=
+    IncludeTrailingPathDelimiter(edtDirDestino.Text) +
+    'Fontes\ACBrComum\ACBr.inc';
 
   F := TStringList.Create;
   try
@@ -213,7 +215,7 @@ begin
     ComentarLinha('{$DEFINE ACBrCTeOpenSSL}', not(AUtilizar));
     ComentarLinha('{$DEFINE ACBrNFSeOpenSSL}', not(AUtilizar));
 
-    WriteToTXT(PathArquivo, F.Text, False, True);
+    WriteToTXT(PathArquivo, F.Text, False, False);
   finally
     F.Free;
   end;

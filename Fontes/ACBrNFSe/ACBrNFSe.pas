@@ -41,10 +41,10 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     function Enviar(ALote: Integer; Imprimir:Boolean = True): Boolean;
-    function ConsutarSituacao(ACnpj, AInscricaoMunicipal, AProtocolo: String): Boolean;
-    function ConsutarLoteRps(ANumLote, AProtocolo: String): Boolean;
-    function ConsutarNFSeporRps(ANumero, ASerie, ATipo, ACnpj, AInscricaoMunicipal: String): Boolean;
-    function ConsutarNFSe(ACnpj, AInscricaoMunicipal: String; ADataInicial, ADataFinal: TDateTime; NumeroNFSe: string = ''): Boolean;
+    function ConsultarSituacao(ACnpj, AInscricaoMunicipal, AProtocolo: String): Boolean;
+    function ConsultarLoteRps(ANumLote, AProtocolo: String): Boolean;
+    function ConsultarNFSeporRps(ANumero, ASerie, ATipo, ACnpj, AInscricaoMunicipal: String): Boolean;
+    function ConsultarNFSe(ACnpj, AInscricaoMunicipal: String; ADataInicial, ADataFinal: TDateTime; NumeroNFSe: string = ''): Boolean;
     function CancelarNFSe(ACodigoCancelamento: String): Boolean;
     function Gerar(ARps: Integer): Boolean;
 
@@ -187,13 +187,13 @@ begin
   end;
 end;
 
-function TACBrNFSe.ConsutarSituacao(ACnpj, AInscricaoMunicipal,
+function TACBrNFSe.ConsultarSituacao(ACnpj, AInscricaoMunicipal,
   AProtocolo: String): Boolean;
 begin
  Result := WebServices.ConsultaSituacao(ACnpj, AInscricaoMunicipal, AProtocolo);
 end;
 
-function TACBrNFSe.ConsutarLoteRps(ANumLote, AProtocolo: String): Boolean;
+function TACBrNFSe.ConsultarLoteRps(ANumLote, AProtocolo: String): Boolean;
 var
  aPath: String;
  wAno, wMes, wDia: Word;
@@ -224,7 +224,7 @@ begin
  Result := WebServices.ConsultaLoteRps(AProtocolo);
 end;
 
-function TACBrNFSe.ConsutarNFSeporRps(ANumero, ASerie, ATipo, ACnpj,
+function TACBrNFSe.ConsultarNFSeporRps(ANumero, ASerie, ATipo, ACnpj,
   AInscricaoMunicipal: String): Boolean;
 begin
  if NotasFiscais.Count <= 0
@@ -235,13 +235,13 @@ begin
    exit;
   end;
 
- Result := WebServices.ConsutaNFSeporRps(ANumero, ASerie, ATipo, ACnpj, AInscricaoMunicipal);
+ Result := WebServices.ConsultaNFSeporRps(ANumero, ASerie, ATipo, ACnpj, AInscricaoMunicipal);
 end;
 
-function TACBrNFSe.ConsutarNFSe(ACnpj, AInscricaoMunicipal: String;
+function TACBrNFSe.ConsultarNFSe(ACnpj, AInscricaoMunicipal: String;
   ADataInicial, ADataFinal: TDateTime; NumeroNFSe: string = ''): Boolean;
 begin
- Result := WebServices.ConsutaNFSe(ACnpj, AInscricaoMunicipal, ADataInicial, ADataFinal, NumeroNFSe);
+ Result := WebServices.ConsultaNFSe(ACnpj, AInscricaoMunicipal, ADataInicial, ADataFinal, NumeroNFSe);
 end;
 
 function TACBrNFSe.CancelarNFSe(ACodigoCancelamento: String): Boolean;

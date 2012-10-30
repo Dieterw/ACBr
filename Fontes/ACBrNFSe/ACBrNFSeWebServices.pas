@@ -297,8 +297,8 @@ type
                              const CarregaProps: boolean = true): Boolean; overload;
     function ConsultaLoteRps(AProtocolo,
                              ACNPJ, AInscricaoMunicipal: string): Boolean; overload;
-    function ConsutaNFSeporRps(ANumero, ASerie, ATipo, ACnpj, AInscricaoMunicipal: String): Boolean;
-    function ConsutaNFSe(ACnpj, AInscricaoMunicipal: String; ADataInicial, ADataFinal: TDateTime; NumeroNFSe: string = ''): Boolean;
+    function ConsultaNFSeporRps(ANumero, ASerie, ATipo, ACnpj, AInscricaoMunicipal: String): Boolean;
+    function ConsultaNFSe(ACnpj, AInscricaoMunicipal: String; ADataInicial, ADataFinal: TDateTime; NumeroNFSe: string = ''): Boolean;
     function CancelaNFSe(ACodigoCancelamento: String;
                          const CarregaProps: boolean = true): Boolean; overload;
     function CancelaNFSe(ACodigoCancelamento, ANumeroRPS, ACNPJ, AInscricaoMunicipal,
@@ -1411,7 +1411,7 @@ begin
  Result := ConsultaLoteRPS(AProtocolo,False);
 end;
 
-function TWebServices.ConsutaNFSeporRps(ANumero, ASerie, ATipo, ACnpj,
+function TWebServices.ConsultaNFSeporRps(ANumero, ASerie, ATipo, ACnpj,
   AInscricaoMunicipal: String): Boolean;
 begin
  ACnpj := OnlyNumber(ACnpj);
@@ -1434,7 +1434,7 @@ begin
  Result := true;
 end;
 
-function TWebServices.ConsutaNFSe(ACnpj, AInscricaoMunicipal: String;
+function TWebServices.ConsultaNFSe(ACnpj, AInscricaoMunicipal: String;
   ADataInicial, ADataFinal: TDateTime; NumeroNFSe: string = ''): Boolean;
 begin
  ACnpj := OnlyNumber(ACnpj);

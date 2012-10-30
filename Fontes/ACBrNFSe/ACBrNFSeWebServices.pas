@@ -227,6 +227,7 @@ type
     FInscricaoMunicipal: String;
     FDataInicial: TDateTime;
     FDataFinal: TDateTime;
+    FNumeroNFSe: String;
     FNFSeRetorno: TRetNfse;
     FNotasFiscais : TNotasFiscais;
   public
@@ -236,6 +237,7 @@ type
     property InscricaoMunicipal: String read FInscricaoMunicipal write FInscricaoMunicipal;
     property DataInicial: TDateTime read FDataInicial write FDataInicial;
     property DataFinal: TDateTime read FDataFinal write FDataFinal;
+    property NumeroNFSe: String read FNumeroNFSe write FNumeroNFSe;
     property NFSeRetorno: TRetNfse read FNFSeRetorno write FNFSeRetorno;
   end;
 
@@ -296,7 +298,7 @@ type
     function ConsultaLoteRps(AProtocolo,
                              ACNPJ, AInscricaoMunicipal: string): Boolean; overload;
     function ConsutaNFSeporRps(ANumero, ASerie, ATipo, ACnpj, AInscricaoMunicipal: String): Boolean;
-    function ConsutaNFSe(ACnpj, AInscricaoMunicipal: String; ADataInicial, ADataFinal: TDateTime): Boolean;
+    function ConsutaNFSe(ACnpj, AInscricaoMunicipal: String; ADataInicial, ADataFinal: TDateTime; NumeroNFSe: string = ''): Boolean;
     function CancelaNFSe(ACodigoCancelamento: String;
                          const CarregaProps: boolean = true): Boolean; overload;
     function CancelaNFSe(ACodigoCancelamento, ANumeroRPS, ACNPJ, AInscricaoMunicipal,
@@ -914,7 +916,8 @@ begin
                                                    TNFSeConsultarNfse(Self).DataInicial,
                                                    TNFSeConsultarNfse(Self).DataFinal,
                                                    FTagI,
-                                                   FTagF);
+                                                   FTagF,
+                                                   TNFSeConsultarNfse(Self).FNumeroNFSe);
 
  if FProvedorClass.GetAssinarXML(acConsNFSe)
   then begin
@@ -931,7 +934,7 @@ begin
     then raise Exception.Create('Falha ao assinar o XML ' + FMsg)
     else FDadosMsg := FvAssinada;
   {$ENDIF}
-  end;
+  end;                                               
 
 end;
 
@@ -1432,7 +1435,7 @@ begin
 end;
 
 function TWebServices.ConsutaNFSe(ACnpj, AInscricaoMunicipal: String;
-  ADataInicial, ADataFinal: TDateTime): Boolean;
+  ADataInicial, ADataFinal: TDateTime; NumeroNFSe: string = ''): Boolean;
 begin
  ACnpj := OnlyNumber(ACnpj);
  if not ValidarCNPJ(ACnpj) then
@@ -1442,6 +1445,7 @@ begin
  Self.ConsNfse.InscricaoMunicipal := AInscricaoMunicipal;
  Self.ConsNfse.DataInicial        := ADataInicial;
  Self.ConsNfse.DataFinal          := ADataFinal;
+ Self.ConsNfse.NumeroNFSe         := NumeroNFSe;
 
  if not (Self.ConsNfse.Executar)
   then begin

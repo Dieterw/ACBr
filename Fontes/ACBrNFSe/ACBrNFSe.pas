@@ -44,7 +44,7 @@ type
     function ConsutarSituacao(ACnpj, AInscricaoMunicipal, AProtocolo: String): Boolean;
     function ConsutarLoteRps(ANumLote, AProtocolo: String): Boolean;
     function ConsutarNFSeporRps(ANumero, ASerie, ATipo, ACnpj, AInscricaoMunicipal: String): Boolean;
-    function ConsutarNFSe(ACnpj, AInscricaoMunicipal: String; ADataInicial, ADataFinal: TDateTime): Boolean;
+    function ConsutarNFSe(ACnpj, AInscricaoMunicipal: String; ADataInicial, ADataFinal: TDateTime; NumeroNFSe: string = ''): Boolean;
     function CancelarNFSe(ACodigoCancelamento: String): Boolean;
     function Gerar(ARps: Integer): Boolean;
 
@@ -239,9 +239,9 @@ begin
 end;
 
 function TACBrNFSe.ConsutarNFSe(ACnpj, AInscricaoMunicipal: String;
-  ADataInicial, ADataFinal: TDateTime): Boolean;
+  ADataInicial, ADataFinal: TDateTime; NumeroNFSe: string = ''): Boolean;
 begin
- Result := WebServices.ConsutaNFSe(ACnpj, AInscricaoMunicipal, ADataInicial, ADataFinal);
+ Result := WebServices.ConsutaNFSe(ACnpj, AInscricaoMunicipal, ADataInicial, ADataFinal, NumeroNFSe);
 end;
 
 function TACBrNFSe.CancelarNFSe(ACodigoCancelamento: String): Boolean;

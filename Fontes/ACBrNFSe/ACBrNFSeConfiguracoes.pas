@@ -169,7 +169,7 @@ type
     constructor Create(AOwner: TComponent); override;
     procedure SetConfigMunicipio(aPath: String = '');
   published
-    property Salvar: Boolean               read FSalvar     write FSalvar     default False ;
+    property Salvar: Boolean               read FSalvar     write FSalvar     default False;
     property Visualizar: Boolean           read FVisualizar write FVisualizar default False;
     property Ambiente: TpcnTipoAmbiente    read FAmbiente   write SetAmbiente default taHomologacao;
     property AmbienteCodigo: Integer       read FAmbienteCodigo;
@@ -238,10 +238,10 @@ type
     FPathSchemas: String;
     function GetPathSalvar: String;
   public
-    constructor Create(AOwner: TComponent); override ;
+    constructor Create(AOwner: TComponent); override;
     function Save(AXMLName: String; AXMLFile: WideString; aPath: String = ''): Boolean;
   published
-    property Salvar: Boolean read FSalvar write FSalvar default False ;
+    property Salvar: Boolean read FSalvar write FSalvar default False;
     property PathSalvar: String read GetPathSalvar write FPathSalvar;
     property PathSchemas: String read FPathSchemas write FPathSchemas;
   end;
@@ -257,16 +257,16 @@ type
     FPathRPS: String;
     FPathGer: String;
   public
-    constructor Create(AOwner: TComponent); override ;
+    constructor Create(AOwner: TComponent); override;
     function GetPathCan: String;
     function GetPathGer: String;
     function GetPathRPS: String;
     function GetPathNFSe(Data : TDateTime = 0): String;
   published
-    property Salvar     : Boolean read FSalvar  write FSalvar  default False ;
-    property PastaMensal: Boolean read FMensal  write FMensal  default False ;
-    property AdicionarLiteral: Boolean read FLiteral write FLiteral default False ;
-    property EmissaoPathNFSe: Boolean read FEmissaoPathNFSe write FEmissaoPathNFSe default False ;
+    property Salvar     : Boolean read FSalvar  write FSalvar  default False;
+    property PastaMensal: Boolean read FMensal  write FMensal  default False;
+    property AdicionarLiteral: Boolean read FLiteral write FLiteral default False;
+    property EmissaoPathNFSe: Boolean read FEmissaoPathNFSe write FEmissaoPathNFSe default False;
     property PathNFSe : String read FPathNFSe  write FPathNFSe;
     property PathCan : String read FPathCan  write FPathCan;
     property PathRPS : String read FPathRPS  write FPathRPS;
@@ -283,10 +283,10 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
   published
-    property Geral: TGeralConf read FGeral ;
-    property WebServices: TWebServicesConf read FWebServices ;
-    property Certificados: TCertificadosConf read FCertificados ;
-    property Arquivos: TArquivosConf read FArquivos ;
+    property Geral: TGeralConf read FGeral;
+    property WebServices: TWebServicesConf read FWebServices;
+    property Certificados: TCertificadosConf read FCertificados;
+    property Arquivos: TArquivosConf read FArquivos;
   end;
 
  TProvedorClass = Class
@@ -324,7 +324,7 @@ type
    function Gera_DadosMsgConsNFSe(Prefixo3, Prefixo4, VersaoXML,
                                   CNPJ, IM: String;
                                   DataInicial, DataFinal: TDateTime;
-                                  TagI, TagF: AnsiString): AnsiString; Virtual; Abstract;
+                                  TagI, TagF: AnsiString; NumeroNFSe: string = ''): AnsiString; Virtual; Abstract;
    function Gera_DadosMsgCancelarNFSe(Prefixo4, NumeroNFSe, CNPJ, IM,
                                       CodMunicipio, CodCancelamento: String;
                                       TagI, TagF: AnsiString): AnsiString; Virtual; Abstract;
@@ -422,7 +422,7 @@ begin
   then Result := NotaUtil.PathAplication
   else Result := FPathSalvar;
 
- Result := NotaUtil.PathWithDelim( Trim(Result) ) ;
+ Result := NotaUtil.PathWithDelim( Trim(Result) );
 end;
 
 function TGeralConf.Save(AXMLName: String; AXMLFile: WideString; aPath: String = ''): Boolean;

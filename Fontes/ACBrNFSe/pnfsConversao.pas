@@ -623,7 +623,8 @@ begin
   3305505, // Saquarema/RJ
   3541505, // Presidente Venceslau/SP
   4205902, // Gaspar/SC
-  4309407  // Guapore/RS
+  4309407, // Guapore/RS
+  4310207  // Ijui/RS
          : Provedor := 'GovBR';
 
   2611606  // Recife/PE
@@ -909,6 +910,7 @@ begin
   4308508: Cidade := 'Frederico Westphalen/RS';
   4309308: Cidade := 'Guaiba/RS';
   4309407: Cidade := 'Guapore/RS';
+  4310207: Cidade := 'Ijui/RS';
   4314407: Cidade := 'Pelotas/RS';
   4318002: Cidade := 'São Borja/RS';
   4318705: Cidade := 'Sao Leopoldo/RS';

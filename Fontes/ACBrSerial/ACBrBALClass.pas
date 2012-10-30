@@ -141,7 +141,6 @@ end;
 function TACBrBALClass.LePeso( MillisecTimeOut : Integer): Double;
 begin
   { Deve ser implementada na Classe Filha }
-  Result := 0;
   raise Exception.Create(ACBrStr('Função LePeso não implementada em: ')+ModeloStr);
 end;
 

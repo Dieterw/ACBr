@@ -134,7 +134,6 @@ var
   i : Integer;
   ProtLido : Boolean; //Protocolo lido do arquivo
 begin
-  Result := False;
   ProtLido := False;
   // Alterado por Italo em 28/09/2012
 

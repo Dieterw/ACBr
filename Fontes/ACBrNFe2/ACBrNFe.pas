@@ -560,26 +560,27 @@ procedure TACBrNFe.EnviarEmailEvento(const sSmtpHost, sSmtpPort, sSmtpUser,
   EnviaPDF: Boolean; sCC, Anexos: TStrings; PedeConfirma,
   AguardarEnvio: Boolean; NomeRemetente: String; TLS: Boolean);
 var
- NomeArq : String;
- i: Integer;
- AnexosEmail:TStrings ;
+  NomeArq : String;
+  AnexosEmail:TStrings ;
 begin
- AnexosEmail := TStringList.Create;
- try
+  AnexosEmail := TStringList.Create;
+  try
     AnexosEmail.Clear;
     if Anexos <> nil then
       AnexosEmail.Text := Anexos.Text;
+
    // AnexosEmail.Add('');
     if (EnviaPDF) then
     begin
-       if DANFE <> nil then
-       begin
-          ImprimirEventoPDF;
-          NomeArq := StringReplace(EventoNFe.Evento[0].InfEvento.id,'ID', '', [rfIgnoreCase]);
-          NomeArq := PathWithDelim(DANFE.PathPDF)+NomeArq+'evento.pdf';
-          AnexosEmail.Add(NomeArq);
-       end;
+      if DANFE <> nil then
+      begin
+        ImprimirEventoPDF;
+        NomeArq := StringReplace(EventoNFe.Evento[0].InfEvento.id,'ID', '', [rfIgnoreCase]);
+        NomeArq := PathWithDelim(DANFE.PathPDF)+NomeArq+'evento.pdf';
+        AnexosEmail.Add(NomeArq);
+      end;
     end;
+
     EnviaEmail(sSmtpHost,
                 sSmtpPort,
                 sSmtpUser,
@@ -595,9 +596,9 @@ begin
                 AguardarEnvio,
                 NomeRemetente,
                 TLS);
- finally
+  finally
     AnexosEmail.Free ;
- end;
+  end;
 end;
 
 { TCartaCorrecao }

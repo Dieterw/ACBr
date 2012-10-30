@@ -221,7 +221,7 @@ begin
   ArqEvento := TStringList.Create;
   try
      ArqEvento.LoadFromFile(CaminhoArquivo);
-     LerXMLFromString(ArqEvento.Text);
+     Result := LerXMLFromString(ArqEvento.Text);
   finally
      ArqEvento.Free;
   end;
@@ -234,7 +234,7 @@ begin
   RetEventoNFe := TRetEventoNFe.Create;
   try
      RetEventoNFe.Leitor.Arquivo := AXML;
-     RetEventoNFe.LerXml;
+     Result := RetEventoNFe.LerXml;
      with FEvento.Add do
       begin
          infEvento.ID            := RetEventoNFe.InfEvento.id;

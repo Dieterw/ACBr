@@ -376,7 +376,10 @@ begin
         if not(NotaUtil.Assinar(LocNFSeW.Gerador.ArquivoFormatoXML,
                                 FConfiguracoes.Certificados.Certificado,
                                 FConfiguracoes.Certificados.Senha,
-                                vAssinada, FMsg))
+                                vAssinada, FMsg, False,
+                                FConfiguracoes.WebServices.Prefixo3,
+                                FConfiguracoes.WebServices.Prefixo4,
+                                FConfiguracoes.WebServices.Provedor))
          then raise Exception.Create('Falha ao assinar Nota Fiscal de Serviço Eletrônica '+
                                      Self.Items[i].NFSe.IdentificacaoRps.Numero + FMsg);
       {$ELSE}
@@ -432,7 +435,10 @@ begin
       if not(NotaUtil.Assinar(vLote,
                               FConfiguracoes.Certificados.Certificado,
                               FConfiguracoes.Certificados.Senha,
-                              vAssinada, FMsg, True))
+                              vAssinada, FMsg, True,
+                              FConfiguracoes.WebServices.Prefixo3,
+                              FConfiguracoes.WebServices.Prefixo4,
+                              FConfiguracoes.WebServices.Provedor))
        then raise Exception.Create('Falha ao assinar o Lote de RPS, '+ IntToStr(nLote) + FMsg);
     {$ELSE}
       // Alterado por Italo em 24/07/2012

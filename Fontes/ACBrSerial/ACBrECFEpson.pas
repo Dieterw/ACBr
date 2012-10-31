@@ -1147,7 +1147,7 @@ end ;
 Function TACBrECFEpson.EnviaComando_ECF( cmd : AnsiString = '' ) : AnsiString ;
 Var
   ErroMsg    : String ;
-  OldTimeOut : Integer ;
+  OldTimeOut, Ret : Integer ;
   aStatus  : array [0..20] of AnsiChar;
   aLineOut : array [0..4096] of AnsiChar;
 begin
@@ -1166,10 +1166,20 @@ begin
 
      aStatus[0]  := #0; // Zera Buffer de Saida
      aLineOut[0] := #0;
-     xEPSON_Send_From_FileEXX( cmd, aStatus, aLineOut ) ;
+
+     GravaLog( 'xEPSON_Send_From_FileEXX -> '+cmd, True );
+     Ret := xEPSON_Send_From_FileEXX( cmd, aStatus, aLineOut ) ;
+     GravaLog( '   Ret = '+IntToStr(Ret) );
 
      fpComandoEnviado  := cmd ;
      fpRespostaComando := TrimRight( aStatus )+'|:|'+TrimRight( aLineOut );
+
+     if Ret <> 0 then
+     begin
+        Ret := StrToIntDef( '$'+copy(aStatus,5,4), 0 ); // Le Status da Comunicação
+        if Ret <> 0 then
+           raise EACBrECFSemResposta.create(Format(ACBrStr(cACBrECFEnviaCmdSemRespostaException), [ ModeloStr ]));
+     end ;
 
      EpsonResposta.Resposta := fpRespostaComando ;
    end

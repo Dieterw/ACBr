@@ -160,8 +160,8 @@
         <UnitName Value="ECFTeste1"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="3020"/>
-        <CursorPos X="19" Y="3034"/>
+        <TopLine Value="18"/>
+        <CursorPos X="5" Y="28"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -279,42 +279,22 @@
     </Other>
   </CompilerOptions>
   <Debugging>
-    <BreakPoints Count="3">
-      <Item1>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="..\..\..\Fontes\ACBrSerial\ACBrECFEscECF.pas"/>
-        <Line Value="1851"/>
-      </Item1>
-      <Item2>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="..\..\..\Fontes\ACBrSerial\ACBrECFEscECF.pas"/>
-        <Line Value="1849"/>
-      </Item2>
-      <Item3>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="..\..\..\Fontes\ACBrSerial\ACBrECFEscECF.pas"/>
-        <Line Value="824"/>
-      </Item3>
-    </BreakPoints>
     <Watches Count="1">
       <Item1>
         <Expression Value="R"/>
         <DisplayStyle Value="wdfString"/>
       </Item1>
     </Watches>
-    <Exceptions Count="2">
+    <Exceptions Count="3">
       <Item1>
         <Name Value="EACBrECFSemResposta"/>
       </Item1>
       <Item2>
         <Name Value="Exception"/>
       </Item2>
+      <Item3>
+        <Name Value="EACBrECFErro"/>
+      </Item3>
     </Exceptions>
   </Debugging>
   <EditorMacros Count="0"/>

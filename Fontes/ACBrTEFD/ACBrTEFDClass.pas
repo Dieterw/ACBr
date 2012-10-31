@@ -2611,7 +2611,7 @@ begin
      begin
        if (Valor > RespostasPendentes.SaldoRestante + TrocoMaximo ) then
           raise Exception.Create( ACBrStr( 'Operação TEF permite '+
-                                           'Troco Máximo de '+FormatCurr('0,00',TrocoMaximo) ) );
+                                           'Troco Máximo de R$ '+FormatCurr('0.00',TrocoMaximo) ) );
      end ;
 
     if MultiplosCartoes and (NumeroMaximoCartoes > 0) and   // Tem multiplos Cartoes ?

@@ -716,7 +716,7 @@ var
  valid_ctxt : xmlSchemaValidCtxtPtr;
  schemError : xmlErrorPtr;
  schema_filename : PChar;
-
+ filename : String;
  Tipo, I : Integer;
 begin
  if not DirectoryExists(NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),
@@ -728,12 +728,14 @@ begin
                               PathWithDelim(APathSchemas)));
 
  if NotaUtil.EstaVazio(APathSchemas)
-  then schema_filename := PathWithDelim(ExtractFileDir(application.ExeName)) + 'Schemas\' + Servico
-  else schema_filename := PathWithDelim(APathSchemas) + Servico;
+  then filename := PathWithDelim(ExtractFileDir(application.ExeName)) + 'Schemas\' + Servico
+  else filename := PathWithDelim(APathSchemas) + Servico;
 
- if not FilesExists(schema_filename)
-  then raise Exception.Create('Arquivo ' + schema_filename + ' não encontrado.');
+ if not FilesExists(filename)
+  then raise Exception.Create('Arquivo ' + filename + ' não encontrado.');
 
+ schema_filename := pchar(filename);
+ 
 // if RightStr(URL, 1) = '/'
 //  then Schema.add( URL + Servico, schema_filename )
 //  else Schema.add( URL, schema_filename );

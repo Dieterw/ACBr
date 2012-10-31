@@ -715,9 +715,11 @@ var
  schema : xmlSchemaPtr;
  valid_ctxt : xmlSchemaValidCtxtPtr;
  schemError : xmlErrorPtr;
- schema_filename : PChar;
- filename : String;
- Tipo, I : Integer;
+ schema_filename : AnsiString;
+
+ // schema_filename : PChar;
+// filename : String;
+// Tipo, I : Integer;
 begin
  if not DirectoryExists(NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),
                         PathWithDelim(ExtractFileDir(application.ExeName)) + 'Schemas',
@@ -728,23 +730,23 @@ begin
                               PathWithDelim(APathSchemas)));
 
  if NotaUtil.EstaVazio(APathSchemas)
-  then filename := PathWithDelim(ExtractFileDir(application.ExeName)) + 'Schemas\' + Servico
-  else filename := PathWithDelim(APathSchemas) + Servico;
+  then schema_filename := PathWithDelim(ExtractFileDir(application.ExeName)) + 'Schemas\' + Servico
+  else schema_filename := PathWithDelim(APathSchemas) + Servico;
 
  if not FilesExists(filename)
-  then raise Exception.Create('Arquivo ' + filename + ' não encontrado.');
+  then raise Exception.Create('Arquivo ' + schema_filename + ' não encontrado.');
 
- schema_filename := pchar(filename);
- 
+// schema_filename := pchar(filename);
+
 // if RightStr(URL, 1) = '/'
 //  then Schema.add( URL + Servico, schema_filename )
 //  else Schema.add( URL, schema_filename );
 
- doc         := nil;
- schema_doc  := nil;
- parser_ctxt := nil;
- schema      := nil;
- valid_ctxt  := nil;
+// doc         := nil;
+// schema_doc  := nil;
+// parser_ctxt := nil;
+// schema      := nil;
+// valid_ctxt  := nil;
 
  doc := xmlParseDoc(PAnsiChar(Axml));
  if ((doc = nil) or (xmlDocGetRootElement(doc) = nil)) then
@@ -754,7 +756,7 @@ begin
     exit;
   end;
 
- schema_doc := xmlReadFile(schema_filename, nil, XML_DETECT_IDS);
+ schema_doc := xmlReadFile(PAnsiChar(schema_filename), nil, XML_DETECT_IDS);
 //  the schema cannot be loaded or is not well-formed
  if (schema_doc = nil) then
   begin

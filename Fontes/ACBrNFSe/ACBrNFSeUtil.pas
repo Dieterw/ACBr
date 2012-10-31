@@ -734,7 +734,7 @@ begin
   else schema_filename := PathWithDelim(APathSchemas) + Servico;
 
  if not FilesExists(schema_filename)
-  then raise Exception.Create('Arquivo ' + schema_filename + ' não encontrado.');
+  then raise Exception.Create('Arquivo [' + schema_filename + '] não encontrado.');
 
 // schema_filename := pchar(filename);
 
@@ -781,7 +781,7 @@ begin
   begin
     xmlSchemaFreeParserCtxt(parser_ctxt);
     xmlFreeDoc(schema_doc);
-    AMsg   := 'Error: the schema itself is not valid';
+    AMsg   := 'Error: the schema itself is not valid ['+schema_filename+']';
     Result := False;
     exit;
   end;

@@ -339,6 +339,7 @@ object frmDemo_ACBrNFSe: TfrmDemo_ACBrNFSe
               'Guarapari/3202405/ES'
               'Guarulhos/3518800/SP'
               'Hortolandia/3519071/SP'
+              'Ijui/4310207/RS'
               'Indaial/4207502/SC'
               'Ipatinga/3131307/MG'
               'Itajai/4208203/SC'

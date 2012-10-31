@@ -1594,7 +1594,7 @@ begin
     StrStream.CopyFrom(HTTP.Document, 0);
 
     FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
-    FRetWS     := FProvedorClass.GetRetornoWS(acConsSit, FRetornoWS);
+    FRetWS     := FProvedorClass.GetRetornoWS(acRecepcionar, FRetornoWS);
 
     StrStream.Free;
   {$ELSE}
@@ -1949,7 +1949,7 @@ begin
     StrStream.CopyFrom(HTTP.Document, 0);
 
     FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
-    FRetWS     := FProvedorClass.GetRetornoWS(acConsSit, FRetornoWS);
+    FRetWS     := FProvedorClass.GetRetornoWS(acConsLote, FRetornoWS);
 
     StrStream.Free;
   {$ELSE}
@@ -2175,7 +2175,7 @@ begin
     StrStream.CopyFrom(HTTP.Document, 0);
 
     FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
-    FRetWS     := FProvedorClass.GetRetornoWS(acConsSit, FRetornoWS);
+    FRetWS     := FProvedorClass.GetRetornoWS(acConsNFSeRps, FRetornoWS);
 
     StrStream.Free;
   {$ELSE}
@@ -2369,7 +2369,7 @@ begin
     StrStream.CopyFrom(HTTP.Document, 0);
 
     FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
-    FRetWS     := FProvedorClass.GetRetornoWS(acConsSit, FRetornoWS);
+    FRetWS     := FProvedorClass.GetRetornoWS(acConsNFSe, FRetornoWS);
 
     StrStream.Free;
   {$ELSE}
@@ -2566,7 +2566,7 @@ begin
     StrStream.CopyFrom(HTTP.Document, 0);
 
     FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
-    FRetWS     := FProvedorClass.GetRetornoWS(acConsSit, FRetornoWS);
+    FRetWS     := FProvedorClass.GetRetornoWS(acCancelar, FRetornoWS);
 
     StrStream.Free;
   {$ELSE}

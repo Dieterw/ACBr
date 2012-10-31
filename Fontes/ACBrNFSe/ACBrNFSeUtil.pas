@@ -733,7 +733,7 @@ begin
   then schema_filename := PathWithDelim(ExtractFileDir(application.ExeName)) + 'Schemas\' + Servico
   else schema_filename := PathWithDelim(APathSchemas) + Servico;
 
- if not FilesExists(filename)
+ if not FilesExists(schema_filename)
   then raise Exception.Create('Arquivo ' + schema_filename + ' não encontrado.');
 
 // schema_filename := pchar(filename);

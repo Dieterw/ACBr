@@ -48,6 +48,11 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   31/10/12 (Regys Silveira)
+---------------
+[*] Ajuste para poder escolher entre enviar email com thread ou sem thread
+    o padrão continua sendo utilizando a Thread.
+
 Alterações   10/10/12 (João Henrique)
 ---------------
 [*] Ajustes na Impressão do Danfe (Rave Arquivo e Code Base) de acordo com a 

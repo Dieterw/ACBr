@@ -93,7 +93,10 @@ type
     {$IFDEF ACBrNFSeOpenSSL}
       class function Assinar(const AXML, ArqPFX, PFXSenha: AnsiString;
                              out AXMLAssinado, FMensagem: AnsiString;
-                             ALote: Boolean = False): Boolean;
+                             ALote: Boolean = False;
+                             APrefixo3: string = '';
+                             APrefixo4: string = '';
+                             AProvedor: TnfseProvedor = proNenhum): Boolean;
     {$ELSE}
       // Alterado por Italo em 12/07/2012
       class function Assinar(const AXML: AnsiString;
@@ -116,9 +119,10 @@ type
     // Alterado por Italo em 29/10/2012
     {$IFDEF ACBrNFSeOpenSSL}
      class function AssinarXML(AXML, FURI, FTagI, FTagF, ArqPFX, PFXSenha: AnsiString;
-                             out AXMLAssinado, FMensagem: AnsiString): Boolean;
+                               out AXMLAssinado, FMensagem: AnsiString): Boolean;
     {$ELSE}
-     class function AssinarXML(AXML, FURI, FTagI, FTagF: AnsiString; Certificado : ICertificate2; out AXMLAssinado, FMensagem: AnsiString): Boolean;
+     class function AssinarXML(AXML, FURI, FTagI, FTagF: AnsiString; Certificado : ICertificate2;
+                               out AXMLAssinado, FMensagem: AnsiString): Boolean;
     {$ENDIF}
     class function RetirarPrefixos(AXML: String): String;
     class function VersaoXML(AXML: String): String;
@@ -701,7 +705,10 @@ end;
 
 {$IFDEF ACBrNFSeOpenSSL}
 function ValidaLibXML(const AXML: AnsiString;
-  var AMsg: AnsiString; const APathSchemas: string = ''): Boolean;
+                      var AMsg: AnsiString;
+                      const APathSchemas: string = '';
+                      URL: string = '';
+                      Servico: string = ''): Boolean;
 var
  doc, schema_doc : xmlDocPtr;
  parser_ctxt : xmlSchemaParserCtxtPtr;
@@ -712,55 +719,24 @@ var
 
  Tipo, I : Integer;
 begin
-  I    := pos('<infNFe',AXML);
-  Tipo := 1;
-  if I = 0  then
-   begin
-     I := pos('<infCanc',AXML);
-     if I > 0 then
-        Tipo := 2
-     else
-      begin
-        I := pos('<infInut',AXML);
-        if I > 0 then
-           Tipo := 3
-        else
-           Tipo := 4;
-      end;
-   end;
+ if not DirectoryExists(NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),
+                        PathWithDelim(ExtractFileDir(application.ExeName)) + 'Schemas',
+                        PathWithDelim(APathSchemas)))
+  then raise Exception.Create('Diretório de Schemas não encontrado' + sLineBreak +
+                              NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),
+                              PathWithDelim(ExtractFileDir(application.ExeName)) + 'Schemas',
+                              PathWithDelim(APathSchemas)));
 
- if not DirectoryExists(NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),NotaUtil.PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas',NotaUtil.PathWithDelim(APathSchemas))) then
-    raise Exception.Create('Diretório de Schemas não encontrado'+sLineBreak+
-                           NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),NotaUtil.PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas',NotaUtil.PathWithDelim(APathSchemas)));
+ schema_filename := NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),
+                    PathWithDelim(ExtractFileDir(application.ExeName)) + 'Schemas\',
+                    PathWithDelim(APathSchemas)) + Servico;
 
- if Tipo = 1 then
- begin
-    if NotaUtil.EstaVazio(APathSchemas) then
-       schema_filename := pchar(NotaUtil.PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\nfe_v2.00.xsd')
-    else
-       schema_filename := pchar(NotaUtil.PathWithDelim(APathSchemas)+'nfe_v2.00.xsd');
- end
- else if Tipo = 2 then
- begin
-    if NotaUtil.EstaVazio(APathSchemas) then
-       schema_filename := pchar(NotaUtil.PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\cancNFe_v2.00.xsd')
-    else
-       schema_filename := pchar(NotaUtil.PathWithDelim(APathSchemas)+'cancNFe_v2.00.xsd');
- end
- else if Tipo = 3 then
- begin
-    if NotaUtil.EstaVazio(APathSchemas) then
-       schema_filename := pchar(NotaUtil.PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\inutNFe_v2.00.xsd')
-    else
-       schema_filename := pchar(NotaUtil.PathWithDelim(APathSchemas)+'inutNFe_v2.00.xsd');
- end
- else if Tipo = 4 then
- begin
-    if NotaUtil.EstaVazio(APathSchemas) then
-       schema_filename := pchar(NotaUtil.PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\envDPEC_v1.01.xsd')
-    else
-       schema_filename := pchar(NotaUtil.PathWithDelim(APathSchemas)+'envDPEC_v1.01.xsd');
- end;
+ if not FilesExists(schema_filename)
+  then raise Exception.Create('Arquivo ' + schema_filename + ' não encontrado.');
+
+// if RightStr(URL, 1) = '/'
+//  then Schema.add( URL + Servico, schema_filename )
+//  else Schema.add( URL, schema_filename );
 
  doc         := nil;
  schema_doc  := nil;
@@ -785,52 +761,52 @@ begin
     exit;
   end;
 
-  parser_ctxt := xmlSchemaNewDocParserCtxt(schema_doc);
+ parser_ctxt := xmlSchemaNewDocParserCtxt(schema_doc);
 // unable to create a parser context for the schema */
-    if (parser_ctxt = nil) then
-     begin
-        xmlFreeDoc(schema_doc);
-        AMsg   := 'Erro: unable to create a parser context for the schema';
-        Result := False;
-        exit;
-     end;
+ if (parser_ctxt = nil) then
+  begin
+    xmlFreeDoc(schema_doc);
+    AMsg   := 'Erro: unable to create a parser context for the schema';
+    Result := False;
+    exit;
+  end;
 
-   schema := xmlSchemaParse(parser_ctxt);
+ schema := xmlSchemaParse(parser_ctxt);
 // the schema itself is not valid
-    if (schema = nil) then
-     begin
-        xmlSchemaFreeParserCtxt(parser_ctxt);
-        xmlFreeDoc(schema_doc);
-        AMsg   := 'Error: the schema itself is not valid';
-        Result := False;
-        exit;
-     end;
+ if (schema = nil) then
+  begin
+    xmlSchemaFreeParserCtxt(parser_ctxt);
+    xmlFreeDoc(schema_doc);
+    AMsg   := 'Error: the schema itself is not valid';
+    Result := False;
+    exit;
+  end;
 
-    valid_ctxt := xmlSchemaNewValidCtxt(schema);
+ valid_ctxt := xmlSchemaNewValidCtxt(schema);
 //   unable to create a validation context for the schema */
-    if (valid_ctxt = nil) then
-     begin
-        xmlSchemaFree(schema);
-        xmlSchemaFreeParserCtxt(parser_ctxt);
-        xmlFreeDoc(schema_doc);
-        AMsg   := 'Error: unable to create a validation context for the schema';
-        Result := False;
-        exit;
-     end;
-
-    if (xmlSchemaValidateDoc(valid_ctxt, doc) <> 0) then
-     begin
-       schemError := xmlGetLastError();
-       AMsg       := IntToStr(schemError^.code)+' - '+schemError^.message;
-       Result     := False;
-       exit;
-     end;
-
-    xmlSchemaFreeValidCtxt(valid_ctxt);
+ if (valid_ctxt = nil) then
+  begin
     xmlSchemaFree(schema);
     xmlSchemaFreeParserCtxt(parser_ctxt);
     xmlFreeDoc(schema_doc);
-    Result := True;
+    AMsg   := 'Error: unable to create a validation context for the schema';
+    Result := False;
+    exit;
+  end;
+
+ if (xmlSchemaValidateDoc(valid_ctxt, doc) <> 0) then
+  begin
+    schemError := xmlGetLastError();
+    AMsg       := IntToStr(schemError^.code)+' - '+schemError^.message;
+    Result     := False;
+    exit;
+  end;
+
+ xmlSchemaFreeValidCtxt(valid_ctxt);
+ xmlSchemaFree(schema);
+ xmlSchemaFreeParserCtxt(parser_ctxt);
+ xmlFreeDoc(schema_doc);
+ Result := True;
 end;
 
 {$ELSE}
@@ -839,8 +815,7 @@ function ValidaMSXML(XML: AnsiString;
                      out Msg: AnsiString;
                      const APathSchemas: string = '';
                      URL: string = '';
-                     Servico: string = '';
-                     APrefixo: string = ''): Boolean;
+                     Servico: string = ''): Boolean;
 var
  DOMDocument     : IXMLDOMDocument3;
  ParseError      : IXMLDOMParseError;
@@ -894,96 +869,173 @@ class function NotaUtil.Valida(const AXML: AnsiString;
                                APrefixo: string = ''): Boolean;
 begin
 {$IFDEF ACBrNFSeOpenSSL}
-  Result := ValidaLibXML(AXML,AMsg, APathSchemas);
+  Result := ValidaLibXML(AXML, AMsg, APathSchemas, AURL, AServico);
 {$ELSE}
-  Result := ValidaMSXML(AXML,AMsg, APathSchemas, AURL, AServico, APrefixo);
+  Result := ValidaMSXML(AXML, AMsg, APathSchemas, AURL, AServico);
 {$ENDIF}
 end;
 
 {$IFDEF ACBrNFSeOpenSSL}
-function AssinarLibXML(const AXML, ArqPFX, PFXSenha : AnsiString;
-  out AXMLAssinado, FMensagem: AnsiString; ALote: Boolean = False): Boolean;
- Var I, J, PosIni, PosFim : Integer;
-     URI, AStr, XmlAss : AnsiString;
-     Tipo : Integer; // 1 - NFE 2 - Cancelamento 3 - Inutilizacao
-     Cert: TMemoryStream;
-     Cert2: TStringStream;
+function AssinarLibXML(const AXML,
+                       ArqPFX, PFXSenha : AnsiString;
+                       out AXMLAssinado, FMensagem: AnsiString;
+                       ALote: Boolean = False;
+                       APrefixo3: string = '';
+                       APrefixo4: string = '';
+                       AProvedor: TnfseProvedor = proNenhum): Boolean;
+var
+ I, J, PosIni, PosFim, PosIniAssLote : Integer;
+ URI, AID, Identificador : String;
+ AStr, XmlAss, Assinatura : AnsiString;
+ Cert: TMemoryStream;
+ Cert2: TStringStream;
 begin
-  AStr := AXML;
+ AStr := AXML;
 
-  //// Encontrando o URI ////
-  I    := pos('<EnviarLoteRpsEnvio',AStr);
-  Tipo := 1;
+ if ALote
+  then begin
+   Identificador := 'Id';
+   I             := pos('LoteRps Id=', AStr);
+   if I = 0
+    then begin
+     Identificador := 'id';
+     I             := pos('LoteRps id=', AStr);
+    end;
+   if I = 0
+    then begin
+     Identificador := '';
+     URI           := '';
+    end
+    else begin
+     I := NotaUtil.PosEx('"', AStr, I + 2);
+     if I = 0
+      then raise Exception.Create('Não encontrei inicio do URI: aspas inicial');
+     J := NotaUtil.PosEx('"', AStr, I + 1);
+     if J = 0
+      then raise Exception.Create('Não encontrei inicio do URI: aspas final');
 
-  if I = 0  then
-   begin
-     I := pos('<Rps',AStr);
-     if I > 0 then
-        Tipo := 2;
-   end;
+     URI := copy(AStr, I + 1, J - I - 1);
+    end;
 
-  I := NotaUtil.PosEx('Id=',AStr,I+6);
-  if I = 0 then
-     raise Exception.Create('Não encontrei inicio do URI: Id=');
-  I := NotaUtil.PosEx('"',AStr,I+2);
-  if I = 0 then
-     raise Exception.Create('Não encontrei inicio do URI: aspas inicial');
-  J := NotaUtil.PosEx('"',AStr,I+1);
-  if J = 0 then
-     raise Exception.Create('Não encontrei inicio do URI: aspas final');
+//   if Identificador = 'id' then URI := '';
 
-  URI := copy(AStr,I+1,J-I-1);
+   AStr := copy(AStr, 1, pos('</'+ APrefixo3 + 'EnviarLoteRpsEnvio>', AStr) - 1);
 
-  //// Adicionando Cabeçalho DTD, necessário para xmlsec encontrar o ID ////
-  I := pos('?>',AStr);
+   if (URI = '') {or (AProvedor = profintelISS)}
+    then AID := '>'
+    else AID := ' '+Identificador+'="AssLote_'+ URI +'">';
 
-  if Tipo = 1 then
-     AStr := copy(AStr,1,StrToInt(VarToStr(NotaUtil.SeSenao(I>0,I+1,I)))) + cDTDLote + Copy(AStr,StrToInt(VarToStr(NotaUtil.SeSenao(I>0,I+2,I))),Length(AStr))
-  else if Tipo = 2 then
-     AStr := copy(AStr,1,StrToInt(VarToStr(NotaUtil.SeSenao(I>0,I+1,I)))) + cDTDRps + Copy(AStr,StrToInt(VarToStr(NotaUtil.SeSenao(I>0,I+2,I))),Length(AStr));
+   //// Adicionando Cabeçalho DTD, necessário para xmlsec encontrar o ID ////
+   I    := pos('?>', AStr);
+   AStr := copy(AStr, 1, StrToInt(VarToStr(NotaUtil.SeSenao(I>0, I+1, I)))) +
+           cDTDLote +
+           copy(AStr, StrToInt(VarToStr(NotaUtil.SeSenao(I>0, I+2, I))), Length(AStr));
 
-  //// Inserindo Template da Assinatura digital ////
-  if Tipo = 1 then
-   begin
-     I := pos('</EnviarLoteRpsEnvio>',AStr);
-     if I = 0 then
-        raise Exception.Create('Não encontrei final do XML: </EnviarLoteRpsEnvio>');
-   end
-  else if Tipo = 2 then
-   begin
-     I := pos('</Rps>',AStr);
-     if I = 0 then
-        raise Exception.Create('Não encontrei final do XML: </Rps>');
-   end;
-
-  if pos('<Signature',AStr) > 0 then
-     I    := pos('<Signature',AStr);
-     AStr := copy(AStr,1,I-1) +
-            '<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">'+
-              '<SignedInfo>'+
-                '<CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>'+
-                '<SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />'+
-                '<Reference URI="#'+URI+'">'+
-                  '<Transforms>'+
+   AStr := AStr + '<Signature xmlns="http://www.w3.org/2000/09/xmldsig#"'+ AID +
+//                  NotaUtil.SeSenao(URI = '', '>', ' '+Identificador+'="AssLote_'+ URI +'">') +
+                 '<SignedInfo>'+
+                  '<CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>'+
+                  '<SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />'+
+                  '<Reference URI="' + NotaUtil.SeSenao(URI = '', '">', '#' + URI + '">') +
+                   '<Transforms>'+
                     '<Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />'+
-                    '<Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />'+
-                  '</Transforms>'+
-                  '<DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />'+
-                  '<DigestValue></DigestValue>'+
-                '</Reference>'+
-              '</SignedInfo>'+
-              '<SignatureValue></SignatureValue>'+
-              '<KeyInfo>'+
-                '<X509Data>'+
-                  '<X509Certificate></X509Certificate>'+
-                '</X509Data>'+
-              '</KeyInfo>'+
-            '</Signature>';
+                   NotaUtil.SeSenao(AProvedor = profintelISS, '',
+                    '<Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />') +
+                   '</Transforms>'+
+                   '<DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />'+
+                   '<DigestValue></DigestValue>'+
+                  '</Reference>'+
+                 '</SignedInfo>'+
+                 '<SignatureValue></SignatureValue>'+
+                 '<KeyInfo>'+
+                  '<X509Data>'+
+                    '<X509Certificate></X509Certificate>'+
+                  '</X509Data>'+
+                 '</KeyInfo>'+
+                '</Signature>';
 
-  if Tipo = 1 then
-     AStr := AStr + '</EnviarLoteRpsEnvio>'
-  else if Tipo = 2 then
-     AStr := AStr + '</Rps>';
+   AStr := AStr + '</'+ APrefixo3 + 'EnviarLoteRpsEnvio>';
+
+  end
+  else begin
+
+   // Ao assinar um RPS a tag não possui prefixo
+   APrefixo3 := '';
+
+   if Pos('<Signature', AStr) <= 0
+    then begin
+     Identificador := 'Id';
+     I             := pos('Id=', AStr);
+     if I = 0
+      then begin
+       Identificador := 'id';
+       I             := pos('id=', AStr);
+       if I = 0
+        then Identificador := '';
+  //      raise Exception.Create('Não encontrei inicio do URI: Id=');
+      end;
+     if I <> 0
+      then begin
+       I := NotaUtil.PosEx('"', AStr, I + 2);
+       if I = 0
+        then raise Exception.Create('Não encontrei inicio do URI: aspas inicial');
+       J := NotaUtil.PosEx('"', AStr, I + 1);
+       if J = 0
+        then raise Exception.Create('Não encontrei inicio do URI: aspas final');
+
+       URI := copy(AStr, I + 1, J - I - 1);
+      end
+      else URI := '';
+
+     if (URI = '') or (AProvedor = profintelISS)
+      then AID := '>'
+      else AID := ' '+Identificador+'="Ass_'+ URI +'">';
+
+     //// Adicionando Cabeçalho DTD, necessário para xmlsec encontrar o ID ////
+     I    := pos('?>', AStr);
+     AStr := copy(AStr, 1, StrToInt(VarToStr(NotaUtil.SeSenao(I>0, I+1, I)))) +
+             cDTDRps +
+             copy(AStr, StrToInt(VarToStr(NotaUtil.SeSenao(I>0, I+2, I))), Length(AStr));
+
+     Assinatura := '<Signature xmlns="http://www.w3.org/2000/09/xmldsig#"' + AID +
+//                        NotaUtil.SeSenao(URI = '', '>', ' ' + Identificador + '="Ass_' + URI + '">') +
+                    '<SignedInfo>' +
+                    '<CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>' +
+                     '<SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />' +
+                     '<Reference URI="' + NotaUtil.SeSenao(URI = '', '">', '#' + URI + '">') +
+                      '<Transforms>' +
+                       '<Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />' +
+                       NotaUtil.SeSenao(AProvedor = profintelISS, '',
+                       '<Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />') +
+                      '</Transforms>' +
+                      '<DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />' +
+                      '<DigestValue></DigestValue>' +
+                     '</Reference>' +
+                    '</SignedInfo>' +
+                    '<SignatureValue></SignatureValue>' +
+                    '<KeyInfo>' +
+                     '<X509Data>' +
+                       '<X509Certificate></X509Certificate>' +
+                     '</X509Data>' +
+                    '</KeyInfo>' +
+                   '</Signature>';
+
+     case AProvedor of
+      profintelISS,
+      proSaatri:    begin
+                     AStr := copy(AStr, 1, pos('</InfDeclaracaoPrestacaoServico>', AStr) - 1);
+                     AStr := AStr + '</InfDeclaracaoPrestacaoServico>';
+                     AStr := AStr + Assinatura;
+                     AStr := AStr + '</Rps>';
+                    end;
+      else begin
+            AStr := copy(AStr, 1, pos('</Rps>', AStr) - 1);
+            AStr := AStr + Assinatura;
+            AStr := AStr + '</Rps>';
+           end;
+     end;
+    end;
+  end;
 
   if FileExists(ArqPFX) then
     XmlAss := NotaUtil.sign_file(PChar(AStr), PChar(ArqPFX), PChar(PFXSenha))
@@ -1002,15 +1054,14 @@ begin
   XmlAss := StringReplace( XmlAss, #13, '', [rfReplaceAll] );
 
   // Removendo DTD //
-  if Tipo = 1 then
-     XmlAss := StringReplace( XmlAss, cDTDLote, '', [] )
-  else if Tipo = 2 then
-     XmlAss := StringReplace( XmlAss, cDTDRps , '', [] );
+  if ALote
+   then XmlAss := StringReplace( XmlAss, cDTDLote, '', [] )
+   else XmlAss := StringReplace( XmlAss, cDTDRps , '', [] );
 
-  PosIni := Pos('<X509Certificate>',XmlAss)-1;
-  PosFim := NotaUtil.PosLast('<X509Certificate>',XmlAss);
+  PosIni := Pos('<X509Certificate>', XmlAss) -1;
+  PosFim := NotaUtil.PosLast('<X509Certificate>', XmlAss);
 
-  XmlAss := copy(XmlAss,1,PosIni)+copy(XmlAss,PosFim,length(XmlAss));
+  XmlAss := copy(XmlAss, 1, PosIni) + copy(XmlAss, PosFim, length(XmlAss));
 
   AXMLAssinado := XmlAss;
 
@@ -1028,20 +1079,9 @@ function AssinarMSXML(XML : AnsiString;
                       APrefixo4: string = '';
                       AProvedor: TnfseProvedor = proNenhum): Boolean;
 var
- I,
- J,
- PosIni,
- PosFim,
- PosIniAssLote : Integer;
-
- URI, AID,
- Identificador : String;
-
- AXML,
- Assinatura,
- xmlHeaderAntes,
- xmlHeaderDepois : AnsiString;
-
+ I, J, PosIni, PosFim, PosIniAssLote : Integer;
+ URI, AID, Identificador : String;
+ AXML, Assinatura, xmlHeaderAntes, xmlHeaderDepois : AnsiString;
  xmldoc    : IXMLDOMDocument3;
  xmldsig   : IXMLDigitalSignature;
  dsigKey   : IXMLDSigKey;
@@ -1252,9 +1292,9 @@ begin
    XMLAssinado := StringReplace( XMLAssinado, #10, '', [rfReplaceAll] );
    XMLAssinado := StringReplace( XMLAssinado, #13, '', [rfReplaceAll] );
 
- case AProvedor of
-  profintelISS,
-  proSaatri:    begin
+   case AProvedor of
+    profintelISS,
+    proSaatri: begin
                  //By Akai - L. Massao Aihara ==================================
                  //MUDA A ASSINATURA...
                  //para não criar uma variavel usei a XMLAssinado mesmo...
@@ -1317,10 +1357,8 @@ begin
 
                  XMLAssinado := AXML;
                  *)
-                end;
- end;
-
-
+               end;
+   end; // fim do case
 
    if ALote
     then begin
@@ -1383,7 +1421,10 @@ end;
 {$IFDEF ACBrNFSeOpenSSL}
 class function NotaUtil.Assinar(const AXML, ArqPFX, PFXSenha: AnsiString;
                                 out AXMLAssinado, FMensagem: AnsiString;
-                                ALote: Boolean = False): Boolean;
+                                ALote: Boolean = False;
+                                APrefixo3: string = '';
+                                APrefixo4: string = '';
+                                AProvedor: TnfseProvedor = proNenhum): Boolean;
 {$ELSE}
 // Alterado por Italo em 12/07/2012
 class function NotaUtil.Assinar(const AXML: AnsiString;
@@ -1396,10 +1437,12 @@ class function NotaUtil.Assinar(const AXML: AnsiString;
 {$ENDIF}
 begin
 {$IFDEF ACBrNFSeOpenSSL}
-  Result := AssinarLibXML(AXML, ArqPFX, PFXSenha, AXMLAssinado, FMensagem, ALote);
+  Result := AssinarLibXML(AXML, ArqPFX, PFXSenha, AXMLAssinado, FMensagem,
+                          ALote, APrefixo3, APrefixo4, AProvedor);
 {$ELSE}
   // Alterado por Italo em 12/07/2012
-  Result := AssinarMSXML(AXML, Certificado, AXMLAssinado, ALote, APrefixo3, APrefixo4, AProvedor);
+  Result := AssinarMSXML(AXML, Certificado, AXMLAssinado,
+                         ALote, APrefixo3, APrefixo4, AProvedor);
 {$ENDIF}
 end;
 

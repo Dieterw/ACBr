@@ -47,6 +47,7 @@ type
     function ConsultarNFSe(ACnpj, AInscricaoMunicipal: String; ADataInicial, ADataFinal: TDateTime; NumeroNFSe: string = ''): Boolean;
     function CancelarNFSe(ACodigoCancelamento: String): Boolean;
     function Gerar(ARps: Integer): Boolean;
+    function LinkNFSe(ANumeroNFSe: Integer; ACodVerificacao: String): String;
 
     property WebServices: TWebServices   read FWebServices  write FWebServices;
     property NotasFiscais: TNotasFiscais read FNotasFiscais write FNotasFiscais;
@@ -289,6 +290,12 @@ begin
  NotasFiscais.Assinar; // Assina os Rps
 
  Result := WebServices.Gera(ARps);
+end;
+
+function TACBrNFSe.LinkNFSe(ANumeroNFSe: Integer;
+  ACodVerificacao: String): String;
+begin
+ Result := WebServices.LinkNFSeGerada(ANumeroNFSe, ACodVerificacao);
 end;
 
 end.

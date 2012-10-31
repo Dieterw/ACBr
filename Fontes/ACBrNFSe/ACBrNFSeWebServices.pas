@@ -304,6 +304,7 @@ type
     function CancelaNFSe(ACodigoCancelamento, ANumeroRPS, ACNPJ, AInscricaoMunicipal,
                          ACodigoMunicipio: string): Boolean; overload;
     function Gera(ARps:Integer): Boolean;
+    function LinkNFSeGerada(ANumeroNFSe: Integer; ACodVerificacao: String): String;
   published
     property ACBrNFSe: TComponent read FACBrNFSe write FACBrNFSe;
     property Enviar: TNFSeEnviarLoteRPS read FEnviar write FEnviar;
@@ -1517,6 +1518,13 @@ begin
   end;
 
  Result := true;
+end;
+
+function TWebServices.LinkNFSeGerada(ANumeroNFSe: Integer;
+  ACodVerificacao: String): String;
+begin
+ Result := FProvedorClass.GetLinkNFSe(FConfiguracoes.WebServices.CodigoMunicipio,
+                                      ANumeroNFSe, ACodVerificacao);
 end;
 
 { TNFSeEnviarLoteRPS }

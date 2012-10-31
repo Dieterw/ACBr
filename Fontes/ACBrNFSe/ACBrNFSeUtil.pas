@@ -727,9 +727,9 @@ begin
                               PathWithDelim(ExtractFileDir(application.ExeName)) + 'Schemas',
                               PathWithDelim(APathSchemas)));
 
- schema_filename := NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),
-                    PathWithDelim(ExtractFileDir(application.ExeName)) + 'Schemas\',
-                    PathWithDelim(APathSchemas)) + Servico;
+ if NotaUtil.EstaVazio(APathSchemas)
+  then schema_filename := PathWithDelim(ExtractFileDir(application.ExeName)) + 'Schemas\' + Servico
+  else schema_filename := PathWithDelim(APathSchemas) + Servico;
 
  if not FilesExists(schema_filename)
   then raise Exception.Create('Arquivo ' + schema_filename + ' não encontrado.');

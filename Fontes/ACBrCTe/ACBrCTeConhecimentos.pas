@@ -91,7 +91,8 @@ type
                                 PedeConfirma: Boolean = False;
                                 AguardarEnvio: Boolean = False;
                                 NomeRemetente: String = '';
-                                TLS : Boolean = True);
+                                TLS : Boolean = True;
+                                UsarThread: Boolean = True);
     property CTe: TCTe  read FCTe write FCTe;
     property XML: AnsiString  read GetCTeXML write FXML;
     property Confirmada: Boolean  read FConfirmada write FConfirmada;
@@ -124,6 +125,7 @@ type
     function GetNamePath: string; override ;
     function LoadFromFile(CaminhoArquivo: string): boolean;
     function LoadFromStream(Stream: TStringStream): boolean;
+    function LoadFromString(AString: String): boolean;
     function SaveToFile(PathArquivo: string = ''): boolean;
 
     property ACBrCTe : TComponent read FACBrCTe ;
@@ -142,8 +144,8 @@ type
     sTo : String;
     sCC : TStrings;
     slmsg_Lines : TStrings;
-    constructor Create(AOwner: Conhecimento);
-    destructor Destroy ; override ;
+    constructor Create;
+    destructor Destroy; override;
   protected
     procedure Execute; override;
     procedure HandleException;
@@ -250,15 +252,69 @@ procedure Conhecimento.EnviarEmail(const sSmtpHost,
                                       PedeConfirma: Boolean = False;
                                       AguardarEnvio: Boolean = False;
                                       NomeRemetente: String = '';
-                                      TLS : Boolean = True);
+                                      TLS : Boolean = True;
+                                      UsarThread: Boolean = True);
 var
+ NomeArq : String;
+ AnexosEmail:TStrings ;
+ StreamCTe : TStringStream;
+(*
  ThreadSMTP : TSendMailThread;
  m          : TMimemess;
  p          : TMimepart;
  StreamCTe  : TStringStream;
  NomeArq    : String;
  i          : Integer;
+*)
 begin
+ AnexosEmail := TStringList.Create;
+ StreamCTe  := TStringStream.Create('');
+ try
+    AnexosEmail.Clear;
+    if Anexos <> nil then
+      AnexosEmail.Text := Anexos.Text;
+    if NomeArq <> '' then
+     begin
+       SaveToFile(NomeArq);
+       AnexosEmail.Add(NomeArq);
+     end
+    else
+     begin
+       SaveToStream(StreamCTe) ;
+     end;
+    if (EnviaPDF) then
+    begin
+       if TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).DACTE <> nil then
+       begin
+          TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).DACTE.ImprimirDACTEPDF(CTe);
+          NomeArq :=  StringReplace(CTe.infCTe.ID,'CTe', '', [rfIgnoreCase]);
+          NomeArq := PathWithDelim(TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).DACTE.PathPDF)+NomeArq+'.pdf';
+          AnexosEmail.Add(NomeArq);
+       end;
+    end;
+    TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).EnviaEmail(sSmtpHost,
+                sSmtpPort,
+                sSmtpUser,
+                sSmtpPasswd,
+                sFrom,
+                sTo,
+                sAssunto,
+                sMensagem,
+                SSL,
+                sCC,
+                AnexosEmail,
+                PedeConfirma,
+                AguardarEnvio,
+                NomeRemetente,
+                TLS,
+                StreamCTe,
+                copy(CTe.infCTe.ID, (length(CTe.infCTe.ID)-44)+1, 44)+'-CTe.xml',
+                UsarThread);
+ finally
+    AnexosEmail.Free ;
+    StreamCTe.Free ;
+ end;
+(*
  m:=TMimemess.create;
  ThreadSMTP := TSendMailThread.Create(Self);  // Não Libera, pois usa FreeOnTerminate := True ;
  StreamCTe  := TStringStream.Create('');
@@ -328,6 +384,7 @@ begin
     m.free;
     StreamCTe.Free ;
  end;
+*)
 end;
 
 function Conhecimento.GetCTeXML: AnsiString;
@@ -583,6 +640,23 @@ begin
  end;
 end;
 
+function TConhecimentos.LoadFromString(AString: String): boolean;
+var
+  XMLCTe: TStringStream;
+begin
+  try
+    XMLCTe := TStringStream.Create('');
+    try
+      XMLCTe.WriteString(AString);
+      Result := LoadFromStream(XMLCTe);
+    finally
+      XMLCTe.Free;
+    end;
+  except
+    Result := False;
+  end;
+end;
+
 { TSendMailThread }
 
 procedure TSendMailThread.DoHandleException;
@@ -597,9 +671,8 @@ begin
     SysUtils.ShowException(FException, nil);
 end;
 
-constructor TSendMailThread.Create(AOwner: Conhecimento);
+constructor TSendMailThread.Create;
 begin
-  FOwner      := AOwner;
   smtp        := TSMTPSend.Create;
   slmsg_Lines := TStringList.Create;
   sCC         := TStringList.Create;

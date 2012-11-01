@@ -2325,8 +2325,14 @@ end ;
 
 procedure TACBrECFDaruma.ImprimeCheque(Banco: String; Valor: Double;
   Favorecido, Cidade: String; Data: TDateTime; Observacao: String);
-Var ValStr, DataStr : String ;
+Var
+  ValStr,
+  DataStr: String;
+  Continuar: Boolean;
+
 begin
+  DoOnChequeEstado(chqIdle, Continuar);
+
   Banco      := IntToStrZero( StrToInt(Banco), 3) ;
   Favorecido := LeftStr(Trim(Favorecido),65) ;
   Cidade     := LeftStr(Trim(Cidade),25) ;
@@ -2334,15 +2340,34 @@ begin
   DataStr    := FormatDateTime('ddmmyyyy',Data) ;
   ValStr     := IntToStrZero( Round(abs(Valor)*100),12 ) ;
 
+  // enviar comando para acertar o protocolo, conforme orientação da daruma
+  EnviaComando(ESC + #190 + '20') ;
+
+  // enviar todos os comando menos o valor
   EnviaComando(ESC + 'b' + Banco) ;
   EnviaComando(ESC + 'c' + Cidade + cDELIMITADOR) ;
   EnviaComando(ESC + 'd' + DataStr ) ;
   EnviaComando(ESC + 'f' + Favorecido + cDELIMITADOR ) ;
-  AguardaImpressao := True ;
-  EnviaComando(ESC + 'v' + ValStr ) ;
 
+  // enviar o valor para iniciar a impressão do cheque
   AguardaImpressao := True ;
-  EnviaComando(ESC + 't' + Observacao + cDELIMITADOR ) ;
+  DoOnChequeEstado(chqPosicione, Continuar);
+  if Continuar then
+  begin
+    DoOnChequeEstado(chqImprimindo, Continuar);
+    EnviaComando(ESC + 'v' + ValStr ) ;
+    DoOnChequeEstado(chqRetire, Continuar);
+
+    // impressão no verso
+    if Trim(Observacao) <> EmptyStr then
+    begin
+      AguardaImpressao := True ;
+
+      DoOnChequeEstado(chqAutenticacao, Continuar);
+      if Continuar then
+        EnviaComando(ESC + 't' + Observacao + cDELIMITADOR ) ;
+    end;
+  end;
 end;
 
 procedure TACBrECFDaruma.CancelaImpressaoCheque;

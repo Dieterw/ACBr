@@ -385,6 +385,8 @@ TACBrECF = class( TACBrComponent )
     function GetRespostasComandoClass: TACBrInformacoes;
     function GetRodape: String;
     function GetRodapeUF: String;
+    function GetOnChequeEstado: TACBrECFOnChequeEstado;
+    procedure SetOnChequeEstado(const Value: TACBrECFOnChequeEstado);
   protected
     fpUltimoEstadoObtido: TACBrECFEstado;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
@@ -860,6 +862,8 @@ TACBrECF = class( TACBrComponent )
                                                   write SetOnMsgRetentar ;
      property OnErrorSemPapel : TNotifyEvent read GetOnErrorSemPapel
                                             write SetOnErrorSemPapel ;
+     property OnChequeEstado: TACBrECFOnChequeEstado read GetOnChequeEstado
+                                                     write SetOnChequeEstado;
 
     property OnAntesAbreCupom : TACBrECFOnAbreCupom
        read FOnAntesAbreCupom write FOnAntesAbreCupom;
@@ -1693,9 +1697,19 @@ begin
   fsECF.OnAguardandoRespostaChange := AValue ;
 end;
 
+procedure TACBrECF.SetOnChequeEstado(const Value: TACBrECFOnChequeEstado);
+begin
+  fsECF.OnChequeEstado := Value
+end;
+
 function TACBrECF.GetOnAguardandoRespostaChange: TNotifyEvent;
 begin
   Result := fsECF.OnAguardandoRespostaChange ;
+end;
+
+function TACBrECF.GetOnChequeEstado: TACBrECFOnChequeEstado;
+begin
+  Result := fsECF.OnChequeEstado;
 end;
 
 function TACBrECF.TestarDialog: Boolean;

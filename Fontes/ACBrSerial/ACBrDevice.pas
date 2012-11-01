@@ -137,6 +137,8 @@ TACBrHandShake    = (hsNenhum, hsXON_XOFF, hsRTS_CTS, hsDTR_DSR) ;
 
 TACBrAlinhamento = (alDireita, alEsquerda, alCentro);
 
+TACBrECFCHQEstado = (chqIdle, chqPosicione, chqImprimindo, chqFimImpressao, chqRetire, chqAutenticacao);
+
 { ACBrDevice é um componente apenas para usarmos o recurso de AutoExpand do
   ObjectInspector para SubComponentes, poderia ser uma Classe }
 

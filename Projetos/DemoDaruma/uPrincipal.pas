@@ -93,6 +93,8 @@ type
     procedure DAV2Click(Sender: TObject);
     procedure DAVOS1Click(Sender: TObject);
     procedure ImpressodeCheques1Click(Sender: TObject);
+    procedure ACBrECF1ChequeEstado(const EstadoAtual: TACBrECFCHQEstado;
+      var Continuar: Boolean);
   private
     FBobinaCupom: TStringList;
     function GetIniFileName: String;
@@ -334,6 +336,20 @@ begin
   end;
 
   StatusBar1.Panels[1].Text := Estado;
+end;
+
+procedure TfrmPrincipal.ACBrECF1ChequeEstado(
+  const EstadoAtual: TACBrECFCHQEstado; var Continuar: Boolean);
+begin
+  // mensagens de estado da impressão de cheques
+  case EstadoAtual of
+    chqIdle:         StatusBar1.Panels[1].Text := '...';
+    chqPosicione:    Continuar := MessageDlg('Posione o cheque e clique em continuar', mtConfirmation, mbYesNo, 0) = ID_YES;
+    chqImprimindo:   StatusBar1.Panels[1].Text := 'Imprimindo, aguarde...';
+    chqFimImpressao: StatusBar1.Panels[1].Text := 'Fim da impressão.';
+    chqRetire:       StatusBar1.Panels[1].Text := 'Retire o cheque.';
+    chqAutenticacao: Continuar := MessageDlg('Posione o cheque e clique em continuar', mtConfirmation, mbYesNo, 0) = ID_YES;
+  end;
 end;
 
 //******************************************************************************

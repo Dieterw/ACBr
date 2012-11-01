@@ -45,9 +45,9 @@ inherited frmImpressaoCheque: TfrmImpressaoCheque
     object Label6: TLabel
       Left = 25
       Top = 148
-      Width = 63
+      Width = 283
       Height = 13
-      Caption = 'Observa'#231#245'es'
+      Caption = 'Observa'#231#245'es no verso (deixe em branco para n'#227'o imprimir)'
     end
     object edtBanco: TSpinEdit
       Left = 25
@@ -98,7 +98,6 @@ inherited frmImpressaoCheque: TfrmImpressaoCheque
       Width = 439
       Height = 21
       TabOrder = 5
-      Text = 'TEXTO DE OBSERVACAO, ESCREVA QUALQUER COISA'
     end
   end
   inherited pnlRodape: TPanel

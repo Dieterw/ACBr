@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, uBasicoModal, StdCtrls, ExtCtrls, Spin, ComCtrls;
+  Dialogs, uBasicoModal, StdCtrls, ExtCtrls, Spin, ComCtrls, ACBrBase, ACBrCHQ;
 
 type
   TfrmImpressaoCheque = class(TfrmBasicoModal)

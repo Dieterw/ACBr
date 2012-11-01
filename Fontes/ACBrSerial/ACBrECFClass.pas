@@ -57,7 +57,7 @@ uses ACBrDevice,
 
 type
 
-EACBrECFErro            = class(Exception) ;
+  EACBrECFErro            = class(Exception) ;
   EACBrECFCMDInvalido     = class(EACBrECFErro) ;
   EACBrECFSemResposta     = class(EACBrECFErro) ;
   EACBrECFSemPapel        = class(EACBrECFErro) ;
@@ -428,6 +428,9 @@ TACBrECFMsgRetentar = procedure(const Mensagem : String;
 TACBrECFBobinaAdicionaLinhas = procedure(const Linhas : String;
    const Operacao : String) of object ;
 
+TACBrECFOnChequeEstado = procedure(const EstadoAtual: TACBrECFCHQEstado;
+  var Continuar: Boolean) of object;
+
 TACBrFormMsgProcedure = procedure of object ;
 
 TACBrFormMsgEstado = (fmsNenhum, fmsProcessando, fmsConcluido, fmsAbortado) ;
@@ -467,6 +470,7 @@ TACBrECFClass = class
     fsOnMsgPoucoPapel: TNotifyEvent;
     fsOnErrorSemPapel : TNotifyEvent ;
     fsOnMsgRetentar : TACBrECFMsgRetentar ;
+    fsOnChequeEstado: TACBrECFOnChequeEstado;
     fsOperador: String;
     fsBytesRec : Integer ;
     fsAguardaImpressao: Boolean;
@@ -658,6 +662,8 @@ TACBrECFClass = class
     procedure DoOnErrorSemPapel ;
     Function DoOnMsgRetentar( const Mensagem : String;
        const Situacao : String = '') : Boolean ;
+    procedure DoOnChequeEstado(const Estado: TACBrECFCHQEstado;
+       var Continuar: Boolean);
 
     procedure ImprimirLinhaALinha( Texto, Cmd : AnsiString ) ;
 
@@ -712,6 +718,8 @@ TACBrECFClass = class
         read  fsOnMsgRetentar write fsOnMsgRetentar ;
     property OnErrorSemPapel : TNotifyEvent
         read fsOnErrorSemPapel write fsOnErrorSemPapel ;
+    property OnChequeEstado: TACBrECFOnChequeEstado
+        read fsOnChequeEstado write fsOnChequeEstado;
 
     Property TimeOut  : Integer read GetTimeOut write SetTimeOut ;
     Property Retentar : Boolean read fsRetentar write fsRetentar ;
@@ -2774,6 +2782,13 @@ begin
 
      fpUltimaMsgPoucoPapel := now ;
   end ;
+end;
+
+procedure TACBrECFClass.DoOnChequeEstado(const Estado: TACBrECFCHQEstado;
+  var Continuar: Boolean);
+begin
+  if Assigned( fsOnChequeEstado ) then
+    fsOnChequeEstado( Estado, Continuar );
 end;
 
 procedure TACBrECFClass.DoOnErrorSemPapel ;

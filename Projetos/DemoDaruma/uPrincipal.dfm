@@ -4,8 +4,8 @@ object frmPrincipal: TfrmPrincipal
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'Demo ACBRDaruma'
-  ClientHeight = 382
-  ClientWidth = 675
+  ClientHeight = 480
+  ClientWidth = 750
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -21,8 +21,8 @@ object frmPrincipal: TfrmPrincipal
   TextHeight = 13
   object Image1: TImage
     Left = 0
-    Top = 322
-    Width = 675
+    Top = 420
+    Width = 750
     Height = 41
     Align = alBottom
     Picture.Data = {
@@ -880,8 +880,8 @@ object frmPrincipal: TfrmPrincipal
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 363
-    Width = 675
+    Top = 461
+    Width = 750
     Height = 19
     Panels = <
       item
@@ -894,7 +894,7 @@ object frmPrincipal: TfrmPrincipal
   object GroupBox1: TGroupBox
     Left = 0
     Top = 0
-    Width = 675
+    Width = 750
     Height = 66
     Align = alTop
     Caption = 'configura'#231#245'es da impressora fiscal'
@@ -999,6 +999,7 @@ object frmPrincipal: TfrmPrincipal
     FormMsgColor = clHighlight
     OnAntesAbreCupom = ACBrECF1AntesAbreCupom
     OnChangeEstado = ACBrECF1ChangeEstado
+    OnChequeEstado = ACBrECF1ChequeEstado
     MemoParams.Strings = (
       '[Cabecalho]'
       'LIN000=<center><b>Demo Daruma</b></center>'
@@ -1041,6 +1042,11 @@ object frmPrincipal: TfrmPrincipal
     ConfigBarras.MostrarCodigo = False
     ConfigBarras.LarguraLinha = 3
     ConfigBarras.Altura = 10
+    InfoRodapeCupom.CupomMania = False
+    InfoRodapeCupom.MinasLegal = False
+    InfoRodapeCupom.ParaibaLegal = False
+    InfoRodapeCupom.NotaLegalDF.Imprimir = False
+    InfoRodapeCupom.NotaLegalDF.ProgramaDeCredito = False
     Left = 350
     Top = 130
   end

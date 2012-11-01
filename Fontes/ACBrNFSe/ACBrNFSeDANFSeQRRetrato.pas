@@ -384,7 +384,8 @@ begin
  qrlValorTotal.Caption := 'VALOR TOTAL DA NOTA = R$ '+
     NotaUtil.FormatFloat( FNFSe.Servico.Valores.ValorServicos );
 
- qrlCodServico.Caption := FNFSe.Servico.ItemListaServico + ' - '+
+ qrlCodServico.Caption := FNFSe.Servico.ItemListaServico + ' / ' +
+                          FNFSe.Servico.CodigoTributacaoMunicipio + ' - ' +
                           FNFSe.Servico.xItemListaServico;
 
  qrlCodObra.Caption := FNFSe.ConstrucaoCivil.CodigoObra;

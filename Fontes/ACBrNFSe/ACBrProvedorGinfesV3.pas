@@ -567,11 +567,14 @@ function TProvedorGinfesV3.GetLinkNFSe(ACodMunicipio, ANumeroNFSe: Integer;
   ACodVerificacao: String): String;
 begin
  case ACodMunicipio of
+
  3503208: Result := 'http://araraquara.ginfes.com.br/birt/frameset?_report=nfs_novo.rptdesign&cdVerificacao=' +
                     ACodVerificacao + '&numNota=' + IntToStr(ANumeroNFSe);
  3518800: Result := 'http://guarulhos.ginfes.com.br/birt/frameset?_report=nfs_ver4.rptdesign&cdVerificacao=' +
                     ACodVerificacao + '&numNota=' + IntToStr(ANumeroNFSe);
  3543402: Result := 'http://ribeiraopreto.ginfes.com.br/birt/frameset?_report=nfs_ribeirao_preto.rptdesign&cdVerificacao=' +
+                    ACodVerificacao + '&numNota=' + IntToStr(ANumeroNFSe);
+ 3547809: Result := 'http://santoandre.ginfes.com.br/birt/frameset?_report=nfs_novo.rptdesign&cdVerificacao=' +
                     ACodVerificacao + '&numNota=' + IntToStr(ANumeroNFSe);
  else Result := '';
  end;

@@ -3799,7 +3799,7 @@ begin
       if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
          TACBrNFe( FACBrNFe ).OnGerarLog(aMsg);
 
-      Result := (FretConsNFeDest.CStat =138);
+      Result := (FretConsNFeDest.CStat =137) or (FretConsNFeDest.CStat =138);
 
       if FConfiguracoes.Geral.Salvar then
        begin

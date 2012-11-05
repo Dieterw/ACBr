@@ -139,6 +139,7 @@ begin
  FNFSe        := TNFSe.Create;
  FXML_RPS     := '';
  FXML_RPS_Ass := '';
+ FNomeArq     := '';
 end;
 
 destructor NotaFiscal.Destroy;
@@ -157,7 +158,7 @@ var
  m          : TMimemess;
  p          : TMimepart;
  StreamNFSe : TStringStream;
- NomeArq    : String;
+ NomeArqPDF : String;
  i          : Integer;
 begin
  m := TMimemess.create;
@@ -176,9 +177,13 @@ begin
     if TACBrNFSe( TNotasFiscais( Collection ).ACBrNFSe ).DANFSE <> nil
      then begin
       TACBrNFSe( TNotasFiscais( Collection ).ACBrNFSe ).DANFSE.ImprimirDANFSEPDF(NFSe);
-      NomeArq := StringReplace(NFSe.Numero, 'NFSe', '', [rfIgnoreCase]);
-      NomeArq := PathWithDelim(TACBrNFSe( TNotasFiscais( Collection ).ACBrNFSe ).DANFSE.PathPDF) + NomeArq + '.pdf';
-      m.AddPartBinaryFromFile(NomeArq, p);
+      // Alterado por Italo em 05/11/2012
+      if NomeArq <> ''
+       then NomeArqPDF := NomeArq
+       else NomeArqPDF := StringReplace(NFSe.Numero, 'NFSe', '', [rfIgnoreCase]);
+
+      NomeArqPDF := PathWithDelim(TACBrNFSe( TNotasFiscais( Collection ).ACBrNFSe ).DANFSE.PathPDF) + NomeArqPDF + '.pdf';
+      m.AddPartBinaryFromFile(NomeArqPDF, p);
      end;
    end;
 

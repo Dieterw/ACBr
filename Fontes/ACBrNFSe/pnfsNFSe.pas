@@ -296,6 +296,7 @@ type
  TNFSe = class(TPersistent)
   private
     // RPS e NFSe
+    FNomeArq: String;
     FInfID: TInfID;
     FIdentificacaoRps: TIdentificacaoRps;
     FDataEmissao: TDateTime;
@@ -336,6 +337,7 @@ type
     destructor Destroy; override;
   published
     // RPS e NFSe
+    property NomeArq: String read FNomeArq write FNomeArq;
     property InfID: TInfID read FInfID write FInfID;
     property IdentificacaoRps: TIdentificacaoRps read FIdentificacaoRps write FIdentificacaoRps;
     property DataEmissao: TDateTime read FDataEmissao write FDataEmissao;
@@ -541,6 +543,7 @@ constructor TNFSe.Create;
 begin
  inherited create;
  // RPS e NFSe
+ FNomeArq                      := '';
  FInfID                        := TInfID.Create;
  FIdentificacaoRps             := TIdentificacaoRps.Create;
  FIdentificacaoRps.FTipo       := trRPS;

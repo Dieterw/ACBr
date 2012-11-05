@@ -84,7 +84,7 @@ end;
 
 procedure TACBrNFSeDANFSeQR.ImprimirDANFSePDF(NFSe : TNFSe = nil);
 var
- NomeArq : String;
+ NomeArqPDF : String;
  i : Integer;
  fqrDANFSeQRRetrato : TfqrDANFSeQRRetrato;
 begin
@@ -94,15 +94,16 @@ begin
   then begin
    for i:= 0 to TACBrNFSe(ACBrNFSe).NotasFiscais.Count-1 do
     begin
-//     NomeArq :=  trim(TACBrNFSe(ACBrNFSe).NotasFiscais.Items[i].NomeArq);
-//     if NomeArq=''
-//      then begin
-       NomeArq := StringReplace(TACBrNFSe(ACBrNFSe).NotasFiscais.Items[i].NFSe.Numero,'NFSe', '', [rfIgnoreCase]);
-       NomeArq := PathWithDelim(Self.PathPDF)+NomeArq+'.pdf';
-//      end
-//      else NomeArq := StringReplace(NomeArq,'-nfse.xml', '.pdf', [rfIgnoreCase]);
+      // Alterado por Italo em 05/11/2012
+      NomeArqPDF := trim(TACBrNFSe(ACBrNFSe).NotasFiscais.Items[i].NomeArq);
+      if NomeArqPDF = ''
+      then begin
+       NomeArqPDF := StringReplace(TACBrNFSe(ACBrNFSe).NotasFiscais.Items[i].NFSe.Numero, 'NFSe', '', [rfIgnoreCase]);
+       NomeArqPDF := PathWithDelim(Self.PathPDF) + NomeArqPDF + '.pdf';
+      end
+      else NomeArqPDF := StringReplace(NomeArqPDF, '-nfse.xml', '.pdf', [rfIgnoreCase]);
 
-     fqrDANFSeQRRetrato.SavePDF( NomeArq
+     fqrDANFSeQRRetrato.SavePDF( NomeArqPDF
                                , TACBrNFSe(ACBrNFSe).NotasFiscais.Items[i].NFSe
                                , Logo
                                , Email
@@ -120,10 +121,16 @@ begin
     end;
   end
   else begin
-   NomeArq := StringReplace(NFSe.Numero,'NFSe', '', [rfIgnoreCase]);
-   NomeArq := PathWithDelim(Self.PathPDF)+NomeArq+'.pdf';
+   // Alterado por Italo em 05/11/2012
+   NomeArqPDF := trim(NFSe.NomeArq);
+   if NomeArqPDF = ''
+    then begin
+     NomeArqPDF := StringReplace(NFSe.Numero, 'NFSe', '', [rfIgnoreCase]);
+     NomeArqPDF := PathWithDelim(Self.PathPDF) + NomeArqPDF + '.pdf';
+    end
+    else NomeArqPDF := StringReplace(NomeArqPDF, '-nfse.xml', '.pdf', [rfIgnoreCase]);
 
-   fqrDANFSeQRRetrato.SavePDF( NomeArq
+   fqrDANFSeQRRetrato.SavePDF( NomeArqPDF
                              , NFSe
                              , Logo
                              , Email

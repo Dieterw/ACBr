@@ -835,6 +835,7 @@ begin
   3549805: Cidade := 'São José do Rio Preto/SP';
   3549904: Cidade := 'São José dos Campos/SP';
   3554003: Cidade := 'Tatui/SP';
+  3556701: Cidade := 'Vinhedo/SP';
   3557105: Cidade := 'Votuporanga/SP';
 
   3704708: Cidade := 'Marechal Deodoro/AL';

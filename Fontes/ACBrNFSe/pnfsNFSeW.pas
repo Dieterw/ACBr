@@ -424,6 +424,7 @@ begin
   proSaatri,
   proRJ,
   proTiplan,
+  proRecife,
   proBetha: begin
              Gerador.wCampoNFSe(tcStr, '#43', 'CodigoMunicipio', 7, 7, 0, SomenteNumeros(NFSe.Tomador.Endereco.CodigoMunicipio), '');
              Gerador.wCampoNFSe(tcStr, '#44', 'Uf             ', 2, 2, 0, NFSe.Tomador.Endereco.UF, '');

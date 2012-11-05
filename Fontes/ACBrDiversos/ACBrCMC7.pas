@@ -103,11 +103,30 @@ type
   end;
 
 function ValidaCMC7(CMC7: String) : Boolean;
+function FormataCMC7(const ACMC7: String): String;
 function CalculaC1(Chave: String): Integer;
 function CalculaC2(Chave: String): Integer;
 function CalculaC3(Chave: String): Integer;
 
 implementation
+
+uses
+  MaskUtils;
+
+function FormataCMC7(const ACMC7: String): String;
+var
+  CMC7: String;
+begin
+  CMC7 := ACBrUtil.OnlyNumber(ACMC7);
+
+  if Length(CMC7) <> 30 then
+    raise Exception.Create('Código CMC7 Inválido!');
+
+  Result := '<' +
+    Copy(CMC7, 1, 8)   + '<' +
+    Copy(CMC7, 9, 10)  + '>' +
+    Copy(CMC7, 19, 12) + ':';
+end;
 
 function CalculaC1(Chave: String): Integer;
 var
@@ -279,15 +298,16 @@ var
 begin
   CodBanco := StrToIntDef(Banco,0);
   case CodBanco of
-     1: Result := 2;    /// 001 - Banco do Brasil
-    33: Result := 4;    /// 033 - Santander / Banespa
-    41: Result := 0;    /// 041 - Banrisul Obs: Este banco utiliza todo o campo para o número da conta
-   104: Result := 0;    /// 104 - CEF. Utiliza apenas 7, mas os 3 primeiros são necessários para calcular o dv
-// 237: Result := 3;    /// 237 - Bradesco
-   341: Result := 4;    /// 341 - Itau
-   389: Result := 1;    /// 389 - Mercantil   
-// 409: Result := 3;    /// 409 - Unibanco
-   479: Result := 2;    /// 479 - Bank of Boston
+      1: Result := 2;    // 001 - Banco do Brasil
+     33: Result := 4;    // 033 - Santander / Banespa
+     41: Result := 0;    // 041 - Banrisul Obs: Este banco utiliza todo o campo para o número da conta
+    104: Result := 0;    // 104 - CEF. Utiliza apenas 7, mas os 3 primeiros são necessários para calcular o dv
+//  237: Result := 3;    // 237 - Bradesco
+    341: Result := 4;    // 341 - Itau
+    389: Result := 1;    // 389 - Mercantil
+    399: Result := 4;    // 399 - HSBC
+//  409: Result := 3;    // 409 - Unibanco
+    479: Result := 2;    // 479 - Bank of Boston
   else
     Result := 3;
   end;

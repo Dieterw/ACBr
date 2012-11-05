@@ -159,6 +159,7 @@ type
     FxItemListaServico: ansistring;
     FItemServico: TItemServicoCollection;
     FResponsavelRetencao: TnfseResponsavelRetencao;
+    FDescricao: string;
 
     procedure SetItemServico(Value: TItemServicoCollection);
   public
@@ -178,6 +179,7 @@ type
     property xItemListaServico: ansistring read FxItemListaServico write FxItemListaServico;
     property ItemServico: TItemServicoCollection read FItemServico write SetItemServico;
     property ResponsavelRetencao: TnfseResponsavelRetencao read FResponsavelRetencao write FResponsavelRetencao;
+    property Descricao: string read FDescricao write FDescricao;
   end;
 
  TIdentificacaoPrestador = class(TPersistent)
@@ -475,7 +477,8 @@ begin
   end;
 
  FItemServico := TItemServicoCollection.Create(Self);
-
+ FDescricao   := '';
+ 
 end;
 
 destructor TDadosServico.Destroy;

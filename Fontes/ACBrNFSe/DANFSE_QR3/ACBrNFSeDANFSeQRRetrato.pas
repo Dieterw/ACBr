@@ -383,8 +383,13 @@ begin
  qrlValorTotal.Caption := 'VALOR TOTAL DA NOTA = R$ '+
     NotaUtil.FormatFloat( FNFSe.Servico.Valores.ValorServicos );
 
- qrlCodServico.Caption := FNFSe.Servico.ItemListaServico + ' - '+
-                          FNFSe.Servico.xItemListaServico;
+ if trim(FNFSe.Servico.Descricao) = ''
+  then qrlCodServico.Caption := FNFSe.Servico.ItemListaServico + ' / ' +
+                                FNFSe.Servico.CodigoTributacaoMunicipio + ' - ' +
+                                FNFSe.Servico.xItemListaServico
+  else qrlCodServico.Caption := FNFSe.Servico.ItemListaServico + ' / ' +
+                                FNFSe.Servico.CodigoTributacaoMunicipio + ' - ' +
+                                FNFSe.Servico.Descricao;
 
  qrlCodObra.Caption := FNFSe.ConstrucaoCivil.CodigoObra;
  qrlCodART.Caption  := FNFSe.ConstrucaoCivil.Art;

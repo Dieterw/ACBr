@@ -433,7 +433,10 @@ begin
               '</' + Prefixo4 + 'CodigoCancelamento>' +
              '</' + Prefixo4 + 'InfPedidoCancelamento>';
 
- Result := TagI + DadosMsg + TagF;
+// Result := TagI + DadosMsg + TagF;
+
+ // O retorno é somente o DadosMsg uma vez que o cancelamento recebe a assinatura
+ Result := DadosMsg;
 end;
 
 function TProvedorProdemge.Gera_DadosMsgGerarNFSe(Prefixo3, Prefixo4,

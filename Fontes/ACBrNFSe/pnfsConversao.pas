@@ -756,6 +756,7 @@ begin
   1400100: Cidade := 'Boa Vista/RR';
 
   1500800: Cidade := 'Ananindeua/PA';
+  1505502: Cidade := 'Paragominas/PA';
   1505536: Cidade := 'Parauapebas/PA';
 
   2304400: Cidade := 'Fortaleza/CE';
@@ -788,6 +789,7 @@ begin
   3170107: Cidade := 'Uberaba/MG';
   3170701: Cidade := 'Varginha/MG';
 
+  3200607: Cidade := 'Aracruz/ES';
   3202405: Cidade := 'Guarapari/ES';
 
   3300456: Cidade := 'Belford Roxo/RJ';
@@ -834,6 +836,7 @@ begin
   3548909: Cidade := 'São Carlos/SP';
   3549805: Cidade := 'São José do Rio Preto/SP';
   3549904: Cidade := 'São José dos Campos/SP';
+  3550308: Cidade := 'São Paulo/SP';
   3554003: Cidade := 'Tatui/SP';
   3556701: Cidade := 'Vinhedo/SP';
   3557105: Cidade := 'Votuporanga/SP';
@@ -860,6 +863,7 @@ begin
 
   4202131: Cidade := 'Bela Vista do Toldo/SC';
   4202305: Cidade := 'Biguaçu/SC';
+  4202404: Cidade := 'Blumenau/SC';
   4202453: Cidade := 'Bombinhas/SC';
   4202909: Cidade := 'Brusque/SC';
   4203600: Cidade := 'Campos Novos/SC';
@@ -913,6 +917,7 @@ begin
   4309407: Cidade := 'Guapore/RS';
   4310207: Cidade := 'Ijui/RS';
   4314407: Cidade := 'Pelotas/RS';
+  4314902: Cidade := 'Porto Alegre/RS';
   4318002: Cidade := 'São Borja/RS';
   4318705: Cidade := 'Sao Leopoldo/RS';
 
@@ -928,6 +933,8 @@ begin
 
   5201108: Cidade := 'Anapolis/GO';
   5201405: Cidade := 'Aparecida de Goiania/GO';
+  5208707: Cidade := 'Goiânia/GO';
+
  end;
  Result := Cidade;
 end;

@@ -343,12 +343,37 @@ procedure TfrmPrincipal.ACBrECF1ChequeEstado(
 begin
   // mensagens de estado da impressão de cheques
   case EstadoAtual of
-    chqIdle:         StatusBar1.Panels[1].Text := '...';
-    chqPosicione:    Continuar := MessageDlg('Posione o cheque e clique em continuar', mtConfirmation, mbYesNo, 0) = ID_YES;
-    chqImprimindo:   StatusBar1.Panels[1].Text := 'Imprimindo, aguarde...';
-    chqFimImpressao: StatusBar1.Panels[1].Text := 'Fim da impressão.';
-    chqRetire:       StatusBar1.Panels[1].Text := 'Retire o cheque.';
-    chqAutenticacao: Continuar := MessageDlg('Posione o cheque e clique em continuar', mtConfirmation, mbYesNo, 0) = ID_YES;
+    chqIdle:
+      begin
+        StatusBar1.Panels[1].Text := '...';
+      end;
+
+    chqPosicione:
+      begin
+        Continuar := MessageDlg('Posione o cheque e clique em continuar', mtConfirmation, mbYesNo, 0) = ID_YES;
+      end;
+
+    chqImprimindo:
+      begin
+        StatusBar1.Panels[1].Text := 'Imprimindo, aguarde...';
+      end;
+
+    chqFimImpressao:
+      begin
+        StatusBar1.Panels[1].Text := 'Fim da impressão.';
+        ShowMessage(StatusBar1.Panels[1].Text);
+      end;
+
+    chqRetire:
+      begin
+        StatusBar1.Panels[1].Text := 'Retire o cheque.';
+        ShowMessage(StatusBar1.Panels[1].Text);
+      end;
+
+    chqAutenticacao:
+      begin
+        Continuar := MessageDlg('Posione o cheque e clique em continuar', mtConfirmation, mbYesNo, 0) = ID_YES;
+      end;
   end;
 end;
 

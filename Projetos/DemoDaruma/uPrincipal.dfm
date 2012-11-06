@@ -997,9 +997,9 @@ object frmPrincipal: TfrmPrincipal
     FormMsgFonte.Name = 'Tahoma'
     FormMsgFonte.Style = []
     FormMsgColor = clHighlight
+    OnChequeEstado = ACBrECF1ChequeEstado
     OnAntesAbreCupom = ACBrECF1AntesAbreCupom
     OnChangeEstado = ACBrECF1ChangeEstado
-    OnChequeEstado = ACBrECF1ChequeEstado
     MemoParams.Strings = (
       '[Cabecalho]'
       'LIN000=<center><b>Demo Daruma</b></center>'

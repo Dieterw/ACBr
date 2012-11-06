@@ -2365,9 +2365,13 @@ begin
 
       DoOnChequeEstado(chqAutenticacao, Continuar);
       if Continuar then
-        EnviaComando(ESC + 't' + Observacao + cDELIMITADOR ) ;
+        EnviaComando(ESC + 't' + Observacao + cDELIMITADOR )
+      else
+        CancelaImpressaoCheque;
     end;
-  end;
+  end
+  else
+    CancelaImpressaoCheque;
 end;
 
 procedure TACBrECFDaruma.CancelaImpressaoCheque;
@@ -5213,4 +5217,4 @@ end;
 
 end.
 
-
+

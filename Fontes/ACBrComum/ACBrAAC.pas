@@ -355,6 +355,7 @@ begin
         fsIdentPAF.Paf.EmitePED                     := Ini.ReadBool('PAF', 'EmitePED', False);
         fsIdentPAF.Paf.CupomMania                   := Ini.ReadBool('PAF', 'CupomMania', False);
         fsIdentPAF.Paf.MinasLegal                   := Ini.ReadBool('PAF', 'MinasLegal', False);
+        fsIdentPAF.Paf.NotaLegalDF                  := Ini.ReadBool('PAF', 'NotaLegalDF', False);
      end;
 
      if ArquivoInvalido then
@@ -511,6 +512,7 @@ begin
         Ini.WriteBool('PAF', 'EmitePED', fsIdentPAF.Paf.EmitePED);
         Ini.WriteBool('PAF', 'CupomMania', fsIdentPAF.Paf.CupomMania);
         Ini.WriteBool('PAF', 'MinasLegal', fsIdentPAF.Paf.MinasLegal);
+        Ini.WriteBool('PAF', 'NotaLegalDF', fsIdentPAF.Paf.NotaLegalDF);
      end;
 
 

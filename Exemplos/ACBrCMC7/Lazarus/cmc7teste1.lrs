@@ -6,15 +6,15 @@ LazarusResources.Add('TForm1','FORMDATA',[
   +'VertScrollBar.Range'#2'C'#13'ActiveControl'#7#7'edtcmc7'#7'Caption'#6#8'ACB'
   +'rCMC7'#12'ClientHeight'#3'M'#1#11'ClientWidth'#3' '#1#10'KeyPreview'#9#10'P'
   +'arentFont'#9#10'LCLVersion'#6#3'1.1'#0#6'TLabel'#6'Label1'#4'Left'#2#8#6'He'
-  +'ight'#2#16#3'Top'#3#249#0#5'Width'#2'%'#7'Caption'#6#5'Comp.'#11'ParentColo'
-  +'r'#8#0#0#6'TLabel'#6'Label2'#4'Left'#2'?'#6'Height'#2#16#3'Top'#3#249#0#5'W'
-  +'idth'#2'"'#7'Caption'#6#5'Banco'#11'ParentColor'#8#0#0#6'TLabel'#6'Label3'#4
-  +'Left'#3#128#0#6'Height'#2#16#3'Top'#3#249#0#5'Width'#2','#7'Caption'#6#8'Ag'
+  +'ight'#2#15#3'Top'#3#249#0#5'Width'#2'$'#7'Caption'#6#5'Comp.'#11'ParentColo'
+  +'r'#8#0#0#6'TLabel'#6'Label2'#4'Left'#2'?'#6'Height'#2#15#3'Top'#3#249#0#5'W'
+  +'idth'#2'!'#7'Caption'#6#5'Banco'#11'ParentColor'#8#0#0#6'TLabel'#6'Label3'#4
+  +'Left'#3#128#0#6'Height'#2#15#3'Top'#3#249#0#5'Width'#2'+'#7'Caption'#6#8'Ag'
   +#195#170'ncia'#11'ParentColor'#8#0#0#6'TLabel'#6'Label4'#4'Left'#3#198#0#6'H'
-  +'eight'#2#16#3'Top'#3#249#0#5'Width'#2'!'#7'Caption'#6#5'Conta'#11'ParentCol'
-  +'or'#8#0#0#6'TLabel'#6'Label5'#4'Left'#2#8#6'Height'#2#16#3'Top'#3'!'#1#5'Wi'
-  +'dth'#2';'#7'Caption'#6#10'N'#194#186' Cheque'#11'ParentColor'#8#0#0#6'TLabe'
-  +'l'#6'Label6'#4'Left'#3#138#0#6'Height'#2#16#3'Top'#3'!'#1#5'Width'#2';'#7'C'
+  +'eight'#2#15#3'Top'#3#249#0#5'Width'#2' '#7'Caption'#6#5'Conta'#11'ParentCol'
+  +'or'#8#0#0#6'TLabel'#6'Label5'#4'Left'#2#8#6'Height'#2#15#3'Top'#3'!'#1#5'Wi'
+  +'dth'#2':'#7'Caption'#6#10'N'#194#186' Cheque'#11'ParentColor'#8#0#0#6'TLabe'
+  +'l'#6'Label6'#4'Left'#3#138#0#6'Height'#2#15#3'Top'#3'!'#1#5'Width'#2':'#7'C'
   +'aption'#6#13'Tipifica'#195#167#195#163'o'#11'ParentColor'#8#0#0#5'TEdit'#7
   +'edtcmc7'#4'Left'#2#8#6'Height'#2#23#3'Top'#2#16#5'Width'#3#17#1#7'Anchors'
   +#11#5'akTop'#6'akLeft'#7'akRight'#0#10'OnKeyPress'#7#15'edtcmc7KeyPress'#8'T'

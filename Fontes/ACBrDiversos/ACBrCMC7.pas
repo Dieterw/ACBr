@@ -110,9 +110,6 @@ function CalculaC3(Chave: String): Integer;
 
 implementation
 
-uses
-  MaskUtils;
-
 function FormataCMC7(const ACMC7: String): String;
 var
   CMC7: String;

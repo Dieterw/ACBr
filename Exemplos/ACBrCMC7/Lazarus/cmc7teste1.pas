@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, LResources, Forms, Controls, Graphics, Dialogs,
-  ACBrBase, ACBrLCB, ACBrCMC7, StdCtrls, Buttons;
+  ACBrLCB, ACBrCMC7, StdCtrls, Buttons;
 
 type
 

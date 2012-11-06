@@ -2054,8 +2054,9 @@ var
   FS : TFileStream ;
   LineBreak : AnsiString ;
 begin
-  FS := TFileStream.Create( String( ArqTXT ), IfThen( AppendIfExists and FileExists(String(ArqTXT)),
-     fmOpenReadWrite, fmCreate) or fmShareDenyWrite );
+  FS := TFileStream.Create( String( ArqTXT ),
+               IfThen( AppendIfExists and FileExists(String(ArqTXT)),
+                       Integer(fmOpenReadWrite), Integer(fmCreate)) or fmShareDenyWrite );
   try
      FS.Seek(0, soFromEnd);  // vai para EOF
      FS.Write(Pointer(AString)^,Length(AString));

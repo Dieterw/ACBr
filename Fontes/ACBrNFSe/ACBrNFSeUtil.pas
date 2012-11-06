@@ -1084,7 +1084,7 @@ function AssinarMSXML(XML : AnsiString;
                       AProvedor: TnfseProvedor = proNenhum): Boolean;
 var
  I, J, PosIni, PosFim, PosIniAssLote : Integer;
- URI, AID, Identificador : String;
+ URI, AID, Identificador, NameSpaceLote : String;
  AXML, Assinatura, xmlHeaderAntes, xmlHeaderDepois : AnsiString;
  xmldoc    : IXMLDOMDocument3;
  xmldsig   : IXMLDigitalSignature;
@@ -1095,6 +1095,15 @@ begin
 
  if ALote
   then begin
+   I := pos('EnviarLoteRpsEnvio xmlns=', AXML);
+   if I = 0
+    then NameSpaceLote := ''
+    else begin
+     I := I + 25;
+     J := pos('>', AXML);
+     NameSpaceLote := ' xmlns:ds1=' + Copy(AXML, I, J - I);
+    end;
+
    Identificador := 'Id';
    I             := pos('LoteRps Id=', AXML);
    if I = 0
@@ -1118,35 +1127,32 @@ begin
      URI := copy(AXML, I + 1, J - I - 1);
     end;
 
-//   if Identificador = 'id' then URI := '';
-
    AXML := copy(AXML, 1, pos('</'+ APrefixo3 + 'EnviarLoteRpsEnvio>', AXML) - 1);
 
-   if (URI = '') {or (AProvedor = profintelISS)}
+   if (URI = '') or (AProvedor = proRecife)
     then AID := '>'
-    else AID := ' '+Identificador+'="AssLote_'+ URI +'">';
+    else AID := ' ' + Identificador + '="AssLote_' + URI + '">';
 
-   AXML := AXML + '<Signature xmlns="http://www.w3.org/2000/09/xmldsig#"'+ AID +
-//                  NotaUtil.SeSenao(URI = '', '>', ' '+Identificador+'="AssLote_'+ URI +'">') +
-                 '<SignedInfo>'+
-                  '<CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>'+
-                  '<SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />'+
+   AXML := AXML + '<Signature xmlns="http://www.w3.org/2000/09/xmldsig#"' + AID +
+                 '<SignedInfo>' +
+                  '<CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>' +
+                  '<SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />' +
                   '<Reference URI="' + NotaUtil.SeSenao(URI = '', '">', '#' + URI + '">') +
-                   '<Transforms>'+
-                    '<Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />'+
+                   '<Transforms>' +
+                    '<Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />' +
                    NotaUtil.SeSenao(AProvedor = profintelISS, '',
                     '<Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />') +
-                   '</Transforms>'+
-                   '<DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />'+
-                   '<DigestValue></DigestValue>'+
-                  '</Reference>'+
-                 '</SignedInfo>'+
-                 '<SignatureValue></SignatureValue>'+
-                 '<KeyInfo>'+
-                  '<X509Data>'+
-                    '<X509Certificate></X509Certificate>'+
-                  '</X509Data>'+
-                 '</KeyInfo>'+
+                   '</Transforms>' +
+                   '<DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />' +
+                   '<DigestValue></DigestValue>' +
+                  '</Reference>' +
+                 '</SignedInfo>' +
+                 '<SignatureValue></SignatureValue>' +
+                 '<KeyInfo>' +
+                  '<X509Data>' +
+                    '<X509Certificate></X509Certificate>' +
+                  '</X509Data>' +
+                 '</KeyInfo>' +
                 '</Signature>';
 
    AXML := AXML + '</'+ APrefixo3 + 'EnviarLoteRpsEnvio>';
@@ -1182,12 +1188,11 @@ begin
       end
       else URI := '';
 
-     if (URI = '') or (AProvedor = profintelISS)
+     if (URI = '') or (AProvedor in [profintelISS, proRecife])
       then AID := '>'
-      else AID := ' '+Identificador+'="Ass_'+ URI +'">';
+      else AID := ' ' + Identificador + '="Ass_' + URI + '">';
 
      Assinatura := '<Signature xmlns="http://www.w3.org/2000/09/xmldsig#"' + AID +
-//                        NotaUtil.SeSenao(URI = '', '>', ' ' + Identificador + '="Ass_' + URI + '">') +
                     '<SignedInfo>' +
                     '<CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>' +
                      '<SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />' +
@@ -1230,7 +1235,8 @@ begin
 
  // Lendo Header antes de assinar //
  xmlHeaderAntes := '';
- I              := pos('?>', AXML);
+
+ I := pos('?>', AXML);
  if I > 0
   then xmlHeaderAntes := copy(AXML, 1, I + 1);
 
@@ -1245,14 +1251,15 @@ begin
  if (not xmldoc.loadXML(AXML))
   then raise Exception.Create('Não foi possível carregar o arquivo: ' + AXML);
 
- xmldoc.setProperty('SelectionNamespaces', DSIGNS);
+ xmldoc.setProperty('SelectionNamespaces', DSIGNS + NameSpaceLote);
 
  if ALote
   then begin
-   if (URI <> '') {and (AProvedor <> profintelISS) }
-    then xmldsig.signature := xmldoc.selectSingleNode('.//ds:Signature[@'+Identificador+'="AssLote_'+ URI +'"]')
-    else xmldsig.signature := xmldoc.selectSingleNode('.//ds:Signature');
-//    else xmldsig.signature := xmldoc.selectSingleNode('.//EnviarLoteRpsEnvio//ds:Signature');
+   if (URI <> '') and (AProvedor <> proRecife)
+    then xmldsig.signature := xmldoc.selectSingleNode('.//ds:Signature[@' + Identificador + '="AssLote_' + URI + '"]')
+    else begin
+     xmldsig.signature := xmldoc.selectSingleNode('.//ds1:EnviarLoteRpsEnvio/ds:Signature');
+    end;
   end
   else xmldsig.signature := xmldoc.selectSingleNode('.//ds:Signature');
 

@@ -372,7 +372,7 @@ begin
   then begin
    Gerador.wGrupoNFSe('CpfCnpj');
 
-   if length(trim(NFSe.Prestador.Cnpj))=11
+   if length(SomenteNumeros(NFSe.Prestador.Cnpj))<=11
     then Gerador.wCampoNFSe(tcStr, '#34', 'Cpf ', 11, 11, 1, SomenteNumeros(NFSe.Prestador.Cnpj), '')
     else Gerador.wCampoNFSe(tcStr, '#34', 'Cnpj', 14, 14, 1, SomenteNumeros(NFSe.Prestador.Cnpj), '');
 
@@ -396,7 +396,7 @@ begin
 
    Gerador.wGrupoNFSe('CpfCnpj');
 
-   if Length(NFSe.Tomador.IdentificacaoTomador.CpfCnpj)<=11
+   if Length(SomenteNumeros(NFSe.Tomador.IdentificacaoTomador.CpfCnpj))<=11
     then Gerador.wCampoNFSe(tcStr, '#36', 'Cpf ', 11, 11, 1, SomenteNumeros(NFSe.Tomador.IdentificacaoTomador.CpfCnpj), '')
     else Gerador.wCampoNFSe(tcStr, '#36', 'Cnpj', 14, 14, 1, SomenteNumeros(NFSe.Tomador.IdentificacaoTomador.CpfCnpj), '');
 
@@ -456,7 +456,7 @@ begin
 
    Gerador.wGrupoNFSe('CpfCnpj');
 
-   if Length(NFSe.IntermediarioServico.CpfCnpj)<=11
+   if Length(SomenteNumeros(NFSe.IntermediarioServico.CpfCnpj))<=11
     then Gerador.wCampoNFSe(tcStr, '#49', 'Cpf ', 11, 11, 1, SomenteNumeros(NFSe.IntermediarioServico.CpfCnpj), '')
     else Gerador.wCampoNFSe(tcStr, '#49', 'Cnpj', 14, 14, 1, SomenteNumeros(NFSe.IntermediarioServico.CpfCnpj), '');
 

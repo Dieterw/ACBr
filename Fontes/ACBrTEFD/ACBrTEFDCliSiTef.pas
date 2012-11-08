@@ -45,13 +45,14 @@ unit ACBrTEFDCliSiTef;
 interface
 
 uses
-  Classes, SysUtils, ACBrTEFDClass, ACBrConsts,
+  Classes, SysUtils, ACBrTEFDClass, ACBrConsts
+  {$IFNDEF CONSOLE}
   {$IFDEF VisualCLX}
-     QControls, QDialogs
+     ,QControls, QDialogs
   {$ELSE}
-     Controls, Dialogs
+     ,Controls, Dialogs
+  {$ENDIF}
   {$ENDIF};
-
 
 Const
    CACBrTEFD_CliSiTef_ImprimeGerencialConcomitante = False ;

@@ -46,11 +46,13 @@ interface
 
 uses
   Classes, SysUtils, ACBrTEFDClass
+  {$IFNDEF CONSOLE}
   {$IFDEF VisualCLX}
      ,QControls
   {$ELSE}
      ,Controls
-  {$ENDIF}  ;
+  {$ENDIF}
+  {$ENDIF};
 
 
 Const
@@ -164,7 +166,10 @@ type
 
 implementation
 
-Uses ACBrUtil, dateutils, ACBrTEFD, Dialogs, Math, strutils;
+Uses ACBrUtil, dateutils, ACBrTEFD, Math, strutils
+{$IFNDEF CONSOLE}
+, Dialogs
+{$ENDIF};
 
 { TACBrTEFDRespTicketCar }
 
@@ -553,7 +558,7 @@ begin
         if fConteudoRet.LeInformacao(517, 0).AsInteger <> 0 then
           begin
              DeleteFile(ArqSTS);
-             ShowMessage(fConteudoRet.LeInformacao(517, 1).AsString);
+             TACBrTEFD(Owner).DoExibeMsg(opmOK, fConteudoRet.LeInformacao(517, 1).AsString);
              fConteudoRet.Clear;
              Interromper := True;
              Exit;

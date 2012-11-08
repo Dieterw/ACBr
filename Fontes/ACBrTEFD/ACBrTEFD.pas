@@ -49,10 +49,10 @@ uses
   ACBrTEFDDial, ACBrTEFDDisc, ACBrTEFDHiper, ACBrTEFDCliSiTef, ACBrTEFDGpu,
   ACBrTEFDVeSPague, ACBrTEFDBanese, ACBrTEFDGoodCard, ACBrTEFDFoxWin,
   ACBrTEFDCliDTEF, ACBrTEFDPetroCard, ACBrTEFDCrediShop, ACBrTEFDTicketCar
-  {$IFDEF FPC}
-    ,LResources
-  {$ENDIF}
   {$IFNDEF CONSOLE}
+    {$IFDEF FPC}
+      ,LResources
+    {$ENDIF}
     {$IFDEF MSWINDOWS}
       ,Windows, Messages
     {$ENDIF}
@@ -926,7 +926,9 @@ begin
                           while SecondsBetween(now,TempoInicio) < 5 do
                           begin
                              Sleep(EsperaSTS) ;
+                             {$IFNDEF FRAMEWORK}
                              Application.ProcessMessages;
+                             {$ENDIF}
                           end;
 
                           DoExibeMsg( opmRemoverMsgOperador, '' ) ;
@@ -1051,8 +1053,10 @@ begin
                              { Verifica se Mensagem Ficou pelo menos por 5 segundos }
                              while SecondsBetween(now,TempoInicio) < 5 do
                              begin
-                                Sleep(EsperaSTS) ;
+                                Sleep(EsperaSTS);
+                                {$IFNDEF FRAMEWORK}
                                 Application.ProcessMessages;
+                                {$ENDIF}
                              end;
 
                              DoExibeMsg( opmRemoverMsgOperador, '' ) ;
@@ -1774,6 +1778,7 @@ begin
   if Assigned( fOnBloqueiaMouseTeclado ) then
      fOnBloqueiaMouseTeclado( Bloqueia, Tratado ) ;
 
+  {$IFNDEF FRAMEWORK}
   if not Bloqueia then
      LimparTeclado;
 
@@ -1784,20 +1789,24 @@ begin
         xBlockInput( Bloqueia ) ;
    {$ENDIF}
   end;
+  {$ENDIF}
 end;
 
  procedure TACBrTEFD.LimparTeclado;
  Var
    Tratado : Boolean ;
-{$IFDEF MSWINDOWS}
+   {$IFNDEF FRAMEWORK}
+     {$IFDEF MSWINDOWS}
      Msg: TMsg;
-{$ENDIF}
+     {$ENDIF}
+   {$ENDIF}
  begin
    Tratado := False ;
 
    if Assigned( fOnLimpaTeclado ) then
       fOnLimpaTeclado( Tratado ) ;
 
+   {$IFNDEF FRAMEWORK}
    {$IFDEF MSWINDOWS}
     if not Tratado then
     begin
@@ -1807,7 +1816,8 @@ end;
       except
       end
     end;
-   {$ENDIF} ;
+   {$ENDIF}
+   {$ENDIF};
  end;
 
  procedure TACBrTEFD.RestaurarFocoAplicacao ;
@@ -1818,6 +1828,7 @@ end;
    if Assigned( fOnRestauraFocoAplicacao ) then
       fOnRestauraFocoAplicacao( Tratado ) ;
 
+   {$IFNDEF FRAMEWORK}
    if not Tratado then
    begin
       Application.BringToFront ;
@@ -1833,8 +1844,8 @@ end;
        end;
       {$ENDIF}
    end;
+  {$ENDIF}
  end;
-
 
 {$ifdef FPC}
 initialization

@@ -6471,7 +6471,7 @@ begin
 end;
 
 {$IFDEF FRAMEWORK}
-{$DEF CONSOLE}
+{$DEFINE CONSOLE}
 {$ENDIF}
 end.
 

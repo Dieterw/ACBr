@@ -46,11 +46,13 @@ interface
 
 uses
   Classes, SysUtils, ACBrTEFDClass
+  {$IFNDEF CONSOLE}
   {$IFDEF VisualCLX}
      ,QForms, QControls
   {$ELSE}
      ,Forms, Controls
-  {$ENDIF}  ;
+  {$ENDIF}
+  {$ENDIF};
 
 
 Const
@@ -233,7 +235,10 @@ type
 
 implementation
 
-Uses ACBrUtil, dateutils, ACBrTEFD, Dialogs, Math, strutils;
+Uses ACBrUtil, dateutils, ACBrTEFD, Math, strutils
+{$IFNDEF CONSOLE}
+, Dialogs
+{$ENDIF};
 
 { TACBrTEFDRespCliDTEF }
 
@@ -1034,7 +1039,9 @@ begin
               while SecondsBetween(now,TempoInicio) < 5 do
               begin
                 Sleep(EsperaSleep) ;
+                {$IFNDEF FRAMEWORK}
                 Application.ProcessMessages;
+                {$ENDIF}
               end;
             end;
 

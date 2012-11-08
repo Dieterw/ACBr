@@ -54,6 +54,11 @@ uses
     {$ENDIF}
   {$ENDIF} ;
 
+{$IFDEF FRAMEWORK}
+{$UNDEF CONSOLE}
+type TModalResult = (mrNone = 0, mrYes = 6, mrNo = 7, mrOK = 1, mrCancel = 2, mrAbort = 3, mrRetry = 4, mrIgnore = 5, mrAll = 8, mrNoToAll = 9, mrYesToAll = 10);
+{$ENDIF}
+
 const
    CACBrTEFD_Versao      = '4.2.2' ;
    CACBrTEFD_EsperaSTS   = 7 ;
@@ -2341,8 +2346,10 @@ begin
                     begin
                        while SecondsBetween(now,TempoInicio) < 5 do
                        begin
-                          Sleep(EsperaSleep) ;
+                          Sleep(EsperaSleep);
+                          {$IFNDEF FRAMEWORK}
                           Application.ProcessMessages;
+                          {$ENDIF}
                        end;
                     end;
 
@@ -2768,5 +2775,8 @@ begin
   inherited Insert(Index, Obj);
 end;
 
+{$IFDEF FRAMEWORK}
+{$DEFINE CONSOLE}
+{$ENDIF}
 end.
 

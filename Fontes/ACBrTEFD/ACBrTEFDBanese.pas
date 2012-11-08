@@ -49,11 +49,13 @@ interface
 
 uses
   Classes, SysUtils, ACBrTEFDClass
+  {$IFNDEF CONSOLE}
   {$IFDEF VisualCLX}
      ,QForms, QControls
   {$ELSE}
      ,Forms, Controls
-  {$ENDIF}  ;
+  {$ENDIF}
+  {$ENDIF};
 
 
 Const
@@ -152,7 +154,11 @@ type
 
 implementation
 
-Uses ACBrUtil, dateutils, StrUtils, ACBrTEFD, Dialogs, Math;
+Uses ACBrUtil, dateutils, StrUtils, ACBrTEFD, Math
+{$IFNDEF CONSOLE}
+,Dialogs
+{$ENDIF};
+
 
 { TACBrTEFDRespBanese }
 
@@ -470,9 +476,8 @@ begin
       if FileExists(ArqRespBkp) then
         Result := True
       else
-        ShowMessage('Não existe arquivo de resposta para imprimir');
-    end;
-
+        TACBrTEFD(Owner).DoExibeMsg( opmOK, 'Não existe arquivo de resposta para imprimir');
+      end;
   if ((AHeader = 'ADM') and (ItemSelecionado = 2)) then
     begin
       {Apagando o Arquivo de Backup da Resposta anterior}
@@ -605,7 +610,7 @@ begin
         if copy(RespostaRequisicao[0],19,2) <> '00' then
           begin
              DeleteFile(ArqResp);
-             ShowMessage(copy(RespostaRequisicao[0],25,length(RespostaRequisicao[0])));
+             TACBrTEFD(Owner).DoExibeMsg( opmOK, copy(RespostaRequisicao[0],25,length(RespostaRequisicao[0])));
              RespostaRequisicao.Free;
              Interromper := True;
           end
@@ -793,8 +798,10 @@ begin
             begin
               while SecondsBetween(now,TempoInicio) < 5 do
               begin
-                Sleep(EsperaSleep) ;
+                Sleep(EsperaSleep);
+                {$IFNDEF FRAMEWORK}
                 Application.ProcessMessages;
+                {$ENDIF}
               end;
             end;
 

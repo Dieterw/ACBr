@@ -45,13 +45,15 @@ unit ACBrTEFDVeSPague;
 interface
 
 uses
-  Classes, SysUtils, ACBrTEFDClass, ACBrConsts,
+  Classes, SysUtils, ACBrTEFDClass, ACBrConsts
+  {$IFNDEF CONSOLE}
   {$IFDEF VisualCLX}
-     QControls, QForms, QDialogs,
+     ,QControls, QForms, QDialogs
   {$ELSE}
-     Controls, Forms, Dialogs,
+     ,Controls, Forms, Dialogs
   {$ENDIF}
-  blcksock ;
+  {$ENDIF}
+  ,blcksock ;
 
 
 Const

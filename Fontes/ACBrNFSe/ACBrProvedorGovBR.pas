@@ -252,12 +252,12 @@ begin
        ConfigURL.HomCancelaNFSe        := 'http://mail.presidentevenceslau.sp.gov.br/NFSEWSTESTE/Services.svc';
 
        ConfigURL.ProNomeCidade         := '';
-       ConfigURL.ProRecepcaoLoteRPS    := 'http://nfse.presidentevenceslau.sp.gov.br/NFSEWS/Services.svc';
-       ConfigURL.ProConsultaLoteRPS    := 'http://nfse.presidentevenceslau.sp.gov.br/NFSEWS/Services.svc';
-       ConfigURL.ProConsultaNFSeRPS    := 'http://nfse.presidentevenceslau.sp.gov.br/NFSEWS/Services.svc';
-       ConfigURL.ProConsultaSitLoteRPS := 'http://nfse.presidentevenceslau.sp.gov.br/NFSEWS/Services.svc';
-       ConfigURL.ProConsultaNFSe       := 'http://nfse.presidentevenceslau.sp.gov.br/NFSEWS/Services.svc';
-       ConfigURL.ProCancelaNFSe        := 'http://nfse.presidentevenceslau.sp.gov.br/NFSEWS/Services.svc';
+       ConfigURL.ProRecepcaoLoteRPS    := 'http://mail.presidentevenceslau.sp.gov.br/NFSEWS/Services.svc';
+       ConfigURL.ProConsultaLoteRPS    := 'http://mail.presidentevenceslau.sp.gov.br/NFSEWS/Services.svc';
+       ConfigURL.ProConsultaNFSeRPS    := 'http://mail.presidentevenceslau.sp.gov.br/NFSEWS/Services.svc';
+       ConfigURL.ProConsultaSitLoteRPS := 'http://mail.presidentevenceslau.sp.gov.br/NFSEWS/Services.svc';
+       ConfigURL.ProConsultaNFSe       := 'http://mail.presidentevenceslau.sp.gov.br/NFSEWS/Services.svc';
+       ConfigURL.ProCancelaNFSe        := 'http://mail.presidentevenceslau.sp.gov.br/NFSEWS/Services.svc';
       end;
  end;
 

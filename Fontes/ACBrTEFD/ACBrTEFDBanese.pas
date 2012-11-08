@@ -696,7 +696,7 @@ begin
      begin
         if AutoFinalizarCupom then
         begin
-           FinalizarCupom;
+           FinalizarCupom( False );  { False não desbloqueia o MouseTeclado }
            ImprimirTransacoesPendentes;
         end;
      end ;

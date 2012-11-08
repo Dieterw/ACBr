@@ -234,7 +234,7 @@ type
      procedure NCN(const Rede, NSU, Finalizacao : String;
         const Valor : Double = 0; const DocumentoVinculado : String = '');
 
-     procedure FinalizarCupom;
+     procedure FinalizarCupom( DesbloquearMouseTecladoNoTermino: Boolean = True);
      procedure CancelarTransacoesPendentes;
      procedure ConfirmarTransacoesPendentes;
      procedure ImprimirTransacoesPendentes;
@@ -811,7 +811,7 @@ begin
   if Est <> 'L' then
   begin
      case Est of
-       'V', 'P', 'N' : FinalizarCupom;
+       'V', 'P', 'N' : FinalizarCupom( False );  { False não desbloqueia o MouseTeclado }
        'R', 'G'      : ComandarECF( opeFechaGerencial );
        'C'           : ComandarECF( opeFechaVinculado );
      end;
@@ -1284,7 +1284,7 @@ begin
   end;
 end;
 
-procedure TACBrTEFD.FinalizarCupom;
+procedure TACBrTEFD.FinalizarCupom(DesbloquearMouseTecladoNoTermino: Boolean);
 Var
   I, J, Ordem : Integer;
   Est, EstNaoFiscal  : AnsiChar;
@@ -1292,7 +1292,8 @@ Var
   GrupoFPG    : TACBrTEFDArrayGrupoRespostasPendentes ;
 begin
   ImpressaoOk := False ;
-  fTefClass.GravaLog( 'FinalizarCupom ') ;
+  fTefClass.GravaLog( 'FinalizarCupom'+IfThen(DesbloquearMouseTecladoNoTermino,
+                      ', DesbloquearMouseTecladoNoTermino','') ) ;
 
   try
      while not ImpressaoOk do
@@ -1411,7 +1412,8 @@ begin
               ImpressaoOk := True ;
 
            finally
-              BloquearMouseTeclado( False );
+              if DesbloquearMouseTecladoNoTermino then
+                 BloquearMouseTeclado( False );
            end;
 
         except

@@ -47,6 +47,14 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data:  08/11/2012 - 4.2.3
+-- ACBrTEFD --
+[*] Modificação do método: FinalizarCupom, para:
+    FinalizarCupom( DesbloquearMouseTecladoNoTermino: Boolean = True);  (por:DSA)
+      Isso evita que o mouse e TEclado fiquem desbloqueado no pequeno intervalo
+    entre: FinalizarCupom e ImprimirTransacoesPendentes.
+[*] Inclusão de directivas de compilação para ACBrFramework (Por: Rafael Batiati)
+
 Data:  18/10/2012 - 4.2.2
 -- ACBrTEFDCliSitef --
 [*] Envio do Parametro Documento Vinculado em transações administrativas usando

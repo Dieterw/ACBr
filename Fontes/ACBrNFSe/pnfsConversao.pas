@@ -758,6 +758,7 @@ begin
   1500800: Cidade := 'Ananindeua/PA';
   1505502: Cidade := 'Paragominas/PA';
   1505536: Cidade := 'Parauapebas/PA';
+  1508001: Cidade := 'Tomé-Açu/PA';
 
   2304400: Cidade := 'Fortaleza/CE';
 
@@ -791,6 +792,7 @@ begin
 
   3200607: Cidade := 'Aracruz/ES';
   3202405: Cidade := 'Guarapari/ES';
+  3205002: Cidade := 'Serra/ES';
 
   3300456: Cidade := 'Belford Roxo/RJ';
   3301009: Cidade := 'Campos dos Goytacazes/RJ';
@@ -798,15 +800,19 @@ begin
   3302254: Cidade := 'Itatiaia/RJ';
   3302700: Cidade := 'Marica/RJ';
   3303302: Cidade := 'Niteroi/RJ';
+  3303401: Cidade := 'Nova Friburgo/RJ';
+  3303500: Cidade := 'Nova Iguaçu/RJ';
   3303955: Cidade := 'Pinheiral/RJ';
   3304508: Cidade := 'Rio das Flores/RJ';
   3304557: Cidade := 'Rio de Janeiro/RJ';
   3305505: Cidade := 'Saquarema/RJ';
+  3306305: Cidade := 'Volta Redonda/RJ';
 
   3501608: Cidade := 'Americana/SP';
   3503208: Cidade := 'Araraquara/SP';
   3503307: Cidade := 'Araras/SP';
   3506359: Cidade := 'Bertioga/SP';
+  3509502: Cidade := 'Campinas/SP';
   3510104: Cidade := 'Candido Rodrigues/SP';
   3511300: Cidade := 'Cedral/SP';
   3513009: Cidade := 'Cotia/SP';
@@ -818,6 +824,8 @@ begin
   3524709: Cidade := 'Jaguariuna/SP';
   3525300: Cidade := 'Jau/SP';
   3525904: Cidade := 'Jundiai/SP';
+  3526704: Cidade := 'Leme/SP';
+  3529005: Cidade := 'Marília/SP';
   3529401: Cidade := 'Maua/SP';
   3530508: Cidade := 'Mococa/SP';
   3530607: Cidade := 'Mogi das Cruzes/SP';
@@ -829,6 +837,7 @@ begin
   3542602: Cidade := 'Registro/SP';
   3543402: Cidade := 'Ribeirão Preto/SP';
   3543907: Cidade := 'Rio Claro/SP';
+  3547304: Cidade := 'Santana de Parnaíba/SP';
   3547809: Cidade := 'Santo Andre/SP';
   3548500: Cidade := 'Santos/SP';
   3548708: Cidade := 'São Bernardo do Campos/SP';
@@ -837,6 +846,7 @@ begin
   3549805: Cidade := 'São José do Rio Preto/SP';
   3549904: Cidade := 'São José dos Campos/SP';
   3550308: Cidade := 'São Paulo/SP';
+  3551009: Cidade := 'São Vicente/SP';
   3554003: Cidade := 'Tatui/SP';
   3556701: Cidade := 'Vinhedo/SP';
   3557105: Cidade := 'Votuporanga/SP';
@@ -920,6 +930,7 @@ begin
   4314902: Cidade := 'Porto Alegre/RS';
   4318002: Cidade := 'São Borja/RS';
   4318705: Cidade := 'Sao Leopoldo/RS';
+  4323002: Cidade := 'Viamão/RS';
 
   5006200: Cidade := 'Nova Andradina/MS';
 

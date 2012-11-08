@@ -74,6 +74,7 @@ type
 'ImprimirDetalhamentoEspecifico = 1'+#13+
 'TamanhoCampoCodigo             = 0'+#13+
 'TamanhoFonte_ANTT              = 10'+#13+
+'MostrarSetup                   = 0'+#13+
 #13+
 '[PROPRIEDADEs_DANFe_FORTES]'+#13+
 '# FonteDANFE                     = fdArial'+#13+
@@ -185,6 +186,7 @@ begin
             ImprimirDetalhamentoEspecifico := Ini.ReadBool('PROPRIEDADEs_DANFe_RAVECB','ImprimirDetalhamentoEspecifico' ,true);
             TamanhoCampoCodigo             := Ini.ReadInteger('PROPRIEDADEs_DANFe_RAVECB','TamanhoCampoCodigo' ,10);
             TamanhoFonte_ANTT              := Ini.ReadInteger('PROPRIEDADES_DANFe_RAVE','TamanhoFonte_ANTT' ,10);
+            MostrarSetup                   := Ini.ReadBool('PROPRIEDADEs_DANFe_RAVECB','MostrarSetup' ,false);
          end;
 
          with ACBrNFeDANFeRL1 do

@@ -48,6 +48,10 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   08/11/12 (João Henrique)
+---------------
+[+] Inclusão da propriedade MostrarSetup (padrão FALSE) no componente Danfe Rave Code Base.     
+
 Alterações   31/10/12 (Regys Silveira)
 ---------------
 [*] Ajuste para poder escolher entre enviar email com thread ou sem thread

@@ -161,6 +161,7 @@ type
     FProConsultaNFSe: String;
     FProCancelaNFSe: String;
     FProGerarNFSe: String;
+    FConsultaLoteAposEnvio: Boolean;
 
     procedure SetAmbiente(AValue: TpcnTipoAmbiente);
     procedure SetTentativas(const Value: Integer);
@@ -196,6 +197,7 @@ type
     property NameSpace: String read FNameSpace;
     property SenhaWeb: AnsiString read FSenhaWeb write FSenhaWeb;
     property UserWeb: String read FUserWeb write FUserWeb;
+    property ConsultaLoteAposEnvio: Boolean read FConsultaLoteAposEnvio write FConsultaLoteAposEnvio;
 
     // Schemas
     property VersaoCabecalho: String read FVersaoCabecalho;
@@ -479,6 +481,7 @@ begin
  FVersaoSoap    := '';
  FIdentificador := 'Id';
  FNameSpace     := '';
+ FConsultaLoteAposEnvio := True;
 end;
 
 procedure TWebServicesConf.SetAmbiente(AValue: TpcnTipoAmbiente);

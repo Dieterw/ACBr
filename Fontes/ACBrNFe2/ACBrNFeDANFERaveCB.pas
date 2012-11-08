@@ -62,6 +62,7 @@ type
      FTamanhoFonte_ANTT: integer;
      FFonte : TFont;
      FEspessuraBorda: Integer;
+    FMostrarSetup: boolean;
 
      function SeSenaoJPEG(ACondicao: Boolean; ATrue, AFalse: TJPEGImage): TJPEGImage;
    public
@@ -76,6 +77,7 @@ type
      property TamanhoFonte_ANTT:integer read FTamanhoFonte_ANTT write FTamanhoFonte_ANTT;
      property Fonte:TFont read FFonte write FFonte;
      property EspessuraBorda:Integer read FEspessuraBorda write FEspessuraBorda;
+     property MostrarSetup: boolean read FMostrarSetup write FMostrarSetup;
   end;
 
 implementation
@@ -89,6 +91,7 @@ begin
   FTamanhoCampoCodigo:=0;
   FTamanhoFonte_ANTT:=10;
   FEspessuraBorda:=2;
+  FMostrarSetup:=False;
 end;
 
 destructor TACBrNFeDANFERaveCB.Destroy;
@@ -134,6 +137,7 @@ begin
                        NotaUtil.SeSenao((TipoDANFE=tiRetrato),poPortrait,poLandScape),
                        NotaUtil.SeSenao(MostrarPreview,tsPreview,tsPrint),
                        MostrarStatus,
+                       MostrarSetup,
                        NumCopias,
                        Impressora,
                        '',
@@ -209,6 +213,7 @@ begin
                        NotaUtil.SeSenao((TipoDANFE=tiRetrato),poPortrait,poLandScape),
                        tsPDF,
                        MostrarStatus,
+                       MostrarSetup,
                        NumCopias,
                        Impressora,
                        NomeArq,
@@ -276,6 +281,7 @@ begin
                        NotaUtil.SeSenao((TipoDANFE=tiRetrato),poPortrait,poLandScape),
                        NotaUtil.SeSenao(MostrarPreview,tsPreview,tsPrint),
                        MostrarStatus,
+                       MostrarSetup,
                        NumCopias,
                        Impressora,
                        '',
@@ -334,6 +340,7 @@ begin
                        NotaUtil.SeSenao((TipoDANFE=tiRetrato),poPortrait,poLandScape),
                        tsPDF,
                        MostrarStatus,
+                       MostrarSetup,
                        NumCopias,
                        Impressora,
                        NomeArq,

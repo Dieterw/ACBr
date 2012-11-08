@@ -47,6 +47,13 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Alterações   08/11/2012 (João Henrique)
+---------------
+[+] Incluido propriedade Webservices->ConsultarLoteAposEnvio (valor padrão TRUE).
+    Alguns servidores não processam o lote logo após o envio, e o componente fica
+    tentando obter o processamento em vão. Com essa propriedade é possível controlar
+    essas situações.
+
 Alterações   20/07/2012 (Italo Jurisato Junior)
 ---------------
 [+] Diponibilizado o pacote de instalação do DANFSE em Fortes Report, 

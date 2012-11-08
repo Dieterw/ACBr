@@ -1334,29 +1334,32 @@ begin
    raise Exception.Create(Self.Enviar.Msg);
   end;
 
- Self.ConsSitLote.Cnpj               := TACBrNFSe( FACBrNFSe ).NotasFiscais.Items[0].NFSe.Prestador.Cnpj;
- Self.ConsSitLote.InscricaoMunicipal := TACBrNFSe( FACBrNFSe ).NotasFiscais.Items[0].NFSe.Prestador.InscricaoMunicipal;
- Self.ConsSitLote.Protocolo          := Self.Enviar.Protocolo;
+ if TACBrNFSe( FACBrNFSe ).Configuracoes.WebServices.ConsultaLoteAposEnvio then
+ begin
+   Self.ConsSitLote.Cnpj               := TACBrNFSe( FACBrNFSe ).NotasFiscais.Items[0].NFSe.Prestador.Cnpj;
+   Self.ConsSitLote.InscricaoMunicipal := TACBrNFSe( FACBrNFSe ).NotasFiscais.Items[0].NFSe.Prestador.InscricaoMunicipal;
+   Self.ConsSitLote.Protocolo          := Self.Enviar.Protocolo;
 
- Self.ConsLote.Protocolo := Self.Enviar.Protocolo;
+   Self.ConsLote.Protocolo := Self.Enviar.Protocolo;
 
- // Alterado por Akai L. Massao Aihara
- if not (TACBrNFSe( FACBrNFSe ).Configuracoes.WebServices.Provedor in [profintelISS, proSaatri])
-  then begin
-   if not (Self.ConsSitLote.Executar)
+   // Alterado por Akai L. Massao Aihara
+   if not (TACBrNFSe( FACBrNFSe ).Configuracoes.WebServices.Provedor in [profintelISS, proSaatri])
+    then begin
+     if not (Self.ConsSitLote.Executar)
+      then begin
+       if Assigned(TACBrNFSe( FACBrNFSe ).OnGerarLog)
+        then TACBrNFSe( FACBrNFSe ).OnGerarLog(Self.ConsSitLote.Msg);
+       raise Exception.Create(Self.ConsSitLote.Msg);
+      end;
+    end;
+
+   if not (Self.ConsLote.Executar)
     then begin
      if Assigned(TACBrNFSe( FACBrNFSe ).OnGerarLog)
-      then TACBrNFSe( FACBrNFSe ).OnGerarLog(Self.ConsSitLote.Msg);
-     raise Exception.Create(Self.ConsSitLote.Msg);
+      then TACBrNFSe( FACBrNFSe ).OnGerarLog(Self.ConsLote.Msg);
+     raise Exception.Create(Self.ConsLote.Msg);
     end;
-  end;
-
- if not (Self.ConsLote.Executar)
-  then begin
-   if Assigned(TACBrNFSe( FACBrNFSe ).OnGerarLog)
-    then TACBrNFSe( FACBrNFSe ).OnGerarLog(Self.ConsLote.Msg);
-   raise Exception.Create(Self.ConsLote.Msg);
-  end;
+ end;
 
  Result := true;
 end;

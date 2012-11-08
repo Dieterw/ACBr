@@ -104,6 +104,7 @@ type
      FExpandirLogoMarca: boolean;
      FMostrarStatus: Boolean;
      FNFeCancelada: Boolean;
+     FMostrarSetup: boolean;
   public
      FCurrentPage, FPageNum, FNFIndex, FNumNFe:Integer;
      FChaveNFe, FNumeroNF, FSerie: String;
@@ -149,6 +150,7 @@ type
      property FormularioContinuo:boolean read FFormularioContinuo write FFormularioContinuo;
      property ExpandirLogoMarca:boolean read FExpandirLogoMarca write FExpandirLogoMarca default false;
      property MostrarStatus:boolean read FMostrarStatus write FMostrarStatus default true;
+     property MostrarSetup:boolean read FMostrarSetup write FMostrarSetup default true;
      property NFeCancelada:boolean read FNFeCancelada write FNFeCancelada default false;
   end;
 
@@ -171,6 +173,8 @@ type
      FFormularioContinuo: boolean;
      FExpandirLogoMarca: boolean;
      FMostrarStatus: Boolean;
+     FMostrarPreview: boolean;
+     FMostrarSetup: boolean;
   public
      FCurrentPage, FPageNum, FNFIndex, FNumNFe:Integer;
      FChaveNFe, FNumeroNF, FSerie: String;
@@ -200,6 +204,7 @@ type
      property FormularioContinuo:boolean read FFormularioContinuo write FFormularioContinuo;
      property ExpandirLogoMarca:boolean read FExpandirLogoMarca write FExpandirLogoMarca default false;
      property MostrarStatus:boolean read FMostrarStatus write FMostrarStatus default true;
+     property MostrarSetup:boolean read FMostrarSetup write FMostrarSetup default true;
   end;
 
 
@@ -214,6 +219,7 @@ procedure ImprimirDANFeRave(aACBrNFe:TACBrNFe;
                             aOrientacaoPapel:TOrientation;
                             aOpcaoDeSaida:TTipoSaida=tsPreview;
                             aMostrarStatus:boolean=true;
+                            aMostrarSetup:boolean=true;
                             aNumeroDeCopias:Integer=1;
                             aNomeImpressora:string='';
                             aArquivoSaida:String='';
@@ -250,6 +256,7 @@ procedure ImprimirEventoRave(aACBrNFe:TACBrNFe;
                             aOrientacaoPapel:TOrientation;
                             aOpcaoDeSaida:TTipoSaida=tsPreview;
                             aMostrarStatus:boolean=true;
+                            aMostrarSetup:boolean=true;
                             aNumeroDeCopias:Integer=1;
                             aNomeImpressora:string='';
                             aArquivoSaida:String='';
@@ -281,6 +288,7 @@ procedure ImprimirDANFeRave(aACBrNFe:TACBrNFe;
                             aOrientacaoPapel:TOrientation;
                             aOpcaoDeSaida:TTipoSaida=tsPreview;
                             aMostrarStatus:boolean=true;
+                            aMostrarSetup:boolean=true;
                             aNumeroDeCopias:Integer=1;
                             aNomeImpressora:string='';
                             aArquivoSaida:String='';
@@ -405,7 +413,9 @@ begin
     //DANFeRave.SystemPrinter.Collate := True;
     DANFeRave.SystemPrinter.UnitsFactor:=25.4;
     DANFeRave.SystemPrinter.Orientation:=aOrientacaoPapel;
-    DANFeRave.SystemSetups:=[ssAllowCopies,ssAllowCollate,ssAllowDuplex,ssAllowDestPreview,ssAllowDestPrinter,ssAllowDestFile,ssAllowPrinterSetup,ssAllowPreviewSetup];
+    DANFeRave.SystemSetups:=[ssAllowSetup,ssAllowCopies,ssAllowCollate,ssAllowDuplex,ssAllowDestPreview,ssAllowDestPrinter,ssAllowDestFile,ssAllowPrinterSetup,ssAllowPreviewSetup];
+    if not aMostrarSetup then
+       DANFeRave.SystemSetups:=DANFeRave.SystemSetups - [ssAllowSetup];
     case aOpcaoDeSaida of
        tsPrint: DANFeRave.DefaultDest:=rdPrinter;
        tsPreview: DANFeRave.DefaultDest:=rdPreview;
@@ -441,6 +451,7 @@ procedure ImprimirEventoRave(aACBrNFe:TACBrNFe;
                             aOrientacaoPapel:TOrientation;
                             aOpcaoDeSaida:TTipoSaida=tsPreview;
                             aMostrarStatus:boolean=true;
+                            aMostrarSetup:boolean=true;
                             aNumeroDeCopias:Integer=1;
                             aNomeImpressora:string='';
                             aArquivoSaida:String='';
@@ -528,7 +539,9 @@ begin
     //EventoRave.SystemPrinter.Collate := True;
     EventoRave.SystemPrinter.UnitsFactor:=25.4;
     EventoRave.SystemPrinter.Orientation:=aOrientacaoPapel;
-    EventoRave.SystemSetups:=[ssAllowCopies,ssAllowCollate,ssAllowDuplex,ssAllowDestPreview,ssAllowDestPrinter,ssAllowDestFile,ssAllowPrinterSetup,ssAllowPreviewSetup];
+    EventoRave.SystemSetups:=[ssAllowSetup,ssAllowCopies,ssAllowCollate,ssAllowDuplex,ssAllowDestPreview,ssAllowDestPrinter,ssAllowDestFile,ssAllowPrinterSetup,ssAllowPreviewSetup];
+    if not aMostrarSetup then
+       DANFeRave.SystemSetups:=DANFeRave.SystemSetups - [ssAllowSetup];
     case aOpcaoDeSaida of
        tsPrint: EventoRave.DefaultDest:=rdPrinter;
        tsPreview: EventoRave.DefaultDest:=rdPreview;

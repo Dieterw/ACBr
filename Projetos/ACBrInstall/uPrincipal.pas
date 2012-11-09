@@ -418,7 +418,7 @@ begin
     ArqIni.WriteBool('CONFIG', 'FecharTortoise', ckbFecharTortoise.Checked);
     ArqIni.WriteBool('CONFIG', 'InstalarCapicom', ckbInstalarCapicom.Checked);
     ArqIni.WriteBool('CONFIG', 'InstalarOpenSSL', ckbInstalarOpenSSL.Checked);
-    ArqIni.WriteBool('CONFIG', 'UtilizarOpenSSL', ckbInstalarOpenSSL.Checked);
+    ArqIni.WriteBool('CONFIG', 'UtilizarOpenSSL', ckbUtilizarOpenSSL.Checked);
 
     for I := 0 to frameDpk.Pacotes.Count - 1 do
       ArqIni.WriteBool('PACOTES', frameDpk.Pacotes[I].Caption, frameDpk.Pacotes[I].Checked);

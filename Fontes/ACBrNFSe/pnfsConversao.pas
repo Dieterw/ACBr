@@ -556,6 +556,7 @@ begin
   2910727, // Eunapolis/BA
   3115300, // Cataguases/MG
   3137601, // Lagoa Santa/MG
+  3143906, // Muriae/MG
   3147105, // Para de Minas/MG
   3154606, // Ribeirao das Neves/MG
   3169901, // Uba/MG
@@ -783,6 +784,7 @@ begin
   3131307: Cidade := 'Ipatinga/MG';
   3137601: Cidade := 'Lagoa Santa/MG';
   3143302: Cidade := 'Montes Claros/MG';
+  3143906: Cidade := 'Muriae/MG';
   3147105: Cidade := 'Para de Minas/MG';
   3148103: Cidade := 'Patrocinio/MG';
   3154606: Cidade := 'Ribeirão das Neves/MG';

@@ -361,6 +361,7 @@ object frmDemo_ACBrNFSe: TfrmDemo_ACBrNFSe
               'Mococa/3530508/SP'
               'Mogi das Cruzes/3530607/SP'
               'Montes Claros/3143302/MG'
+              'Muriae/3143906/MG'
               'Niteroi/3303302/RJ'
               'Olimpia/3533908/SP'
               'Palhoca/4211900/SC'

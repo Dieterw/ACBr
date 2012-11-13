@@ -772,6 +772,7 @@ begin
 
   2910727: Cidade := 'Eunapolis/BA';
   2910800: Cidade := 'Feira de Santana/BA';
+  2927408: Cidade := 'Salvador/BA';
 
   3104205: Cidade := 'Arcos/MG';
   3105608: cidade := 'Barbacena/MG';
@@ -822,6 +823,7 @@ begin
   3516200: Cidade := 'Franca/SP';
   3518800: Cidade := 'Guarulhos/SP';
   3519071: Cidade := 'Hortolandia/SP';
+  3523503: Cidade := 'Itatinga/SP';
   3523909: Cidade := 'Itu/SP';
   3524709: Cidade := 'Jaguariuna/SP';
   3525300: Cidade := 'Jau/SP';
@@ -839,7 +841,9 @@ begin
   3542602: Cidade := 'Registro/SP';
   3543402: Cidade := 'Ribeirão Preto/SP';
   3543907: Cidade := 'Rio Claro/SP';
+  3545803: Cidade := 'Santa Barbara D’oeste/SP';
   3547304: Cidade := 'Santana de Parnaíba/SP';
+  3547700: Cidade := 'Santo Anastácio/SP';
   3547809: Cidade := 'Santo Andre/SP';
   3548500: Cidade := 'Santos/SP';
   3548708: Cidade := 'São Bernardo do Campos/SP';
@@ -850,6 +854,7 @@ begin
   3550308: Cidade := 'São Paulo/SP';
   3551009: Cidade := 'São Vicente/SP';
   3554003: Cidade := 'Tatui/SP';
+  3554805: Cidade := 'Tremembé/SP';
   3556701: Cidade := 'Vinhedo/SP';
   3557105: Cidade := 'Votuporanga/SP';
 

@@ -1527,7 +1527,9 @@ function TWebServices.LinkNFSeGerada(ANumeroNFSe: Integer;
   ACodVerificacao: String): String;
 begin
  Result := FProvedorClass.GetLinkNFSe(FConfiguracoes.WebServices.CodigoMunicipio,
-                                      ANumeroNFSe, ACodVerificacao);
+                                      ANumeroNFSe,
+                                      ACodVerificacao,
+                                      FConfiguracoes.WebServices.AmbienteCodigo);
 end;
 
 { TNFSeEnviarLoteRPS }

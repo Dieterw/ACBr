@@ -809,6 +809,7 @@ begin
   3303955: Cidade := 'Pinheiral/RJ';
   3304508: Cidade := 'Rio das Flores/RJ';
   3304557: Cidade := 'Rio de Janeiro/RJ';
+  3304904: Cidade := 'São Gonçalo/RJ';
   3305505: Cidade := 'Saquarema/RJ';
   3306305: Cidade := 'Volta Redonda/RJ';
 
@@ -816,6 +817,7 @@ begin
   3503208: Cidade := 'Araraquara/SP';
   3503307: Cidade := 'Araras/SP';
   3506359: Cidade := 'Bertioga/SP';
+  3506508: Cidade := 'Birigui/SP';
   3509502: Cidade := 'Campinas/SP';
   3510104: Cidade := 'Candido Rodrigues/SP';
   3511300: Cidade := 'Cedral/SP';
@@ -834,6 +836,7 @@ begin
   3529401: Cidade := 'Maua/SP';
   3530508: Cidade := 'Mococa/SP';
   3530607: Cidade := 'Mogi das Cruzes/SP';
+  3531803: Cidade := 'Monte Mor/SP';
   3533908: Cidade := 'Olimpia/SP';
   3536505: Cidade := 'Paulinia/SP';
   3538006: Cidade := 'Pindamonhangaba/SP';
@@ -842,7 +845,7 @@ begin
   3542602: Cidade := 'Registro/SP';
   3543402: Cidade := 'Ribeirão Preto/SP';
   3543907: Cidade := 'Rio Claro/SP';
-  3545803: Cidade := 'Santa Barbara D’oeste/SP';
+  3545803: Cidade := 'Santa Barbara D oeste/SP';
   3547304: Cidade := 'Santana de Parnaíba/SP';
   3547700: Cidade := 'Santo Anastácio/SP';
   3547809: Cidade := 'Santo Andre/SP';
@@ -953,6 +956,10 @@ begin
   5201108: Cidade := 'Anapolis/GO';
   5201405: Cidade := 'Aparecida de Goiania/GO';
   5208707: Cidade := 'Goiânia/GO';
+
+
+
+
 
  end;
  Result := Cidade;

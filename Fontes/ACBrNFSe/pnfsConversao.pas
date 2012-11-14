@@ -780,6 +780,7 @@ begin
   3106200: Cidade := 'Belo Horizonte/MG';
   3106705: Cidade := 'Betim/MG';
   3115300: Cidade := 'Cataguases/MG';
+  3116704: Cidade := 'Coimbra/MG';
   3118601: Cidade := 'Contagem/MG';
   3126109: Cidade := 'Formiga/MG';
   3131307: Cidade := 'Ipatinga/MG';

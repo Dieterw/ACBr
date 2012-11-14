@@ -550,8 +550,8 @@ begin
   1500800, // Ananindeua/PA
   1505536, // Parauapebas/PA
   2304400, // Fortaleza/CE
-  2504106, // Caruaru/CE
   2507507, // Joao Pessoa/PB
+  2604106, // Caruaru/PE
   2704302, // Maceio/AL
   2910727, // Eunapolis/BA
   3115300, // Cataguases/MG
@@ -763,9 +763,9 @@ begin
 
   2304400: Cidade := 'Fortaleza/CE';
 
-  2504106: Cidade := 'Caruaru/CE';
   2507507: Cidade := 'João Pessoa/PB';
 
+  2604106: Cidade := 'Caruaru/PE';
   2611606: Cidade := 'Recife/PE';
 
   2704302: Cidade := 'Maceio/AL';

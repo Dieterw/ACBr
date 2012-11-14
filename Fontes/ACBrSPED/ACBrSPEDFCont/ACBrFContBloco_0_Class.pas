@@ -55,7 +55,7 @@ type
     destructor Destroy; override; /// Destroy
     procedure LimpaRegistros;
 
-    function WriteRegistro0000: AnsiString;
+    function WriteRegistro0000: String;
 
     property Registro0000: TRegistro0000     read FRegistro0000 write FRegistro0000;
   end;
@@ -83,7 +83,7 @@ begin
 
 end;
 
-function TBloco_0.WriteRegistro0000: AnsiString;
+function TBloco_0.WriteRegistro0000: String;
 begin
   Result := '';
 

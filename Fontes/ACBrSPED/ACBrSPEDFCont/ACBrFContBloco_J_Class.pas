@@ -57,9 +57,9 @@ type
     destructor Destroy; override; /// Destroy
     procedure LimpaRegistros;
 
-    function WriteRegistroJ001: AnsiString;
-    function WriteRegistroJ930: AnsiString;
-    function WriteRegistroJ990: AnsiString;
+    function WriteRegistroJ001: String;
+    function WriteRegistroJ930: String;
+    function WriteRegistroJ990: String;
 
     property RegistroJ001: TRegistroJ001     read fRegistroJ001 write fRegistroJ001;
     property RegistroJ930: TRegistroJ930List read fRegistroJ930 write fRegistroJ930;
@@ -94,7 +94,7 @@ begin
   FRegistroJ990.QTD_LIN_J := 0;
 end;
 
-function TBloco_J.WriteRegistroJ001: AnsiString;
+function TBloco_J.WriteRegistroJ001: String;
 begin
   Result := '';
 
@@ -114,10 +114,10 @@ begin
   end;
 end;
 
-function TBloco_J.WriteRegistroJ930: AnsiString;
+function TBloco_J.WriteRegistroJ930: String;
 var
 intFor: integer;
-strRegistroJ930: AnsiString;
+strRegistroJ930: String;
 begin
   strRegistroJ930 := '';
 
@@ -143,7 +143,7 @@ begin
   Result := strRegistroJ930;
 end;
 
-function TBloco_J.WriteRegistroJ990: AnsiString;
+function TBloco_J.WriteRegistroJ990: String;
 begin
   Result := '';
 

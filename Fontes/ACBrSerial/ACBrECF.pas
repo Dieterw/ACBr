@@ -135,7 +135,7 @@ TACBrECF = class( TACBrComponent )
     fsRFD : TACBrRFD ;
     fsAAC : TACBrAAC ;
     fsEADInterno : TACBrEAD ;
-    fsEAD : TACBrEAD ;       /// Classe usada para AssinarArquivo com assinatura EAD.
+    fsEAD : TACBrEAD ;       { Classe usada para AssinarArquivo com assinatura EAD. }
 
     fOnAntesAbreCupom : TACBrECFOnAbreCupom;
     fOnDepoisAbreCupom  : TACBrECFOnAbreCupom;
@@ -1976,8 +1976,7 @@ end;
 
 function TACBrECF.MontaDadosReducaoZ: AnsiString;
 begin
-  ComandoLOG := 'MontaDadosReducaoZ' ;
-  Result := fsECF.MontaDadosReducaoZ;
+  Result := fsECF.DadosReducaoZClass.MontaDadosReducaoZ;
 end;
 
 function TACBrECF.GetIdentificaConsumidorRodapeClass: Boolean;
@@ -2174,153 +2173,8 @@ begin
 end;
 
 function TACBrECF.GetDadosReducaoZ: AnsiString;
-Var
-  I    : Integer ;
-  Aliq : TACBrECFAliquota ;
-  FPG  : TACBrECFFormaPagamento ;
-  CNF  : TACBrECFComprovanteNaoFiscal ;
-  RG   : TACBrECFRelatorioGerencial ;
 begin
-  { Alimenta a class com os dados atuais do ECF }
-  with fsECF.DadosReducaoZClass do
-  begin
-     // Zerar variaveis
-     Clear ;
-
-     { REDUÇÃO Z }
-     try DataDoMovimento  := Self.DataMovimento; except end ;
-     try DataDaImpressora := Self.DataHora;      except end ;
-     try NumeroDeSerie    := Self.NumSerie;      except end ;
-     try NumeroDeSerieMFD := Self.NumSerieMFD;   except end ;
-     try NumeroDoECF      := Self.NumECF;        except end ;
-     try NumeroDaLoja     := Self.NumLoja;       except end ;
-     try NumeroCOOInicial := Self.NumCOOInicial; except end ;
-
-     { CONTADORES }
-     try COO  := StrToIntDef(Self.NumCOO,0);  except end ;
-     try GNF  := StrToIntDef(Self.NumGNF,0);  except end ;
-     try CRO  := StrToIntDef(Self.NumCRO,0);  except end ;
-     try CRZ  := StrToIntDef(Self.NumCRZ,0);  except end ;
-     try CCF  := StrToIntDef(Self.NumCCF,0);  except end ;
-     try CDC  := StrToIntDef(Self.NumCDC,0);  except end ;
-     try CFC  := StrToIntDef(Self.NumCFC,0);  except end ;
-     try GRG  := StrToIntDef(Self.NumGRG,0);  except end ;
-     try GNFC := StrToIntDef(Self.NumGNFC,0); except end ;
-     try CFD  := StrToIntDef(Self.NumCFD,0);  except end ;
-     try NCN  := StrToIntDef(Self.NumNCN,0);  except end ;
-     try CCDC := StrToIntDef(Self.NumCCDC,0); except end ;
-
-     { TOTALIZADORES }
-     try ValorGrandeTotal  := Self.GrandeTotal;             except end ;
-     try ValorVendaBruta   := Self.VendaBruta;              except end ;
-     try CancelamentoICMS  := Self.TotalCancelamentos;      except end ;
-     try DescontoICMS      := Self.TotalDescontos;          except end ;
-     try CancelamentoISSQN := Self.TotalCancelamentosISSQN; except end ;
-     try DescontoISSQN     := Self.TotalDescontosISSQN;     except end ;
-     try AcrescimoICMS     := Self.TotalAcrescimos;         except end ;
-     try AcrescimoISSQN    := Self.TotalAcrescimosISSQN;    except end ;
-     try CancelamentoOPNF  := Self.TotalCancelamentosOPNF;  except end ;
-     try DescontoOPNF      := Self.TotalDescontosOPNF;      except end ;
-     try AcrescimoOPNF     := Self.TotalAcrescimosOPNF;     except end ;
-//   try TotalISSQN        := Self.TotalNaoTributadoISSQN; //Total ISSQN e Total Não tributado são coisas diferentes... ??? except end ;
-
-     { Copiando objetos de ICMS e ISS}
-     try
-        CarregaAliquotas;
-        LerTotaisAliquota;
-
-        TotalISSQN := 0;
-        TotalICMS  := 0;
-
-        for I := 0 to Self.Aliquotas.Count - 1 do
-        begin
-           Aliq := TACBrECFAliquota.Create ;
-           Aliq.Assign( Self.Aliquotas[I] );
-
-           TodasAliquotas.Add( Aliq );
-
-           if Self.Aliquotas[I].Tipo = 'S' then
-           begin
-              ISSQN.Add(Aliq);
-              try TotalISSQN := TotalISSQN + Aliq.Total; except end;
-           end
-           else
-           begin
-              ICMS.Add(Aliq);
-              try TotalICMS  := TotalICMS + Aliq.Total; except end;
-           end;
-        end;
-     except
-     end;
-
-     { ICMS }
-     try SubstituicaoTributariaICMS  := Self.TotalSubstituicaoTributaria; except end ;
-     try IsentoICMS                  := Self.TotalIsencao;                except end ;
-     try NaoTributadoICMS            := Self.TotalNaoTributado;           except end ;
-
-     { ISSQN }
-     try SubstituicaoTributariaISSQN := Self.TotalSubstituicaoTributariaISSQN; except end ;
-     try IsentoISSQN                 := Self.TotalIsencaoISSQN;                except end ;
-     try NaoTributadoISSQN           := Self.TotalNaoTributadoISSQN;           except end ;
-
-     VendaLiquida := VendaBruta -
-                     CancelamentoICMS -
-                     DescontoICMS -
-                     TotalISSQN -
-                     CancelamentoISSQN -
-                     DescontoISSQN;
-
-     { TOTALIZADORES NÃO FISCAIS }
-     try
-        CarregaComprovantesNaoFiscais ;
-        LerTotaisComprovanteNaoFiscal ;
-
-        For I := 0 to Self.ComprovantesNaoFiscais.Count-1 do
-        begin
-           CNF := TACBrECFComprovanteNaoFiscal.Create ;
-           CNF.Assign( Self.ComprovantesNaoFiscais[I] );
-
-           TotalizadoresNaoFiscais.Add( CNF ) ;
-        end ;
-
-        TotalOperacaoNaoFiscal := Self.TotalNaoFiscal;
-     except
-     end ;
-
-     { RELATÓRIO GERENCIAL }
-     try
-        CarregaRelatoriosGerenciais ;
-
-        For I := 0 to Self.RelatoriosGerenciais.Count-1 do
-        begin
-           RG := TACBrECFRelatorioGerencial.Create ;
-           RG.Assign( Self.RelatoriosGerenciais[I] );
-
-           RelatorioGerencial.Add( RG ) ;
-        end ;
-     except
-     end ;
-
-     { MEIOS DE PAGAMENTO }
-     try
-        CarregaFormasPagamento ;
-        LerTotaisFormaPagamento ;
-
-        For I := 0 to Self.FormasPagamento.Count-1 do
-        begin
-           FPG := TACBrECFFormaPagamento.Create ;
-           FPG.Assign( Self.FormasPagamento[I] );
-
-           MeiosDePagamento.Add( FPG ) ;
-        end ;
-
-        TotalTroco := Self.TotalTroco;
-     except
-     end ;
-  end;
-
-  ///// Montando o INI com as informações /////
-  Result := MontaDadosReducaoZ;
+  Result := fsECF.DadosReducaoZ;
 end;
 
 function TACBrECF.GetDadosReducaoZClass: TACBrECFDadosRZ;

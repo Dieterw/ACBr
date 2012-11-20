@@ -160,8 +160,8 @@
         <UnitName Value="ECFTeste1"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="18"/>
-        <CursorPos X="5" Y="28"/>
+        <TopLine Value="19"/>
+        <CursorPos X="16" Y="27"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -279,13 +279,29 @@
     </Other>
   </CompilerOptions>
   <Debugging>
+    <BreakPoints Count="2">
+      <Item1>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="..\..\..\Fontes\ACBrSerial\ACBrECFBematech.pas"/>
+        <Line Value="2428"/>
+      </Item1>
+      <Item2>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="..\..\..\Fontes\ACBrSerial\ACBrECFBematech.pas"/>
+        <Line Value="2458"/>
+      </Item2>
+    </BreakPoints>
     <Watches Count="1">
       <Item1>
         <Expression Value="R"/>
         <DisplayStyle Value="wdfString"/>
       </Item1>
     </Watches>
-    <Exceptions Count="3">
+    <Exceptions Count="9">
       <Item1>
         <Name Value="EACBrECFSemResposta"/>
       </Item1>
@@ -295,6 +311,24 @@
       <Item3>
         <Name Value="EACBrECFErro"/>
       </Item3>
+      <Item4>
+        <Name Value="ESynaSerError"/>
+      </Item4>
+      <Item5>
+        <Name Value="EStringListError"/>
+      </Item5>
+      <Item6>
+        <Name Value="EACBrECFNaoInicializado"/>
+      </Item6>
+      <Item7>
+        <Name Value="EACBrECFTimeOut"/>
+      </Item7>
+      <Item8>
+        <Name Value="EACBrECFOcupado"/>
+      </Item8>
+      <Item9>
+        <Name Value="EACBrECFCMDInvalido"/>
+      </Item9>
     </Exceptions>
   </Debugging>
   <EditorMacros Count="0"/>

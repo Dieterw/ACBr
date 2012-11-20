@@ -2331,6 +2331,7 @@ Var
   Continuar: Boolean;
 
 begin
+  Continuar := True;
   DoOnChequeEstado(chqIdle, Continuar);
 
   Banco      := IntToStrZero( StrToInt(Banco), 3) ;
@@ -4430,20 +4431,15 @@ end;
 
 
 function TACBrECFDaruma.GetDadosUltimaReducaoZ: AnsiString;
-Var RetCmd : AnsiString ;
-    I:Integer;
-    S:String;
-//    VBruta,TOPNF,V:Double;
-    Aliq : TACBrECFAliquota ;
-    FPG  : TACBrECFFormaPagamento ;
-    CNF  : TACBrECFComprovanteNaoFiscal ;
-    RG   : TACBrECFRelatorioGerencial ;
-    GTInicial:Double;
+Var RetCmd, S, SS : AnsiString ;
+    I :Integer;
+    AliqZ : TACBrECFAliquota ;
+    FPGZ  : TACBrECFFormaPagamento ;
+    CNFZ  : TACBrECFComprovanteNaoFiscal ;
+    RGZ   : TACBrECFRelatorioGerencial ;
+    GTInicial :Double;
 begin
-//Fernando Gutierres Damaceno( lampada )
-//17/09/2009
 //Comando 140 - Retorno:1164 caracteres
-
 //                         INICIO    TAM
 //Data do Movimento 8     ( 1         08 )
 //Grande Total 18         ( 9         18 )
@@ -4491,164 +4487,111 @@ begin
 //CDC 4                   ( 1001      04 )
 //CON 80                  ( 1005      80 )
 //CER 80                  ( 1085      80 )
-  if fpMFD then
+  if not fpMFD then
   begin
-    try
-      RetCmd := RetornaInfoECF('140');
-    except
-      Result := '';
-      Exit;
-    end;
+    Result := '';
+    exit ;
+  end;
 
-    { Alimenta a class com os dados atuais do ECF }
-    with fpDadosReducaoZClass do
+  // Zerar variaveis e inicializa Dados do ECF //
+  InitDadosUltimaReducaoZ;
+
+  if not Assigned( fpAliquotas ) then
+    CarregaAliquotas ;
+
+  if not Assigned( fpComprovantesNaoFiscais ) then
+    CarregaComprovantesNaoFiscais ;
+
+  if not Assigned( fpRelatoriosGerenciais ) then
+    CarregaRelatoriosGerenciais ;
+
+  RetCmd := RetornaInfoECF('140');
+
+  { Alimenta a class com os dados atuais do ECF }
+  with fpDadosReducaoZClass do
+  begin
+    { REDUÇÃO Z }
+    DataDoMovimento := StringToDateTime( copy(RetCmd,1,2)+DateSeparator+
+                                         copy(RetCmd,3,2)+DateSeparator+
+                                         copy(RetCmd,7,2), 'dd/mm/yy' );
+
+    { TOTALIZADORES }
+    ValorGrandeTotal  := RoundTo( StrToFloatDef( copy(RetCmd,  9,18),0) / 100, -2 ) ;
+    GTInicial         := RoundTo( StrToFloatDef( copy(RetCmd, 27,18),0) / 100, -2 ) ;
+    DescontoICMS      := RoundTo( StrToFloatDef( copy(RetCmd, 45,14),0) / 100, -2 ) ;
+    DescontoISSQN     := RoundTo( StrToFloatDef( copy(RetCmd, 59,14),0) / 100, -2 ) ;
+    CancelamentoICMS  := RoundTo( StrToFloatDef( copy(RetCmd, 73,14),0) / 100, -2 ) ;
+    CancelamentoISSQN := RoundTo( StrToFloatDef( copy(RetCmd, 87,14),0) / 100, -2 ) ;
+    AcrescimoICMS     := RoundTo( StrToFloatDef( copy(RetCmd,101,14),0) / 100, -2 ) ;
+    AcrescimoISSQN    := RoundTo( StrToFloatDef( copy(RetCmd,115,14),0) / 100, -2 ) ;
+    DescontoOPNF      := RoundTo( StrToFloatDef( copy(RetCmd,801,14),0) / 100, -2 ) ;
+    CancelamentoOPNF  := RoundTo( StrToFloatDef( copy(RetCmd,815,14),0) / 100, -2 ) ;
+    AcrescimoOPNF     := RoundTo( StrToFloatDef( copy(RetCmd,829,14),0) / 100, -2 ) ;
+    ValorVendaBruta   := RoundTo( ValorGrandeTotal - GTInicial, -2 ) ;
+
+    { CONTADORES }
+    CRO := StrToIntDef(Copy(RetCmd,923, 4),0);
+    CRZ := StrToIntDef(Copy(RetCmd,927, 4),0);
+    COO := StrToIntDef(copy(RetCmd,935, 6),0);
+    GNF := StrToIntDef(Copy(RetCmd,941, 6),0);
+    CCF := StrToIntDef(Copy(RetCmd,947, 6),0);
+    GRG := StrToIntDef(Copy(RetCmd,959, 6),0);
+    CFD := StrToIntDef(Copy(RetCmd,965, 6),0);
+    CFC := StrToIntDef(Copy(RetCmd,985, 4),0);
+    NCN := StrToIntDef(Copy(RetCmd,997, 4),0);
+    CDC := StrToIntDef(Copy(RetCmd,1001,4),0);
+
+    {Copiando objetos de ICMS e ISS}
+    S := Copy(RetCmd,129,224);  // 16 * 14
+    for I := 0 to fpAliquotas.Count - 1 do
     begin
-       // Zerar variaveis
-       Clear ;
+      AliqZ := TACBrECFAliquota.Create ;
+      AliqZ.Assign( fpAliquotas[I] );
+      AliqZ.Total := RoundTo(StrToFloatDef( copy(S,(I*14)+1,14),0) / 100, -2) ;
 
-       { REDUÇÃO Z }
-       DataDoMovimento := StrToDateDef( copy(RetCmd,1,2)+DateSeparator+
-                                        copy(RetCmd,3,2)+DateSeparator+
-                                        copy(RetCmd,7,2),Date );
-       DataDaImpressora := DataHora;
-       NumeroDeSerie    := NumSerie;
-       NumeroDeSerieMFD := NumSerieMFD;
-       NumeroDoECF      := NumECF;
-       NumeroDaLoja     := NumLoja;
-
-       { CONTADORES }
-       COO  := StrToIntDef(copy(RetCmd,935,6),0);
-       GNF  := StrToIntDef(Copy(RetCmd,941,6),0);
-       CRO  := StrToIntDef(Copy(RetCmd,923,4),0);
-       CRZ  := StrToIntDef(Copy(RetCmd,927,4),0);
-       CCF  := StrToIntDef(Copy(RetCmd,947,6),0);
-       CDC  := StrToIntDef(Copy(RetCmd,1001,4),0);
-       CFC  := StrToIntDef(Copy(RetCmd,985,4),0);
-       GRG  := StrToIntDef(Copy(RetCmd,959,6),0);
-       CFD  := StrToIntDef(Copy(RetCmd,965,6),0);
-       NCN  := StrToIntDef(Copy(RetCmd,997,4),0);
-
-       { TOTALIZADORES }
-       GTInicial         := RoundTo( StrToFloatDef( copy(RetCmd,27,18),0) / 100, -2 ) ;
-       ValorGrandeTotal  := RoundTo( StrToFloatDef( copy(RetCmd, 9,18),0) / 100, -2 ) ;
-       ValorVendaBruta   := RoundTo( ValorGrandeTotal - GTInicial, -2 ) ;
-       DescontoICMS      := RoundTo( StrToFloatDef( copy(RetCmd,45,14),0) / 100, -2 ) ;
-       DescontoISSQN     := RoundTo( StrToFloatDef( copy(RetCmd,59,14),0) / 100, -2 ) ;
-       CancelamentoISSQN := RoundTo( StrToFloatDef( copy(RetCmd,87,14),0) / 100, -2 ) ;
-       CancelamentoICMS  := RoundTo( StrToFloatDef( copy(RetCmd,73,14),0) / 100, -2 ) ;
-       AcrescimoICMS     := RoundTo( StrToFloatDef( copy(RetCmd,101,14),0) / 100, -2 ) ;
-       AcrescimoISSQN    := RoundTo( StrToFloatDef( copy(RetCmd,115,14),0) / 100, -2 ) ;
-       DescontoOPNF      := RoundTo( StrToFloatDef( copy(RetCmd,801,14),0) / 100, -2 ) ;
-       CancelamentoOPNF  := RoundTo( StrToFloatDef( copy(RetCmd,815,14),0) / 100, -2 ) ;
-       AcrescimoOPNF     := RoundTo( StrToFloatDef( copy(RetCmd,829,14),0) / 100, -2 ) ;
-
-       {Copiando objetos de ICMS e ISS}
-       try
-         TotalISSQN  := 0;
-         TotalICMS   := 0;
-
-         if not Assigned( fpAliquotas ) then
-            CarregaAliquotas ;
-
-         S := Copy(RetCmd,129,224);
-         for I := 0 to Aliquotas.Count - 1 do
-         begin
-            Aliq := TACBrECFAliquota.Create ;
-            Aliq.Assign( Aliquotas[I] );
-            Aliq.Total := RoundTo(StrToFloatDef( copy(S,(I*14)+1,14),0) / 100, -2) ;
-
-            TodasAliquotas.Add( Aliq );
-
-            if Aliq.Tipo = 'S' then
-            begin
-               ISSQN.Add(Aliq);
-               try TotalISSQN := TotalISSQN + Aliq.Total; except end;
-            end
-            else
-            begin
-               ICMS.Add(Aliq);
-               try TotalICMS  := TotalICMS + Aliq.Total; except end;
-            end;
-         end;
-       except
-       end;
-       { ICMS }
-       SubstituicaoTributariaICMS  := RoundTo( StrToFloatDef(Copy(RetCmd,353,14),0)/100,-2 ) +
-                                      RoundTo( StrToFloatDef(Copy(RetCmd,367,14),0)/100,-2 ) ;
-       IsentoICMS                  := RoundTo( StrToFloatDef(Copy(RetCmd,381,14),0)/100,-2 ) +
-                                      RoundTo( StrToFloatDef(Copy(RetCmd,395,14),0)/100,-2 ) ;
-       NaoTributadoICMS            := RoundTo( StrToFloatDef(Copy(RetCmd,409,14),0)/100,-2 ) +
-                                      RoundTo( StrToFloatDef(Copy(RetCmd,423,14),0)/100,-2 ) ;
-       { ISSQN }
-       SubstituicaoTributariaISSQN := RoundTo( StrToFloatDef(Copy(RetCmd,437,14),0)/100,-2 ) +
-                                      RoundTo( StrToFloatDef(Copy(RetCmd,451,14),0)/100,-2 ) ;
-       IsentoISSQN                 := RoundTo( StrToFloatDef(Copy(RetCmd,465,14),0)/100,-2 ) +
-                                      RoundTo( StrToFloatDef(Copy(RetCmd,479,14),0)/100,-2 ) ;
-       NaoTributadoISSQN           := RoundTo( StrToFloatDef(Copy(RetCmd,493,14),0)/100,-2 ) +
-                                      RoundTo( StrToFloatDef(Copy(RetCmd,507,14),0)/100,-2 ) ;
-       VendaLiquida := VendaBruta -
-                       CancelamentoICMS -
-                       DescontoICMS -
-                       TotalISSQN -
-                       CancelamentoISSQN -
-                       DescontoISSQN;
-
-       { TOTALIZADORES NÃO FISCAIS }
-       try
-         TotalOperacaoNaoFiscal := 0;
-
-         if not Assigned( fpComprovantesNaoFiscais ) then
-            CarregaComprovantesNaoFiscais ;
-
-         {String Totalizadores não fiscas, 521,280}
-         S := Copy(RetCmd,521,280);
-         for I := 0 to ComprovantesNaoFiscais.Count - 1 do
-         begin
-           CNF := TACBrECFComprovanteNaoFiscal.Create ;
-           CNF.Assign( Self.ComprovantesNaoFiscais[I] );
-           CNF.Total := RoundTo(StrToFloatDef( copy(S,(I*14)+1,14),0) / 100, -2 ) ;
-
-           TotalizadoresNaoFiscais.Add( CNF ) ;
-           try TotalOperacaoNaoFiscal := TotalOperacaoNaoFiscal + CNF.Total; except end;
-         end;
-       except
-       end;
-
-       { RELATÓRIO GERENCIAL }
-       try
-         if not Assigned( fpRelatoriosGerenciais ) then
-            CarregaRelatoriosGerenciais ;
-
-         For I := 0 to RelatoriosGerenciais.Count-1 do
-         begin
-            RG := TACBrECFRelatorioGerencial.Create ;
-            RG.Assign( RelatoriosGerenciais[I] );
-
-            RelatorioGerencial.Add( RG ) ;
-         end ;
-       except
-       end ;
-
-       { MEIOS DE PAGAMENTO }
-       try
-         if not Assigned( fpFormasPagamentos ) then
-            CarregaFormasPagamento ;
-
-         For I := 0 to FormasPagamento.Count-1 do
-         begin
-            FPG := TACBrECFFormaPagamento.Create ;
-            FPG.Assign( FormasPagamento[I] );
-            FPG.Total := 0;
-
-            MeiosDePagamento.Add( FPG ) ;
-         end ;
-
-         TotalTroco := 0;
-       except
-       end ;
+      AdicionaAliquota( AliqZ );
     end;
 
-    ///// Montando o INI com as informações /////
+    { ICMS }
+    SubstituicaoTributariaICMS  := RoundTo( StrToFloatDef(Copy(RetCmd,353,14),0)/100,-2 ) +
+                                   RoundTo( StrToFloatDef(Copy(RetCmd,367,14),0)/100,-2 ) ;
+    IsentoICMS                  := RoundTo( StrToFloatDef(Copy(RetCmd,381,14),0)/100,-2 ) +
+                                   RoundTo( StrToFloatDef(Copy(RetCmd,395,14),0)/100,-2 ) ;
+    NaoTributadoICMS            := RoundTo( StrToFloatDef(Copy(RetCmd,409,14),0)/100,-2 ) +
+                                   RoundTo( StrToFloatDef(Copy(RetCmd,423,14),0)/100,-2 ) ;
+    { ISSQN }
+    SubstituicaoTributariaISSQN := RoundTo( StrToFloatDef(Copy(RetCmd,437,14),0)/100,-2 ) +
+                                   RoundTo( StrToFloatDef(Copy(RetCmd,451,14),0)/100,-2 ) ;
+    IsentoISSQN                 := RoundTo( StrToFloatDef(Copy(RetCmd,465,14),0)/100,-2 ) +
+                                   RoundTo( StrToFloatDef(Copy(RetCmd,479,14),0)/100,-2 ) ;
+    NaoTributadoISSQN           := RoundTo( StrToFloatDef(Copy(RetCmd,493,14),0)/100,-2 ) +
+                                   RoundTo( StrToFloatDef(Copy(RetCmd,507,14),0)/100,-2 ) ;
+
+    { TOTALIZADORES NÃO FISCAIS }
+    S  := Copy(RetCmd,521,280);   // 20 * 14
+    SS := Copy(RetCmd,1005,80);   // 20 * 4
+    for I := 0 to fpComprovantesNaoFiscais.Count - 1 do
+    begin
+      CNFZ := TACBrECFComprovanteNaoFiscal.Create ;
+      CNFZ.Assign( fpComprovantesNaoFiscais[I] );
+      CNFZ.Total    := RoundTo(StrToFloatDef( copy(S,(I*14)+1,14),0) / 100, -2 ) ;
+      CNFZ.Contador := StrToIntDef( copy(SS,(I*4)+1,4), 0);
+
+      TotalizadoresNaoFiscais.Add( CNFZ ) ;
+    end;
+
+    { RELATÓRIO GERENCIAL }
+    S := copy(RetCmd,1085,80) ; // 20 * 4
+    For I := 0 to fpRelatoriosGerenciais.Count-1 do
+    begin
+      RGZ := TACBrECFRelatorioGerencial.Create ;
+      RGZ.Assign( fpRelatoriosGerenciais[I] );
+      RGZ.Contador := StrToIntDef(copy(S,(I*4)+1,4), 0) ;
+
+      RelatorioGerencial.Add( RGZ ) ;
+    end ;
+
+    CalculaValoresVirtuais;
     Result := MontaDadosReducaoZ;
   end;
 end ;

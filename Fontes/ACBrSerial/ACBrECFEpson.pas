@@ -1167,9 +1167,9 @@ begin
      aStatus[0]  := #0; // Zera Buffer de Saida
      aLineOut[0] := #0;
 
-     GravaLog( 'xEPSON_Send_From_FileEXX -> '+cmd, True );
+     GravaLog( '   xEPSON_Send_From_FileEXX -> '+cmd, True );
      Ret := xEPSON_Send_From_FileEXX( cmd, aStatus, aLineOut ) ;
-     GravaLog( '   Ret = '+IntToStr(Ret) );
+     GravaLog( '      Ret = '+IntToStr(Ret) );
 
      fpComandoEnviado  := cmd ;
      fpRespostaComando := TrimRight( aStatus )+'|:|'+TrimRight( aLineOut );
@@ -1375,7 +1375,7 @@ begin
 
         if EpsonResposta.Seq <> EpsonComando.Seq then  // Despreza esse Bloco
         begin
-           GravaLog( 'Sequencia de Resposta ('+IntToStr(EpsonResposta.Seq)+')'+
+           GravaLog( '   Sequencia de Resposta ('+IntToStr(EpsonResposta.Seq)+')'+
                      'diferente da enviada ('+IntToStr(EpsonComando.Seq)+
                      '). Bloco Desprezado: '+Retorno, True) ;
            Result  := False ;
@@ -1385,7 +1385,7 @@ begin
         on E : Exception do
         begin
            fpDevice.Serial.SendByte(ord(NAK));
-           GravaLog( 'Pacote Inválido, NACK enviado: '+Retorno, True ) ;
+           GravaLog( '   Pacote Inválido, NACK enviado: '+Retorno, True ) ;
            Result  := False ;
            Retorno := '' ;
            fpDevice.Serial.Purge;  // Zera conteudo de Porta Serial
@@ -1399,26 +1399,22 @@ begin
 end;
 
 function TACBrECFEpson.GetDataHora: TDateTime;
-Var RetCmd : AnsiString ;
-    OldShortDateFormat : String ;
+Var
+  DtStr, HrStr : AnsiString ;
 begin
   EpsonComando.Comando := '0502' ;
   EnviaComando ;
-  RetCmd := EpsonResposta.Params[0] ;
-  OldShortDateFormat := ShortDateFormat ;
-  try
-     ShortDateFormat := 'dd/mm/yyyy' ;
-     Result := StrToDate(copy(RetCmd, 1,2) + DateSeparator +
-                         copy(RetCmd, 3,2) + DateSeparator +
-                         copy(RetCmd, 5,4)) ;
-  finally
-     ShortDateFormat := OldShortDateFormat ;
-  end ;
 
-  RetCmd := EpsonResposta.Params[1] ;
-  Result := RecodeHour(  Result,StrToInt(copy(RetCmd,1,2))) ;
-  Result := RecodeMinute(Result,StrToInt(copy(RetCmd,3,2))) ;
-  Result := RecodeSecond(Result,StrToInt(copy(RetCmd,5,2))) ;
+  DtStr := EpsonResposta.Params[0] ;
+  HrStr := EpsonResposta.Params[1] ;
+
+  Result := EncodeDateTime( StrToInt(copy(DtStr, 5,4)),   // Ano
+                            StrToInt(copy(DtStr, 3,2)),   // Mes
+                            StrToInt(copy(DtStr, 1,2)),   // Dia
+                            StrToInt(copy(HrStr, 1,2)),   // Hora
+                            StrToInt(copy(HrStr, 3,2)),   // Min
+                            StrToInt(copy(HrStr, 5,2)),   // Seg
+                            0 );
 end;
 
 function TACBrECFEpson.GetNumCupom: String;
@@ -2678,28 +2674,25 @@ begin
 end;
 
 function TACBrECFEpson.GetDataHoraSB: TDateTime;
-Var RetCmd : AnsiString ;
-    OldShortDateFormat : String ;
+Var
+  DtStr, HrStr : AnsiString ;
 begin
   EpsonComando.Comando := '0402' ;
   EnviaComando ;
-  RetCmd := EpsonResposta.Params[8] ;
-  OldShortDateFormat := ShortDateFormat ;
-  try
-     ShortDateFormat := 'dd/mm/yyyy' ;
-     Result := StrToDate(copy(RetCmd, 1,2) + DateSeparator +
-                         copy(RetCmd, 3,2) + DateSeparator +
-                         copy(RetCmd, 5,4)) ;
-  finally
-     ShortDateFormat := OldShortDateFormat ;
-  end ;
-{Atualmente não tem informações de como pegar a hora por comando direto,
-tem que utilizar a mesma forma que a Bemateh realizar a partir da LMF  a
-ser implementado.}
-  RetCmd := '000000' ;
-  Result := RecodeHour(  Result,StrToInt(copy(RetCmd,1,2))) ;
-  Result := RecodeMinute(Result,StrToInt(copy(RetCmd,3,2))) ;
-  Result := RecodeSecond(Result,StrToInt(copy(RetCmd,5,2))) ;
+
+  DtStr := EpsonResposta.Params[8] ;
+  HrStr := '000000' ;
+  { Atualmente não tem informações de como pegar a hora por comando direto,
+    tem que utilizar a mesma forma que a Bemateh realizar a partir da LMF.
+    A ser implementado.... }
+
+  Result := EncodeDateTime( StrToInt(copy(DtStr, 5,4)),   // Ano
+                            StrToInt(copy(DtStr, 3,2)),   // Mes
+                            StrToInt(copy(DtStr, 1,2)),   // Dia
+                            StrToInt(copy(HrStr, 1,2)),   // Hora
+                            StrToInt(copy(HrStr, 3,2)),   // Min
+                            StrToInt(copy(HrStr, 5,2)),   // Seg
+                            0 );
 end;
 
 function TACBrECFEpson.GetSubModeloECF: String;
@@ -2711,26 +2704,21 @@ begin
 end;
 
 function TACBrECFEpson.GetDataMovimento: TDateTime;
-Var RetCmd : AnsiString ;
-    OldShortDateFormat : String ;
+Var
+  DtStr, HrStr : AnsiString ;
 begin
   EpsonComando.Comando := '080A' ;
   EnviaComando ;
-  RetCmd := EpsonResposta.Params[0] ;
-  OldShortDateFormat := ShortDateFormat ;
-  try
-     ShortDateFormat := 'dd/mm/yyyy' ;
-     Result := StrToDate(copy(RetCmd, 1,2) + DateSeparator +
-                         copy(RetCmd, 3,2) + DateSeparator +
-                         copy(RetCmd, 5,4)) ;
-  finally
-     ShortDateFormat := OldShortDateFormat ;
-  end ;
+  DtStr := EpsonResposta.Params[0] ;
+  HrStr := EpsonResposta.Params[1] ;
 
-  RetCmd := EpsonResposta.Params[1] ;
-  Result := RecodeHour(  Result,StrToInt(copy(RetCmd,1,2))) ;
-  Result := RecodeMinute(Result,StrToInt(copy(RetCmd,3,2))) ;
-  Result := RecodeSecond(Result,StrToInt(copy(RetCmd,5,2))) ;
+  Result := EncodeDateTime( StrToInt(copy(DtStr, 5,4)),   // Ano
+                            StrToInt(copy(DtStr, 3,2)),   // Mes
+                            StrToInt(copy(DtStr, 1,2)),   // Dia
+                            StrToInt(copy(HrStr, 1,2)),   // Hora
+                            StrToInt(copy(HrStr, 3,2)),   // Min
+                            StrToInt(copy(HrStr, 5,2)),   // Seg
+                            0 );
 end;
 
 function TACBrECFEpson.GetGrandeTotal: Double;
@@ -3199,10 +3187,11 @@ end ;
 
 function TACBrECFEpson.GetDadosUltimaReducaoZ: AnsiString;
 var
-  Total, ValAliq : Double;
-  Aliq : TACBrECFAliquota ;
-  CRZ  : String ;
+  AliqZ : TACBrECFAliquota ;
+  ECFCRZ, DtStr, HrStr : String ;
   I, J : Integer ;
+  DataMov, DataFechaZ : TDateTime;
+  ECFEst: TACBrECFEstado;
 begin
 //Esta função utiliza o comando "Obter Totais da Jornada (09 0D)", que aceita
 //como parâmetro um CRZ. Então para obter os totais da última redução, passamos o
@@ -3237,87 +3226,99 @@ begin
 //n+25-Percentual do Totalizador parcial  N  4
 //n+26-Total vendido         N  13
 
-  // TODO: Implementar a leitura dos valores na Classe da ReducaoZ
+  // Zerar variaveis e inicializa Dados do ECF //
+  InitDadosUltimaReducaoZ;
 
-  Result := '';
+  if not Assigned( fpAliquotas ) then
+    CarregaAliquotas ;
 
-  try
-     // Seção ECF
-     Result := '[ECF]'+ sLineBreak ;
-     Result := Result + 'NumSerie = ' + NumSerie + sLineBreak;
-     Result := Result + 'NumLoja = ' + NumLoja + sLineBreak;
-     Result := Result + 'NumECF = ' + NumECF + sLineBreak;
-     CRZ    := NumCRZ;
-
-     EpsonComando.Comando := '090D';
-     EpsonComando.Params.Clear;
-     EpsonComando.AddParamString( CRZ );
-     EnviaComando;
-  except
-     Exit;
+  with TACBrECF(fpOwner) do
+  begin
+    DataMov := DataMovimento;
+    ECFEst  := Estado;
+    ECFCRZ  := NumCRZ;
   end;
 
-  Result := Result + 'NumCRZ = ' + EpsonResposta.Params[0] + sLineBreak;
-  Result := Result + 'NumCOO = ' + EpsonResposta.Params[1] + sLineBreak;
-  Result := Result + 'NumCRO = ' + EpsonResposta.Params[2] + sLineBreak;
+  EpsonComando.Comando := '090D';
+  EpsonComando.Params.Clear;
+  EpsonComando.AddParamString( ECFCRZ );
+  EnviaComando;
 
-  // Seção OutrasICMS
-  Result := Result + sLineBreak;
-  Result := Result + '[OutrasICMS]' + sLineBreak;
-
-  {a divisão por 100 ocorre para transformar, por exemplo 7886 em 78,86, pois
-   o ECF não traz a informação com a virgula}
-  Total  := RoundTo( StrToFloatDef(EpsonResposta.Params[4],0)/100, -2);
-  Result := Result + 'TotalSubstituicaoTributaria = ' + FloatToStr(Total) + sLineBreak;
-
-  Total  := RoundTo( StrToFloatDef(EpsonResposta.Params[5],0)/100, -2);
-  Result := Result + 'TotalIsencao = ' + FloatToStr(Total) + sLineBreak;
-
-  Total  := RoundTo( StrToFloatDef(EpsonResposta.Params[6],0)/100, -2);
-  Result := Result + 'TotalNaoTributado = ' + FloatToStr(Total) + sLineBreak;
-
-  // Seção Totalizadores
-  Result := Result + sLineBreak;
-  Result := Result + '[Totalizadores]'+sLineBreak;
-
-  Total  := StrToFloatDef(EpsonResposta.Params[13],0)/100; //Total Desc. ICMS
-  Total  := RoundTo( Total + StrToFloatDef(EpsonResposta.Params[14],0)/100, -2); //Total Desc. ICMS
-  Result := Result + 'TotalDescontos = ' + FloatToStr(Total) + sLineBreak;
-
-  Total  := StrToFloatDef(EpsonResposta.Params[10],0)/100; //Total Canc. ICMS
-  Total  := RoundTo( Total + StrToFloatDef(EpsonResposta.Params[11],0)/100, -2); // Total Canc. ISS
-  Result := Result + 'TotalCancelamentos = ' + FloatToStr(Total) + sLineBreak;
-
-  Total  := StrToFloatDef(EpsonResposta.Params[16],0)/100; //Total Acre. ICMS
-  Total  := RoundTo( Total + StrToFloatDef(EpsonResposta.Params[17],0)/100, -2); //Total Acre. ISS
-  Result := Result + 'TotalAcrescimos = ' + FloatToStr(Total) + sLineBreak;
-
-  Total  := RoundTo( StrToFloatDef(EpsonResposta.Params[21],0)/100, -2);
-  Result := Result + 'TotalNaoFiscal = ' + FloatToStr(Total) + sLineBreak ;
-
-  Total  := RoundTo( StrToFloatDef(EpsonResposta.Params[3],0)/100, -2);
-  Result := Result + 'VendaBruta = ' + FloatToStr(Total) + sLineBreak;
-
-  Total  := RoundTo( StrToFloatDef(EpsonResposta.Params[24],0)/100, -2);
-  Result := Result + 'GrandeTotal = ' + FloatToStr(Total) + sLineBreak;
-
-  Result := Result + sLineBreak + '[Aliquotas]'+sLineBreak ;
-  I := 25 ;
-  J := 1 ;
-  while I < EpsonResposta.Params.Count do
+  DtStr := EpsonResposta.Params[22] ;
+  HrStr := EpsonResposta.Params[23] ;
+  DataFechaZ := EncodeDateTime( StrToInt(copy(DtStr, 5,4)),   // Ano
+                                StrToInt(copy(DtStr, 3,2)),   // Mes
+                                StrToInt(copy(DtStr, 1,2)),   // Dia
+                                StrToInt(copy(HrStr, 1,2)),   // Hora
+                                StrToInt(copy(HrStr, 3,2)),   // Min
+                                StrToInt(copy(HrStr, 5,2)),   // Seg
+                                0 );
+  { Epson não retorna a Data do Movimento e SIM a Data de Fechamento da Z
+    tentando descobir se o Fechamento ocorreu no dia correto do movimento }
+  if (not (ECFEst in [estBloqueada, estRequerX])) and  // Ainda não abriu a Jornada
+     (DataFechaZ < DataMov) then
   begin
-     ValAliq := RoundTo( StrToFloatDef(EpsonResposta.Params[ I ],0)/100, -2);
-     Total   := RoundTo( StrToFloatDef(EpsonResposta.Params[I+1],0)/100, -2);
+    if DateOf( DataFechaZ ) = DateOf( DataMov ) then
+      DataMov := EndOfTheDay( IncDay( DateOf( DataFechaZ ), - 1) )
+    else
+      DataMov := DataFechaZ;
+  end;
 
-     Aliq := AchaICMSAliquota( ValAliq );
-     if Aliq <> Nil then
-        Result := Result + IntToStrZero(J,2) + Aliq.Tipo +
-                           IntToStrZero(Trunc(ValAliq*100),4) + ' = '+
-                           FloatToStr(Total) + sLineBreak ;
+  { Alimenta a class com os dados atuais do ECF }
+  with fpDadosReducaoZClass do
+  begin
+    DataDoMovimento := DataMov;
 
-     I := I + 2 ;
-     J := J + 1 ;
-  end ;
+    CRZ := StrToIntDef( EpsonResposta.Params[0], 0) ;
+    COO := StrToIntDef( EpsonResposta.Params[1], 0) ;
+    CRO := StrToIntDef( EpsonResposta.Params[2], 0) ;
+
+    ValorVendaBruta  := RoundTo( StrToFloatDef(EpsonResposta.Params[3],0)/100, -2);
+
+    SubstituicaoTributariaICMS := RoundTo( StrToFloatDef(EpsonResposta.Params[4],0)/100, -2);
+    IsentoICMS := RoundTo( StrToFloatDef(EpsonResposta.Params[5],0)/100, -2);
+    NaoTributadoICMS := RoundTo( StrToFloatDef(EpsonResposta.Params[6],0)/100, -2);
+
+    SubstituicaoTributariaISSQN := RoundTo( StrToFloatDef(EpsonResposta.Params[7],0)/100, -2);
+    IsentoISSQN := RoundTo( StrToFloatDef(EpsonResposta.Params[8],0)/100, -2);
+    NaoTributadoISSQN := RoundTo( StrToFloatDef(EpsonResposta.Params[9],0)/100, -2);
+
+    CancelamentoICMS := RoundTo( StrToFloatDef(EpsonResposta.Params[10],0)/100, -2);
+    CancelamentoISSQN := RoundTo( StrToFloatDef(EpsonResposta.Params[11],0)/100, -2);
+    CancelamentoOPNF := RoundTo( StrToFloatDef(EpsonResposta.Params[12],0)/100, -2);
+
+    DescontoICMS := RoundTo( StrToFloatDef(EpsonResposta.Params[13],0)/100, -2);
+    DescontoISSQN := RoundTo( StrToFloatDef(EpsonResposta.Params[14],0)/100, -2);
+    DescontoOPNF := RoundTo( StrToFloatDef(EpsonResposta.Params[15],0)/100, -2);
+
+    AcrescimoICMS := RoundTo( StrToFloatDef(EpsonResposta.Params[16],0)/100, -2);
+    AcrescimoISSQN := RoundTo( StrToFloatDef(EpsonResposta.Params[17],0)/100, -2);
+    AcrescimoOPNF := RoundTo( StrToFloatDef(EpsonResposta.Params[18],0)/100, -2);
+
+    // A informação abaixo traz o Total da Base de Calculo e não o total por Tipo de aliquota //
+    //TotalICMS := RoundTo( StrToFloatDef(EpsonResposta.Params[19],0)/100, -2);
+    //TotalISSQN := RoundTo( StrToFloatDef(EpsonResposta.Params[20],0)/100, -2);
+    TotalOperacaoNaoFiscal := RoundTo( StrToFloatDef(EpsonResposta.Params[21],0)/100, -2);
+    ValorGrandeTotal := RoundTo( StrToFloatDef(EpsonResposta.Params[24],0)/100, -2);
+
+    {Copiando objetos de ICMS e ISS}
+    // Nota: Aparentemente ECF Epson não retorna aliquotas do ISSQN na Ultima Red.Z
+    for I := 0 to fpAliquotas.Count - 1 do
+    begin
+      J := 25 + (I * 2) ;
+      if J < EpsonResposta.Params.Count then
+      begin
+        AliqZ := TACBrECFAliquota.Create ;
+        AliqZ.Assign( fpAliquotas[I] );
+        AliqZ.Total := RoundTo( StrToFloatDef(EpsonResposta.Params[ J+1 ],0)/100, -2) ;
+
+        AdicionaAliquota( AliqZ );
+      end;
+    end;
+
+    CalculaValoresVirtuais;
+    Result := MontaDadosReducaoZ;
+  end;
 end;
 
 procedure TACBrECFEpson.ZeraCache( ZeraRespostaComando: Boolean ) ;
@@ -3366,11 +3367,11 @@ begin
 
   Porta := StrToIntDef( OnlyNumber( fpDevice.Porta ), 0) ;
 
-  GravaLog( 'Desativando ACBrECF' );
+  GravaLog( '   Desativando ACBrECF' );
   if not fsUsarDLL then
      Ativo := False ;
 
-  GravaLog( 'xEPSON_Serial_Abrir_Porta' );
+  GravaLog( '   xEPSON_Serial_Abrir_Porta' );
   Resp := xEPSON_Serial_Abrir_Porta( fpDevice.Baud, Porta ) ;
   if Resp <> 0 then
      raise EACBrECFERRO.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao abrir a Porta com:'+sLineBreak+
@@ -3383,13 +3384,13 @@ var
 begin
   if fsUsarDLL and OldAtivo then exit;
 
-  GravaLog( 'xEPSON_Serial_Fechar_Porta' ) ;
+  GravaLog( '   xEPSON_Serial_Fechar_Porta' ) ;
   Resp := xEPSON_Serial_Fechar_Porta ;
   if Resp <> 0 then
      raise EACBrECFERRO.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao Fechar a Porta com:'+sLineBreak+
         'EPSON_Serial_Fechar_Porta' ));
 
-  GravaLog( 'Ativar ACBr: '+ifthen(OldAtivo,'SIM','NAO') ) ;
+  GravaLog( '   Ativar ACBr: '+ifthen(OldAtivo,'SIM','NAO') ) ;
 
   if OldAtivo then
   begin
@@ -3398,10 +3399,10 @@ begin
         Inc( Resp ) ;
 
         try
-          GravaLog('- Tentativa: '+IntToStr(Resp));
+          GravaLog('   - Tentativa: '+IntToStr(Resp));
           Ativar;
         except
-          GravaLog( '  Falha... Aguardando '+IntToStr(Resp)+' segundo(s)' );
+          GravaLog( '     Falha... Aguardando '+IntToStr(Resp)+' segundo(s)' );
           Sleep(Resp * 1000);
         end ;
      end ;
@@ -3431,7 +3432,7 @@ begin
     DiaIni := FormatDateTime('ddmmyyyy',DataInicial) ;
     DiaFim := FormatDateTime('ddmmyyyy',DataFinal) ;
 
-    GravaLog( 'xEPSON_Obter_Dados_MF_MFD' );
+    GravaLog( '   xEPSON_Obter_Dados_MF_MFD' );
     Resp := xEPSON_Obter_Dados_MF_MFD(  DiaIni, DiaFim,
                                         0,                // 0 = Faixa em Datas
                                         DocumentosToNum(Documentos),
@@ -3476,7 +3477,7 @@ begin
     CooIni := IntToStrZero( COOInicial, 6 ) ;
     CooFim := IntToStrZero( COOFinal, 6 ) ;
 
-    GravaLog( 'xEPSON_Obter_Dados_MF_MFD' );
+    GravaLog( '   xEPSON_Obter_Dados_MF_MFD' );
     Resp := xEPSON_Obter_Dados_MF_MFD(  COOIni, CooFim,
                                         2,                // 2 = Faixa em COO
                                         DocumentosToNum(Documentos),
@@ -3529,7 +3530,7 @@ begin
     DiaIni := FormatDateTime('ddmmyyyy',DataInicial) ;
     DiaFim := FormatDateTime('ddmmyyyy',DataFinal) ;
 
-    GravaLog( 'xEPSON_Obter_Dados_MF_MFD' );
+    GravaLog( '   xEPSON_Obter_Dados_MF_MFD' );
     Resp := xEPSON_Obter_Dados_MF_MFD(  DiaIni, DiaFim,
                                         0,                // 0 = Faixa em Datas
                                         0,                // 0 = Sem Espelhos
@@ -3589,7 +3590,7 @@ begin
     CooIni := IntToStrZero( ContInicial, IfThen( TipoContador = tpcCOO, 6, 4) ) ;
     CooFim := IntToStrZero( ContFinal, IfThen( TipoContador = tpcCOO, 6, 4) ) ;
 
-    GravaLog( 'xEPSON_Obter_Dados_MF_MFD' );
+    GravaLog( '   xEPSON_Obter_Dados_MF_MFD' );
     Resp := xEPSON_Obter_Dados_MF_MFD(  COOIni, CooFim,
                                         IfThen( TipoContador = tpcCOO, 2, 1),
                                         0,                // 0 = Sem Espelhos

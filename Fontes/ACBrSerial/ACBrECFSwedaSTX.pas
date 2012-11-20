@@ -1072,13 +1072,12 @@ procedure TACBrECFSwedaSTX.PafMF_GerarCAT52(const DataInicial: TDateTime;
    const DataFinal: TDateTime; const DirArquivos: string);
 var
   Resp: Integer;
-  FilePath, Dia, FileMF : AnsiString;
+  Dia, FileMF : AnsiString;
   OldAtivo: Boolean;
   DataArquivo: TDateTime;
 begin
   LoadDLLFunctions;
 
-  FilePath := IncludeTrailingPathDelimiter(DirArquivos);
   OldAtivo := Ativo ;
   try
     // a sweda não possui a geração do CAT52 por período, mas pode-se
@@ -2457,214 +2456,165 @@ end;
 
 function TACBrECFSwedaSTX.GetDadosUltimaReducaoZ: AnsiString;
 var
-   RetCMD,sAliquota:String;
-   I:Integer;
-   V:Double;
-   PosI:Integer;
+  RetCMD,sAliquota:String;
+  I:Integer;
+  V:Double;
+  AliqZ: TACBrECFAliquota;
+
+  function AchaValorRegistrador( Registrador: String ): Double ;
+  var
+     PosI: Integer;
+  begin
+    Result := 0;
+    PosI   := Pos(padL(Registrador,5), RetCMD);
+    if PosI > 0 then
+       Result := RoundTo( StrToFloatDef( Trim(Copy(RetCMD,PosI+5,18)), 0)/100, -2);
+  end ;
 begin
-   {Comando suportado apenas a partir da versão 01.00.04}
-   RetCMD := RemoveNulos(EnviaComando('65|9999' ));//retorna dados do movimento atual
-   {Remove a primeira parte da string (#2'265+0000AA˜€’€€)}
-   RetCMD := Copy(RetCMD,17,length(RetCMD));
+{ Descrição                                         Tamanho  Inicial  Final
+  1 Marca (Sweda)                                      21        1      21
+  2 Modelo do ECF                                      21       22      42
+  3 Tipo de ECF                                        8        43      50
+  4 Número de Fabricação                               22       51      72
+  5 Número seqüencial do ECF                           3        73      75
+  6 Número serial do dispositivo de MFD                21       76      86
+  7 Número seqüencial do usuário na MF                 2        97      98
+  8 Número do C.N.P.J.                                 21       99     119
+  9 Inscrição Estadual                                 21      120     140
+  10 Inscrição Municipal                               21      141     161
+  11 Símbolo da Moeda                                  5       162     166
+  12 Centavos                                          1       167     167
+  13 Contador de Reduções Z (redução inicial)          4       168     171
+  14 Data de emissão da Redução Z (redução inicial)    11      172     182
+  15 Horário de emissão da Redução Z (redução inicial) 10      183     182
+  16 COO do documento Redução Z (redução inicial)      6       193     198
+  17 Data do movimento (redução inicial)               11      199     209
+  18 COO da primeira operação do dia (redução inicial) 6       210     215
+  19 Contador de Reinício de Operação (redução inicial)4       216     219
+  20 Contador de Reduções Z (redução final)            4       220     223
+  21 Data de emissão da Redução Z (redução final)      11      224     234
+  22 Horário de emissão da Redução Z (redução final)   10      235     244
+  23 COO do documento Redução Z (redução final)        6       245     250
+  24 Data do movimento (redução final)                 11      251     261
+  25 COO da primeira operação do dia (redução final)   6       262     267
+  26 Contador de Reinício de Operação (redução final)  4       268     271
+  27 Venda Líquida de ICMS                             18      272     289
+  28 Venda Bruta de ICMS                               18      290     307
+  29 Venda Líquida de ISSQN                            18      308     325
+  30 Venda Bruta de ISSQN                              18      326     343
+  31 Venda Líquida Não-Fiscal                          18      344     361
+  xx Legenda - Vide Tabela de Legendas 5 362 --
+  xx Valor acumulado no respectivo totalizador 18 -- --
 
-   Result := '[ECF]'+sLineBreak;
-   Result := Result + 'DataMovimento = '+Copy(RetCMD,199,5)+DateSeparator+
-                                         Copy(RetCMD,207,2)+sLineBreak ;
-   Result := Result + 'NumSerie = ' + Copy(RetCMD,51,22) + sLineBreak;
-   Result := Result + 'NumLoja = '+ NumLoja +sLineBreak;
-   Result := Result + 'NumECF = '+ Copy(RetCMD,73,3) + sLineBreak;
-   Result := Result + 'NumCOOInicial = '+ Copy(RetCMD,210,06) + sLineBreak ;
-   Result := Result + 'NumCOO = '+ Copy(RetCMD,193,06) + sLineBreak ;
-   Result := Result + 'NumCRZ = '+ Copy(RetCMD,168,04) + sLineBreak;
-   Result := Result + 'NumCRO = '+ Copy(RetCMD,216,04) + sLineBreak;
+  Legenda Totalizador - As legendas tem 5 caracteres + 18 de valores acumulados
+  Exemplo: GT no arquivo está como 'GT   000000000000000000'
 
+  GT Totalizador Geral
+  VB Venda Bruta Diária
+  ON Venda Bruta Não-Fiscais
+  DT Desconto de ICMS
+  DS Desconto de ISSQN
+  AT Acréscimo de ICMS
+  AS Acréscimo de ISSQN
+  CT Cancelamento de ICMS
+  CS Cancelamento de ISSQN
+  Tnnnn Totalizador de ICMS com carga tributária vinculada.
+        nnnn corresponde à alíquota ‘nn,nn%’ (até 15 totalizadores)
+  Fn Substituição de ICMS
+     n é o número do totalizador, de 1 a 3
+  In Isento de ICMS
+     n é o número do totalizador, de 1 a 3
+  Nn Não tributado de ICMS
+     n é o número do totalizador, de 1 a 3
+  Snnnn Totalizador de ISSQN com carga tributária vinculada
+        nnnn corresponde à alíquota ‘nn,nn%’ (até 15 totalizadores)
+  FSn Substituição de ISSQN
+      n é o número do totalizador, de 1 a 3
+  Isn Isento de ISSQN
+      n é o número do totalizador, de 1 a 3
+  NSn Não tributado de ISSQN
+      n é o número do totalizador, de 1 a 3
 
-   {Aliquotas}
-   {As aliquotas são retornadas nesse comando, mas apenas se tiver valor }
-   {Por isso percorro as aliquotas cadastradas no ECF para pegar todas}
-   Result := Result + sLineBreak + '[Aliquotas]'+sLineBreak ;
-    if not Assigned( fpAliquotas ) then
-      LerTotaisAliquota ;
+  Os totalizadores são retornados na ordem apresentada. Com exceção dos três primeiros (GT, VB e ON) os
+  demais totalizadores são incluídos no retorno somente se acumularem valor significativo (diferente de zero).
+  }
 
+  // Zerar variaveis e inicializa Dados do ECF //
+  InitDadosUltimaReducaoZ;
+
+  if not Assigned( fpAliquotas ) then
+    LerTotaisAliquota ;
+
+  {Comando suportado apenas a partir da versão 01.00.04}
+  RetCMD := RemoveNulos(EnviaComando('65|9999' ));//retorna dados do movimento atual
+  {Remove a primeira parte da string (#2'265+0000AA˜€’€€)}
+  RetCMD := Copy(RetCMD,17,length(RetCMD));
+
+  { Alimenta a class com os dados atuais do ECF }
+  with fpDadosReducaoZClass do
+  begin
+    NumeroDeSerie    := Copy(RetCMD,51,22);
+    NumeroDoECF      := Copy(RetCMD,73,3);
+    NumeroDeSerieMFD := Copy(RetCMD,76,21);
+    CRZ              := StrToIntDef( Copy(RetCMD,168,04), 0) ;
+    COO              := StrToIntDef( Copy(RetCMD,193,06), 0) ;
+    DataDoMovimento  := StringToDateTime( Copy(RetCMD,199,5) + DateSeparator+
+                                          Copy(RetCMD,207,2), 'dd/mm/yy' );
+    NumeroCOOInicial := Copy(RetCMD,210,06) ;
+    CRO              := StrToIntDef( Copy(RetCMD,216,04), 0) ;
+    VendaLiquida     := RoundTo( StrToFloatDef( copy(RetCMD,272,18),0) / 100, -2) ;
+
+    {Aliquotas}
+    {As aliquotas são retornadas nesse comando, mas apenas se tiver valor }
+    {Por isso percorro as aliquotas cadastradas no ECF para pegar todas}
     for I := 0 to Aliquotas.Count - 1 do
     begin
-       {Procura pela aliquota no formato Tnnnn na string}
-       sAliquota := Aliquotas[I].Tipo+FormatFloat('00.00',Aliquotas[I].Aliquota);
-       sAliquota := StringReplace(sAliquota,',','',[rfReplaceAll]);
-       PosI := Pos(sAliquota,RetCMD);
-       if PosI > 0 then
-       begin
-          V := StrToFloatDef(Copy(RetCMD,PosI+5,18),0)/100;
-          Result := Result + padL(Aliquotas[I].Indice,2) +
-                             sAliquota + ' = '+
-                             FormatFloat('#0.00',V) + sLineBreak ;
-       end
-       else
-       begin
-          {Envia o valor zerado, pois não foi feito venda nessa aliquota}
-          Result := Result + padL(Aliquotas[I].Indice,2) +
-                             sAliquota + ' = '+
-                             '0,00' + sLineBreak ;
-       end;
-    end;
-    {Leitura das legendas - As legendas tem 5 caracteres + 18 de valores acumulados}
-    {Exemplo: GT no arquivo está como 'GT   000000000000000000' Dúvidas consulte
-    o manual da sweda stx pág 69 - Fernando Gutierres Damaceno}
-    Result  := Result + sLineBreak + '[OutrasICMS]'+sLineBreak ;
-    {Verifica se existe F1}
-    PosI := Pos('F1   ',RetCMD);
-    V := 0;
-    if PosI > 0 then
-    begin
-       PosI := PosI + 5 ; {F1     }
-       V  := StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
-    end;
-    {Verifica se existe F2}
-    PosI := Pos('F2   ',RetCMD);
-    if PosI > 0 then
-    begin
-       PosI := PosI + 5 ; {F2     }
-       V  := V + StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
-    end;
-    {Verifica se existe F3}
-    PosI := Pos('F3   ',RetCMD);
-    if PosI > 0 then
-    begin
-       PosI := PosI + 5 ; {F3     }
-       V  := V + StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
-    end;
-    Result  := Result + 'TotalSubstituicaoTributaria = '+FormatFloat('#0.00',V)+sLineBreak;
-    V := 0;
+      AliqZ := TACBrECFAliquota.Create ;
+      AliqZ.Assign( fpAliquotas[I] );
+      {Procura pela aliquota no formato T/Snnnn na string}
+      AliqZ.Total := AchaValorRegistrador(
+           AliqZ.Tipo + FormatFloat( '0000', AliqZ.Aliquota*100 ) ) ;
 
-    {Verifica se existe não tributado}
-    PosI := Pos('N1   ',RetCMD);
-    if PosI > 0 then
-    begin
-       PosI := PosI + 5 ; {N1     }
-       V  :=  StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
-    end;
+      AdicionaAliquota( AliqZ );
+    end ;
 
-    PosI := Pos('N2   ',RetCMD);
-    if PosI > 0 then
-    begin
-       PosI := PosI + 5 ; {N2     }
-       V  := V + StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
-    end;
+    ValorGrandeTotal           := AchaValorRegistrador('GT');
+    ValorVendaBruta            := AchaValorRegistrador('VB');
+    DescontoICMS               := AchaValorRegistrador('DT');
+    DescontoISSQN              := AchaValorRegistrador('DS');
+    AcrescimoICMS              := AchaValorRegistrador('AT');
+    AcrescimoISSQN             := AchaValorRegistrador('AS');
+    CancelamentoICMS           := AchaValorRegistrador('CT');
+    CancelamentoISSQN          := AchaValorRegistrador('CS');
+    TotalOperacaoNaoFiscal     := AchaValorRegistrador('ON') ;
 
-    PosI := Pos('N3   ',RetCMD);
-    if PosI > 0 then
-    begin
-       PosI := PosI + 5 ; {N3     }
-       V  := V + StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
-    end;
-    Result := Result + 'TotalNaoTributado = '+FormatFloat('#0.00',V)+ sLineBreak;
-    V:= 0;
-   {Isentos}
-    PosI := Pos('I1   ',RetCMD);
-    if PosI > 0 then
-    begin
-       PosI := PosI + 5 ; {I1     }
-       V  := StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
-    end;
+    SubstituicaoTributariaICMS := AchaValorRegistrador('F1') +
+                                  AchaValorRegistrador('F2') +
+                                  AchaValorRegistrador('F3') ;
 
-    PosI := Pos('I2   ',RetCMD);
-    if PosI > 0 then
-    begin
-       PosI := PosI + 5 ; {I2     }
-       V  := V + StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
-    end;
+    NaoTributadoICMS           := AchaValorRegistrador('N1') +
+                                  AchaValorRegistrador('N2') +
+                                  AchaValorRegistrador('N3') ;
 
-    PosI := Pos('I3   ',RetCMD);
-    if PosI > 0 then
-    begin
-       PosI := PosI + 5 ; {I3     }
-       V  := V + StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
-    end;
-    Result := Result + 'TotalIsencao = '+FormatFloat('#0.00',V)+ sLineBreak;
+    IsentoICMS                 := AchaValorRegistrador('I1') +
+                                  AchaValorRegistrador('I2') +
+                                  AchaValorRegistrador('I3') ;
 
-    { A impressora não retorna as informações descriminadas }
-    Result := Result + sLineBreak + '[Totalizadores]'+sLineBreak;
-    V := 0 ;
+    SubstituicaoTributariaISSQN:= AchaValorRegistrador('FS1') +
+                                  AchaValorRegistrador('FS2') +
+                                  AchaValorRegistrador('FS3') ;
 
-    {Descontos ICMS}
-    PosI := Pos('DT   ',RetCMD);
-    if PosI > 0 then
-    begin
-       PosI := PosI + 5 ; {DT     }
-       V  := StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
-    end;
-    {Descontos ISS}
-    PosI := Pos('DS   ',RetCMD);
-    if PosI > 0 then
-    begin
-       PosI := PosI + 5 ; {DS    }
-       V  := V + StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
-    end;
-    Result := Result +'TotalDescontos = '+FormatFloat('#0.00',V)+ sLineBreak;
-    V := 0 ;
+    NaoTributadoISSQN          := AchaValorRegistrador('NS1') +
+                                  AchaValorRegistrador('NS2') +
+                                  AchaValorRegistrador('NS3') ;
 
-    {Cancelamento  ISS}
-    PosI := Pos('CS   ',RetCMD);
-    if PosI > 0 then
-    begin
-       PosI := PosI + 5 ;
-       V  := StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
-    end;
-    {Cancelamento  ICMS}
-    PosI := Pos('CT   ',RetCMD);
-    if PosI > 0 then
-    begin
-       PosI := PosI + 5 ;
-       V  := V + StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
-    end;
-    Result := Result + 'TotalCancelamentos = '+FormatFloat('#0.00',V)+ sLineBreak;
-    V := 0;
+    IsentoISSQN                := AchaValorRegistrador('IS1') +
+                                  AchaValorRegistrador('IS2') +
+                                  AchaValorRegistrador('IS3') ;
 
-    {Acrescimo  ICMS}
-    PosI := Pos('AT   ',RetCMD);
-    if PosI > 0 then
-    begin
-       PosI := PosI + 5 ;
-       V  := StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
-    end;
-    {Acrescimo  ISS}
-    PosI := Pos('AS   ',RetCMD);
-    if PosI > 0 then
-    begin
-       PosI := PosI + 5 ;
-       V  := V + StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
-    end;
-    Result := Result + 'TotalAcrescimos = '+FormatFloat('#0.00',V)+ sLineBreak;
-    V := 0;
-
-    {Venda Bruta não fiscal}
-    PosI := Pos('ON   ',RetCMD);
-    if PosI > 0 then
-    begin
-       PosI := PosI + 5 ;
-       V  := StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
-    end;
-    Result := Result + 'TotalNaoFiscal = ' + FormatFloat('#0.00',V)+ sLineBreak;
-    V := 0;
-
-    {Venda Bruta Diaria}
-    PosI := Pos('VB   ',RetCMD);
-    if PosI > 0 then
-    begin
-       PosI := PosI + 5 ;
-       V  := StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
-    end;
-    Result := Result + 'VendaBruta = ' + FormatFloat('#0.00',V)+ sLineBreak;
-    V := 0;
-
-    {Grande Total}
-    PosI := Pos('GT   ',RetCMD);
-    if PosI > 0 then
-    begin
-       PosI := PosI + 5 ;
-       V  := StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
-    end;
-    Result := Result + 'GrandeTotal = '+FormatFloat('#0.00',V)+ sLineBreak;
+    CalculaValoresVirtuais;
+    Result := MontaDadosReducaoZ;
+  end ;
 end;
 
 procedure TACBrECFSwedaSTX.CortaPapel(const CorteParcial: Boolean);

@@ -2285,6 +2285,7 @@ var
    UltimoCOO: Integer;
 begin
   // TODO: Como ler os CCDs pendentes ??
+  Result := 0 ;
   UltimoCOO := StrToInt( TACBrECF( fpOwner ).NumCOO );
 
   with EscECFComando do

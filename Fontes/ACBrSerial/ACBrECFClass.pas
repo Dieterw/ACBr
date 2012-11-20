@@ -51,7 +51,7 @@ uses ACBrDevice,
           , Controls, Forms, Graphics, Dialogs, ExtCtrls
        {$ENDIF}
        {$IFDEF MSWINDOWS}
-         , Messages, Windows
+         , Windows
        {$ENDIF}
      {$ENDIF} ;
 
@@ -287,44 +287,47 @@ TACBrECFComprovantesNaoFiscais = class(TObjectList)
   end;
 
 { Dados da atual ou última redução Z }
+
+{ TACBrECFDadosRZ }
+
 TACBrECFDadosRZ = class
   private
     fsCOO: integer;
     fsCFD: integer;
-    fsCancelamentoISSQN: double;
+    fsCancelamentoISSQN: Double;
     fsGNFC: integer;
     fsCRO: integer;
-    fsValorVendaBruta: double;
+    fsValorVendaBruta: Double;
     fsTotalizadoresNaoFiscais: TACBrECFComprovantesNaoFiscais;
     fsICMS: TACBrECFAliquotas;
     fsTodasAliquotas: TACBrECFAliquotas;
-    fsAcrescimoICMS: double;
-    fsDescontoICMS: double;
-    fsNaoTributadoICMS: double;
+    fsAcrescimoICMS: Double;
+    fsDescontoICMS: Double;
+    fsNaoTributadoICMS: Double;
     fsRelatorioGerencial: TACBrECFRelatoriosGerenciais;
     fsCRZ: integer;
     fsISSQN: TACBrECFAliquotas;
     fsGRG: integer;
-    fsValorGrandeTotal: double;
-    fsAcrescimoISSQN: double;
-    fsNaoTributadoISSQN: double;
-    fsIsentoICMS: double;
-    fsSubstituicaoTributariaICMS: double;
+    fsValorGrandeTotal: Double;
+    fsAcrescimoISSQN: Double;
+    fsNaoTributadoISSQN: Double;
+    fsIsentoICMS: Double;
+    fsSubstituicaoTributariaICMS: Double;
     fsDataDaImpressora: TDateTime;
-    fsTotalOperacaoNaoFiscal: double;
-    fsDescontoISSQN: double;
-    fsCancelamentoOPNF: double;
-    fsAcrescimoOPNF: double;
-    fsDescontoOPNF: double;
-    fsCancelamentoICMS: double;
+    fsTotalOperacaoNaoFiscal: Double;
+    fsDescontoISSQN: Double;
+    fsCancelamentoOPNF: Double;
+    fsAcrescimoOPNF: Double;
+    fsDescontoOPNF: Double;
+    fsCancelamentoICMS: Double;
     fsGNF: integer;
-    fsIsentoISSQN: double;
-    fsSubstituicaoTributariaISSQN: double;
-    fsVendaLiquida: double;
+    fsIsentoISSQN: Double;
+    fsSubstituicaoTributariaISSQN: Double;
+    fsVendaLiquida: Double;
     fsCFC: integer;
     fsCCF: integer;
-    fsTotalISSQN: double;
-    fsTotalICMS: double;
+    fsTotalISSQN: Double;
+    fsTotalICMS: Double;
     fsCDC: integer;
     fsCCDC: integer;
     fsNCN: integer;
@@ -336,11 +339,16 @@ TACBrECFDadosRZ = class
     fsNumeroDeSerieMFD: AnsiString;
     fsNumeroDaLoja: AnsiString;
     fsTotalTroco: Double;
+    procedure SetDataDoMovimento(AValue: TDateTime);
   public
     constructor Create;
     destructor Destroy; override ;
     procedure Clear;
-    //
+    Procedure CalculaValoresVirtuais;
+
+    Function MontaDadosReducaoZ : AnsiString;
+    procedure AdicionaAliquota( AliqZ: TACBrECFAliquota );
+
     property DataDaImpressora: TDateTime read fsDataDaImpressora write fsDataDaImpressora;
     property NumeroDeSerie: AnsiString read fsNumeroDeSerie write fsNumeroDeSerie;
     property NumeroDeSerieMFD: AnsiString read fsNumeroDeSerieMFD write fsNumeroDeSerieMFD;
@@ -348,7 +356,7 @@ TACBrECFDadosRZ = class
     property NumeroDaLoja: AnsiString read fsNumeroDaLoja write fsNumeroDaLoja;
     property NumeroCOOInicial: AnsiString read fsNumeroCOOInicial write fsNumeroCOOInicial;
     // REDUÇÃO Z
-    property DataDoMovimento: TDateTime read fsDataDoMovimento write fsDataDoMovimento;
+    property DataDoMovimento: TDateTime read fsDataDoMovimento write SetDataDoMovimento;
     // CONTADORES
     property COO: integer read fsCOO write fsCOO;
     property GNF: integer read fsGNF write fsGNF;
@@ -363,41 +371,41 @@ TACBrECFDadosRZ = class
     property CCDC: integer read fsCCDC write fsCCDC;
     property CFC: integer read fsCFC write fsCFC;
     // TOTALIZADORES
-    property ValorGrandeTotal: double read fsValorGrandeTotal write fsValorGrandeTotal;
-    property ValorVendaBruta: double read fsValorVendaBruta write fsValorVendaBruta;
-    property CancelamentoICMS: double read fsCancelamentoICMS write fsCancelamentoICMS;
-    property DescontoICMS: double read fsDescontoICMS write fsDescontoICMS;
-    property TotalISSQN: double read fsTotalISSQN write fsTotalISSQN;
-    property TotalICMS: double read fsTotalICMS write fsTotalICMS;
-    property CancelamentoISSQN: double read fsCancelamentoISSQN write fsCancelamentoISSQN;
-    property CancelamentoOPNF: double read fsCancelamentoOPNF write fsCancelamentoOPNF;
-    property DescontoISSQN: double read fsDescontoISSQN write fsDescontoISSQN;
-    property DescontoOPNF: double read fsDescontoOPNF write fsDescontoOPNF;
-    property VendaLiquida: double read fsVendaLiquida write fsVendaLiquida;
-    property AcrescimoICMS: double read fsAcrescimoICMS write fsAcrescimoICMS;
-    property AcrescimoISSQN: double read fsAcrescimoISSQN write fsAcrescimoISSQN;
-    property AcrescimoOPNF: double read fsAcrescimoOPNF write fsAcrescimoOPNF;
+    property ValorGrandeTotal: Double read fsValorGrandeTotal write fsValorGrandeTotal;
+    property ValorVendaBruta: Double read fsValorVendaBruta write fsValorVendaBruta;
+    property CancelamentoICMS: Double read fsCancelamentoICMS write fsCancelamentoICMS;
+    property DescontoICMS: Double read fsDescontoICMS write fsDescontoICMS;
+    property TotalISSQN: Double read fsTotalISSQN write fsTotalISSQN;
+    property TotalICMS: Double read fsTotalICMS write fsTotalICMS;
+    property CancelamentoISSQN: Double read fsCancelamentoISSQN write fsCancelamentoISSQN;
+    property CancelamentoOPNF: Double read fsCancelamentoOPNF write fsCancelamentoOPNF;
+    property DescontoISSQN: Double read fsDescontoISSQN write fsDescontoISSQN;
+    property DescontoOPNF: Double read fsDescontoOPNF write fsDescontoOPNF;
+    property VendaLiquida: Double read fsVendaLiquida write fsVendaLiquida;
+    property AcrescimoICMS: Double read fsAcrescimoICMS write fsAcrescimoICMS;
+    property AcrescimoISSQN: Double read fsAcrescimoISSQN write fsAcrescimoISSQN;
+    property AcrescimoOPNF: Double read fsAcrescimoOPNF write fsAcrescimoOPNF;
 
     // Todas as Aliquotas, de ICMS e ISSQN na ordem original de programação no ECF
     property TodasAliquotas: TACBrECFAliquotas read fsTodasAliquotas;
     // ICMS
     property ICMS: TACBrECFAliquotas read fsICMS;
-    property SubstituicaoTributariaICMS: double read fsSubstituicaoTributariaICMS write fsSubstituicaoTributariaICMS;
-    property IsentoICMS: double read fsIsentoICMS write fsIsentoICMS;
-    property NaoTributadoICMS: double read fsNaoTributadoICMS write fsNaoTributadoICMS;
+    property SubstituicaoTributariaICMS: Double read fsSubstituicaoTributariaICMS write fsSubstituicaoTributariaICMS;
+    property IsentoICMS: Double read fsIsentoICMS write fsIsentoICMS;
+    property NaoTributadoICMS: Double read fsNaoTributadoICMS write fsNaoTributadoICMS;
     // ISSQN
     property ISSQN: TACBrECFAliquotas read fsISSQN;
-    property SubstituicaoTributariaISSQN: double read fsSubstituicaoTributariaISSQN write fsSubstituicaoTributariaISSQN;
-    property IsentoISSQN: double read fsIsentoISSQN write fsIsentoISSQN;
-    property NaoTributadoISSQN: double read fsNaoTributadoISSQN write fsNaoTributadoISSQN;
+    property SubstituicaoTributariaISSQN: Double read fsSubstituicaoTributariaISSQN write fsSubstituicaoTributariaISSQN;
+    property IsentoISSQN: Double read fsIsentoISSQN write fsIsentoISSQN;
+    property NaoTributadoISSQN: Double read fsNaoTributadoISSQN write fsNaoTributadoISSQN;
     // TOTALIZADORES NÃO FISCAIS
     property TotalizadoresNaoFiscais: TACBrECFComprovantesNaoFiscais read fsTotalizadoresNaoFiscais ;
-    property TotalOperacaoNaoFiscal: double read fsTotalOperacaoNaoFiscal write fsTotalOperacaoNaoFiscal;
+    property TotalOperacaoNaoFiscal: Double read fsTotalOperacaoNaoFiscal write fsTotalOperacaoNaoFiscal;
     // RELATÓRIO GERENCIAL
     property RelatorioGerencial: TACBrECFRelatoriosGerenciais read fsRelatorioGerencial;
     // MEIOS DE PAGAMENTO
     property MeiosDePagamento: TACBrECFFormasPagamento read fsMeiosDePagamento;
-    property TotalTroco: double read fsTotalTroco write fsTotalTroco;
+    property TotalTroco: Double read fsTotalTroco write fsTotalTroco;
   end;
 
 TACBrECFConfigBarras = class(TPersistent)
@@ -632,6 +640,8 @@ TACBrECFClass = class
     function GetNumUltimoItem: Integer; virtual ;
 
     function GetDadosUltimaReducaoZ: AnsiString; Virtual ;
+    function GetDadosReducaoZ: AnsiString; Virtual ;
+    Procedure InitDadosUltimaReducaoZ;
 
     function GetEstado: TACBrECFEstado; virtual ;
     function GetGavetaAberta: Boolean; virtual ;
@@ -827,6 +837,7 @@ TACBrECFClass = class
     Property NumUltItem         : Integer    read GetNumUltimoItem ;
     Property TotalNaoFiscal     : Double     read GetTotalNaoFiscal ;
 
+    Property DadosReducaoZ : AnsiString  read GetDadosReducaoZ ;
     Property DadosUltimaReducaoZ : AnsiString read GetDadosUltimaReducaoZ ;
     Property DadosReducaoZClass: TACBrECFDadosRZ read fpDadosReducaoZClass;
 
@@ -1062,7 +1073,6 @@ TACBrECFClass = class
     function PossuiTagCodBarra(const ATexto: String): Boolean; virtual;
     function CodificarPaginaDeCodigoECF(ATexto: String): AnsiString; virtual;
     function DecodificarPaginaDeCodigoECF(ATexto: AnsiString): String; virtual;
-    function MontaDadosReducaoZ: AnsiString; virtual;
 end ;
 
 implementation
@@ -2571,6 +2581,150 @@ begin
   ErroAbstract('DadosUltimaReducaoZ');
 end;
 
+function TACBrECFClass.GetDadosReducaoZ: AnsiString;
+Var
+  I     : Integer ;
+  AliqZ : TACBrECFAliquota ;
+  FPGZ  : TACBrECFFormaPagamento ;
+  CNFZ  : TACBrECFComprovanteNaoFiscal ;
+  RGZ   : TACBrECFRelatorioGerencial ;
+begin
+  { Alimenta a class com os dados atuais do ECF }
+  with fpDadosReducaoZClass do
+  begin
+    { Zerar variaveis e inicializa Dados do ECF }
+    InitDadosUltimaReducaoZ;
+
+    with TACBrECF(fpOwner) do
+    begin
+      { REDUÇÃO Z }
+      try DataDoMovimento  := DataMovimento; except end ;
+      try NumeroCOOInicial := NumCOOInicial; except end ;
+
+      { CONTADORES }
+      try COO  := StrToIntDef(NumCOO,0);  except end ;
+      try GNF  := StrToIntDef(NumGNF,0);  except end ;
+      try CRO  := StrToIntDef(NumCRO,0);  except end ;
+      try CRZ  := StrToIntDef(NumCRZ,0);  except end ;
+      try CCF  := StrToIntDef(NumCCF,0);  except end ;
+      try CDC  := StrToIntDef(NumCDC,0);  except end ;
+      try CFC  := StrToIntDef(NumCFC,0);  except end ;
+      try GRG  := StrToIntDef(NumGRG,0);  except end ;
+      try GNFC := StrToIntDef(NumGNFC,0); except end ;
+      try CFD  := StrToIntDef(NumCFD,0);  except end ;
+      try NCN  := StrToIntDef(NumNCN,0);  except end ;
+      try CCDC := StrToIntDef(NumCCDC,0); except end ;
+
+      { TOTALIZADORES }
+      try ValorGrandeTotal  := GrandeTotal;             except end ;
+      try ValorVendaBruta   := VendaBruta;              except end ;
+      try CancelamentoICMS  := TotalCancelamentos;      except end ;
+      try DescontoICMS      := TotalDescontos;          except end ;
+      try AcrescimoICMS     := TotalAcrescimos;         except end ;
+      try CancelamentoISSQN := TotalCancelamentosISSQN; except end ;
+      try DescontoISSQN     := TotalDescontosISSQN;     except end ;
+      try AcrescimoISSQN    := TotalAcrescimosISSQN;    except end ;
+      try CancelamentoOPNF  := TotalCancelamentosOPNF;  except end ;
+      try DescontoOPNF      := TotalDescontosOPNF;      except end ;
+      try AcrescimoOPNF     := TotalAcrescimosOPNF;     except end ;
+
+      { Copiando objetos de ICMS e ISS}
+      try
+        CarregaAliquotas;
+        LerTotaisAliquota;
+
+        for I := 0 to fpAliquotas.Count - 1 do
+        begin
+          AliqZ := TACBrECFAliquota.Create ;
+          AliqZ.Assign( fpAliquotas[I] );
+
+          AdicionaAliquota( AliqZ );
+        end;
+      except
+      end;
+
+      { ICMS }
+      try SubstituicaoTributariaICMS  := TotalSubstituicaoTributaria; except end ;
+      try IsentoICMS                  := TotalIsencao;                except end ;
+      try NaoTributadoICMS            := TotalNaoTributado;           except end ;
+
+      { ISSQN }
+      try SubstituicaoTributariaISSQN := TotalSubstituicaoTributariaISSQN; except end ;
+      try IsentoISSQN                 := TotalIsencaoISSQN;                except end ;
+      try NaoTributadoISSQN           := TotalNaoTributadoISSQN;           except end ;
+
+      { TOTALIZADORES NÃO FISCAIS }
+      try
+        CarregaComprovantesNaoFiscais ;
+        LerTotaisComprovanteNaoFiscal ;
+
+        For I := 0 to fpComprovantesNaoFiscais.Count-1 do
+        begin
+          CNFZ := TACBrECFComprovanteNaoFiscal.Create ;
+          CNFZ.Assign( fpComprovantesNaoFiscais[I] );
+
+          TotalizadoresNaoFiscais.Add( CNFZ ) ;
+        end ;
+
+        TotalOperacaoNaoFiscal := TotalNaoFiscal;
+      except
+      end ;
+
+      { RELATÓRIO GERENCIAL }
+      try
+        CarregaRelatoriosGerenciais ;
+
+        For I := 0 to fpRelatoriosGerenciais.Count-1 do
+        begin
+           RGZ := TACBrECFRelatorioGerencial.Create ;
+           RGZ.Assign( fpRelatoriosGerenciais[I] );
+
+           fpDadosReducaoZClass.RelatorioGerencial.Add( RGZ ) ;
+        end ;
+      except
+      end ;
+
+      { MEIOS DE PAGAMENTO }
+      try
+        CarregaFormasPagamento ;
+        LerTotaisFormaPagamento ;
+
+        For I := 0 to fpFormasPagamentos.Count-1 do
+        begin
+          FPGZ := TACBrECFFormaPagamento.Create ;
+          FPGZ.Assign( fpFormasPagamentos[I] );
+
+          MeiosDePagamento.Add( FPGZ ) ;
+        end ;
+
+        fpDadosReducaoZClass.TotalTroco := TACBrECF(fpOwner).TotalTroco;
+      except
+      end ;
+    end;
+
+    CalculaValoresVirtuais;
+    Result := MontaDadosReducaoZ;
+  end;
+end;
+
+procedure TACBrECFClass.InitDadosUltimaReducaoZ;
+begin
+  with fpDadosReducaoZClass do
+  begin
+    Clear ;
+
+    { DADOS DO ECF }
+    with TACBrECF(fpOwner) do
+    begin
+      try DataDaImpressora := DataHora;    except end ;
+      try NumeroDeSerie    := NumSerie;    except end ;
+      try NumeroDeSerieMFD := NumSerieMFD; except end ;
+      try NumeroDoECF      := NumECF;      except end ;
+      try NumeroDaLoja     := NumLoja;     except end ;
+    end;
+  end;
+end;
+
 procedure TACBrECFClass.LeituraX;
 begin
   ErroAbstract('LeituraX');
@@ -2589,79 +2743,6 @@ end;
 procedure TACBrECFClass.MudaHorarioVerao(EHorarioVerao: Boolean);
 begin
   ErroAbstract('MudaHorarioVerao(EHorarioVerao: Boolean)');
-end;
-
-function TACBrECFClass.MontaDadosReducaoZ: AnsiString;
-Var
-  I: Integer ;
-begin
-  with fpDadosReducaoZClass do
-  begin
-     Result := '[ECF]' + sLineBreak ;
-
-     Result := Result + 'DataMovimento = ' + FormatDateTime('dd/mm/yy', DataDoMovimento) + sLineBreak ;
-     Result := Result + 'NumSerie = '      + NumeroDeSerie               + sLineBreak ;
-     Result := Result + 'NumSerieMFD = '   + NumeroDeSerieMFD            + sLineBreak ;
-     Result := Result + 'NumECF = '        + NumeroDoECF                 + sLineBreak ;
-     Result := Result + 'NumLoja = '       + NumeroDaLoja                + sLineBreak ;
-     Result := Result + 'NumCOOInicial = ' + NumeroCOOInicial            + sLineBreak ;
-     Result := Result + 'NumCOO = '        + FormatFloat('000000', COO)  + sLineBreak ;
-     Result := Result + 'NumCRZ = '        + FormatFloat('000000', CRZ)  + sLineBreak ;
-     Result := Result + 'NumCRO = '        + FormatFloat('000000', CRO)  + sLineBreak ;
-     Result := Result + 'NumGNF = '        + FormatFloat('000000', GNF)  + sLineBreak ;
-     Result := Result + 'NumCCF = '        + FormatFloat('000000', CCF)  + sLineBreak ;
-     Result := Result + 'NumCFD = '        + FormatFloat('000000', CFD)  + sLineBreak ;
-     Result := Result + 'NumCDC = '        + FormatFloat('000000', CDC)  + sLineBreak ;
-     Result := Result + 'NumGRG = '        + FormatFloat('000000', GRG)  + sLineBreak ;
-     Result := Result + 'NumGNFC = '       + FormatFloat('000000', GNFC) + sLineBreak ;
-     Result := Result + 'NumCFC = '        + FormatFloat('000000', CFC)  + sLineBreak ;
-     Result := Result + 'NumNCN = '        + FormatFloat('000000', NCN)  + sLineBreak ;
-     Result := Result + 'NumCCDC = '       + FormatFloat('000000', CCDC) + sLineBreak ;
-
-     Result := Result + sLineBreak + '[Totalizadores]' + sLineBreak ;
-
-     Result := Result + 'VendaBruta = '              + FloatToStr(ValorVendaBruta)        + sLineBreak ;
-     Result := Result + 'GrandeTotal = '             + FloatToStr(ValorGrandeTotal)       + sLineBreak ;
-     Result := Result + 'TotalDescontos = '          + FloatToStr(DescontoICMS)           + sLineBreak ;
-     Result := Result + 'TotalCancelamentos = '      + FloatToStr(CancelamentoICMS)       + sLineBreak ;
-     Result := Result + 'TotalAcrescimos = '         + FloatToStr(AcrescimoICMS)          + sLineBreak ;
-     Result := Result + 'TotalDescontosISSQN = '     + FloatToStr(DescontoISSQN)          + sLineBreak ;
-     Result := Result + 'TotalCancelamentosISSQN = ' + FloatToStr(CancelamentoISSQN)      + sLineBreak ;
-     Result := Result + 'TotalAcrescimosISSQN = '    + FloatToStr(AcrescimoISSQN)         + sLineBreak ;
-     Result := Result + 'TotalNaoFiscal = '          + FloatToStr(TotalOperacaoNaoFiscal) + sLineBreak ;
-     Result := Result + 'TotalDescontosOPNF = '      + FloatToStr(DescontoOPNF)           + sLineBreak ;
-     Result := Result + 'TotalCancelamentosOPNF = '  + FloatToStr(CancelamentoOPNF)       + sLineBreak ;
-     Result := Result + 'TotalAcrescimosOPNF = '     + FloatToStr(AcrescimoOPNF)          + sLineBreak ;
-
-     Result := Result + sLineBreak + '[Aliquotas]' + sLineBreak ;
-
-     For I := 0 to TodasAliquotas.Count-1 do
-     begin
-        Result := Result +
-                  FormatFloat('00', I+1 ) +
-                  TodasAliquotas[I].Tipo +
-                  IntToStrZero(Round(TodasAliquotas[I].Aliquota*100),4) + ' = ' +
-                  FloatToStr(TodasAliquotas[I].Total) + sLineBreak ;
-     end ;
-
-     Result := Result + sLineBreak + '[OutrasICMS]' + sLineBreak ;
-
-     Result := Result + 'TotalICMS = '                        + FloatToStr(TotalICMS)                   + sLineBreak ;
-     Result := Result + 'TotalISSQN = '                       + FloatToStr(TotalISSQN)                  + sLineBreak ;
-     Result := Result + 'TotalSubstituicaoTributaria = '      + FloatToStr(SubstituicaoTributariaICMS)  + sLineBreak ;
-     Result := Result + 'TotalNaoTributado = '                + FloatToStr(NaoTributadoICMS)            + sLineBreak ;
-     Result := Result + 'TotalIsencao = '                     + FloatToStr(IsentoICMS)                  + sLineBreak ;
-     Result := Result + 'TotalSubstituicaoTributariaISSQN = ' + FloatToStr(SubstituicaoTributariaISSQN) + sLineBreak ;
-     Result := Result + 'TotalNaoTributadoISSQN = '           + FloatToStr(NaoTributadoISSQN)           + sLineBreak ;
-     Result := Result + 'TotalIsencaoISSQN = '                + FloatToStr(IsentoISSQN)                 + sLineBreak ;
-
-     Result := Result + sLineBreak + '[NaoFiscais]' + sLineBreak ;
-
-     For I := 0 to TotalizadoresNaoFiscais.Count-1 do
-        Result := Result + padL(TotalizadoresNaoFiscais[I].Indice,2) + '_' +
-                           TotalizadoresNaoFiscais[I].Descricao + ' = ' +
-                           FloatToStr(TotalizadoresNaoFiscais[I].Total) + sLineBreak ;
-  end;
 end;
 
 procedure TACBrECFClass.MudaArredondamento(Arredondar: Boolean);
@@ -3771,8 +3852,8 @@ end;
   begin
     CanClose := (fsFormMsgEstado <> fmsProcessando) ;
   end;
-  {$D-}
   {$IFDEF VisualCLX}
+    {$D-}
     procedure TACBrECFClass.FormMsgEvent(Sender: QObjectH; Event: QEventH;
       var Handled: Boolean);
     {$IFDEF QT3CLX}
@@ -3839,8 +3920,8 @@ end;
          Handled := true ;
       {$ENDIF}
     end;
+    {$D+}
   {$ENDIF}
-  {$D+}
   procedure TACBrECFClass.FormMsgPinta( Texto : String );
   Var H, W, X, Y : Integer ;
   begin
@@ -4013,6 +4094,12 @@ end;
 
 { TACBrECFDadosRZ }
 
+procedure TACBrECFDadosRZ.SetDataDoMovimento(AValue: TDateTime);
+begin
+   if fsDataDoMovimento=AValue then Exit;
+   fsDataDoMovimento := DateOf( AValue );
+end;
+
 constructor TACBrECFDadosRZ.Create;
 begin
    fsTotalizadoresNaoFiscais := TACBrECFComprovantesNaoFiscais.Create;
@@ -4034,43 +4121,321 @@ begin
    fsISSQN.Clear ;
    fsTodasAliquotas.Clear;
 
-   fsCOO                         := 0 ;
-   fsCFD                         := 0 ;
-   fsCancelamentoISSQN           := 0 ;
-   fsGNFC                        := 0 ;
-   fsCRO                         := 0 ;
-   fsValorVendaBruta             := 0 ;
-   fsAcrescimoICMS               := 0 ;
-   fsDescontoICMS                := 0 ;
-   fsNaoTributadoICMS            := 0 ;
-   fsCRZ                         := 0 ;
-   fsGRG                         := 0 ;
-   fsValorGrandeTotal            := 0 ;
-   fsAcrescimoISSQN              := 0 ;
-   fsNaoTributadoISSQN           := 0 ;
-   fsIsentoICMS                  := 0 ;
-   fsSubstituicaoTributariaICMS  := 0 ;
-   fsDataDaImpressora            := 0 ;
-   fsTotalOperacaoNaoFiscal      := 0 ;
-   fsDescontoISSQN               := 0 ;
-   fsCancelamentoICMS            := 0 ;
-   fsGNF                         := 0 ;
-   fsIsentoISSQN                 := 0 ;
-   fsSubstituicaoTributariaISSQN := 0 ;
-   fsVendaLiquida                := 0 ;
-   fsCFC                         := 0 ;
-   fsCCF                         := 0 ;
-   fsTotalISSQN                  := 0 ;
-   fsTotalICMS                   := 0 ;
-   fsCDC                         := 0 ;
-   fsCFC                         := 0 ;
+   fsCOO                         := -1 ;
+   fsCFD                         := -1 ;
+   fsCancelamentoISSQN           := -1 ;
+   fsGNFC                        := -1 ;
+   fsCRO                         := -1 ;
+   fsValorVendaBruta             := -1 ;
+   fsAcrescimoICMS               := -1 ;
+   fsDescontoICMS                := -1 ;
+   fsNaoTributadoICMS            := -1 ;
+   fsCRZ                         := -1 ;
+   fsGRG                         := -1 ;
+   fsValorGrandeTotal            := -1 ;
+   fsAcrescimoISSQN              := -1 ;
+   fsNaoTributadoISSQN           := -1 ;
+   fsIsentoICMS                  := -1 ;
+   fsSubstituicaoTributariaICMS  := -1 ;
+   fsTotalOperacaoNaoFiscal      := -1 ;
+   fsDescontoISSQN               := -1 ;
+   fsCancelamentoICMS            := -1 ;
+   fsGNF                         := -1 ;
+   fsIsentoISSQN                 := -1 ;
+   fsSubstituicaoTributariaISSQN := -1 ;
+   fsVendaLiquida                := -1 ;
+   fsCFC                         := -1 ;
+   fsCCF                         := -1 ;
+   fsTotalISSQN                  := -1 ;
+   fsTotalICMS                   := -1 ;
+   fsCDC                         := -1 ;
+   fsCCDC                        := -1 ;
+   fsNCN                         := -1 ;
+   fsCancelamentoOPNF            := -1 ;
+   fsAcrescimoOPNF               := -1 ;
+   fsDescontoOPNF                := -1 ;
+   fsTotalTroco                  := -1;
    fsDataDoMovimento             := 0 ;
+   fsDataDaImpressora            := 0 ;
    fsNumeroCOOInicial            := '' ;
    fsNumeroDoECF                 := '' ;
    fsNumeroDeSerie               := '' ;
    fsNumeroDeSerieMFD            := '' ;
    fsNumeroDaLoja                := '' ;
 end ;
+
+procedure TACBrECFDadosRZ.CalculaValoresVirtuais;
+Var
+  I : Integer ;
+  V: Double;
+begin
+  // Computando Total de Operações não fiscais //
+  if (fsTotalOperacaoNaoFiscal < 0) then
+  begin
+    fsTotalOperacaoNaoFiscal := IfThen(fsTotalizadoresNaoFiscais.Count > 0, 0, -1) ;
+
+    For I := 0 to fsTotalizadoresNaoFiscais.Count-1 do
+      fsTotalOperacaoNaoFiscal := fsTotalOperacaoNaoFiscal + fsTotalizadoresNaoFiscais[I].Total;
+  end;
+
+  // Computando Total de ICMS //
+  if (fsTotalICMS < 0) then
+  begin
+    fsTotalICMS := IfThen(fsICMS.Count > 0, 0, -1) ;
+
+    For I := 0 to fsICMS.Count-1 do
+      fsTotalICMS := fsTotalICMS + fsICMS[I].Total;
+  end;
+
+  // Computando Total de ISSQN; //
+  if (fsTotalISSQN < 0) then
+  begin
+    fsTotalISSQN := IfThen(fsISSQN.Count > 0, 0, -1) ;
+
+    For I := 0 to fsISSQN.Count-1 do
+      fsTotalISSQN := fsTotalISSQN + fsISSQN[I].Total;
+  end;
+
+  // Computando a Venda Bruta //
+  if (fsValorVendaBruta < 0) then
+  begin
+    V := 0 ;
+
+    // ICMS //
+    if (IsentoICMS > -1) then
+       V := V + IsentoICMS;
+
+    if (NaoTributadoICMS > -1) then
+       V := V + NaoTributadoICMS;
+
+    if (SubstituicaoTributariaICMS > -1) then
+       V := V + SubstituicaoTributariaICMS;
+
+    if (DescontoICMS > -1) then
+       V := V + DescontoICMS;
+
+    if (CancelamentoICMS > -1) then
+       V := V + CancelamentoICMS;
+
+    // ISSQN //
+    if (IsentoISSQN > -1) then
+       V := V + IsentoISSQN;
+
+    if (NaoTributadoISSQN > -1) then
+       V := V + NaoTributadoISSQN;
+
+    if (SubstituicaoTributariaISSQN > -1) then
+       V := V + SubstituicaoTributariaISSQN;
+
+    if (DescontoISSQN > -1) then
+       V := V + DescontoISSQN;
+
+    if (CancelamentoISSQN > -1) then
+       V := V + CancelamentoISSQN;
+
+{
+    // OPNF //
+    if (AcrescimoOPNF > -1) then
+       V := V + AcrescimoOPNF;
+
+    if (DescontoOPNF > -1) then
+       V := V + DescontoOPNF;
+
+    if (CancelamentoOPNF > -1) then             // Entra ?
+       V := V + CancelamentoOPNF;
+}
+    // Aliquotas //
+    For I := 0 to TodasAliquotas.Count-1 do
+       V := V + TodasAliquotas[I].Total;
+
+    if V > 0 then
+       fsValorVendaBruta := V;
+  end;
+
+  // Computando a Venda Líquida //
+  if (fsVendaLiquida < 0) and (ValorVendaBruta > -1) then
+  begin
+    fsVendaLiquida := ValorVendaBruta ;
+
+    if (CancelamentoICMS > -1) then
+      fsVendaLiquida := fsVendaLiquida - CancelamentoICMS ;
+
+    if (DescontoICMS > -1) then
+      fsVendaLiquida := fsVendaLiquida - DescontoICMS ;
+
+    if (TotalISSQN > -1) then
+      fsVendaLiquida := fsVendaLiquida - TotalISSQN;
+
+    if (CancelamentoISSQN > -1) then
+      fsVendaLiquida := fsVendaLiquida - CancelamentoISSQN;
+
+    if (DescontoISSQN > -1) then
+      fsVendaLiquida := fsVendaLiquida - DescontoISSQN;
+
+    if (SubstituicaoTributariaISSQN > -1) then
+      fsVendaLiquida := fsVendaLiquida - SubstituicaoTributariaISSQN ;
+
+    if (NaoTributadoISSQN > -1) then
+      fsVendaLiquida := fsVendaLiquida - NaoTributadoISSQN ;
+
+    if (IsentoISSQN > -1) then
+      fsVendaLiquida := fsVendaLiquida - IsentoISSQN ;
+  end;
+end;
+
+function TACBrECFDadosRZ.MontaDadosReducaoZ: AnsiString;
+Var
+  I: Integer ;
+  S: String;
+begin
+  Result := '[ECF]' + sLineBreak ;
+
+  // Apenas grava no .INI os valores que foram realmente preenchidos pelo retorno do ECF //
+  if DataDaImpressora > 0 then
+     Result := Result + 'DataECF = ' + FormatDateTime('dd/mm/yy', DataDaImpressora) + sLineBreak ;
+  if DataDoMovimento > 0 then
+     Result := Result + 'DataMovimento = ' + FormatDateTime('dd/mm/yy', DataDoMovimento) + sLineBreak ;
+  if NumeroDeSerie <> '' then
+     Result := Result + 'NumSerie = '      + NumeroDeSerie               + sLineBreak ;
+  if NumeroDeSerieMFD <> '' then
+     Result := Result + 'NumSerieMFD = '   + NumeroDeSerieMFD            + sLineBreak ;
+  if NumeroDoECF <> '' then
+     Result := Result + 'NumECF = '        + NumeroDoECF                 + sLineBreak ;
+  if NumeroDaLoja <> '' then
+     Result := Result + 'NumLoja = '       + NumeroDaLoja                + sLineBreak ;
+  if NumeroCOOInicial <> '' then
+     Result := Result + 'NumCOOInicial = ' + NumeroCOOInicial            + sLineBreak ;
+  if COO > -1 then
+     Result := Result + 'NumCOO = '        + FormatFloat('000000', COO)  + sLineBreak ;
+  if CRZ > -1 then
+     Result := Result + 'NumCRZ = '        + FormatFloat('000000', CRZ)  + sLineBreak ;
+  if CRO > -1 then
+     Result := Result + 'NumCRO = '        + FormatFloat('000000', CRO)  + sLineBreak ;
+  if GNF > -1 then
+     Result := Result + 'NumGNF = '        + FormatFloat('000000', GNF)  + sLineBreak ;
+  if CCF > -1 then
+     Result := Result + 'NumCCF = '        + FormatFloat('000000', CCF)  + sLineBreak ;
+  if CFD > -1 then
+     Result := Result + 'NumCFD = '        + FormatFloat('000000', CFD)  + sLineBreak ;
+  if CDC > -1 then
+     Result := Result + 'NumCDC = '        + FormatFloat('000000', CDC)  + sLineBreak ;
+  if GRG > -1 then
+     Result := Result + 'NumGRG = '        + FormatFloat('000000', GRG)  + sLineBreak ;
+  if GNFC > -1 then
+  begin
+     Result := Result + 'NumNFC = '        + FormatFloat('000000', GNFC) + sLineBreak ;
+     Result := Result + 'NumGNFC = '       + FormatFloat('000000', GNFC) + sLineBreak ;
+  end;
+  if CFC > -1 then
+     Result := Result + 'NumCFC = '        + FormatFloat('000000', CFC)  + sLineBreak ;
+  if NCN > -1 then
+     Result := Result + 'NumNCN = '        + FormatFloat('000000', NCN)  + sLineBreak ;
+  if CCDC > -1 then
+     Result := Result + 'NumCCDC = '       + FormatFloat('000000', CCDC) + sLineBreak ;
+
+  Result := Result + sLineBreak + '[Totalizadores]' + sLineBreak ;
+
+  if ValorVendaBruta > -1 then
+     Result := Result + 'VendaBruta = '              + FormatFloat('0.00',ValorVendaBruta)        + sLineBreak ;
+  if VendaLiquida > -1 then
+     Result := Result + 'VendaLiquida = '            + FormatFloat('0.00',VendaLiquida)           + sLineBreak ;
+  if ValorGrandeTotal > -1 then
+     Result := Result + 'GrandeTotal = '             + FormatFloat('0.00',ValorGrandeTotal)       + sLineBreak ;
+  if DescontoICMS > -1 then
+     Result := Result + 'TotalDescontos = '          + FormatFloat('0.00',DescontoICMS)           + sLineBreak ;
+  if CancelamentoICMS > -1 then
+     Result := Result + 'TotalCancelamentos = '      + FormatFloat('0.00',CancelamentoICMS)       + sLineBreak ;
+  if AcrescimoICMS > -1 then
+     Result := Result + 'TotalAcrescimos = '         + FormatFloat('0.00',AcrescimoICMS)          + sLineBreak ;
+  if DescontoISSQN > -1 then
+     Result := Result + 'TotalDescontosISSQN = '     + FormatFloat('0.00',DescontoISSQN)          + sLineBreak ;
+  if CancelamentoISSQN > -1 then
+     Result := Result + 'TotalCancelamentosISSQN = ' + FormatFloat('0.00',CancelamentoISSQN)      + sLineBreak ;
+  if AcrescimoISSQN > -1 then
+     Result := Result + 'TotalAcrescimosISSQN = '    + FormatFloat('0.00',AcrescimoISSQN)         + sLineBreak ;
+  if TotalOperacaoNaoFiscal > -1 then
+     Result := Result + 'TotalNaoFiscal = '          + FormatFloat('0.00',TotalOperacaoNaoFiscal) + sLineBreak ;
+  if DescontoOPNF > -1 then
+     Result := Result + 'TotalDescontosOPNF = '      + FormatFloat('0.00',DescontoOPNF)           + sLineBreak ;
+  if CancelamentoOPNF > -1 then
+     Result := Result + 'TotalCancelamentosOPNF = '  + FormatFloat('0.00',CancelamentoOPNF)       + sLineBreak ;
+  if AcrescimoOPNF > -1 then
+     Result := Result + 'TotalAcrescimosOPNF = '     + FormatFloat('0.00',AcrescimoOPNF)          + sLineBreak ;
+  if TotalTroco > -1 then
+     Result := Result + 'TotalTroco = '              + FormatFloat('0.00',TotalTroco)             + sLineBreak ;
+
+  if TodasAliquotas.Count > 0 then
+     Result := Result + sLineBreak + '[Aliquotas]' + sLineBreak ;
+
+  For I := 0 to TodasAliquotas.Count-1 do
+  begin
+     Result := Result +
+               FormatFloat('00', I+1 ) +
+               TodasAliquotas[I].Tipo +
+               IntToStrZero(Round(TodasAliquotas[I].Aliquota*100),4) + ' = ' +
+               FormatFloat('0.00',TodasAliquotas[I].Total) + sLineBreak ;
+  end ;
+
+  Result := Result + sLineBreak + '[OutrasICMS]' + sLineBreak ;
+
+  if TotalICMS > -1 then
+     Result := Result + 'TotalICMS = '                        + FormatFloat('0.00',TotalICMS)                   + sLineBreak ;
+  if TotalISSQN > -1 then
+     Result := Result + 'TotalISSQN = '                       + FormatFloat('0.00',TotalISSQN)                  + sLineBreak ;
+  if SubstituicaoTributariaICMS > -1 then
+     Result := Result + 'TotalSubstituicaoTributaria = '      + FormatFloat('0.00',SubstituicaoTributariaICMS)  + sLineBreak ;
+  if NaoTributadoICMS > -1 then
+     Result := Result + 'TotalNaoTributado = '                + FormatFloat('0.00',NaoTributadoICMS)            + sLineBreak ;
+  if IsentoICMS > -1 then
+     Result := Result + 'TotalIsencao = '                     + FormatFloat('0.00',IsentoICMS)                  + sLineBreak ;
+  if SubstituicaoTributariaISSQN > -1 then
+     Result := Result + 'TotalSubstituicaoTributariaISSQN = ' + FormatFloat('0.00',SubstituicaoTributariaISSQN) + sLineBreak ;
+  if NaoTributadoISSQN > -1 then
+     Result := Result + 'TotalNaoTributadoISSQN = '           + FormatFloat('0.00',NaoTributadoISSQN)           + sLineBreak ;
+  if IsentoISSQN > -1 then
+     Result := Result + 'TotalIsencaoISSQN = '                + FormatFloat('0.00',IsentoISSQN)                 + sLineBreak ;
+
+  if TotalizadoresNaoFiscais.Count > 0 then
+     Result := Result + sLineBreak + '[NaoFiscais]' + sLineBreak ;
+  S := '';
+  For I := 0 to TotalizadoresNaoFiscais.Count-1 do
+  begin
+     Result := Result + padL(TotalizadoresNaoFiscais[I].Indice,2) + '_' +
+                        TotalizadoresNaoFiscais[I].Descricao + ' = ' +
+                        FormatFloat('0.00',TotalizadoresNaoFiscais[I].Total) + sLineBreak ;
+     S := S + 'CON_' + TotalizadoresNaoFiscais[I].Descricao +' = '+
+          FormatFloat('0000', TotalizadoresNaoFiscais[I].Contador) + sLineBreak ;
+  end;
+  Result := Result + S + sLineBreak ;
+
+  if RelatorioGerencial.Count > 0 then
+     Result := Result + sLineBreak + '[RelatoriosGerenciais]' + sLineBreak ;
+  For I := 0 to RelatorioGerencial.Count-1 do
+  begin
+     Result := Result + padL(RelatorioGerencial[I].Indice,2) + '_' +
+                        RelatorioGerencial[I].Descricao +' = '+
+                        FormatFloat('0000', RelatorioGerencial[I].Contador) + sLineBreak ;
+  end ;
+
+  if MeiosDePagamento.Count > 0 then
+     Result := Result + sLineBreak + '[MeiosDePagamento]' + sLineBreak ;
+  For I := 0 to MeiosDePagamento.Count-1 do
+  begin
+     Result := Result + padL(MeiosDePagamento[I].Indice,2) + '_' +
+                        MeiosDePagamento[I].Descricao + ' = ' +
+                        FormatFloat('0.00',MeiosDePagamento[I].Total) + sLineBreak ;
+  end;
+end;
+
+procedure TACBrECFDadosRZ.AdicionaAliquota(AliqZ: TACBrECFAliquota);
+begin
+  fsTodasAliquotas.Add( AliqZ );
+
+  if AliqZ.Tipo = 'S' then
+    fsISSQN.Add( AliqZ )
+  else
+    fsICMS.Add( AliqZ );
+end;
 
 destructor TACBrECFDadosRZ.Destroy;
 begin

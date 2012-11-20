@@ -1655,39 +1655,36 @@ end ;
 
 procedure TACBrECFSwedaSTX.CarregaAliquotas;
 var
-   RetCMD:String;
+   RetICMS, RetISSQN:String;
    Aliquota : TACBrECFAliquota ;
    iAliquotas:Integer;
    I:Integer;
 begin
+   RetICMS  := RemoveNulos( RetornaInfoECF('D4') );
+   RetISSQN := RemoveNulos( RetornaInfoECF('E4') );
 
-   RetCMD := RetornaInfoECF('D4');
    inherited CarregaAliquotas;
-   {ICMS}
-   RetCMD := RemoveNulos(RetCMD);
-   iAliquotas := Trunc(Length(RetCMD)/4);
+
+   iAliquotas := Trunc(Length(RetICMS)/4);
    for I := 1 to iAliquotas do
    begin
       Aliquota := TACBrECFAliquota.create;
       Aliquota.Sequencia := I;
       Aliquota.Indice := FormatFloat('T00',I);
-      Aliquota.Aliquota := StrToFloatDef(Copy(RetCMD,(I*4)-3,4),0)/100;
+      Aliquota.Aliquota := StrToFloatDef(Copy(RetICMS,(I*4)-3,4),0)/100;
       fpAliquotas.Add(Aliquota);
    end;
-   {ISS}
-   RetCMD := RetornaInfoECF('E4');
-   RetCMD := RemoveNulos(RetCMD);
-   iAliquotas := Trunc(Length(RetCMD)/4);
+
+   iAliquotas := Trunc(Length(RetISSQN)/4);
    for I := 1 to iAliquotas do
    begin
       Aliquota := TACBrECFAliquota.create;
       Aliquota.Sequencia := I;
       Aliquota.Indice := FormatFloat('S00',I);
       Aliquota.Tipo := 'S';
-      Aliquota.Aliquota := StrToFloatDef(Copy(RetCMD,(I*4)-3,4),0)/100;
+      Aliquota.Aliquota := StrToFloatDef(Copy(RetISSQN,(I*4)-3,4),0)/100;
       fpAliquotas.Add(Aliquota);
    end;
-
 end;
 
 procedure TACBrECFSwedaSTX.LerTotaisAliquota;
@@ -1696,18 +1693,13 @@ var
    RetCMD:String;
 begin
     if not Assigned(fpAliquotas) then
-    begin
        CarregaAliquotas;
-    end;
 
-    RetCMD := RetornaInfoECF('D2');
-    RetCMD := RemoveNulos(RetCMD);
+    RetCMD := RemoveNulos( RetornaInfoECF('D2') ) +    // ICMS
+              RemoveNulos( RetornaInfoECF('E2') ) ;    // ISSQN
 
     for I := 0 to fpAliquotas.Count - 1 do
-    begin
-       fpAliquotas[I].Total:=StrToFloatDef(Copy(RetCMD,((I+1)*13)-12,13),0)/100;
-    end;
-
+       fpAliquotas[I].Total := StrToFloatDef(Copy(RetCMD,((I+1)*13)-12,13),0)/100;
 end;
 
 

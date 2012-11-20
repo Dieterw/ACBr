@@ -51,7 +51,7 @@ uses ACBrDevice,
           , Controls, Forms, Graphics, Dialogs, ExtCtrls
        {$ENDIF}
        {$IFDEF MSWINDOWS}
-         , Windows
+         , Windows, messages
        {$ENDIF}
      {$ENDIF} ;
 

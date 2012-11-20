@@ -133,7 +133,8 @@ Data: 20/11/2012
 [+] Implementado retorno para os métodos: GetTotalAcrescimosISSQN,
     GetTotalCancelamentosISSQN, GetTotalDescontosISSQN, GetTotalIsencaoISSQN,
     GetTotalNaoTributadoISSQN, GetTotalSubstituicaoTributariaISSQN,
-    GetTotalAcrescimosOPNF, GetTotalCancelamentosOPNF, GetTotalDescontosOPNF
+    GetTotalAcrescimosOPNF, GetTotalCancelamentosOPNF, GetTotalDescontosOPNF,
+    GetTotalTroco
 
 Data: 31/10/2012
 -- ACBrECFEpson --

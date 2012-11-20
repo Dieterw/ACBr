@@ -156,6 +156,7 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
     function GetTotalAcrescimos: Double; override ;
     function GetTotalCancelamentos: Double; override ;
     function GetTotalDescontos: Double; override ;
+    function GetTotalTroco: Double; override ;
     function GetTotalSubstituicaoTributaria: Double; override ;
     function GetTotalNaoTributado: Double; override ;
     function GetTotalIsencao: Double; override ;
@@ -163,11 +164,11 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
     function GetTotalCancelamentosISSQN: Double; override ;
     function GetTotalDescontosISSQN: Double; override ;
     function GetTotalIsencaoISSQN: Double; override ;
-    function GetTotalNaoTributadoISSQN: Double; virtual ;
-    function GetTotalSubstituicaoTributariaISSQN: Double; virtual ;
-    function GetTotalAcrescimosOPNF: Double; virtual ;
-    function GetTotalCancelamentosOPNF: Double; virtual ;
-    function GetTotalDescontosOPNF: Double; virtual ;
+    function GetTotalNaoTributadoISSQN: Double; override ;
+    function GetTotalSubstituicaoTributariaISSQN: Double; override ;
+    function GetTotalAcrescimosOPNF: Double; override ;
+    function GetTotalCancelamentosOPNF: Double; override ;
+    function GetTotalDescontosOPNF: Double; override ;
     function GetNumCOOInicial: String; override ;
     function GetNumUltimoItem: Integer; override ;
 
@@ -2255,6 +2256,14 @@ begin
    Result := StrToFloatDef(Copy(RetCMD,14,13),0)/100;
 end;
 
+function TACBrECFSwedaSTX.GetTotalTroco: Double;
+var
+   RetCMD:String;
+begin
+   RetCMD := Trim(RetornaInfoECF('B1'));
+   Result := StrToFloatDef(Copy(RetCMD,1,14),0)/100;
+end;
+
 function TACBrECFSwedaSTX.GetTotalIsencao: Double;
 var
    I1:Double;
@@ -2554,10 +2563,9 @@ end;
 
 function TACBrECFSwedaSTX.GetDadosUltimaReducaoZ: AnsiString;
 var
-  RetCMD,sAliquota:String;
-  I:Integer;
-  V:Double;
-  AliqZ: TACBrECFAliquota;
+  RetCMD :String;
+  I : Integer;
+  AliqZ : TACBrECFAliquota;
 
   function AchaValorRegistrador( Registrador: String ): Double ;
   var

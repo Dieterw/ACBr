@@ -48,9 +48,11 @@ interface
 
 uses
   SysUtils, Math, Classes,
+{$IFNDEF Framework}
   {$IFDEF FPC}
     LResources,
   {$ENDIF}
+{$ENDIF}
   DateUtils, ACBrSped, ACBrTXTClass, ACBrEFDBlocos,
   ACBrEFDBloco_0_Class, ACBrEFDBloco_1_Class, ACBrEFDBloco_9_Class,
   ACBrEFDBloco_C_Class, ACBrEFDBloco_D_Class, ACBrEFDBloco_E_Class,
@@ -2173,11 +2175,12 @@ begin
   Bloco_9.WriteRegistro9999;
 end;
 
-
-{$ifdef FPC}
+{$IFNDEF Framework}
+{$IFDEF FPC}
 initialization
    {$I ACBrSpedFiscal.lrs}
-{$endif}
+{$ENDIF}
+{$ENDIF}
 
 end.
 

@@ -97,6 +97,44 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 20/11/2012
+-- ACBrECF --                                                      (por: DSA)
+[*] Refactoring em método: GetDadosReducaoZ e MontaDadosReducaoZ
+
+-- ACBrECFClass --                                                 (por: DSA)
+[*] Refactoring em método: GetDadosReducaoZ e MontaDadosReducaoZ
+[*] Classe TACBrECFDadosRZ modificada para conter o método MontaDadosReducaoZ
+[-] Método TACBrECFDadosRZ.MontaDadosReducaoZ, modificado para montar .INI apenas
+    com as variaveis que foram realmente informadas (eliminando problema de
+    registradores zerados)
+[+] Inserido método TACBrECFDadosRZ.CalculaValoresVirtuais para calcular valores
+    que não tenham sido retornado pelo ECF como: TotalOperacaoNaoFiscal, TotalICMS,
+    TotalISSQN, ValorVendaBruta, VendaLiquida
+
+-- ACBrECFBematech --                                              (por: DSA)
+[*] Refactoring em: GetDataHora, GetDataHoraSB e GetDataMovimento
+[*] Revisão e refactoring em GetDadosUltimaReducaoZ
+
+-- ACBrECFDaruma --                                                (por: DSA)
+[*] Revisão e refactoring em GetDadosUltimaReducaoZ
+
+-- ACBrECFEpson --                                                 (por: DSA)
+[*] Refactoring em: GetDataHora, GetDataHoraSB e GetDataMovimento
+[*] Revisão e refactoring em GetDadosUltimaReducaoZ, modificado para usar a
+    classe TACBrECFDadosRZ
+
+-- ACBrECFEpson --                                                 (por: DSA)
+[*] Revisão e refactoring em GetDadosUltimaReducaoZ, modificado para usar a
+    classe TACBrECFDadosRZ
+
+-- ACBrECFSwedaSTX --                                              (por: DSA)
+[*] Revisão e refactoring em GetDadosUltimaReducaoZ, modificado para usar a
+    classe TACBrECFDadosRZ
+[+] Implementado retorno para os métodos: GetTotalAcrescimosISSQN,
+    GetTotalCancelamentosISSQN, GetTotalDescontosISSQN, GetTotalIsencaoISSQN,
+    GetTotalNaoTributadoISSQN, GetTotalSubstituicaoTributariaISSQN,
+    GetTotalAcrescimosOPNF, GetTotalCancelamentosOPNF, GetTotalDescontosOPNF
+
 Data: 31/10/2012
 -- ACBrECFEpson --
 [-] Adicionada verificação do sucesso de Envio do Comando quando usando USB e a

@@ -159,6 +159,15 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
     function GetTotalSubstituicaoTributaria: Double; override ;
     function GetTotalNaoTributado: Double; override ;
     function GetTotalIsencao: Double; override ;
+    function GetTotalAcrescimosISSQN: Double; override ;
+    function GetTotalCancelamentosISSQN: Double; override ;
+    function GetTotalDescontosISSQN: Double; override ;
+    function GetTotalIsencaoISSQN: Double; override ;
+    function GetTotalNaoTributadoISSQN: Double; virtual ;
+    function GetTotalSubstituicaoTributariaISSQN: Double; virtual ;
+    function GetTotalAcrescimosOPNF: Double; virtual ;
+    function GetTotalCancelamentosOPNF: Double; virtual ;
+    function GetTotalDescontosOPNF: Double; virtual ;
     function GetNumCOOInicial: String; override ;
     function GetNumUltimoItem: Integer; override ;
 
@@ -2260,6 +2269,96 @@ begin
    Result := I1+I2+I3;
 end;
 
+function TACBrECFSwedaSTX.GetTotalAcrescimosISSQN: Double;
+var
+   RetCMD:String;
+begin
+   RetCMD := Trim(RetornaInfoECF('E1'));
+   Result := StrToFloatDef(Copy(RetCMD,1,13),0)/100;
+end;
+
+function TACBrECFSwedaSTX.GetTotalCancelamentosISSQN: Double;
+var
+   RetCMD:String;
+begin
+   RetCMD := Trim(RetornaInfoECF('E1'));
+   Result := StrToFloatDef(Copy(RetCMD,27,13),0)/100;
+end;
+
+function TACBrECFSwedaSTX.GetTotalDescontosISSQN: Double;
+var
+   RetCMD:String;
+begin
+   RetCMD := Trim(RetornaInfoECF('E1'));
+   Result := StrToFloatDef(Copy(RetCMD,14,13),0)/100;
+end;
+
+function TACBrECFSwedaSTX.GetTotalIsencaoISSQN: Double;
+var
+   I1:Double;
+   I2:Double;
+   I3:Double;
+   RetCMD:String;
+begin
+   RetCMD := Trim(RetornaInfoECF('E1'));
+   I1:= StrToFloatDef(Copy(RetCMD,118,13),0)/100;
+   I2:= StrToFloatDef(Copy(RetCMD,131,13),0)/100;
+   I3:= StrToFloatDef(Copy(RetCMD,144,13),0)/100;
+   Result := I1+I2+I3;
+end;
+
+function TACBrECFSwedaSTX.GetTotalNaoTributadoISSQN: Double;
+var
+   RetCMD :String;
+   N1:Double;
+   N2:Double;
+   N3:Double;
+begin
+   RetCMD := Trim(RetornaInfoECF('E1'));
+   N1 := StrToFloatDef(Copy(RetCMD,79,13),0)/100;
+   N2 := StrToFloatDef(Copy(RetCMD,92,13),0)/100;
+   N3 := StrToFloatDef(Copy(RetCMD,105,13),0)/100;
+   Result := N1+N2+N3;
+end;
+
+function TACBrECFSwedaSTX.GetTotalSubstituicaoTributariaISSQN: Double;
+var
+   RetCMD :String;
+   F1:Double;
+   F2:Double;
+   F3:Double;
+begin
+   RetCMD := Trim(RetornaInfoECF('E1'));
+   F1 := StrToFloatDef(Copy(RetCMD,40,13),0)/100;
+   F2 := StrToFloatDef(Copy(RetCMD,53,13),0)/100;
+   F3 := StrToFloatDef(Copy(RetCMD,66,13),0)/100;
+   Result := F1+F2+F3;
+end;
+
+function TACBrECFSwedaSTX.GetTotalAcrescimosOPNF: Double;
+var
+   RetCMD:String;
+begin
+   RetCMD := Trim(RetornaInfoECF('C1'));
+   Result := StrToFloatDef(Copy(RetCMD,1,13),0)/100;
+end;
+
+function TACBrECFSwedaSTX.GetTotalCancelamentosOPNF: Double;
+var
+   RetCMD:String;
+begin
+   RetCMD := Trim(RetornaInfoECF('C1'));
+   Result := StrToFloatDef(Copy(RetCMD,27,13),0)/100;
+end;
+
+function TACBrECFSwedaSTX.GetTotalDescontosOPNF: Double;
+var
+   RetCMD:String;
+begin
+   RetCMD := Trim(RetornaInfoECF('C1'));
+   Result := StrToFloatDef(Copy(RetCMD,14,13),0)/100;
+end;
+
 function TACBrECFSwedaSTX.GetTotalNaoTributado: Double;
 var
    RetCMD :String;
@@ -2286,7 +2385,6 @@ begin
    F2 := StrToFloatDef(Copy(RetCMD,53,13),0)/100;
    F3 := StrToFloatDef(Copy(RetCMD,66,13),0)/100;
    Result := F1+F2+F3;
-
 end;
 
 function TACBrECFSwedaSTX.GetNumUltimoItem: Integer;

@@ -4434,7 +4434,6 @@ function TACBrECFDaruma.GetDadosUltimaReducaoZ: AnsiString;
 Var RetCmd, S, SS : AnsiString ;
     I :Integer;
     AliqZ : TACBrECFAliquota ;
-    FPGZ  : TACBrECFFormaPagamento ;
     CNFZ  : TACBrECFComprovanteNaoFiscal ;
     RGZ   : TACBrECFRelatorioGerencial ;
     GTInicial :Double;

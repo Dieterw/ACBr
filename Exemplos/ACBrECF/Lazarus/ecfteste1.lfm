@@ -2668,6 +2668,10 @@ object Form1: TForm1
           Caption = 'Grande Total'
           OnClick = GrandeTotal1Click
         end
+        object mTotalTroco: TMenuItem
+          Caption = 'TotalTroco'
+          OnClick = mTotalTrocoClick
+        end
         object N22: TMenuItem
           Caption = '-'
         end
@@ -3303,6 +3307,13 @@ object Form1: TForm1
     ConfigBarras.MostrarCodigo = True
     ConfigBarras.LarguraLinha = 3
     ConfigBarras.Altura = 10
+    InfoRodapeCupom.CupomMania = False
+    InfoRodapeCupom.MinasLegal = False
+    InfoRodapeCupom.ParaibaLegal = False
+    InfoRodapeCupom.NotaLegalDF.Imprimir = False
+    InfoRodapeCupom.NotaLegalDF.ProgramaDeCredito = False
+    InfoRodapeCupom.NotaLegalDF.ValorICMS = 0
+    InfoRodapeCupom.NotaLegalDF.ValorISS = 0
     left = 312
     top = 328
   end
@@ -3353,6 +3364,8 @@ object Form1: TForm1
     IdentPAF.Paf.EmitePED = False
     IdentPAF.Paf.CupomMania = False
     IdentPAF.Paf.MinasLegal = False
+    IdentPAF.Paf.NotaLegalDF = False
+    IdentPAF.Paf.ParaibaLegal = False
     IdentPAF.Paf.TrocoEmCartao = False
     OnGetChave = ACBrAAC1GetChave
     OnAntesAbrirArquivo = ACBrAAC1AntesAbrirArquivo

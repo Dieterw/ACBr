@@ -107,6 +107,7 @@ type
     edAAC_SH_IM : TEdit ;
     edAAC_ECF_GT : TDBEdit ;
     edAAC_SH_RazaoSocial : TEdit ;
+    mTotalTroco: TMenuItem;
     sePaginaCodigo: TSpinEdit;
     edtDtInicial : TDateEdit ;
     edtDtFinal : TDateEdit ;
@@ -515,6 +516,7 @@ type
     procedure mSangriaClick(Sender : TObject) ;
     procedure mSuprimentoClick(Sender : TObject) ;
     procedure mTesteVinculadoClick(Sender : TObject) ;
+    procedure mTotalTrocoClick(Sender: TObject);
     procedure mUsuarioAtualClick(Sender : TObject) ;
     procedure mValorTotalNaoFiscalClick(Sender : TObject) ;
     procedure NumSerieMFDClick(Sender : TObject) ;
@@ -2357,6 +2359,12 @@ begin
      mResp.Lines.Add('---------------------------------');
      AtualizaMemos ;
   end ;
+end;
+
+procedure TForm1.mTotalTrocoClick(Sender: TObject);
+begin
+  mResp.Lines.Add( 'TotalTroco: ('+ FloatToStr(ACBrECF1.TotalTroco)+')' );
+  AtualizaMemos ;
 end;
 
 procedure TForm1.mUsuarioAtualClick(Sender : TObject) ;

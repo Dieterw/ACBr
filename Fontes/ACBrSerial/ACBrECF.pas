@@ -1801,7 +1801,8 @@ end;
 
 function TACBrECF.GetDataHoraClass: TDateTime;
 begin
-  ComandoLOG := 'DataHora' ;
+  if ComandoLOG = '' then
+     ComandoLOG := 'DataHora' ;
   Result := fsECF.DataHora ;
 end;
 

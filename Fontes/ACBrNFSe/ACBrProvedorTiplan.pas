@@ -101,7 +101,9 @@ begin
   then ConfigCidade.NameSpaceEnvelope := 'http://www.nfe.com.br'
   else ConfigCidade.NameSpaceEnvelope := 'http://www.nfe.com.br';
 
- ConfigCidade.AssinaRPS  := True;
+ // Alterado por Italo em 21/11/2012
+ // Conforme postagem feita por Rodrigo@azoup.com.br 
+ ConfigCidade.AssinaRPS  := False;
  ConfigCidade.AssinaLote := True;
 
  Result := ConfigCidade;

@@ -1240,6 +1240,27 @@ begin
       inc(i01);
     end;
 
+    // Incluido por Italo em 21/11/2012
+{$IFDEF PL_104}
+    if Leitor.rExtrai(2, 'cobr') <> '' then
+    begin
+      CTe.cobr.Fat.nFat  := Leitor.rCampo(tcStr, 'nFat');
+      CTe.cobr.Fat.vOrig := Leitor.rCampo(tcDe2, 'vOrig');
+      CTe.cobr.Fat.vDesc := Leitor.rCampo(tcDe2, 'vDesc');
+      CTe.cobr.Fat.vLiq  := Leitor.rCampo(tcDe2, 'vLiq');
+
+      i01 := 0;
+      while Leitor.rExtrai(3, 'dup', '', i01 + 1) <> '' do
+      begin
+        CTe.cobr.Dup.Add;
+        CTe.cobr.Dup[i01].nDup  := Leitor.rCampo(tcStr, 'nDup');
+        CTe.cobr.Dup[i01].dVenc := Leitor.rCampo(tcDat, 'dVenc');
+        CTe.cobr.Dup[i01].vDup  := Leitor.rCampo(tcDe2, 'vDup');
+        inc(i01);
+      end;
+    end;
+{$ENDIF}
+
     if Leitor.rExtrai(2, 'infCteSub') <> '' then
     begin
      CTe.infCTeSub.chCte := Leitor.rCampo(tcStr, 'chCte');

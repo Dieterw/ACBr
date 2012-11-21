@@ -404,14 +404,18 @@ end;
 class function NotaUtil.FormatDate(const AString: string): String;
 var
   vTemp: TDateTime;
+{$IFDEF VER140} //delphi6
+{$ELSE}
+vFormatSettings: TFormatSettings;
+{$ENDIF}
 begin
   try
 {$IFDEF VER140} //delphi6
     DateSeparator   := '/';
     ShortDateFormat := 'dd/mm/yyyy';
 {$ELSE}
-    FormatSettings.DateSeparator   := '-';
-    FormatSettings.ShortDateFormat := 'yyyy-mm-dd';
+    vFormatSettings.DateSeparator   := '-';
+    vFormatSettings.ShortDateFormat := 'yyyy-mm-dd';
 //    vTemp := StrToDate(AString, FFormato);
 {$ENDIF}
     vTemp := StrToDate(AString);
@@ -427,6 +431,10 @@ end;
 class function NotaUtil.FormatDateTime(const AString: string): string;
 var
   vTemp : TDateTime;
+{$IFDEF VER140} //delphi6
+{$ELSE}
+vFormatSettings: TFormatSettings;
+{$ENDIF}
 begin
   try
 {$IFDEF VER140} //delphi6
@@ -434,8 +442,8 @@ begin
     ShortDateFormat := 'dd/mm/yyyy';
     ShortTimeFormat := 'hh:nn:ss';
 {$ELSE}
-    FormatSettings.DateSeparator   := '-';
-    FormatSettings.ShortDateFormat := 'yyyy-mm-dd';
+    vFormatSettings.DateSeparator   := '-';
+    vFormatSettings.ShortDateFormat := 'yyyy-mm-dd';
     //    vTemp := StrToDate(AString, FFormato);
 {$ENDIF}
     vTemp := StrToDateTime(AString);
@@ -458,15 +466,20 @@ end;
 
 class function NotaUtil.FormatFloat(AValue: Extended;
   const AFormat: string): string;
+{$IFDEF VER140} //delphi6
+{$ELSE}
+var
+vFormatSettings: TFormatSettings;
+{$ENDIF}
 begin
 {$IFDEF VER140} //delphi6
   DecimalSeparator  := ',';
   ThousandSeparator := '.';
   Result            := SysUtils.FormatFloat(AFormat, AValue);
 {$ELSE}
-  FormatSettings.DecimalSeparator  := ',';
-  FormatSettings.ThousandSeparator := '.';
-  Result                     := SysUtils.FormatFloat(AFormat, AValue, FormatSettings);
+  vFormatSettings.DecimalSeparator  := ',';
+  vFormatSettings.ThousandSeparator := '.';
+  Result                     := SysUtils.FormatFloat(AFormat, AValue, vFormatSettings);
 {$ENDIF}
 end;
 
@@ -1447,13 +1460,17 @@ end;
 class function NotaUtil.StringToFloat(AValue: String): Double;
 var
 sDecimalSeparator: string;
+{$IFDEF VER140} //delphi6
+{$ELSE}
+vFormatSettings: TFormatSettings;
+{$ENDIF}
 begin
   AValue := Trim( AValue );
 
 {$IFDEF VER140} //delphi6
   sDecimalSeparator := DecimalSeparator;
 {$ELSE}
-  sDecimalSeparator := FormatSettings.DecimalSeparator;
+  sDecimalSeparator := vFormatSettings.DecimalSeparator;
 {$ENDIF}
 
   if sDecimalSeparator <> '.' then
@@ -1476,11 +1493,16 @@ begin
 end;
 
 class procedure NotaUtil.ConfAmbiente;
+{$IFDEF VER140} //delphi6
+{$ELSE}
+var
+vFormatSettings: TFormatSettings;
+{$ENDIF}
 begin
 {$IFDEF VER140} //delphi6
   DecimalSeparator := ',';
 {$ELSE}
-  FormatSettings.DecimalSeparator := ',';
+  vFormatSettings.DecimalSeparator := ',';
 {$ENDIF}
 end;
 

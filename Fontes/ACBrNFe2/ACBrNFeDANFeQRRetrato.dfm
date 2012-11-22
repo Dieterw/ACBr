@@ -12,8 +12,6 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
   TextHeight = 10
   inherited QRNFe: TQuickRep
     Tag = 1
-    Left = 2
-    Top = 2
     BeforePrint = QRNFeBeforePrint
     DataSet = cdsItens
     Font.Height = -8
@@ -528,7 +526,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           63.500000000000000000
-          846.666666666666800000
+          846.666666666666600000
           29.104166666666670000
           177.270833333333300000)
         XLColumn = 0
@@ -1998,7 +1996,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       ForceNewColumn = False
       ForceNewPage = False
       Size.Values = (
-        886.354166666666800000
+        886.354166666666900000
         1989.666666666667000000)
       PreCaluculateBandHeight = False
       KeepOnOnePage = False

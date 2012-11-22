@@ -460,7 +460,9 @@ type
 
 implementation
 
-uses StrUtils, ACBrNFeUtil, DateUtils, ACBrUtil, pcnNFe;
+uses
+ StrUtils, DateUtils,
+ ACBrUtil, ACBrDFeUtil, ACBrNFeUtil, pcnNFe;
 
 {$R *.dfm}
 
@@ -851,7 +853,7 @@ begin
                            '  -  ' +
                            'DEST. / REM.: ' + FNFe.Dest.xNome + '  -  ' +
                            'VALOR TOTAL: R$ ' +
-                           NotaUtil.FormatFloat(FNFe.Total.ICMSTot.vNF,
+                           DFeUtil.FormatFloat(FNFe.Total.ICMSTot.vNF,
                            '###,###,###,##0.00');
         end; // if FResumoCanhoto_Texto <> ''
     end // if FResumoCanhoto = True
@@ -970,8 +972,8 @@ begin
    with FNFe.Dest do
    begin
       if Trim( CNPJCPF ) = ''                then qrlDestCNPJ.Caption := ''
-      else if Length( Trim( CNPJCPF ) ) > 11 then qrlDestCNPJ.Caption := NotaUtil.FormatarCNPJ( CNPJCPF )
-      else                                        qrlDestCNPJ.Caption := NotaUtil.FormatarCPF( CNPJCPF );
+      else if Length( Trim( CNPJCPF ) ) > 11 then qrlDestCNPJ.Caption := DFeUtil.FormatarCNPJ( CNPJCPF )
+      else                                        qrlDestCNPJ.Caption := DFeUtil.FormatarCPF( CNPJCPF );
 
       qrlDestIE.Caption   := IE;
       qrlDestNome.Caption := XNome;
@@ -988,8 +990,8 @@ begin
 
    // Emissao, saida
 
-   qrlEmissao.Caption   := NotaUtil.FormatDate(DateToStr(FNFe.Ide.dEmi));
-   qrlSaida.Caption     := IfThen( FNFe.Ide.DSaiEnt <> 0, NotaUtil.FormatDate(DateToStr(FNFe.Ide.dSaiEnt)));
+   qrlEmissao.Caption   := DFeUtil.FormatDate(DateToStr(FNFe.Ide.dEmi));
+   qrlSaida.Caption     := IfThen( FNFe.Ide.DSaiEnt <> 0, DFeUtil.FormatDate(DateToStr(FNFe.Ide.dSaiEnt)));
    // Alterado por Italo em 22/03/2011
    qrlHoraSaida.Caption := IfThen( FNFe.Ide.hSaiEnt <> 0, FormatDateTime('hh:mm:ss', FNFe.Ide.hSaiEnt));
 
@@ -1023,8 +1025,8 @@ begin
      for x := 0 to (iQuantDup - 1) do with FNFe.Cobr.Dup[ x ] do
      begin
         TQRLabel( FindComponent( 'qrlFatNum'   + intToStr ( x + 1 ) ) ).Caption := NDup;
-        TQRLabel( FindComponent( 'qrlFatData'  + intToStr ( x + 1 ) ) ).Caption := NotaUtil.FormatDate( DateToStr(DVenc) );
-        TQRLabel( FindComponent( 'qrlFatValor' + intToStr ( x + 1 ) ) ).Caption := NotaUtil.FormatFloat(VDup);
+        TQRLabel( FindComponent( 'qrlFatData'  + intToStr ( x + 1 ) ) ).Caption := DFeUtil.FormatDate( DateToStr(DVenc) );
+        TQRLabel( FindComponent( 'qrlFatValor' + intToStr ( x + 1 ) ) ).Caption := DFeUtil.FormatFloat(VDup);
      end;
     end;
 
@@ -1032,17 +1034,17 @@ begin
 
    with FNFe.Total.ICMSTot do
    begin
-      qrlBaseICMS.Caption      := NotaUtil.FormatFloat( VBC );
-      qrlValorICMS.Caption     := NotaUtil.FormatFloat( VICMS );
-      qrlBaseICMST.Caption     := NotaUtil.FormatFloat( VBCST );
-      qrlValorICMST.Caption    := NotaUtil.FormatFloat( VST );
-      qrlTotalProdutos.Caption := NotaUtil.FormatFloat( VProd );
-      qrlValorFrete.Caption    := NotaUtil.FormatFloat( VFrete );
-      qrlValorSeguro.Caption   := NotaUtil.FormatFloat( VSeg );
-      qrlDescontos.Caption     := NotaUtil.FormatFloat( VDesc );
-      qrlAcessorias.Caption    := NotaUtil.FormatFloat( VOutro );
-      qrlValorIPI.Caption      := NotaUtil.FormatFloat( VIPI );
-      qrlTotalNF.Caption       := NotaUtil.FormatFloat( VNF );
+      qrlBaseICMS.Caption      := DFeUtil.FormatFloat( VBC );
+      qrlValorICMS.Caption     := DFeUtil.FormatFloat( VICMS );
+      qrlBaseICMST.Caption     := DFeUtil.FormatFloat( VBCST );
+      qrlValorICMST.Caption    := DFeUtil.FormatFloat( VST );
+      qrlTotalProdutos.Caption := DFeUtil.FormatFloat( VProd );
+      qrlValorFrete.Caption    := DFeUtil.FormatFloat( VFrete );
+      qrlValorSeguro.Caption   := DFeUtil.FormatFloat( VSeg );
+      qrlDescontos.Caption     := DFeUtil.FormatFloat( VDesc );
+      qrlAcessorias.Caption    := DFeUtil.FormatFloat( VOutro );
+      qrlValorIPI.Caption      := DFeUtil.FormatFloat( VIPI );
+      qrlTotalNF.Caption       := DFeUtil.FormatFloat( VNF );
    end;
 
    // Transporte
@@ -1063,8 +1065,8 @@ begin
       with Transporta do
       begin
          if Trim( CNPJCPF ) = ''                then qrlTransCNPJ.Caption := '' 
-         else if Length( Trim( CNPJCPF ) ) > 11 then qrlTransCNPJ.Caption := NotaUtil.FormatarCNPJ( CNPJCPF )
-         else                                        qrlTransCNPJ.Caption := NotaUtil.FormatarCPF( CNPJCPF );
+         else if Length( Trim( CNPJCPF ) ) > 11 then qrlTransCNPJ.Caption := DFeUtil.FormatarCNPJ( CNPJCPF )
+         else                                        qrlTransCNPJ.Caption := DFeUtil.FormatarCPF( CNPJCPF );
 
          qrlTransNome.Caption     := XNome;
          qrlTransIE.Caption       := IE;
@@ -1088,8 +1090,8 @@ begin
       qrlTransEspecie.Caption   := Esp;
       qrlTransMarca.Caption     := Marca;
       qrlTransNumeracao.Caption := NVol;
-      qrlTransPesoLiq.Caption   := NotaUtil.FormatFloat( PesoL, '#,0.000#' );
-      qrlTransPesoBruto.Caption := NotaUtil.FormatFloat( PesoB, '#,0.000#' );
+      qrlTransPesoLiq.Caption   := DFeUtil.FormatFloat( PesoL, '#,0.000#' );
+      qrlTransPesoBruto.Caption := DFeUtil.FormatFloat( PesoB, '#,0.000#' );
    end
    else
    begin
@@ -1157,9 +1159,9 @@ begin
       if FNFE.Total.ISSQNtot.vISS > 0 then
       begin
          qrlInscMunicipal.Caption := FNFE.Emit.IM;
-         qrlTotalServicos.Caption := NotaUtil.FormatFloat( FNFE.Total.ISSQNtot.vServ );
-         qrlBaseISSQN.Caption     := NotaUtil.FormatFloat( FNFE.Total.ISSQNtot.vBC );
-         qrlValorISSQN.Caption    := NotaUtil.FormatFloat( FNFE.Total.ISSQNtot.vISS );
+         qrlTotalServicos.Caption := DFeUtil.FormatFloat( FNFE.Total.ISSQNtot.vServ );
+         qrlBaseISSQN.Caption     := DFeUtil.FormatFloat( FNFE.Total.ISSQNtot.vBC );
+         qrlValorISSQN.Caption    := DFeUtil.FormatFloat( FNFE.Total.ISSQNtot.vISS );
       end
       else
       begin
@@ -1318,7 +1320,7 @@ begin
 
       // Alterado a posição por Italo em 22/06/2012
       // conforme problema detectado por Wilson
-      qrlCNPJ.Caption              := NotaUtil.FormatarCNPJ( FNFe.Emit.CNPJCPF  );
+      qrlCNPJ.Caption              := DFeUtil.FormatarCNPJ( FNFe.Emit.CNPJCPF  );
       qrlInscrEstSubst.caption     := FNFe.Emit.IEST;
       qrlInscricaoEstadual.Caption := FNFe.Emit.IE;
 
@@ -1405,7 +1407,7 @@ begin
                 qrlProtocolo.Caption        := FProtocoloNFE
             else
                 qrlProtocolo.Caption        :=  FNFe.procNFe.nProt + ' ' +
-                                                NotaUtil.SeSenao(FNFe.procNFe.dhRecbto <> 0, DateTimeToStr(FNFe.procNFe.dhRecbto),'');
+                                                DFeUtil.SeSenao(FNFe.procNFe.dhRecbto <> 0, DateTimeToStr(FNFe.procNFe.dhRecbto),'');
             qriBarCodeContingencia.Visible  := False;
             qrlMsgAutorizado.Enabled        := True;
         end;
@@ -1425,7 +1427,7 @@ begin
             qrlDescricao.Caption := 'NÚMERO DE REGISTRO DPEC';
             qrlProtocolo.Caption := FProtocoloNFE;
             //qrlProtocolo.Caption := FNFe.procNFe.nProt + ' '  +
-            //                        NotaUtil.SeSenao(FNFe.procNFe.dhRecbto <> 0, DateTimeToStr(FNFe.procNFe.dhRecbto),'');
+            //                        DFeUtil.SeSenao(FNFe.procNFe.dhRecbto <> 0, DateTimeToStr(FNFe.procNFe.dhRecbto),'');
         end;
     //************************************************************************
     end;

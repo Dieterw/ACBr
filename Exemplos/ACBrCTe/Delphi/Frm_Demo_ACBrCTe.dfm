@@ -1059,10 +1059,12 @@ object frmDemo_ACBrCTe: TfrmDemo_ACBrCTe
   end
   object ACBrCTeDACTeQR1: TACBrCTeDACTeQR
     ACBrCTE = ACBrCTe1
+    PathPDF = 'C:\Arquivos de programas\Borland\Delphi7\Bin\'
     ImprimirHoraSaida = False
     MostrarPreview = True
     MostrarStatus = True
     TipoDACTE = tiRetrato
+    TamanhoPapel = tpA4
     NumCopias = 1
     ImprimirDescPorc = False
     MargemInferior = 0.800000000000000000

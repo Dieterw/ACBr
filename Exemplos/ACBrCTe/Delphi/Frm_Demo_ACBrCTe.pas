@@ -183,7 +183,7 @@ uses
  FileCtrl, DateUtils,
  ufrmStatus,
  {pcnNFe, }
- ACBrCTeConhecimentos, ACBrCTeUtil;
+ ACBrCTeConhecimentos, ACBrDFeUtil, ACBrCTeUtil;
 
 const
   SELDIRHELP = 1000;
@@ -1317,7 +1317,7 @@ begin
  if not(InputQuery('WebServices Consulta Cadastro ', 'Documento(CPF/CNPJ)', Documento))
   then exit;
 
- Documento := Trim(CTeUtil.LimpaNumero(Documento));
+ Documento := Trim(DFeUtil.LimpaNumero(Documento));
 
  ACBrCTe1.WebServices.ConsultaCadastro.UF := UF;
  if Length(Documento) > 11

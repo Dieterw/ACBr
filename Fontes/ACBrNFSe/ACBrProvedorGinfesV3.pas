@@ -89,12 +89,15 @@ function TProvedorGinfesV3.GetConfigCidade(ACodigo,
 var
  ConfigCidade: TConfigCidade;
 begin
- ConfigCidade.VersaoSoap    := '1.2';
+ ConfigCidade.VersaoSoap := '1.2';
  case ACodigo of
   3300456: ConfigCidade.CodigoSchemas := 10; // Belford Roxo/RJ
   else     ConfigCidade.CodigoSchemas := 01; // Demais cidades
  end;
- ConfigCidade.CodigoURLs    := 1;
+ case ACodigo of
+  2304400: ConfigCidade.CodigoURLs := 2; // Fortaleza/CE
+  else     ConfigCidade.CodigoURLs := 1; // Demais cidades
+ end;
  ConfigCidade.Prefixo2      := 'ns2:';
  ConfigCidade.Prefixo3      := 'ns3:';
  ConfigCidade.Prefixo4      := 'ns4:';
@@ -139,22 +142,42 @@ function TProvedorGinfesV3.GetConfigURL(ACodigo: Integer): TConfigURL;
 var
  ConfigURL: TConfigURL;
 begin
- ConfigURL.HomNomeCidade         := '';
- ConfigURL.HomRecepcaoLoteRPS    := 'https://homologacao.ginfes.com.br/ServiceGinfesImpl';
- ConfigURL.HomConsultaLoteRPS    := 'https://homologacao.ginfes.com.br/ServiceGinfesImpl';
- ConfigURL.HomConsultaNFSeRPS    := 'https://homologacao.ginfes.com.br/ServiceGinfesImpl';
- ConfigURL.HomConsultaSitLoteRPS := 'https://homologacao.ginfes.com.br/ServiceGinfesImpl';
- ConfigURL.HomConsultaNFSe       := 'https://homologacao.ginfes.com.br/ServiceGinfesImpl';
- ConfigURL.HomCancelaNFSe        := 'https://homologacao.ginfes.com.br/ServiceGinfesImpl';
+ case ACodigo of
+  1: begin // Demais Cidades
+      ConfigURL.HomNomeCidade         := '';
+      ConfigURL.HomRecepcaoLoteRPS    := 'https://homologacao.ginfes.com.br/ServiceGinfesImpl';
+      ConfigURL.HomConsultaLoteRPS    := 'https://homologacao.ginfes.com.br/ServiceGinfesImpl';
+      ConfigURL.HomConsultaNFSeRPS    := 'https://homologacao.ginfes.com.br/ServiceGinfesImpl';
+      ConfigURL.HomConsultaSitLoteRPS := 'https://homologacao.ginfes.com.br/ServiceGinfesImpl';
+      ConfigURL.HomConsultaNFSe       := 'https://homologacao.ginfes.com.br/ServiceGinfesImpl';
+      ConfigURL.HomCancelaNFSe        := 'https://homologacao.ginfes.com.br/ServiceGinfesImpl';
 
- ConfigURL.ProNomeCidade         := '';
- ConfigURL.ProRecepcaoLoteRPS    := 'https://producao.ginfes.com.br/ServiceGinfesImpl';
- ConfigURL.ProConsultaLoteRPS    := 'https://producao.ginfes.com.br/ServiceGinfesImpl';
- ConfigURL.ProConsultaNFSeRPS    := 'https://producao.ginfes.com.br/ServiceGinfesImpl';
- ConfigURL.ProConsultaSitLoteRPS := 'https://producao.ginfes.com.br/ServiceGinfesImpl';
- ConfigURL.ProConsultaNFSe       := 'https://producao.ginfes.com.br/ServiceGinfesImpl';
- ConfigURL.ProCancelaNFSe        := 'https://producao.ginfes.com.br/ServiceGinfesImpl';
+      ConfigURL.ProNomeCidade         := '';
+      ConfigURL.ProRecepcaoLoteRPS    := 'https://producao.ginfes.com.br/ServiceGinfesImpl';
+      ConfigURL.ProConsultaLoteRPS    := 'https://producao.ginfes.com.br/ServiceGinfesImpl';
+      ConfigURL.ProConsultaNFSeRPS    := 'https://producao.ginfes.com.br/ServiceGinfesImpl';
+      ConfigURL.ProConsultaSitLoteRPS := 'https://producao.ginfes.com.br/ServiceGinfesImpl';
+      ConfigURL.ProConsultaNFSe       := 'https://producao.ginfes.com.br/ServiceGinfesImpl';
+      ConfigURL.ProCancelaNFSe        := 'https://producao.ginfes.com.br/ServiceGinfesImpl';
+     end;
+  2: begin // Fortaleza/CE
+      ConfigURL.HomNomeCidade         := '';
+      ConfigURL.HomRecepcaoLoteRPS    := 'https://homologacao.issfortaleza.com.br/ServiceGinfesImpl';
+      ConfigURL.HomConsultaLoteRPS    := 'https://homologacao.issfortaleza.com.br/ServiceGinfesImpl';
+      ConfigURL.HomConsultaNFSeRPS    := 'https://homologacao.issfortaleza.com.br/ServiceGinfesImpl';
+      ConfigURL.HomConsultaSitLoteRPS := 'https://homologacao.issfortaleza.com.br/ServiceGinfesImpl';
+      ConfigURL.HomConsultaNFSe       := 'https://homologacao.issfortaleza.com.br/ServiceGinfesImpl';
+      ConfigURL.HomCancelaNFSe        := 'https://homologacao.issfortaleza.com.br/ServiceGinfesImpl';
 
+      ConfigURL.ProNomeCidade         := '';
+      ConfigURL.ProRecepcaoLoteRPS    := 'https://producao.issfortaleza.com.br/ServiceGinfesImpl';
+      ConfigURL.ProConsultaLoteRPS    := 'https://producao.issfortaleza.com.br/ServiceGinfesImpl';
+      ConfigURL.ProConsultaNFSeRPS    := 'https://producao.issfortaleza.com.br/ServiceGinfesImpl';
+      ConfigURL.ProConsultaSitLoteRPS := 'https://producao.issfortaleza.com.br/ServiceGinfesImpl';
+      ConfigURL.ProConsultaNFSe       := 'https://producao.issfortaleza.com.br/ServiceGinfesImpl';
+      ConfigURL.ProCancelaNFSe        := 'https://producao.issfortaleza.com.br/ServiceGinfesImpl';
+     end;
+ end;
  Result := ConfigURL;
 end;
 

@@ -1594,7 +1594,7 @@ begin
         raise Exception.Create('Não encontrei final do XML: </inutCTe>');
       end;
    else
-      raise EACBrNFeException.Create('Template de Tipo não implementado.') ;
+      raise EACBrCTeException.Create('Template de Tipo não implementado.') ;
   end;
 
   if pos('<Signature', AStr) > 0 then
@@ -1829,7 +1829,7 @@ end;
 {$ENDIF}
 
 {$IFDEF ACBrCTeOpenSSL}
-class function CTeUtil.sign_file(const Axml: PAnsiChar; const key_file: PAnsiChar; const senha: PChar): AnsiString;
+class function CTeUtil.sign_file(const Axml: PAnsiChar; const key_file: PAnsiChar; const senha: PAnsiChar): AnsiString;
 var
   doc     : xmlDocPtr;
   node    : xmlNodePtr;

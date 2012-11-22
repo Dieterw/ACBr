@@ -85,7 +85,7 @@ type
 
 implementation
 
-uses ACBrNFe, ACBrNFeUtil, ACBrUtil, StrUtils, Dialogs;
+uses ACBrNFe, ACBrNFeUtil, ACBrUtil, ACBrDFeUtil, StrUtils, Dialogs;
 
 constructor TACBrNFeDANFERave.Create(AOwner: TComponent);
 begin
@@ -488,7 +488,7 @@ begin
          wFloatField[1] := FindRaveComponent('CustomDadosProdutosCXQCom',wDataView) as TRaveFloatField;
          if (wFloatField[1] <> nil) then
          begin
-            if (NotaUtil.NaoEstaVazio(FCasasDecimais._Mask_qCom)) then
+            if (DFeUtil.NaoEstaVazio(FCasasDecimais._Mask_qCom)) then
                wFloatField[1].DisplayFormat:=FCasasDecimais._Mask_qCom
             else
                wFloatField[1].DisplayFormat:=wDisplayFormat(FCasasDecimais._QCom);
@@ -497,14 +497,14 @@ begin
          wFloatField[2] := FindRaveComponent('CustomDadosProdutosCXVUnCom',wDataView) as TRaveFloatField;
          if (wFloatField[2] <> nil) then
          begin
-            if (NotaUtil.NaoEstaVazio(FCasasDecimais._Mask_vUnCom)) then
+            if (DFeUtil.NaoEstaVazio(FCasasDecimais._Mask_vUnCom)) then
                wFloatField[2].DisplayFormat:=FCasasDecimais._Mask_vUnCom
             else
                wFloatField[2].DisplayFormat:=wDisplayFormat(FCasasDecimais._vUnCom);
          end;
 
          //NÃO imprime o LOGO se o mesmo não for especificado
-         if NotaUtil.EstaVazio(FLogo) then
+         if DFeUtil.EstaVazio(FLogo) then
          begin
             wPage[1] := FindRaveComponent('GlobalDANFE',nil) as TRavePage;
             wBitmap[1] := FindRaveComponent('Bitmap1',wPage[1]) as TRaveBitmap;

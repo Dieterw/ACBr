@@ -136,7 +136,7 @@ type
 
 implementation
 
-uses ACBrNFe, ACBrNFeUtil, StrUtils , Math;
+uses ACBrNFe, ACBrNFeUtil, ACBrDFeUtil, StrUtils , Math;
 
 {$R *.dfm}
 

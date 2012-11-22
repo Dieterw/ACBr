@@ -82,7 +82,7 @@ type
 
 implementation
 
-uses ACBrNFe, ACBrNFeUtil, ACBrUtil, StrUtils, Dialogs;
+uses ACBrNFe, ACBrNFeUtil, ACBrUtil, ACBrDFeUtil, StrUtils, Dialogs;
 
 constructor TACBrNFeDANFERaveCB.Create(AOwner: TComponent);
 begin
@@ -109,7 +109,7 @@ begin
     ExisteLogoMarca:=True;
     LogoMarcaEmpresa:=TJPEGImage.Create;
     try
-      if NotaUtil.NaoEstaVazio(Logo) then
+      if DFeUtil.NaoEstaVazio(Logo) then
        begin
          if FileExists(Logo) then
             LogoMarcaEmpresa.LoadFromFile(Logo)
@@ -134,8 +134,8 @@ begin
                        Usuario,
                        ProtocoloNFe,
                        SeSenaoJPEG(ExisteLogoMarca,LogoMarcaEmpresa,nil),
-                       NotaUtil.SeSenao((TipoDANFE=tiRetrato),poPortrait,poLandScape),
-                       NotaUtil.SeSenao(MostrarPreview,tsPreview,tsPrint),
+                       DFeUtil.SeSenao((TipoDANFE=tiRetrato),poPortrait,poLandScape),
+                       DFeUtil.SeSenao(MostrarPreview,tsPreview,tsPrint),
                        MostrarStatus,
                        MostrarSetup,
                        NumCopias,
@@ -178,7 +178,7 @@ begin
     ExisteLogoMarca:=True;
     LogoMarcaEmpresa:=TJPEGImage.Create;
     try
-      if NotaUtil.NaoEstaVazio(Logo) then
+      if DFeUtil.NaoEstaVazio(Logo) then
        begin
          if FileExists(Logo) then
             LogoMarcaEmpresa.LoadFromFile(Logo)
@@ -210,7 +210,7 @@ begin
                        Usuario,
                        ProtocoloNFe,
                        SeSenaoJPEG(ExisteLogoMarca,LogoMarcaEmpresa,nil),
-                       NotaUtil.SeSenao((TipoDANFE=tiRetrato),poPortrait,poLandScape),
+                       DFeUtil.SeSenao((TipoDANFE=tiRetrato),poPortrait,poLandScape),
                        tsPDF,
                        MostrarStatus,
                        MostrarSetup,
@@ -254,7 +254,7 @@ begin
     ExisteLogoMarca:=True;
     LogoMarcaEmpresa:=TJPEGImage.Create;
     try
-      if NotaUtil.NaoEstaVazio(Logo) then
+      if DFeUtil.NaoEstaVazio(Logo) then
        begin
          if FileExists(Logo) then
             LogoMarcaEmpresa.LoadFromFile(Logo)
@@ -278,8 +278,8 @@ begin
                        Sistema,
                        Usuario,
                        SeSenaoJPEG(ExisteLogoMarca,LogoMarcaEmpresa,nil),
-                       NotaUtil.SeSenao((TipoDANFE=tiRetrato),poPortrait,poLandScape),
-                       NotaUtil.SeSenao(MostrarPreview,tsPreview,tsPrint),
+                       DFeUtil.SeSenao((TipoDANFE=tiRetrato),poPortrait,poLandScape),
+                       DFeUtil.SeSenao(MostrarPreview,tsPreview,tsPrint),
                        MostrarStatus,
                        MostrarSetup,
                        NumCopias,
@@ -310,7 +310,7 @@ begin
     ExisteLogoMarca:=True;
     LogoMarcaEmpresa:=TJPEGImage.Create;
     try
-      if NotaUtil.NaoEstaVazio(Logo) then
+      if DFeUtil.NaoEstaVazio(Logo) then
        begin
          if FileExists(Logo) then
             LogoMarcaEmpresa.LoadFromFile(Logo)
@@ -337,7 +337,7 @@ begin
                        Sistema,
                        Usuario,
                        SeSenaoJPEG(ExisteLogoMarca,LogoMarcaEmpresa,nil),
-                       NotaUtil.SeSenao((TipoDANFE=tiRetrato),poPortrait,poLandScape),
+                       DFeUtil.SeSenao((TipoDANFE=tiRetrato),poPortrait,poLandScape),
                        tsPDF,
                        MostrarStatus,
                        MostrarSetup,

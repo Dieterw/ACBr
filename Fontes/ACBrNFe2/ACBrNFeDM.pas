@@ -151,7 +151,7 @@ type
 
 implementation
 
-uses ACBrNFe, ACBrNFeUtil, StrUtils ;
+uses ACBrNFe, ACBrNFeUtil, ACBrDFeUtil, StrUtils ;
 
 {$R *.dfm}
 
@@ -295,10 +295,10 @@ procedure TdmACBrNFe.CustomDestinatarioCXNGetRow(
 begin
   with FNFe.Dest do
   begin
-    if NotaUtil.NaoEstaVazio(CNPJCPF) then
-      Connection.WriteStrData('', NotaUtil.FormatarCNPJ(CNPJCPF))
+    if DFeUtil.NaoEstaVazio(CNPJCPF) then
+      Connection.WriteStrData('', DFeUtil.FormatarCNPJ(CNPJCPF))
     else
-      Connection.WriteStrData('', NotaUtil.FormatarCPF(CNPJCPF));
+      Connection.WriteStrData('', DFeUtil.FormatarCPF(CNPJCPF));
 
     Connection.WriteStrData('', XNome);
     with EnderDest do
@@ -362,7 +362,7 @@ procedure TdmACBrNFe.CustomEmitenteCXNGetRow(
 begin
   with FNFe.Emit do
   begin
-    Connection.WriteStrData('', NotaUtil.FormatarCNPJ(CNPJCPF));
+    Connection.WriteStrData('', DFeUtil.FormatarCNPJ(CNPJCPF));
     Connection.WriteStrData('', XNome);
     Connection.WriteStrData('', XFant);
     with EnderEmit do
@@ -409,20 +409,20 @@ procedure TdmACBrNFe.CustomCalculoImpostoCXNGetRow(
 begin
   with FNFe.Total.ICMSTot do
   begin
-    Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(VBC),0));
-    Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(VICMS),0));
-    Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(VBCST),0));
-    Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(VST),0));
-    Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(VProd),0));
-    Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(VFrete),0));
-    Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(VSeg),0));
-    Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(VDesc),0));
-    Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(VII),0));
-    Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(VIPI),0));
-    Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(VPIS),0));
-    Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(VCOFINS),0));
-    Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(VOutro),0));
-    Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(VNF),0));
+    Connection.WriteFloatData('', DFeUtil.StringToFloatDef(floattostr(VBC),0));
+    Connection.WriteFloatData('', DFeUtil.StringToFloatDef(floattostr(VICMS),0));
+    Connection.WriteFloatData('', DFeUtil.StringToFloatDef(floattostr(VBCST),0));
+    Connection.WriteFloatData('', DFeUtil.StringToFloatDef(floattostr(VST),0));
+    Connection.WriteFloatData('', DFeUtil.StringToFloatDef(floattostr(VProd),0));
+    Connection.WriteFloatData('', DFeUtil.StringToFloatDef(floattostr(VFrete),0));
+    Connection.WriteFloatData('', DFeUtil.StringToFloatDef(floattostr(VSeg),0));
+    Connection.WriteFloatData('', DFeUtil.StringToFloatDef(floattostr(VDesc),0));
+    Connection.WriteFloatData('', DFeUtil.StringToFloatDef(floattostr(VII),0));
+    Connection.WriteFloatData('', DFeUtil.StringToFloatDef(floattostr(VIPI),0));
+    Connection.WriteFloatData('', DFeUtil.StringToFloatDef(floattostr(VPIS),0));
+    Connection.WriteFloatData('', DFeUtil.StringToFloatDef(floattostr(VCOFINS),0));
+    Connection.WriteFloatData('', DFeUtil.StringToFloatDef(floattostr(VOutro),0));
+    Connection.WriteFloatData('', DFeUtil.StringToFloatDef(floattostr(VNF),0));
   end;
 end;
 
@@ -552,9 +552,9 @@ begin
            (IPITrib.CST = '50') or (IPITrib.CST = '99') then
           begin
             Connection.WriteStrData('', IPITrib.CST);
-            Connection.WriteFloatData('', NotaUtil.StringToFloatDef(IPITrib.VBC,0));
-            Connection.WriteFloatData('', NotaUtil.StringToFloatDef(IPITrib.PIPI,0));
-            Connection.WriteFloatData('', NotaUtil.StringToFloatDef(IPITrib.VIPI,0));
+            Connection.WriteFloatData('', DFeUtil.StringToFloatDef(IPITrib.VBC,0));
+            Connection.WriteFloatData('', DFeUtil.StringToFloatDef(IPITrib.PIPI,0));
+            Connection.WriteFloatData('', DFeUtil.StringToFloatDef(IPITrib.VIPI,0));
           end
         else if (IPINT.CST = '01') or (IPINT.CST = '02') or (IPINT.CST = '03') or
                 (IPINT.CST = '04') or (IPINT.CST = '51') or (IPINT.CST = '52') or
@@ -587,13 +587,13 @@ procedure TdmACBrNFe.CustomTransportadorCXNGetRow(
 begin
   with FNFe.Transp do
   begin
-    Connection.WriteStrData('', NotaUtil.SeSenao(modFrete = mfContaEmitente,'0','1'));
+    Connection.WriteStrData('', DFeUtil.SeSenao(modFrete = mfContaEmitente,'0','1'));
     with Transporta do
     begin
-      if NotaUtil.NaoEstaVazio(CNPJCPF) then
-        Connection.WriteStrData('', NotaUtil.FormatarCNPJ(CNPJCPF))
+      if DFeUtil.NaoEstaVazio(CNPJCPF) then
+        Connection.WriteStrData('', DFeUtil.FormatarCNPJ(CNPJCPF))
       else
-        Connection.WriteStrData('', NotaUtil.FormatarCPF(CNPJCPF));
+        Connection.WriteStrData('', DFeUtil.FormatarCPF(CNPJCPF));
       Connection.WriteStrData('', XNome);
       Connection.WriteStrData('', IE);
       Connection.WriteStrData('', XEnder);
@@ -628,11 +628,11 @@ var
   vStream: TMemoryStream;
 begin
   with FNFe.Ide do
-    Connection.WriteStrData('', NotaUtil.SeSenao(TpAmb = taHomologacao,'Nota Fiscal sem valor Fiscal', ''));
+    Connection.WriteStrData('', DFeUtil.SeSenao(TpAmb = taHomologacao,'Nota Fiscal sem valor Fiscal', ''));
 
   vStream := TMemoryStream.Create;
   try
-    if NotaUtil.NaoEstaVazio(FLogo) then
+    if DFeUtil.NaoEstaVazio(FLogo) then
     begin
       if FileExists(FLogo) then
         vStream.LoadFromFile(FLogo);
@@ -677,7 +677,7 @@ begin
   with FNFe.infNFe do
   begin
 //    Connection.WriteStrData('', IntToStr(Versao));
-    Connection.WriteStrData('', NotaUtil.LimpaNumero(Id));
+    Connection.WriteStrData('', DFeUtil.LimpaNumero(Id));
     Connection.WriteStrData('', NotaUtil.FormatarChaveAcesso(Id));
   end;
 
@@ -686,20 +686,20 @@ begin
     Connection.WriteStrData('', inttostr(CUF));
     Connection.WriteStrData('', inttostr(CNF));
     Connection.WriteStrData('', NatOp);
-    Connection.WriteStrData('', NotaUtil.SeSenao(IndPag = ipVista,'0', NotaUtil.SeSenao(IndPag = ipPrazo,'1','2')));
+    Connection.WriteStrData('', DFeUtil.SeSenao(IndPag = ipVista,'0', DFeUtil.SeSenao(IndPag = ipPrazo,'1','2')));
     Connection.WriteStrData('', inttostr(Modelo));
     Connection.WriteStrData('', inttostr(Serie));
-    Connection.WriteStrData('', NotaUtil.FormatarNumeroDocumentoFiscal(inttostr(NNF)));
-    Connection.WriteStrData('', NotaUtil.FormatDate(datetostr(DEmi)));
-    Connection.WriteStrData('', IfThen(NotaUtil.NaoEstaVazio(datetostr(DSaiEnt)), NotaUtil.FormatDate(datetostr(DSaiEnt))));
-    Connection.WriteStrData('', NotaUtil.SeSenao(TpNF=tnEntrada,'0','1'));
+    Connection.WriteStrData('', DFeUtil.FormatarNumeroDocumentoFiscal(inttostr(NNF)));
+    Connection.WriteStrData('', DFeUtil.FormatDate(datetostr(DEmi)));
+    Connection.WriteStrData('', IfThen(DFeUtil.NaoEstaVazio(datetostr(DSaiEnt)), DFeUtil.FormatDate(datetostr(DSaiEnt))));
+    Connection.WriteStrData('', DFeUtil.SeSenao(TpNF=tnEntrada,'0','1'));
     Connection.WriteStrData('', inttostr(CMunFG));
-    Connection.WriteStrData('', NotaUtil.SeSenao(TpImp=tiRetrato,'1','2'));
-    Connection.WriteStrData('', NotaUtil.SeSenao(TpEmis=teNormal,'1','5'));
+    Connection.WriteStrData('', DFeUtil.SeSenao(TpImp=tiRetrato,'1','2'));
+    Connection.WriteStrData('', DFeUtil.SeSenao(TpEmis=teNormal,'1','5'));
     Connection.WriteStrData('', inttostr(CDV));
-    Connection.WriteStrData('', NotaUtil.SeSenao(TpAmb = taHomologacao,'2','1'));
-    Connection.WriteStrData('', NotaUtil.SeSenao(FinNFe=fnNormal,'1',NotaUtil.SeSenao(FinNFe=fnComplementar,'2','3')));
-    Connection.WriteStrData('', NotaUtil.SeSenao(ProcEmi=peAplicativoContribuinte,'0',''));
+    Connection.WriteStrData('', DFeUtil.SeSenao(TpAmb = taHomologacao,'2','1'));
+    Connection.WriteStrData('', DFeUtil.SeSenao(FinNFe=fnNormal,'1',DFeUtil.SeSenao(FinNFe=fnComplementar,'2','3')));
+    Connection.WriteStrData('', DFeUtil.SeSenao(ProcEmi=peAplicativoContribuinte,'0',''));
     Connection.WriteStrData('', VerProc);
   end;
 end;
@@ -724,8 +724,8 @@ begin
   with FNFe.Cobr.Dup[Connection.DataIndex] do
   begin
     Connection.WriteStrData('', NDup);
-    Connection.WriteStrData('', NotaUtil.FormatDate(datetostr(DVenc)));
-    Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(VDup),0));
+    Connection.WriteStrData('', DFeUtil.FormatDate(datetostr(DVenc)));
+    Connection.WriteFloatData('', DFeUtil.StringToFloatDef(floattostr(VDup),0));
   end;
 end;
 
@@ -776,12 +776,12 @@ procedure TdmACBrNFe.CustomVolumesCXNGetRow(
 begin
   with FNFe.Transp.Vol[Connection.DataIndex] do
   begin
-    Connection.WriteFloatData('', NotaUtil.StringToFloatDef(inttostr(QVol),0));
+    Connection.WriteFloatData('', DFeUtil.StringToFloatDef(inttostr(QVol),0));
     Connection.WriteStrData('', Esp);
     Connection.WriteStrData('', Marca);
     Connection.WriteStrData('', NVol);
-    Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(PesoL),0));
-    Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(PesoB),0));
+    Connection.WriteFloatData('', DFeUtil.StringToFloatDef(floattostr(PesoL),0));
+    Connection.WriteFloatData('', DFeUtil.StringToFloatDef(floattostr(PesoB),0));
   end;
 end;
 
@@ -892,9 +892,9 @@ procedure TdmACBrNFe.CustomISSQNCXNGetRow(Connection: TRvCustomConnection);
 begin
   with FNFe.Total.ISSQNtot do
   begin
-    Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(VServ),0));
-    Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(VBC),0));
-    Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(VISS),0));
+    Connection.WriteFloatData('', DFeUtil.StringToFloatDef(floattostr(VServ),0));
+    Connection.WriteFloatData('', DFeUtil.StringToFloatDef(floattostr(VBC),0));
+    Connection.WriteFloatData('', DFeUtil.StringToFloatDef(floattostr(VISS),0));
   end;
 end;
 

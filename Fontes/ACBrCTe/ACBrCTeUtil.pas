@@ -1099,37 +1099,37 @@ begin
      end;
   end;
 
- if not DirectoryExists(CTeUtil.SeSenao(CTeUtil.EstaVazio(APathSchemas),
+ if not DirectoryExists(DFeUtil.SeSenao(DFeUtil.EstaVazio(APathSchemas),
                  PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas',
                  PathWithDelim(APathSchemas))) then
     raise Exception.Create('Diretório de Schemas não encontrado'+sLineBreak+
-                           CTeUtil.SeSenao(CTeUtil.EstaVazio(APathSchemas),
+                           DFeUtil.SeSenao(DFeUtil.EstaVazio(APathSchemas),
                            PathWithDelim(ExtractFileDir(application.ExeName))+
                            'Schemas',PathWithDelim(APathSchemas)));
 
 {$IFDEF PL_103}
  case Tipo of
   1: begin
-      if CTeUtil.EstaVazio(APathSchemas) then
+      if DFeUtil.EstaVazio(APathSchemas) then
         schema_filename := pchar(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\cte_v1.03.xsd')
        else
         schema_filename := pchar(PathWithDelim(APathSchemas)+'cte_v1.03.xsd');
      end;
   2: begin
-      if CTeUtil.EstaVazio(APathSchemas) then
+      if DFeUtil.EstaVazio(APathSchemas) then
         schema_filename := pchar(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\canccte_v1.03.xsd')
        else
         schema_filename := pchar(PathWithDelim(APathSchemas)+'canccte_v1.03.xsd');
      end;
   3: begin
-      if CTeUtil.EstaVazio(APathSchemas) then
+      if DFeUtil.EstaVazio(APathSchemas) then
         schema_filename := pchar(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\inutcte_v1.03.xsd')
        else
         schema_filename := pchar(PathWithDelim(APathSchemas)+'inutcte_v1.03.xsd');
      end;
   4: begin
       {
-      if CTeUtil.EstaVazio(APathSchemas) then
+      if DFeUtil.EstaVazio(APathSchemas) then
         schema_filename := pchar(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\envDPEC_v1.03.xsd')
        else
         schema_filename := pchar(PathWithDelim(APathSchemas)+'envDPEC_v1.03.xsd');
@@ -1140,26 +1140,26 @@ begin
 {$IFDEF PL_104}
  case Tipo of
   1: begin
-      if CTeUtil.EstaVazio(APathSchemas) then
+      if DFeUtil.EstaVazio(APathSchemas) then
         schema_filename := pchar(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\cte_v1.04.xsd')
        else
         schema_filename := pchar(PathWithDelim(APathSchemas)+'cte_v1.04.xsd');
      end;
   2: begin
-      if CTeUtil.EstaVazio(APathSchemas) then
+      if DFeUtil.EstaVazio(APathSchemas) then
         schema_filename := pchar(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\canccte_v1.04.xsd')
        else
         schema_filename := pchar(PathWithDelim(APathSchemas)+'canccte_v1.04.xsd');
      end;
   3: begin
-      if CTeUtil.EstaVazio(APathSchemas) then
+      if DFeUtil.EstaVazio(APathSchemas) then
         schema_filename := pchar(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\inutcte_v1.04.xsd')
        else
         schema_filename := pchar(PathWithDelim(APathSchemas)+'inutcte_v1.04.xsd');
      end;
   4: begin
       {
-      if CTeUtil.EstaVazio(APathSchemas) then
+      if DFeUtil.EstaVazio(APathSchemas) then
         schema_filename := pchar(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\envDPEC_v1.04.xsd')
        else
         schema_filename := pchar(PathWithDelim(APathSchemas)+'envDPEC_v1.04.xsd');
@@ -1286,28 +1286,28 @@ begin
    1: begin
        Schema.remove('http://www.portalfiscal.inf.br/cte');
        Schema.add('http://www.portalfiscal.inf.br/cte',
-        CTeUtil.SeSenao(CTeUtil.EstaVazio(APathSchemas),
+        DFeUtil.SeSenao(DFeUtil.EstaVazio(APathSchemas),
         PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',
         PathWithDelim(APathSchemas))+'cte_v1.03.xsd')
       end;
    2: begin
        Schema.remove('http://www.portalfiscal.inf.br/cte');
        Schema.add('http://www.portalfiscal.inf.br/cte',
-        CTeUtil.SeSenao(CTeUtil.EstaVazio(APathSchemas),
+        DFeUtil.SeSenao(DFeUtil.EstaVazio(APathSchemas),
         PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',
         PathWithDelim(APathSchemas))+'cancCte_v1.03.xsd')
       end;
    3: begin
        Schema.remove('http://www.portalfiscal.inf.br/cte');
        Schema.add('http://www.portalfiscal.inf.br/cte',
-        CTeUtil.SeSenao(CTeUtil.EstaVazio(APathSchemas),
+        DFeUtil.SeSenao(DFeUtil.EstaVazio(APathSchemas),
         PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',
         PathWithDelim(APathSchemas))+'inutCte_v1.03.xsd')
       end;
    4: begin
        Schema.remove('http://www.portalfiscal.inf.br/cte');
        Schema.add( 'http://www.portalfiscal.inf.br/cte',
-        CTeUtil.SeSenao(CTeUtil.EstaVazio(APathSchemas),
+        DFeUtil.SeSenao(DFeUtil.EstaVazio(APathSchemas),
         PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',
         PathWithDelim(APathSchemas))+'envDPEC_v1.03.xsd')
       end;

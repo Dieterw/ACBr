@@ -210,7 +210,12 @@ end;
 
 class function DFeUtil.FormatarCEP(AValue: String): String;
 begin
-   //-- tem diferença entre as três
+  // Proposta de Italo
+  AValue := Poem_Zeros(LimpaNumero(AValue), 9);
+
+  if StrToInt(AValue) = 0
+    then Result := Space(9)
+    else Result := copy(AValue, 1, 5) + '-' + copy(AValue, 6, 3);
 end;
 
 class function DFeUtil.FormatarCNPJ(AValue: String): String;
@@ -238,8 +243,41 @@ begin
 end;
 
 class function DFeUtil.FormatarFone(AValue: String): String;
+var
+  lTemp: string;
 begin
-   //-- tem diferença entre as três
+  // Proposta de Italo
+  AValue := IntToStr(StrToInt64Def(LimpaNumero(AValue), 0));
+  Result := AValue;
+  lTemp  := '';
+
+  if NaoEstaVazio(AValue) then
+  begin
+    case length(AValue) of
+       8: Result := '(  )' + copy(AValue, 1, 4) + '-' + copy(AValue, 5, 4);
+       9: begin
+            if copy(AValue, 1, 1) = '9' // Celulares da Municipio de São Paulo tem 9 Digitos e o primeiro é 9
+              then Result := '(  )' + copy(AValue, 1, 5) + '-' + copy(AValue, 6, 4)
+              else begin
+               ltemp := '0' + copy(AValue, 1, 1);
+               Result := '(' + lTemp + ')' + copy(AValue, 2, 4) + '-' + copy(AValue, 6, 4);;
+              end;
+         end;
+       else
+       begin
+         AValue := Poem_Zeros(AValue), 12);
+         if copy(AValue, 1, 1) = '0' and copy(AValue, 2, 1) = '0'
+           then begin
+             ltemp := copy(AValue, 3, 2);
+             Result := '(' + lTemp + ')' + copy(AValue, 5, 4) + '-' + copy(AValue, 9, 4);;
+           end
+           else begin
+             ltemp := copy(AValue, 2, 2);
+             Result := '(' + lTemp + ')' + copy(AValue, 4, 5) + '-' + copy(AValue, 9, 4);;
+           end;
+       end;
+    end;
+  end;
 end;
 
 class function DFeUtil.FormatarNumeroDocumentoFiscal(AValue: String): String;

@@ -5,7 +5,7 @@ interface
 uses
   SysUtils, Classes, Forms,
   pcnAuxiliar, pcnConversao, pcnLeitor,
-  pnfsConversao, pnfsNFSe, ACBrUtil, ACBrNFSeUtil;
+  pnfsConversao, pnfsNFSe, ACBrUtil, ACBrNFSeUtil, ACBrDFeUtil;
 
 type
 
@@ -295,7 +295,7 @@ begin
               // Grupo da TAG <Servico> *****************************************************
               if Leitor.rExtrai(6, Prefixo4 + 'Servico') <> ''
                then begin
-                ListaNfse.FCompNfse[i].FNFSe.Servico.ItemListaServico          := NotaUtil.LimpaNumero(Leitor.rCampo(tcStr, Prefixo4 + 'ItemListaServico'));
+                ListaNfse.FCompNfse[i].FNFSe.Servico.ItemListaServico          := DFeUtil.LimpaNumero(Leitor.rCampo(tcStr, Prefixo4 + 'ItemListaServico'));
                 ListaNfse.FCompNfse[i].FNFSe.Servico.CodigoCnae                := Leitor.rCampo(tcStr, Prefixo4 + 'CodigoCnae');
                 ListaNfse.FCompNfse[i].FNFSe.Servico.CodigoTributacaoMunicipio := Leitor.rCampo(tcStr, Prefixo4 + 'CodigoTributacaoMunicipio');
                 ListaNfse.FCompNfse[i].FNFSe.Servico.Discriminacao             := Leitor.rCampo(tcStr, Prefixo4 + 'Discriminacao');

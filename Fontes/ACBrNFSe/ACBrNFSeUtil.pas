@@ -14,7 +14,7 @@ uses
   {$ELSE}
     StrUtils,
   {$ENDIF}
-  ACBrNFSeConfiguracoes, pnfsConversao, pnfsNFSe;
+  ACBrNFSeConfiguracoes, pnfsConversao, pnfsNFSe, ACBrDFeUtil;
 
   {$IFDEF ACBrNFSeOpenSSL}
     const
@@ -48,42 +48,42 @@ type
       class Procedure InitXmlSec;
       class Procedure ShutDownXmlSec;
     {$ENDIF}
-    class function PosEx(const SubStr, S: AnsiString; Offset: Cardinal = 1): Integer;
-    class function PosLast(const SubStr, S: AnsiString ): Integer;
-    class function PadE(const AString : string; const nLen : Integer; const Caracter : Char = ' ') : String;
-    class function PadD(const AString : string; const nLen : Integer; const Caracter : Char = ' ') : String;
-    class function padC(const AString : string; const nLen : Integer; const Caracter : Char = ' ') : String;
-    class function SeSenao(ACondicao: Boolean; ATrue, AFalse: Variant) : Variant;
-    class function FormatFloat(AValue: Extended; const AFormat: string = ',0.00'): String;
-    class function Poem_Zeros(const Texto : String; const Tamanho : Integer) : String;overload;
-    class function Poem_Zeros(const Valor : Integer; const Tamanho : Integer) : String;overload;
-    class function LasString(AString: String): String;
-    class function EstaVazio(const AValue: String): Boolean;overload;
-    class procedure EstaVazio(const AValue, AMensagem: String);overload;
-    class function NaoEstaVazio(AValue: String): Boolean;
-    class function EstaZerado(AValue: Double): Boolean;overload;
-    class function EstaZerado(AValue: Integer): Boolean;overload;
-    class procedure EstaZerado(AValue: Integer; AMensagem: String);overload;
-    class function NaoEstaZerado(AValue: Double): Boolean;overload;
-    class function NaoEstaZerado(AValue: Integer): Boolean;overload;
-    class function LimpaNumero(AValue: String): String;
-    class function TrataString(const AValue: String): String;overload;
-    class function TrataString(const AValue: String; const ATamanho: Integer): String;overload;
-    class function CortaD(const AString: string; const ATamanho: Integer): String;
-    class function CortaE(const AString: string; const ATamanho: Integer): String;
-    class function FormatDate(const AString: string): String;
-    class function FormatDateTime(const AString: string): string;
-    class function StringToDate(const AString: string): TDateTime;
-    class function TamanhoIgual(const AValue: String; const ATamanho: Integer): Boolean;overload;
-    class procedure TamanhoIgual(const AValue: String; const ATamanho: Integer; AMensagem: String);overload;
-    class function TamanhoIgual(const AValue: Integer; const ATamanho: Integer): Boolean;overload;
-    class procedure TamanhoIgual(const AValue: Integer; const ATamanho: Integer; AMensagem: String);overload;
-    class function TamanhoMenor(const AValue: String; const ATamanho: Integer): Boolean;
-    class function FormatarCPF(AValue : String ): String;
-    class function FormatarCNPJ(AValue : String ): String;
+//    class function PosEx(const SubStr, S: AnsiString; Offset: Cardinal = 1): Integer;
+//    class function PosLast(const SubStr, S: AnsiString ): Integer;
+//    class function PadE(const AString : string; const nLen : Integer; const Caracter : Char = ' ') : String;
+//    class function PadD(const AString : string; const nLen : Integer; const Caracter : Char = ' ') : String;
+//    class function padC(const AString : string; const nLen : Integer; const Caracter : Char = ' ') : String;
+//    class function SeSenao(ACondicao: Boolean; ATrue, AFalse: Variant) : Variant;
+//    class function FormatFloat(AValue: Extended; const AFormat: string = ',0.00'): String;
+//    class function Poem_Zeros(const Texto : String; const Tamanho : Integer) : String;overload;
+//    class function Poem_Zeros(const Valor : Integer; const Tamanho : Integer) : String;overload;
+//    class function LasString(AString: String): String;
+//    class function EstaVazio(const AValue: String): Boolean;overload;
+//    class procedure EstaVazio(const AValue, AMensagem: String);overload;
+//    class function NaoEstaVazio(AValue: String): Boolean;
+//    class function EstaZerado(AValue: Double): Boolean;overload;
+//    class function EstaZerado(AValue: Integer): Boolean;overload;
+//    class procedure EstaZerado(AValue: Integer; AMensagem: String);overload;
+//    class function NaoEstaZerado(AValue: Double): Boolean;overload;
+//    class function NaoEstaZerado(AValue: Integer): Boolean;overload;
+//    class function LimpaNumero(AValue: String): String;
+//    class function TrataString(const AValue: String): String;overload;
+//    class function TrataString(const AValue: String; const ATamanho: Integer): String;overload;
+//    class function CortaD(const AString: string; const ATamanho: Integer): String;
+//    class function CortaE(const AString: string; const ATamanho: Integer): String;
+//    class function FormatDate(const AString: string): String;
+//    class function FormatDateTime(const AString: string): string;
+//    class function StringToDate(const AString: string): TDateTime;
+//    class function TamanhoIgual(const AValue: String; const ATamanho: Integer): Boolean;overload;
+//    class procedure TamanhoIgual(const AValue: String; const ATamanho: Integer; AMensagem: String);overload;
+//    class function TamanhoIgual(const AValue: Integer; const ATamanho: Integer): Boolean;overload;
+//    class procedure TamanhoIgual(const AValue: Integer; const ATamanho: Integer; AMensagem: String);overload;
+//    class function TamanhoMenor(const AValue: String; const ATamanho: Integer): Boolean;
+//    class function FormatarCPF(AValue : String ): String;
+//    class function FormatarCNPJ(AValue : String ): String;
     class function FormatarCEP(AValue : String ): String;
     class function FormatarFone(AValue : String ): String;
-    class function FormatarNumeroDocumentoFiscal(AValue : String ): String;
+//    class function FormatarNumeroDocumentoFiscal(AValue : String ): String;
     class function Valida(const AXML: AnsiString;
                           var AMsg: AnsiString;
                           const APathSchemas: string = '';
@@ -107,8 +107,8 @@ type
                              APrefixo4: string = '';
                              AProvedor: TnfseProvedor = proNenhum): Boolean;
     {$ENDIF}
-    class function StringToFloat(AValue : String ) : Double;
-    class function StringToFloatDef(const AValue: String; const DefaultValue: Double): Double;
+//    class function StringToFloat(AValue : String ) : Double;
+//    class function StringToFloatDef(const AValue: String; const DefaultValue: Double): Double;
     class procedure ConfAmbiente;
     class function PathAplication: String;
     class function CollateBr(Str: String): String;
@@ -323,6 +323,7 @@ begin
 end;
 {$ENDIF}
 
+(*
 class function NotaUtil.PosEx(const SubStr, S: AnsiString; Offset: Cardinal = 1): Integer;
 var
   I,X: Integer;
@@ -353,7 +354,9 @@ begin
     Result := 0;
   end;
 end;
+*)
 
+(*
 class function NotaUtil.PosLast(const SubStr, S: AnsiString ): Integer;
 Var P : Integer;
 begin
@@ -365,13 +368,17 @@ begin
      P      := PosEx( SubStr, S, P+1);
   end;
 end;
+*)
 
+(*
 class function NotaUtil.CortaD(const AString: string;
   const ATamanho: Integer): String;
 begin
   Result := copy(AString,1,ATamanho);
 end;
+*)
 
+(*
 class function NotaUtil.CortaE(const AString: string;
   const ATamanho: Integer): String;
 begin
@@ -379,28 +386,38 @@ begin
   if Length(AString) > ATamanho then
     Result := copy(AString, Length(AString) - ATamanho + 1, length(AString));
 end;
+*)
 
+(*
 class function NotaUtil.EstaVazio(const AValue: String): Boolean;
 begin
   Result := (Trim(AValue) = '');
 end;
+*)
 
+(*
 class function NotaUtil.EstaZerado(AValue: Double): Boolean;
 begin
   Result := (AValue = 0);
 end;
+*)
 
+(*
 class procedure NotaUtil.EstaVazio(const AValue, AMensagem: String);
 begin
   if NotaUtil.EstaVazio(AValue) then
     raise Exception.Create(AMensagem);
 end;
+*)
 
+(*
 class function NotaUtil.EstaZerado(AValue: Integer): Boolean;
 begin
   Result := (AValue = 0);
 end;
+*)
 
+(*
 class function NotaUtil.FormatDate(const AString: string): String;
 var
   vTemp: TDateTime;
@@ -427,7 +444,9 @@ begin
     Result := '';
   end;
 end;
+*)
 
+(*
 class function NotaUtil.FormatDateTime(const AString: string): string;
 var
   vTemp : TDateTime;
@@ -455,7 +474,9 @@ begin
     Result := '';
   end;
 end;
+*)
 
+(*
 class function NotaUtil.StringToDate(const AString: string): TDateTime;
 begin
   if (AString = '0') or (AString = '') then
@@ -463,7 +484,9 @@ begin
   else
      Result := StrToDate(AString);
 end;
+*)
 
+(*
 class function NotaUtil.FormatFloat(AValue: Extended;
   const AFormat: string): string;
 {$IFDEF VER140} //delphi6
@@ -482,12 +505,16 @@ begin
   Result                     := SysUtils.FormatFloat(AFormat, AValue, vFormatSettings);
 {$ENDIF}
 end;
+*)
 
+(*
 class function NotaUtil.LasString(AString: String): String;
 begin
   Result := Copy(AString, Length(AString), Length(AString));
 end;
+*)
 
+(*
 class function NotaUtil.LimpaNumero(AValue: String): String;
 var
   A : Integer;
@@ -499,12 +526,16 @@ begin
        Result := Result + AValue[A];
   end;
 end;
+*)
 
+(*
 class function NotaUtil.NaoEstaVazio(AValue: String): Boolean;
 begin
   Result := not(EstaVazio(AValue));
 end;
+*)
 
+(*
 class function NotaUtil.NaoEstaZerado(AValue: Double): Boolean;
 begin
   Result := not(EstaZerado(AValue));
@@ -514,7 +545,9 @@ class function NotaUtil.NaoEstaZerado(AValue: Integer): Boolean;
 begin
   Result := not(EstaZerado(AValue));
 end;
+*)
 
+(*
 class function NotaUtil.padC(const AString: string; const nLen: Integer;
   const Caracter: Char): String;
 Var nCharLeft : Integer;
@@ -525,21 +558,27 @@ begin
   nCharLeft := Trunc( D );
   Result    := PadE( StringOfChar(Caracter, nCharLeft)+Result, nLen, Caracter);
 end;
+*)
 
+(*
 class function NotaUtil.PadD(const AString: string; const nLen: Integer;
   const Caracter: Char): String;
 begin
   Result := copy(AString,1,nLen);
   Result := StringOfChar(Caracter, (nLen - Length(Result))) + Result;
 end;
+*)
 
+(*
 class function NotaUtil.PadE(const AString: string; const nLen: Integer;
   const Caracter: Char): String;
 begin
   Result := copy(AString,1,nLen);
   Result := Result + StringOfChar(Caracter, (nLen - Length(Result)));
 end;
+*)
 
+(*
 class function NotaUtil.Poem_Zeros(const Texto: String;
   const Tamanho: Integer): String;
 begin
@@ -550,7 +589,9 @@ class function NotaUtil.Poem_Zeros(const Valor, Tamanho: Integer): String;
 begin
   Result := PadD(IntToStr(Valor), Tamanho, '0');
 end;
+*)
 
+(*
 class function NotaUtil.SeSenao(ACondicao: Boolean; ATrue,
   AFalse: Variant): Variant;
 begin
@@ -558,7 +599,9 @@ begin
   if ACondicao then
     Result := ATrue;
 end;
+*)
 
+(*
 class function NotaUtil.TrataString(const AValue: String): String;
 var
   A : Integer;
@@ -616,7 +659,9 @@ class function NotaUtil.TrataString(const AValue: String;
 begin
   Result := NotaUtil.TrataString(NotaUtil.CortaD(AValue, ATamanho));
 end;
+*)
 
+(*
 class function NotaUtil.TamanhoIgual(const AValue: String;
   const ATamanho: Integer): Boolean;
 begin
@@ -642,14 +687,18 @@ begin
   if not(NotaUtil.TamanhoIgual(AValue, ATamanho)) then
     raise Exception.Create(AMensagem);
 end;
+*)
 
+(*
 class procedure NotaUtil.EstaZerado(AValue: Integer;
   AMensagem: String);
 begin
   if NotaUtil.EstaZerado(AValue) then
     raise Exception.Create(AMensagem);
 end;
+*)
 
+(*
 class function NotaUtil.FormatarCPF(AValue: String): String;
 begin
   if Length(AValue) = 0 then
@@ -661,7 +710,9 @@ begin
                copy(AValue,7,3) + '-' + copy(AValue,10,2);
    end;
 end;
+*)
 
+(*
 class function NotaUtil.FormatarCNPJ(AValue: String): String;
 begin
   if Length(AValue) = 0 then
@@ -673,28 +724,32 @@ begin
                copy(AValue,6,3) + '/' + copy(AValue,9,4) + '-' + copy(AValue,13,2);
    end;
 end;
+*)
 
 class function NotaUtil.FormatarCEP(AValue: String): String;
 begin
   Result := copy(AValue,1,5) + '-' + copy(AValue,6,3);
 end;
 
+(*
 class function NotaUtil.TamanhoMenor(const AValue: String;
   const ATamanho: Integer): Boolean;
 begin
   Result := (Length(AValue) < ATamanho);
 end;
+*)
 
 class function NotaUtil.FormatarFone(AValue: String): String;
 begin
   Result := AValue;
-  if NotaUtil.NaoEstaVazio(AValue) then
+  if DFeUtil.NaoEstaVazio(AValue) then
   begin
-    AValue := NotaUtil.Poem_Zeros(NotaUtil.LimpaNumero(AValue), 10);
+    AValue := DFeUtil.Poem_Zeros(DFeUtil.LimpaNumero(AValue), 10);
     Result := '('+copy(AValue,1,2) + ')' + copy(AValue,3,8);
   end;
 end;
 
+(*
 class function NotaUtil.FormatarNumeroDocumentoFiscal(
   AValue: String): String;
 begin
@@ -702,6 +757,7 @@ begin
   Result := copy(AValue,1,3) + '.' + copy(AValue,4,3)+ '.'+
             copy(AValue,7,3);
 end;
+*)
 
 {$IFDEF ACBrNFSeOpenSSL}
 function ValidaLibXML(const AXML: AnsiString;
@@ -834,15 +890,15 @@ begin
 
  Schema := CoXMLSchemaCache50.Create;
 
- if not DirectoryExists(NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),
+ if not DirectoryExists(DFeUtil.SeSenao(DFeUtil.EstaVazio(APathSchemas),
                         PathWithDelim(ExtractFileDir(application.ExeName)) + 'Schemas',
                         PathWithDelim(APathSchemas)))
   then raise Exception.Create('Diretório de Schemas não encontrado' + sLineBreak +
-                              NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),
+                              DFeUtil.SeSenao(DFeUtil.EstaVazio(APathSchemas),
                               PathWithDelim(ExtractFileDir(application.ExeName)) + 'Schemas',
                               PathWithDelim(APathSchemas)));
 
- schema_filename := NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),
+ schema_filename := DFeUtil.SeSenao(DFeUtil.EstaVazio(APathSchemas),
                     PathWithDelim(ExtractFileDir(application.ExeName)) + 'Schemas\',
                     PathWithDelim(APathSchemas)) + Servico;
 
@@ -1117,10 +1173,10 @@ begin
      URI           := '';
     end
     else begin
-     I := NotaUtil.PosEx('"', AXML, I + 2);
+     I := DFeUtil.PosEx('"', AXML, I + 2);
      if I = 0
       then raise Exception.Create('Não encontrei inicio do URI: aspas inicial');
-     J := NotaUtil.PosEx('"', AXML, I + 1);
+     J := DFeUtil.PosEx('"', AXML, I + 1);
      if J = 0
       then raise Exception.Create('Não encontrei inicio do URI: aspas final');
 
@@ -1137,10 +1193,10 @@ begin
                  '<SignedInfo>' +
                   '<CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />' +
                   '<SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />' +
-                  '<Reference URI="' + NotaUtil.SeSenao(URI = '', '">', '#' + URI + '">') +
+                  '<Reference URI="' + DFeUtil.SeSenao(URI = '', '">', '#' + URI + '">') +
                    '<Transforms>' +
                     '<Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />' +
-                   NotaUtil.SeSenao((AProvedor in [profintelISS, proGovBr]), '',
+                   DFeUtil.SeSenao((AProvedor in [profintelISS, proGovBr]), '',
                     '<Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />') +
                    '</Transforms>' +
                    '<DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />' +
@@ -1177,10 +1233,10 @@ begin
       end;
      if I <> 0
       then begin
-       I := NotaUtil.PosEx('"', AXML, I + 2);
+       I := DFeUtil.PosEx('"', AXML, I + 2);
        if I = 0
         then raise Exception.Create('Não encontrei inicio do URI: aspas inicial');
-       J := NotaUtil.PosEx('"', AXML, I + 1);
+       J := DFeUtil.PosEx('"', AXML, I + 1);
        if J = 0
         then raise Exception.Create('Não encontrei inicio do URI: aspas final');
 
@@ -1196,10 +1252,10 @@ begin
                     '<SignedInfo>' +
                     '<CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />' +
                      '<SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />' +
-                     '<Reference URI="' + NotaUtil.SeSenao(URI = '', '">', '#' + URI + '">') +
+                     '<Reference URI="' + DFeUtil.SeSenao(URI = '', '">', '#' + URI + '">') +
                       '<Transforms>' +
                        '<Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />' +
-                       NotaUtil.SeSenao((AProvedor in [profintelISS, proGovBr]), '',
+                       DFeUtil.SeSenao((AProvedor in [profintelISS, proGovBr]), '',
                        '<Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />') +
                       '</Transforms>' +
                       '<DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />' +
@@ -1380,7 +1436,7 @@ begin
       then PosIniAssLote := Pos('</LoteRps>', XMLAssinado) + length('</LoteRps>')
       else PosIniAssLote := PosIniAssLote + length('</'+ APrefixo3 + 'LoteRps>');
 
-     PosIni      := NotaUtil.PosEx('<SignatureValue>', XMLAssinado, PosIniAssLote) + length('<SignatureValue>');
+     PosIni      := DFeUtil.PosEx('<SignatureValue>', XMLAssinado, PosIniAssLote) + length('<SignatureValue>');
      XMLAssinado := copy(XMLAssinado, 1, PosIni - 1) +
                     StringReplace( copy(XMLAssinado, PosIni, length(XMLAssinado)), ' ', '', [rfReplaceAll] );
 
@@ -1391,8 +1447,8 @@ begin
       then PosIniAssLote := Pos('</LoteRps>', XMLAssinado) + length('</LoteRps>')
       else PosIniAssLote := PosIniAssLote + length('</'+ APrefixo3 + 'LoteRps>');
 
-     PosIni      := NotaUtil.PosEx('<X509Certificate>', XMLAssinado, PosIniAssLote) - 1;
-     PosFim      := NotaUtil.PosLast('<X509Certificate>', XMLAssinado);
+     PosIni      := DFeUtil.PosEx('<X509Certificate>', XMLAssinado, PosIniAssLote) - 1;
+     PosFim      := DFeUtil.PosLast('<X509Certificate>', XMLAssinado);
      XMLAssinado := copy(XMLAssinado, 1, PosIni) +
                     copy(XMLAssinado, PosFim, length(XMLAssinado));
     end
@@ -1401,7 +1457,7 @@ begin
      XMLAssinado := copy(XMLAssinado, 1, PosIni - 1) +
                     StringReplace( copy(XMLAssinado, PosIni, length(XMLAssinado)), ' ', '', [rfReplaceAll] );
      PosIni      := Pos('<X509Certificate>', XMLAssinado) - 1;
-     PosFim      := NotaUtil.PosLast('<X509Certificate>', XMLAssinado);
+     PosFim      := DFeUtil.PosLast('<X509Certificate>', XMLAssinado);
      XMLAssinado := copy(XMLAssinado, 1, PosIni) +
                     copy(XMLAssinado, PosFim, length(XMLAssinado));
     end;
@@ -1457,6 +1513,7 @@ begin
 {$ENDIF}
 end;
 
+(*
 class function NotaUtil.StringToFloat(AValue: String): Double;
 var
 sDecimalSeparator: string;
@@ -1467,7 +1524,7 @@ vFormatSettings: TFormatSettings;
 begin
   AValue := Trim( AValue );
 
-{$IFDEF VER140} //delphi6
+{$IFDEF VER140} //D6
   sDecimalSeparator := DecimalSeparator;
 {$ELSE}
   sDecimalSeparator := vFormatSettings.DecimalSeparator;
@@ -1481,7 +1538,9 @@ begin
 
   Result := StrToFloat(AValue);
 end;
+*)
 
+(*
 class function NotaUtil.StringToFloatDef(const AValue: String;
   const DefaultValue: Double): Double;
 begin
@@ -1491,6 +1550,7 @@ begin
      Result := DefaultValue;
   end;
 end;
+*)
 
 class procedure NotaUtil.ConfAmbiente;
 {$IFDEF VER140} //delphi6
@@ -1712,11 +1772,11 @@ var
  signedKey : IXMLDSigKey;
 begin
    AXML := AXML+'<Signature xmlns="http://www.w3.org/2000/09/xmldsig#"'+
-                     NotaUtil.SeSenao(FURI = '', '',' Id="Ass_'+ FURI +'"')+'>'+
+                     DFeUtil.SeSenao(FURI = '', '',' Id="Ass_'+ FURI +'"')+'>'+
                  '<SignedInfo>'+
                   '<CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />'+
                   '<SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />'+
-                  '<Reference URI="'+NotaUtil.SeSenao(FURI = '', '','#'+FURI)+'">'+
+                  '<Reference URI="'+DFeUtil.SeSenao(FURI = '', '','#'+FURI)+'">'+
                    '<Transforms>'+
                     '<Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />'+
                     '<Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />'+
@@ -1799,7 +1859,7 @@ begin
    PosIni       := Pos('<SignatureValue>',AXMLAssinado)+length('<SignatureValue>');
    AXMLAssinado := copy(AXMLAssinado,1,PosIni-1)+StringReplace( copy(AXMLAssinado,PosIni,length(AXMLAssinado)), ' ', '', [rfReplaceAll] );
    PosIni       := Pos('<X509Certificate>',AXMLAssinado)-1;
-   PosFim       := NotaUtil.PosLast('<X509Certificate>',AXMLAssinado);
+   PosFim       := DFeUtil.PosLast('<X509Certificate>',AXMLAssinado);
    AXMLAssinado := copy(AXMLAssinado, 1, PosIni) +
                    copy(AXMLAssinado, PosFim, length(AXMLAssinado));
   end

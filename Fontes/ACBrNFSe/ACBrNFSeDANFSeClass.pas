@@ -66,7 +66,7 @@ type
 implementation
 
 uses
- ACBrNFSe, ACBrNFSeUtil, ACBrUtil;
+ ACBrNFSe, ACBrNFSeUtil, ACBrUtil, ACBrDFeUtil;
 
 { TACBrNFSeDANFSeClass }
 
@@ -108,11 +108,11 @@ end;
 
 function TACBrNFSeDANFSeClass.GetPathArquivos: String;
 begin
- if NotaUtil.EstaVazio(FPathArquivos)
+ if DFeUtil.EstaVazio(FPathArquivos)
   then if Assigned(FACBrNFSe)
         then FPathArquivos := TACBrNFSe(FACBrNFSe).Configuracoes.Geral.PathSalvar;
 
- if NotaUtil.NaoEstaVazio(FPathArquivos)
+ if DFeUtil.NaoEstaVazio(FPathArquivos)
   then if not DirectoryExists(FPathArquivos)
         then ForceDirectories(FPathArquivos);
 

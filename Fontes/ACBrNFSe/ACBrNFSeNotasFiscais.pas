@@ -128,7 +128,7 @@ type
 implementation
 
 uses
- ACBrNFSe, ACBrUtil, pcnGerador;
+ ACBrNFSe, ACBrUtil, ACBrDFeUtil, pcnGerador;
 
 { NotaFiscal }
 
@@ -215,7 +215,7 @@ begin
   ThreadSMTP.smtp.Password   := sSmtpPasswd;
   ThreadSMTP.smtp.TargetHost := sSmtpHost;
 
-  if not NotaUtil.EstaVazio( sSmtpPort )
+  if not DFeUtil.EstaVazio( sSmtpPort )
    then ThreadSMTP.smtp.TargetPort := sSmtpPort; // Usa default
 
   ThreadSMTP.smtp.FullSSL := SSL;
@@ -291,11 +291,11 @@ begin
    LocNFSeW.ServicoEnviar := TACBrNFSe( TNotasFiscais( Collection ).ACBrNFSe ).Configuracoes.WebServices.ServicoEnviar;
    LocNFSeW.GerarXml;
 
-   if NotaUtil.EstaVazio(CaminhoArquivo)
+   if DFeUtil.EstaVazio(CaminhoArquivo)
     then CaminhoArquivo := NotaUtil.PathWithDelim(TACBrNFSe( TNotasFiscais( Collection ).ACBrNFSe ).Configuracoes.Arquivos.GetPathRPS) +
                             Self.NFSe.InfID.ID + '-Rps.xml';
 
-   if NotaUtil.EstaVazio(CaminhoArquivo) or not DirectoryExists(ExtractFilePath(CaminhoArquivo))
+   if DFeUtil.EstaVazio(CaminhoArquivo) or not DirectoryExists(ExtractFilePath(CaminhoArquivo))
     then raise Exception.Create('Caminho Inválido: ' + CaminhoArquivo);
 
    LocNFSeW.Gerador.SalvarArquivo(CaminhoArquivo);
@@ -418,7 +418,7 @@ begin
     if FConfiguracoes.Geral.Salvar
      then FConfiguracoes.Geral.Save(NotaUtil.PathWithDelim(FConfiguracoes.Arquivos.GetPathRPS) + Self.Items[i].NFSe.InfID.ID+'-Rps.xml', vAssinada);
 
-    if NotaUtil.NaoEstaVazio(Self.Items[i].NomeArq)
+    if DFeUtil.NaoEstaVazio(Self.Items[i].NomeArq)
      then FConfiguracoes.Geral.Save(ExtractFileName(Self.Items[i].NomeArq), vAssinada, ExtractFilePath(Self.Items[i].NomeArq));
 
    finally
@@ -698,7 +698,7 @@ begin
  try
   for i := 0 to TACBrNFSe( FACBrNFSe ).NotasFiscais.Count-1 do
    begin
-    if NotaUtil.EstaVazio(PathArquivo)
+    if DFeUtil.EstaVazio(PathArquivo)
      then PathArquivo := TACBrNFSe( FACBrNFSe ).Configuracoes.Geral.PathSalvar
      else PathArquivo := ExtractFilePath(PathArquivo);
 

@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils,
   pnfsConversao, pcnAuxiliar,
-  ACBrNFSeConfiguracoes, ACBrNFSeUtil, ACBrUtil,
+  ACBrNFSeConfiguracoes, ACBrNFSeUtil, ACBrUtil, ACBrDFeUtil,
   {$IFDEF COMPILER6_UP} DateUtils {$ELSE} ACBrD5, FileCtrl {$ENDIF};
 
 type
@@ -189,7 +189,7 @@ begin
    acCancelar:    Result := '<' + Prefixo3 + 'CancelarNfseEnvio' + NameSpaceDad +
                              '<' + Prefixo3 + 'Pedido>' +
                               '<' + Prefixo4 + 'InfPedidoCancelamento' +
-                                 NotaUtil.SeSenao(Identificador <> '', ' ' + Identificador + '="' + URI + '"', '') + '>';
+                                 DFeUtil.SeSenao(Identificador <> '', ' ' + Identificador + '="' + URI + '"', '') + '>';
    acGerar:       Result := '';
  end;
 end;
@@ -228,13 +228,13 @@ var
  DadosMsg: AnsiString;
 begin
  DadosMsg := '<' + Prefixo3 + 'LoteRps'+
-               NotaUtil.SeSenao(Identificador <> '', ' ' + Identificador + '="' + NumeroLote + '"', '') +
-               ' versao="' + VersaoDados + '">' + 
+               DFeUtil.SeSenao(Identificador <> '', ' ' + Identificador + '="' + NumeroLote + '"', '') +
+               ' versao="' + VersaoDados + '">' +
               '<' + Prefixo4 + 'NumeroLote>' +
                 NumeroLote +
               '</' + Prefixo4 + 'NumeroLote>' +
 
-              NotaUtil.SeSenao(VersaoXML = '1',
+              DFeUtil.SeSenao(VersaoXML = '1',
 
                 '<' + Prefixo4 + 'CpfCnpj>' +
                 '<' + Prefixo4 + 'Cnpj>' +
@@ -268,7 +268,7 @@ var
 begin
  DadosMsg := '<' + Prefixo3 + 'Prestador>' +
 
-               NotaUtil.SeSenao(VersaoXML = '1',
+               DFeUtil.SeSenao(VersaoXML = '1',
 
                  '<' + Prefixo4 + 'CpfCnpj>' +
                  '<' + Prefixo4 + 'Cnpj>' +
@@ -299,7 +299,7 @@ var
 begin
  DadosMsg := '<' + Prefixo3 + 'Prestador>' +
 
-               NotaUtil.SeSenao(VersaoXML = '1',
+               DFeUtil.SeSenao(VersaoXML = '1',
 
                  '<' + Prefixo4 + 'CpfCnpj>' +
                  '<' + Prefixo4 + 'Cnpj>' +
@@ -341,7 +341,7 @@ begin
              '</' + Prefixo3 + 'IdentificacaoRps>' +
              '<' + Prefixo3 + 'Prestador>' +
 
-              NotaUtil.SeSenao(VersaoXML = '1',
+              DFeUtil.SeSenao(VersaoXML = '1',
 
                 '<' + Prefixo4 + 'CpfCnpj>' +
                 '<' + Prefixo4 + 'Cnpj>' +
@@ -369,7 +369,7 @@ var
 begin
  DadosMsg := '<' + Prefixo3 + 'Prestador>' +
 
-               NotaUtil.SeSenao(VersaoXML = '1',
+               DFeUtil.SeSenao(VersaoXML = '1',
 
                  '<' + Prefixo4 + 'CpfCnpj>' +
                  '<' + Prefixo4 + 'Cnpj>' +

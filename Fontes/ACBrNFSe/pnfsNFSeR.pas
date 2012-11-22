@@ -8,7 +8,7 @@ uses
   Variants,
 {$ENDIF}
   pcnAuxiliar, pcnConversao, pcnLeitor, pnfsNFSe, pnfsConversao,
-  ACBrUtil, ACBrNFSeUtil;
+  ACBrUtil, ACBrNFSeUtil, ACBrDFeUtil;
 
 type
 
@@ -120,7 +120,7 @@ begin
     then begin
      NFSe.Servico.Valores.IssRetido   := StrToSituacaoTributaria(ok, Leitor.rCampo(tcStr, 'IssRetido'));
      NFSe.Servico.ResponsavelRetencao := StrToResponsavelRetencao(ok, Leitor.rCampo(tcStr, 'ResponsavelRetencao'));
-     NFSe.Servico.ItemListaServico    := NotaUtil.LimpaNumero(Leitor.rCampo(tcStr, 'ItemListaServico'));
+     NFSe.Servico.ItemListaServico    := DFeUtil.LimpaNumero(Leitor.rCampo(tcStr, 'ItemListaServico'));
 
      Item := StrToInt(SomenteNumeros(Nfse.Servico.ItemListaServico));
      if Item<100 then Item:=Item*100+1;
@@ -259,7 +259,7 @@ begin
     then begin
      NFSe.Servico.Valores.IssRetido   := StrToSituacaoTributaria(ok, Leitor.rCampo(tcStr, 'IssRetido'));
      NFSe.Servico.ResponsavelRetencao := StrToResponsavelRetencao(ok, Leitor.rCampo(tcStr, 'ResponsavelRetencao'));
-     NFSe.Servico.ItemListaServico    := NotaUtil.LimpaNumero(Leitor.rCampo(tcStr, 'ItemListaServico'));
+     NFSe.Servico.ItemListaServico    := DFeUtil.LimpaNumero(Leitor.rCampo(tcStr, 'ItemListaServico'));
 
      Item := StrToInt(SomenteNumeros(Nfse.Servico.ItemListaServico));
      if Item<100 then Item:=Item*100+1;
@@ -394,7 +394,7 @@ begin
 
    if (Leitor.rExtrai(3, 'Servico') <> '')
     then begin
-     NFSe.Servico.ItemListaServico          := NotaUtil.LimpaNumero(Leitor.rCampo(tcStr, 'ItemListaServico'));
+     NFSe.Servico.ItemListaServico          := DFeUtil.LimpaNumero(Leitor.rCampo(tcStr, 'ItemListaServico'));
      NFSe.Servico.CodigoTributacaoMunicipio := Leitor.rCampo(tcStr, 'CodigoTributacaoMunicipio');
      NFSe.Servico.Discriminacao             := Leitor.rCampo(tcStr, 'Discriminacao');
 
@@ -706,7 +706,7 @@ begin
       then begin
        NFSe.Servico.Valores.IssRetido   := StrToSituacaoTributaria(ok, Leitor.rCampo(tcStr, 'IssRetido'));
        NFSe.Servico.ResponsavelRetencao := StrToResponsavelRetencao(ok, Leitor.rCampo(tcStr, 'ResponsavelRetencao'));
-       NFSe.Servico.ItemListaServico    := NotaUtil.LimpaNumero(Leitor.rCampo(tcStr, 'ItemListaServico'));
+       NFSe.Servico.ItemListaServico    := DFeUtil.LimpaNumero(Leitor.rCampo(tcStr, 'ItemListaServico'));
 
        Item := StrToInt(SomenteNumeros(Nfse.Servico.ItemListaServico));
        if Item<100 then Item:=Item*100+1;
@@ -849,7 +849,7 @@ begin
  if (Leitor.rExtrai(3, 'Servico') <> '')
   then begin
    NFSe.Servico.ResponsavelRetencao := StrToResponsavelRetencao(ok, Leitor.rCampo(tcStr, 'ResponsavelRetencao'));
-   NFSe.Servico.ItemListaServico    := NotaUtil.LimpaNumero(Leitor.rCampo(tcStr, 'ItemListaServico'));
+   NFSe.Servico.ItemListaServico    := DFeUtil.LimpaNumero(Leitor.rCampo(tcStr, 'ItemListaServico'));
 
    Item := StrToInt(SomenteNumeros(Nfse.Servico.ItemListaServico));
    if Item<100 then Item:=Item*100+1;

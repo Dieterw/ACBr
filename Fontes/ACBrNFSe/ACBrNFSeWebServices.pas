@@ -322,7 +322,7 @@ uses
  {$IFDEF ACBrNFSeOpenSSL}
    ssl_openssl,
  {$ENDIF}
- Math, ACBrUtil, ACBrNFSeUtil, ACBrNFSe;
+ Math, ACBrUtil, ACBrNFSeUtil, ACBrDFeUtil, ACBrNFSe;
 
 {$IFNDEF ACBrNFSeOpenSSL}
 const
@@ -1658,7 +1658,7 @@ begin
       FNotasFiscais.Items[i].NFSe.dhRecebimento := FDataRecebimento;
      end;
     aMsg := 'Numero do Lote : ' + NFSeRetorno.InfRec.NumeroLote + LineBreak +
-            'Recebimento... : ' + NotaUtil.SeSenao(FDataRecebimento = 0, '', DateTimeToStr(FDataRecebimento)) + LineBreak +
+            'Recebimento... : ' + DFeUtil.SeSenao(FDataRecebimento = 0, '', DateTimeToStr(FDataRecebimento)) + LineBreak +
             'Protocolo..... : ' + FProtocolo + LineBreak +
             'Provedor...... : ' + FxProvedor + LineBreak;
    end;
@@ -2001,7 +2001,7 @@ begin
    begin
     // Alterado por Rodrigo Cantelli
     j := Pos('</' + Prefixo3 +
-                    NotaUtil.seSenao(FProvedor = proBetha, 'ComplNfse', 'CompNfse') + '>', FRetListaNfse);
+                    DFeUtil.seSenao(FProvedor = proBetha, 'ComplNfse', 'CompNfse') + '>', FRetListaNfse);
     p := Length(trim(Prefixo3));
     if j > 0
      then begin
@@ -2626,7 +2626,7 @@ begin
      end;
    end
    else aMsg := 'Numero da NFSe : ' + NFSeRetorno.InfCanc.Pedido.IdentificacaoNfse.Numero + LineBreak +
-                'Data Hora..... : ' + NotaUtil.SeSenao(FDataHora = 0, '', DateTimeToStr(FDataHora)) + LineBreak;
+                'Data Hora..... : ' + DFeUtil.SeSenao(FDataHora = 0, '', DateTimeToStr(FDataHora)) + LineBreak;
 
   if FConfiguracoes.WebServices.Visualizar
    then ShowMessage(aMsg);

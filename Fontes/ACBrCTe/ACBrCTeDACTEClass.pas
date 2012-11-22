@@ -118,7 +118,7 @@ type
 
 implementation
 
-uses ACBrCTE, ACBrCteUtil, ACBrUtil ;
+uses ACBrCTE, ACBrCteUtil, ACBrUtil, ACBrDFeUtil ;
 
 constructor TACBrCteDACTEClass.Create(AOwner: TComponent);
 begin
@@ -211,11 +211,11 @@ end;
 
 function TACBrCTeDACTEClass.GetPathArquivos: String;
 begin
-  if CTeUtil.EstaVazio(FPathArquivos) then
+  if DFeUtil.EstaVazio(FPathArquivos) then
      if Assigned(FACBrCTe) then
         FPathArquivos := TACBrCTe(FACBrCTe).Configuracoes.Geral.PathSalvar;
 
-  if CTeUtil.NaoEstaVazio(FPathArquivos) then
+  if DFeUtil.NaoEstaVazio(FPathArquivos) then
      if not DirectoryExists(FPathArquivos) then
         ForceDirectories(FPathArquivos);
 

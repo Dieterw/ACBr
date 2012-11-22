@@ -154,7 +154,7 @@ type
 
 implementation
 
-uses ACBrCTe, ACBrUtil, pcnGerador;
+uses ACBrCTe, ACBrUtil, ACBrDFeUtil, pcnGerador;
 
 { Conhecimento }
 
@@ -204,9 +204,9 @@ begin
      LocCTeW := TCTeW.Create(CTe);
      try
         LocCTeW.GerarXml;
-        if CTeUtil.EstaVazio(CaminhoArquivo) then
+        if DFeUtil.EstaVazio(CaminhoArquivo) then
            CaminhoArquivo := PathWithDelim(TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).Configuracoes.Geral.PathSalvar)+copy(CTe.inFCTe.ID, (length(CTe.inFCTe.ID)-44)+1, 44)+'-cte.xml';
-        if CTeUtil.EstaVazio(CaminhoArquivo) or not DirectoryExists(ExtractFilePath(CaminhoArquivo)) then
+        if DFeUtil.EstaVazio(CaminhoArquivo) or not DirectoryExists(ExtractFilePath(CaminhoArquivo)) then
            raise Exception.Create('Caminho Inválido: ' + CaminhoArquivo);
         LocCTeW.Gerador.SalvarArquivo(CaminhoArquivo);
         NomeArq := CaminhoArquivo;
@@ -459,7 +459,7 @@ begin
         if FConfiguracoes.Geral.Salvar then
            FConfiguracoes.Geral.Save(StringReplace(Self.Items[i].CTe.infCTe.ID, 'CTe', '', [rfIgnoreCase])+'-cte.xml', vAssinada);
 
-        if CTeUtil.NaoEstaVazio(Self.Items[i].NomeArq) then
+        if DFeUtil.NaoEstaVazio(Self.Items[i].NomeArq) then
            FConfiguracoes.Geral.Save(ExtractFileName(Self.Items[i].NomeArq), vAssinada, ExtractFilePath(Self.Items[i].NomeArq));
      finally
         LocCTeW.Free;
@@ -628,7 +628,7 @@ begin
  try
     for i:= 0 to TACBrCTe( FACBrCTe ).Conhecimentos.Count-1 do
      begin
-        if CTeUtil.EstaVazio(PathArquivo) then
+        if DFeUtil.EstaVazio(PathArquivo) then
            PathArquivo := TACBrCTe( FACBrCTe ).Configuracoes.Geral.PathSalvar
         else
            PathArquivo := ExtractFilePath(PathArquivo);

@@ -377,7 +377,7 @@ implementation
 uses {$IFDEF ACBrCTeOpenSSL}
         ssl_openssl,
      {$ENDIF}
-     ACBrUtil, ACBrCTeUtil, ACBrCTe,
+     ACBrUtil, ACBrCTeUtil, ACBrCTe, ACBrDFeUtil,
      pcnGerador, pcnCabecalho, pcnLeitor,
      pcteConsStatServ, pcteRetConsStatServ,
      pcteConsCad,
@@ -955,9 +955,9 @@ begin
               'Status Código : '+IntToStr(CTeRetorno.cStat)+LineBreak+
               'Status Descrição : '+CTeRetorno.xMotivo+LineBreak+
               'UF : '+CodigoParaUF(CTeRetorno.cUF)+LineBreak+
-              'Recebimento : '+CTeUtil.SeSenao(CTeRetorno.DhRecbto = 0, '', DateTimeToStr(CTeRetorno.dhRecbto))+LineBreak+
+              'Recebimento : '+DFeUtil.SeSenao(CTeRetorno.DhRecbto = 0, '', DateTimeToStr(CTeRetorno.dhRecbto))+LineBreak+
               'Tempo Médio : '+IntToStr(CTeRetorno.TMed)+LineBreak+
-              'Retorno : '+ CTeUtil.SeSenao(CTeRetorno.dhRetorno = 0, '', DateTimeToStr(CTeRetorno.dhRetorno))+LineBreak+
+              'Retorno : '+ DFeUtil.SeSenao(CTeRetorno.dhRetorno = 0, '', DateTimeToStr(CTeRetorno.dhRetorno))+LineBreak+
               'Observação : '+CTeRetorno.xObs;
       if FConfiguracoes.WebServices.Visualizar then
         ShowMessage(aMsg);
@@ -1100,7 +1100,7 @@ begin
                       'Status Código : '+IntToStr(CTeRetorno.cStat)+LineBreak+
                       'Status Descrição : '+CTeRetorno.xMotivo+LineBreak+
                       'UF : '+CodigoParaUF(CTeRetorno.cUF)+LineBreak+
-                      'Recebimento : '+CTeUtil.SeSenao(CTeRetorno.InfRec.dhRecbto = 0, '', DateTimeToStr(CTeRetorno.InfRec.dhRecbto))+LineBreak+
+                      'Recebimento : '+DFeUtil.SeSenao(CTeRetorno.InfRec.dhRecbto = 0, '', DateTimeToStr(CTeRetorno.InfRec.dhRecbto))+LineBreak+
                       'Tempo Médio : '+IntToStr(CTeRetorno.infRec.tMed)+LineBreak+
                       'Número Recibo: '+CTeRetorno.infRec.nRec;
       if FConfiguracoes.WebServices.Visualizar then
@@ -1178,7 +1178,7 @@ begin
          FCTes.Items[j].CTe.procCTe.cStat    := AInfProt.Items[i].cStat;
          FCTes.Items[j].CTe.procCTe.xMotivo  := AInfProt.Items[i].xMotivo;
 
-         if FConfiguracoes.Geral.Salvar or CTeUtil.NaoEstaVazio(FCTes.Items[j].NomeArq) then
+         if FConfiguracoes.Geral.Salvar or DFeUtil.NaoEstaVazio(FCTes.Items[j].NomeArq) then
           begin
             if FileExists(PathWithDelim(FConfiguracoes.Geral.PathSalvar)+AInfProt.Items[i].chCTe+'-cte.xml') and
                FileExists(PathWithDelim(FConfiguracoes.Geral.PathSalvar)+FCTeRetorno.nRec+'-pro-rec.xml') then
@@ -1187,9 +1187,9 @@ begin
                AProcCTe.PathCTe := PathWithDelim(FConfiguracoes.Geral.PathSalvar)+AInfProt.Items[i].chCTe+'-cte.xml';
                AProcCTe.PathRetConsReciCTe := PathWithDelim(FConfiguracoes.Geral.PathSalvar)+FCTeRetorno.nRec+'-pro-rec.xml';
                AProcCTe.GerarXML;
-               if CTeUtil.NaoEstaVazio(AProcCTe.Gerador.ArquivoFormatoXML) then
+               if DFeUtil.NaoEstaVazio(AProcCTe.Gerador.ArquivoFormatoXML) then
                 begin
-                  if CTeUtil.NaoEstaVazio(FCTes.Items[j].NomeArq) then
+                  if DFeUtil.NaoEstaVazio(FCTes.Items[j].NomeArq) then
                      AProcCTe.Gerador.SalvarArquivo(FCTes.Items[j].NomeArq)
                   else
                      AProcCTe.Gerador.SalvarArquivo(PathWithDelim(FConfiguracoes.Geral.PathSalvar)+AInfProt.Items[i].chCTe+'-cte.xml');
@@ -1670,8 +1670,8 @@ begin
     FretCancCTe.dhRecbto := CTeRetorno.retCancCTe.dhRecbto;
     FretCancCTe.nProt    := CTeRetorno.retCancCTe.nProt;
 
-    FProtocolo := CTeUtil.SeSenao(CTeUtil.NaoEstaVazio(CTeRetorno.retCancCTe.nProt),CTeRetorno.retCancCTe.nProt,CTeRetorno.protCTe.nProt);
-    FDhRecbto  := CTeUtil.SeSenao(CTeRetorno.retCancCTe.dhRecbto <> 0,CTeRetorno.retCancCTe.dhRecbto,CTeRetorno.protCTe.dhRecbto);
+    FProtocolo := DFeUtil.SeSenao(DFeUtil.NaoEstaVazio(CTeRetorno.retCancCTe.nProt),CTeRetorno.retCancCTe.nProt,CTeRetorno.protCTe.nProt);
+    FDhRecbto  := DFeUtil.SeSenao(CTeRetorno.retCancCTe.dhRecbto <> 0,CTeRetorno.retCancCTe.dhRecbto,CTeRetorno.protCTe.dhRecbto);
 
     TACBrCTe( FACBrCTe ).SetStatus( stCteIdle );
     aMsg := 'Identificador : '+CTeRetorno.protCTe.chCTe+LineBreak+
@@ -1721,17 +1721,17 @@ begin
               TACBrCTe( FACBrCTe ).Conhecimentos.Items[i].CTe.procCTe.xMotivo  := CTeRetorno.xMotivo;
             end;
 
-            if ((FileExists(PathWithDelim(FConfiguracoes.Geral.PathSalvar)+FCTeChave+'-cte.xml') or CTeUtil.NaoEstaVazio(TACBrCTe( FACBrCTe ).Conhecimentos.Items[i].NomeArq))
+            if ((FileExists(PathWithDelim(FConfiguracoes.Geral.PathSalvar)+FCTeChave+'-cte.xml') or DFeUtil.NaoEstaVazio(TACBrCTe( FACBrCTe ).Conhecimentos.Items[i].NomeArq))
                and wAtualiza) then
             begin
              AProcCTe := TProcCTe.Create;
-             if CTeUtil.NaoEstaVazio(TACBrCTe( FACBrCTe ).Conhecimentos.Items[i].NomeArq) then
+             if DFeUtil.NaoEstaVazio(TACBrCTe( FACBrCTe ).Conhecimentos.Items[i].NomeArq) then
                 AProcCTe.PathCTe := TACBrCTe( FACBrCTe ).Conhecimentos.Items[i].NomeArq
              else
                 AProcCTe.PathCTe := PathWithDelim(FConfiguracoes.Geral.PathSalvar)+FCTeChave+'-cte.xml';
              AProcCTe.PathRetConsSitCTe := PathWithDelim(FConfiguracoes.Geral.PathSalvar)+FCTeChave+'-sit.xml';
              AProcCTe.GerarXML;
-             if CTeUtil.NaoEstaVazio(AProcCTe.Gerador.ArquivoFormatoXML) then
+             if DFeUtil.NaoEstaVazio(AProcCTe.Gerador.ArquivoFormatoXML) then
                 AProcCTe.Gerador.SalvarArquivo(AProcCTe.PathCTe);
              AProcCTe.Free;
             end;
@@ -1760,7 +1760,7 @@ begin
              AProcCTe.PathCTe := PathWithDelim(FConfiguracoes.Geral.PathSalvar)+FCTeChave+'-cte.xml';
              AProcCTe.PathRetConsSitCTe := PathWithDelim(FConfiguracoes.Geral.PathSalvar)+FCTeChave+'-sit.xml';
              AProcCTe.GerarXML;
-             if CTeUtil.NaoEstaVazio(AProcCTe.Gerador.ArquivoFormatoXML) then
+             if DFeUtil.NaoEstaVazio(AProcCTe.Gerador.ArquivoFormatoXML) then
                 AProcCTe.Gerador.SalvarArquivo(AProcCTe.PathCTe);
              AProcCTe.Free;
            end;
@@ -1871,7 +1871,7 @@ begin
             'Status Descrição : '+CTeRetorno.xMotivo+LineBreak+
             'UF : '+CodigoParaUF(CTeRetorno.cUF)+LineBreak+
             'Chave Acesso : '+CTeRetorno.chCTe+LineBreak+
-            'Recebimento : '+CTeUtil.SeSenao(CTeRetorno.DhRecbto = 0, '', DateTimeToStr(CTeRetorno.DhRecbto))+LineBreak+
+            'Recebimento : '+DFeUtil.SeSenao(CTeRetorno.DhRecbto = 0, '', DateTimeToStr(CTeRetorno.DhRecbto))+LineBreak+
             'Protocolo : '+CTeRetorno.nProt+LineBreak;
 
     if FConfiguracoes.WebServices.Visualizar then
@@ -1907,12 +1907,12 @@ begin
               TACBrCTe( FACBrCTe ).Conhecimentos.Items[i].CTe.procCTe.xMotivo  := CTeRetorno.xMotivo;
            end;
 
-           if FConfiguracoes.Arquivos.Salvar or CTeUtil.NaoEstaVazio(TACBrCTe( FACBrCTe ).Conhecimentos.Items[i].NomeArq) then
+           if FConfiguracoes.Arquivos.Salvar or DFeUtil.NaoEstaVazio(TACBrCTe( FACBrCTe ).Conhecimentos.Items[i].NomeArq) then
             begin
               if ((CTeRetorno.CStat = 101) and // 101 = Cancelamento Homologado
                   (FConfiguracoes.Geral.AtualizarXMLCancelado)) then
               begin
-                 if CTeUtil.NaoEstaVazio(TACBrCTe( FACBrCTe ).Conhecimentos.Items[i].NomeArq) then
+                 if DFeUtil.NaoEstaVazio(TACBrCTe( FACBrCTe ).Conhecimentos.Items[i].NomeArq) then
                     TACBrCTe( FACBrCTe ).Conhecimentos.Items[i].SaveToFile(TACBrCTe( FACBrCTe ).Conhecimentos.Items[i].NomeArq)
                  else
                  begin
@@ -1975,14 +1975,14 @@ end;
 
 procedure TCTeCancelamento.SetJustificativa(AValue: WideString);
 begin
-  if CTeUtil.EstaVazio(AValue) then
+  if DFeUtil.EstaVazio(AValue) then
    begin
      if Assigned(TACBrCTe( FACBrCTe ).OnGerarLog) then
         TACBrCTe( FACBrCTe ).OnGerarLog('ERRO: Informar uma Justificativa para cancelar o Conhecimento Eletrônico');
      raise Exception.Create('Informar uma Justificativa para cancelar o Conhecimento Eletrônico')
    end
   else
-    AValue := CTeUtil.TrataString(AValue);
+    AValue := DFeUtil.TrataString(AValue);
 
   if Length(AValue) < 15 then
    begin
@@ -2082,7 +2082,7 @@ begin
             'Status Código : '+IntToStr(CTeRetorno.cStat)+LineBreak+
             'Status Descrição : '+CTeRetorno.xMotivo+LineBreak+
             'UF : '+CodigoParaUF(CTeRetorno.cUF)+LineBreak+
-            'Recebimento : '+CTeUtil.SeSenao(CTeRetorno.DhRecbto = 0, '', DateTimeToStr(CTeRetorno.dhRecbto));
+            'Recebimento : '+DFeUtil.SeSenao(CTeRetorno.DhRecbto = 0, '', DateTimeToStr(CTeRetorno.dhRecbto));
     if FConfiguracoes.WebServices.Visualizar then
       ShowMessage(aMsg);
 
@@ -2146,14 +2146,14 @@ end;
 
 procedure TCTeInutilizacao.SetJustificativa(AValue: WideString);
 begin
-  if CTeUtil.EstaVazio(AValue) then
+  if DFeUtil.EstaVazio(AValue) then
    begin
      if Assigned(TACBrCTe( FACBrCTe ).OnGerarLog) then
         TACBrCTe( FACBrCTe ).OnGerarLog('ERRO: Informar uma Justificativa para Inutilização de numeração do Conhecimento Eletrônico');
      raise Exception.Create('Informar uma Justificativa para Inutilização de numeração do Conhecimento Eletrônico')
    end
   else
-    AValue := CTeUtil.TrataString(AValue);
+    AValue := DFeUtil.TrataString(AValue);
 
   if Length(Trim(AValue)) < 15 then
    begin
@@ -2297,7 +2297,7 @@ end;
 
 procedure TCTeConsultaCadastro.SetCNPJ(const Value: String);
 begin
-  if CTeUtil.NaoEstaVazio(Value) then
+  if DFeUtil.NaoEstaVazio(Value) then
    begin
      FIE  := '';
      FCPF := '';
@@ -2307,7 +2307,7 @@ end;
 
 procedure TCTeConsultaCadastro.SetCPF(const Value: String);
 begin
-  if CTeUtil.NaoEstaVazio(Value) then
+  if DFeUtil.NaoEstaVazio(Value) then
    begin
      FIE   := '';
      FCNPJ := '';
@@ -2317,7 +2317,7 @@ end;
 
 procedure TCTeConsultaCadastro.SetIE(const Value: String);
 begin
-  if CTeUtil.NaoEstaVazio(Value) then
+  if DFeUtil.NaoEstaVazio(Value) then
    begin
      FCNPJ := '';
      FCPF  := '';

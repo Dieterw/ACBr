@@ -56,7 +56,7 @@ uses
      Dialogs,
   {$ENDIF}
   pcteCTe, pcnConversao, ACBrCTeConhecimentos, ACBrCTeConfiguracoes,
-  ACBrCTeWebServices, ACBrCTeUtil, ACBrCTeDACTeClass,
+  ACBrCTeWebServices, ACBrCTeUtil, ACBrCTeDACTeClass, ACBrDFeUtil,
   ACBrUtil, Forms,
   smtpsend, ssl_openssl, mimemess, mimepart; // units para enviar email
 
@@ -362,7 +362,7 @@ begin
     ThreadSMTP.smtp.Password := sSmtpPasswd;
 
     ThreadSMTP.smtp.TargetHost := sSmtpHost;
-    if not CTeUtil.EstaVazio( sSmtpPort ) then     // Usa default
+    if not DFeUtil.EstaVazio( sSmtpPort ) then     // Usa default
        ThreadSMTP.smtp.TargetPort := sSmtpPort;
 
     ThreadSMTP.smtp.FullSSL := SSL;

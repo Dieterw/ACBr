@@ -124,7 +124,7 @@ var
 
 implementation
 
-uses ACBrCTe, ACBrCTeUtil, StrUtils, Math;
+uses ACBrCTe, ACBrCTeUtil, ACBrDFeUtil, StrUtils, Math;
 
 {$R *.dfm}
 
@@ -482,12 +482,12 @@ begin
 
     with FCTe.Dest do
     begin
-      if CTEUtil.NaoEstaVazio(CNPJCPF) then
+      if DFeUtil.NaoEstaVazio(CNPJCPF) then
       begin
         if Length(CNPJCPF) > 11 then
-          FieldByName('CNPJCPF').AsString := CTeUtil.FormatarCNPJ(CNPJCPF)
+          FieldByName('CNPJCPF').AsString := DFeUtil.FormatarCNPJ(CNPJCPF)
         else
-          FieldByName('CNPJCPF').AsString := CTeUtil.FormatarCPF(CNPJCPF);
+          FieldByName('CNPJCPF').AsString := DFeUtil.FormatarCPF(CNPJCPF);
       end
       else
         FieldByName('CNPJCPF').AsString := '';
@@ -502,10 +502,10 @@ begin
         FieldByName('CMun').AsString := IntToStr(CMun);
         FieldByName('XMun').AsString := CollateBr(XMun);
         FieldByName('UF').AsString := UF;
-        FieldByName('CEP').AsString := CTeUtil.FormatarCEP(CTeUtil.Poem_Zeros(CEP, 8));
+        FieldByName('CEP').AsString := DFeUtil.FormatarCEP(DFeUtil.Poem_Zeros(CEP, 8));
         FieldByName('CPais').AsString := IntToStr(CPais);
         FieldByName('XPais').AsString := XPais;
-        FieldByName('Fone').AsString := CTeUtil.FormatarFone(Fone);
+        FieldByName('Fone').AsString := DFeUtil.FormatarFone(Fone);
       end;
       FieldByName('IE').AsString := IE;
     end;
@@ -544,7 +544,7 @@ begin
 
     with FCTE.Emit do
     begin
-      FieldByName('CNPJ').AsString := CTeUtil.FormatarCNPJ(CNPJ);
+      FieldByName('CNPJ').AsString := DFeUtil.FormatarCNPJ(CNPJ);
       FieldByName('XNome').AsString := XNome;
       FieldByName('XFant').AsString := XFant;
       with EnderEmit do
@@ -556,10 +556,10 @@ begin
         FieldByName('CMun').AsString := IntToStr(CMun);
         FieldByName('XMun').AsString := CollateBr(XMun);
         FieldByName('UF').AsString := UF;
-        FieldByName('CEP').AsString := CTeUtil.FormatarCEP(CTeUtil.Poem_Zeros(CEP, 8));
+        FieldByName('CEP').AsString := DFeUtil.FormatarCEP(DFeUtil.Poem_Zeros(CEP, 8));
         //        FieldByName('CPais').AsString := IntToStr(CPais);
         //        FieldByName('XPais').AsString := XPais;
-        FieldByName('Fone').AsString := CTeUtil.FormatarFone(Fone);
+        FieldByName('Fone').AsString := DFeUtil.FormatarFone(Fone);
       end;
       FieldByName('IE').AsString := IE;
     end;
@@ -599,7 +599,7 @@ begin
 
     with FCTE.Exped do
     begin
-      FieldByName('CNPJ').AsString := CTeUtil.FormatarCNPJ(CNPJCPF);
+      FieldByName('CNPJ').AsString := DFeUtil.FormatarCNPJ(CNPJCPF);
       FieldByName('XNome').AsString := XNome;
       with EnderExped do
       begin
@@ -610,10 +610,10 @@ begin
         FieldByName('CMun').AsString := IntToStr(CMun);
         FieldByName('XMun').AsString := CollateBr(XMun);
         FieldByName('UF').AsString := UF;
-        FieldByName('CEP').AsString := CTeUtil.FormatarCEP(CTeUtil.Poem_Zeros(CEP, 8));
+        FieldByName('CEP').AsString := DFeUtil.FormatarCEP(DFeUtil.Poem_Zeros(CEP, 8));
         FieldByName('CPais').AsString := IntToStr(CPais);
         FieldByName('XPais').AsString := XPais;
-        FieldByName('Fone').AsString := CTeUtil.FormatarFone(Fone);
+        FieldByName('Fone').AsString := DFeUtil.FormatarFone(Fone);
       end;
       FieldByName('IE').AsString := IE;
     end;
@@ -668,7 +668,7 @@ begin
     with FCTe.infCTe do
     begin
       //FieldByName('Versao').AsString := IntToStr(Versao);
-      FieldByName('Id').AsString := CTeUtil.LimpaNumero(Id);
+      FieldByName('Id').AsString := DFeUtil.LimpaNumero(Id);
       FieldByName('Chave').AsString := CTeUtil.FormatarChaveAcesso(Id);
     end;
 
@@ -707,7 +707,7 @@ begin
       FieldByName('UFEmi').AsString := UFEnv;
 {$ENDIF}
 
-      FieldByName('modal').AsString := CTeUtil.SeSenao(modal = mdRodoviario, '0', '0');
+      FieldByName('modal').AsString := DFeUtil.SeSenao(modal = mdRodoviario, '0', '0');
 
       case tpServ of
         tsNormal: FieldByName('tpServ').AsString := 'Normal';
@@ -722,11 +722,11 @@ begin
       FieldByName('cMunFim').AsString := IntToStr(cMunFim);
       FieldByName('xMunFim').AsString := xMunFim;
       FieldByName('UFFim').AsString := UFFim;
-      FieldByName('TpImp').AsString := CTeUtil.SeSenao(TpImp = tiRetrato, '1', '2');
-      FieldByName('TpEmis').AsString := CTeUtil.SeSenao(TpEmis = teNormal, '1', '5');
+      FieldByName('TpImp').AsString := DFeUtil.SeSenao(TpImp = tiRetrato, '1', '2');
+      FieldByName('TpEmis').AsString := DFeUtil.SeSenao(TpEmis = teNormal, '1', '5');
       FieldByName('CDV').AsString := IntToStr(CDV);
-      FieldByName('TpAmb').AsString := CTeUtil.SeSenao(TpAmb = taHomologacao, '2', '1');
-      FieldByName('ProcEmi').AsString := CTeUtil.SeSenao(ProcEmi = peAplicativoContribuinte, '0', '');
+      FieldByName('TpAmb').AsString := DFeUtil.SeSenao(TpAmb = taHomologacao, '2', '1');
+      FieldByName('ProcEmi').AsString := DFeUtil.SeSenao(ProcEmi = peAplicativoContribuinte, '0', '');
       FieldByName('VerProc').AsString := VerProc;
 
       case Toma03.Toma of
@@ -777,8 +777,8 @@ begin
           wContingencia := 'DACTE IMPRESSO EM CONTINGÊNCIA - DPEC REGULARMENTE RECEBIDA PELA RECEITA FEDERAL DO BRASIL';
 
         //            wContingencia := wContingencia + ';' +
-        //            'DATA/HORA INÍCIO: ' + CTeUtil.SeSenao(FCTe.ide.dhCont = 0, ' ', DateTimeToStr(FCTe.ide.dhCont)) + ';'+
-        //            'MOTIVO CONTINGÊNCIA: ' + CTeUtil.SeSenao(CTeUtil.EstaVazio(FCTe.ide.xJust), ' ', FCTe.ide.xJust);
+        //            'DATA/HORA INÍCIO: ' + DFeUtil.SeSenao(FCTe.ide.dhCont = 0, ' ', DateTimeToStr(FCTe.ide.dhCont)) + ';'+
+        //            'MOTIVO CONTINGÊNCIA: ' + DFeUtil.SeSenao(DFeUtil.EstaVazio(FCTe.ide.xJust), ' ', FCTe.ide.xJust);
       end;
       if Length(wObs) > 0 then
         wObs := wObs + ';';
@@ -881,8 +881,8 @@ begin
     for i := 0 to CTe.Rodo.valePed.Count - 1 do
     begin
       Append;
-      FieldByName('CNPJForn').AsString := CTeUtil.FormatarCNPJ(CTe.Rodo.valePed.Items[i].CNPJForn);
-      FieldByName('CNPJPg').AsString := CTeUtil.FormatarCNPJ(CTe.Rodo.valePed.Items[i].CNPJPg);
+      FieldByName('CNPJForn').AsString := DFeUtil.FormatarCNPJ(CTe.Rodo.valePed.Items[i].CNPJForn);
+      FieldByName('CNPJPg').AsString := DFeUtil.FormatarCNPJ(CTe.Rodo.valePed.Items[i].CNPJPg);
       FieldByName('nCompra').AsString := CTe.Rodo.valePed.Items[i].nCompra;
       Post;
     end;
@@ -957,12 +957,12 @@ begin
     begin
       if not (FCTe.Ide.tpEmis in [teContingencia, teFSDA]) then
       begin
-        if ((CTeUtil.EstaVazio(FDACTEClassOwner.ProtocoloCTE)) and
-          (CTeUtil.EstaVazio(FCTe.procCTe.nProt))) then
+        if ((DFeUtil.EstaVazio(FDACTEClassOwner.ProtocoloCTE)) and
+          (DFeUtil.EstaVazio(FCTe.procCTe.nProt))) then
           FieldByName('Mensagem0').AsString := 'CTe sem Autorização de Uso da SEFAZ'
         else
-          if (not ((CTeUtil.EstaVazio(FDACTEClassOwner.ProtocoloCTE)) and
-            (CTeUtil.EstaVazio(FCTe.procCTe.nProt)))) and
+          if (not ((DFeUtil.EstaVazio(FDACTEClassOwner.ProtocoloCTE)) and
+            (DFeUtil.EstaVazio(FCTe.procCTe.nProt)))) and
             (FCTe.procCTe.cStat = 101) then
             FieldByName('Mensagem0').AsString := 'CTe Cancelada'
           else
@@ -1014,12 +1014,12 @@ begin
       else
         FieldByName('Contingencia_Descricao').AsString := 'PROTOCOLO DE AUTORIZAÇÃO DE USO';
 
-      if CTeUtil.EstaVazio(FDACTEClassOwner.ProtocoloCTE) then
+      if DFeUtil.EstaVazio(FDACTEClassOwner.ProtocoloCTE) then
       begin
-        if not (FCTe.Ide.tpEmis in [teContingencia, teFSDA]) and CTeUtil.EstaVazio(FCTe.procCTe.nProt) then
+        if not (FCTe.Ide.tpEmis in [teContingencia, teFSDA]) and DFeUtil.EstaVazio(FCTe.procCTe.nProt) then
           FieldByName('Contingencia_Valor').AsString := 'CTe sem Autorização de Uso da SEFAZ'
         else
-          FieldByName('Contingencia_Valor').AsString := FCTe.procCTe.nProt + ' ' + CTeUtil.SeSenao(FCTe.procCTe.dhRecbto <> 0,
+          FieldByName('Contingencia_Valor').AsString := FCTe.procCTe.nProt + ' ' + DFeUtil.SeSenao(FCTe.procCTe.dhRecbto <> 0,
             DateTimeToStr(FCTe.procCTe.dhRecbto), '');
       end
       else
@@ -1042,7 +1042,7 @@ begin
           FieldByName('Contingencia_Descricao').AsString := 'NÚMERO DE REGISTRO DPEC';
 
           //precisa testar
-  //        if CTeUtil.EstaVazio(FDACTEClassOwner.ProtocoloCTE) then
+  //        if DFeUtil.EstaVazio(FDACTEClassOwner.ProtocoloCTE) then
   //          raise EACBrCTeException.Create('Protocolo de Registro no DPEC não informado.')
   //        else
   //          FieldByName('Contingencia_Valor').AsString := FDACTEClassOwner.ProtocoloCTe;
@@ -1085,7 +1085,7 @@ begin
 
     with FCTE.Receb do
     begin
-      FieldByName('CNPJ').AsString := CTeUtil.FormatarCNPJ(CNPJCPF);
+      FieldByName('CNPJ').AsString := DFeUtil.FormatarCNPJ(CNPJCPF);
       FieldByName('XNome').AsString := XNome;
       with EnderReceb do
       begin
@@ -1096,10 +1096,10 @@ begin
         FieldByName('CMun').AsString := IntToStr(CMun);
         FieldByName('XMun').AsString := CollateBr(XMun);
         FieldByName('UF').AsString := UF;
-        FieldByName('CEP').AsString := CTeUtil.FormatarCEP(CTeUtil.Poem_Zeros(CEP, 8));
+        FieldByName('CEP').AsString := DFeUtil.FormatarCEP(DFeUtil.Poem_Zeros(CEP, 8));
         FieldByName('CPais').AsString := IntToStr(CPais);
         FieldByName('XPais').AsString := XPais;
-        FieldByName('Fone').AsString := CTeUtil.FormatarFone(Fone);
+        FieldByName('Fone').AsString := DFeUtil.FormatarFone(Fone);
       end;
       FieldByName('IE').AsString := IE;
     end;
@@ -1139,7 +1139,7 @@ begin
     Append;
     with FCTE.Rem do
     begin
-      FieldByName('CNPJ').AsString := CTeUtil.FormatarCNPJ(CNPJCPF);
+      FieldByName('CNPJ').AsString := DFeUtil.FormatarCNPJ(CNPJCPF);
       FieldByName('XNome').AsString := XNome;
       FieldByName('XFant').AsString := XFant;
       with EnderReme do
@@ -1151,10 +1151,10 @@ begin
         FieldByName('CMun').AsString := IntToStr(CMun);
         FieldByName('XMun').AsString := CollateBr(XMun);
         FieldByName('UF').AsString := UF;
-        FieldByName('CEP').AsString := CTeUtil.FormatarCEP(CTeUtil.Poem_Zeros(CEP, 8));
+        FieldByName('CEP').AsString := DFeUtil.FormatarCEP(DFeUtil.Poem_Zeros(CEP, 8));
         FieldByName('CPais').AsString := IntToStr(CPais);
         FieldByName('XPais').AsString := XPais;
-        FieldByName('Fone').AsString := CTeUtil.FormatarFone(Fone);
+        FieldByName('Fone').AsString := DFeUtil.FormatarFone(Fone);
       end;
       FieldByName('IE').AsString := IE;
     end;

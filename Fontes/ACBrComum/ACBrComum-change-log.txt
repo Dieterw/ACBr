@@ -42,6 +42,7 @@ Símbolo : Significado
 -- ACBrDFeUtil
 [+] Unificação de funções de mesma funcionalidade das units:
     ACBrNFeUtil, ACBrNFEsUtil, ACBrCTeUtil
+    (por Isaque Pinheiro)
 
 22/10/2012
 -- ACBrPafClass --

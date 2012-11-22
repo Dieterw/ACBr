@@ -97,6 +97,27 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 22/11/2012
+-- ACBrECFBematech --
+[-] Correção da Leitura de Totalizadores de Sangria e Suprimento em
+    LerTotaisComprovanteNaoFiscal  (por: DSA)
+[-] Correção da leitura de Totalizadores Não fiscais em DadosUltimaReducaoZ
+
+-- ACBrECFDaruma --
+[+] Adicionado retorno para os métodos: GetTotalAcrescimosOPNF,
+    GetTotalCancelamentosOPNF, GetTotalDescontosOPNF
+
+-- ACBrECFEpson --
+[-] Correção da leitura de Totalizadores de ISSQN em DadosUltimaReducaoZ
+
+-- ACBrECFFiscNet --
+[*] Refactoring, intruduzindo métodos Internos para: LeMoeda, LeInteiro, LeTexto
+[+] Adicionado retorno para os métodos: GetTotalAcrescimosOPNF,
+    GetTotalCancelamentosOPNF, GetTotalDescontosOPNF
+
+-- ACBrECFSwedaSTX --
+[-] Corrigida leitura de TotalOperacaoNaoFiscal em DadosUltimaReducaoZ
+
 Data: 20/11/2012
 -- ACBrECF --                                                      (por: DSA)
 [*] Refactoring em método: GetDadosReducaoZ e MontaDadosReducaoZ

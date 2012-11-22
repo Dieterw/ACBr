@@ -136,7 +136,7 @@ var
 
 implementation
 
-uses ACBrNFe, ACBrNFeUtil, StrUtils, Math;
+uses ACBrNFe, ACBrNFeUtil, ACBrDFeUtil, StrUtils, Math;
 
 {$R *.dfm}
 
@@ -282,20 +282,20 @@ begin
 
     with FNFe.Total.ICMSTot do
     begin
-      FieldByName('VBC').AsFloat := NotaUtil.StringToFloatDef(FloatToStr(VBC), 0);
-      FieldByName('VICMS').AsFloat := NotaUtil.StringToFloatDef(FloatToStr(VICMS), 0);
-      FieldByName('VBCST').AsFloat := NotaUtil.StringToFloatDef(FloatToStr(VBCST), 0);
-      FieldByName('VST').AsFloat := NotaUtil.StringToFloatDef(FloatToStr(VST), 0);
-      FieldByName('VProd').AsFloat := NotaUtil.StringToFloatDef(FloatToStr(VProd), 0);
-      FieldByName('VFrete').AsFloat := NotaUtil.StringToFloatDef(FloatToStr(VFrete), 0);
-      FieldByName('VSeg').AsFloat := NotaUtil.StringToFloatDef(FloatToStr(VSeg), 0);
-      FieldByName('VDesc').AsFloat := NotaUtil.StringToFloatDef(FloatToStr(VDesc), 0);
-      FieldByName('VII').AsFloat := NotaUtil.StringToFloatDef(FloatToStr(VII), 0);
-      FieldByName('VIPI').AsFloat := NotaUtil.StringToFloatDef(FloatToStr(VIPI), 0);
-      FieldByName('VPIS').AsFloat := NotaUtil.StringToFloatDef(FloatToStr(VPIS), 0);
-      FieldByName('VCOFINS').AsFloat := NotaUtil.StringToFloatDef(FloatToStr(VCOFINS), 0);
-      FieldByName('VOutro').AsFloat := NotaUtil.StringToFloatDef(FloatToStr(VOutro), 0);
-      FieldByName('VNF').AsFloat := NotaUtil.StringToFloatDef(FloatToStr(VNF), 0);
+      FieldByName('VBC').AsFloat := DFeUtil.StringToFloatDef(FloatToStr(VBC), 0);
+      FieldByName('VICMS').AsFloat := DFeUtil.StringToFloatDef(FloatToStr(VICMS), 0);
+      FieldByName('VBCST').AsFloat := DFeUtil.StringToFloatDef(FloatToStr(VBCST), 0);
+      FieldByName('VST').AsFloat := DFeUtil.StringToFloatDef(FloatToStr(VST), 0);
+      FieldByName('VProd').AsFloat := DFeUtil.StringToFloatDef(FloatToStr(VProd), 0);
+      FieldByName('VFrete').AsFloat := DFeUtil.StringToFloatDef(FloatToStr(VFrete), 0);
+      FieldByName('VSeg').AsFloat := DFeUtil.StringToFloatDef(FloatToStr(VSeg), 0);
+      FieldByName('VDesc').AsFloat := DFeUtil.StringToFloatDef(FloatToStr(VDesc), 0);
+      FieldByName('VII').AsFloat := DFeUtil.StringToFloatDef(FloatToStr(VII), 0);
+      FieldByName('VIPI').AsFloat := DFeUtil.StringToFloatDef(FloatToStr(VIPI), 0);
+      FieldByName('VPIS').AsFloat := DFeUtil.StringToFloatDef(FloatToStr(VPIS), 0);
+      FieldByName('VCOFINS').AsFloat := DFeUtil.StringToFloatDef(FloatToStr(VCOFINS), 0);
+      FieldByName('VOutro').AsFloat := DFeUtil.StringToFloatDef(FloatToStr(VOutro), 0);
+      FieldByName('VNF').AsFloat := DFeUtil.StringToFloatDef(FloatToStr(VNF), 0);
     end;
 
     Post;
@@ -406,10 +406,10 @@ begin
                 with med.Items[j] do
                 begin
                   vTemp2.Add('-LOTE: ' + nLote);
-                  vTemp2.Add(' QTDADE: ' + NotaUtil.FormatFloat(qLote));
-                  vTemp2.Add(' FABR.: ' + NotaUtil.FormatDate(DateToStr(dFab)));
-                  vTemp2.Add(' VAL.: ' + NotaUtil.FormatDate(DateToStr(dVal)));
-                  vTemp2.Add(NotaUtil.SeSenao(vPMC > 0, ' PMC: ' + NotaUtil.FormatFloat(vPMC), ''));
+                  vTemp2.Add(' QTDADE: ' + DFeUtil.FormatFloat(qLote));
+                  vTemp2.Add(' FABR.: ' + DFeUtil.FormatDate(DateToStr(dFab)));
+                  vTemp2.Add(' VAL.: ' + DFeUtil.FormatDate(DateToStr(dVal)));
+                  vTemp2.Add(DFeUtil.SeSenao(vPMC > 0, ' PMC: ' + DFeUtil.FormatFloat(vPMC), ''));
                 end;
               end;
 
@@ -444,30 +444,30 @@ begin
         FieldByName('genero').AsString := '';
         FieldByName('CFOP').AsString := CFOP;
         FieldByName('Ucom').AsString := UCom;
-        FieldByName('QCom').AsFloat := NotaUtil.StringToFloatDef(FloatToStr(QCom), 0);
-        FieldByName('VUnCom').AsFloat := NotaUtil.StringToFloatDef(FloatToStr(VUnCom), 0);
+        FieldByName('QCom').AsFloat := DFeUtil.StringToFloatDef(FloatToStr(QCom), 0);
+        FieldByName('VUnCom').AsFloat := DFeUtil.StringToFloatDef(FloatToStr(VUnCom), 0);
 
         if FDANFEClassOwner.ImprimirTotalLiquido then
-          FieldByName('VProd').AsFloat := NotaUtil.StringToFloatDef(FloatToStr(VProd - vDesc), 0)
+          FieldByName('VProd').AsFloat := DFeUtil.StringToFloatDef(FloatToStr(VProd - vDesc), 0)
         else
-          FieldByName('VProd').AsFloat := NotaUtil.StringToFloatDef(FloatToStr(VProd), 0);
+          FieldByName('VProd').AsFloat := DFeUtil.StringToFloatDef(FloatToStr(VProd), 0);
 
         FieldByName('cEANTrib').AsString := cEANTrib;
         FieldByName('UTrib').AsString := uTrib;
-        FieldByName('QTrib').AsFloat := NotaUtil.StringToFloatDef(FloatToStr(qTrib), 0);
-        FieldByName('VUnTrib').AsFloat := NotaUtil.StringToFloatDef(FloatToStr(vUnTrib), 0);
-        FieldByName('vFrete').AsFloat := NotaUtil.StringToFloatDef(FloatToStr(vFrete), 0);
-        FieldByName('vSeg').AsFloat := NotaUtil.StringToFloatDef(FloatToStr(vSeg), 0);
+        FieldByName('QTrib').AsFloat := DFeUtil.StringToFloatDef(FloatToStr(qTrib), 0);
+        FieldByName('VUnTrib').AsFloat := DFeUtil.StringToFloatDef(FloatToStr(vUnTrib), 0);
+        FieldByName('vFrete').AsFloat := DFeUtil.StringToFloatDef(FloatToStr(vFrete), 0);
+        FieldByName('vSeg').AsFloat := DFeUtil.StringToFloatDef(FloatToStr(vSeg), 0);
 
         if FDANFEClassOwner.ImprimirDescPorc then
         begin
           if vDesc > 0 then
-            FieldByName('vDesc').AsString := NotaUtil.FormatFloat(RoundTo(100 - ((((VUnCom * QCom) - vDesc) / (VUnCom * QCom)) * 100), -1)) + '%'
+            FieldByName('vDesc').AsString := DFeUtil.FormatFloat(RoundTo(100 - ((((VUnCom * QCom) - vDesc) / (VUnCom * QCom)) * 100), -1)) + '%'
           else
-            FieldByName('vDesc').AsString := NotaUtil.FormatFloat(vDesc);
+            FieldByName('vDesc').AsString := DFeUtil.FormatFloat(vDesc);
         end
         else
-          FieldByName('vDesc').AsString := NotaUtil.FormatFloat(vDesc);
+          FieldByName('vDesc').AsString := DFeUtil.FormatFloat(vDesc);
 
         with FNFe.Det.Items[i].Imposto.ICMS do
         begin
@@ -571,8 +571,8 @@ begin
         begin
           if (CST = ipi00) or (CST = ipi49) or (CST = ipi50) or (CST = ipi99) then
           begin
-            FieldByName('VIPI').AsFloat := NotaUtil.StringToFloatDef(FloatToStr(VIPI), 0);
-            FieldByName('PIPI').AsFloat := NotaUtil.StringToFloatDef(FloatToStr(PIPI), 0);
+            FieldByName('VIPI').AsFloat := DFeUtil.StringToFloatDef(FloatToStr(VIPI), 0);
+            FieldByName('PIPI').AsFloat := DFeUtil.StringToFloatDef(FloatToStr(PIPI), 0);
           end
           else if (CST = ipi01) or (CST = ipi02) or (CST = ipi03) or (CST = ipi04) or (CST = ipi51) or (CST = ipi52) or (CST = ipi53) or (CST = ipi54) or (CST = ipi55) then
           begin
@@ -619,12 +619,12 @@ begin
 
     with FNFe.Dest do
     begin
-      if NotaUtil.NaoEstaVazio(CNPJCPF) then
+      if DFeUtil.NaoEstaVazio(CNPJCPF) then
        begin
          if Length(CNPJCPF) > 11 then
-            FieldByName('CNPJCPF').AsString := NotaUtil.FormatarCNPJ(CNPJCPF)
+            FieldByName('CNPJCPF').AsString := DFeUtil.FormatarCNPJ(CNPJCPF)
          else
-            FieldByName('CNPJCPF').AsString := NotaUtil.FormatarCPF(CNPJCPF);
+            FieldByName('CNPJCPF').AsString := DFeUtil.FormatarCPF(CNPJCPF);
        end
       else
          FieldByName('CNPJCPF').AsString := '';
@@ -639,10 +639,10 @@ begin
         FieldByName('CMun').AsString := IntToStr(CMun);
         FieldByName('XMun').AsString := CollateBr(XMun);
         FieldByName('UF').AsString := UF;
-        FieldByName('CEP').AsString := NotaUtil.FormatarCEP(NotaUtil.Poem_Zeros(CEP, 8));
+        FieldByName('CEP').AsString := DFeUtil.FormatarCEP(DFeUtil.Poem_Zeros(CEP, 8));
         FieldByName('CPais').AsString := IntToStr(CPais);
         FieldByName('XPais').AsString := XPais;
-        FieldByName('Fone').AsString := NotaUtil.FormatarFone(Fone);
+        FieldByName('Fone').AsString := DFeUtil.FormatarFone(Fone);
       end;
       FieldByName('IE').AsString := IE;
     end;
@@ -671,8 +671,8 @@ begin
       with FNFe.Cobr.Dup[i] do
       begin
         FieldByName('NDup').AsString := NDup;
-        FieldByName('DVenc').AsString := NotaUtil.FormatDate(DateToStr(DVenc));
-        FieldByName('VDup').AsFloat := NotaUtil.StringToFloatDef(FloatToStr(VDup), 0);
+        FieldByName('DVenc').AsString := DFeUtil.FormatDate(DateToStr(DVenc));
+        FieldByName('VDup').AsFloat := DFeUtil.StringToFloatDef(FloatToStr(VDup), 0);
       end;
 
       Post;
@@ -711,7 +711,7 @@ begin
 
     with FNFe.Emit do
     begin
-      FieldByName('CNPJ').AsString := NotaUtil.FormatarCNPJ(CNPJCPF);
+      FieldByName('CNPJ').AsString := DFeUtil.FormatarCNPJ(CNPJCPF);
       FieldByName('XNome').AsString := XNome;
       FieldByName('XFant').AsString := XFant;
       with EnderEmit do
@@ -723,10 +723,10 @@ begin
         FieldByName('CMun').AsString := IntToStr(CMun);
         FieldByName('XMun').AsString := CollateBr(XMun);
         FieldByName('UF').AsString := UF;
-        FieldByName('CEP').AsString := NotaUtil.FormatarCEP(NotaUtil.Poem_Zeros(CEP, 8));
+        FieldByName('CEP').AsString := DFeUtil.FormatarCEP(DFeUtil.Poem_Zeros(CEP, 8));
         FieldByName('CPais').AsString := IntToStr(CPais);
         FieldByName('XPais').AsString := XPais;
-        FieldByName('Fone').AsString := NotaUtil.FormatarFone(Fone);
+        FieldByName('Fone').AsString := DFeUtil.FormatarFone(Fone);
       end;
       FieldByName('IE').AsString := IE;
       FieldByName('IM').AsString := IM;
@@ -753,7 +753,7 @@ begin
     CreateDataSet;
     Append;
 
-    if NotaUtil.EstaVazio(FNFe.Cobr.Fat.nFat) then
+    if DFeUtil.EstaVazio(FNFe.Cobr.Fat.nFat) then
     begin
       if FNFe.Cobr.Dup.Count = 0 then
       begin
@@ -773,9 +773,9 @@ begin
     with FNFe.Cobr.Fat do
     begin
       FieldByName('nfat').AsString := nFat;
-      FieldByName('vOrig').AsFloat := NotaUtil.StringToFloatDef(FloatToStr(vOrig), 0);
-      FieldByName('vDesc').AsFloat := NotaUtil.StringToFloatDef(FloatToStr(vDesc), 0);
-      FieldByName('vLiq').AsFloat := NotaUtil.StringToFloatDef(FloatToStr(vLiq), 0);
+      FieldByName('vOrig').AsFloat := DFeUtil.StringToFloatDef(FloatToStr(vOrig), 0);
+      FieldByName('vDesc').AsFloat := DFeUtil.StringToFloatDef(FloatToStr(vDesc), 0);
+      FieldByName('vLiq').AsFloat := DFeUtil.StringToFloatDef(FloatToStr(vLiq), 0);
     end;
 
     Post;
@@ -817,7 +817,7 @@ begin
     with FNFe.infNFe do
     begin
       //FieldByName('Versao').AsString := IntToStr(Versao);
-      FieldByName('Id').AsString := NotaUtil.LimpaNumero(Id);
+      FieldByName('Id').AsString := DFeUtil.LimpaNumero(Id);
       FieldByName('Chave').AsString := NotaUtil.FormatarChaveAcesso(Id);
     end;
 
@@ -826,20 +826,20 @@ begin
       FieldByName('CUF').AsString := IntToStr(CUF);
       FieldByName('CNF').AsString := IntToStr(CNF);
       FieldByName('NatOp').AsString := NatOp;
-      FieldByName('IndPag').AsString := NotaUtil.SeSenao(IndPag = ipVista, '0', NotaUtil.SeSenao(IndPag = ipPrazo, '1', '2'));
+      FieldByName('IndPag').AsString := DFeUtil.SeSenao(IndPag = ipVista, '0', DFeUtil.SeSenao(IndPag = ipPrazo, '1', '2'));
       FieldByName('Mod_').AsString := IntToStr(Modelo);
       FieldByName('Serie').AsString := IntToStr(Serie);
-      FieldByName('NNF').AsString := NotaUtil.FormatarNumeroDocumentoFiscal(IntToStr(NNF));
-      FieldByName('DEmi').AsString := NotaUtil.FormatDate(DateToStr(DEmi));
-      FieldByName('DSaiEnt').AsString := IfThen(DSaiEnt <> 0, NotaUtil.FormatDate(DateToStr(DSaiEnt)));
-      FieldByName('TpNF').AsString := NotaUtil.SeSenao(TpNF = tnEntrada, '0', '1');
+      FieldByName('NNF').AsString := DFeUtil.FormatarNumeroDocumentoFiscal(IntToStr(NNF));
+      FieldByName('DEmi').AsString := DFeUtil.FormatDate(DateToStr(DEmi));
+      FieldByName('DSaiEnt').AsString := IfThen(DSaiEnt <> 0, DFeUtil.FormatDate(DateToStr(DSaiEnt)));
+      FieldByName('TpNF').AsString := DFeUtil.SeSenao(TpNF = tnEntrada, '0', '1');
       FieldByName('CMunFG').AsString := IntToStr(CMunFG);
-      FieldByName('TpImp').AsString := NotaUtil.SeSenao(TpImp = tiRetrato, '1', '2');
-      FieldByName('TpEmis').AsString := NotaUtil.SeSenao(TpEmis = teNormal, '1', '5');
+      FieldByName('TpImp').AsString := DFeUtil.SeSenao(TpImp = tiRetrato, '1', '2');
+      FieldByName('TpEmis').AsString := DFeUtil.SeSenao(TpEmis = teNormal, '1', '5');
       FieldByName('CDV').AsString := IntToStr(CDV);
-      FieldByName('TpAmb').AsString := NotaUtil.SeSenao(TpAmb = taHomologacao, '2', '1');
-      FieldByName('FinNFe').AsString := NotaUtil.SeSenao(FinNFe = fnNormal, '1', NotaUtil.SeSenao(FinNFe = fnComplementar, '2', '3'));
-      FieldByName('ProcEmi').AsString := NotaUtil.SeSenao(ProcEmi = peAplicativoContribuinte, '0', '');
+      FieldByName('TpAmb').AsString := DFeUtil.SeSenao(TpAmb = taHomologacao, '2', '1');
+      FieldByName('FinNFe').AsString := DFeUtil.SeSenao(FinNFe = fnNormal, '1', DFeUtil.SeSenao(FinNFe = fnComplementar, '2', '3'));
+      FieldByName('ProcEmi').AsString := DFeUtil.SeSenao(ProcEmi = peAplicativoContribuinte, '0', '');
       FieldByName('VerProc').AsString := VerProc;
     end;
 
@@ -914,8 +914,8 @@ begin
         else if FNFe.Ide.tpEmis = teDPEC then
           wContingencia := 'DANFE IMPRESSO EM CONTINGÊNCIA - DPEC REGULARMENTE RECEBIDA PELA RECEITA FEDERAL DO BRASIL';
           wContingencia := wContingencia + ';' +
-                           'DATA/HORA INÍCIO: ' + NotaUtil.SeSenao(FNFe.ide.dhCont = 0, ' ', DateTimeToStr(FNFe.ide.dhCont)) + ';'+
-                           'MOTIVO CONTINGÊNCIA: ' + NotaUtil.SeSenao(NotaUtil.EstaVazio(FNFe.ide.xJust), ' ', FNFe.ide.xJust);
+                           'DATA/HORA INÍCIO: ' + DFeUtil.SeSenao(FNFe.ide.dhCont = 0, ' ', DateTimeToStr(FNFe.ide.dhCont)) + ';'+
+                           'MOTIVO CONTINGÊNCIA: ' + DFeUtil.SeSenao(DFeUtil.EstaVazio(FNFe.ide.xJust), ' ', FNFe.ide.xJust);
       end;
       if Length(wObs) > 0 then
         wObs := wObs + ';';
@@ -962,9 +962,9 @@ begin
     Append;
     with FNFe.Total.ISSQNtot do
     begin
-      FieldByName('vSERV').AsFloat := NotaUtil.StringToFloatDef(FloatToStr(VServ), 0);
-      FieldByName('vBC').AsFloat := NotaUtil.StringToFloatDef(FloatToStr(VBC), 0);
-      FieldByName('vISS').AsFloat := NotaUtil.StringToFloatDef(FloatToStr(VISS), 0);
+      FieldByName('vSERV').AsFloat := DFeUtil.StringToFloatDef(FloatToStr(VServ), 0);
+      FieldByName('vBC').AsFloat := DFeUtil.StringToFloatDef(FloatToStr(VBC), 0);
+      FieldByName('vISS').AsFloat := DFeUtil.StringToFloatDef(FloatToStr(VISS), 0);
     end;
     Post;
   end;
@@ -988,21 +988,21 @@ begin
 
     CreateDataSet;
 
-    if NotaUtil.NaoEstaVazio(FNFe.Entrega.CNPJCPF) then
+    if DFeUtil.NaoEstaVazio(FNFe.Entrega.CNPJCPF) then
     begin
       Append;
 
       with FNFe.Entrega do
       begin
-        if NotaUtil.NaoEstaVazio(CNPJCPF) then
+        if DFeUtil.NaoEstaVazio(CNPJCPF) then
         begin
           if Length(CNPJCPF) > 11 then
-             FieldByName('CNPJ').AsString := NotaUtil.FormatarCNPJ(CNPJCPF)
+             FieldByName('CNPJ').AsString := DFeUtil.FormatarCNPJ(CNPJCPF)
           else
-             FieldByName('CNPJ').AsString := NotaUtil.FormatarCPF(CNPJCPF);
+             FieldByName('CNPJ').AsString := DFeUtil.FormatarCPF(CNPJCPF);
         end
         else
-           FieldByName('CNPJ').AsString := NotaUtil.FormatarCNPJ(NotaUtil.Poem_Zeros(0, 18));
+           FieldByName('CNPJ').AsString := DFeUtil.FormatarCNPJ(DFeUtil.Poem_Zeros(0, 18));
 
         FieldByName('Xlgr').AsString := XLgr;
         FieldByName('Nro').AsString := Nro;
@@ -1035,21 +1035,21 @@ begin
 
     CreateDataSet;
 
-    if NotaUtil.NaoEstaVazio(FNFe.Retirada.CNPJCPF) then
+    if DFeUtil.NaoEstaVazio(FNFe.Retirada.CNPJCPF) then
     begin
       Append;
 
       with FNFe.Retirada do
       begin
-        if NotaUtil.NaoEstaVazio(CNPJCPF) then
+        if DFeUtil.NaoEstaVazio(CNPJCPF) then
         begin
           if Length(CNPJCPF) > 11 then
-             FieldByName('CNPJ').AsString := NotaUtil.FormatarCNPJ(CNPJCPF)
+             FieldByName('CNPJ').AsString := DFeUtil.FormatarCNPJ(CNPJCPF)
           else
-             FieldByName('CNPJ').AsString := NotaUtil.FormatarCPF(CNPJCPF);
+             FieldByName('CNPJ').AsString := DFeUtil.FormatarCPF(CNPJCPF);
         end
         else
-           FieldByName('CNPJ').AsString := NotaUtil.FormatarCNPJ(NotaUtil.Poem_Zeros(0, 18));
+           FieldByName('CNPJ').AsString := DFeUtil.FormatarCNPJ(DFeUtil.Poem_Zeros(0, 18));
 
         FieldByName('Xlgr').AsString := XLgr;
         FieldByName('Nro').AsString := Nro;
@@ -1095,8 +1095,8 @@ begin
     vResumo := '';
     if DANFEClassOwner.ExibirResumoCanhoto then
     begin
-       if NotaUtil.EstaVazio(DANFEClassOwner.ExibirResumoCanhoto_Texto) then
-          vResumo := 'Emissão: ' + NotaUtil.FormatDate(DateToStr(FNFe.Ide.DEmi)) + '  Dest/Reme: ' + FNFe.Dest.XNome + '  Valor Total: ' + NotaUtil.FormatFloat(FNFe.Total.ICMSTot.VNF)
+       if DFeUtil.EstaVazio(DANFEClassOwner.ExibirResumoCanhoto_Texto) then
+          vResumo := 'Emissão: ' + DFeUtil.FormatDate(DateToStr(FNFe.Ide.DEmi)) + '  Dest/Reme: ' + FNFe.Dest.XNome + '  Valor Total: ' + DFeUtil.FormatFloat(FNFe.Total.ICMSTot.VNF)
        else
           vResumo := DANFEClassOwner.ExibirResumoCanhoto_Texto;
     end;
@@ -1108,12 +1108,12 @@ begin
     begin
       if not (FNFe.Ide.tpEmis in [teContingencia, teFSDA]) then
       begin
-        if ((NotaUtil.EstaVazio(FDANFEClassOwner.ProtocoloNFe)) and
-            (NotaUtil.EstaVazio(FNFe.procNFe.nProt))) then
+        if ((DFeUtil.EstaVazio(FDANFEClassOwner.ProtocoloNFe)) and
+            (DFeUtil.EstaVazio(FNFe.procNFe.nProt))) then
           FieldByName('Mensagem0').AsString := 'NFe sem Autorização de Uso da SEFAZ'
         else
-        if (not ((NotaUtil.EstaVazio(FDANFEClassOwner.ProtocoloNFe)) and
-           (NotaUtil.EstaVazio(FNFe.procNFe.nProt)))) and
+        if (not ((DFeUtil.EstaVazio(FDANFEClassOwner.ProtocoloNFe)) and
+           (DFeUtil.EstaVazio(FNFe.procNFe.nProt)))) and
            (FNFe.procNFe.cStat = 101) then
           FieldByName('Mensagem0').AsString := 'NFe Cancelada'
         else
@@ -1165,12 +1165,12 @@ begin
       else
         FieldByName('Contingencia_Descricao').AsString := 'PROTOCOLO DE AUTORIZAÇÃO DE USO';
 
-      if NotaUtil.EstaVazio(FDANFEClassOwner.ProtocoloNFe) then
+      if DFeUtil.EstaVazio(FDANFEClassOwner.ProtocoloNFe) then
       begin
-        if not (FNFe.Ide.tpEmis in [teContingencia, teFSDA]) and NotaUtil.EstaVazio(FNFe.procNFe.nProt) then
+        if not (FNFe.Ide.tpEmis in [teContingencia, teFSDA]) and DFeUtil.EstaVazio(FNFe.procNFe.nProt) then
           FieldByName('Contingencia_Valor').AsString := 'NFe sem Autorização de Uso da SEFAZ'
         else
-          FieldByName('Contingencia_Valor').AsString := FNFe.procNFe.nProt + ' ' + NotaUtil.SeSenao(FNFe.procNFe.dhRecbto <> 0, DateTimeToStr(FNFe.procNFe.dhRecbto), '');
+          FieldByName('Contingencia_Valor').AsString := FNFe.procNFe.nProt + ' ' + DFeUtil.SeSenao(FNFe.procNFe.dhRecbto <> 0, DateTimeToStr(FNFe.procNFe.dhRecbto), '');
       end
       else
         FieldByName('Contingencia_Valor').AsString := FDANFEClassOwner.ProtocoloNFe;
@@ -1192,7 +1192,7 @@ begin
         FieldByName('Contingencia_Descricao').AsString := 'NÚMERO DE REGISTRO DPEC';
 
         //precisa testar
-        if notautil.EstaVazio(FDANFEClassOwner.ProtocoloNFe) then
+        if DFeUtil.EstaVazio(FDANFEClassOwner.ProtocoloNFe) then
           raise EACBrNFeException.Create('Protocolo de Registro no DPEC não informado.')
         else
           FieldByName('Contingencia_Valor').AsString := FDANFEClassOwner.ProtocoloNFe;
@@ -1235,12 +1235,12 @@ begin
 
       with Transporta do
       begin
-        if NotaUtil.NaoEstaVazio(CNPJCPF) then
+        if DFeUtil.NaoEstaVazio(CNPJCPF) then
         begin
           if Length(CNPJCPF) > 11 then
-            FieldByName('CNPJCPF').AsString := NotaUtil.FormatarCNPJ(CNPJCPF)
+            FieldByName('CNPJCPF').AsString := DFeUtil.FormatarCNPJ(CNPJCPF)
           else
-            FieldByName('CNPJCPF').AsString := NotaUtil.FormatarCPF(CNPJCPF);
+            FieldByName('CNPJCPF').AsString := DFeUtil.FormatarCPF(CNPJCPF);
         end
         else
           FieldByName('CNPJCPF').AsString := '';
@@ -1303,12 +1303,12 @@ begin
       Append;
       with FNFe.Transp.Vol[i] do
       begin
-        FieldByName('QVol').AsFloat := NotaUtil.StringToFloatDef(IntToStr(QVol), 0);
+        FieldByName('QVol').AsFloat := DFeUtil.StringToFloatDef(IntToStr(QVol), 0);
         FieldByName('Esp').AsString := Esp;
         FieldByName('Marca').AsString := Marca;
         FieldByName('NVol').AsString := NVol;
-        FieldByName('PesoL').AsFloat := NotaUtil.StringToFloatDef(FloatToStr(PesoL), 0);
-        FieldByName('PesoB').AsFloat := NotaUtil.StringToFloatDef(FloatToStr(PesoB), 0);
+        FieldByName('PesoL').AsFloat := DFeUtil.StringToFloatDef(FloatToStr(PesoL), 0);
+        FieldByName('PesoB').AsFloat := DFeUtil.StringToFloatDef(FloatToStr(PesoB), 0);
       end;
       Post;
     end;

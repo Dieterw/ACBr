@@ -50,7 +50,7 @@ interface
 
 uses
   Classes, Sysutils, Dialogs, Forms,
-  ACBrNFeUtil, ACBrNFeConfiguracoes,
+  ACBrNFeUtil, ACBrNFeConfiguracoes, ACBrDFeUtil,
   {$IFDEF FPC}
      ACBrNFeDMLaz,
   {$ELSE}
@@ -221,10 +221,10 @@ begin
         LocNFeW.schema := TsPL005c;
         LocNFeW.Opcoes.GerarTXTSimultaneamente := SalvaTXT;
         LocNFeW.GerarXml;
-        if NotaUtil.EstaVazio(CaminhoArquivo) then
+        if DFeUtil.EstaVazio(CaminhoArquivo) then
            CaminhoArquivo := PathWithDelim(TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).Configuracoes.Geral.PathSalvar)+copy(NFe.infNFe.ID, (length(NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml';
 
-        if NotaUtil.EstaVazio(CaminhoArquivo) or not DirectoryExists(ExtractFilePath(CaminhoArquivo)) then
+        if DFeUtil.EstaVazio(CaminhoArquivo) or not DirectoryExists(ExtractFilePath(CaminhoArquivo)) then
            raise EACBrNFeException.Create('Caminho Inválido: ' + CaminhoArquivo);
 
         LocNFeW.Gerador.SalvarArquivo(CaminhoArquivo);
@@ -402,7 +402,7 @@ begin
         if FConfiguracoes.Geral.Salvar then
            FConfiguracoes.Geral.Save(StringReplace(Self.Items[i].NFe.infNFe.ID, 'NFe', '', [rfIgnoreCase])+'-nfe.xml', vAssinada);
 
-        if NotaUtil.NaoEstaVazio(Self.Items[i].NomeArq) then
+        if DFeUtil.NaoEstaVazio(Self.Items[i].NomeArq) then
            FConfiguracoes.Geral.Save(ExtractFileName(Self.Items[i].NomeArq), vAssinada, ExtractFilePath(Self.Items[i].NomeArq));
 
      finally
@@ -587,7 +587,7 @@ begin
  try
     for i:= 0 to TACBrNFe( FACBrNFe ).NotasFiscais.Count-1 do
      begin
-        if NotaUtil.EstaVazio(PathArquivo) then
+        if DFeUtil.EstaVazio(PathArquivo) then
            PathArquivo := TACBrNFe( FACBrNFe ).Configuracoes.Geral.PathSalvar
         else
            PathArquivo := ExtractFilePath(PathArquivo);
@@ -639,7 +639,7 @@ begin
           I:=I+1;
       end;
 
-      if NotaUtil.EstaVazio(PathArquivo) then
+      if DFeUtil.EstaVazio(PathArquivo) then
         PathArquivo := PathWithDelim(TACBrNFe( FACBrNFe ).Configuracoes.Geral.PathSalvar)+'NFe.TXT';
       loSTR.SaveToFile(PathArquivo);
       Result:=True;

@@ -50,11 +50,11 @@ uses
   Classes, Sysutils,
   pcnNFe, pcnConversao, pcnCCeNFe, pcnRetCCeNFe,
   pcnEnvEventoNFe, pcnRetEnvEventoNFe,
-  pcnDownloadNFe,                      
+  pcnDownloadNFe,
   {$IFDEF CLX} QDialogs,{$ELSE} Dialogs,{$ENDIF}
   ACBrNFeNotasFiscais,
   ACBrNFeConfiguracoes,
-  ACBrNFeWebServices, ACBrNFeUtil,
+  ACBrNFeWebServices, ACBrNFeUtil, ACBrDFeUtil,
   ACBrNFeDANFEClass, ACBrUtil, Forms,
   smtpsend, ssl_openssl, mimemess, mimepart; // units para enviar email
 
@@ -626,7 +626,7 @@ begin
     ThreadSMTP.smtp.Password := sSmtpPasswd;
 
     ThreadSMTP.smtp.TargetHost := sSmtpHost;
-    if not NotaUtil.EstaVazio( sSmtpPort ) then     // Usa default
+    if not DFeUtil.EstaVazio( sSmtpPort ) then     // Usa default
        ThreadSMTP.smtp.TargetPort := sSmtpPort;
 
     ThreadSMTP.smtp.FullSSL := SSL;

@@ -536,7 +536,7 @@ implementation
 uses {$IFDEF ACBrNFeOpenSSL}
         ssl_openssl,
      {$ENDIF}
-     ACBrUtil, ACBrNFeUtil, ACBrNFe,
+     ACBrUtil, ACBrNFeUtil, ACBrNFe, ACBrDFeUtil,
      pcnGerador, pcnCabecalho,
      pcnConsStatServ, pcnRetConsStatServ,
      pcnCancNFe, pcnConsSitNFe,
@@ -1550,9 +1550,9 @@ begin
               'Status Código : '+IntToStr(NFeRetorno.cStat)+LineBreak+
               'Status Descrição : '+NFeRetorno.xMotivo+LineBreak+
               'UF : '+CodigoParaUF(NFeRetorno.cUF)+LineBreak+
-              'Recebimento : '+NotaUtil.SeSenao(NFeRetorno.DhRecbto = 0, '', DateTimeToStr(NFeRetorno.dhRecbto))+LineBreak+
+              'Recebimento : '+DFeUtil.SeSenao(NFeRetorno.DhRecbto = 0, '', DateTimeToStr(NFeRetorno.dhRecbto))+LineBreak+
               'Tempo Médio : '+IntToStr(NFeRetorno.TMed)+LineBreak+
-              'Retorno : '+ NotaUtil.SeSenao(NFeRetorno.dhRetorno = 0, '', DateTimeToStr(NFeRetorno.dhRetorno))+LineBreak+
+              'Retorno : '+ DFeUtil.SeSenao(NFeRetorno.dhRetorno = 0, '', DateTimeToStr(NFeRetorno.dhRetorno))+LineBreak+
               'Observação : '+NFeRetorno.xObs+LineBreak;
       if FConfiguracoes.WebServices.Visualizar then
         ShowMessage(aMsg);
@@ -1703,7 +1703,7 @@ begin
             'Status Descrição : '+NFeRetorno.xMotivo+LineBreak+
             'UF : '+CodigoParaUF(NFeRetorno.cUF)+LineBreak+
             'Recibo : '+NFeRetorno.infRec.nRec+LineBreak+
-            'Recebimento : '+NotaUtil.SeSenao(NFeRetorno.InfRec.dhRecbto = 0, '', DateTimeToStr(NFeRetorno.InfRec.dhRecbto))+LineBreak+
+            'Recebimento : '+DFeUtil.SeSenao(NFeRetorno.InfRec.dhRecbto = 0, '', DateTimeToStr(NFeRetorno.InfRec.dhRecbto))+LineBreak+
             'Tempo Médio : '+IntToStr(NFeRetorno.InfRec.TMed)+LineBreak;
     if FConfiguracoes.WebServices.Visualizar then
        ShowMessage(aMsg);
@@ -1773,7 +1773,7 @@ begin
          FNotasFiscais.Items[j].NFe.procNFe.digVal   := AInfProt.Items[i].digVal;
          FNotasFiscais.Items[j].NFe.procNFe.cStat    := AInfProt.Items[i].cStat;
          FNotasFiscais.Items[j].NFe.procNFe.xMotivo  := AInfProt.Items[i].xMotivo;
-         if FConfiguracoes.Geral.Salvar or NotaUtil.NaoEstaVazio(FNotasFiscais.Items[j].NomeArq) then
+         if FConfiguracoes.Geral.Salvar or DFeUtil.NaoEstaVazio(FNotasFiscais.Items[j].NomeArq) then
           begin
             if FileExists(PathWithDelim(FConfiguracoes.Geral.PathSalvar)+AInfProt.Items[i].chNFe+'-nfe.xml') and
                FileExists(PathWithDelim(FConfiguracoes.Geral.PathSalvar)+FNFeRetorno.nRec+'-pro-rec.xml') then
@@ -1785,9 +1785,9 @@ begin
                AProcNFe.Versao := NFenviNFe;
 
                AProcNFe.GerarXML;
-               if NotaUtil.NaoEstaVazio(AProcNFe.Gerador.ArquivoFormatoXML) then
+               if DFeUtil.NaoEstaVazio(AProcNFe.Gerador.ArquivoFormatoXML) then
                 begin
-                  if NotaUtil.NaoEstaVazio(FNotasFiscais.Items[j].NomeArq) then
+                  if DFeUtil.NaoEstaVazio(FNotasFiscais.Items[j].NomeArq) then
                      AProcNFe.Gerador.SalvarArquivo(FNotasFiscais.Items[j].NomeArq)
                   else
                      AProcNFe.Gerador.SalvarArquivo(PathWithDelim(FConfiguracoes.Geral.PathSalvar)+AInfProt.Items[i].chNFe+'-nfe.xml');
@@ -2322,8 +2322,8 @@ begin
       end;
     end;
 
-    FProtocolo  := NotaUtil.SeSenao(NotaUtil.NaoEstaVazio(NFeRetorno.retCancNFe.nProt),NFeRetorno.retCancNFe.nProt,NFeRetorno.protNFe.nProt);
-    FDhRecbto   := NotaUtil.SeSenao(NFeRetorno.retCancNFe.dhRecbto <> 0,NFeRetorno.retCancNFe.dhRecbto,NFeRetorno.protNFe.dhRecbto);
+    FProtocolo  := DFeUtil.SeSenao(DFeUtil.NaoEstaVazio(NFeRetorno.retCancNFe.nProt),NFeRetorno.retCancNFe.nProt,NFeRetorno.protNFe.nProt);
+    FDhRecbto   := DFeUtil.SeSenao(NFeRetorno.retCancNFe.dhRecbto <> 0,NFeRetorno.retCancNFe.dhRecbto,NFeRetorno.protNFe.dhRecbto);
     FMsg        := NFeRetorno.XMotivo;
 
     TACBrNFe( FACBrNFe ).SetStatus( stIdle );
@@ -2369,11 +2369,11 @@ begin
               TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NFe.procNFe.xMotivo  := NFeRetorno.xMotivo;
             end;
 
-            if ((FileExists(PathWithDelim(FConfiguracoes.Geral.PathSalvar)+FNFeChave+'-nfe.xml') or NotaUtil.NaoEstaVazio(TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NomeArq))
+            if ((FileExists(PathWithDelim(FConfiguracoes.Geral.PathSalvar)+FNFeChave+'-nfe.xml') or DFeUtil.NaoEstaVazio(TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NomeArq))
                and wAtualiza) then
             begin
              AProcNFe:=TProcNFe.Create;
-             if NotaUtil.NaoEstaVazio(TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NomeArq) then
+             if DFeUtil.NaoEstaVazio(TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NomeArq) then
                 AProcNFe.PathNFe:=TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NomeArq
              else
                 AProcNFe.PathNFe:=PathWithDelim(FConfiguracoes.Geral.PathSalvar)+FNFeChave+'-nfe.xml';
@@ -2382,7 +2382,7 @@ begin
              AProcNFe.Versao := NFenviNFe;
 
              AProcNFe.GerarXML;
-             if NotaUtil.NaoEstaVazio(AProcNFe.Gerador.ArquivoFormatoXML) then
+             if DFeUtil.NaoEstaVazio(AProcNFe.Gerador.ArquivoFormatoXML) then
                 AProcNFe.Gerador.SalvarArquivo(AProcNFe.PathNFe);
              AProcNFe.Free;
             end;
@@ -2414,7 +2414,7 @@ begin
              AProcNFe.Versao := NFenviNFe;
 
              AProcNFe.GerarXML;
-             if NotaUtil.NaoEstaVazio(AProcNFe.Gerador.ArquivoFormatoXML) then
+             if DFeUtil.NaoEstaVazio(AProcNFe.Gerador.ArquivoFormatoXML) then
                 AProcNFe.Gerador.SalvarArquivo(AProcNFe.PathNFe);
              AProcNFe.Free;
            end;
@@ -2537,7 +2537,7 @@ begin
             'Status Descrição : '+NFeRetorno.xMotivo+LineBreak+
             'UF : '+CodigoParaUF(NFeRetorno.cUF)+LineBreak+
             'Chave Acesso : '+NFeRetorno.chNFE+LineBreak+
-            'Recebimento : '+NotaUtil.SeSenao(NFeRetorno.DhRecbto = 0, '', DateTimeToStr(NFeRetorno.DhRecbto))+LineBreak+
+            'Recebimento : '+DFeUtil.SeSenao(NFeRetorno.DhRecbto = 0, '', DateTimeToStr(NFeRetorno.DhRecbto))+LineBreak+
             'Protocolo : '+NFeRetorno.nProt+LineBreak;
 
     if FConfiguracoes.WebServices.Visualizar then
@@ -2573,12 +2573,12 @@ begin
               TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NFe.procNFe.xMotivo  := NFeRetorno.xMotivo;
            end;
 
-           if FConfiguracoes.Arquivos.Salvar or NotaUtil.NaoEstaVazio(TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NomeArq) then
+           if FConfiguracoes.Arquivos.Salvar or DFeUtil.NaoEstaVazio(TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NomeArq) then
             begin
               if ((NFeRetorno.CStat = 101) and
                   (FConfiguracoes.Geral.AtualizarXMLCancelado)) then
               begin
-                 if NotaUtil.NaoEstaVazio(TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NomeArq) then
+                 if DFeUtil.NaoEstaVazio(TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NomeArq) then
                     TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].SaveToFile(TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NomeArq)
                  else
                  begin
@@ -2628,14 +2628,14 @@ end;
 
 procedure TNFeCancelamento.SetJustificativa(AValue: WideString);
 begin
-  if NotaUtil.EstaVazio(AValue) then
+  if DFeUtil.EstaVazio(AValue) then
    begin
      if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
         TACBrNFe( FACBrNFe ).OnGerarLog('ERRO: Informar uma Justificativa para cancelar a Nota Fiscal Eletronica');
      raise EACBrNFeException.Create('Informar uma Justificativa para cancelar a Nota Fiscal Eletronica')
    end
   else
-    AValue := NotaUtil.TrataString(AValue);
+    AValue := DFeUtil.TrataString(AValue);
 
   if Length(AValue) < 15 then
    begin
@@ -2744,7 +2744,7 @@ begin
             'Status Código : '+IntToStr(NFeRetorno.cStat)+LineBreak+
             'Status Descrição : '+NFeRetorno.xMotivo+LineBreak+
             'UF : '+CodigoParaUF(NFeRetorno.cUF)+LineBreak+
-            'Recebimento : '+NotaUtil.SeSenao(NFeRetorno.DhRecbto = 0, '', DateTimeToStr(NFeRetorno.dhRecbto));
+            'Recebimento : '+DFeUtil.SeSenao(NFeRetorno.DhRecbto = 0, '', DateTimeToStr(NFeRetorno.dhRecbto));
     if FConfiguracoes.WebServices.Visualizar then
       ShowMessage(aMsg);
 
@@ -2794,14 +2794,14 @@ end;
 
 procedure TNFeInutilizacao.SetJustificativa(AValue: WideString);
 begin
-  if NotaUtil.EstaVazio(AValue) then
+  if DFeUtil.EstaVazio(AValue) then
    begin
      if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
         TACBrNFe( FACBrNFe ).OnGerarLog('ERRO: Informar uma Justificativa para Inutilização de numeração da Nota Fiscal Eletronica');
      raise EACBrNFeException.Create('Informar uma Justificativa para Inutilização de numeração da Nota Fiscal Eletronica')
    end
   else
-    AValue := NotaUtil.TrataString(AValue);
+    AValue := DFeUtil.TrataString(AValue);
 
   if Length(Trim(AValue)) < 15 then
    begin
@@ -2945,7 +2945,7 @@ end;
 
 procedure TNFeConsultaCadastro.SetCNPJ(const Value: String);
 begin
-  if NotaUtil.NaoEstaVazio(Value) then
+  if DFeUtil.NaoEstaVazio(Value) then
    begin
      FIE   := '';
      FCPF  := '';
@@ -2955,7 +2955,7 @@ end;
 
 procedure TNFeConsultaCadastro.SetCPF(const Value: String);
 begin
-  if NotaUtil.NaoEstaVazio(Value) then
+  if DFeUtil.NaoEstaVazio(Value) then
    begin
      FIE   := '';
      FCNPJ := '';
@@ -2965,7 +2965,7 @@ end;
 
 procedure TNFeConsultaCadastro.SetIE(const Value: String);
 begin
-  if NotaUtil.NaoEstaVazio(Value) then
+  if DFeUtil.NaoEstaVazio(Value) then
    begin
      FCNPJ := '';
      FCPF  := '';
@@ -3248,14 +3248,14 @@ end;
 
 procedure TNFeConsultaDPEC.SetNFeChave(const Value: String);
 begin
-  if NotaUtil.NaoEstaVazio(Value) then
+  if DFeUtil.NaoEstaVazio(Value) then
      FnRegDPEC := '';
   FNFeChave := StringReplace(Value,'NFe','',[rfReplaceAll]);
 end;
 
 procedure TNFeConsultaDPEC.SetnRegDPEC(const Value: String);
 begin
-  if NotaUtil.NaoEstaVazio(Value) then
+  if DFeUtil.NaoEstaVazio(Value) then
      FNFeChave := '';
   FnRegDPEC := Value;
 end;
@@ -3367,7 +3367,7 @@ begin
             'Versão Aplicativo : '+CCeRetorno.verAplic+LineBreak+
             'Status Código : '+IntToStr(CCeRetorno.cStat)+LineBreak+
             'Status Descrição : '+CCeRetorno.xMotivo+LineBreak+
-            'Recebimento : '+NotaUtil.SeSenao(CCeRetorno.retEvento.Items[0].RetInfEvento.dhRegEvento = 0, '', DateTimeToStr(CCeRetorno.retEvento.Items[0].RetInfEvento.dhRegEvento));
+            'Recebimento : '+DFeUtil.SeSenao(CCeRetorno.retEvento.Items[0].RetInfEvento.dhRegEvento = 0, '', DateTimeToStr(CCeRetorno.retEvento.Items[0].RetInfEvento.dhRegEvento));
     if FConfiguracoes.WebServices.Visualizar then
       ShowMessage(aMsg);
 
@@ -3577,7 +3577,7 @@ begin
             'Status Código : '+IntToStr(EventoRetorno.cStat)+LineBreak+
             'Status Descrição : '+EventoRetorno.xMotivo+LineBreak;
     if (EventoRetorno.retEvento.Count > 0) then
-      aMsg := aMsg + 'Recebimento : '+NotaUtil.SeSenao(EventoRetorno.retEvento.Items[0].RetInfEvento.dhRegEvento = 0,
+      aMsg := aMsg + 'Recebimento : '+DFeUtil.SeSenao(EventoRetorno.retEvento.Items[0].RetInfEvento.dhRegEvento = 0,
                                                        '',
                                                        DateTimeToStr(EventoRetorno.retEvento.Items[0].RetInfEvento.dhRegEvento));
     if FConfiguracoes.WebServices.Visualizar then
@@ -3790,7 +3790,7 @@ begin
               'Versão Aplicativo : '+FretConsNFeDest.verAplic+LineBreak+
               'Status Código : '+IntToStr(FretConsNFeDest.cStat)+LineBreak+
               'Status Descrição : '+FretConsNFeDest.xMotivo+LineBreak+
-              'Recebimento : '+NotaUtil.SeSenao(FretConsNFeDest.dhResp = 0, '', DateTimeToStr(RetConsNFeDest.dhResp))+LineBreak+
+              'Recebimento : '+DFeUtil.SeSenao(FretConsNFeDest.dhResp = 0, '', DateTimeToStr(RetConsNFeDest.dhResp))+LineBreak+
               'Ind. Continuação : '+IndicadorContinuacaoToStr(FretConsNFeDest.indCont)+LineBreak+
               'Último NSU : '+FretConsNFeDest.ultNSU+LineBreak;
       if FConfiguracoes.WebServices.Visualizar then
@@ -3942,7 +3942,7 @@ begin
               'Versão Aplicativo : '+FRetDownloadNFe.verAplic+LineBreak+
               'Status Código : '+IntToStr(FRetDownloadNFe.cStat)+LineBreak+
               'Status Descrição : '+FRetDownloadNFe.xMotivo+LineBreak+
-              'Recebimento : '+NotaUtil.SeSenao(FRetDownloadNFe.dhResp = 0, '', DateTimeToStr(FRetDownloadNFe.dhResp))+LineBreak;
+              'Recebimento : '+DFeUtil.SeSenao(FRetDownloadNFe.dhResp = 0, '', DateTimeToStr(FRetDownloadNFe.dhResp))+LineBreak;
 
       if FConfiguracoes.WebServices.Visualizar then
         ShowMessage(aMsg);

@@ -148,7 +148,7 @@ type
 
 implementation
 
-uses ACBrNFe, ACBrNFeUtil, ACBrUtil ;
+uses ACBrNFe, ACBrNFeUtil, ACBrUtil, ACBrDFeUtil ;
 
 //Casas Decimais
 constructor TCasasDecimais.Create(AOwner: TComponent);
@@ -282,11 +282,11 @@ end;
 
 function TACBrNFeDANFEClass.GetPathArquivos: String;
 begin
-  if NotaUtil.EstaVazio(FPathArquivos) then
+  if DFeUtil.EstaVazio(FPathArquivos) then
      if Assigned(FACBrNFe) then
         FPathArquivos := TACBrNFe(FACBrNFe).Configuracoes.Geral.PathSalvar;
 
-  if NotaUtil.NaoEstaVazio(FPathArquivos) then
+  if DFeUtil.NaoEstaVazio(FPathArquivos) then
      if not DirectoryExists(FPathArquivos) then
         ForceDirectories(FPathArquivos);
 

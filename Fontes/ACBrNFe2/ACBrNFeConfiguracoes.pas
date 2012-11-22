@@ -204,7 +204,7 @@ type
 
 implementation
 
-uses ACBrNFe, ACBrNFeUtil, Math, StrUtils, ACBrUtil, DateUtils;
+uses ACBrNFe, ACBrNFeUtil, Math, StrUtils, ACBrUtil, ACBrDFeUtil, DateUtils;
 
 { TConfiguracoes }
 
@@ -265,7 +265,7 @@ end;
 
 function TGeralConf.GetPathSalvar: String;
 begin
-  if NotaUtil.EstaVazio(FPathSalvar) then
+  if DFeUtil.EstaVazio(FPathSalvar) then
     Result := NotaUtil.PathAplication
   else
     Result := FPathSalvar;
@@ -281,14 +281,14 @@ begin
   vSalvar := TStringList.Create;
   try
     try
-      if NotaUtil.NaoEstaVazio(ExtractFilePath(AXMLName)) then
+      if DFeUtil.NaoEstaVazio(ExtractFilePath(AXMLName)) then
        begin
          aPath := ExtractFilePath(AXMLName);
          AXMLName := StringReplace(AXMLName,aPath,'',[rfIgnoreCase]);
        end
       else
        begin
-         if NotaUtil.EstaVazio(aPath) then
+         if DFeUtil.EstaVazio(aPath) then
             aPath := PathSalvar
          else
             aPath := PathWithDelim(aPath);
@@ -385,7 +385,7 @@ var
   hCryptProvider : HCRYPTPROV;
   XML : String;
 begin
-  if NotaUtil.EstaVazio( FNumeroSerie ) then
+  if DFeUtil.EstaVazio( FNumeroSerie ) then
     raise EACBrNFeException.Create('Número de Série do Certificado Digital não especificado !');
 
   Result := nil;
@@ -398,7 +398,7 @@ begin
     Cert := IInterface(Certs.Item[i]) as ICertificate2;
     if Cert.SerialNumber = FNumeroSerie then
     begin
-      if NotaUtil.EstaVazio(NumCertCarregado) then
+      if DFeUtil.EstaVazio(NumCertCarregado) then
          NumCertCarregado := Cert.SerialNumber;
 
       PrivateKey := Cert.PrivateKey;
@@ -494,7 +494,7 @@ end;
 
 function TCertificadosConf.GetDataVenc: TDateTime;
 begin
- if NotaUtil.NaoEstaVazio(FNumeroSerie) then
+ if DFeUtil.NaoEstaVazio(FNumeroSerie) then
   begin
     if FDataVenc = 0 then
        GetCertificado;
@@ -518,7 +518,7 @@ var
   wDia, wMes, wAno : Word;
   Dir : String;
 begin
-  if NotaUtil.EstaVazio(FPathCan) then
+  if DFeUtil.EstaVazio(FPathCan) then
      Dir := TConfiguracoes( Self.Owner ).Geral.PathSalvar
   else
      Dir := FPathCan;
@@ -547,7 +547,7 @@ var
   wDia, wMes, wAno : Word;
   Dir : String;
 begin
-  if NotaUtil.EstaVazio(FPathCCe) then
+  if DFeUtil.EstaVazio(FPathCCe) then
      Dir := TConfiguracoes( Self.Owner ).Geral.PathSalvar
   else
      Dir := FPathCCe;
@@ -576,7 +576,7 @@ var
   wDia, wMes, wAno : Word;
   Dir : String;
 begin
-  if NotaUtil.EstaVazio(FPathDPEC) then
+  if DFeUtil.EstaVazio(FPathDPEC) then
      Dir := TConfiguracoes( Self.Owner ).Geral.PathSalvar
   else
      Dir := FPathDPEC;
@@ -605,7 +605,7 @@ var
   wDia, wMes, wAno : Word;
   Dir : String;
 begin
-  if NotaUtil.EstaVazio(FPathMDe) then
+  if DFeUtil.EstaVazio(FPathMDe) then
      Dir := TConfiguracoes( Self.Owner ).Geral.PathSalvar
   else
      Dir := FPathMDe;
@@ -635,7 +635,7 @@ var
   wDia, wMes, wAno : Word;
   Dir : String;
 begin
-  if NotaUtil.EstaVazio(FPathInu) then
+  if DFeUtil.EstaVazio(FPathInu) then
      Dir := TConfiguracoes( Self.Owner ).Geral.PathSalvar
   else
      Dir := FPathInu;
@@ -664,7 +664,7 @@ var
   wDia, wMes, wAno : Word;
   Dir : String;
 begin
-  if NotaUtil.EstaVazio(FPathMDe) then
+  if DFeUtil.EstaVazio(FPathMDe) then
      Dir := TConfiguracoes( Self.Owner ).Geral.PathSalvar
   else
      Dir := FPathMDe;
@@ -693,7 +693,7 @@ var
   wDia, wMes, wAno : Word;
   Dir : String;
 begin
-  if NotaUtil.EstaVazio(FPathNFe) then
+  if DFeUtil.EstaVazio(FPathNFe) then
      Dir := TConfiguracoes( Self.Owner ).Geral.PathSalvar
   else
      Dir := FPathNFe;

@@ -772,6 +772,7 @@ begin
 
   2910727: Cidade := 'Eunapolis/BA';
   2910800: Cidade := 'Feira de Santana/BA';
+  2919207: Cidade := 'Lauro de Freitas/BA';
   2927408: Cidade := 'Salvador/BA';
 
   3104205: Cidade := 'Arcos/MG';
@@ -797,6 +798,7 @@ begin
   3200607: Cidade := 'Aracruz/ES';
   3202405: Cidade := 'Guarapari/ES';
   3205002: Cidade := 'Serra/ES';
+  3205309: Cidade := 'Vitória/ES';
 
   3300456: Cidade := 'Belford Roxo/RJ';
   3301009: Cidade := 'Campos dos Goytacazes/RJ';
@@ -828,18 +830,22 @@ begin
   3519071: Cidade := 'Hortolandia/SP';
   3523503: Cidade := 'Itatinga/SP';
   3523909: Cidade := 'Itu/SP';
+  3524402: Cidade := 'Jacareí/SP';
   3524709: Cidade := 'Jaguariuna/SP';
   3525300: Cidade := 'Jau/SP';
   3525904: Cidade := 'Jundiai/SP';
   3526704: Cidade := 'Leme/SP';
+  3527207: Cidade := 'Lorena/SP';
   3529005: Cidade := 'Marília/SP';
   3529401: Cidade := 'Maua/SP';
   3530508: Cidade := 'Mococa/SP';
   3530607: Cidade := 'Mogi das Cruzes/SP';
   3531803: Cidade := 'Monte Mor/SP';
   3533908: Cidade := 'Olimpia/SP';
+  3534401: Cidade := 'Osasco/SP';
   3536505: Cidade := 'Paulinia/SP';
   3538006: Cidade := 'Pindamonhangaba/SP';
+  3540705: Cidade := 'Porto Ferreira/SP';
   3541406: Cidade := 'Presidente Prudente/SP';
   3541505: Cidade := 'Presidente Venceslau/SP';
   3542602: Cidade := 'Registro/SP';
@@ -857,6 +863,8 @@ begin
   3549904: Cidade := 'São José dos Campos/SP';
   3550308: Cidade := 'São Paulo/SP';
   3551009: Cidade := 'São Vicente/SP';
+  3552502: Cidade := 'Suzano/SP';
+  3552809: Cidade := 'Taboão da Serra/SP';
   3554003: Cidade := 'Tatui/SP';
   3554805: Cidade := 'Tremembé/SP';
   3556701: Cidade := 'Vinhedo/SP';
@@ -879,6 +887,7 @@ begin
   4120853: Cidade := 'Quatro Pontes/PR';
   4125506: Cidade := 'Sao José dos Pinhais/PR';
   4125605: Cidade := 'São Mateus do Sul/PR';
+  4127106: Cidade := 'Telêmaco Borba/PR';
   4128104: Cidade := 'Umuarama/PR';
   4128203: Cidade := 'União da Vitória/PR';
 
@@ -907,6 +916,7 @@ begin
   4209300: Cidade := 'Lages/SC';
   4210001: Cidade := 'Luiz Alves/SC';
   4211306: Cidade := 'Navegantes/SC';
+  4211702: Cidade := 'Orleans/SC';
   4211900: Cidade := 'Palhoça/SC';
   4212106: Cidade := 'Palmitos/SC';
   4212502: Cidade := 'Penha/SC';

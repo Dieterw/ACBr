@@ -1193,7 +1193,7 @@ begin
                      aDescProduto:=aDescProduto+
                                    ' - LOTE: '+nLote+
    //                                ' QTDADE: '+DFeUtil.FormatFloat(qLote)+#13+
-                                   ' FABR.: '+DFeUtil..FormatDate(DateToStr(dFab))+
+                                   ' FABR.: '+DFeUtil.FormatDate(DateToStr(dFab))+
                                    ' VAL.: '+DFeUtil.FormatDate(DateToStr(dVal))+
                                    DFeUtil.SeSenao(vPMC>0,' PMC: '+DFeUtil.FormatFloat(vPMC),'');
                     end;

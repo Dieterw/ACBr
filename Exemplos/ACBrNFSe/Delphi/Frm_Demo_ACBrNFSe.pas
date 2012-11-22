@@ -185,7 +185,7 @@ implementation
 uses
  FileCtrl, DateUtils, Math,
  ufrmStatus,
- ACBrNFSeNotasFiscais, ACBrNFSeUtil;
+ ACBrNFSeNotasFiscais, ACBrDFeUtil, ACBrNFSeUtil;
 
 const
   SELDIRHELP = 1000;
@@ -700,7 +700,7 @@ begin
    MemoDados.Lines.Add('Retorno do Cancelamento:');
    MemoDados.Lines.Add('Cód. Cancelamento: ' + ACBrNFSe1.WebServices.CancNfse.CodigoCancelamento);
    MemoDados.Lines.Add('Data / Hora      : ' +
-    NotaUtil.SeSenao(ACBrNFSe1.WebServices.CancNfse.DataHora = 0, '',
+    DFeUtil.SeSenao(ACBrNFSe1.WebServices.CancNfse.DataHora = 0, '',
                       DateTimeToStr(ACBrNFSe1.WebServices.CancNfse.DataHora)));
    LoadXML(MemoResp, WBResposta);
    PageControl2.ActivePageIndex := 1;

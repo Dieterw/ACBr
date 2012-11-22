@@ -21,12 +21,12 @@
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MinorVersionNr Value="9"/>
-      <BuildNr Value="38"/>
+      <BuildNr Value="39"/>
       <Language Value="0416"/>
       <CharSet Value="04B0"/>
       <StringTable ProductVersion=""/>
     </VersionInfo>
-    <BuildModes Count="3" Active="Release">
+    <BuildModes Count="3" Active="Debug">
       <Item1 Name="Debug" Default="True"/>
       <Item2 Name="Release">
         <CompilerOptions>
@@ -160,8 +160,8 @@
         <UnitName Value="ECFTeste1"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="2364"/>
-        <CursorPos X="15" Y="2370"/>
+        <TopLine Value="2682"/>
+        <CursorPos X="24" Y="2689"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -279,7 +279,7 @@
     </Other>
   </CompilerOptions>
   <Debugging>
-    <BreakPoints Count="3">
+    <BreakPoints Count="2">
       <Item1>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
@@ -291,16 +291,9 @@
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
-        <Source Value="..\..\..\Fontes\ACBrSerial\ACBrECFBematech.pas"/>
-        <Line Value="2458"/>
+        <Source Value="..\..\..\Fontes\ACBrSerial\ACBrECFEpson.pas"/>
+        <Line Value="3305"/>
       </Item2>
-      <Item3>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="..\..\..\Fontes\ACBrSerial\ACBrECFSwedaSTX.pas"/>
-        <Line Value="1701"/>
-      </Item3>
     </BreakPoints>
     <Watches Count="1">
       <Item1>

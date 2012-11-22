@@ -407,12 +407,12 @@ TACBrECFBematech = class( TACBrECFClass )
     function GetNumNCN: String; override ;
     function GetNumCCDC: String; override ;
     function GetVendaBruta: Double; override ;
+    function GetTotalTroco: Double; override ;
     function GetNumReducoesZRestantes: String; override ;
 
     function GetTotalAcrescimos: Double; override ;
     function GetTotalCancelamentos: Double; override ;
     function GetTotalDescontos: Double; override ;
-    function GetTotalTroco: Double; override ;
     function GetTotalSubstituicaoTributaria: Double; override ;
     function GetTotalNaoTributado: Double; override ;
     function GetTotalIsencao: Double; override ;
@@ -1984,14 +1984,14 @@ begin
      CNF.Indice    := 'SA' ;
      CNF.Descricao := 'Sangria' ;
      CNF.Total     := StrToFloatDef( BcdToAsc( copy(TotalizadoresParciais,ifThen(fs25MFD,393,197),7) ),0) / 100 ;
-     CNF.Contador  := StrToIntDef( BcdToAsc( copy(RetCmd,57,2) ),0) ;
+     CNF.Contador  := StrToIntDef( copy(RetCmd,113,4),0) ;
      fpComprovantesNaoFiscais.Insert(0, CNF ) ;
 
      CNF := TACBrECFComprovanteNaoFiscal.create ;
      CNF.Indice    := 'SU' ;
      CNF.Descricao := 'Suprimento' ;
      CNF.Total     := StrToFloatDef( BcdToAsc( copy(TotalizadoresParciais,ifThen(fs25MFD,400,204),7) ),0) / 100 ;
-     CNF.Contador  := StrToIntDef( BcdToAsc( copy(RetCmd,59,2) ),0) ;
+     CNF.Contador  := StrToIntDef( copy(RetCmd,117,4),0) ;
      fpComprovantesNaoFiscais.Insert(1, CNF ) ;
   except
     { Se falhou ao carregar, deve "nilzar" as variaveis para que as rotinas
@@ -2821,45 +2821,44 @@ begin
     RetCmd    := BcdToAsc(EnviaComando( #88, 5 )) ;
 
     {ESC 88 Tamanho de Retorno: 621 bytes (BCD), com a seguinte estrutura:
-    Descrição             Bytes         (Digitos BCD)                   0
-    RZautomática se zero indica que a RZ foi emitida por comando 1 (2)  2
-    CRO Contador de Reinício de Operação 2 (4)                          6
-    CRZ Contador de Redução Z 2 (4)                                     10
-    COO Contador de Ordem de Operação 3 (6)                             16
-    GNF Contador Geral de Operações Não Fiscais 3 (6)                   22
-    CCF Contador de Cupom Fiscal 3 (6)                                  28
-    GRG Contador Geral de Relatório Gerencial 3 (6)                     34
-    CFD Contador de Fita Detalhe Emitida 3 (6)                          40
-    NFC Contador de Operação Não Fiscal Cancelada 2 (4)                 44
-    CFC Contador de Cupom Fiscal Cancelado 2 (4)                        48
-    CON[30] Contadores Específicos de Operações não Fiscais 30x2 (30x4) 168
-    CER[30] Contadores Específicos de Relatórios Gerenciais 30x2 (30x4) 288
-    CDC Contador de Comprovantes de Débito ou Crédito 2 (4)             292
-    NCN Contador de Débito ou Crédito não Emitidos 2 (4)                296
-    CCDC Contador de Débito ou Crédito Cancelados 2 (4)                 300
-    GT Totalizador Geral 9 (18)                                         318
-    TP[16] Totalizadores Parciais Tributados 16x7 (16x14)               542
-    I I Totalizador de Isenção de ICMS 7 (14)                           556
-    NN Totalizador de Não Incidência de ICMS 7 (14)                     570
-    FF Totalizador de Substituição Tributária de ICMS 7 (14)            584
-    SI Totalizador de Isenção de ISSQN 7 (14)                           598
-    SN Totalizador de Não Incidência de ISSQN 7 (14)                    612
-    SF Totalizador de Substituição Tributária de ISSQN 7 (14)           626
-    Totalizador de Desconto em ICMS 7 (14)                              640
-    Totalizador de Desconto em ISSQN 7 (14)                             654
-    Totalizador de Acrécimo em ICMS 7 (14)                              668
-    Totalizador de Acrécimo em ISSQN 7 (14)                             682
-    Totalizador de Cancelamentos em ICMS 7 (14)                         696
-    Totalizador de Cancelamentos em ISSQN 7 (14)                        710
-    TPNS Totalizadores Parciais Não sujeitos ao ICMS 28x7 (28x14)       1102
-    Sangria Totalizador de Sangria 7 (14)                               1116
-    Suprimento Totalizador de Suprimento 7 (14)                         1130
-    Totalizador de Cancelamentos de Não Fiscais 7 (14)                  1144
-    Totalizador de Descontos de Não Fiscais 7 (14)                      1158
-    Totalizador de Acrécimos de Não Fiscais 7 (14)                      1172
-    Alíquotas Tributadas 16x2 (16x4)                                    1236
-
-    Data do Movimento 3     (6)                                         1242}
+    Descrição             Bytes         (Digitos BCD)
+    RZautomática se zero indica que a RZ foi emitida por comando 1 (2)  1   ,  2
+    CRO Contador de Reinício de Operação 2 (4)                          3   ,  6
+    CRZ Contador de Redução Z 2 (4)                                     7   , 10
+    COO Contador de Ordem de Operação 3 (6)                             11  , 16
+    GNF Contador Geral de Operações Não Fiscais 3 (6)                   17  , 22
+    CCF Contador de Cupom Fiscal 3 (6)                                  23  , 28
+    GRG Contador Geral de Relatório Gerencial 3 (6)                     29  , 34
+    CFD Contador de Fita Detalhe Emitida 3 (6)                          35  , 40
+    NFC Contador de Operação Não Fiscal Cancelada 2 (4)                 41  , 44
+    CFC Contador de Cupom Fiscal Cancelado 2 (4)                        45  , 48
+    CON[30] Contadores Específicos de Operações não Fiscais 30x2 (30x4) 49  ,168
+    CER[30] Contadores Específicos de Relatórios Gerenciais 30x2 (30x4) 169 ,288
+    CDC Contador de Comprovantes de Débito ou Crédito 2 (4)             289 ,292
+    NCN Contador de Débito ou Crédito não Emitidos 2 (4)                293 ,296
+    CCDC Contador de Débito ou Crédito Cancelados 2 (4)                 297 ,300
+    GT Totalizador Geral 9 (18)                                         301 ,318
+    TP[16] Totalizadores Parciais Tributados 16x7 (16x14)               319 ,542
+    I I Totalizador de Isenção de ICMS 7 (14)                           543 ,556
+    NN Totalizador de Não Incidência de ICMS 7 (14)                     557 ,570
+    FF Totalizador de Substituição Tributária de ICMS 7 (14)            571 ,584
+    SI Totalizador de Isenção de ISSQN 7 (14)                           585 ,598
+    SN Totalizador de Não Incidência de ISSQN 7 (14)                    599 ,612
+    SF Totalizador de Substituição Tributária de ISSQN 7 (14)           613 ,626
+    Totalizador de Desconto em ICMS 7 (14)                              627 ,640
+    Totalizador de Desconto em ISSQN 7 (14)                             641 ,654
+    Totalizador de Acrécimo em ICMS 7 (14)                              655 ,668
+    Totalizador de Acrécimo em ISSQN 7 (14)                             669 ,682
+    Totalizador de Cancelamentos em ICMS 7 (14)                         683 ,696
+    Totalizador de Cancelamentos em ISSQN 7 (14)                        697 ,710
+    TPNS Totalizadores Parciais Não sujeitos ao ICMS 28x7 (28x14)       711 ,1102
+    Sangria Totalizador de Sangria 7 (14)                               1103,1116
+    Suprimento Totalizador de Suprimento 7 (14)                         1117,1130
+    Totalizador de Cancelamentos de Não Fiscais 7 (14)                  1131,1144
+    Totalizador de Descontos de Não Fiscais 7 (14)                      1145,1158
+    Totalizador de Acrécimos de Não Fiscais 7 (14)                      1159,1172
+    Alíquotas Tributadas 16x2 (16x4)                                    1173,1236
+    Data do Movimento 3     (6)                                         1237,1242}
 
     { Alimenta a class com os dados atuais do ECF }
     with fpDadosReducaoZClass do
@@ -2911,11 +2910,10 @@ begin
       end ;
 
       // Dados dos Comprovantes não Fiscais //
-      S :=  copy(RetCmd,1103,14) +  // Totalizadores: Sangria    (14)
-            copy(RetCmd,1117,14) +  //                Suprimento (14)
-            copy(RetCmd,711,392) ;  //                Não ICMS  (392)  28 * 14
+      S :=  copy(RetCmd,1103,28) +  // Sangria(14) + Suprimento(14)
+            copy(RetCmd,739,364) ;  // Não ICMS  (392)  28 * 14 (2 primeiros vem vazios ??)
       SS := copy(RetCmd,161,8)   +  // Contadores: Sangria(4) + Suprimento(4)
-            copy(RetCmd,49,112);    //             Não ICMS(112) 28 * 4
+            copy(RetCmd,57,104);    // Não ICMS(112) 28 * 4  (2 primeiros vem vazios ??)
 
       for I := 0 to fpComprovantesNaoFiscais.Count - 1 do
       begin

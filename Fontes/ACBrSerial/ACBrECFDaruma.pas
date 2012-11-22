@@ -164,6 +164,9 @@ TACBrECFDaruma = class( TACBrECFClass )
     function GetTotalIsencaoISSQN: Double; override;
     function GetTotalNaoTributadoISSQN: Double; override;
 
+    function GetTotalAcrescimosOPNF: Double; override ;
+    function GetTotalCancelamentosOPNF: Double; override ;
+    function GetTotalDescontosOPNF: Double; override ;
 
     function GetNumCOOInicial: String; override ;
     function GetNumUltimoItem: Integer; override ;
@@ -961,8 +964,8 @@ begin
     Result := ErrosEstendidos[AErro];
 end;
 
-procedure TACBrECFDaruma.PafMF_GerarCAT52(const DataInicial,
-  DataFinal: TDateTime; const DirArquivos: string);
+procedure TACBrECFDaruma.PafMF_GerarCAT52(const DataInicial: TDateTime;
+   const DataFinal: TDateTime; const DirArquivos: string);
 begin
   Self.ArquivoMFD_DLL(DataInicial, DataFinal, DirArquivos, [docTodos], finNFPTDM);
 end;
@@ -3548,7 +3551,8 @@ begin
   end ;
 end;
 
-procedure TACBrECFDaruma.AbreNaoFiscal( CPF_CNPJ, Nome, Endereco: String );
+procedure TACBrECFDaruma.AbreNaoFiscal(CPF_CNPJ: String; Nome: String;
+   Endereco: String);
 begin
   fsNumCupom := '';
 
@@ -3720,9 +3724,7 @@ begin
   Result := 0;
 
   if fpMFD then
-    Result := StrToFloatDef(RetornaInfoECF('015'),0)/100 ;
-
-  Result := RoundTo( Result, -2);
+    Result := RoundTo( StrToFloatDef(RetornaInfoECF('015'),0)/100, -2) ;
 end;
 
 function TACBrECFDaruma.GetTotalCancelamentosISSQN: Double;
@@ -3730,9 +3732,7 @@ begin
   Result := 0;
 
   if fpMFD then
-    Result := StrToFloatDef(RetornaInfoECF('016'),0)/100 ;
-
-  Result := RoundTo( Result, -2);
+    Result := RoundTo( StrToFloatDef(RetornaInfoECF('016'),0)/100, -2) ;
 end;
 
 function TACBrECFDaruma.GetTotalDescontosISSQN: Double;
@@ -3740,9 +3740,7 @@ begin
   Result := 0;
 
   if fpMFD then
-    Result := StrToFloatDef(RetornaInfoECF('014'),0)/100 ;
-
-  Result := RoundTo( Result, -2);
+    Result := RoundTo( StrToFloatDef(RetornaInfoECF('014'),0)/100, -2) ;
 end;
 
 
@@ -3751,9 +3749,7 @@ begin
   Result := 0;
 
   if fpMFD then
-    Result := StrToFloatDef(Copy(RetornaInfoECF('003'), 286, 13),0)/100 ;
-
-  Result := RoundTo( Result, -2);
+    Result := RoundTo( StrToFloatDef(Copy(RetornaInfoECF('003'), 286, 13),0)/100, -2) ;
 end;
 
 function TACBrECFDaruma.GetTotalIsencaoISSQN: Double;
@@ -3761,9 +3757,7 @@ begin
   Result := 0;
 
   if fpMFD then
-    Result := StrToFloatDef(Copy(RetornaInfoECF('003'), 312, 13),0)/100 ;
-
-  Result := RoundTo( Result, -2);
+    Result := RoundTo( StrToFloatDef(Copy(RetornaInfoECF('003'), 312, 13),0)/100, -2) ;
 end;
 
 
@@ -3772,9 +3766,31 @@ begin
   Result := 0;
 
   if fpMFD then
-    Result := StrToFloatDef(Copy(RetornaInfoECF('003'), 338, 13),0)/100 ;
+    Result := RoundTo( StrToFloatDef(Copy(RetornaInfoECF('003'), 338, 13),0)/100, -2) ;
+end;
 
-  Result := RoundTo( Result, -2);
+function TACBrECFDaruma.GetTotalAcrescimosOPNF: Double;
+begin
+  Result := 0;
+
+  if fpMFD then
+    Result := RoundTo( StrToFloatDef(RetornaInfoECF('018'),0)/100, -2) ;
+end;
+
+function TACBrECFDaruma.GetTotalCancelamentosOPNF: Double;
+begin
+  Result := 0;
+
+  if fpMFD then
+    Result := RoundTo( StrToFloatDef(RetornaInfoECF('019'),0)/100, -2) ;
+end;
+
+function TACBrECFDaruma.GetTotalDescontosOPNF: Double;
+begin
+  Result := 0;
+
+  if fpMFD then
+    Result := RoundTo( StrToFloatDef(RetornaInfoECF('017'),0)/100, -2) ;
 end;
 
 function TACBrECFDaruma.GetTotalIsencao: Double;

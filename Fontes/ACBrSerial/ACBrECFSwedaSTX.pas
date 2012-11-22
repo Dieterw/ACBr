@@ -2661,6 +2661,7 @@ begin
     NumeroCOOInicial := Copy(RetCMD,210,06) ;
     CRO              := StrToIntDef( Copy(RetCMD,216,04), 0) ;
     VendaLiquida     := RoundTo( StrToFloatDef( copy(RetCMD,272,18),0) / 100, -2) ;
+    TotalOperacaoNaoFiscal := RoundTo( StrToFloatDef( copy(RetCMD,344,18),0) / 100, -2) ;
 
     {Aliquotas}
     {As aliquotas são retornadas nesse comando, mas apenas se tiver valor }
@@ -2684,7 +2685,6 @@ begin
     AcrescimoISSQN             := AchaValorRegistrador('AS');
     CancelamentoICMS           := AchaValorRegistrador('CT');
     CancelamentoISSQN          := AchaValorRegistrador('CS');
-    TotalOperacaoNaoFiscal     := AchaValorRegistrador('ON') ;
 
     SubstituicaoTributariaICMS := AchaValorRegistrador('F1') +
                                   AchaValorRegistrador('F2') +

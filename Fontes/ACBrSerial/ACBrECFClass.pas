@@ -619,23 +619,27 @@ TACBrECFClass = class
     function GetNumNCN: String; virtual ;
     function GetNumCCDC: String; virtual ;
     function GetVendaBruta: Double; virtual ;
+    function GetTotalTroco: Double; virtual ;
+
     function GetTotalAcrescimos: Double; virtual ;
     function GetTotalCancelamentos: Double; virtual ;
     function GetTotalDescontos: Double; virtual ;
-    function GetTotalTroco: Double; virtual ;
     function GetTotalSubstituicaoTributaria: Double; virtual ;
     function GetTotalNaoTributado: Double; virtual ;
     function GetTotalIsencao: Double; virtual ;
     function GetTotalNaoFiscal: Double; virtual ;
+
     function GetTotalAcrescimosISSQN: Double; virtual ;
     function GetTotalCancelamentosISSQN: Double; virtual ;
     function GetTotalDescontosISSQN: Double; virtual ;
     function GetTotalIsencaoISSQN: Double; virtual ;
     function GetTotalNaoTributadoISSQN: Double; virtual ;
     function GetTotalSubstituicaoTributariaISSQN: Double; virtual ;
+
     function GetTotalAcrescimosOPNF: Double; virtual ;
     function GetTotalCancelamentosOPNF: Double; virtual ;
     function GetTotalDescontosOPNF: Double; virtual ;
+
     function GetNumCOOInicial: String; virtual ;
     function GetNumUltimoItem: Integer; virtual ;
 

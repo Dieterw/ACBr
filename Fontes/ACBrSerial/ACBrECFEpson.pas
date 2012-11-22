@@ -3187,7 +3187,7 @@ end ;
 
 function TACBrECFEpson.GetDadosUltimaReducaoZ: AnsiString;
 var
-  AliqZ : TACBrECFAliquota ;
+  Aliq, AliqZ : TACBrECFAliquota ;
   ECFCRZ, DtStr, HrStr : String ;
   I, J : Integer ;
   DataMov, DataFechaZ : TDateTime;
@@ -3301,19 +3301,45 @@ begin
     TotalOperacaoNaoFiscal := RoundTo( StrToFloatDef(EpsonResposta.Params[21],0)/100, -2);
     ValorGrandeTotal := RoundTo( StrToFloatDef(EpsonResposta.Params[24],0)/100, -2);
 
-    {Copiando objetos de ICMS e ISS}
-    // Nota: Aparentemente ECF Epson não retorna aliquotas do ISSQN na Ultima Red.Z
-    for I := 0 to fpAliquotas.Count - 1 do
+    { Copiando objetos de ICMS }
+    J := 25;
+    while J < EpsonResposta.Params.Count do
     begin
-      J := 25 + (I * 2) ;
-      if J < EpsonResposta.Params.Count then
+      Aliq := AchaICMSAliquota( RoundTo( StrToFloatDef(EpsonResposta.Params[ J ],0)/100, -2), 'T' );
+
+      if Aliq <> Nil then
       begin
         AliqZ := TACBrECFAliquota.Create ;
-        AliqZ.Assign( fpAliquotas[I] );
+        AliqZ.Assign( Aliq );
         AliqZ.Total := RoundTo( StrToFloatDef(EpsonResposta.Params[ J+1 ],0)/100, -2) ;
-
         AdicionaAliquota( AliqZ );
-      end;
+      end ;
+
+      J := J + 2 ;
+    end;
+
+    // Lendo dados do ISSQN //
+    EpsonComando.Comando := '090D';
+    EpsonComando.Extensao:= '0001';
+    EpsonComando.Params.Clear;
+    EpsonComando.AddParamString( ECFCRZ );
+    EnviaComando;
+
+    { Copiando objetos de ISSQN }
+    J := 25;
+    while J < EpsonResposta.Params.Count do
+    begin
+      Aliq := AchaICMSAliquota( RoundTo( StrToFloatDef(EpsonResposta.Params[ J ],0)/100, -2), 'S' );
+
+      if Aliq <> Nil then
+      begin
+        AliqZ := TACBrECFAliquota.Create ;
+        AliqZ.Assign( Aliq );
+        AliqZ.Total := RoundTo( StrToFloatDef(EpsonResposta.Params[ J+1 ],0)/100, -2) ;
+        AdicionaAliquota( AliqZ );
+      end ;
+
+      J := J + 2 ;
     end;
 
     CalculaValoresVirtuais;

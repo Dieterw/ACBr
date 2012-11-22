@@ -159,6 +159,10 @@ TACBrECFFiscNET = class( TACBrECFClass )
                                               UsuarioECF: AnsiString;
                                               TipoLeitura: AnsiString) : Integer; StdCall;
 
+    Function LeMoeda(const Registrador: String): Double;
+    Function LeInteiro(const Registrador: String): Integer;
+    Function LeTexto(const Registrador: String): String;
+
     procedure LoadDLLFunctions;
     procedure AbrePortaSerialDLL(const Porta, Path : String ) ;
 
@@ -206,14 +210,14 @@ TACBrECFFiscNET = class( TACBrECFClass )
     function GetNumCFC: String; override ;    
     function GetNumCRZ: String; override ;
     function GetVendaBruta: Double; override ;
+    function GetTotalTroco: Double; override ;
+
     function GetTotalAcrescimos: Double; override ;
     function GetTotalCancelamentos: Double; override ;
     function GetTotalDescontos: Double; override ;
-    function GetTotalTroco: Double; override ;
     function GetTotalSubstituicaoTributaria: Double; override ;
     function GetTotalNaoTributado: Double; override ;
     function GetTotalIsencao: Double; override ;
-
 
     function GetTotalAcrescimosISSQN: Double; override;
     function GetTotalCancelamentosISSQN: Double; override;
@@ -222,6 +226,9 @@ TACBrECFFiscNET = class( TACBrECFClass )
     function GetTotalIsencaoISSQN: Double; override;
     function GetTotalNaoTributadoISSQN: Double; override;
 
+    function GetTotalAcrescimosOPNF: Double; override;
+    function GetTotalCancelamentosOPNF: Double; override;
+    function GetTotalDescontosOPNF: Double; override;
 
     function GetNumCOOInicial: String; override ;
     function GetNumUltimoItem: Integer; override ;
@@ -652,17 +659,10 @@ begin
 
      GetPAF ;
 
-     FiscNETComando.NomeComando := 'LeTexto' ;
-     FiscNETComando.AddParamString('NomeTexto','Marca') ;
-     EnviaComando ;
-     fsMarcaECF := FiscNETResposta.Params.Values['ValorTexto'] ;
+     fsMarcaECF  := LeTexto( 'Marca' );
      fpModeloStr := 'FiscNET: '+ fsMarcaECF ;
-     fsMarcaECF := LowerCase(Trim(fsMarcaECF)) ;
-
-     FiscNETComando.NomeComando := 'LeTexto';
-     FiscNETComando.AddParamString('NomeTexto','Modelo');
-     EnviaComando;
-     fsModeloECF := FiscNETResposta.Params.Values['ValorTexto'] ;
+     fsMarcaECF  := LowerCase(Trim(fsMarcaECF)) ;
+     fsModeloECF := LeTexto( 'Modelo' );
 
      fpModeloStr := fpModeloStr + ' - ' + fsModeloECF ;
 
@@ -805,96 +805,48 @@ end;
 
 function TACBrECFFiscNET.GetNumCupom: String;
 begin
-  FiscNETComando.NomeComando := 'LeInteiro' ;
-  FiscNETComando.AddParamString('NomeInteiro','COO') ;
-  EnviaComando ;
-
-  Result := IntToStrZero(  StrToIntDef(
-                  FiscNETResposta.Params.Values['ValorInteiro'],0 ), 6) ;
+  Result := IntToStrZero( LeInteiro( 'COO' ), 6) ;
 end;
 
 function TACBrECFFiscNET.GetNumCCF: String;
 begin
-  FiscNETComando.NomeComando := 'LeInteiro' ;
-  FiscNETComando.AddParamString('NomeInteiro','CCF') ;
-  EnviaComando ;
-
-  Result := IntToStrZero(  StrToIntDef(
-                  FiscNETResposta.Params.Values['ValorInteiro'],0 ), 6) ;
+  Result := IntToStrZero( LeInteiro( 'CCF' ), 6) ;
 end;
 
 function TACBrECFFiscNET.GetNumReducoesZRestantes: String;
 begin
-  FiscNETComando.NomeComando := 'LeInteiro' ;
-  FiscNETComando.AddParamString('NomeInteiro','CRZRestantes') ;
-  EnviaComando ;
-
-  Result := IntToStrZero(  StrToIntDef(
-                  FiscNETResposta.Params.Values['ValorInteiro'],0 ), 6) ;
-
+  Result := IntToStrZero( LeInteiro( 'CRZRestantes' ), 6) ;
 end;
 
 function TACBrECFFiscNET.GetNumCRO: String;
 begin
-  FiscNETComando.NomeComando := 'LeInteiro' ;
-  FiscNETComando.AddParamString('NomeInteiro','CRO') ;
-  EnviaComando ;
-
-  Result := IntToStrZero(  StrToIntDef(
-                  FiscNETResposta.Params.Values['ValorInteiro'],0 ), 6) ;
+  Result := IntToStrZero( LeInteiro( 'CRO' ), 6) ;
 end;
 
 function TACBrECFFiscNET.GetNumGRG: String;
 begin
-  FiscNETComando.NomeComando := 'LeInteiro' ;
-  FiscNETComando.AddParamString('NomeInteiro','GRG') ;
-  EnviaComando ;
-
-  Result := IntToStrZero(  StrToIntDef(
-                  FiscNETResposta.Params.Values['ValorInteiro'],0 ), 6) ;
+  Result := IntToStrZero( LeInteiro( 'GRG' ), 6) ;
 end;
 
 function TACBrECFFiscNET.GetNumGNF: String;
 begin
-  FiscNETComando.NomeComando := 'LeInteiro' ;
-  FiscNETComando.AddParamString('NomeInteiro','GNF') ;
-  EnviaComando ;
-
-  Result := IntToStrZero(  StrToIntDef(
-                  FiscNETResposta.Params.Values['ValorInteiro'],0 ), 6) ;
+  Result := IntToStrZero( LeInteiro( 'GNF' ), 6) ;
 end;
 
 function TACBrECFFiscNET.GetNumCDC: String;
 begin
-  FiscNETComando.NomeComando := 'LeInteiro' ;
-  FiscNETComando.AddParamString('NomeInteiro','CDC') ;
-  EnviaComando ;
-
-  Result := IntToStrZero(  StrToIntDef(
-                  FiscNETResposta.Params.Values['ValorInteiro'],0 ), 6) ;
+  Result := IntToStrZero( LeInteiro( 'CDC' ), 6) ;
 end;
 
 function TACBrECFFiscNET.GetNumCFC: String;
 begin
-  FiscNETComando.NomeComando := 'LeInteiro' ;
-  FiscNETComando.AddParamString('NomeInteiro','CFC') ;
-  EnviaComando ;
-
-  Result := IntToStrZero(  StrToIntDef(
-                  FiscNETResposta.Params.Values['ValorInteiro'],0 ), 6) ;
+  Result := IntToStrZero( LeInteiro( 'CFC' ), 6) ;
 end;
 
 function TACBrECFFiscNET.GetNumLoja: String;
 begin
   if fsNumLoja = '' then
-  begin
-     FiscNETComando.NomeComando := 'LeInteiro' ;
-     FiscNETComando.AddParamString('NomeInteiro','Loja') ;
-     EnviaComando ;
-
-     fsNumLoja := IntToStrZero(  StrToIntDef(
-                  FiscNETResposta.Params.Values['ValorInteiro'],0 ), 3) ;
-  end ;
+     fsNumLoja := IntToStrZero( LeInteiro( 'Loja' ), 3) ;
 
   Result := fsNumLoja ;
 end;
@@ -902,68 +854,37 @@ end;
 function TACBrECFFiscNET.GetNumECF: String;
 begin
   if fsNumECF = '' then
-  begin
-     FiscNETComando.NomeComando := 'LeInteiro' ;
-     FiscNETComando.AddParamString('NomeInteiro','ECF') ;
-     EnviaComando ;
-
-     fsNumECF := IntToStrZero(  StrToIntDef(
-                     FiscNETResposta.Params.Values['ValorInteiro'],0 ), 5) ;
-  end ;
+     fsNumECF := IntToStrZero( LeInteiro( 'ECF' ), 5) ;
 
   Result := fsNumECF ;
 end;
 
 function TACBrECFFiscNET.GetNumSerie: String;
 begin
-  FiscNETComando.NomeComando := 'LeTexto' ;
-  FiscNETComando.AddParamString('NomeTexto','NumeroSerieECF') ;
-  EnviaComando ;
-
-  Result := FiscNETResposta.Params.Values['ValorTexto'] ;
+  Result := LeTexto( 'NumeroSerieECF' );
 end;
 
 function TACBrECFFiscNET.GetNumSerieMFD: String;
 begin
-  FiscNETComando.NomeComando := 'LeTexto' ;
-  FiscNETComando.AddParamString('NomeTexto','NumeroSerieMFD') ;
-  EnviaComando ;
-
-  Result := FiscNETResposta.Params.Values['ValorTexto'] ;
+  Result := LeTexto( 'NumeroSerieMFD' );
 end;
 
 function TACBrECFFiscNET.GetNumVersao: String ;
 begin
   if fsNumVersao = '' then
-  begin
-     FiscNETComando.NomeComando := 'LeTexto' ;
-     FiscNETComando.AddParamString('NomeTexto','VersaoSW') ;
-     EnviaComando ;
-
-     fsNumVersao := FiscNETResposta.Params.Values['ValorTexto'] ;
-  end ;
+     fsNumVersao := LeTexto( 'VersaoSW' );
 
   Result := fsNumVersao ;
 end;
 
 function TACBrECFFiscNET.GetTotalPago: Double;
 begin
-  FiscNETComando.NomeComando := 'LeMoeda' ;
-  FiscNETComando.AddParamString('NomeDadoMonetario','TotalDocValorPago') ;
-  EnviaComando ;
-
-  Result := StringToFloatDef(
-               RemoveString('.',FiscNETResposta.Params.Values['ValorMoeda']), 0) ;
+  Result := LeMoeda( 'TotalDocValorPago' ) ;
 end;
 
 function TACBrECFFiscNET.GetSubTotal: Double;
 begin
-  FiscNETComando.NomeComando := 'LeMoeda' ;
-  FiscNETComando.AddParamString('NomeDadoMonetario','TotalDocLiquido') ;
-  EnviaComando ;
-
-  Result := StringToFloatDef(
-               RemoveString('.',FiscNETResposta.Params.Values['ValorMoeda']), 0) ;
+  Result := LeMoeda( 'TotalDocLiquido' ) ;
 end;
 
 
@@ -991,12 +912,7 @@ begin
 
     fpEstado := estDesconhecido ;
 
-    FiscNETComando.NomeComando := 'LeInteiro' ;
-    FiscNETComando.AddParamString('NomeInteiro','EstadoFiscal') ;
-    EnviaComando ;
-
-    Est := StrToIntDef( FiscNETResposta.Params.Values['ValorInteiro'] ,0) ;
-
+    Est := LeInteiro( 'EstadoFiscal' );
     case Est of
       1      : fpEstado := estLivre ;
       2      : fpEstado := estVenda ;
@@ -1010,10 +926,7 @@ begin
 
     if fpEstado in [estDesconhecido, estLivre] then
     begin
-      FiscNETComando.NomeComando := 'LeInteiro' ;
-      FiscNETComando.AddParamString('NomeInteiro','Indicadores') ;
-      EnviaComando ;
-      Ind := StrToIntDef( FiscNETResposta.Params.Values['ValorInteiro'] ,0) ;
+      Ind := LeInteiro('Indicadores');
 
       if TestBit(Ind,5) then
          fpEstado := estBloqueada
@@ -1459,17 +1372,8 @@ begin
      CarregaAliquotas ;
 
   For A := 0 to Aliquotas.Count-1 do
-  begin
-     FiscNETComando.NomeComando := 'LeMoeda' ;
-     FiscNETComando.AddParamString('NomeDadoMonetario',
-                               'TotalDiaValorAliquota['+Trim(Aliquotas[A].indice)+']') ;
-     EnviaComando ;
-
-     Aliquotas[A].Total := StringToFloatDef(
-        RemoveString('.', FiscNETResposta.Params.Values['ValorMoeda']), 0) ;
-  end ;   
+     Aliquotas[A].Total := LeMoeda( 'TotalDiaValorAliquota['+Trim(Aliquotas[A].indice)+']' );
 end;
-
 
 procedure TACBrECFFiscNET.ProgramaAliquota(Aliquota: Double; Tipo: Char;
    Posicao : String);
@@ -1596,6 +1500,7 @@ end;
 procedure TACBrECFFiscNET.LerTotaisFormaPagamento;
 var
   A: Integer;
+  V: Double;
 begin
   if not Assigned( fpFormasPagamentos ) then
      CarregaFormasPagamento ;
@@ -1622,16 +1527,12 @@ begin
 
   For A := 0 to FormasPagamento.Count-1 do
   begin
-     FiscNETComando.NomeComando := 'LeMoeda' ;
      if A = 0 then
-        FiscNETComando.AddParamString('NomeDadoMonetario','TotalDiaDinheiro')
+        V := LeMoeda('TotalDiaDinheiro')
      else
-        FiscNETComando.AddParamString('NomeDadoMonetario',
-          'TotalDiaMeioPagamento['+IntToStrZero(A+fsBaseTotalDiaMeioPagamento-1,2)+']');
-     EnviaComando ;
+        V := LeMoeda('TotalDiaMeioPagamento['+IntToStrZero(A+fsBaseTotalDiaMeioPagamento-1,2)+']');
 
-     FormasPagamento[A].Total := StringToFloatDef(
-        RemoveString('.', FiscNETResposta.Params.Values['ValorMoeda']), 0) ;
+     FormasPagamento[A].Total := V ;
   end ;
 end;
 
@@ -1732,21 +1633,10 @@ begin
 
   For A := 0 to ComprovantesNaoFiscais.Count-1 do
   begin
-     FiscNETComando.NomeComando := 'LeMoeda' ;
-     FiscNETComando.AddParamString('NomeDadoMonetario',
-        'TotalDiaNaoFiscal['+IntToStrZero(A+fsBaseTotalDiaNaoFiscal,2)+']');
-     EnviaComando ;
-
-     ComprovantesNaoFiscais[A].Total := StringToFloatDef(
-        RemoveString('.', FiscNETResposta.Params.Values['ValorMoeda']), 0) ;
-
-     FiscNETComando.NomeComando := 'LeInteiro' ;
-     FiscNETComando.AddParamString('NomeInteiro',
-        'CON['+IntToStrZero(A+fsBaseTotalDiaNaoFiscal,2)+']');
-     EnviaComando ;
-
-     ComprovantesNaoFiscais[A].Contador := StrToIntDef(
-         FiscNETResposta.Params.Values['ValorInteiro'], 0) ;
+     ComprovantesNaoFiscais[A].Total := LeMoeda(
+        'TotalDiaNaoFiscal['+IntToStrZero(A+fsBaseTotalDiaNaoFiscal,2)+']' );
+     ComprovantesNaoFiscais[A].Contador := LeInteiro(
+       'CON['+IntToStrZero(A+fsBaseTotalDiaNaoFiscal,2)+']' );
   end ;
 end;
 
@@ -2170,47 +2060,27 @@ end;
 
 function TACBrECFFiscNET.GetCNPJ: String;
 begin
-  FiscNETComando.NomeComando := 'LeTexto' ;
-  FiscNETComando.AddParamString('NomeTexto','CNPJ') ;
-  EnviaComando ;
-
-  Result := FiscNETResposta.Params.Values['ValorTexto'] ;
+  Result := LeTexto( 'CNPJ' ) ;
 end;
 
 function TACBrECFFiscNET.GetIE: String;
 begin
-  FiscNETComando.NomeComando := 'LeTexto' ;
-  FiscNETComando.AddParamString('NomeTexto','IE') ;
-  EnviaComando ;
-
-  Result := FiscNETResposta.Params.Values['ValorTexto'] ;
+  Result := LeTexto( 'IE' ) ;
 end;
 
 function TACBrECFFiscNET.GetIM: String;
 begin
-  FiscNETComando.NomeComando := 'LeTexto' ;
-  FiscNETComando.AddParamString('NomeTexto','IM') ;
-  EnviaComando ;
-
-  Result := FiscNETResposta.Params.Values['ValorTexto'] ;
+  Result := LeTexto( 'IM' ) ;
 end;
 
 function TACBrECFFiscNET.GetCliche: AnsiString;
 begin
-  FiscNETComando.NomeComando := 'LeTexto' ;
-  FiscNETComando.AddParamString('NomeTexto','Cliche') ;
-  EnviaComando ;
-
-  Result := FiscNETResposta.Params.Values['ValorTexto'] ;
+  Result := LeTexto( 'Cliche' ) ;
 end;
 
 function TACBrECFFiscNET.GetUsuarioAtual: String;
 begin
-  FiscNETComando.NomeComando := 'LeInteiro' ;
-  FiscNETComando.AddParamString('NomeInteiro','ContadorProprietarios') ;
-  EnviaComando ;
-
-  Result := FiscNETResposta.Params.Values['ValorInteiro'] ;
+  Result := IntToStrZero( LeInteiro( 'ContadorProprietarios' ), 3) ;
 end;
 
 function TACBrECFFiscNET.GetDataHoraSB: TDateTime;
@@ -2329,186 +2199,107 @@ end;
 
 function TACBrECFFiscNET.GetGrandeTotal: Double;
 begin
-  FiscNETComando.NomeComando := 'LeMoeda' ;
-  FiscNETComando.AddParamString('NomeDadoMonetario','GT') ;
-  EnviaComando ;
-
-  Result := StringToFloatDef(
-     RemoveString('.',FiscNETResposta.Params.Values['ValorMoeda'] ), 0) ;
+  Result := LeMoeda('GT') ;
 end;
 
 function TACBrECFFiscNET.GetNumCRZ: String;
 begin
-  FiscNETComando.NomeComando := 'LeInteiro' ;
-  FiscNETComando.AddParamString('NomeInteiro','CRZ') ;
-  EnviaComando ;
-
-  Result := IntToStrZero(  StrToIntDef(
-                  FiscNETResposta.Params.Values['ValorInteiro'],0 ), 6) ;
+  Result := IntToStrZero( LeInteiro( 'CRZ' ), 6) ;
 end;
 
 function TACBrECFFiscNET.GetTotalAcrescimos: Double;
 begin
-  FiscNETComando.NomeComando := 'LeMoeda' ;
-  FiscNETComando.AddParamString('NomeDadoMonetario','TotalDiaAcrescimos') ;
-  EnviaComando ;
-
-  Result := StringToFloatDef(
-     RemoveString('.',FiscNETResposta.Params.Values['ValorMoeda']), 0) ;
+  Result := LeMoeda( 'TotalDiaAcrescimos' ) ;
 end;
 
 function TACBrECFFiscNET.GetTotalAcrescimosISSQN: Double;
 begin
-  FiscNETComando.NomeComando := 'LeMoeda' ;
-  FiscNETComando.AddParamString('NomeDadoMonetario','TotalDiaAcrescimosISSQN') ;
-  EnviaComando ;
-
-  Result := StringToFloatDef(
-     RemoveString('.',FiscNETResposta.Params.Values['ValorMoeda']), 0) ;
+  Result := LeMoeda( 'TotalDiaAcrescimosISSQN') ;
 end;
-
-
 
 function TACBrECFFiscNET.GetTotalCancelamentos: Double;
 begin
-  FiscNETComando.NomeComando := 'LeMoeda' ;
-  FiscNETComando.AddParamString('NomeDadoMonetario','TotalDiaCancelamentosIcms') ;
-  EnviaComando ;
-
-  Result := StringToFloatDef(
-     RemoveString('.', FiscNETResposta.Params.Values['ValorMoeda'] ), 0) ;
+  Result := LeMoeda( 'TotalDiaCancelamentosIcms' ) ;
 end;
 
 function TACBrECFFiscNET.GetTotalCancelamentosISSQN: Double;
 begin
-  FiscNETComando.NomeComando := 'LeMoeda' ;
-  FiscNETComando.AddParamString('NomeDadoMonetario','TotalDiaCancelamentosISSQN') ;
-  EnviaComando ;
-
-  Result := StringToFloatDef(
-     RemoveString('.', FiscNETResposta.Params.Values['ValorMoeda'] ), 0) ;
+  Result := LeMoeda( 'TotalDiaCancelamentosISSQN' ) ;
 end;
-
-
 
 function TACBrECFFiscNET.GetTotalDescontos: Double;
 begin
-  FiscNETComando.NomeComando := 'LeMoeda' ;
-  FiscNETComando.AddParamString('NomeDadoMonetario','TotalDiaDescontos') ;
-  EnviaComando ;
-
-  Result := StringToFloatDef(
-     RemoveString('.', FiscNETResposta.Params.Values['ValorMoeda'] ), 0) ;
+  Result := LeMoeda( 'TotalDiaDescontos' ) ;
 end;
 
 function TACBrECFFiscNET.GetTotalTroco: Double;
 begin
-  FiscNETComando.NomeComando := 'LeMoeda' ;
-  FiscNETComando.AddParamString('NomeDadoMonetario','TotalDiaTroco') ;
-  EnviaComando ;
-
-  Result := StringToFloatDef(
-     RemoveString('.', FiscNETResposta.Params.Values['ValorMoeda'] ), 0) ;
+  Result := LeMoeda( 'TotalDiaTroco' ) ;
 end;
-
 
 function TACBrECFFiscNET.GetTotalDescontosISSQN: Double;
 begin
-  FiscNETComando.NomeComando := 'LeMoeda' ;
-  FiscNETComando.AddParamString('NomeDadoMonetario','TotalDiaDescontosISSQN') ;
-  EnviaComando ;
-
-  Result := StringToFloatDef(
-     RemoveString('.', FiscNETResposta.Params.Values['ValorMoeda'] ), 0) ;
+  Result := LeMoeda( 'TotalDiaDescontosISSQN' ) ;
 end;
 
 function TACBrECFFiscNET.GetTotalSubstituicaoTributaria: Double;
 begin
-  FiscNETComando.NomeComando := 'LeMoeda' ;
-  FiscNETComando.AddParamString('NomeDadoMonetario','TotalDiaSubstituicaoTributariaICMS') ;
-  EnviaComando ;
-
-  Result := StringToFloatDef(
-     RemoveString('.', FiscNETResposta.Params.Values['ValorMoeda'] ), 0) ;
+  Result := LeMoeda( 'TotalDiaSubstituicaoTributariaICMS' ) ;
 end;
 
 function TACBrECFFiscNET.GetTotalSubstituicaoTributariaISSQN: Double;
 begin
-  FiscNETComando.NomeComando := 'LeMoeda' ;
-  FiscNETComando.AddParamString('NomeDadoMonetario','TotalDiaSubstituicaoTributariaISSQN') ;
-  EnviaComando ;
-
-  Result := StringToFloatDef(
-     RemoveString('.', FiscNETResposta.Params.Values['ValorMoeda'] ), 0) ;
+  Result := LeMoeda( 'TotalDiaSubstituicaoTributariaISSQN' ) ;
 end;
 
 function TACBrECFFiscNET.GetTotalIsencao: Double;
 begin
-  FiscNETComando.NomeComando := 'LeMoeda' ;
-  FiscNETComando.AddParamString('NomeDadoMonetario','TotalDiaIsencaoICMS') ;
-  EnviaComando ;
-
-  Result := StringToFloatDef(
-     RemoveString('.', FiscNETResposta.Params.Values['ValorMoeda'] ), 0) ;
+  Result := LeMoeda( 'TotalDiaIsencaoICMS' ) ;
 end;
 
 function TACBrECFFiscNET.GetTotalIsencaoISSQN: Double;
 begin
-  FiscNETComando.NomeComando := 'LeMoeda' ;
-  FiscNETComando.AddParamString('NomeDadoMonetario','TotalDiaIsencaoISSQN') ;
-  EnviaComando ;
-
-  Result := StringToFloatDef(
-     RemoveString('.', FiscNETResposta.Params.Values['ValorMoeda'] ), 0) ;
+  Result := LeMoeda( 'TotalDiaIsencaoISSQN' ) ;
 end;
 
 function TACBrECFFiscNET.GetTotalNaoTributado: Double;
 begin
-  FiscNETComando.NomeComando := 'LeMoeda' ;
-  FiscNETComando.AddParamString('NomeDadoMonetario','TotalDiaNaoTributadoICMS') ;
-  EnviaComando ;
-
-  Result := StringToFloatDef(
-     RemoveString('.', FiscNETResposta.Params.Values['ValorMoeda'] ), 0) ;
+  Result := LeMoeda( 'TotalDiaNaoTributadoICMS' ) ;
 end;
 
 function TACBrECFFiscNET.GetTotalNaoTributadoISSQN: Double;
 begin
-  FiscNETComando.NomeComando := 'LeMoeda' ;
-  FiscNETComando.AddParamString('NomeDadoMonetario','TotalDiaNaoTributadoISSQN') ;
-  EnviaComando ;
+  Result := LeMoeda( 'TotalDiaNaoTributadoISSQN' ) ;
+end;
 
-  Result := StringToFloatDef(
-     RemoveString('.', FiscNETResposta.Params.Values['ValorMoeda'] ), 0) ;
+function TACBrECFFiscNET.GetTotalAcrescimosOPNF: Double;
+begin
+  Result := LeMoeda( 'TotalDiaAcrescimosNaoFiscais' ) ;
+end;
+
+function TACBrECFFiscNET.GetTotalCancelamentosOPNF: Double;
+begin
+  Result := LeMoeda( 'TotalDiaCancelamentosNaoFiscais' ) ;
+end;
+
+function TACBrECFFiscNET.GetTotalDescontosOPNF: Double;
+begin
+  Result := LeMoeda( 'TotalDiaDescontosNaoFiscais' ) ;
 end;
 
 function TACBrECFFiscNET.GetVendaBruta: Double;
 begin
-  FiscNETComando.NomeComando := 'LeMoeda' ;
-  FiscNETComando.AddParamString('NomeDadoMonetario','TotalDiaVendaBruta') ;
-  EnviaComando ;
-
-  Result := StringToFloatDef(
-     RemoveString('.', FiscNETResposta.Params.Values['ValorMoeda'] ), 0) ;
+  Result := LeMoeda( 'TotalDiaVendaBruta' ) ;
 end;
 
 function TACBrECFFiscNET.GetNumCOOInicial: String;
 begin
-  FiscNETComando.NomeComando := 'LeInteiro' ;
-  FiscNETComando.AddParamString('NomeInteiro','COOInicioDia') ;
-  EnviaComando ;
-
-  Result := IntToStrZero(  StrToIntDef(
-                  FiscNETResposta.Params.Values['ValorInteiro'],0 ), 6) ;
+  Result := IntToStrZero( LeInteiro( 'COOInicioDia' ), 6) ;
 end;
 
 function TACBrECFFiscNET.GetNumUltimoItem: Integer;
 begin
-  FiscNETComando.NomeComando := 'LeInteiro' ;
-  FiscNETComando.AddParamString('NomeInteiro','ContadorDocUltimoItemVendido') ;
-  EnviaComando ;
-
-  Result := StrToIntDef( FiscNETResposta.Params.Values['ValorInteiro'],0 ) ;
+  Result := LeInteiro( 'ContadorDocUltimoItemVendido' );
 end;
 
 procedure TACBrECFFiscNET.AbreNaoFiscal(CPF_CNPJ : String ; Nome : String ;
@@ -2540,11 +2331,7 @@ begin
   if fsArredonda < 0 then
   begin
      try
-        FiscNETComando.NomeComando := 'LeInteiro' ;
-        FiscNETComando.AddParamString('NomeInteiro','Arredondamento') ;
-        EnviaComando ;
-
-        fsArredonda :=  StrToIntDef( FiscNETResposta.Params.Values['ValorInteiro'],0 ) ;
+        fsArredonda := LeInteiro( 'Arredondamento' ) ;
      except
         on E : Exception do
         begin
@@ -2566,11 +2353,7 @@ function TACBrECFFiscNET.GetTipoUltimoDocumento : TACBrECFTipoDocumento ;
 var
    Tipo : Integer ;
 begin
-  FiscNETComando.NomeComando := 'LeInteiro' ;
-  FiscNETComando.AddParamString('NomeInteiro','TipoUltimoDocEmitido') ;
-  EnviaComando ;
-
-  Tipo := StrToIntDef( FiscNETResposta.Params.Values['ValorInteiro'] ,0) ;
+  Tipo := LeInteiro( 'TipoUltimoDocEmitido' ) ;
 
   case Tipo of
     1        : Result := docLX;
@@ -2718,14 +2501,8 @@ begin
      CarregaRelatoriosGerenciais ;
 
   For A := 0 to RelatoriosGerenciais.Count-1 do
-  begin
-     FiscNETComando.NomeComando := 'LeInteiro' ;
-     FiscNETComando.AddParamString('NomeInteiro','CER['+RelatoriosGerenciais[A].Indice+']');
-     EnviaComando ;
-
-     RelatoriosGerenciais[A].Contador := StrToIntDef(
-        FiscNETResposta.Params.Values['ValorInteiro'], 0) ;
-  end ;
+     RelatoriosGerenciais[A].Contador := LeInteiro(
+        'CER['+RelatoriosGerenciais[A].Indice+']');
 end ;
 
 procedure TACBrECFFiscNET.ProgramaRelatorioGerencial(var Descricao: String;
@@ -2765,20 +2542,14 @@ end;
 
 function TACBrECFFiscNET.GetPAF: String;   
 begin
-  FiscNETComando.NomeComando := 'LeTexto' ;
-  FiscNETComando.AddParamString('NomeTexto','TextoLivre') ;
-  EnviaComando ;
-  fsPAF  := FiscNETResposta.Params.Values['ValorTexto'] ;
+  fsPAF  := LeTexto( 'TextoLivre' ) ;
   Result := fsPAf ;
 end;
 
 function TACBrECFFiscNET.GetParamDescontoISSQN: Boolean;
 begin
   try
-    FiscNETComando.NomeComando := 'LeInteiro' ;
-    FiscNETComando.AddParamString('NomeInteiro','PermiteISS') ;
-    EnviaComando ;
-    Result  := StrToIntDef(FiscNETResposta.Params.Values['ValorInteiro'], 0) = 15 ;
+    Result := (LeInteiro( 'PermiteISS' ) = 15) ;
   except
      On E : Exception do
      begin
@@ -2839,6 +2610,33 @@ begin
      FiscNetFunctionDetect('Leitura.dll', 'DLLReadLeMemorias',  @xDLLReadLeMemorias );
      FiscNetFunctionDetect('ATO17.dll',   'DLLATO17GeraArquivo', @xDLLATO17GeraArquivo );
    end ;
+end;
+
+function TACBrECFFiscNET.LeMoeda(const Registrador: String): Double;
+begin
+   FiscNETComando.NomeComando := 'LeMoeda' ;
+   FiscNETComando.AddParamString('NomeDadoMonetario', Registrador ) ;
+   EnviaComando ;
+
+   Result := StringToFloatDef(
+      RemoveString('.', FiscNETResposta.Params.Values['ValorMoeda'] ), 0) ;
+end;
+
+function TACBrECFFiscNET.LeInteiro(const Registrador: String): Integer;
+begin
+  FiscNETComando.NomeComando := 'LeInteiro' ;
+  FiscNETComando.AddParamString('NomeInteiro', Registrador ) ;
+  EnviaComando ;
+
+  Result := StrToIntDef( FiscNETResposta.Params.Values['ValorInteiro'], 0 );
+end;
+
+function TACBrECFFiscNET.LeTexto(const Registrador: String): String;
+begin
+  FiscNETComando.NomeComando := 'LeTexto';
+  FiscNETComando.AddParamString('NomeTexto', Registrador );
+  EnviaComando;
+  Result := FiscNETResposta.Params.Values['ValorTexto'] ;
 end;
 
 procedure TACBrECFFiscNET.AbrePortaSerialDLL(const Porta, Path: String);
@@ -3206,12 +3004,8 @@ begin
     ECFCRO := StrToIntDef( NumCRO, 0);
   end;
 
-  FiscNETComando.NomeComando := 'LeMoeda' ;
-  FiscNETComando.AddParamString( 'NomeDadoMonetario','VendaBrutaReducao['+
-                                 IntToStr(ECFCRZ) + ']') ;
   EnviaComando ;
-  ECFVBruta := StringToFloatDef(
-     RemoveString('.', FiscNETResposta.Params.Values['ValorMoeda'] ), 0) ;
+  ECFVBruta := LeMoeda( 'VendaBrutaReducao['+IntToStr(ECFCRZ) + ']' ) ;
 
   FiscNETComando.NomeComando := 'LeTexto' ;
   FiscNETComando.AddParamString( 'NomeTexto', 'DadosUltimaReducaoZ' );
@@ -3269,9 +3063,6 @@ begin
     IsentoICMS := RoundTo( StrToFloatDef( copy( RetCmd, 365, 14 ), 0 ) / 100, -2 ) ;
 
     { TOTALIZADORES NÃO FISCAIS }
-    // TODO: 14 SANGRIA Sangria                                        379  392
-    // TODO: 14 SUPRIMENTOS Suprimentos                                393  406
-
     S  := Copy(RetCmd,407,126);   // 9 * 14
     SS := Copy(RetCmd,533,36);    // 9 * 4
     for I := 0 to fpComprovantesNaoFiscais.Count - 1 do

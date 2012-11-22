@@ -316,7 +316,10 @@ end ;
 
 procedure TACBrECFEmpresa.SetIE(const AValue : String) ;
 begin
-  fsIE := Trim(LeftStr( OnlyNumber( AValue ), 14));
+  if AValue <> 'ISENTO' then
+     fsIE := Trim(LeftStr( OnlyNumber( AValue ), 14))
+  else
+     fsIE := AValue;
 end ;
 
 procedure TACBrECFEmpresa.SetIM(const AValue : String) ;

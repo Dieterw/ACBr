@@ -51,7 +51,7 @@ uses Graphics, Forms, Windows, SysUtils, Classes,
      {$IFNDEF COMPILER16} JPEG, {$ELSE} Vcl.Imaging.jpeg, {$ENDIF}
      RpDefine, RpBase, RpSystem, RpBars, RpMemo,
      RpRenderText, RpRenderRTF, RpRenderHTML, RpRender, RpRenderPDF,
-     ACBrNFe, pcnConversao, ACBrDANFeCBRave, ACBrNFeUtil;
+     ACBrNFe, pcnConversao, ACBrDANFeCBRave, ACBrNFeUtil, ACBrDFeUtil;
 
 const aHeigthPadrao:Double=5.8;
 
@@ -135,7 +135,7 @@ begin
         BarHeight:=10.0;
         WideFactor:=BarWidth;
         PrintReadable:=False;
-        Text:=NotaUtil.LimpaNumero(InfEvento.chNFe);
+        Text:=DFeUtil.LimpaNumero(InfEvento.chNFe);
         PrintXY(PosBarra,PosY+1);
         Free;
      end;
@@ -193,11 +193,11 @@ begin
            SetFont(FontNameUsed,10);
            Bold:=False;
            Box([],PosX,PosY,148,aHeigthPadrao,'NOME / RAZÃO SOCIAL', EventoRave.ACBrNFe.NotasFiscais.Items[0].NFe.Emit.xNome,taLeftJustify);
-           Box([],XPos,YPos, 42,aHeigthPadrao,'CNPJ / CPF', NotaUtil.FormatarCNPJ(EventoRave.ACBrNFe.NotasFiscais.Items[0].NFe.Emit.CNPJCPF),taRightJustify);
+           Box([],XPos,YPos, 42,aHeigthPadrao,'CNPJ / CPF', DFeUtil.FormatarCNPJ(EventoRave.ACBrNFe.NotasFiscais.Items[0].NFe.Emit.CNPJCPF),taRightJustify);
            PosY := YPos + aHeigthPadrao;
            Box([],PosX,PosY, 98,aHeigthPadrao,'ENDEREÇO', EventoRave.ACBrNFe.NotasFiscais.Items[0].NFe.Emit.EnderEmit.xLgr,taLeftJustify);
            Box([],XPos,YPos, 70,aHeigthPadrao,'BAIRRO', EventoRave.ACBrNFe.NotasFiscais.Items[0].NFe.Emit.EnderEmit.xBairro,taLeftJustify);
-           Box([],XPos,YPos, 22,aHeigthPadrao,'CEP', NotaUtil.FormatarCEP(NotaUtil.Poem_Zeros(EventoRave.ACBrNFe.NotasFiscais.Items[0].NFe.Emit.EnderEmit.CEP,8)),taRightJustify);
+           Box([],XPos,YPos, 22,aHeigthPadrao,'CEP', NotaUtil.FormatarCEP(DFeUtil.Poem_Zeros(EventoRave.ACBrNFe.NotasFiscais.Items[0].NFe.Emit.EnderEmit.CEP,8)),taRightJustify);
            PosY := YPos + aHeigthPadrao;
            Box([],PosX,PosY, 88,aHeigthPadrao,'MUNICÍPIO', EventoRave.ACBrNFe.NotasFiscais.Items[0].NFe.Emit.EnderEmit.xMun,taLeftJustify);
            Box([],XPos,YPos, 49,aHeigthPadrao,'FONE/FAX', EventoRave.ACBrNFe.NotasFiscais.Items[0].NFe.Emit.EnderEmit.xBairro,taLeftJustify);
@@ -220,13 +220,13 @@ begin
            Bold:=False;
            Box([],PosX,PosY,148,aHeigthPadrao,'NOME / RAZÃO SOCIAL', EventoRave.ACBrNFe.NotasFiscais.Items[0].NFe.Dest.xNome,taLeftJustify);
            if Length(Trim(EventoRave.ACBrNFe.NotasFiscais.Items[0].NFe.Dest.CNPJCPF)) > 11 then
-              Box([],XPos,YPos, 42,aHeigthPadrao,'CNPJ / CPF', NotaUtil.FormatarCNPJ(EventoRave.ACBrNFe.NotasFiscais.Items[0].NFe.Dest.CNPJCPF),taRightJustify)
+              Box([],XPos,YPos, 42,aHeigthPadrao,'CNPJ / CPF', DFeUtil.FormatarCNPJ(EventoRave.ACBrNFe.NotasFiscais.Items[0].NFe.Dest.CNPJCPF),taRightJustify)
            else
-              Box([],XPos,YPos, 42,aHeigthPadrao,'CNPJ / CPF', NotaUtil.FormatarCPF(EventoRave.ACBrNFe.NotasFiscais.Items[0].NFe.Dest.CNPJCPF),taRightJustify);
+              Box([],XPos,YPos, 42,aHeigthPadrao,'CNPJ / CPF', DFeUtil.FormatarCPF(EventoRave.ACBrNFe.NotasFiscais.Items[0].NFe.Dest.CNPJCPF),taRightJustify);
            PosY := YPos + aHeigthPadrao;
            Box([],PosX,PosY, 98,aHeigthPadrao,'ENDEREÇO', EventoRave.ACBrNFe.NotasFiscais.Items[0].NFe.Dest.EnderDest.xLgr,taLeftJustify);
            Box([],XPos,YPos, 70,aHeigthPadrao,'BAIRRO', EventoRave.ACBrNFe.NotasFiscais.Items[0].NFe.Dest.EnderDest.xBairro,taLeftJustify);
-           Box([],XPos,YPos, 22,aHeigthPadrao,'CEP', NotaUtil.FormatarCEP(NotaUtil.Poem_Zeros(EventoRave.ACBrNFe.NotasFiscais.Items[0].NFe.Dest.EnderDest.CEP,8)),taRightJustify);
+           Box([],XPos,YPos, 22,aHeigthPadrao,'CEP', NotaUtil.FormatarCEP(DFeUtil.Poem_Zeros(EventoRave.ACBrNFe.NotasFiscais.Items[0].NFe.Dest.EnderDest.CEP,8)),taRightJustify);
            PosY := YPos + aHeigthPadrao;
            Box([],PosX,PosY, 88,aHeigthPadrao,'MUNICÍPIO', EventoRave.ACBrNFe.NotasFiscais.Items[0].NFe.Dest.EnderDest.xMun,taLeftJustify);
            Box([],XPos,YPos, 49,aHeigthPadrao,'FONE/FAX', EventoRave.ACBrNFe.NotasFiscais.Items[0].NFe.Dest.EnderDest.xBairro,taLeftJustify);
@@ -286,7 +286,7 @@ begin
       end;
       
      SetFontTitle;
-     PrintXY(PosX,FLastY,'DATA E HORA DA IMPRESSÃO: '+FormatDateTime('dd/mm/yyyy hh:mm:ss',Now)+NotaUtil.SeSenao((Trim(NomeDoUsuario)<>''),' - '+NomeDoUsuario,''));
+     PrintXY(PosX,FLastY,'DATA E HORA DA IMPRESSÃO: '+FormatDateTime('dd/mm/yyyy hh:mm:ss',Now)+DFeUtil.SeSenao((Trim(NomeDoUsuario)<>''),' - '+NomeDoUsuario,''));
      if Trim(NomeDoERP)>'' then
       begin
         PrintRight('Desenvolvido por '+NomeDoERP,FLastX-5);

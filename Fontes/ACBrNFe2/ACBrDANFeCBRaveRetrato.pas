@@ -68,7 +68,7 @@ procedure ImprimirRetrato(aRaveSystem:TDANFeRave);
 
 implementation
 
-uses ACBrNFeUtil, StrUtils, pcnNFe;
+uses ACBrNFeUtil, ACBrDFeUtil, StrUtils, pcnNFe;
 
 function ImprimirCanhoto(PosX,PosY:Double):Double;
 var aWidthOutros,aWidthNFe,
@@ -113,8 +113,8 @@ begin
                 NewLine;
                 if ExibirResumoCanhoto then
                 begin
-                   if NotaUtil.EstaVazio(ExibirResumoCanhoto_Texto) then
-                      PrintCenter('Emissão: '+NotaUtil.FormatDate(DateToStr(Ide.DEmi))+'  Dest/Reme: '+Dest.XNome+'  Valor Total: '+NotaUtil.FormatFloat(Total.ICMSTot.VNF),PosX+(aWidthOutros/2))
+                   if DFeUtil.EstaVazio(ExibirResumoCanhoto_Texto) then
+                      PrintCenter('Emissão: '+DFeUtil.FormatDate(DateToStr(Ide.DEmi))+'  Dest/Reme: '+Dest.XNome+'  Valor Total: '+DFeUtil.FormatFloat(Total.ICMSTot.VNF),PosX+(aWidthOutros/2))
                    else
                       PrintCenter(ExibirResumoCanhoto_Texto,PosX+(aWidthOutros/2));
                 end;
@@ -135,7 +135,7 @@ begin
                 PrintCenter(vEnd,PosX+(aWidthOutros/2));
                 NewLine;
                 if ExibirResumoCanhoto then
-                   PrintCenter('Emissão: '+NotaUtil.FormatDate(DateToStr(Ide.DEmi))+'  Dest/Reme: '+Dest.XNome+'  Valor Total: '+NotaUtil.FormatFloat(Total.ICMSTot.VNF),PosX+(aWidthOutros/2));
+                   PrintCenter('Emissão: '+DFeUtil.FormatDate(DateToStr(Ide.DEmi))+'  Dest/Reme: '+Dest.XNome+'  Valor Total: '+DFeUtil.FormatFloat(Total.ICMSTot.VNF),PosX+(aWidthOutros/2));
              end;
           end;
         end;
@@ -342,7 +342,7 @@ begin
               vTemp:='';
            PrintCenter(vEnd,CenterX);
            NewLine;
-           vEnd:=vTemp+XBairro+' - '+NotaUtil.FormatarCEP(NotaUtil.Poem_Zeros(CEP,8));
+           vEnd:=vTemp+XBairro+' - '+NotaUtil.FormatarCEP(DFeUtil.Poem_Zeros(CEP,8));
            PrintCenter(vEnd,CenterX);
            NewLine;
            vEnd:=XMun+' - '+UF;
@@ -411,7 +411,7 @@ begin
      Box([],PosX+30,PosY+14.5,4,4);
      SetFont(FontNameUsed,FontSizeIdentDoc_Outros);
      Bold:=True;
-     PrintXY(PosX+31,PosY+17.8,NotaUtil.SeSenao(Ide.TpNF=tnEntrada,'0','1'));
+     PrintXY(PosX+31,PosY+17.8,DFeUtil.SeSenao(Ide.TpNF=tnEntrada,'0','1'));
      GotoXY(PosX,PosY+20.4);
      NewLine;
      PrintCenter('N.º '+FNumeroNF,CenterX);
@@ -464,8 +464,8 @@ begin
          aProtocolo := ProtocoloNFe;
          if (ACBrNFe.NotasFiscais.Items[FNFIndex].NFe.Ide.tpEmis in [teNormal,teSCAN]) then
          begin
-            if NotaUtil.EstaVazio(aProtocolo) then
-               aProtocolo:=Trim(procNFe.nProt)+' '+NotaUtil.SeSenao(procNFe.dhRecbto<>0,DateTimeToStr(procNFe.dhRecbto),'');
+            if DFeUtil.EstaVazio(aProtocolo) then
+               aProtocolo:=Trim(procNFe.nProt)+' '+DFeUtil.SeSenao(procNFe.dhRecbto<>0,DateTimeToStr(procNFe.dhRecbto),'');
             if ((NFeCancelada) or
                 (ACBrNFe.NotasFiscais.Items[FNFIndex].NFe.procNFe.cStat in [101,151])) then
                Box([fsLeft,fsTop],PosX,YPos,aWidth,aHeigthPadrao,'PROTOCOLO DE HOMOLOGAÇÃO DO CANCELAMENTO',aProtocolo,taCenter,True)
@@ -491,7 +491,7 @@ begin
             BarHeight:=10.0;
             WideFactor:=BarWidth;
             PrintReadable:=False;
-            Text:=NotaUtil.LimpaNumero(FChaveNFe);
+            Text:=DFeUtil.LimpaNumero(FChaveNFe);
             PrintXY(PosX+(aWidth/2),PosY+1);
             Free;
          end;
@@ -508,15 +508,15 @@ begin
                BarHeight:=10.0;
                WideFactor:=BarWidth;
                PrintReadable:=False;
-               Text:=NotaUtil.LimpaNumero(aChaveContigencia);
+               Text:=DFeUtil.LimpaNumero(aChaveContigencia);
                PrintXY(PosX+(aWidth/2),PosYCodBarraContigencia+1);
                Free;
             end;
          end
          else
          begin
-            SetFont(FontNameUsed,NotaUtil.SeSenao(Pos('Courier',FontNameUsed)>0,8,9));
-            if NotaUtil.LimpaNumero(aProtocolo)='' then
+            SetFont(FontNameUsed,DFeUtil.SeSenao(Pos('Courier',FontNameUsed)>0,8,9));
+            if DFeUtil.LimpaNumero(aProtocolo)='' then
             begin
               Bold:=True;
               FontColor:=clRed;
@@ -570,7 +570,7 @@ begin
      begin
        Box([fsTop],PosX,YPos,82,aHeigthPadrao,'INSCRIÇÃO ESTADUAL',Emit.IE,taLeftJustify);
        Box([fsTop,fsLeft],XPos,YPos,75,aHeigthPadrao,'INSCRIÇÃO ESTADUAL DO SUBST. TRIBUTÁRIO',Emit.IEST,taLeftJustify);
-       Box([fsTop,fsLeft],XPos,YPos,87,aHeigthPadrao,'C.N.P.J.',NotaUtil.FormatarCNPJ(Emit.CNPJCPF),taLeftJustify,True);
+       Box([fsTop,fsLeft],XPos,YPos,87,aHeigthPadrao,'C.N.P.J.',DFeUtil.FormatarCNPJ(Emit.CNPJCPF),taLeftJustify,True);
      end
      else begin
        Box([fsTop,fsLeft],XPos,YPos,87,aHeigthPadrao,' ','',taLeftJustify,True);
@@ -604,10 +604,10 @@ begin
      TituloDoBloco(PosX,PosY,'DESTINATÁRIO / REMETENTE');
      Box([],PosX,YPos,132,aHeigthPadrao,'Nome / Razão Social',Dest.XNome);
      if Length(Trim(Dest.CNPJCPF)) > 11 then
-       Box([fsLeft],XPos,YPos,41,aHeigthPadrao,'CNPJ / CPF',NotaUtil.FormatarCNPJ(Dest.CNPJCPF),taCenter)
+       Box([fsLeft],XPos,YPos,41,aHeigthPadrao,'CNPJ / CPF',DFeUtil.FormatarCNPJ(Dest.CNPJCPF),taCenter)
      else
-       Box([fsLeft],XPos,YPos,41,aHeigthPadrao,'CNPJ / CPF',NotaUtil.FormatarCPF(Dest.CNPJCPF),taCenter);
-     Box([fsLeft],XPos,YPos,21,aHeigthPadrao,'Data de Emissão',NotaUtil.FormatDate(DateToStr(Ide.DEmi)),taCenter,True);
+       Box([fsLeft],XPos,YPos,41,aHeigthPadrao,'CNPJ / CPF',DFeUtil.FormatarCPF(Dest.CNPJCPF),taCenter);
+     Box([fsLeft],XPos,YPos,21,aHeigthPadrao,'Data de Emissão',DFeUtil.FormatDate(DateToStr(Ide.DEmi)),taCenter,True);
      with Dest.EnderDest do
       begin
        vEnd:=XLgr;
@@ -617,8 +617,8 @@ begin
           vEnd:=vEnd+', '+XCpl;
        Box([fsTop],PosX,YPos,93,aHeigthPadrao,'Endereço',vEnd);
        Box([fsTop,fsLeft],XPos,YPos,50,aHeigthPadrao,'Bairro',XBairro);
-       Box([fsTop,fsLeft],XPos,YPos,30,aHeigthPadrao,'CEP',NotaUtil.FormatarCEP(NotaUtil.Poem_Zeros(CEP,8)),taCenter);
-       Box([fsTop,fsLeft],XPos,YPos,21,aHeigthPadrao,'Data de '+vEntSai,NotaUtil.FormatDate(DateToStr(Ide.DSaiEnt)),taCenter,True);
+       Box([fsTop,fsLeft],XPos,YPos,30,aHeigthPadrao,'CEP',NotaUtil.FormatarCEP(DFeUtil.Poem_Zeros(CEP,8)),taCenter);
+       Box([fsTop,fsLeft],XPos,YPos,21,aHeigthPadrao,'Data de '+vEntSai,DFeUtil.FormatDate(DateToStr(Ide.DSaiEnt)),taCenter,True);
        Box([fsTop],PosX,YPos,85,aHeigthPadrao,'Município',XMun);
        Box([fsTop,fsLeft],XPos,YPos,40,aHeigthPadrao,'Fone / Fax',NotaUtil.FormatarFone(Fone),taCenter);
        Box([fsTop,fsLeft],XPos,YPos,10,aHeigthPadrao,'Estado',UF,taCenter);
@@ -641,7 +641,7 @@ begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
      //Ocultar Local se não for informado CNPJ
-     if NotaUtil.EstaVazio(Retirada.CNPJCPF) then
+     if DFeUtil.EstaVazio(Retirada.CNPJCPF) then
       begin
         Result:=PosY;
         exit;
@@ -654,9 +654,9 @@ begin
        if FontNameUsed = 'Courier New' then
           FontSizeText:=8;
        if Length(Trim(CNPJCPF)) > 11 then
-         Box([],XPos,YPos,34,aHeigthPadrao,'CNPJ/CPF',NotaUtil.FormatarCNPJ(CNPJCPF),taCenter)
+         Box([],XPos,YPos,34,aHeigthPadrao,'CNPJ/CPF',DFeUtil.FormatarCNPJ(CNPJCPF),taCenter)
        else
-         Box([],XPos,YPos,34,aHeigthPadrao,'CNPJ/CPF',NotaUtil.FormatarCPF(CNPJCPF),taCenter);
+         Box([],XPos,YPos,34,aHeigthPadrao,'CNPJ/CPF',DFeUtil.FormatarCPF(CNPJCPF),taCenter);
        FontSizeText:=wtemp_FontSizeText;
 
        vEnd:=XLgr;
@@ -680,7 +680,7 @@ begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
      //Ocultar Local se não for informado CNPJ
-     if NotaUtil.EstaVazio(Entrega.CNPJCPF) then
+     if DFeUtil.EstaVazio(Entrega.CNPJCPF) then
       begin
         Result:=PosY;
         exit;
@@ -693,9 +693,9 @@ begin
        if FontNameUsed = 'Courier New' then
           FontSizeText:=8;
        if Length(Trim(CNPJCPF)) > 11 then
-         Box([],XPos,YPos,34,aHeigthPadrao,'CNPJ/CPF',NotaUtil.FormatarCNPJ(CNPJCPF),taCenter)
+         Box([],XPos,YPos,34,aHeigthPadrao,'CNPJ/CPF',DFeUtil.FormatarCNPJ(CNPJCPF),taCenter)
        else
-         Box([],XPos,YPos,34,aHeigthPadrao,'CNPJ/CPF',NotaUtil.FormatarCPF(CNPJCPF),taCenter);
+         Box([],XPos,YPos,34,aHeigthPadrao,'CNPJ/CPF',DFeUtil.FormatarCPF(CNPJCPF),taCenter);
        FontSizeText:=wtemp_FontSizeText;
 
        vEnd:=XLgr;
@@ -720,7 +720,7 @@ begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
       //Ocultar se não for informado nenhuma
-      if (NotaUtil.EstaVazio(Cobr.Fat.nFat)) then
+      if (DFeUtil.EstaVazio(Cobr.Fat.nFat)) then
       begin
          if (Cobr.Dup.Count=0) then
          begin
@@ -745,12 +745,12 @@ begin
 
      TituloDoBloco(PosX,PosY,'FATURA/DUPLICATAS');
      YY2:=0;
-     if not (NotaUtil.EstaVazio(Cobr.Fat.nFat)) then
+     if not (DFeUtil.EstaVazio(Cobr.Fat.nFat)) then
      begin
         Box([fsRigth],XPos,YPos,30,aHeigthPadrao,'Número da Fatura',Cobr.Fat.nFat,taLeftJustify);
-        Box([fsLeft,fsRigth],XPos,YPos,30,aHeigthPadrao,'Valor Original',NotaUtil.FormatFloat(Cobr.Fat.vOrig),taLeftJustify);
-        Box([fsLeft,fsRigth],XPos,YPos,30,aHeigthPadrao,'Valor do Desconto',NotaUtil.FormatFloat(Cobr.Fat.vDesc),taLeftJustify);
-        Box([fsLeft],XPos,YPos,30,aHeigthPadrao,'Valor Líquido',NotaUtil.FormatFloat(Cobr.Fat.vLiq),taLeftJustify,true);
+        Box([fsLeft,fsRigth],XPos,YPos,30,aHeigthPadrao,'Valor Original',DFeUtil.FormatFloat(Cobr.Fat.vOrig),taLeftJustify);
+        Box([fsLeft,fsRigth],XPos,YPos,30,aHeigthPadrao,'Valor do Desconto',DFeUtil.FormatFloat(Cobr.Fat.vDesc),taLeftJustify);
+        Box([fsLeft],XPos,YPos,30,aHeigthPadrao,'Valor Líquido',DFeUtil.FormatFloat(Cobr.Fat.vLiq),taLeftJustify,true);
         YY2:=aHeigthPadrao;
      end;
      YY:=YPos;
@@ -787,8 +787,8 @@ begin
           with Cobr.Dup.Items[f] do
            begin
             PrintTab(NDup);
-            PrintTab(NotaUtil.FormatDate(DateToStr(DVenc)));
-            PrintTab(NotaUtil.FormatFloat(VDup));
+            PrintTab(DFeUtil.FormatDate(DateToStr(DVenc)));
+            PrintTab(DFeUtil.FormatFloat(VDup));
             Inc(q);
             if q>3 then
              begin
@@ -816,18 +816,18 @@ begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
      TituloDoBloco(PosX,PosY,'CÁLCULO DO IMPOSTO');
-     Box([],PosX,YPos,38,aHeigthPadrao,'Base de Cálculo do ICMS',NotaUtil.FormatFloat(Total.ICMSTot.VBC),taRightJustify);
-     Box([fsLeft],XPos,YPos,38,aHeigthPadrao,'Valor do ICMS',NotaUtil.FormatFloat(Total.ICMSTot.VICMS),taRightJustify);
-     Box([fsLeft],XPos,YPos,38,aHeigthPadrao,'Base Cálculo do ICMS Subst.',NotaUtil.FormatFloat(Total.ICMSTot.vBCST),taRightJustify);
-     Box([fsLeft],XPos,YPos,38,aHeigthPadrao,'Valor do ICMS Subst.',NotaUtil.FormatFloat(Total.ICMSTot.vST),taRightJustify);
-     Box([fsLeft],XPos,YPos,42,aHeigthPadrao,'Valor Total dos Produtos',NotaUtil.FormatFloat(Total.ICMSTot.VProd),taRightJustify,True);
+     Box([],PosX,YPos,38,aHeigthPadrao,'Base de Cálculo do ICMS',DFeUtil.FormatFloat(Total.ICMSTot.VBC),taRightJustify);
+     Box([fsLeft],XPos,YPos,38,aHeigthPadrao,'Valor do ICMS',DFeUtil.FormatFloat(Total.ICMSTot.VICMS),taRightJustify);
+     Box([fsLeft],XPos,YPos,38,aHeigthPadrao,'Base Cálculo do ICMS Subst.',DFeUtil.FormatFloat(Total.ICMSTot.vBCST),taRightJustify);
+     Box([fsLeft],XPos,YPos,38,aHeigthPadrao,'Valor do ICMS Subst.',DFeUtil.FormatFloat(Total.ICMSTot.vST),taRightJustify);
+     Box([fsLeft],XPos,YPos,42,aHeigthPadrao,'Valor Total dos Produtos',DFeUtil.FormatFloat(Total.ICMSTot.VProd),taRightJustify,True);
 
-     Box([fsTop],PosX,YPos,30.4,aHeigthPadrao,'Valor do Frete',NotaUtil.FormatFloat(Total.ICMSTot.VFrete),taRightJustify);
-     Box([fsTop,fsLeft],XPos,YPos,30.4,aHeigthPadrao,'Valor do Seguro',NotaUtil.FormatFloat(Total.ICMSTot.VSeg),taRightJustify);
-     Box([fsTop,fsLeft],XPos,YPos,30.4,aHeigthPadrao,'Desconto',NotaUtil.FormatFloat(Total.ICMSTot.VDesc),taRightJustify);
-     Box([fsTop,fsLeft],XPos,YPos,30.4,aHeigthPadrao,'Outras Desp. Acessórias',NotaUtil.FormatFloat(Total.ICMSTot.VOutro),taRightJustify);
-     Box([fsTop,fsLeft],XPos,YPos,30.4,aHeigthPadrao,'Valor do IPI',NotaUtil.FormatFloat(Total.ICMSTot.VIPI),taRightJustify);
-     Box([fsTop,fsLeft],XPos,YPos,42,aHeigthPadrao,'VALOR TOTAL DA NOTA FISCAL',NotaUtil.FormatFloat(Total.ICMSTot.VNF),taRightJustify,True,False);
+     Box([fsTop],PosX,YPos,30.4,aHeigthPadrao,'Valor do Frete',DFeUtil.FormatFloat(Total.ICMSTot.VFrete),taRightJustify);
+     Box([fsTop,fsLeft],XPos,YPos,30.4,aHeigthPadrao,'Valor do Seguro',DFeUtil.FormatFloat(Total.ICMSTot.VSeg),taRightJustify);
+     Box([fsTop,fsLeft],XPos,YPos,30.4,aHeigthPadrao,'Desconto',DFeUtil.FormatFloat(Total.ICMSTot.VDesc),taRightJustify);
+     Box([fsTop,fsLeft],XPos,YPos,30.4,aHeigthPadrao,'Outras Desp. Acessórias',DFeUtil.FormatFloat(Total.ICMSTot.VOutro),taRightJustify);
+     Box([fsTop,fsLeft],XPos,YPos,30.4,aHeigthPadrao,'Valor do IPI',DFeUtil.FormatFloat(Total.ICMSTot.VIPI),taRightJustify);
+     Box([fsTop,fsLeft],XPos,YPos,42,aHeigthPadrao,'VALOR TOTAL DA NOTA FISCAL',DFeUtil.FormatFloat(Total.ICMSTot.VNF),taRightJustify,True,False);
 
      Result:=YPos;
   end;
@@ -881,9 +881,9 @@ begin
      if FontNameUsed = 'Courier New' then
         FontSizeText:=8;
      if Length(TRim(Transp.Transporta.CNPJCPF)) > 11 then
-       Box([fsLeft],XPos,YPos,30,aHeigthPadrao,'CNPJ / CPF',NotaUtil.FormatarCNPJ(Transp.Transporta.CNPJCPF),taCenter,True)
+       Box([fsLeft],XPos,YPos,30,aHeigthPadrao,'CNPJ / CPF',DFeUtil.FormatarCNPJ(Transp.Transporta.CNPJCPF),taCenter,True)
      else
-       Box([fsLeft],XPos,YPos,30,aHeigthPadrao,'CNPJ / CPF',NotaUtil.FormatarCPF(Transp.Transporta.CNPJCPF),taCenter,True);
+       Box([fsLeft],XPos,YPos,30,aHeigthPadrao,'CNPJ / CPF',DFeUtil.FormatarCPF(Transp.Transporta.CNPJCPF),taCenter,True);
      FontSizeText:=wtemp_FontSizeText;
 
      Box([fsTop],PosX,YPos,90,aHeigthPadrao,'Endereço',Transp.Transporta.XEnder);
@@ -903,11 +903,11 @@ begin
            Box([fsTop,fsLeft],XPos,YPos,50,aHeigthPadrao,'Marca',Transp.Vol.Items[i].marca,taCenter);
            Box([fsTop,fsLeft],XPos,YPos,30,aHeigthPadrao,'Numero',Transp.Vol.Items[i].nVol,taCenter);
            //if (Transp.Vol.Items[i].pesoB <> 0) then
-              Box([fsTop,fsLeft],XPos,YPos,30,aHeigthPadrao,'Peso Bruto',NotaUtil.FormatFloat(Transp.Vol.Items[i].pesoB,NotaUtil.PreparaCasasDecimais(3)),taRightJustify);
+              Box([fsTop,fsLeft],XPos,YPos,30,aHeigthPadrao,'Peso Bruto',DFeUtil.FormatFloat(Transp.Vol.Items[i].pesoB,NotaUtil.PreparaCasasDecimais(3)),taRightJustify);
            //else
            //   Box([fsTop,fsLeft],XPos,YPos,30,aHeigthPadrao,'Peso Bruto','',taRightJustify);
            //if (Transp.Vol.Items[i].pesoL <> 0) then
-              Box([fsTop,fsLeft],XPos,YPos,30,aHeigthPadrao,'Peso Líquido',NotaUtil.FormatFloat(Transp.Vol.Items[i].pesoL,NotaUtil.PreparaCasasDecimais(3)),taRightJustify,True);
+              Box([fsTop,fsLeft],XPos,YPos,30,aHeigthPadrao,'Peso Líquido',DFeUtil.FormatFloat(Transp.Vol.Items[i].pesoL,NotaUtil.PreparaCasasDecimais(3)),taRightJustify,True);
            //else
            //   Box([fsTop,fsLeft],XPos,YPos,30,aHeigthPadrao,'Peso Líquido','',taRightJustify,True);
         end;
@@ -926,9 +926,9 @@ begin
         Result:=PosY-aHeigthPadrao-4;
         TituloDoBloco(PosX,Result,'CÁLCULO DO ISSQN');
         Box([],PosX,YPos,50,aHeigthPadrao,'Inscrição Municipal',Emit.IM);
-        Box([fsLeft],XPos,YPos,48,aHeigthPadrao,'Valor Total dos Serviços',NotaUtil.FormatFloat(Total.ISSQNtot.vServ),taRightJustify);
-        Box([fsLeft],XPos,YPos,48,aHeigthPadrao,'Base de Cálculo do ISSQN',NotaUtil.FormatFloat(Total.ISSQNtot.vBC),taRightJustify);
-        Box([fsLeft],XPos,YPos,48,aHeigthPadrao,'Valor do ISSQN',NotaUtil.FormatFloat(Total.ISSQNtot.vISS),taRightJustify,True);
+        Box([fsLeft],XPos,YPos,48,aHeigthPadrao,'Valor Total dos Serviços',DFeUtil.FormatFloat(Total.ISSQNtot.vServ),taRightJustify);
+        Box([fsLeft],XPos,YPos,48,aHeigthPadrao,'Base de Cálculo do ISSQN',DFeUtil.FormatFloat(Total.ISSQNtot.vBC),taRightJustify);
+        Box([fsLeft],XPos,YPos,48,aHeigthPadrao,'Valor do ISSQN',DFeUtil.FormatFloat(Total.ISSQNtot.vISS),taRightJustify,True);
       end
      else
         Result:=PosY;
@@ -1162,10 +1162,10 @@ begin
                     begin
                      aDescProduto:=aDescProduto+
                                    ' - LOTE: '+nLote+
-   //                                ' QTDADE: '+NotaUtil.FormatFloat(qLote)+#13+
-                                   ' FABR.: '+NotaUtil.FormatDate(DateToStr(dFab))+
-                                   ' VAL.: '+NotaUtil.FormatDate(DateToStr(dVal))+
-                                   NotaUtil.SeSenao(vPMC>0,' PMC: '+NotaUtil.FormatFloat(vPMC),'');
+   //                                ' QTDADE: '+DFeUtil.FormatFloat(qLote)+#13+
+                                   ' FABR.: '+DFeUtil.FormatDate(DateToStr(dFab))+
+                                   ' VAL.: '+DFeUtil.FormatDate(DateToStr(dVal))+
+                                   DFeUtil.SeSenao(vPMC>0,' PMC: '+DFeUtil.FormatFloat(vPMC),'');
                     end;
                    QtdeMin:=QtdeMin+1;
                  end;
@@ -1212,31 +1212,31 @@ begin
           PrintTab(Prod.CFOP);
           PrintTab(Prod.UCom);
 
-          PrintTab(NotaUtil.FormatFloat(Prod.QCom,NotaUtil.SeSenao(Mask_qCom='',NotaUtil.PreparaCasasDecimais(CasasDecimais_qCom),Mask_qCom)));
-          PrintTab(NotaUtil.FormatFloat(Prod.VUnCom,NotaUtil.SeSenao(Mask_vUnCom='',NotaUtil.PreparaCasasDecimais(CasasDecimais_vUnCom),Mask_vUnCom)));
+          PrintTab(DFeUtil.FormatFloat(Prod.QCom,DFeUtil.SeSenao(Mask_qCom='',NotaUtil.PreparaCasasDecimais(CasasDecimais_qCom),Mask_qCom)));
+          PrintTab(DFeUtil.FormatFloat(Prod.VUnCom,DFeUtil.SeSenao(Mask_vUnCom='',NotaUtil.PreparaCasasDecimais(CasasDecimais_vUnCom),Mask_vUnCom)));
 
           if ImprimirValorLiquido then
-             PrintTab(NotaUtil.FormatFloat(Prod.VProd-Prod.VDesc))
+             PrintTab(DFeUtil.FormatFloat(Prod.VProd-Prod.VDesc))
           else
-             PrintTab(NotaUtil.FormatFloat(Prod.VProd));
+             PrintTab(DFeUtil.FormatFloat(Prod.VProd));
 
           if ImprimirDescPorc then
           begin
             if Prod.vDesc > 0 then
-               PrintTab(NotaUtil.FormatFloat(RoundTo(100-((((Prod.VUnCom*Prod.QCom)-Prod.vDesc)/(Prod.VUnCom*Prod.QCom))*100),-1))+'%')
+               PrintTab(DFeUtil.FormatFloat(RoundTo(100-((((Prod.VUnCom*Prod.QCom)-Prod.vDesc)/(Prod.VUnCom*Prod.QCom))*100),-1))+'%')
             else
-               PrintTab(NotaUtil.FormatFloat(Prod.vDesc));
+               PrintTab(DFeUtil.FormatFloat(Prod.vDesc));
           end
           else
-            PrintTab(NotaUtil.FormatFloat(Prod.vDesc));
+            PrintTab(DFeUtil.FormatFloat(Prod.vDesc));
 
-          PrintTab(NotaUtil.FormatFloat(Imposto.ICMS.vBC));
-          PrintTab(NotaUtil.FormatFloat(Imposto.ICMS.vBCST));
-          PrintTab(NotaUtil.FormatFloat(Imposto.ICMS.vICMSST));
-          PrintTab(NotaUtil.FormatFloat(Imposto.ICMS.vICMS));
-          PrintTab(NotaUtil.FormatFloat(Imposto.IPI.vIPI));
-          PrintTab(NotaUtil.FormatFloat(Imposto.ICMS.pICMS));
-          PrintTab(NotaUtil.FormatFloat(Imposto.IPI.pIPI));
+          PrintTab(DFeUtil.FormatFloat(Imposto.ICMS.vBC));
+          PrintTab(DFeUtil.FormatFloat(Imposto.ICMS.vBCST));
+          PrintTab(DFeUtil.FormatFloat(Imposto.ICMS.vICMSST));
+          PrintTab(DFeUtil.FormatFloat(Imposto.ICMS.vICMS));
+          PrintTab(DFeUtil.FormatFloat(Imposto.IPI.vIPI));
+          PrintTab(DFeUtil.FormatFloat(Imposto.ICMS.pICMS));
+          PrintTab(DFeUtil.FormatFloat(Imposto.IPI.pIPI));
           Memo:=TMemoBuf.Create;
           try
             Memo.PrintStart:=PosX+ColsWidth[1]+0.5;
@@ -1258,8 +1258,8 @@ begin
              PrintTab('');  // 4
              PrintTab('');  // 5
              PrintTab(Prod.uTrib);  // 6
-             PrintTab(NotaUtil.FormatFloat(Prod.qTrib,'0.0000'));
-             PrintTab(NotaUtil.FormatFloat(Prod.vUnTrib,'0.0000'));
+             PrintTab(DFeUtil.FormatFloat(Prod.qTrib,'0.0000'));
+             PrintTab(DFeUtil.FormatFloat(Prod.vUnTrib,'0.0000'));
              End ;
 
           Inc(FDetIndex);
@@ -1351,8 +1351,8 @@ begin
                    end;
         end;
         wInfCpl:=wInfCpl+';'+
-        'DATA/HORA INÍCIO: '+NotaUtil.SeSenao(ide.dhCont = 0,' ',DateTimeToStr(ide.dhCont))+';'+
-        'MOTIVO CONTINGÊNCIA: '+NotaUtil.SeSenao(NotaUtil.EstaVazio(ide.xJust),' ',ide.xJust);
+        'DATA/HORA INÍCIO: '+DFeUtil.SeSenao(ide.dhCont = 0,' ',DateTimeToStr(ide.dhCont))+';'+
+        'MOTIVO CONTINGÊNCIA: '+DFeUtil.SeSenao(DFeUtil.EstaVazio(ide.xJust),' ',ide.xJust);
 
          FMemoInfCpl.Text:=FMemoInfCpl.Text+';;'+wInfCpl;
      end;

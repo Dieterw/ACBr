@@ -51,6 +51,7 @@ Símbolo : Significado
 -- ACBrDFeUtil
 [+] Unificação de funções de mesma funcionalidade das units:
     ACBrNFeUtil, ACBrNFEsUtil, ACBrCTeUtil
+    (por Isaque Pinheiro)
 
 Alterações   10/10/2012 (Italo Jurisato Junior)
 ---------------

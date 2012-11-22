@@ -921,7 +921,7 @@ begin
            //else
            //   Box([fsTop,fsLeft],XPos,YPos,41,aHeigthPadrao+aIncHeigth,'Peso Bruto','',taRightJustify);
            //if (Transp.Vol.Items[i].pesoL <> 0) then
-              Box([fsTop,fsLeft],XPos,YPos,41,aHeigthPadrao+aIncHeigth,'Peso Líquido',DFeUtil.FormatFloat(Transp.Vol.Items[i].pesoL,DFeUtil.PreparaCasasDecimais(3)),taRightJustify,True);
+              Box([fsTop,fsLeft],XPos,YPos,41,aHeigthPadrao+aIncHeigth,'Peso Líquido',DFeUtil.FormatFloat(Transp.Vol.Items[i].pesoL,NotaUtil.PreparaCasasDecimais(3)),taRightJustify,True);
            //else
            //   Box([fsTop,fsLeft],XPos,YPos,41,aHeigthPadrao+aIncHeigth,'Peso Líquido','',taRightJustify,True);
         end;
@@ -1243,7 +1243,7 @@ begin
           PrintTab(Prod.CFOP);
           PrintTab(Prod.UCom);
 
-          PrintTab(DFeUtil.FormatFloat(Prod.QCom,DFeUtil.SeSenao(Mask_qCom='',DFeUtil.PreparaCasasDecimais(CasasDecimais_qCom),Mask_qCom)));
+          PrintTab(DFeUtil.FormatFloat(Prod.QCom,DFeUtil.SeSenao(Mask_qCom='',NotaUtil.PreparaCasasDecimais(CasasDecimais_qCom),Mask_qCom)));
           PrintTab(DFeUtil.FormatFloat(Prod.VUnCom,DFeUtil.SeSenao(Mask_vUnCom='',NotaUtil.PreparaCasasDecimais(CasasDecimais_vUnCom),Mask_vUnCom)));
 
           if ImprimirValorLiquido then

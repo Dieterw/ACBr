@@ -669,7 +669,7 @@ type
 
 implementation
 
-uses ACBrNFeUtil, pcnNFe, Math;
+uses ACBrNFeUtil, ACBrDFeUtil, pcnNFe, Math;
 
 var iLimiteLinhas: Integer = 10;
 iLinhasUtilizadas: Integer = 0;
@@ -720,11 +720,11 @@ end;
 function TfrlDANFeRLRetrato.FormatarFone(AValue: String): String;
 begin
   Result := AValue;
-  if NotaUtil.NaoEstaVazio(AValue) then
+  if DFeUtil.NaoEstaVazio(AValue) then
   begin
-    if Length(NotaUtil.LimpaNumero(AValue)) > 10 then AValue := copy(NotaUtil.LimpaNumero(AValue),2,10); //Casos em que o DDD vem com ZERO antes somando 3 digitos
+    if Length(DFeUtil.LimpaNumero(AValue)) > 10 then AValue := copy(DFeUtil.LimpaNumero(AValue),2,10); //Casos em que o DDD vem com ZERO antes somando 3 digitos
 
-    AValue := NotaUtil.Poem_Zeros(NotaUtil.LimpaNumero(AValue), 10);
+    AValue := DFeUtil.Poem_Zeros(DFeUtil.LimpaNumero(AValue), 10);
     Result := '('+copy(AValue,1,2) + ') ' + copy(AValue,3,4) + '-' + copy(AValue,7,4);
   end;
 end;
@@ -859,7 +859,7 @@ begin
                            '  -  ' +
                            'DEST. / REM.: ' + FNFe.Dest.xNome + '  -  ' +
                            'VALOR TOTAL: R$ ' +
-                           NotaUtil.FormatFloat(FNFe.Total.ICMSTot.vNF,
+                           DFeUtil.FormatFloat(FNFe.Total.ICMSTot.vNF,
                            '###,###,###,##0.00');
         end; // if FResumoCanhoto_Texto <> ''
       rllResumo.Visible := True;
@@ -1180,9 +1180,9 @@ begin
      else
         rllEntradaSaida.Caption := '1';
 
-    rllEmissao.Caption   := NotaUtil.FormatDate(DateToStr(dEmi));
+    rllEmissao.Caption   := DFeUtil.FormatDate(DateToStr(dEmi));
     rllSaida.Caption     := IfThen(DSaiEnt <> 0,
-                                      NotaUtil.FormatDate(DateToStr(dSaiEnt)));
+                                      DFeUtil.FormatDate(DateToStr(dSaiEnt)));
     rllHoraSaida.Caption := IfThen(hSaiEnt <> 0, FormatDateTime('hh:nn:ss', hSaiEnt));
 
     if FNFe.Ide.tpEmis in [teNormal, teSCAN] then
@@ -1268,7 +1268,7 @@ begin
       rllRecebemosDe.Caption := Format (FRecebemoDe, [ XNome ]);
       rllInscricaoEstadual.Caption := IE;
       rllInscrEstSubst.caption := IEST;
-      rllCNPJ.Caption := NotaUtil.FormatarCNPJ(CNPJCPF );
+      rllCNPJ.Caption := DFeUtil.FormatarCNPJ(CNPJCPF );
       rlmEmitente.Lines.Text   := XNome;
       with EnderEmit do
         begin
@@ -1325,10 +1325,10 @@ begin
   with FNFe.Dest do
     begin
       if Length(CNPJCPF) = 14 then
-        rllDestCNPJ.Caption := NotaUtil.FormatarCNPJ(CNPJCPF)
+        rllDestCNPJ.Caption := DFeUtil.FormatarCNPJ(CNPJCPF)
       else
         if Length(CNPJCPF) = 11 then
-          rllDestCNPJ.Caption := NotaUtil.FormatarCPF(CNPJCPF)
+          rllDestCNPJ.Caption := DFeUtil.FormatarCPF(CNPJCPF)
         else
           rllDestCNPJ.Caption := CNPJCPF;
 
@@ -1359,9 +1359,9 @@ begin
       with FNFe.Entrega do
         begin
           if Trim (CNPJCPF) <>  '' then
-            sCNPJ := NotaUtil.FormatarCNPJ(CNPJCPF)
+            sCNPJ := DFeUtil.FormatarCNPJ(CNPJCPF)
           else
-            sCNPJ := NotaUtil.FormatarCPF(CNPJCPF);
+            sCNPJ := DFeUtil.FormatarCPF(CNPJCPF);
 
           if xCpl > '' then
             sEndereco := XLgr + IfThen (Nro = '0', '', ', ' + Nro) + ' - ' + xCpl
@@ -1383,9 +1383,9 @@ begin
       with FNFe.Retirada do
         begin
           if Trim (CNPJCPF) <>  '' then
-            sCNPJ := NotaUtil.FormatarCNPJ(CNPJCPF)
+            sCNPJ := DFeUtil.FormatarCNPJ(CNPJCPF)
           else
-            sCNPJ := NotaUtil.FormatarCPF(CNPJCPF);
+            sCNPJ := DFeUtil.FormatarCPF(CNPJCPF);
 
           if xCpl > '' then
             sEndereco := XLgr + IfThen (Nro = '0', '', ', ' + Nro) + ' - ' + xCpl
@@ -1402,17 +1402,17 @@ procedure TfrlDANFeRLRetrato.Imposto;
 begin
   with FNFe.Total.ICMSTot do
   begin
-    rllBaseICMS.Caption      := NotaUtil.FormatFloat(VBC, '###,###,###,##0.00');
-    rllValorICMS.Caption     := NotaUtil.FormatFloat(VICMS, '###,###,###,##0.00');
-    rllBaseICMST.Caption     := NotaUtil.FormatFloat(VBCST, '###,###,###,##0.00');
-    rllValorICMST.Caption    := NotaUtil.FormatFloat(VST, '###,###,###,##0.00');
-    rllTotalProdutos.Caption := NotaUtil.FormatFloat(VProd, '###,###,###,##0.00');
-    rllValorFrete.Caption    := NotaUtil.FormatFloat(VFrete, '###,###,###,##0.00');
-    rllValorSeguro.Caption   := NotaUtil.FormatFloat(VSeg, '###,###,###,##0.00');
-    rllDescontos.Caption     := NotaUtil.FormatFloat(VDesc, '###,###,###,##0.00');
-    rllAcessorias.Caption    := NotaUtil.FormatFloat(VOutro, '###,###,###,##0.00');
-    rllValorIPI.Caption      := NotaUtil.FormatFloat(VIPI, '###,###,###,##0.00');
-    rllTotalNF.Caption       := NotaUtil.FormatFloat(VNF, '###,###,###,##0.00');
+    rllBaseICMS.Caption      := DFeUtil.FormatFloat(VBC, '###,###,###,##0.00');
+    rllValorICMS.Caption     := DFeUtil.FormatFloat(VICMS, '###,###,###,##0.00');
+    rllBaseICMST.Caption     := DFeUtil.FormatFloat(VBCST, '###,###,###,##0.00');
+    rllValorICMST.Caption    := DFeUtil.FormatFloat(VST, '###,###,###,##0.00');
+    rllTotalProdutos.Caption := DFeUtil.FormatFloat(VProd, '###,###,###,##0.00');
+    rllValorFrete.Caption    := DFeUtil.FormatFloat(VFrete, '###,###,###,##0.00');
+    rllValorSeguro.Caption   := DFeUtil.FormatFloat(VSeg, '###,###,###,##0.00');
+    rllDescontos.Caption     := DFeUtil.FormatFloat(VDesc, '###,###,###,##0.00');
+    rllAcessorias.Caption    := DFeUtil.FormatFloat(VOutro, '###,###,###,##0.00');
+    rllValorIPI.Caption      := DFeUtil.FormatFloat(VIPI, '###,###,###,##0.00');
+    rllTotalNF.Caption       := DFeUtil.FormatFloat(VNF, '###,###,###,##0.00');
   end;
 end;
 
@@ -1436,9 +1436,9 @@ begin
           if Trim (CNPJCPF) <> '' then
             begin
               if length(Trim (CNPJCPF)) <= 11 then
-                rllTransCNPJ.Caption := NotaUtil.FormatarCPF(CNPJCPF)
+                rllTransCNPJ.Caption := DFeUtil.FormatarCPF(CNPJCPF)
               else
-                rllTransCNPJ.Caption := NotaUtil.FormatarCNPJ(CNPJCPF);
+                rllTransCNPJ.Caption := DFeUtil.FormatarCNPJ(CNPJCPF);
             end
           else
             rllTransCNPJ.Caption := '';
@@ -1467,10 +1467,10 @@ begin
         rllTransMarca.Caption      :=  Marca;
         rllTransNumeracao.Caption  :=  NVol ;
         if pesoL > 0 then
-          rllTransPesoLiq.Caption    :=  NotaUtil.FormatFloat(PesoL,
+          rllTransPesoLiq.Caption    :=  DFeUtil.FormatFloat(PesoL,
                                                         '###,###,###,##0.000');
         if pesoB > 0 then
-          rllTransPesoBruto.Caption  :=  NotaUtil.FormatFloat(PesoB,
+          rllTransPesoBruto.Caption  :=  DFeUtil.FormatFloat(PesoB,
                                                         '###,###,###,##0.000');
       end;
    end
@@ -1828,13 +1828,13 @@ begin
           rlbISSQN.Visible := True;
           rllISSQNInscricao.Caption := FNFe.Emit.IM;
           rllISSQNValorServicos.Caption :=
-                                NotaUtil.FormatFloat(FNFe.Total.ISSQNtot.vServ,
+                                DFeUtil.FormatFloat(FNFe.Total.ISSQNtot.vServ,
                                 '###,###,##0.00');
           rllISSQNBaseCalculo.Caption :=
-                                  NotaUtil.FormatFloat(FNFe.Total.ISSQNtot.vBC,
+                                  DFeUtil.FormatFloat(FNFe.Total.ISSQNtot.vBC,
                                   '###,###,##0.00');
           rllISSQNValorISSQN.Caption :=
-                                  NotaUtil.FormatFloat(FNFe.Total.ISSQNtot.vISS,
+                                  DFeUtil.FormatFloat(FNFe.Total.ISSQNtot.vISS,
                                   '###,###,##0.00');
         end
       else
@@ -1899,9 +1899,9 @@ begin
                TRLLabel (FindComponent ('rllFatNum'   + intToStr (x + 1))).Caption :=
                                                                               NDup;
                TRLLabel (FindComponent ('rllFatData'  + intToStr (x + 1))).Caption :=
-                                              NotaUtil.FormatDate(DateToStr(DVenc));
+                                              DFeUtil.FormatDate(DateToStr(DVenc));
                TRLLabel (FindComponent ('rllFatValor' + intToStr (x + 1))).Caption :=
-                                                        NotaUtil.FormatFloat(VDup);
+                                                        DFeUtil.FormatFloat(VDup);
              end;
         end; // if FNFe.Cobr.Dup.Count = 0
     end;  // ipPrazo

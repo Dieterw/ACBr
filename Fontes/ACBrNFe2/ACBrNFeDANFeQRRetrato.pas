@@ -509,27 +509,27 @@ begin
 
                if (CST = cst00) then
                begin
-                  sBCICMS    := NotaUtil.FormatFloat( VBC   );
-                  sALIQICMS  := NotaUtil.FormatFloat( PICMS );
-                  sVALORICMS := NotaUtil.FormatFloat( VICMS );
+                  sBCICMS    := DFeUtil.FormatFloat( VBC   );
+                  sALIQICMS  := DFeUtil.FormatFloat( PICMS );
+                  sVALORICMS := DFeUtil.FormatFloat( VICMS );
                end
                else if (CST = cst10) then
                begin
-                  sBCICMS    := NotaUtil.FormatFloat( VBC   );
-                  sALIQICMS  := NotaUtil.FormatFloat( PICMS );
-                  sVALORICMS := NotaUtil.FormatFloat( VICMS );
+                  sBCICMS    := DFeUtil.FormatFloat( VBC   );
+                  sALIQICMS  := DFeUtil.FormatFloat( PICMS );
+                  sVALORICMS := DFeUtil.FormatFloat( VICMS );
                end
                else if (CST = cst20) then
                begin
-                  sBCICMS    := NotaUtil.FormatFloat( VBC   );
-                  sALIQICMS  := NotaUtil.FormatFloat( PICMS );
-                  sVALORICMS := NotaUtil.FormatFloat( VICMS );
+                  sBCICMS    := DFeUtil.FormatFloat( VBC   );
+                  sALIQICMS  := DFeUtil.FormatFloat( PICMS );
+                  sVALORICMS := DFeUtil.FormatFloat( VICMS );
                end
                else if (CST = cst30) then
                begin
-                  sBCICMS    := NotaUtil.FormatFloat( VBCST   );
-                  sALIQICMS  := NotaUtil.FormatFloat( PICMSST );
-                  sVALORICMS := NotaUtil.FormatFloat( VICMSST );
+                  sBCICMS    := DFeUtil.FormatFloat( VBCST   );
+                  sALIQICMS  := DFeUtil.FormatFloat( PICMSST );
+                  sVALORICMS := DFeUtil.FormatFloat( VICMSST );
                end
                else if (CST = cst40) or (CST = cst41) or (CST = cst50) then
                begin
@@ -537,26 +537,26 @@ begin
                end
                else if (CST = cst51) then
                begin
-                  sBCICMS    := NotaUtil.FormatFloat( VBC   );
-                  sALIQICMS  := NotaUtil.FormatFloat( PICMS );
-                  sVALORICMS := NotaUtil.FormatFloat( VICMS );
+                  sBCICMS    := DFeUtil.FormatFloat( VBC   );
+                  sALIQICMS  := DFeUtil.FormatFloat( PICMS );
+                  sVALORICMS := DFeUtil.FormatFloat( VICMS );
                end
                else if (CST = cst60) then
                begin
-                  sBCICMS    := NotaUtil.FormatFloat( VBCST );
-                  sVALORICMS := NotaUtil.FormatFloat( VICMSST );
+                  sBCICMS    := DFeUtil.FormatFloat( VBCST );
+                  sVALORICMS := DFeUtil.FormatFloat( VICMSST );
                end
                else if (CST = cst70) then
                begin
-                  sBCICMS    := NotaUtil.FormatFloat( VBC   );
-                  sALIQICMS  := NotaUtil.FormatFloat( PICMS );
-                  sVALORICMS := NotaUtil.FormatFloat( VICMS );
+                  sBCICMS    := DFeUtil.FormatFloat( VBC   );
+                  sALIQICMS  := DFeUtil.FormatFloat( PICMS );
+                  sVALORICMS := DFeUtil.FormatFloat( VICMS );
                end
                else if (CST = cst90) then
                begin
-                  sBCICMS    := NotaUtil.FormatFloat( VBC   );
-                  sALIQICMS  := NotaUtil.FormatFloat( PICMS );
-                  sVALORICMS := NotaUtil.FormatFloat( VICMS );
+                  sBCICMS    := DFeUtil.FormatFloat( VBC   );
+                  sALIQICMS  := DFeUtil.FormatFloat( PICMS );
+                  sVALORICMS := DFeUtil.FormatFloat( VICMS );
                end;
             end;
 
@@ -565,8 +565,8 @@ begin
                if (CST = ipi00) or (CST = ipi49) or
                   (CST = ipi50) or (CST = ipi99) then
                begin
-                  sALIQIPI  := NotaUtil.FormatFloat( PIPI );
-                  sVALORIPI := NotaUtil.FormatFloat( VIPI );
+                  sALIQIPI  := DFeUtil.FormatFloat( PIPI );
+                  sVALORIPI := DFeUtil.FormatFloat( VIPI );
                end
             end;
 
@@ -584,9 +584,9 @@ begin
             cdsItens.FieldByName( 'NCM'       ).AsString := NCM;
             cdsItens.FieldByName( 'CFOP'      ).AsString := CFOP;
             cdsItens.FieldByName( 'UNIDADE'   ).AsString := UCom;
-            cdsItens.FieldByName( 'QTDE'      ).AsString := NotaUtil.FormatFloat( QCom );
-            cdsItens.FieldByName( 'VALOR'     ).AsString := NotaUtil.FormatFloat( VUnCom );
-            cdsItens.FieldByName( 'TOTAL'     ).AsString := NotaUtil.FormatFloat( VProd );
+            cdsItens.FieldByName( 'QTDE'      ).AsString := DFeUtil.FormatFloat( QCom );
+            cdsItens.FieldByName( 'VALOR'     ).AsString := DFeUtil.FormatFloat( VUnCom );
+            cdsItens.FieldByName( 'TOTAL'     ).AsString := DFeUtil.FormatFloat( VProd );
             cdsItens.FieldByName( 'CST'       ).AsString := sCST;
             cdsItens.FieldByName( 'BICMS'     ).AsString := sBCICMS;
             cdsItens.FieldByName( 'ALIQICMS'  ).AsString := sALIQICMS;

@@ -777,15 +777,15 @@ var
 // filename : String;
 // Tipo, I : Integer;
 begin
- if not DirectoryExists(NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),
+ if not DirectoryExists(DFeUtil.SeSenao(DFeUtil.EstaVazio(APathSchemas),
                         PathWithDelim(ExtractFileDir(application.ExeName)) + 'Schemas',
                         PathWithDelim(APathSchemas)))
   then raise Exception.Create('Diretório de Schemas não encontrado' + sLineBreak +
-                              NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),
+                              DFeUtil.SeSenao(DFeUtil.EstaVazio(APathSchemas),
                               PathWithDelim(ExtractFileDir(application.ExeName)) + 'Schemas',
                               PathWithDelim(APathSchemas)));
 
- if NotaUtil.EstaVazio(APathSchemas)
+ if DFeUtil.EstaVazio(APathSchemas)
   then schema_filename := PathWithDelim(ExtractFileDir(application.ExeName)) + 'Schemas\' + Servico
   else schema_filename := PathWithDelim(APathSchemas) + Servico;
 
@@ -967,10 +967,10 @@ begin
      URI           := '';
     end
     else begin
-     I := NotaUtil.PosEx('"', AStr, I + 2);
+     I := DFeUtil.PosEx('"', AStr, I + 2);
      if I = 0
       then raise Exception.Create('Não encontrei inicio do URI: aspas inicial');
-     J := NotaUtil.PosEx('"', AStr, I + 1);
+     J := DFeUtil.PosEx('"', AStr, I + 1);
      if J = 0
       then raise Exception.Create('Não encontrei inicio do URI: aspas final');
 
@@ -987,19 +987,19 @@ begin
 
    //// Adicionando Cabeçalho DTD, necessário para xmlsec encontrar o ID ////
    I    := pos('?>', AStr);
-   AStr := copy(AStr, 1, StrToInt(VarToStr(NotaUtil.SeSenao(I>0, I+1, I)))) +
+   AStr := copy(AStr, 1, StrToInt(VarToStr(DFeUtil.SeSenao(I>0, I+1, I)))) +
            cDTDLote +
-           copy(AStr, StrToInt(VarToStr(NotaUtil.SeSenao(I>0, I+2, I))), Length(AStr));
+           copy(AStr, StrToInt(VarToStr(DFeUtil.SeSenao(I>0, I+2, I))), Length(AStr));
 
    AStr := AStr + '<Signature xmlns="http://www.w3.org/2000/09/xmldsig#"'+ AID +
-//                  NotaUtil.SeSenao(URI = '', '>', ' '+Identificador+'="AssLote_'+ URI +'">') +
+//                  DFeUtil.SeSenao(URI = '', '>', ' '+Identificador+'="AssLote_'+ URI +'">') +
                  '<SignedInfo>'+
                   '<CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>'+
                   '<SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />'+
-                  '<Reference URI="' + NotaUtil.SeSenao(URI = '', '">', '#' + URI + '">') +
+                  '<Reference URI="' + DFeUtil.SeSenao(URI = '', '">', '#' + URI + '">') +
                    '<Transforms>'+
                     '<Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />'+
-                   NotaUtil.SeSenao(AProvedor = profintelISS, '',
+                   DFeUtil.SeSenao(AProvedor = profintelISS, '',
                     '<Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />') +
                    '</Transforms>'+
                    '<DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />'+
@@ -1036,10 +1036,10 @@ begin
       end;
      if I <> 0
       then begin
-       I := NotaUtil.PosEx('"', AStr, I + 2);
+       I := DFeUtil.PosEx('"', AStr, I + 2);
        if I = 0
         then raise Exception.Create('Não encontrei inicio do URI: aspas inicial');
-       J := NotaUtil.PosEx('"', AStr, I + 1);
+       J := DFeUtil.PosEx('"', AStr, I + 1);
        if J = 0
         then raise Exception.Create('Não encontrei inicio do URI: aspas final');
 
@@ -1053,19 +1053,19 @@ begin
 
      //// Adicionando Cabeçalho DTD, necessário para xmlsec encontrar o ID ////
      I    := pos('?>', AStr);
-     AStr := copy(AStr, 1, StrToInt(VarToStr(NotaUtil.SeSenao(I>0, I+1, I)))) +
+     AStr := copy(AStr, 1, StrToInt(VarToStr(DFeUtil.SeSenao(I>0, I+1, I)))) +
              cDTDRps +
-             copy(AStr, StrToInt(VarToStr(NotaUtil.SeSenao(I>0, I+2, I))), Length(AStr));
+             copy(AStr, StrToInt(VarToStr(DFeUtil.SeSenao(I>0, I+2, I))), Length(AStr));
 
      Assinatura := '<Signature xmlns="http://www.w3.org/2000/09/xmldsig#"' + AID +
-//                        NotaUtil.SeSenao(URI = '', '>', ' ' + Identificador + '="Ass_' + URI + '">') +
+//                        DFeUtil.SeSenao(URI = '', '>', ' ' + Identificador + '="Ass_' + URI + '">') +
                     '<SignedInfo>' +
                     '<CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>' +
                      '<SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />' +
-                     '<Reference URI="' + NotaUtil.SeSenao(URI = '', '">', '#' + URI + '">') +
+                     '<Reference URI="' + DFeUtil.SeSenao(URI = '', '">', '#' + URI + '">') +
                       '<Transforms>' +
                        '<Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />' +
-                       NotaUtil.SeSenao(AProvedor = profintelISS, '',
+                       DFeUtil.SeSenao(AProvedor = profintelISS, '',
                        '<Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />') +
                       '</Transforms>' +
                       '<DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />' +
@@ -1119,7 +1119,7 @@ begin
    else XmlAss := StringReplace( XmlAss, cDTDRps , '', [] );
 
   PosIni := Pos('<X509Certificate>', XmlAss) -1;
-  PosFim := NotaUtil.PosLast('<X509Certificate>', XmlAss);
+  PosFim := DFeUtil.PosLast('<X509Certificate>', XmlAss);
 
   XmlAss := copy(XmlAss, 1, PosIni) + copy(XmlAss, PosFim, length(XmlAss));
 
@@ -1693,11 +1693,11 @@ begin
    end;
 
   AXML := AXML+'<Signature xmlns="http://www.w3.org/2000/09/xmldsig#"'+
-                     NotaUtil.SeSenao(FURI = '', '',' Id="Ass_'+ FURI +'"')+'>'+
+                     DFeUtil.SeSenao(FURI = '', '',' Id="Ass_'+ FURI +'"')+'>'+
                  '<SignedInfo>'+
                   '<CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />'+
                   '<SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />'+
-                  '<Reference URI="'+NotaUtil.SeSenao(FURI = '', '','#'+FURI)+'">'+
+                  '<Reference URI="'+DFeUtil.SeSenao(FURI = '', '','#'+FURI)+'">'+
                    '<Transforms>'+
                     '<Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />'+
                     '<Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />'+
@@ -1720,12 +1720,12 @@ begin
   I := pos( '?>', AXML );
 
   case Tipo of
-   1: AXML := copy(AXML, 1, StrToInt(VarToStr(NotaUtil.SeSenao(I>0, I+1, I)))) +
+   1: AXML := copy(AXML, 1, StrToInt(VarToStr(DFeUtil.SeSenao(I>0, I+1, I)))) +
               cDTDLote +
-              copy(AXML, StrToInt(VarToStr(NotaUtil.SeSenao(I>0, I+2, I))), Length(AXML));
-   2: AXML := copy(AXML, 1, StrToInt(VarToStr(NotaUtil.SeSenao(I>0, I+1, I)))) +
+              copy(AXML, StrToInt(VarToStr(DFeUtil.SeSenao(I>0, I+2, I))), Length(AXML));
+   2: AXML := copy(AXML, 1, StrToInt(VarToStr(DFeUtil.SeSenao(I>0, I+1, I)))) +
               cDTDRps +
-              copy(AXML, StrToInt(VarToStr(NotaUtil.SeSenao(I>0, I+2, I))), Length(AXML));
+              copy(AXML, StrToInt(VarToStr(DFeUtil.SeSenao(I>0, I+2, I))), Length(AXML));
   end;
 
   if FileExists(ArqPFX) then
@@ -1751,7 +1751,7 @@ begin
   end;
 
   PosIni := Pos( '<X509Certificate>', XmlAss ) -1;
-  PosFim := NotaUtil.PosLast( '<X509Certificate>', XmlAss );
+  PosFim := DFeUtil.PosLast( '<X509Certificate>', XmlAss );
 
   XmlAss := copy( XmlAss, 1, PosIni ) + copy( XmlAss, PosFim, length(XmlAss) );
 

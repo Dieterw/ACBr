@@ -160,11 +160,6 @@ type
 implementation
 
 uses
- {$IFDEF ACBrNFSeOpenSSL}
-   libxml2, libxmlsec, libxslt,
- {$ELSE}
-   ComObj,
- {$ENDIF}
  IniFiles, Variants, ACBrUtil;
 
 class function DFeUtil.EstaVazio(const AValue: String): Boolean;

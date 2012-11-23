@@ -58,7 +58,7 @@ uses ACBrBase,  {Units da ACBr}
      Graphics, Contnrs, Classes;
 
 const
-  CACBrBoleto_Versao = '0.0.46a' ;
+  CACBrBoleto_Versao = '0.0.47a' ;
 
 type
   TACBrTipoCobranca =
@@ -297,6 +297,7 @@ type
     property OrientacoesBanco: TStringList read fpOrientacoesBanco;
 
     function CalcularDigitoVerificador(const ACBrTitulo : TACBrTitulo): String; virtual;
+    function CalcularTamMaximoNossoNumero(const Carteira : String): Integer; virtual;
 
     function TipoOcorrenciaToDescricao(const TipoOcorrencia: TACBrTipoOcorrencia): String; virtual;
     function CodOcorrenciaToTipo(const CodOcorrencia:Integer): TACBrTipoOcorrencia; virtual;
@@ -361,6 +362,7 @@ type
     function CodMotivoRejeicaoToDescricao(const TipoOcorrencia: TACBrTipoOcorrencia;CodMotivo:Integer): String;
 
     function CalcularDigitoVerificador(const ACBrTitulo : TACBrTitulo): String;
+    function CalcularTamMaximoNossoNumero(const Carteira : String): Integer;
 
     function MontarCampoCodigoCedente(const ACBrTitulo: TACBrTitulo): String;
     function MontarCampoNossoNumero(const ACBrTitulo :TACBrTitulo): String;
@@ -568,32 +570,31 @@ type
      property Parcela           :Integer      read fParcela           write SetParcela default 1;
      property TotalParcelas     :Integer      read fTotalParcelas     write SetTotalParcelas default 1;
 
-     //property TipoOcorrencia                 : TACBrTipoOcorrencia read fTipoOcorrencia  write SetTipoOcorrencia default toRemessaRegistrar ;
      property OcorrenciaOriginal : TACBrOcorrencia read  fOcorrenciaOriginal write fOcorrenciaOriginal;
-     //property OcorrenciaOriginal             : String    read fOcorrenciaOriginal  write fOcorrenciaOriginal;
-     //property DescricaoOcorrenciaOriginal    : String    read fDescricaoOcorrenciaOriginal  write fDescricaoOcorrenciaOriginal;
+
      property MotivoRejeicaoComando          : TStrings    read fMotivoRejeicaoComando  write fMotivoRejeicaoComando;
      property DescricaoMotivoRejeicaoComando : TStrings    read fDescricaoMotivoRejeicaoComando  write fDescricaoMotivoRejeicaoComando;
+
      property DataOcorrencia                 : TDateTime read fDataOcorrencia  write fDataOcorrencia;
-     property DataCredito                    : TDateTime read fDataCredito  write fDataCredito;
+     property DataCredito                    : TDateTime read fDataCredito     write fDataCredito;
      property DataAbatimento                 : TDateTime read fDataAbatimento  write fDataAbatimento;
-     property DataDesconto                   : TDateTime read fDataDesconto  write fDataDesconto;
-     property DataMoraJuros                  : TDateTime read fDataMoraJuros  write fDataMoraJuros;
-     property DataProtesto                   : TDateTime read fDataProtesto  write fDataProtesto;
-     property DataBaixa                      : TDateTime read fDataBaixa  write fDataBaixa;
+     property DataDesconto                   : TDateTime read fDataDesconto    write fDataDesconto;
+     property DataMoraJuros                  : TDateTime read fDataMoraJuros   write fDataMoraJuros;
+     property DataProtesto                   : TDateTime read fDataProtesto    write fDataProtesto;
+     property DataBaixa                      : TDateTime read fDataBaixa       write fDataBaixa;
 
      property ValorDespesaCobranca : Currency read fValorDespesaCobranca  write fValorDespesaCobranca;
-     property ValorAbatimento      : Currency read fValorAbatimento  write fValorAbatimento;
-     property ValorDesconto        : Currency read fValorDesconto  write fValorDesconto;
-     property ValorMoraJuros       : Currency read fValorMoraJuros  write fValorMoraJuros;
-     property ValorIOF             : Currency read fValorIOF  write fValorIOF;
-     property ValorOutrasDespesas  : Currency read fValorOutrasDespesas  write fValorOutrasDespesas;
-     property ValorOutrosCreditos  : Currency read fValorOutrosCreditos  write fValorOutrosCreditos;
-     property ValorRecebido        : Currency read fValorRecebido  write fValorRecebido;
-     property Referencia           : String   read fReferencia  write fReferencia;
-     property Versao               : String   read fVersao  write fVersao;
-     property SeuNumero            : String   read fSeuNumero write fSeuNumero;
-     property PercentualMulta      : Double   read fPercentualMulta write fPercentualMulta;
+     property ValorAbatimento      : Currency read fValorAbatimento       write fValorAbatimento;
+     property ValorDesconto        : Currency read fValorDesconto         write fValorDesconto;
+     property ValorMoraJuros       : Currency read fValorMoraJuros        write fValorMoraJuros;
+     property ValorIOF             : Currency read fValorIOF              write fValorIOF;
+     property ValorOutrasDespesas  : Currency read fValorOutrasDespesas   write fValorOutrasDespesas;
+     property ValorOutrosCreditos  : Currency read fValorOutrosCreditos   write fValorOutrosCreditos;
+     property ValorRecebido        : Currency read fValorRecebido         write fValorRecebido;
+     property Referencia           : String   read fReferencia            write fReferencia;
+     property Versao               : String   read fVersao                write fVersao;
+     property SeuNumero            : String   read fSeuNumero             write fSeuNumero;
+     property PercentualMulta      : Double   read fPercentualMulta       write fPercentualMulta;
 
      property TextoLivre : String read fTextoLivre write fTextoLivre;
    end;
@@ -893,13 +894,19 @@ begin
 end;
 
 procedure TACBrTitulo.SetNossoNumero ( const AValue: String ) ;
+var
+  wTamNossoNumero: Integer;
 begin
    with ACBrBoleto.Banco do
    begin
-      if Length(trim(AValue)) > TamanhoMaximoNossoNum then
-         raise Exception.Create( ACBrStr('Tamanho Máximo do Nosso Número é: '+ IntToStr(TamanhoMaximoNossoNum) ));
+      wTamNossoNumero := TamanhoMaximoNossoNum;
+      if wTamNossoNumero < 1 then
+         wTamNossoNumero:= CalcularTamMaximoNossoNumero(Carteira);
 
-      fNossoNumero := padR(trim(AValue),TamanhoMaximoNossoNum,'0');
+      if Length(trim(AValue)) > wTamNossoNumero then
+         raise Exception.Create( ACBrStr('Tamanho Máximo do Nosso Número é: '+ IntToStr(wTamNossoNumero) ));
+
+      fNossoNumero := padR(trim(AValue),wTamNossoNumero,'0');
    end;
 end;
 
@@ -1602,6 +1609,11 @@ begin
    Result:=  BancoClass.CalcularDigitoVerificador(ACBrTitulo);
 end;
 
+function TACBrBanco.CalcularTamMaximoNossoNumero(const Carteira: String): Integer;
+begin
+  Result:= BancoClass.CalcularTamMaximoNossoNumero(Carteira);
+end;
+
 function TACBrBanco.MontarCampoNossoNumero ( const ACBrTitulo: TACBrTitulo
    ) : String;
 begin
@@ -1755,6 +1767,12 @@ end;
 function TACBrBancoClass.CalcularDigitoVerificador(const ACBrTitulo :TACBrTitulo ): String;
 begin
    Result:= '';
+end;
+
+function TACBrBancoClass.CalcularTamMaximoNossoNumero(
+  const Carteira: String): Integer;
+begin
+  Result := ACBrBanco.TamanhoMaximoNossoNum;
 end;
 
 function TACBrBancoClass.TipoOcorrenciaToDescricao(

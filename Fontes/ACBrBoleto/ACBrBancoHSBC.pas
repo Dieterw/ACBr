@@ -49,7 +49,7 @@ type
   private
     function DataToJuliano(const AData: TDateTime): String;
   protected
-
+    function CalcularTamMaximoNossoNumero(const Carteira : String): Integer; override;
   public
     Constructor create(AOwner: TACBrBanco);
     function CalcularDigitoVerificador(const ACBrTitulo:TACBrTitulo): String; override;
@@ -88,13 +88,26 @@ begin
   end;
 end;
 
+function TACBrBancoHSBC.CalcularTamMaximoNossoNumero(
+  const Carteira: String): Integer;
+begin
+   Result := 13;
+
+   if (trim(Carteira) = '') then
+      raise Exception.Create(ACBrStr('Banco HSBC requer que a carteira seja '+
+                                     'informada antes do Nosso Número.'));
+
+   if (trim(Carteira) = 'CSB') or (trim(Carteira) = '1') then
+       Result:= 5;
+end;
+
 constructor TACBrBancoHSBC.create(AOwner: TACBrBanco);
 begin
    inherited create(AOwner);
    fpDigito                := 9;
    fpNome                  := 'HSBC';
    fpNumero                := 399;
-   fpTamanhoMaximoNossoNum := 13;
+   fpTamanhoMaximoNossoNum := 0;
    fpTamanhoAgencia        := 4;
    fpTamanhoConta          := 7;
    fpTamanhoCarteira       := 3;
@@ -145,15 +158,24 @@ end;
 
 function TACBrBancoHSBC.MontarCampoNossoNumero (
    const ACBrTitulo: TACBrTitulo ) : String;
+var
+  wNossoNumero: String;
 begin
   if (ACBrTitulo.Carteira = 'CSB') or (ACBrTitulo.Carteira = '1') then
    begin
+     if Length(ACBrTitulo.NossoNumero) < 6 then
+        wNossoNumero:= padR(trim(ACBrTitulo.ACBrBoleto.Cedente.Convenio),5,'0') +
+                       RightStr(ACBrTitulo.NossoNumero,5)
+     else
+        wNossoNumero:= RightStr(ACBrTitulo.NossoNumero,10);
+
      Modulo.CalculoPadrao;
      Modulo.MultiplicadorFinal := 7;
-     Modulo.Documento := ACBrTitulo.NossoNumero;
+     Modulo.Documento := wNossoNumero;
      Modulo.Calcular;
 
-     Result := RightStr(ACBrTitulo.NossoNumero,10) + AnsiString(IntToStr(Modulo.DigitoFinal));
+
+     Result := RightStr(wNossoNumero,10) + AnsiString(IntToStr(Modulo.DigitoFinal));
    end
   else
      Result := ACBrTitulo.NossoNumero + '-' +

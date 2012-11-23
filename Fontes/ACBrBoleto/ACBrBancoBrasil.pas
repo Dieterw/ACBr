@@ -45,6 +45,7 @@ type
 
   TACBrBancoBrasil = class(TACBrBancoClass)
    protected
+     function CalcularTamMaximoNossoNumero(const Carteira : String): Integer; override;
    private
     function FormataNossoNumero(const ACBrTitulo :TACBrTitulo): String;
    public
@@ -78,7 +79,7 @@ begin
    fpDigito := 9;
    fpNome   := 'Banco do Brasil';
    fpNumero := 001;
-   fpTamanhoMaximoNossoNum := 10;
+   fpTamanhoMaximoNossoNum := 0;
    fpTamanhoConta   := 12;
    fpTamanhoAgencia := 4;
    fpTamanhoCarteira:= 2;
@@ -99,6 +100,35 @@ begin
       Result:= 'X'
    else
       Result:= IntToStr(Modulo.ModuloFinal);
+end;
+
+function TACBrBancoBrasil.CalcularTamMaximoNossoNumero(
+  const Carteira: String): Integer;
+var
+  wCarteira   : String;
+  wTamConvenio: Integer;
+begin
+   Result := 10;
+
+   if (ACBrBanco.ACBrBoleto.Cedente.Convenio = '') then
+      raise Exception.Create(ACBrStr('Banco do Brasil requer que a Convênio do Cedente '+
+                                     'seja informado.'));
+
+   if (Carteira = '') then
+      raise Exception.Create(ACBrStr('Banco do Brasil requer que a carteira seja '+
+                                     'informada antes do Nosso Número.'));
+
+   wCarteira:= Trim(Carteira);
+   wTamConvenio:= Length(Trim(ACBrBanco.ACBrBoleto.Cedente.Convenio));
+
+   if (wCarteira = '18') and (wTamConvenio = 6) then
+      Result := 17
+   else if (wTamConvenio <= 4) then
+      Result := 7
+   else if (wTamConvenio > 4) and (wTamConvenio <= 6) then
+      Result := 5
+   else if (wTamConvenio = 7) then
+      Result := 10;
 end;
 
 function TACBrBancoBrasil.FormataNossoNumero(const ACBrTitulo :TACBrTitulo): String;
@@ -124,8 +154,6 @@ begin
       else if (Length(AConvenio) = 7) and ((ACBrTitulo.Carteira <> '11')) then
           ANossoNumero := padR(AConvenio, 7, '0') + padR(ANossoNumero, 10, '0');
 
-
-         
    end;
    Result := ANossoNumero;
 end;

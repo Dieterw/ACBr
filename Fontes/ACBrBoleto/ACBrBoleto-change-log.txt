@@ -131,7 +131,12 @@ Versao 0.0.10a do FortesReport 06/07/11
     cobrança não registrada.
     (por: Regys Silveira) 
 
-	
+Versai 0.0.47a
+[*] Adicionada função CalcularTamMaximoNossoNumero para tratar o NossoNumero informado, 
+    dessa forma é validado se     o tamanho do nosso número informado é compativel com 
+    A mesma função utilizada no set do Nosso Número pode ser chamada para capturar o 
+    tamanho deste campo.
+    a carteira e convênio da conta do cliente no banco.(Juliana Tamizou)
 	
 Versao 0.0.46a
 [-] Unit Sicred - Corrigida geração do arquivo remessa CNAB400. Apesar do Manual do Banco

@@ -1610,7 +1610,7 @@ begin
                        LFill( NUM_ITEM ) +
                        LFill( COD_ITEM ) +
                        LFill( DESCR_COMPL ) +
-                       DFill( QTD, 5 ) +
+                       LFill( QTD, 0, 5 ) +
                        LFill( UNID ) +
                        LFill( VL_ITEM,0,2 ) +
                        LFill( VL_DESC,0,2 ) +
@@ -1635,15 +1635,15 @@ begin
                        LFill( CST_PIS ) +
                        LFill( VL_BC_PIS,0,2 ) +
                        LFill( ALIQ_PIS_PERC,0,2 ) +
-                       DFill( QUANT_BC_PIS,3 ) +
-                       DFill( ALIQ_PIS_R,4 ) +
+                       LFill( QUANT_BC_PIS,0,3 ) +
+                       LFill( ALIQ_PIS_R,0,4 ) +
                        LFill( VL_PIS,0,2 ) +
                        // LFill( strCST_COFINS ) +
                        LFill( CST_COFINS ) +
                        LFill( VL_BC_COFINS,0,2 ) +
                        LFill( ALIQ_COFINS_PERC,0,2 ) +
-                       DFill( QUANT_BC_COFINS,3 ) +
-                       DFill( ALIQ_COFINS_R,4 ) +
+                       LFill( QUANT_BC_COFINS,0,3 ) +
+                       LFill( ALIQ_COFINS_R,0,4 ) +
                        LFill( VL_COFINS,0,2 ) +
                        LFill( COD_CTA );
           //-- Write

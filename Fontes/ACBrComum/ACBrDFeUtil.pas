@@ -265,8 +265,8 @@ begin
          end;
        else
        begin
-         AValue := Poem_Zeros(AValue), 12);
-         if copy(AValue, 1, 1) = '0' and copy(AValue, 2, 1) = '0'
+         AValue := Poem_Zeros(AValue, 12);
+         if (copy(AValue, 1, 1) = '0') and (copy(AValue, 2, 1) = '0')
            then begin
              ltemp := copy(AValue, 3, 2);
              Result := '(' + lTemp + ')' + copy(AValue, 5, 4) + '-' + copy(AValue, 9, 4);;

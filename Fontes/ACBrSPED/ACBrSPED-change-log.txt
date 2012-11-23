@@ -47,6 +47,15 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 1.01 23/11/2012
+-- ACBrSPEDPisCofins --
+[+] Finalmente..., adicionado algumas funções de conversão de tipos:
+    TypeToStr()
+    StrToType()
+    Alguns nomes de tipos mudaram, mas não afetará seu código ainda, então aconselho
+    a irem passando para o novo nome, deem uma olhada na unit "ACBrEPCBlocos.pas"
+    (por Isaque Pinheiro) 
+
 Versão 1.00a 18/05/2012
 -- ACBrSPEDPisCofins --
 [+] Add bloco "P" (por carlessoflu)

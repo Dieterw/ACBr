@@ -1153,56 +1153,56 @@ var
 begin
   Tipo := NotaUtil.IdentificaTipoSchema(AXML,I) ;
 
- if not DirectoryExists(NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas',PathWithDelim(APathSchemas))) then
+ if not DirectoryExists(DFeUtil.SeSenao(DFeUtil.EstaVazio(APathSchemas),PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas',PathWithDelim(APathSchemas))) then
     raise EACBrNFeException.Create('Diretório de Schemas não encontrado'+sLineBreak+
-                           NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas',PathWithDelim(APathSchemas)));
+                           DFeUtil.SeSenao(DFeUtil.EstaVazio(APathSchemas),PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas',PathWithDelim(APathSchemas)));
 
   case Tipo of
     1:
     begin
-      if NotaUtil.EstaVazio(APathSchemas) then
+      if DFeUtil.EstaVazio(APathSchemas) then
          schema_filename := pchar(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\nfe_v2.00.xsd')
       else
          schema_filename := pchar(PathWithDelim(APathSchemas)+'nfe_v2.00.xsd');
     end;
     2:
     begin
-      if NotaUtil.EstaVazio(APathSchemas) then
+      if DFeUtil.EstaVazio(APathSchemas) then
          schema_filename := pchar(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\cancNFe_v2.00.xsd')
       else
          schema_filename := pchar(PathWithDelim(APathSchemas)+'cancNFe_v2.00.xsd');
     end;
     3:
     begin
-      if NotaUtil.EstaVazio(APathSchemas) then
+      if DFeUtil.EstaVazio(APathSchemas) then
          schema_filename := pchar(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\inutNFe_v2.00.xsd')
       else
          schema_filename := pchar(PathWithDelim(APathSchemas)+'inutNFe_v2.00.xsd');
     end;
     4:
     begin
-      if NotaUtil.EstaVazio(APathSchemas) then
+      if DFeUtil.EstaVazio(APathSchemas) then
          schema_filename := pchar(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\envDPEC_v1.01.xsd')
       else
          schema_filename := pchar(PathWithDelim(APathSchemas)+'envDPEC_v1.01.xsd');
     end;
     5:
     begin
-      if NotaUtil.EstaVazio(APathSchemas) then
+      if DFeUtil.EstaVazio(APathSchemas) then
          schema_filename := pchar(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\envCCe_v1.00.xsd')
       else
          schema_filename := pchar(PathWithDelim(APathSchemas)+'envCCe_v1.00.xsd');
     end;
     6:
     begin
-      if NotaUtil.EstaVazio(APathSchemas) then
+      if DFeUtil.EstaVazio(APathSchemas) then
          schema_filename := pchar(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\envEventoCancNFe_v1.00.xsd')
       else
          schema_filename := pchar(PathWithDelim(APathSchemas)+'envEventoCancNFe_v1.00.xsd');
     end;
     7..10:
     begin
-      if NotaUtil.EstaVazio(APathSchemas) then
+      if DFeUtil.EstaVazio(APathSchemas) then
          schema_filename := pchar(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\envConfRecebto_v1.00.xsd')
       else
          schema_filename := pchar(PathWithDelim(APathSchemas)+'envConfRecebto_v1.00.xsd');
@@ -1512,13 +1512,13 @@ begin
   //// Encontrando o URI ////
   Tipo := NotaUtil.IdentificaTipoSchema(AStr,I);
 
-  I := NotaUtil.PosEx('Id=',AStr,I+6) ;
+  I := DFeUtil.PosEx('Id=',AStr,I+6) ;
   if I = 0 then
      raise EACBrNFeException.Create('Não encontrei inicio do URI: Id=') ;
-  I := NotaUtil.PosEx('"',AStr,I+2) ;
+  I := DFeUtil.PosEx('"',AStr,I+2) ;
   if I = 0 then
      raise EACBrNFeException.Create('Não encontrei inicio do URI: aspas inicial') ;
-  J := NotaUtil.PosEx('"',AStr,I+1) ;
+  J := DFeUtil.PosEx('"',AStr,I+1) ;
   if J = 0 then
      raise EACBrNFeException.Create('Não encontrei inicio do URI: aspas final') ;
 
@@ -1528,12 +1528,12 @@ begin
   I := pos('?>',AStr) ;
 
   case Tipo of
-    1: AStr := copy(AStr,1,StrToInt(VarToStr(NotaUtil.SeSenao(I>0,I+1,I)))) + cDTD     + Copy(AStr,StrToInt(VarToStr(NotaUtil.SeSenao(I>0,I+2,I))),Length(AStr));
-    2: AStr := copy(AStr,1,StrToInt(VarToStr(NotaUtil.SeSenao(I>0,I+1,I)))) + cDTDCanc + Copy(AStr,StrToInt(VarToStr(NotaUtil.SeSenao(I>0,I+2,I))),Length(AStr));
-    3: AStr := copy(AStr,1,StrToInt(VarToStr(NotaUtil.SeSenao(I>0,I+1,I)))) + cDTDInut + Copy(AStr,StrToInt(VarToStr(NotaUtil.SeSenao(I>0,I+2,I))),Length(AStr));
-    4: AStr := copy(AStr,1,StrToInt(VarToStr(NotaUtil.SeSenao(I>0,I+1,I)))) + cDTDDpec + Copy(AStr,StrToInt(VarToStr(NotaUtil.SeSenao(I>0,I+2,I))),Length(AStr));
-    5: AStr := copy(AStr,1,StrToInt(VarToStr(NotaUtil.SeSenao(I>0,I+1,I)))) + cDTDCCe  + Copy(AStr,StrToInt(VarToStr(NotaUtil.SeSenao(I>0,I+2,I))),Length(AStr));
-    6..10: AStr := copy(AStr,1,StrToInt(VarToStr(NotaUtil.SeSenao(I>0,I+1,I)))) + cDTDEven  + Copy(AStr,StrToInt(VarToStr(NotaUtil.SeSenao(I>0,I+2,I))),Length(AStr));
+    1: AStr := copy(AStr,1,StrToInt(VarToStr(DFeUtil.SeSenao(I>0,I+1,I)))) + cDTD     + Copy(AStr,StrToInt(VarToStr(DFeUtil.SeSenao(I>0,I+2,I))),Length(AStr));
+    2: AStr := copy(AStr,1,StrToInt(VarToStr(DFeUtil.SeSenao(I>0,I+1,I)))) + cDTDCanc + Copy(AStr,StrToInt(VarToStr(DFeUtil.SeSenao(I>0,I+2,I))),Length(AStr));
+    3: AStr := copy(AStr,1,StrToInt(VarToStr(DFeUtil.SeSenao(I>0,I+1,I)))) + cDTDInut + Copy(AStr,StrToInt(VarToStr(DFeUtil.SeSenao(I>0,I+2,I))),Length(AStr));
+    4: AStr := copy(AStr,1,StrToInt(VarToStr(DFeUtil.SeSenao(I>0,I+1,I)))) + cDTDDpec + Copy(AStr,StrToInt(VarToStr(DFeUtil.SeSenao(I>0,I+2,I))),Length(AStr));
+    5: AStr := copy(AStr,1,StrToInt(VarToStr(DFeUtil.SeSenao(I>0,I+1,I)))) + cDTDCCe  + Copy(AStr,StrToInt(VarToStr(DFeUtil.SeSenao(I>0,I+2,I))),Length(AStr));
+    6..10: AStr := copy(AStr,1,StrToInt(VarToStr(DFeUtil.SeSenao(I>0,I+1,I)))) + cDTDEven  + Copy(AStr,StrToInt(VarToStr(DFeUtil.SeSenao(I>0,I+2,I))),Length(AStr));
     else AStr := '';
   end;
 
@@ -1639,7 +1639,7 @@ begin
   end;
 
   PosIni := Pos('<X509Certificate>',XmlAss)-1;
-  PosFim := NotaUtil.PosLast('<X509Certificate>',XmlAss);
+  PosFim := DFeUtil.PosLast('<X509Certificate>',XmlAss);
 
   XmlAss := copy(XmlAss,1,PosIni)+copy(XmlAss,PosFim,length(XmlAss));
 

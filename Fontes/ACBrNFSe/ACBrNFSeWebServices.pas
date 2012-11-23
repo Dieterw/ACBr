@@ -1992,6 +1992,7 @@ begin
    proISSNET: NFSeRetorno.Prefixo4 := '';
   end;
 
+try
   NFSeRetorno.Leitor.Arquivo := FRetWS;
   NFSeRetorno.LerXml;
 
@@ -2076,7 +2077,7 @@ begin
     for i:=0 to NFSeRetorno.ListaNfse.MsgRetorno.Count - 1 do
      begin
       FMsg := FMsg + NFSeRetorno.ListaNfse.MsgRetorno.Items[i].Mensagem + IfThen(FMsg = '', '', ' / ');
-      
+
       aMsg := aMsg + 'Código Erro : ' + NFSeRetorno.ListaNfse.MsgRetorno.Items[i].Codigo + LineBreak +
                      'Mensagem... : ' + NFSeRetorno.ListaNfse.MsgRetorno.Items[i].Mensagem + LineBreak+
                      'Correção... : ' + NFSeRetorno.ListaNfse.MsgRetorno.Items[i].Correcao + LineBreak+
@@ -2086,6 +2087,8 @@ begin
     if FConfiguracoes.WebServices.Visualizar
      then ShowMessage(aMsg);
    end;
+except
+end;
 
   if Assigned(TACBrNFSe( FACBrNFSe ).OnGerarLog)
    then TACBrNFSe( FACBrNFSe ).OnGerarLog(aMsg);

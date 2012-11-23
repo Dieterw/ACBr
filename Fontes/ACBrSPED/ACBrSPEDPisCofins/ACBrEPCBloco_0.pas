@@ -65,9 +65,9 @@ type
   //REGISTRO 0000: ABERTURA DO ARQUIVO DIGITAL E IDENTIFICAÇÃO DA PESSOA JURÍDICA
   TRegistro0000 = class
   private
-    FCOD_VER          : TACBrVersaoLeiaute;             //Código da versão do leiaute conforme a tabela 3.1.1
-    FTIPO_ESCRIT      : TACBrTipoEscrituracao;          //Tipo de escrituração: 0 - Original; 1 – Retificadora;
-    FIND_SIT_ESP      : TACBrIndicadorSituacaoEspecial; //Indicador de situação especial: 0 - Abertura; 1 - Cisão; 2 - Fusão; 3 - Incorporação; 4 – Encerramento;
+    FCOD_VER          : TACBrCodVer;{TACBrVersaoLeiaute;}             //Código da versão do leiaute conforme a tabela 3.1.1
+    FTIPO_ESCRIT      : TACBrTipoEscrit;{TACBrTipoEscrituracao;}          //Tipo de escrituração: 0 - Original; 1 – Retificadora;
+    FIND_SIT_ESP      : TACBrIndSitEsp;{TACBrIndicadorSituacaoEspecial;} //Indicador de situação especial: 0 - Abertura; 1 - Cisão; 2 - Fusão; 3 - Incorporação; 4 – Encerramento;
     FNUM_REC_ANTERIOR : string;                         //Número do Recibo da Escrituração anterior a ser retificada, utilizado quando TIPO_ESCRIT for igual a 1
     FDT_INI           : TDateTime;                      //Data inicial das informações contidas no arquivo
     FDT_FIN           : TDateTime;                      //Data final das informações contidas no arquivo
@@ -76,12 +76,12 @@ type
     FUF               : string;                         //Sigla da Unidade da Federação da pessoa jurídica
     FCOD_MUN          : integer;                        //Código do município do domicílio fiscal da pessoa jurídica, conforme a tabela IBGE
     FSUFRAMA          : string;                         //Inscrição da pessoa jurídica na Suframa
-    FIND_NAT_PJ       : TACBrIndicadorNaturezaPJ;       //Indicador da natureza da pessoa jurídica: 00 – Sociedade empresária em geral 01 – Sociedade cooperativa 02 – Entidade sujeita ao PIS/Pasep exclusivamente com base na Folha de Salários
-    FIND_ATIV         : TACBrIndicadorAtividade;        //Indicador de tipo de atividade preponderante: 0 – Industrial ou equiparado a industrial; 1 – Prestador de serviços; 2 - Atividade de comércio; 3 – Atividade financeira; 4 – Atividade imobiliária; 9 – Outros.
+    FIND_NAT_PJ       : TACBrIndNatPJ;{TACBrIndicadorNaturezaPJ;}       //Indicador da natureza da pessoa jurídica: 00 – Sociedade empresária em geral 01 – Sociedade cooperativa 02 – Entidade sujeita ao PIS/Pasep exclusivamente com base na Folha de Salários
+    FIND_ATIV         : TACBrIndAtiv;{TACBrIndicadorAtividade;}        //Indicador de tipo de atividade preponderante: 0 – Industrial ou equiparado a industrial; 1 – Prestador de serviços; 2 - Atividade de comércio; 3 – Atividade financeira; 4 – Atividade imobiliária; 9 – Outros.
   public
-    property COD_VER          : TACBrVersaoLeiaute             read FCOD_VER          write FCOD_VER;
-    property TIPO_ESCRIT      : TACBrTipoEscrituracao          read FTIPO_ESCRIT      write FTIPO_ESCRIT;
-    property IND_SIT_ESP      : TACBrIndicadorSituacaoEspecial read FIND_SIT_ESP      write FIND_SIT_ESP;
+    property COD_VER          : TACBrCodVer{TACBrVersaoLeiaute}             read FCOD_VER          write FCOD_VER;
+    property TIPO_ESCRIT      : TACBrTipoEscrit{TACBrTipoEscrituracao}          read FTIPO_ESCRIT      write FTIPO_ESCRIT;
+    property IND_SIT_ESP      : TACBrIndSitEsp{TACBrIndicadorSituacaoEspecial} read FIND_SIT_ESP      write FIND_SIT_ESP;
     property NUM_REC_ANTERIOR : string                         read FNUM_REC_ANTERIOR write FNUM_REC_ANTERIOR;
     property DT_INI           : TDateTime                      read FDT_INI           write FDT_INI;
     property DT_FIN           : TDateTime                      read FDT_FIN           write FDT_FIN;
@@ -90,8 +90,8 @@ type
     property UF               : string                         read FUF               write FUF;
     property COD_MUN          : integer                        read FCOD_MUN          write FCOD_MUN;
     property SUFRAMA          : string                         read FSUFRAMA          write FSUFRAMA;
-    property IND_NAT_PJ       : TACBrIndicadorNaturezaPJ       read FIND_NAT_PJ       write FIND_NAT_PJ;
-    property IND_ATIV         : TACBrIndicadorAtividade        read FIND_ATIV         write FIND_ATIV;
+    property IND_NAT_PJ       : TACBrIndNatPJ{TACBrIndicadorNaturezaPJ}       read FIND_NAT_PJ       write FIND_NAT_PJ;
+    property IND_ATIV         : TACBrIndAtiv{TACBrIndicadorAtividade}        read FIND_ATIV         write FIND_ATIV;
   end;
 
   //REGISTRO 0001: ABERTURA DO BLOCO 0

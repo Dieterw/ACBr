@@ -52,38 +52,90 @@ uses
   SysUtils, Classes, DateUtils, ACBrTXTClass;
 
 type
-  /// Indicador de movimento - TOpenBlocos
-  TACBrIndicadorMovimento = (
-                              imComDados, // 0- Bloco com dados informados;
-                              imSemDados  // 1- Bloco sem dados informados.
-                             );
-  /// Perfil de apresentação do arquivo fiscal - TRegistro0000
-  TACBrPerfil  = (
-                   pfPerfilA , // A – Perfil A
-                   pfPerfilB , // B – Perfil B
-                   pfPerfilC   // C – Perfil C
-                  );
-  /// Indicador de tipo de atividade - TRegistro0000
-  TACBrAtividade   = (
-                       atIndustrial,         // 0 – Industrial ou equiparado a industrial
-                       atPrestadorDeServicos,// 1 - Prestador de serviços
-                       atComercio,           // 2 - Atividade de comércio
-                       atFinanceira,         // 3 - Atividade financeira
-                       atImobiliaria,        // 4 - Atividade imobiliaria
-                       atOutros = 9          // 9 - Outros
-                      );
   /// Versão do Leiaute do arquivo - TRegistro0000
-  TACBrVersaoLeiaute = (
-                         vlVersao100,  // Código 001 - Versão 100 ADE Cofis nº 31/2010 de 01/01/2011
-                         vlVersao101,  // Código 002 - Versão 101 ADE Cofis nº 34/2010, atualizado pelo ADE Cofis nº 37/2010 de 01/01/2011
-                         vlVersao200,  // Código 002 - Versão 200 ADE Cofis nº 20/2012
-                         vlVersao201   // Código 003 - Versão 201 ADE Cofis nº 20/2012 de 14/03/2012
-                        );
-  /// Código da finalidade do arquivo - TRegistro0000
-  TACBrCodFinalidade = (
-                         raOriginal,     // 0 - Remessa do arquivo original
-                         raSubstituto    // 1 - Remessa do arquivo substituto
-                        );
+  TACBrCodVer = (
+                 vlVersao100,  // Código 001 - Versão 100 ADE Cofis nº 31/2010 de 01/01/2011
+                 vlVersao101,  // Código 002 - Versão 101 ADE Cofis nº 34/2010 de 01/01/2011
+                 vlVersao200,  // Código 002 - Versão 200 ADE Cofis nº 20/2012
+                 vlVersao201   // Código 003 - Versão 201 ADE Cofis nº 20/2012 de 14/03/2012
+                );
+  TACBrVersaoLeiaute = TACBrCodVer;
+
+  /// Indicador de movimento - TOpenBlocos
+  TACBrIndMov = (
+                 imComDados, // 0- Bloco com dados informados;
+                 imSemDados  // 1- Bloco sem dados informados.
+                );
+  TACBrIndicadorMovimento = TACBrIndMov;
+
+  // Tipo de Escrituração
+  TACBrTipoEscrit = (
+                     tpEscrOriginal,     // 0 - Original
+                     tpEscrRetificadora  // 1 - Retificadora
+                   );
+  // Tipo de Escrituração
+  TACBrTipoEscrituracao = TACBrTipoEscrit;
+
+  // Indicador de situação especial
+  TACBrIndSitEsp = (
+                    indSitAbertura,      // 0 - Abertura
+                    indSitCisao,         // 1 - Cisão
+                    indSitFusao,         // 2 - Fusão
+                    indSitIncorporacao,  // 3 - Incorporação
+                    indSitEncerramento,  // 4 - Encerramento
+                    indNenhum            // 5 - Vazio
+                  );
+  TACBrIndicadorSituacaoEspecial = TACBrIndSitEsp;
+
+  // Indicador da natureza da pessoa juridica
+  TACBrIndNatPJ = (
+                   indNatPJSocEmpresariaGeral, // 0 - Sociedade empresária geral
+                   indNatPJSocCooperativa,     // 1 - Sociedade Cooperativa
+                   indNatPJEntExclusivaFolhaSal// 2 - Entidade sujeita ao PIS/Pasep exclusivamente com base  na folha de salários
+                 );
+  TACBrIndicadorNaturezaPJ = TACBrIndNatPJ;
+
+  //Indicador de tipo de atividade prepoderante
+  TACBrIndAtiv = (
+                  indAtivIndustrial,       // 0 - Industrial ou equiparado a industrial
+                  indAtivPrestadorServico, // 1 - Prestador de serviços
+                  indAtivComercio,         // 2 - Atividade de comércios
+                  indAtivoFincanceira,     // 3 - Atividade Financeira
+                  indAtivoImobiliaria,     // 4 - Atividade Imobiliária
+                  indAtivoOutros           // 9 - Outros
+               );
+  TACBrIndicadorAtividade = TACBrIndAtiv;
+
+  //Codigo indicador da incidencia tributária no período (0110)
+  TACBrCodIncTrib = (
+                     codEscrOpIncNaoCumulativo, // 1 - Escrituração de operações com incidencia exclusivamente no regime não cumulativo
+                     codEscrOpIncCumulativo,    // 2 - Escrituração de operações com incidencia exclusivamente no regime cumulativo
+                     codEscrOpIncAmbos          // 3 - Escrituração de operações com incidencia nos regimes cumulativo e não cumulativo
+                   );
+  TACBrCodIndIncTributaria = TACBrCodIncTrib;
+
+
+  //Código indicador de  método  de apropriação de  créditos  comuns, no caso  de incidencia no regime não cumulativo(COD_INC_TRIB = 1 ou 3)(0110)
+  TACBrIndAproCred = (
+                       indMetodoApropriacaoDireta,   // 0 - Método de apropriação direta
+                       indMetodoDeRateioProporcional // 1 - Método de rateio proporcional(Receita Bruta);
+                     );
+
+  //Código indicador do Tipo de Contribuição Apurada no Período(0110)
+  TACBrCodTipoCont = (
+                       codIndTipoConExclAliqBasica, // 1 - Apuração da Contribuição Exclusivamente a Alíquota Básica
+                       codIndTipoAliqEspecificas    // 2 - Apuração da Contribuição a Alíquotas Específicas (Diferenciadas e/ou por Unidade de Medida de Produto)
+                     );
+  TACBrCodIndTipoCon = TACBrCodTipoCont;
+
+  //Código indicador do critério de escrituração e apuração adotado
+  TACBrIndRegCum = (
+                     codRegimeCaixa,                   // 1 – Regime de Caixa – Escrituração consolidada (Registro F500);
+                     codRegimeCompetEscritConsolidada, // 2 – Regime de Competência - Escrituração consolidada (Registro F550);
+                     codRegimeCompetEscritDetalhada    // 9 – Regime de Competência - Escrituração detalhada, com base nos registros dos Blocos “A”, “C”, “D” e “F”.
+                   );
+  TACBrCodIndCritEscrit = TACBrIndRegCum;
+
   /// Tipo do item – Atividades Industriais, Comerciais e Serviços:
   TACBrTipoItem = (
                     tiMercadoriaRevenda,    // 00 – Mercadoria para Revenda
@@ -99,6 +151,101 @@ type
                     tiOutrosInsumos,        // 10 – Outros Insumos;
                     tiOutras                // 99 – Outras
                    );
+
+  /// Indicador do tipo de operação:
+  TACBrIndOper = (
+                   itoContratado,     // 0 - Serviço Contratado pelo Estabelecimento
+                   itoPrestado        // 1 - Serviço Prestado pelo Estabelecimento
+                 );
+  TACBrIndicadorTpOperacao = TACBrIndOper;
+
+  /// Indicador do emitente do documento fiscal:
+  TACBrIndEmit = (
+                  iedfProprio,       // 0 - Emissão própria
+                  iedfTerceiro       // 1 - Emissão de Terceiros
+                 );
+  TACBrIndicadorEmitenteDF = TACBrIndEmit;
+
+  /// Código da situação do documento fiscal:
+  TACBrCodSit = (
+                 sdfRegular,                 // 00 – Documento regular
+                 sdfExtRegular,              // 01 - Escrituração extemporânea de documento regular
+                 sdfCancelado,               // 02 – Documento cancelado
+                 sdfExtCancelado,            // 03 Escrituração extemporânea de documento cancelado
+                 sdfDenegado,                // 04 NF-e ou CT-e – denegado
+                 sdfInutilizado,             // 05 NF-e ou CT-e - Numeração inutilizada
+                 sdfComplementar,            // 06 Documento Fiscal Complementar
+                 sdfExtComplementar,         // 07 Escrituração extemporânea de documento complementar
+                 sdfEspecial                 // 08 Documento Fiscal emitido com base em Regime Especial ou Norma Específica
+                 );
+  TACBrSituacaoDF = TACBrCodSit;
+
+  /// Indicador do tipo de pagamento
+  TACBrIndPgto = (
+                  tpVista,             // 0 - À Vista
+                  tpPrazo,             // 1 - A Prazo
+                  tpSemPagamento,      // 9 - Sem pagamento
+                  tpNenhum             // Preencher vazio
+                 );
+  TACBrTipoPagamento = TACBrIndPgto;
+
+  //Código da Base de Cálculo do Crédito - {NAT_BC_CRED} - 4.3.7 - Tabela Base de Cálculo do Crédito
+  TACBrNatBcCred = (
+                    bccVazio,                         // ''   // vazio.
+                    bccAqBensRevenda,                 // '01' // Aquisição de bens para revenda
+                    bccAqBensUtiComoInsumo,           // '02' // Aquisição de bens utilizados como insumo
+                    bccAqServUtiComoInsumo,           // '03' // Aquisição de serviços utilizados como insumo
+                    bccEnergiaEletricaTermica,        // '04' // Energia elétrica e térmica, inclusive sob a forma de vapor
+                    bccAluguelPredios,                // '05' // Aluguéis de prédios
+                    bccAluguelMaqEquipamentos,        // '06' // Aluguéis de máquinas e equipamentos
+                    bccArmazenagemMercadoria,         // '07' // Armazenagem de mercadoria e frete na operação de venda
+                    bccConArrendamentoMercantil,      // '08' // Contraprestações de arrendamento mercantil
+                    bccMaqCredDepreciacao,            // '09' // Máquinas, equipamentos e outros bens incorporados ao ativo imobilizado (crédito sobre encargos de depreciação).
+                    bccMaqCredAquisicao,              // '10' // Máquinas, equipamentos e outros bens incorporados ao ativo imobilizado (crédito com base no valor de aquisição).
+                    bccAmortizacaoDepreciacaoImoveis, // '11' // Amortização e Depreciação de edificações e benfeitorias em imóveis
+                    bccDevolucaoSujeita,              // '12' // Devolução de Vendas Sujeitas à Incidência Não-Cumulativa
+                    bccOutrasOpeComDirCredito,        // '13' // Outras Operações com Direito a Crédito
+                    bccAtTransporteSubcontratacao,    // '14' // Atividade de Transporte de Cargas – Subcontratação
+                    bccAtImobCustoIncorrido,          // '15' // Atividade Imobiliária – Custo Incorrido de Unidade Imobiliária
+                    bccAtImobCustoOrcado,             // '16' // Atividade Imobiliária – Custo Orçado de unidade não concluída
+                    bccAtPresServ,                    // '17' // Atividade de Prestação de Serviços de Limpeza, Conservação e Manutenção – vale-transporte, vale-refeição ou vale-alimentação, fardamento ou uniforme.
+                    bccEstoqueAberturaBens            // '18' // Estoque de abertura de bens
+                  );
+  TACBrBaseCalculoCredito = TACBrNatBcCred;
+
+  // Indicador da Origem do Crédito
+  TACBrIndOrigCred = (
+                       opcMercadoInterno,      // 0 – Operação no Mercado Interno
+                       opcImportacao ,         // 1 – Operação de Importação
+                       opcVazio                // Vazio.
+                     );
+  TACBrOrigemCredito = TACBrIndOrigCred;
+
+
+
+
+  /// Perfil de apresentação do arquivo fiscal - TRegistro0000
+//  TACBrPerfil  = (
+//                   pfPerfilA , // A – Perfil A
+//                   pfPerfilB , // B – Perfil B
+//                   pfPerfilC   // C – Perfil C
+//                  );
+
+  /// Indicador de tipo de atividade - TRegistro0000
+//  TACBrAtividade   = (
+//                       atIndustrial,         // 0 – Industrial ou equiparado a industrial
+//                       atPrestadorDeServicos,// 1 - Prestador de serviços
+//                       atComercio,           // 2 - Atividade de comércio
+//                       atFinanceira,         // 3 - Atividade financeira
+//                       atImobiliaria,        // 4 - Atividade imobiliaria
+//                       atOutros = 9          // 9 - Outros
+//                      );
+
+  /// Código da finalidade do arquivo - TRegistro0000
+//  TACBrCodFinalidade = (
+//                         raOriginal,     // 0 - Remessa do arquivo original
+//                         raSubstituto    // 1 - Remessa do arquivo substituto
+//                        );
   /// Indicador do tipo de operação:
   TACBrTipoOperacao = (
                         tpEntradaAquisicao, // 0 - Entrada
@@ -109,13 +256,6 @@ type
                     edEmissaoPropria,         // 0 - Emissão própria
                     edTerceiros               // 1 - Terceiro
                    );
-  /// Indicador do tipo de pagamento
-  TACBrTipoPagamento = (
-                         tpVista,             // 0 - À Vista
-                         tpPrazo,             // 1 - A Prazo
-                         tpSemPagamento,      // 9 - Sem pagamento
-                         tpNenhum             // Preencher vazio
-                        );
   /// Indicador do tipo do frete
   TACBrTipoFrete = (
                      tfPorContaTerceiros,     // 0 - Por conta de terceiros
@@ -126,13 +266,13 @@ type
                     );
 
   /// Indicador do tipo do frete da operação de redespacho
-  TACBrTipoFreteRedespacho = (
-                               frSemRedespacho,         // 0 – Sem redespacho
-                               frPorContaEmitente,      // 1 - Por conta do emitente
-                               frPorContaDestinatario,  // 2 - Por conta do destinatário
-                               frOutros,                // 9 – Outros
-                               frNenhum                 // Preencher vazio
-                              );
+//  TACBrTipoFreteRedespacho = (
+//                               frSemRedespacho,         // 0 – Sem redespacho
+//                               frPorContaEmitente,      // 1 - Por conta do emitente
+//                               frPorContaDestinatario,  // 2 - Por conta do destinatário
+//                               frOutros,                // 9 – Outros
+//                               frNenhum                 // Preencher vazio
+//                              );
   /// Indicador da origem do processo
   TACBrOrigemProcesso = (
                           opJusticaFederal,   // 1 - Justiça Federal'
@@ -141,33 +281,33 @@ type
                           opNenhum           // Preencher vazio
                          );
   ///
-  TACBrDoctoArrecada = (
-                         daEstadualArrecadacao,  // 0 - Documento Estadual de Arrecadação
-                         daGNRE                  // 1 - GNRE
-                        );
+//  TACBrDoctoArrecada = (
+//                         daEstadualArrecadacao,  // 0 - Documento Estadual de Arrecadação
+//                         daGNRE                  // 1 - GNRE
+//                        );
   /// Indicador do tipo de transporte
-  TACBrTipoTransporte = (
-                          ttRodoviario,         // 0 – Rodoviário
-                          ttFerroviario,        // 1 – Ferroviário
-                          ttRodoFerroviario,    // 2 – Rodo-Ferroviário
-                          ttAquaviario,         // 3 – Aquaviário
-                          ttDutoviario,         // 4 – Dutoviário
-                          ttAereo,              // 5 – Aéreo
-                          ttOutros              // 9 – Outros
-                         );
+//  TACBrTipoTransporte = (
+//                          ttRodoviario,         // 0 – Rodoviário
+//                          ttFerroviario,        // 1 – Ferroviário
+//                          ttRodoFerroviario,    // 2 – Rodo-Ferroviário
+//                          ttAquaviario,         // 3 – Aquaviário
+//                          ttDutoviario,         // 4 – Dutoviário
+//                          ttAereo,              // 5 – Aéreo
+//                          ttOutros              // 9 – Outros
+//                         );
   /// Documento de importação
   TACBrDoctoImporta = (
                         diImportacao,           // 0 – Declaração de Importação
                         diSimplificadaImport    // 1 – Declaração Simplificada de Importação
                        );
   /// Indicador do tipo de título de crédito
-  TACBrTipoTitulo = (
-                      tcDuplicata,             // 00- Duplicata
-                      tcCheque,                // 01- Cheque
-                      tcPromissoria,           // 02- Promissória
-                      tcRecibo,                // 03- Recibo
-                      tcOutros                 // 99- Outros (descrever)
-                     );
+//  TACBrTipoTitulo = (
+//                      tcDuplicata,             // 00- Duplicata
+//                      tcCheque,                // 01- Cheque
+//                      tcPromissoria,           // 02- Promissória
+//                      tcRecibo,                // 03- Recibo
+//                      tcOutros                 // 99- Outros (descrever)
+//                     );
 
   /// Movimentação física do ITEM/PRODUTO:
   TACBrMovimentacaoFisica = (
@@ -181,48 +321,48 @@ type
                        iaVazio
                       );
   /// Indicador de tipo de referência da base de cálculo do ICMS (ST) do produto farmacêutico
-  TACBrTipoBaseMedicamento = (
-                               bmCalcTabeladoSugerido,           // 0 - Base de cálculo referente ao preço tabelado ou preço máximo sugerido;
-                               bmCalMargemAgregado,              // 1 - Base cálculo – Margem de valor agregado;
-                               bmCalListNegativa,                // 2 - Base de cálculo referente à Lista Negativa;
-                               bmCalListaPositiva,               // 3 - Base de cálculo referente à Lista Positiva;
-                               bmCalListNeutra                   // 4 - Base de cálculo referente à Lista Neutra
-                              );
+//  TACBrTipoBaseMedicamento = (
+//                               bmCalcTabeladoSugerido,           // 0 - Base de cálculo referente ao preço tabelado ou preço máximo sugerido;
+//                               bmCalMargemAgregado,              // 1 - Base cálculo – Margem de valor agregado;
+//                               bmCalListNegativa,                // 2 - Base de cálculo referente à Lista Negativa;
+//                               bmCalListaPositiva,               // 3 - Base de cálculo referente à Lista Positiva;
+//                               bmCalListNeutra                   // 4 - Base de cálculo referente à Lista Neutra
+//                              );
   /// Tipo Produto
-  TACBrTipoProduto = (
-                       tpSimilar,   // 0 - Similar
-                       tpGenerico,  // 1 - Genérico
-                       tpMarca      // 2 - Ético ou de Marca
-                      );
+//  TACBrTipoProduto = (
+//                       tpSimilar,   // 0 - Similar
+//                       tpGenerico,  // 1 - Genérico
+//                       tpMarca      // 2 - Ético ou de Marca
+//                      );
   /// Indicador do tipo da arma de fogo
-  TACBrTipoArmaFogo = (
-                        tafPermitido,     // 0 - Permitido
-                        tafRestrito       // 1 - Restrito
-                       );
+//  TACBrTipoArmaFogo = (
+//                        tafPermitido,     // 0 - Permitido
+//                        tafRestrito       // 1 - Restrito
+//                       );
   /// Indicador do tipo de operação com veículo
-  TACBrTipoOperacaoVeiculo = (
-                               tovVendaPConcess,   // 0 - Venda para concessionária
-                               tovFaturaDireta,    // 1 - Faturamento direto
-                               tovVendaDireta,     // 2 - Venda direta
-                               tovVendaDConcess,   // 3 - Venda da concessionária
-                               tovVendaOutros      // 9 - Outros
-                              );
+//  TACBrTipoOperacaoVeiculo = (
+//                               tovVendaPConcess,   // 0 - Venda para concessionária
+//                               tovFaturaDireta,    // 1 - Faturamento direto
+//                               tovVendaDireta,     // 2 - Venda direta
+//                               tovVendaDConcess,   // 3 - Venda da concessionária
+//                               tovVendaOutros      // 9 - Outros
+//                              );
   /// Indicador do tipo de receita
-  TACBrTipoReceita = (
-                       trPropria,   // 0 - Receita própria
-                       trTerceiro   // 1 - Receita de terceiros
-                      );
+//  TACBrTipoReceita = (
+//                       trPropria,   // 0 - Receita própria
+//                       trTerceiro   // 1 - Receita de terceiros
+//                      );
 
   /// Indicador do tipo do veículo transportador
-  TACBrTipoVeiculo = (
-                       tvEmbarcacao,
-                       tvEmpuradorRebocador
-                      );
+//  TACBrTipoVeiculo = (
+//                       tvEmbarcacao,
+//                       tvEmpuradorRebocador
+//                      );
   /// Indicador do tipo da navegação
-  TACBrTipoNavegacao = (
-                         tnInterior,
-                         tnCabotagem
-                        );
+//  TACBrTipoNavegacao = (
+//                         tnInterior,
+//                         tnCabotagem
+//                        );
   /// Situação do Documento
   TACBrSituacaoDocto = (
                          sdRegular,                 // 00 - Documento regular
@@ -236,17 +376,17 @@ type
                          sdRegimeEspecNEsp          // 08 - Documento Fiscal emitido com base em Regime Especial ou Norma Específica
                         );
   /// Indicador do tipo de tarifa aplicada:
-  TACBrTipoTarifa = (
-                      tipExp,     // 0 - Exp
-                      tipEnc,     // 1 - Enc
-                      tipCI,      // 2 - CI
-                      tipOutra    // 9 - Outra
-                     );
+//  TACBrTipoTarifa = (
+//                      tipExp,     // 0 - Exp
+//                      tipEnc,     // 1 - Enc
+//                      tipCI,      // 2 - CI
+//                      tipOutra    // 9 - Outra
+//                     );
   /// Indicador da natureza do frete
-  TACBrNaturezaFrete = (
-                         nfNegociavel,      // 0 - Negociavel
-                         nfNaoNegociavel    // 1 - Não Negociavel
-                        );
+//  TACBrNaturezaFrete = (
+//                         nfNegociavel,      // 0 - Negociavel
+//                         nfNaoNegociavel    // 1 - Não Negociavel
+//                        );
 
   //INDICADOR DE NATUREZA DE FRETE CONTRATADO
   TACBrNaturezaFrtContratado = (
@@ -260,151 +400,151 @@ type
                                 );
 
   /// Indicador do tipo de receita
-  TACBrIndTipoReceita = (
-                          recServicoPrestado,          // 0 - Receita própria - serviços prestados;
-                          recCobrancaDebitos,          // 1 - Receita própria - cobrança de débitos;
-                          recVendaMerc,                // 2 - Receita própria - venda de mercadorias;
-                          recServicoPrePago,           // 3 - Receita própria - venda de serviço pré-pago;
-                          recOutrasProprias,           // 4 - Outras receitas próprias;
-                          recTerceiroCoFaturamento,    // 5 - Receitas de terceiros (co-faturamento);
-                          recTerceiroOutras            // 9 - Outras receitas de terceiros
-                         );
+//  TACBrIndTipoReceita = (
+//                          recServicoPrestado,          // 0 - Receita própria - serviços prestados;
+//                          recCobrancaDebitos,          // 1 - Receita própria - cobrança de débitos;
+//                          recVendaMerc,                // 2 - Receita própria - venda de mercadorias;
+//                          recServicoPrePago,           // 3 - Receita própria - venda de serviço pré-pago;
+//                          recOutrasProprias,           // 4 - Outras receitas próprias;
+//                          recTerceiroCoFaturamento,    // 5 - Receitas de terceiros (co-faturamento);
+//                          recTerceiroOutras            // 9 - Outras receitas de terceiros
+//                         );
   /// Indicador do tipo de serviço prestado
-  TACBrServicoPrestado = (
-                           spTelefonia,                // 0- Telefonia;
-                           spComunicacaoDados,         // 1- Comunicação de dados;
-                           spTVAssinatura,             // 2- TV por assinatura;
-                           spAcessoInternet,           // 3- Provimento de acesso à Internet;
-                           spMultimidia,               // 4- Multimídia;
-                           spOutros                    // 9- Outros
-                          );
+//  TACBrServicoPrestado = (
+//                           spTelefonia,                // 0- Telefonia;
+//                           spComunicacaoDados,         // 1- Comunicação de dados;
+//                           spTVAssinatura,             // 2- TV por assinatura;
+//                           spAcessoInternet,           // 3- Provimento de acesso à Internet;
+//                           spMultimidia,               // 4- Multimídia;
+//                           spOutros                    // 9- Outros
+//                          );
   /// Indicador de movimento
-  TACBrMovimentoST = (
-                       mstSemOperacaoST,   // 0 - Sem operações com ST
-                       mstComOperacaoST    // 1 - Com operações de ST
-                      );
+//  TACBrMovimentoST = (
+//                       mstSemOperacaoST,   // 0 - Sem operações com ST
+//                       mstComOperacaoST    // 1 - Com operações de ST
+//                      );
   /// Indicador do tipo de ajuste
-  TACBrTipoAjuste = (
-                      ajDebito,            // 0 - Ajuste a débito;
-                      ajCredito            // 1- Ajuste a crédito
-                     );
+//  TACBrTipoAjuste = (
+//                      ajDebito,            // 0 - Ajuste a débito;
+//                      ajCredito            // 1- Ajuste a crédito
+//                     );
   /// Indicador da origem do documento vinculado ao ajuste
-  TACBrOrigemDocto = (
-                       odPorcessoJudicial, // 0 - Processo Judicial;
-                       odProcessoAdminist, // 1 - Processo Administrativo;
-                       odPerDcomp,         // 2 - PER/DCOMP;
-                       odOutros            // 9 – Outros.
-                      );
+//  TACBrOrigemDocto = (
+//                       odPorcessoJudicial, // 0 - Processo Judicial;
+//                       odProcessoAdminist, // 1 - Processo Administrativo;
+//                       odPerDcomp,         // 2 - PER/DCOMP;
+//                       odOutros            // 9 – Outros.
+//                      );
   /// Indicador de propriedade/posse do item
-  TACBrPosseItem = (
-                     piInformante,           // 0- Item de propriedade do informante e em seu poder;
-                     piInformanteNoTerceiro, // 1- Item de propriedade do informante em posse de terceiros;
-                     piTerceiroNoInformante  // 2- Item de propriedade de terceiros em posse do informante
-                    );
+//  TACBrPosseItem = (
+//                     piInformante,           // 0- Item de propriedade do informante e em seu poder;
+//                     piInformanteNoTerceiro, // 1- Item de propriedade do informante em posse de terceiros;
+//                     piTerceiroNoInformante  // 2- Item de propriedade de terceiros em posse do informante
+//                    );
   /// Informe o tipo de documento
-  TACBrTipoDocto = (
-                     docDeclaracaoExportacao,           // 0 - Declaração de Exportação;
-                     docDeclaracaoSimplesExportacao     // 1 - Declaração Simplificada de Exportação.
-                    );
+//  TACBrTipoDocto = (
+//                     docDeclaracaoExportacao,           // 0 - Declaração de Exportação;
+//                     docDeclaracaoSimplesExportacao     // 1 - Declaração Simplificada de Exportação.
+//                    );
   /// Preencher com
-  TACBrExportacao = (
-                      exDireta,             // 0 - Exportação Direta
-                      exIndireta            // 1 - Exportação Indireta
-                     );
+//  TACBrExportacao = (
+//                      exDireta,             // 0 - Exportação Direta
+//                      exIndireta            // 1 - Exportação Indireta
+//                     );
   /// Informação do tipo de conhecimento de embarque
-  TACBrConhecEmbarque = (
-                          ceAWB,            //01 – AWB;
-                          ceMAWB,           //02 – MAWB;
-                          ceHAWB,           //03 – HAWB;
-                          ceCOMAT,          //04 – COMAT;
-                          ceRExpressas,     //06 – R. EXPRESSAS;
-                          ceEtiqREspressas, //07 – ETIQ. REXPRESSAS;
-                          ceHrExpressas,    //08 – HR. EXPRESSAS;
-                          ceAV7,            //09 – AV7;
-                          ceBL,             //10 – BL;
-                          ceMBL,            //11 – MBL;
-                          ceHBL,            //12 – HBL;
-                          ceCTR,            //13 – CRT;
-                          ceDSIC,           //14 – DSIC;
-                          ceComatBL,        //16 – COMAT BL;
-                          ceRWB,            //17 – RWB;
-                          ceHRWB,           //18 – HRWB;
-                          ceTifDta,         //19 – TIF/DTA;
-                          ceCP2,            //20 – CP2;
-                          ceNaoIATA,        //91 – NÂO IATA;
-                          ceMNaoIATA,       //92 – MNAO IATA;
-                          ceHNaoIATA,       //93 – HNAO IATA;
-                          ceCOutros         //99 – OUTROS.
-                         );
+//  TACBrConhecEmbarque = (
+//                          ceAWB,            //01 – AWB;
+//                          ceMAWB,           //02 – MAWB;
+//                          ceHAWB,           //03 – HAWB;
+//                          ceCOMAT,          //04 – COMAT;
+//                          ceRExpressas,     //06 – R. EXPRESSAS;
+//                          ceEtiqREspressas, //07 – ETIQ. REXPRESSAS;
+//                          ceHrExpressas,    //08 – HR. EXPRESSAS;
+//                          ceAV7,            //09 – AV7;
+//                          ceBL,             //10 – BL;
+//                          ceMBL,            //11 – MBL;
+//                          ceHBL,            //12 – HBL;
+//                          ceCTR,            //13 – CRT;
+//                          ceDSIC,           //14 – DSIC;
+//                          ceComatBL,        //16 – COMAT BL;
+//                          ceRWB,            //17 – RWB;
+//                          ceHRWB,           //18 – HRWB;
+//                          ceTifDta,         //19 – TIF/DTA;
+//                          ceCP2,            //20 – CP2;
+//                          ceNaoIATA,        //91 – NÂO IATA;
+//                          ceMNaoIATA,       //92 – MNAO IATA;
+//                          ceHNaoIATA,       //93 – HNAO IATA;
+//                          ceCOutros         //99 – OUTROS.
+//                         );
   /// Identificador de medição
-  TACBrMedicao = (
-                   medAnalogico,            // 0 - analógico;
-                   medDigital               // 1 – digital
-                  );
+//  TACBrMedicao = (
+//                   medAnalogico,            // 0 - analógico;
+//                   medDigital               // 1 – digital
+//                  );
   /// Tipo de movimentação do bem ou componente
-  TACBrMovimentoBens = (
-                         mbcSI,             // SI = Saldo inicial de bens imobilizados
-                         mbcIM,             // IM = Imobilização de bem individual
-                         mbcIA,             // IA = Imobilização em Andamento - Componente
-                         mbcCI,             // CI = Conclusão de Imobilização em Andamento – Bem Resultante
-                         mbcMC,             // MC = Imobilização oriunda do Ativo Circulante
-                         mbcBA,             // BA = Baixa do Saldo de ICMS - Fim do período de apropriação
-                         mbcAT,             // AT = Alienação ou Transferência
-                         mbcPE,             // PE = Perecimento, Extravio ou Deterioração
-                         mbcOT              // OT = Outras Saídas do Imobilizado
-                        );
+//  TACBrMovimentoBens = (
+//                         mbcSI,             // SI = Saldo inicial de bens imobilizados
+//                         mbcIM,             // IM = Imobilização de bem individual
+//                         mbcIA,             // IA = Imobilização em Andamento - Componente
+//                         mbcCI,             // CI = Conclusão de Imobilização em Andamento – Bem Resultante
+//                         mbcMC,             // MC = Imobilização oriunda do Ativo Circulante
+//                         mbcBA,             // BA = Baixa do Saldo de ICMS - Fim do período de apropriação
+//                         mbcAT,             // AT = Alienação ou Transferência
+//                         mbcPE,             // PE = Perecimento, Extravio ou Deterioração
+//                         mbcOT              // OT = Outras Saídas do Imobilizado
+//                        );
   /// Código de grupo de tensão
-  TACBrGrupoTensao = (
-                       gtA1,          // 01 - A1 - Alta Tensão (230kV ou mais)
-                       gtA2,          // 02 - A2 - Alta Tensão (88 a 138kV)
-                       gtA3,          // 03 - A3 - Alta Tensão (69kV)
-                       gtA3a,         // 04 - A3a - Alta Tensão (30kV a 44kV)
-                       gtA4,          // 05 - A4 - Alta Tensão (2,3kV a 25kV)
-                       gtAS,          // 06 - AS - Alta Tensão Subterrâneo 06
-                       gtB107,        // 07 - B1 - Residencial 07
-                       gtB108,        // 08 - B1 - Residencial Baixa Renda 08
-                       gtB209,        // 09 - B2 - Rural 09
-                       gtB2Rural,     // 10 - B2 - Cooperativa de Eletrificação Rural
-                       gtB2Irrigacao, // 11 - B2 - Serviço Público de Irrigação
-                       gtB3,          // 12 - B3 - Demais Classes
-                       gtB4a,         // 13 - B4a - Iluminação Pública - rede de distribuição
-                       gtB4b          // 14 - B4b - Iluminação Pública - bulbo de lâmpada
-                      );
+//  TACBrGrupoTensao = (
+//                       gtA1,          // 01 - A1 - Alta Tensão (230kV ou mais)
+//                       gtA2,          // 02 - A2 - Alta Tensão (88 a 138kV)
+//                       gtA3,          // 03 - A3 - Alta Tensão (69kV)
+//                       gtA3a,         // 04 - A3a - Alta Tensão (30kV a 44kV)
+//                       gtA4,          // 05 - A4 - Alta Tensão (2,3kV a 25kV)
+//                       gtAS,          // 06 - AS - Alta Tensão Subterrâneo 06
+//                       gtB107,        // 07 - B1 - Residencial 07
+//                       gtB108,        // 08 - B1 - Residencial Baixa Renda 08
+//                       gtB209,        // 09 - B2 - Rural 09
+//                       gtB2Rural,     // 10 - B2 - Cooperativa de Eletrificação Rural
+//                       gtB2Irrigacao, // 11 - B2 - Serviço Público de Irrigação
+//                       gtB3,          // 12 - B3 - Demais Classes
+//                       gtB4a,         // 13 - B4a - Iluminação Pública - rede de distribuição
+//                       gtB4b          // 14 - B4b - Iluminação Pública - bulbo de lâmpada
+//                      );
   /// Código de classe de consumo de energia elétrica ou gás
-  TACBrClasseConsumo = (
-                         ccComercial,         // 01 - Comercial
-                         ccConsumoProprio,    // 02 - Consumo Próprio
-                         ccIluminacaoPublica, // 03 - Iluminação Pública
-                         ccIndustrial,        // 04 - Industrial
-                         ccPoderPublico,      // 05 - Poder Público
-                         ccResidencial,       // 06 - Residencial
-                         ccRural,             // 07 - Rural
-                         ccServicoPublico     // 08 -Serviço Público
-                        );
+//  TACBrClasseConsumo = (
+//                         ccComercial,         // 01 - Comercial
+//                         ccConsumoProprio,    // 02 - Consumo Próprio
+//                         ccIluminacaoPublica, // 03 - Iluminação Pública
+//                         ccIndustrial,        // 04 - Industrial
+//                         ccPoderPublico,      // 05 - Poder Público
+//                         ccResidencial,       // 06 - Residencial
+//                         ccRural,             // 07 - Rural
+//                         ccServicoPublico     // 08 -Serviço Público
+//                        );
   /// Código de tipo de Ligação
-  TACBrTipoLigacao = (
-                       tlMonofasico,          // 1 - Monofásico
-                       tlBifasico,            // 2 - Bifásico
-                       tlTrifasico            // 3 - Trifásico
-                      );
+//  TACBrTipoLigacao = (
+//                       tlMonofasico,          // 1 - Monofásico
+//                       tlBifasico,            // 2 - Bifásico
+//                       tlTrifasico            // 3 - Trifásico
+//                      );
   /// Código dispositivo autorizado
-  TACBrDispositivo = (
-                       cdaFormSeguranca,  // 00 - Formulário de Segurança
-                       cdaFSDA,           // 01 - FS-DA – Formulário de Segurança para Impressão de DANFE
-                       cdaNFe,            // 02 – Formulário de segurança - NF-e
-                       cdaFormContinuo,   // 03 - Formulário Contínuo
-                       cdaBlocos,         // 04 – Blocos
-                       cdaJogosSoltos     // 05 - Jogos Soltos
-                      );
+//  TACBrDispositivo = (
+//                       cdaFormSeguranca,  // 00 - Formulário de Segurança
+//                       cdaFSDA,           // 01 - FS-DA – Formulário de Segurança para Impressão de DANFE
+//                       cdaNFe,            // 02 – Formulário de segurança - NF-e
+//                       cdaFormContinuo,   // 03 - Formulário Contínuo
+//                       cdaBlocos,         // 04 – Blocos
+//                       cdaJogosSoltos     // 05 - Jogos Soltos
+//                      );
   /// Código do Tipo de Assinante
-  TACBrTipoAssinante = (
-                         assComercialIndustrial,    // 1 - Comercial/Industrial
-                         assPodrPublico,            // 2 - Poder Público
-                         assResidencial,            // 3 - Residencial/Pessoa física
-                         assPublico,                // 4 - Público
-                         assSemiPublico,            // 5 - Semi-Público
-                         assOutros                  // 6 - Outros
-                        );
+//  TACBrTipoAssinante = (
+//                         assComercialIndustrial,    // 1 - Comercial/Industrial
+//                         assPodrPublico,            // 2 - Poder Público
+//                         assResidencial,            // 3 - Residencial/Pessoa física
+//                         assPublico,                // 4 - Público
+//                         assSemiPublico,            // 5 - Semi-Público
+//                         assOutros                  // 6 - Outros
+//                        );
   /// Código da natureza da conta/grupo de contas
   TACBrNaturezaConta = (
                          ncgAtivo,        // 01 - Contas de ativo
@@ -415,51 +555,29 @@ type
                          ncgOutras        // 09 - Outras
                         );
 
-  /// Indicador do tipo de operação:
-  TACBrIndicadorTpOperacao = (
-                               itoContratado,     // 0 - Serviço Contratado pelo Estabelecimento
-                               itoPrestado        // 1 - Serviço Prestado pelo Estabelecimento
-                             );
 
-  /// Indicador do emitente do documento fiscal:
-  TACBrIndicadorEmitenteDF = (
-                               iedfProprio,       // 0 - Emissão própria
-                               iedfTerceiro       // 1 - Emissão de Terceiros
-                              );
 
-  /// Código da situação do documento fiscal:
-  TACBrSituacaoDF = (
-                     sdfRegular,                 // 00 – Documento regular
-                     sdfExtRegular,              // 01 - Escrituração extemporânea de documento regular
-                     sdfCancelado,               // 02 – Documento cancelado
-                     sdfExtCancelado,            // 03 Escrituração extemporânea de documento cancelado
-                     sdfDenegado,                // 04 NF-e ou CT-e – denegado
-                     sdfInutilizado,             // 05 NF-e ou CT-e - Numeração inutilizada
-                     sdfComplementar,            // 06 Documento Fiscal Complementar
-                     sdfExtComplementar,         // 07 Escrituração extemporânea de documento complementar
-                     sdfEspecial                 // 08 Documento Fiscal emitido com base em Regime Especial ou Norma Específica
-                     );
 
   /// Código da tabela de modelo de documento fiscais:
-  TACBrCodModeloDoc = (
-                       dfiNFSTransporte,          // 07 - Nota Fiscal de Serviço de Transporte
-                       dfiConhecimentoRodoviario, // 08 - Conhecimento de Transporte Rodoviário de Cargas
-                       dfiConhecimentoAvulso,     // 8B - Conhecimento de Transporte de Cargas Avulso
-                       dfiConhecimentoAquaviario, // 09 - Conhecimento de Transporte Aquaviário de Cargas
-                       dfiConhecimentoAereo,      // 10 - Conhecimento Aério
-                       dfiConhecimentoFerroviario,// 11 - Conhecimento de Transporte Ferroviário de Cargas
-                       dfiConhecimentoMultimodal, // 26 - Conhecimento de Transporte Multimodal de Cargas
-                       dfiNFTranspFerro,          // 27 - Nota Fiscal de Transporte Ferroviário de Cargas
-                       dfiCTE,                    // 57 - Conhecimento de Transporte Eletrônico - CT-e
-                       dfiBilheteRedoviario,      // 13 - Bilhete de passagem Rodoviário
-                       dfiBilheteAquaviario,      // 14 - Bilhete de passagem Aquaviário
-                       dfiBilheteBagagem,         // 15 - Bilhete de passagem e Nota de Bagagem
-                       dfiBilheteFerroviario,     // 16 - Bilhete de passagem Ferrroviário
-                       dfiResumoMovimento,        // 18 - Resumo de Movimento Diário
-                       dfiCFBilhete,              // 2E - Cupom Fiscal Bilhete de Passagem
-                       dfiNFSComunicacao,         // 21 - Nota Fiscal de Serviço de Comunicação
-                       dfiNFSTelecomunicacao      // 22 - Nota Fiscal de Serviço de Telecomunicação
-                      );					 
+//  TACBrCodModeloDoc = (
+//                       dfiNFSTransporte,          // 07 - Nota Fiscal de Serviço de Transporte
+//                       dfiConhecimentoRodoviario, // 08 - Conhecimento de Transporte Rodoviário de Cargas
+//                       dfiConhecimentoAvulso,     // 8B - Conhecimento de Transporte de Cargas Avulso
+//                       dfiConhecimentoAquaviario, // 09 - Conhecimento de Transporte Aquaviário de Cargas
+//                       dfiConhecimentoAereo,      // 10 - Conhecimento Aério
+//                       dfiConhecimentoFerroviario,// 11 - Conhecimento de Transporte Ferroviário de Cargas
+//                       dfiConhecimentoMultimodal, // 26 - Conhecimento de Transporte Multimodal de Cargas
+//                       dfiNFTranspFerro,          // 27 - Nota Fiscal de Transporte Ferroviário de Cargas
+//                       dfiCTE,                    // 57 - Conhecimento de Transporte Eletrônico - CT-e
+//                       dfiBilheteRedoviario,      // 13 - Bilhete de passagem Rodoviário
+//                       dfiBilheteAquaviario,      // 14 - Bilhete de passagem Aquaviário
+//                       dfiBilheteBagagem,         // 15 - Bilhete de passagem e Nota de Bagagem
+//                       dfiBilheteFerroviario,     // 16 - Bilhete de passagem Ferrroviário
+//                       dfiResumoMovimento,        // 18 - Resumo de Movimento Diário
+//                       dfiCFBilhete,              // 2E - Cupom Fiscal Bilhete de Passagem
+//                       dfiNFSComunicacao,         // 21 - Nota Fiscal de Serviço de Comunicação
+//                       dfiNFSTelecomunicacao      // 22 - Nota Fiscal de Serviço de Telecomunicação
+//                      );
 
   ///Código da Situação Tributária referente ao ICMS.
   TACBrSituacaoTribICMS = (
@@ -606,64 +724,8 @@ type
                             lesExecutExterior  // 1 – Executado no Exterior, cujo resultado se verifique no País.
                           );
 
-  // Indicador da Origem do Crédito
-  TACBrOrigemCredito = (
-                         opcMercadoInterno,     // 0 – Operação no Mercado Interno
-                         opcImportacao,         // 1 – Operação de Importação
-                         opcVazio               // Vazio. 
-                       );
-  // Tipo de Escrituração
-  TACBrTipoEscrituracao = (
-                            tpEscrOriginal,     // 0 - Original
-                            tpEscrRetificadora  // 1 - Retificadora
-                          );
-  // Indicador de situação especial
-  TACBrIndicadorSituacaoEspecial = (
-                                     indSitAbertura,      // 0 - Abertura
-                                     indSitCisao,         // 1 - Cisão
-                                     indSitFusao,         // 2 - Fusão
-                                     indSitIncorporacao,  // 3 - Incorporação
-                                     indSitEncerramento,  // 4 - Encerramento
-                                     indNenhum            // 5 - Vazio
-                                   );
-  // Indicador da natureza da pessoa juridica
-  TACBrIndicadorNaturezaPJ = (
-                               indNatPJSocEmpresariaGeral, // 0 - Sociedade empresária geral
-                               indNatPJSocCooperativa,     // 1 - Sociedade Cooperativa
-                               indNatPJEntExclusivaFolhaSal// 2 - Entidade sujeita ao PIS/Pasep exclusivamente com base  na folha de salários
-                             );
 
-  //Indicador de tipo de atividade prepoderante
-  TACBrIndicadorAtividade = (
-                              indAtivIndustrial,       // 0 - Industrial ou equiparado a industrial
-                              indAtivPrestadorServico, // 1 - Prestador de serviços
-                              indAtivComercio,         // 2 - Atividade de comércios
-                              indAtivoFincanceira,     // 3 - Atividade Financeira
-                              indAtivoImobiliaria,     // 4 - Atividade Imobiliária
-                              indAtivoOutros           // 9 - Outros
-                           );
 
-  //Codigo indicador da incidencia tributária no período (0110)
-  TACBrCodIndIncTributaria = (
-                               codEscrOpIncNaoCumulativo, // 0 - Escrituração de operações com incidencia exclusivamente no regime não cumulativo
-                               codEscrOpIncCumulativo,    // 1 - Escrituração de operações com incidencia exclusivamente no regime cumulativo
-                               codEscrOpIncAmbos          // 2 - Escrituração de operações com incidencia nos regimes cumulativo e não cumulativo
-                             );
-  //Código indicador de  método  de apropriação de  créditos  comuns, no caso  de incidencia no regime não cumulativo(COD_INC_TRIB = 1 ou 3)(0110)
-  TACBrIndAproCred = (
-                       indMetodoApropriacaoDireta,   // 0 - Método de apropriação direta
-                       indMetodoDeRateioProporcional // 1 - Método de rateio proporcional(Receita Bruta);
-                     );
-  //Código indicador do Tipo de Contribuição Apurada no Período(0110)
-  TACBrCodIndTipoCon = (
-                         codIndTipoConExclAliqBasica, // 0 - Apuração da Contribuição Exclusivamente a Alíquota Básica
-                         codIndTipoAliqEspecificas    // 1 - Apuração da Contribuição a Alíquotas Específicas (Diferenciadas e/ou por Unidade de Medida de Produto)
-                       );
-  //Código indicador do critério de escrituração e apuração adotado
-  TACBrCodIndCritEscrit = ( codRegimeCaixa,                   //1 – Regime de Caixa – Escrituração consolidada (Registro F500);
-                            codRegimeCompetEscritConsolidada, //2 – Regime de Competência - Escrituração consolidada (Registro F550);
-                            codRegimeCompetEscritDetalhada    //9 – Regime de Competência - Escrituração detalhada, com base nos registros dos Blocos “A”, “C”, “D” e “F”.
-                          );
 
   //Código indicador da tabela de incidencia, conforme anexo III
   TACBrIndCodIncidencia = (
@@ -691,28 +753,6 @@ type
                           IndEscriConsolidado,     //1 – Apuração com base nos registros de consolidação das operações por NF-e (C180 e C190) e por ECF (C490);
                           IndEscriIndividualizado  //2 – Apuração com base no registro individualizado de NF-e (C100 e C170) e de ECF (C400)
                          );
-  //Código da Base de Cálculo do Crédito - {NAT_BC_CRED} - 4.3.7 - Tabela Base de Cálculo do Crédito
-  TACBrBaseCalculoCredito = (
-                              bccVazio,                         // ''   // vazio.
-                              bccAqBensRevenda,                 // '01' // Aquisição de bens para revenda
-                              bccAqBensUtiComoInsumo,           // '02' // Aquisição de bens utilizados como insumo
-                              bccAqServUtiComoInsumo,           // '03' // Aquisição de serviços utilizados como insumo
-                              bccEnergiaEletricaTermica,        // '04' // Energia elétrica e térmica, inclusive sob a forma de vapor
-                              bccAluguelPredios,                // '05' // Aluguéis de prédios
-                              bccAluguelMaqEquipamentos,        // '06' // Aluguéis de máquinas e equipamentos
-                              bccArmazenagemMercadoria,         // '07' // Armazenagem de mercadoria e frete na operação de venda
-                              bccConArrendamentoMercantil,      // '08' // Contraprestações de arrendamento mercantil
-                              bccMaqCredDepreciacao,            // '09' // Máquinas, equipamentos e outros bens incorporados ao ativo imobilizado (crédito sobre encargos de depreciação).
-                              bccMaqCredAquisicao,              // '10' // Máquinas, equipamentos e outros bens incorporados ao ativo imobilizado (crédito com base no valor de aquisição).
-                              bccAmortizacaoDepreciacaoImoveis, // '11' // Amortização e Depreciação de edificações e benfeitorias em imóveis
-                              bccDevolucaoSujeita,              // '12' // Devolução de Vendas Sujeitas à Incidência Não-Cumulativa
-                              bccOutrasOpeComDirCredito,        // '13' // Outras Operações com Direito a Crédito
-                              bccAtTransporteSubcontratacao,    // '14' // Atividade de Transporte de Cargas – Subcontratação
-                              bccAtImobCustoIncorrido,          // '15' // Atividade Imobiliária – Custo Incorrido de Unidade Imobiliária
-                              bccAtImobCustoOrcado,             // '16' // Atividade Imobiliária – Custo Orçado de unidade não concluída
-                              bccAtPresServ,                    // '17' // Atividade de Prestação de Serviços de Limpeza, Conservação e Manutenção – vale-transporte, vale-refeição ou vale-alimentação, fardamento ou uniforme.
-                              bccEstoqueAberturaBens            // '18' // Estoque de abertura de bens
-                            );
 
   //Indicador do tipo de ajuste
   TACBrIndAJ = (
@@ -742,7 +782,7 @@ type
                    );
   //4.3.6 - Tabela Código de Tipo de Crédito
   TACBrCodCred = (
-                  //CÓDIGOS VINCULADOS À RECEITA TRIBUTADA NO MERCADO INTERNO - Grupo 100
+//                  CÓDIGOS VINCULADOS À RECEITA TRIBUTADA NO MERCADO INTERNO - Grupo 100
                     ccRTMIAliqBasica,        // '101' // Crédito vinculado à receita tributada no mercado interno - Alíquota Básica
                     ccRTMIAliqDiferenciada,  // '102' // Crédito vinculado à receita tributada no mercado interno - Alíquotas Diferenciadas
                     ccRTMIAliqUnidProduto,   // '103' // Crédito vinculado à receita tributada no mercado interno - Alíquota por Unidade de Produto
@@ -870,8 +910,6 @@ type
                           crOutros            //99- Outros (Detalhar no campo 10 – Informação Complementar)
                         );
 
-
-
   TOpenBlocos = class
   private
     FIND_MOV: TACBrIndicadorMovimento;    /// Indicador de movimento: 0- Bloco com dados informados, 1- Bloco sem dados informados.
@@ -879,8 +917,491 @@ type
     property IND_MOV: TACBrIndicadorMovimento read FIND_MOV write FIND_MOV;
   end;
 
+function CodVerToStr(AValue: TACBrCodVer): string;
+function StrToCodVer(AValue: string): TACBrCodVer;
+function IndMovToStr(AValue: TACBrIndMov): string;
+function StrToIndMov(AValue: string): TACBrIndMov;
+function TipoEscritToStr(AValue: TACBrTipoEscrit): string;
+function StrToTipoEscrit(AValue: string): TACBrTipoEscrit;
+function IndNatPJToStr(AValue: TACBrIndNatPJ): string;
+function StrToIndNatPJ(AValue: string): TACBrIndNatPJ;
+function IndAtivToStr(AValue: TACBrIndAtiv): string;
+function StrToIndAtiv(AValue: string): TACBrIndAtiv;
+function CodIncTribToStr(AValue: TACBrCodIncTrib): string;
+function StrToCodIncTrib(AValue: string): TACBrCodIncTrib;
+function IndAproCredToStr(AValue: TACBrIndAproCred): string;
+function StrToIndAproCred(AValue: string): TACBrIndAproCred;
+function CodTipoContToStr(AValue: TACBrCodTipoCont): string;
+function StrToCodTipoCont(AValue: string): TACBrCodTipoCont;
+function IndRegCumToStr(AValue: TACBrIndRegCum): string;
+function StrToIndRegCum(AValue: string): TACBrIndRegCum;
+function TipoItemToStr(AValue: TACBrTipoItem): string;
+function StrToTipoItem(AValue: string): TACBrTipoItem;
+function IndOperToStr(AVAlue: TACBrIndOper): string;
+function StrToIndOper(AVAlue: string): TACBrIndOper;
+function IndEmitToStr(AValue: TACBrIndEmit): string;
+function StrToIndEmit(AValue: string): TACBrIndEmit;
+function CodSitToStr(AValue: TACBrCodSit): string;
+function StrToCodSit(AValue: string): TACBrCodSit;
+function IndPgtoToStr(AValue: TACBrIndPgto): string;
+function StrToIndPgto(AValue: string): TACBrIndPgto;
+function NatBcCredToStr(AValue: TACBrNatBcCred): string;
+function StrToNatBcCred(AValue: string): TACBrNatBcCred;
+function IndOrigCredToStr(AValue: TACBrIndOrigCred): string;
+function StrToIndOrigCred(AValue: String): TACBrIndOrigCred;
+
 implementation
 
 { TOpenBlocos }
+
+//function StrToEnumerado(const s: string; const AString:
+//  array of string; const AEnumerados: array of variant): variant;
+//var
+//  iFor: integer;
+//  bOK: boolean;
+//begin
+//  result := -1;
+//  for iFor := Low(AString) to High(AString) do
+//  begin
+//    if AnsiSameText(s, AString[iFor]) then
+//    begin
+//       Result := AEnumerados[iFor];
+//       Break;
+//    end;
+//  end;
+//  bOK := Result <> -1;
+//  if not bOK then
+//    Result := AEnumerados[0];
+//end;
+
+//function EnumeradoToStr(const t: variant; const AString:
+//  array of string; const AEnumerados: array of variant): variant;
+//var
+//  iFor: integer;
+//begin
+//  Result := '';
+//  for iFor := Low(AEnumerados) to High(AEnumerados) do
+//  begin
+//    if t = AEnumerados[iFor] then
+//    begin
+//      Result := AString[iFor];
+//      Break;
+//    end;
+//  end;
+//end;
+
+function CodVerToStr(AValue: TACBrCodVer): string;
+begin
+   Result := IntToStr( Integer( AValue ) + 1 );
+
+//   Result := EnumeradoToStr(AValue, ['1', '2', '3', '4'], [vlVersao100,
+//                                                           vlVersao101,
+//                                                           vlVersao200,
+//                                                           vlVersao201]);
+end;
+
+function StrToCodVer(AValue: string): TACBrCodVer;
+begin
+   Result := TACBrCodVer( StrToIntDef( AValue, 1) -1 );
+
+//   Result := StrToEnumerado(AValue, ['1', '2', '3', '4'], [vlVersao100,
+//                                                           vlVersao101,
+//                                                           vlVersao200,
+//                                                           vlVersao201]);
+end;
+
+function IndMovToStr(AValue: TACBrIndMov): string;
+begin
+   Result := IntToStr( Integer( AValue ) + 1 );
+
+//   Result := EnumeradoToStr(AValue, ['0', '1'], [imComDados,
+//                                                 imSemDados]);
+end;
+
+function StrToIndMov(AValue: string): TACBrIndMov;
+begin
+   Result := TACBrIndMov( StrToIntDef( AValue, 1) -1 );
+
+//   Result := StrToEnumerado(AValue, ['0', '1'], [imComDados,
+//                                                 imSemDados]);
+end;
+
+function TipoEscritToStr(AValue: TACBrTipoEscrit): string;
+begin
+   Result := IntToStr( Integer( AValue ) + 1 );
+
+//   Result := EnumeradoToStr(AValue, ['0', '1'], [tpEscrOriginal,
+//                                                 tpEscrRetificadora]);
+end;
+
+function StrToTipoEscrit(AValue: string): TACBrTipoEscrit;
+begin
+   Result := TACBrTipoEscrit( StrToIntDef( AValue, 1) -1 );
+
+//   Result := StrToEnumerado(AValue, ['0', '1'], [tpEscrOriginal,
+//                                                 tpEscrRetificadora]);
+end;
+
+function IndSitEspToStr(AValue: TACBrIndSitEsp): String;
+begin
+   if AValue = indNenhum then
+      Result := ''
+   else
+      Result := IntToStr( Integer( AValue ) + 1 );
+
+//   Result := EnumeradoToStr(AValue, ['0', '1', '2', '3', '4', ''], [indSitAbertura,
+//                                                                    indSitCisao,
+//                                                                    indSitFusao,
+//                                                                    indSitIncorporacao,
+//                                                                    indSitEncerramento,
+//                                                                    indNenhum]);
+end;
+
+function StrToIndSitEsp(AValue: string): TACBrIndSitEsp;
+begin
+   Result := TACBrIndSitEsp( StrToIntDef( AValue, 1) -1 );
+
+//   Result := StrToEnumerado(AValue, ['0', '1', '2', '3', '4', ''], [indSitAbertura,
+//                                                                    indSitCisao,
+//                                                                    indSitFusao,
+//                                                                    indSitIncorporacao,
+//                                                                    indSitEncerramento,
+//                                                                    indNenhum]);
+end;
+
+function IndNatPJToStr(AValue: TACBrIndNatPJ): string;
+begin
+   Result := IntToStr( Integer( AValue ) + 1 );
+
+//   Result := EnumeradoToStr(AValue, ['0', '1', '2'], [indNatPJSocEmpresariaGeral,
+//                                                      indNatPJSocCooperativa,
+//                                                      indNatPJEntExclusivaFolhaSal]);
+end;
+
+function StrToIndNatPJ(AValue: string): TACBrIndNatPJ;
+begin
+   Result := TACBrIndNatPJ( StrToIntDef( AValue, 1) -1 );
+
+//   Result := StrToEnumerado(AValue, ['0', '1', '2'], [indNatPJSocEmpresariaGeral,
+//                                                      indNatPJSocCooperativa,
+//                                                      indNatPJEntExclusivaFolhaSal]);
+end;
+
+function IndAtivToStr(AValue: TACBrIndAtiv): string;
+begin
+   if AValue = indAtivoOutros then
+      Result := '9'
+   else
+      Result := IntToStr( Integer( AValue ) + 1 );
+
+//   Result := EnumeradoToStr(AValue, ['0', '1', '2', '3', '4', '9'], [indAtivIndustrial,
+//                                                                     indAtivPrestadorServico,
+//                                                                     indAtivComercio,
+//                                                                     indAtivoFincanceira,
+//                                                                     indAtivoImobiliaria,
+//                                                                     indAtivoOutros]);
+end;
+
+function StrToIndAtiv(AValue: string): TACBrIndAtiv;
+begin
+   Result := TACBrIndAtiv( StrToIntDef( AValue, 1) -1 );
+
+//   Result := StrToEnumerado(AValue, ['0', '1', '2', '3', '4', '9'], [indAtivIndustrial,
+//                                                                     indAtivPrestadorServico,
+//                                                                     indAtivComercio,
+//                                                                     indAtivoFincanceira,
+//                                                                     indAtivoImobiliaria,
+//                                                                     indAtivoOutros]);
+end;
+
+function CodIncTribToStr(AValue: TACBrCodIncTrib): string;
+begin
+   Result := IntToStr( Integer( AValue ) + 1 );
+
+//   Result := EnumeradoToStr(AValue, ['1', '2', '3'], [codEscrOpIncNaoCumulativo,
+//                                                      codEscrOpIncCumulativo,
+//                                                      codEscrOpIncAmbos]);
+end;
+
+function StrToCodIncTrib(AValue: string): TACBrCodIncTrib;
+begin
+   Result := TACBrCodIncTrib( StrToIntDef( AValue, 1) -1 );
+
+//   Result := StrToEnumerado(AValue, ['1', '2', '3'], [codEscrOpIncNaoCumulativo,
+//                                                      codEscrOpIncCumulativo,
+//                                                      codEscrOpIncAmbos]);
+end;
+
+function IndAproCredToStr(AValue: TACBrIndAproCred): string;
+begin
+   Result := IntToStr( Integer( AValue ) + 1 );
+
+//   Result := EnumeradoToStr(AValue, ['1', '2'], [indMetodoApropriacaoDireta,
+//                                                 indMetodoDeRateioProporcional]);
+end;
+
+function StrToIndAproCred(AValue: string): TACBrIndAproCred;
+begin
+   Result := TACBrIndAproCred( StrToIntDef( AValue, 1) -1 );
+
+//   Result := StrToEnumerado(AValue, ['1', '2'], [indMetodoApropriacaoDireta,
+//                                                 indMetodoDeRateioProporcional]);
+end;
+
+function CodTipoContToStr(AValue: TACBrCodTipoCont): string;
+begin
+   Result := IntToStr( Integer( AValue ) + 1 );
+
+//   Result := EnumeradoToStr(AValue, ['1', '2'], [codIndTipoConExclAliqBasica,
+//                                                 codIndTipoAliqEspecificas]);
+end;
+
+function StrToCodTipoCont(AValue: string): TACBrCodTipoCont;
+begin
+   Result := TACBrCodTipoCont( StrToIntDef( AValue, 1) -1 );
+
+//   Result := StrToEnumerado(AValue, ['1', '2'], [codIndTipoConExclAliqBasica,
+//                                                 codIndTipoAliqEspecificas]);
+end;
+
+function IndRegCumToStr(AValue: TACBrIndRegCum): string;
+begin
+   if AValue = codRegimeCompetEscritDetalhada then
+      Result := '9'
+   else
+      Result := IntToStr( Integer( AValue ) + 1 );
+
+//   Result := EnumeradoToStr(AValue, ['1', '2', '9'], [codRegimeCaixa,
+//                                                      codRegimeCompetEscritConsolidada,
+//                                                      codRegimeCompetEscritDetalhada]);
+end;
+
+function StrToIndRegCum(AValue: string): TACBrIndRegCum;
+begin
+   Result := TACBrIndRegCum( StrToIntDef( AValue, 1) -1 );
+
+//   Result := StrToEnumerado(AValue, ['1', '2', '9'], [codRegimeCaixa,
+//                                                      codRegimeCompetEscritConsolidada,
+//                                                      codRegimeCompetEscritDetalhada]);
+end;
+
+function TipoItemToStr(AValue: TACBrTipoItem): string;
+begin
+   if AValue = tiOutras then
+      Result := '99'
+   else
+      Result := FormatFloat('00', Integer( AValue ) + 1 );
+
+//   Result := EnumeradoToStr(AValue, ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '99'],
+//                                    [tiMercadoriaRevenda,
+//                                     tiMateriaPrima,
+//                                     tiEmbalagem,
+//                                     tiProdutoProcesso,
+//                                     tiProdutoAcabado,
+//                                     tiSubproduto,
+//                                     tiProdutoIntermediario,
+//                                     tiMaterialConsumo,
+//                                     tiAtivoImobilizado,
+//                                     tiServicos,
+//                                     tiOutrosInsumos,
+//                                     tiOutras]);
+end;
+
+function StrToTipoItem(AValue: string): TACBrTipoItem;
+begin
+   Result := TACBrTipoItem( StrToIntDef( AValue, 1) -1 );
+
+//   Result := StrToEnumerado(AValue, ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '99'],
+//                                    [tiMercadoriaRevenda,
+//                                     tiMateriaPrima,
+//                                     tiEmbalagem,
+//                                     tiProdutoProcesso,
+//                                     tiProdutoAcabado,
+//                                     tiSubproduto,
+//                                     tiProdutoIntermediario,
+//                                     tiMaterialConsumo,
+//                                     tiAtivoImobilizado,
+//                                     tiServicos,
+//                                     tiOutrosInsumos,
+//                                     tiOutras]);
+end;
+
+function IndOperToStr(AVAlue: TACBrIndOper): string;
+begin
+   Result := IntToStr( Integer( AValue ) + 1 );
+
+//   Result := EnumeradoToStr(AVAlue, ['0', '1'], [itoContratado,
+//                                                 itoPrestado]);
+end;
+
+function StrToIndOper(AVAlue: string): TACBrIndOper;
+begin
+   Result := TACBrIndOper( StrToIntDef( AValue, 1) -1 );
+
+//   Result := StrToEnumerado(AVAlue, ['0', '1'], [itoContratado,
+//                                                 itoPrestado]);
+end;
+
+function IndEmitToStr(AValue: TACBrIndEmit): string;
+begin
+   Result := IntToStr( Integer( AValue ) + 1 );
+
+//   Result := EnumeradoToStr(AValue, ['0', '1'], [iedfProprio,
+//                                                 iedfTerceiro]);
+end;
+
+function StrToIndEmit(AValue: string): TACBrIndEmit;
+begin
+   Result := TACBrIndEmit( StrToIntDef( AValue, 1) -1 );
+
+//   Result := StrToEnumerado(AValue, ['0', '1'], [iedfProprio,
+//                                                 iedfTerceiro]);
+end;
+
+function CodSitToStr(AValue: TACBrCodSit): string;
+begin
+   Result := FormatFloat('00', Integer( AValue ) + 1 );
+
+//   Result := EnumeradoToStr(AValue, ['00', '01', '02', '03', '04', '05', '06', '07', '08'],
+//                                    [sdfRegular,
+//                                     sdfExtRegular,
+//                                     sdfCancelado,
+//                                     sdfExtCancelado,
+//                                     sdfDenegado,
+//                                     sdfInutilizado,
+//                                     sdfComplementar,
+//                                     sdfExtComplementar,
+//                                     sdfEspecial]);
+end;
+
+function StrToCodSit(AValue: string): TACBrCodSit;
+begin
+   Result := TACBrCodSit( StrToIntDef( AValue, 1) -1 );
+
+//   Result := StrToEnumerado(AValue, ['00', '01', '02', '03', '04', '05', '06', '07', '08'],
+//                                    [sdfRegular,
+//                                     sdfExtRegular,
+//                                     sdfCancelado,
+//                                     sdfExtCancelado,
+//                                     sdfDenegado,
+//                                     sdfInutilizado,
+//                                     sdfComplementar,
+//                                     sdfExtComplementar,
+//                                     sdfEspecial]);
+end;
+
+function IndPgtoToStr(AValue: TACBrIndPgto): string;
+begin
+   if AValue = tpSemPagamento then
+      Result := '9'
+   else
+   if AValue = tpNenhum then
+      Result := ''
+   else
+      Result := IntToStr( Integer( AValue ) + 1 );
+
+//   Result := EnumeradoToStr(AValue, ['0', '1', '9', ''], [tpVista,
+//                                                          tpPrazo,
+//                                                          tpSemPagamento,
+//                                                          tpNenhum]);
+end;
+
+function StrToIndPgto(AValue: string): TACBrIndPgto;
+begin
+   Result := TACBrIndPgto( StrToIntDef( AValue, 1) -1 );
+
+//   Result := StrToEnumerado(AValue, ['0', '1', '9', ''], [tpVista,
+//                                                          tpPrazo,
+//                                                          tpSemPagamento,
+//                                                          tpNenhum]);
+end;
+
+function NatBcCredToStr(AValue: TACBrNatBcCred): string;
+begin
+   if AValue = bccVazio then
+      Result := ''
+   else
+      Result := FormatFloat('00', Integer( AValue ) + 1 );
+
+//   Result := EnumeradoToStr(AValue, ['', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18'],
+//                                    [bccVazio,                         // ''   // vazio.
+//                                     bccAqBensRevenda,                 // '01' // Aquisição de bens para revenda
+//                                     bccAqBensUtiComoInsumo,           // '02' // Aquisição de bens utilizados como insumo
+//                                     bccAqServUtiComoInsumo,           // '03' // Aquisição de serviços utilizados como insumo
+//                                     bccEnergiaEletricaTermica,        // '04' // Energia elétrica e térmica, inclusive sob a forma de vapor
+//                                     bccAluguelPredios,                // '05' // Aluguéis de prédios
+//                                     bccAluguelMaqEquipamentos,        // '06' // Aluguéis de máquinas e equipamentos
+//                                     bccArmazenagemMercadoria,         // '07' // Armazenagem de mercadoria e frete na operação de venda
+//                                     bccConArrendamentoMercantil,      // '08' // Contraprestações de arrendamento mercantil
+//                                     bccMaqCredDepreciacao,            // '09' // Máquinas, equipamentos e outros bens incorporados ao ativo imobilizado (crédito sobre encargos de depreciação).
+//                                     bccMaqCredAquisicao,              // '10' // Máquinas, equipamentos e outros bens incorporados ao ativo imobilizado (crédito com base no valor de aquisição).
+//                                     bccAmortizacaoDepreciacaoImoveis, // '11' // Amortização e Depreciação de edificações e benfeitorias em imóveis
+//                                     bccDevolucaoSujeita,              // '12' // Devolução de Vendas Sujeitas à Incidência Não-Cumulativa
+//                                     bccOutrasOpeComDirCredito,        // '13' // Outras Operações com Direito a Crédito
+//                                     bccAtTransporteSubcontratacao,    // '14' // Atividade de Transporte de Cargas – Subcontratação
+//                                     bccAtImobCustoIncorrido,          // '15' // Atividade Imobiliária – Custo Incorrido de Unidade Imobiliária
+//                                     bccAtImobCustoOrcado,             // '16' // Atividade Imobiliária – Custo Orçado de unidade não concluída
+//                                     bccAtPresServ,                    // '17' // Atividade de Prestação de Serviços de Limpeza, Conservação e Manutenção – vale-transporte, vale-refeição ou vale-alimentação, fardamento ou uniforme.
+//                                     bccEstoqueAberturaBens            // '18' // Estoque de abertura de bens
+//                                     ]);
+end;
+
+function StrToNatBcCred(AValue: string): TACBrNatBcCred;
+begin
+   if AValue = '' then
+      Result := bccVazio
+   else
+      Result := TACBrNatBcCred( StrToIntDef( AValue, 1) -1 );
+
+//   Result := StrToEnumerado(AValue, ['', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18'],
+//                                    [bccVazio,                         // ''   // vazio.
+//                                     bccAqBensRevenda,                 // '01' // Aquisição de bens para revenda
+//                                     bccAqBensUtiComoInsumo,           // '02' // Aquisição de bens utilizados como insumo
+//                                     bccAqServUtiComoInsumo,           // '03' // Aquisição de serviços utilizados como insumo
+//                                     bccEnergiaEletricaTermica,        // '04' // Energia elétrica e térmica, inclusive sob a forma de vapor
+//                                     bccAluguelPredios,                // '05' // Aluguéis de prédios
+//                                     bccAluguelMaqEquipamentos,        // '06' // Aluguéis de máquinas e equipamentos
+//                                     bccArmazenagemMercadoria,         // '07' // Armazenagem de mercadoria e frete na operação de venda
+//                                     bccConArrendamentoMercantil,      // '08' // Contraprestações de arrendamento mercantil
+//                                     bccMaqCredDepreciacao,            // '09' // Máquinas, equipamentos e outros bens incorporados ao ativo imobilizado (crédito sobre encargos de depreciação).
+//                                     bccMaqCredAquisicao,              // '10' // Máquinas, equipamentos e outros bens incorporados ao ativo imobilizado (crédito com base no valor de aquisição).
+//                                     bccAmortizacaoDepreciacaoImoveis, // '11' // Amortização e Depreciação de edificações e benfeitorias em imóveis
+//                                     bccDevolucaoSujeita,              // '12' // Devolução de Vendas Sujeitas à Incidência Não-Cumulativa
+//                                     bccOutrasOpeComDirCredito,        // '13' // Outras Operações com Direito a Crédito
+//                                     bccAtTransporteSubcontratacao,    // '14' // Atividade de Transporte de Cargas – Subcontratação
+//                                     bccAtImobCustoIncorrido,          // '15' // Atividade Imobiliária – Custo Incorrido de Unidade Imobiliária
+//                                     bccAtImobCustoOrcado,             // '16' // Atividade Imobiliária – Custo Orçado de unidade não concluída
+//                                     bccAtPresServ,                    // '17' // Atividade de Prestação de Serviços de Limpeza, Conservação e Manutenção – vale-transporte, vale-refeição ou vale-alimentação, fardamento ou uniforme.
+//                                     bccEstoqueAberturaBens            // '18' // Estoque de abertura de bens
+//                                    ]);
+end;
+
+function IndOrigCredToStr(AValue: TACBrIndOrigCred): string;
+begin
+   if AValue = opcVazio then
+      Result := ''
+   else
+      Result := IntToStr( Integer( AValue ) + 1 );
+
+//   Result := EnumeradoToStr(AValue, ['0', '1', ''],
+//                                    [opcMercadoInterno,      // 0 – Operação no Mercado Interno
+//                                     opcImportacao,          // 1 – Operação de Importação
+//                                     opcVazio                // Vazio.
+//                                    ]);
+end;
+
+function StrToIndOrigCred(AValue: String): TACBrIndOrigCred;
+begin
+   if AValue = '' then
+      Result := opcVazio
+   else
+      Result := TACBrIndOrigCred( StrToIntDef( AValue, 1) -1 );
+
+//   Result := StrToEnumerado(AValue, ['0', '1', ''],
+//                                    [opcMercadoInterno,      // 0 – Operação no Mercado Interno
+//                                     opcImportacao,          // 1 – Operação de Importação
+//                                     opcVazio                // Vazio.
+//                                ]);
+end;
 
 end.

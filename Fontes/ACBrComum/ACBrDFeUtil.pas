@@ -495,26 +495,14 @@ begin
 end;
 
 class function DFeUtil.StringToFloat(AValue: String): Double;
-var
-sDecimalSeparator: string;
-{$IFDEF VER140} //D6
-{$ELSE}
-vFormatSettings: TFormatSettings;
-{$ENDIF}
 begin
-{$IFDEF VER140} //D6
-  sDecimalSeparator := DecimalSeparator;
-{$ELSE}
-  sDecimalSeparator := vFormatSettings.DecimalSeparator;
-{$ENDIF}
-
   AValue := Trim( AValue );
 
-  if sDecimalSeparator <> '.' then
-     AValue := StringReplace(AValue,'.',sDecimalSeparator,[rfReplaceAll]);
+  if DecimalSeparator <> '.' then
+     AValue := StringReplace(AValue,'.',DecimalSeparator,[rfReplaceAll]);
 
-  if sDecimalSeparator <> ',' then
-     AValue := StringReplace(AValue,',',sDecimalSeparator,[rfReplaceAll]);
+  if DecimalSeparator <> ',' then
+     AValue := StringReplace(AValue,',',DecimalSeparator,[rfReplaceAll]);
 
   Result := StrToFloat(AValue);
 end;

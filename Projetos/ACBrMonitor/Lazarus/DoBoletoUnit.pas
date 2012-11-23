@@ -98,10 +98,9 @@ begin
          Cmd.Resposta := ListaBancos();
        end
       else if cmd.Metodo = 'tamnossonumero' then
-         Cmd.Resposta :=  IntToStr(Banco.TamanhoMaximoNossoNum)
-
-      ELSE
-         raise Exception.Create('Comando inválido ('+Cmd.Comando+')') ;
+         Cmd.Resposta :=  IntToStr(Banco.CalcularTamMaximoNossoNumero(Cmd.Params(0)))
+      else
+         raise Exception.Create(ACBrStr('Comando inválido ('+Cmd.Comando+')')) ;
    end;
 
 end;
@@ -323,8 +322,8 @@ begin
          LocalPagamento      := IfThen(Trim(LocalPagto) <> '',LocalPagto,LocalPagamento);
          NumeroDocumento     := aIni.ReadString(Sessao,'NumeroDocumento',NumeroDocumento);
          EspecieDoc          := aIni.ReadString(Sessao,'Especie',EspecieDoc);
+         Carteira            := trim(aIni.ReadString(Sessao,'Carteira',''));
          NossoNumero         := aIni.ReadString(Sessao,'NossoNumero','');
-         Carteira            := aIni.ReadString(Sessao,'Carteira','');
          ValorDocumento      := aIni.ReadFloat(Sessao,'ValorDocumento',ValorDocumento);
          Sacado.NomeSacado   := aIni.ReadString(Sessao,'Sacado.NomeSacado','');
          Sacado.CNPJCPF      := OnlyNumber(aIni.ReadString(Sessao,'Sacado.CNPJCPF',''));

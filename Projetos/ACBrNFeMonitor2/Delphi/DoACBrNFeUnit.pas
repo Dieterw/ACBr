@@ -36,7 +36,7 @@ unit DoACBrNFeUnit ;
 interface
 Uses Classes, TypInfo, SysUtils, CmdUnitNFe, Types,
      smtpsend, ssl_openssl, mimemess, mimepart,
-     ACBrNFeUtil, RpDevice,
+     ACBrNFeUtil, ACBrDFeUtil, RpDevice,
      IdMessage, IdSMTP, IdBaseComponent, IdComponent,
      IdIOHandler, IdIOHandlerSocket, IdSSLOpenSSL;
 
@@ -133,7 +133,7 @@ begin
            ACBrNFe1.Configuracoes.Geral.Salvar := True;
            ACBrNFe1.NotasFiscais.Assinar;
            ACBrNFe1.Configuracoes.Geral.Salvar := Salva;
-           if NotaUtil.NaoEstaVazio(ACBrNFe1.NotasFiscais.Items[0].NomeArq) then
+           if DFeUtil.NaoEstaVazio(ACBrNFe1.NotasFiscais.Items[0].NomeArq) then
               Cmd.Resposta := ACBrNFe1.NotasFiscais.Items[0].NomeArq
            else
               Cmd.Resposta := PathWithDelim(ACBrNFe1.Configuracoes.Geral.PathSalvar)+StringReplace(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID, 'NFe', '', [rfIgnoreCase])+'-nfe.xml';
@@ -194,7 +194,7 @@ begin
             begin
               infEvento.CNPJ   := Cmd.Params(2);
               if Trim(infEvento.CNPJ) = '' then
-                 infEvento.CNPJ   := copy(NotaUtil.LimpaNumero(ACBrNFe1.WebServices.Consulta.NFeChave),7,14)
+                 infEvento.CNPJ   := copy(DFeUtil.LimpaNumero(ACBrNFe1.WebServices.Consulta.NFeChave),7,14)
               else
                begin
                  if not ValidarCNPJ(Cmd.Params(2)) then
@@ -271,21 +271,21 @@ begin
            else
               raise Exception.Create('Arquivo '+Cmd.Params(0)+' não encontrado.');
 
-           if NotaUtil.NaoEstaVazio(Cmd.Params(1)) then
+           if DFeUtil.NaoEstaVazio(Cmd.Params(1)) then
               ACBrNFe1.DANFE.Impressora := Cmd.Params(1)
            else
               ACBrNFe1.DANFE.Impressora := cbxImpressora.Text;
 
-           if NotaUtil.NaoEstaVazio(Cmd.Params(2)) then
+           if DFeUtil.NaoEstaVazio(Cmd.Params(2)) then
               ACBrNFe1.DANFE.NumCopias := StrToIntDef(Cmd.Params(2),1)
            else
               ACBrNFe1.DANFE.NumCopias := StrToIntDef(edtNumCopia.Text,1);
 
-           if NotaUtil.NaoEstaVazio(Cmd.Params(3)) then
+           if DFeUtil.NaoEstaVazio(Cmd.Params(3)) then
               ACBrNFe1.DANFE.ProtocoloNFe := Cmd.Params(3);
 
            if (ACBrNFe1.NotasFiscais.Items[0].NFe.Ide.tpEmis = teDPEC) and
-              NotaUtil.EstaVazio(ACBrNFe1.DANFE.ProtocoloNFe) then
+              DFeUtil.EstaVazio(ACBrNFe1.DANFE.ProtocoloNFe) then
             begin
               ACBrNFe1.WebServices.ConsultaDPEC.NFeChave := ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID;
               ACBrNFe1.WebServices.ConsultaDPEC.Executar;
@@ -306,11 +306,11 @@ begin
            else
               raise Exception.Create('Arquivo '+Cmd.Params(0)+' não encontrado.');
 
-           if NotaUtil.NaoEstaVazio(Cmd.Params(1)) then
+           if DFeUtil.NaoEstaVazio(Cmd.Params(1)) then
               ACBrNFe1.DANFE.ProtocoloNFe := Cmd.Params(1);
               
            if (ACBrNFe1.NotasFiscais.Items[0].NFe.Ide.tpEmis = teDPEC) and
-              NotaUtil.EstaVazio(ACBrNFe1.DANFE.ProtocoloNFe) then
+              DFeUtil.EstaVazio(ACBrNFe1.DANFE.ProtocoloNFe) then
             begin
               ACBrNFe1.WebServices.ConsultaDPEC.NFeChave := ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID;
               ACBrNFe1.WebServices.ConsultaDPEC.Executar;
@@ -356,16 +356,16 @@ begin
             end
            else
             begin
-              if NotaUtil.NaoEstaVazio(Cmd.Params(1)) then
+              if DFeUtil.NaoEstaVazio(Cmd.Params(1)) then
                  raise Exception.Create('Arquivo '+Cmd.Params(1)+' não encontrado.');
             end;
 
-           if NotaUtil.NaoEstaVazio(Cmd.Params(2)) then
+           if DFeUtil.NaoEstaVazio(Cmd.Params(2)) then
               ACBrNFe1.DANFE.Impressora := Cmd.Params(2)
            else
               ACBrNFe1.DANFE.Impressora := cbxImpressora.Text;
 
-           if NotaUtil.NaoEstaVazio(Cmd.Params(3)) then
+           if DFeUtil.NaoEstaVazio(Cmd.Params(3)) then
               ACBrNFe1.DANFE.NumCopias := StrToIntDef(Cmd.Params(3),1)
            else
               ACBrNFe1.DANFE.NumCopias := StrToIntDef(edtNumCopia.Text,1);
@@ -465,7 +465,7 @@ begin
                 end;
               end;
 
-              if NotaUtil.NaoEstaVazio(Cmd.Params(4)) then
+              if DFeUtil.NaoEstaVazio(Cmd.Params(4)) then
                  ACBrNFe1.DANFE.Impressora := Cmd.Params(4)
               else
                  ACBrNFe1.DANFE.Impressora := cbxImpressora.Text;
@@ -546,9 +546,9 @@ begin
                              'xFant='+ACBrNFe1.WebServices.ConsultaCadastro.RetConsCad.InfCad.Items[0].xFant+sLineBreak+
                              'xRegApur='+ACBrNFe1.WebServices.ConsultaCadastro.RetConsCad.InfCad.Items[0].xRegApur+sLineBreak+
                              'CNAE='+inttostr(ACBrNFe1.WebServices.ConsultaCadastro.RetConsCad.InfCad.Items[0].CNAE)+sLineBreak+
-                             'dIniAtiv='+NotaUtil.FormatDate(DateToStr(ACBrNFe1.WebServices.ConsultaCadastro.RetConsCad.InfCad.Items[0].dIniAtiv))+sLineBreak+
-                             'dUltSit='+NotaUtil.FormatDate(DateToStr(ACBrNFe1.WebServices.ConsultaCadastro.RetConsCad.InfCad.Items[0].dUltSit))+sLineBreak+
-                             'dBaixa='+NotaUtil.FormatDate(DateToStr(ACBrNFe1.WebServices.ConsultaCadastro.RetConsCad.InfCad.Items[0].dBaixa))+sLineBreak+
+                             'dIniAtiv='+DFeUtil.FormatDate(DateToStr(ACBrNFe1.WebServices.ConsultaCadastro.RetConsCad.InfCad.Items[0].dIniAtiv))+sLineBreak+
+                             'dUltSit='+DFeUtil.FormatDate(DateToStr(ACBrNFe1.WebServices.ConsultaCadastro.RetConsCad.InfCad.Items[0].dUltSit))+sLineBreak+
+                             'dBaixa='+DFeUtil.FormatDate(DateToStr(ACBrNFe1.WebServices.ConsultaCadastro.RetConsCad.InfCad.Items[0].dBaixa))+sLineBreak+
                              'xLgr='+ACBrNFe1.WebServices.ConsultaCadastro.RetConsCad.InfCad.Items[0].xLgr+sLineBreak+
                              'nro='+ACBrNFe1.WebServices.ConsultaCadastro.RetConsCad.InfCad.Items[0].nro+sLineBreak+
                              'xCpl='+ACBrNFe1.WebServices.ConsultaCadastro.RetConsCad.InfCad.Items[0].xCpl+sLineBreak+
@@ -844,9 +844,9 @@ begin
             end;
             try
                if rgEmailTipoEnvio.ItemIndex = 0 then
-                  EnviarEmail(edtSmtpHost.Text, edtSmtpPort.Text, edtSmtpUser.Text, edtSmtpPass.Text, edtSmtpUser.Text, Cmd.Params(0),NotaUtil.SeSenao(NotaUtil.NaoEstaVazio(Cmd.Params(3)),Cmd.Params(3),edtEmailAssunto.Text), ArqNFe, ArqPDF, mmEmailMsg.Lines, cbEmailSSL.Checked,Cmd.Params(4))
+                  EnviarEmail(edtSmtpHost.Text, edtSmtpPort.Text, edtSmtpUser.Text, edtSmtpPass.Text, edtSmtpUser.Text, Cmd.Params(0),DFeUtil.SeSenao(DFeUtil.NaoEstaVazio(Cmd.Params(3)),Cmd.Params(3),edtEmailAssunto.Text), ArqNFe, ArqPDF, mmEmailMsg.Lines, cbEmailSSL.Checked,Cmd.Params(4))
                else
-                  EnviarEmailIndy(edtSmtpHost.Text, edtSmtpPort.Text, edtSmtpUser.Text, edtSmtpPass.Text, edtSmtpUser.Text, Cmd.Params(0),NotaUtil.SeSenao(NotaUtil.NaoEstaVazio(Cmd.Params(3)),Cmd.Params(3),edtEmailAssunto.Text), ArqNFe, ArqPDF, mmEmailMsg.Lines, cbEmailSSL.Checked,Cmd.Params(4));
+                  EnviarEmailIndy(edtSmtpHost.Text, edtSmtpPort.Text, edtSmtpUser.Text, edtSmtpPass.Text, edtSmtpUser.Text, Cmd.Params(0),DFeUtil.SeSenao(DFeUtil.NaoEstaVazio(Cmd.Params(3)),Cmd.Params(3),edtEmailAssunto.Text), ArqNFe, ArqPDF, mmEmailMsg.Lines, cbEmailSSL.Checked,Cmd.Params(4));
                Cmd.Resposta := 'Email enviado com sucesso';
             except
                on E: Exception do
@@ -993,7 +993,7 @@ begin
                       StrToInt(Cmd.Params(3)), //serie
                       StrToInt(Cmd.Params(4)), //numero
                       StrToInt(Cmd.Params(5)), //tpemi
-                      NotaUtil.StringToDate(Cmd.Params(6)), //emissao
+                      DFeUtil.StringToDate(Cmd.Params(6)), //emissao
                       Cmd.Params(7)); //CNPJ
            Cmd.Resposta := Chave;
          end
@@ -1117,9 +1117,9 @@ begin
          Ide.modelo     := INIRec.ReadInteger( 'Identificacao','Modelo' ,55);
          Ide.serie      := INIRec.ReadInteger( 'Identificacao','Serie'  ,1);
          Ide.nNF        := INIRec.ReadInteger( 'Identificacao','Numero' ,0);
-         Ide.dEmi       := NotaUtil.StringToDate(INIRec.ReadString( 'Identificacao','Emissao','0'));
-         Ide.dSaiEnt    := NotaUtil.StringToDate(INIRec.ReadString( 'Identificacao','Saida'  ,'0'));
-         Ide.hSaiEnt    := NotaUtil.StringToTime(INIRec.ReadString( 'Identificacao','hSaiEnt','0'));  //NFe2
+         Ide.dEmi       := DFeUtil.StringToDate(INIRec.ReadString( 'Identificacao','Emissao','0'));
+         Ide.dSaiEnt    := DFeUtil.StringToDate(INIRec.ReadString( 'Identificacao','Saida'  ,'0'));
+         Ide.hSaiEnt    := DFeUtil.StringToTime(INIRec.ReadString( 'Identificacao','hSaiEnt','0'));  //NFe2
          Ide.tpNF       := StrToTpNF(OK,INIRec.ReadString( 'Identificacao','Tipo','1'));
 
          Ide.tpImp      := StrToTpImp(  OK, INIRec.ReadString( 'Identificacao','tpImp',TpImpToStr(ACBrNFe1.DANFE.TipoDANFE)));  //NFe2
@@ -1214,10 +1214,10 @@ begin
             Avulsa.fone    := INIRec.ReadString(  'Avulsa','fone','');
             Avulsa.UF      := INIRec.ReadString(  'Avulsa','UF','');
             Avulsa.nDAR    := INIRec.ReadString(  'Avulsa','nDAR','');
-            Avulsa.dEmi    := NotaUtil.StringToDate(INIRec.ReadString(  'Avulsa','dEmi','0'));
+            Avulsa.dEmi    := DFeUtil.StringToDate(INIRec.ReadString(  'Avulsa','dEmi','0'));
             Avulsa.vDAR    := StringToFloatDef(INIRec.ReadString(  'Avulsa','vDAR',''),0);
             Avulsa.repEmi  := INIRec.ReadString(  'Avulsa','repEmi','');
-            Avulsa.dPag    := NotaUtil.StringToDate(INIRec.ReadString(  'Avulsa','dPag','0'));
+            Avulsa.dPag    := DFeUtil.StringToDate(INIRec.ReadString(  'Avulsa','dPag','0'));
           end;
 
          Dest.CNPJCPF           := INIRec.ReadString(  'Destinatario','CNPJ'       ,'');
@@ -1320,10 +1320,10 @@ begin
                      with Prod.DI.Add do
                       begin
                         nDi         := sNumeroDI;
-                        dDi         := NotaUtil.StringToDate(INIRec.ReadString(sSecao,'DataRegistroDI'  ,'0'));
+                        dDi         := DFeUtil.StringToDate(INIRec.ReadString(sSecao,'DataRegistroDI'  ,'0'));
                         xLocDesemb  := INIRec.ReadString(sSecao,'LocalDesembaraco','');
                         UFDesemb    := INIRec.ReadString(sSecao,'UFDesembaraco'   ,'');
-                        dDesemb     := NotaUtil.StringToDate(INIRec.ReadString(sSecao,'DataDesembaraco','0'));
+                        dDesemb     := DFeUtil.StringToDate(INIRec.ReadString(sSecao,'DataDesembaraco','0'));
                         cExportador := INIRec.ReadString(sSecao,'CodigoExportador','');;
 
                         K := 1 ;
@@ -1404,8 +1404,8 @@ begin
                   begin
                     nLote := sFim;
                     qLote := StringToFloatDef(INIRec.ReadString( sSecao,'qLote',''),0) ;
-                    dFab  := NotaUtil.StringToDate(INIRec.ReadString( sSecao,'dFab','0')) ;
-                    dVal  := NotaUtil.StringToDate(INIRec.ReadString( sSecao,'dVal','0')) ;
+                    dFab  := DFeUtil.StringToDate(INIRec.ReadString( sSecao,'dFab','0')) ;
+                    dVal  := DFeUtil.StringToDate(INIRec.ReadString( sSecao,'dVal','0')) ;
                     vPMC  := StringToFloatDef(INIRec.ReadString( sSecao,'vPMC',''),0) ;
                    end;
                   Inc(J)
@@ -1738,7 +1738,7 @@ begin
             with Cobr.Dup.Add do
              begin
                nDup  := sNumDup;
-               dVenc := NotaUtil.StringToDate(INIRec.ReadString( sSecao,'DataVencimento','0'));
+               dVenc := DFeUtil.StringToDate(INIRec.ReadString( sSecao,'DataVencimento','0'));
                vDup  := StringToFloatDef( INIRec.ReadString(sSecao,'Valor','') ,0) ;
              end;
             Inc(I);
@@ -2636,7 +2636,7 @@ begin
        raise Exception.Create('SMTP ERROR: MailFrom:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
      if not smtp.MailTo(sTo) then
        raise Exception.Create('SMTP ERROR: MailTo:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
-     if NotaUtil.NaoEstaVazio(sCopias) then
+     if DFeUtil.NaoEstaVazio(sCopias) then
       begin
         CC:=TstringList.Create;
         CC.DelimitedText := sLineBreak;
@@ -2687,17 +2687,17 @@ begin
 
      IdMessage.From.Address := sFrom;
      IdMessage.Recipients.EMailAddresses := sTo;
-     if NotaUtil.NaoEstaVazio(sCopias) then
+     if DFeUtil.NaoEstaVazio(sCopias) then
         IdMessage.CCList.EMailAddresses := sCopias;
 
      IdMessage.Priority := mpNormal;
      IdMessage.Subject := SubstituirVariaveis(sAssunto);
      IdMessage.Body.Text := SubstituirVariaveis(sMensagem.Text);
 
-     if NotaUtil.NaoEstaVazio(sAttachment) then
+     if DFeUtil.NaoEstaVazio(sAttachment) then
         TIdAttachment.create(IdMessage.MessageParts, sAttachment);
 
-     if NotaUtil.NaoEstaVazio(sAttachment2) then
+     if DFeUtil.NaoEstaVazio(sAttachment2) then
         TIdAttachment.create(IdMessage.MessageParts, sAttachment2);
 
      try
@@ -2740,6 +2740,7 @@ begin
   begin
    try
      ACBrNFe1.CartaCorrecao.CCe.idLote := INIRec.ReadInteger( 'CCE','idLote' ,0);
+     ACBrNFe1.CartaCorrecao.CCe.Evento.Clear;
      I := 1 ;
      while true do
       begin

@@ -41,7 +41,7 @@ uses IniFiles, CmdUnitNFe, FileCtrl, Printers,
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ComCtrls, ExtCtrls, Buttons, Spin, Menus, ImgList,
   ACBrNFe, ACBrNFeDANFEClass, ACBrNFeDANFERave, pcnConversao, OleCtrls,
-  SHDocVw, ACBrNFeUtil, ACBrNFeDANFERaveCB, ACBrGIF;
+  SHDocVw, ACBrNFeUtil, ACBrDFeUtil, ACBrNFeDANFERaveCB, ACBrGIF;
 
 const
    BufferMemoResposta = 10000 ;              { Maximo de Linhas no MemoResposta }
@@ -710,16 +710,16 @@ begin
      edtIntervalo.Text      := Ini.ReadString( 'WebService','Intervalo' ,'0') ;
 
      ACBrNFe1.Configuracoes.WebServices.AjustaAguardaConsultaRet := cbxAjustarAut.Checked;
-     if NotaUtil.NaoEstaVazio(edtAguardar.Text)then
-        ACBrNFe1.Configuracoes.WebServices.AguardarConsultaRet := NotaUtil.SeSenao(StrToInt(edtAguardar.Text)<1000,StrToInt(edtAguardar.Text)*1000,StrToInt(edtAguardar.Text))
+     if DFeUtil.NaoEstaVazio(edtAguardar.Text)then
+        ACBrNFe1.Configuracoes.WebServices.AguardarConsultaRet := DFeUtil.SeSenao(StrToInt(edtAguardar.Text)<1000,StrToInt(edtAguardar.Text)*1000,StrToInt(edtAguardar.Text))
      else
         edtAguardar.Text := IntToStr(ACBrNFe1.Configuracoes.WebServices.AguardarConsultaRet);
-     if NotaUtil.NaoEstaVazio(edtTentativas.Text) then
+     if DFeUtil.NaoEstaVazio(edtTentativas.Text) then
         ACBrNFe1.Configuracoes.WebServices.Tentativas          := StrToInt(edtTentativas.Text)
      else
         edtTentativas.Text := IntToStr(ACBrNFe1.Configuracoes.WebServices.Tentativas);
-     if NotaUtil.NaoEstaVazio(edtIntervalo.Text) then
-        ACBrNFe1.Configuracoes.WebServices.IntervaloTentativas := NotaUtil.SeSenao(StrToInt(edtIntervalo.Text)<1000,StrToInt(edtIntervalo.Text)*1000,StrToInt(edtIntervalo.Text))
+     if DFeUtil.NaoEstaVazio(edtIntervalo.Text) then
+        ACBrNFe1.Configuracoes.WebServices.IntervaloTentativas := DFeUtil.SeSenao(StrToInt(edtIntervalo.Text)<1000,StrToInt(edtIntervalo.Text)*1000,StrToInt(edtIntervalo.Text))
      else
         edtIntervalo.Text := IntToStr(ACBrNFe1.Configuracoes.WebServices.IntervaloTentativas);
 
@@ -820,7 +820,7 @@ begin
         else
          begin
            ACBrNFeDANFERaveCB1.EspessuraBorda := StrToIntDef(edtEspBorda.Text, 1);
-           ACBrNFeDANFERaveCB1.Fonte  := NotaUtil.SeSenao(rgTipoFonte.ItemIndex=0,ftTimes,ftCourier);
+           ACBrNFeDANFERaveCB1.Fonte  := DFeUtil.SeSenao(rgTipoFonte.ItemIndex=0,ftTimes,ftCourier);
          end;
       end;
 

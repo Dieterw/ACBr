@@ -11,7 +11,7 @@ uses
   {$IFDEF COMPILER6_UP} DateUtils {$ELSE} ACBrD5, FileCtrl {$ENDIF};
 
 type
-  { TACBrProvedorGinfes }
+  { TACBrProvedorSimplISS }
 
  TProvedorSimplISS = class(TProvedorClass)
   protected
@@ -77,7 +77,7 @@ type
 
 implementation
 
-{ TProvedorGinfes }
+{ TProvedorSimplISS }
 
 constructor TProvedorSimplISS.Create;
 begin

@@ -11,7 +11,7 @@ uses
   {$IFDEF COMPILER6_UP} DateUtils {$ELSE} ACBrD5, FileCtrl {$ENDIF};
 
 type
-  { TACBrProvedorGinfes }
+  { TACBrProvedorProdemge }
 
  TProvedorProdemge = class(TProvedorClass)
   protected
@@ -77,7 +77,7 @@ type
 
 implementation
 
-{ TProvedorGinfes }
+{ TProvedorProdemge }
 
 constructor TProvedorProdemge.Create;
 begin

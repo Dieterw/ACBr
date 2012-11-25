@@ -360,7 +360,8 @@ uses
  ACBrProvedorProdemge, ACBrProvedorISSIntel, ACBrProvedorGovBR,
  ACBrProvedorRecife, ACBrProvedorSimplISS, ACBrProvedorThema,
  ACBrProvedorEquiplano, ACBrProvedorfintelISS, ACBrProvedorDigifred,
- ACBrProvedorBetha, ACBrProvedorBetim, ACBrProvedorSaatri;
+ ACBrProvedorBetha, ACBrProvedorBetim, ACBrProvedorSaatri,
+ ACBrProvedorAbaco;
 
 { TConfiguracoes }
 
@@ -677,6 +678,7 @@ begin
   proBetha:     FProvedorClass := TProvedorBetha.Create;
   proBetim:     FProvedorClass := TProvedorBetim.Create;
   proSaatri:    FProvedorClass := TProvedorSaatri.Create;
+  proAbaco:     FProvedorClass := TProvedorAbaco.Create;
  end;
 
  ConfigCidade   := FProvedorClass.GetConfigCidade(FCodigoMunicipio, FAmbienteCodigo);

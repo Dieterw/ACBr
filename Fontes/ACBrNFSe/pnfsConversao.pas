@@ -740,6 +740,9 @@ begin
 
   5107958  // Tangara da Serra/MT
          : Provedor := 'FISSLEX';
+
+  4304606  // Canoas/RS
+         : Provedor := 'Abaco';
  end;
  Result := Provedor;
 end;
@@ -942,6 +945,7 @@ begin
 
   4301602: Cidade := 'Bage/RS';
   4302105: Cidade := 'Bento Gonçalves/RS';
+  4304606: Cidade := 'Canoas/RS';
   4305801: Cidade := 'Constantina/RS';
   4308508: Cidade := 'Frederico Westphalen/RS';
   4309308: Cidade := 'Guaiba/RS';

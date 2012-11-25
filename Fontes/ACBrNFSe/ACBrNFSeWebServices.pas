@@ -34,7 +34,8 @@ uses
     ACBrProvedorProdemge, ACBrProvedorISSIntel, ACBrProvedorGovBR,
     ACBrProvedorRecife, ACBrProvedorSimplISS, ACBrProvedorThema,
     ACBrProvedorEquiplano, ACBrProvedorfintelISS, ACBrProvedorDigifred,
-    ACBrProvedorBetha, ACBrProvedorBetim, ACBrProvedorSaatri;
+    ACBrProvedorBetha, ACBrProvedorBetim, ACBrProvedorSaatri,
+    ACBrProvedorAbaco;
 
 type
 
@@ -397,8 +398,9 @@ begin
  CertContext := Cert as ICertContext;
  CertContext.Get_CertContext(Integer(PCertContext));
 
- if (FProvedor <> proGovBr) and
-    (FProvedor <> proSimplISS)
+ if not (FProvedor in [proGovBr, proSimplISS, proAbaco])
+// if (FProvedor <> proGovBr) and
+//    (FProvedor <> proSimplISS)
   then begin
    if not InternetSetOption(Data, INTERNET_OPTION_CLIENT_CERT_CONTEXT, PCertContext, Sizeof(CERT_CONTEXT)*5)
     then begin
@@ -1082,6 +1084,7 @@ begin
   proBetha:     FProvedorClass := TProvedorBetha.Create;
   proBetim:     FProvedorClass := TProvedorBetim.Create;
   proSaatri:    FProvedorClass := TProvedorSaatri.Create;
+  proAbaco:     FProvedorClass := TProvedorAbaco.Create;
  end;
 
  FPrefixo2     := FConfiguracoes.WebServices.Prefixo2;

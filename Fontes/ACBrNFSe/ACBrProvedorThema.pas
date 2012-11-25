@@ -11,7 +11,7 @@ uses
   {$IFDEF COMPILER6_UP} DateUtils {$ELSE} ACBrD5, FileCtrl {$ENDIF};
 
 type
-  { TACBrProvedorGinfes }
+  { TACBrProvedorThema }
 
  TProvedorThema = class(TProvedorClass)
   protected
@@ -77,7 +77,7 @@ type
 
 implementation
 
-{ TProvedorGinfes }
+{ TProvedorThema }
 
 constructor TProvedorThema.Create;
 begin
@@ -131,21 +131,26 @@ function TProvedorThema.GetConfigURL(ACodigo: Integer): TConfigURL;
 var
  ConfigURL: TConfigURL;
 begin
- ConfigURL.HomNomeCidade         := '';
- ConfigURL.HomRecepcaoLoteRPS    := 'http://nfehomologacao.saoleopoldo.rs.gov.br/thema-nfse/services/NFSEremessa';
- ConfigURL.HomConsultaLoteRPS    := 'http://nfehomologacao.saoleopoldo.rs.gov.br/thema-nfse/services/NFSEconsulta';
- ConfigURL.HomConsultaNFSeRPS    := 'http://nfehomologacao.saoleopoldo.rs.gov.br/thema-nfse/services/NFSEconsulta';
- ConfigURL.HomConsultaSitLoteRPS := 'http://nfehomologacao.saoleopoldo.rs.gov.br/thema-nfse/services/NFSEconsulta';
- ConfigURL.HomConsultaNFSe       := 'http://nfehomologacao.saoleopoldo.rs.gov.br/thema-nfse/services/NFSEconsulta';
- ConfigURL.HomCancelaNFSe        := 'http://nfehomologacao.saoleopoldo.rs.gov.br/thema-nfse/services/NFSEcancelamento';
+ case ACodigo of
+  16: begin
+       ConfigURL.HomNomeCidade := 'saoleopoldo.rs.gov.br';
+       ConfigURL.ProNomeCidade := 'saoleopoldo.rs.gov.br';
+      end;
+ end;
 
- ConfigURL.ProNomeCidade         := '';
- ConfigURL.ProRecepcaoLoteRPS    := 'https://nfe.saoleopoldo.rs.gov.br/thema-nfse/services/NFSEremessa';
- ConfigURL.ProConsultaLoteRPS    := 'https://nfe.saoleopoldo.rs.gov.br/thema-nfse/services/NFSEconsulta';
- ConfigURL.ProConsultaNFSeRPS    := 'https://nfe.saoleopoldo.rs.gov.br/thema-nfse/services/NFSEconsulta';
- ConfigURL.ProConsultaSitLoteRPS := 'https://nfe.saoleopoldo.rs.gov.br/thema-nfse/services/NFSEconsulta';
- ConfigURL.ProConsultaNFSe       := 'https://nfe.saoleopoldo.rs.gov.br/thema-nfse/services/NFSEconsulta';
- ConfigURL.ProCancelaNFSe        := 'https://nfe.saoleopoldo.rs.gov.br/thema-nfse/services/NFSEcancelamento';
+ ConfigURL.HomRecepcaoLoteRPS    := 'http://nfehomologacao.'+ ConfigURL.HomNomeCidade +'/thema-nfse/services/NFSEremessa';
+ ConfigURL.HomConsultaLoteRPS    := 'http://nfehomologacao.'+ ConfigURL.HomNomeCidade +'/thema-nfse/services/NFSEconsulta';
+ ConfigURL.HomConsultaNFSeRPS    := 'http://nfehomologacao.'+ ConfigURL.HomNomeCidade +'/thema-nfse/services/NFSEconsulta';
+ ConfigURL.HomConsultaSitLoteRPS := 'http://nfehomologacao.'+ ConfigURL.HomNomeCidade +'/thema-nfse/services/NFSEconsulta';
+ ConfigURL.HomConsultaNFSe       := 'http://nfehomologacao.'+ ConfigURL.HomNomeCidade +'/thema-nfse/services/NFSEconsulta';
+ ConfigURL.HomCancelaNFSe        := 'http://nfehomologacao.'+ ConfigURL.HomNomeCidade +'/thema-nfse/services/NFSEcancelamento';
+
+ ConfigURL.ProRecepcaoLoteRPS    := 'https://nfe.'+ ConfigURL.HomNomeCidade +'/thema-nfse/services/NFSEremessa';
+ ConfigURL.ProConsultaLoteRPS    := 'https://nfe.'+ ConfigURL.HomNomeCidade +'/thema-nfse/services/NFSEconsulta';
+ ConfigURL.ProConsultaNFSeRPS    := 'https://nfe.'+ ConfigURL.HomNomeCidade +'/thema-nfse/services/NFSEconsulta';
+ ConfigURL.ProConsultaSitLoteRPS := 'https://nfe.'+ ConfigURL.HomNomeCidade +'/thema-nfse/services/NFSEconsulta';
+ ConfigURL.ProConsultaNFSe       := 'https://nfe.'+ ConfigURL.HomNomeCidade +'/thema-nfse/services/NFSEconsulta';
+ ConfigURL.ProCancelaNFSe        := 'https://nfe.'+ ConfigURL.HomNomeCidade +'/thema-nfse/services/NFSEcancelamento';
 
  Result := ConfigURL;
 end;

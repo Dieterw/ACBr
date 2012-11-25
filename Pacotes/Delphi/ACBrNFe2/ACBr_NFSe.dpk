@@ -27,7 +27,7 @@ package ACBr_NFSe;
 
 requires
   rtl,
-  vcl,  
+  vcl,
   ACBrComum,
   designide,
   vclactnband,
@@ -79,6 +79,7 @@ contains
   ACBrProvedorBetim in '..\..\..\Fontes\ACBrNFSe\ACBrProvedorBetim.pas',
   ACBrProvedorFISSLEX in '..\..\..\Fontes\ACBrNFSe\ACBrProvedorfISSLex.pas',
   ACBrProvedorSaatri in '..\..\..\Fontes\ACBrNFSe\ACBrProvedorSaatri.pas',
-  pnfsGerarNfseResposta in '..\..\..\Fontes\ACBrNFSe\pnfsGerarNfseResposta.pas';
+  pnfsGerarNfseResposta in '..\..\..\Fontes\ACBrNFSe\pnfsGerarNfseResposta.pas',
+  ACBrProvedorAbaco in '..\..\..\Fontes\ACBrNFSe\ACBrProvedorAbaco.pas';
 
 end.

@@ -6722,7 +6722,7 @@ inherited frmDACTeQRRetratoA5: TfrmDACTeQRRetratoA5
       ForceNewColumn = False
       ForceNewPage = False
       Size.Values = (
-        34.395833333333340000
+        34.395833333333330000
         1960.562500000000000000)
       PreCaluculateBandHeight = False
       KeepOnOnePage = False
@@ -7514,7 +7514,7 @@ inherited frmDACTeQRRetratoA5: TfrmDACTeQRRetratoA5
       ForceNewColumn = False
       ForceNewPage = False
       Size.Values = (
-        256.645833333333400000
+        256.645833333333300000
         1960.562500000000000000)
       PreCaluculateBandHeight = False
       KeepOnOnePage = False

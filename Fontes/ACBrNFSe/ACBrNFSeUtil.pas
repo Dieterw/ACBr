@@ -48,48 +48,7 @@ type
       class Procedure InitXmlSec;
       class Procedure ShutDownXmlSec;
     {$ENDIF}
-//    class function PosEx(const SubStr, S: AnsiString; Offset: Cardinal = 1): Integer;
-//    class function PosLast(const SubStr, S: AnsiString ): Integer;
-//    class function PadE(const AString : string; const nLen : Integer; const Caracter : Char = ' ') : String;
-//    class function PadD(const AString : string; const nLen : Integer; const Caracter : Char = ' ') : String;
-//    class function padC(const AString : string; const nLen : Integer; const Caracter : Char = ' ') : String;
-//    class function SeSenao(ACondicao: Boolean; ATrue, AFalse: Variant) : Variant;
-//    class function FormatFloat(AValue: Extended; const AFormat: string = ',0.00'): String;
-//    class function Poem_Zeros(const Texto : String; const Tamanho : Integer) : String;overload;
-//    class function Poem_Zeros(const Valor : Integer; const Tamanho : Integer) : String;overload;
-//    class function LasString(AString: String): String;
-//    class function EstaVazio(const AValue: String): Boolean;overload;
-//    class procedure EstaVazio(const AValue, AMensagem: String);overload;
-//    class function NaoEstaVazio(AValue: String): Boolean;
-//    class function EstaZerado(AValue: Double): Boolean;overload;
-//    class function EstaZerado(AValue: Integer): Boolean;overload;
-//    class procedure EstaZerado(AValue: Integer; AMensagem: String);overload;
-//    class function NaoEstaZerado(AValue: Double): Boolean;overload;
-//    class function NaoEstaZerado(AValue: Integer): Boolean;overload;
-//    class function LimpaNumero(AValue: String): String;
-//    class function TrataString(const AValue: String): String;overload;
-//    class function TrataString(const AValue: String; const ATamanho: Integer): String;overload;
-//    class function CortaD(const AString: string; const ATamanho: Integer): String;
-//    class function CortaE(const AString: string; const ATamanho: Integer): String;
-//    class function FormatDate(const AString: string): String;
-//    class function FormatDateTime(const AString: string): string;
-//    class function StringToDate(const AString: string): TDateTime;
-//    class function TamanhoIgual(const AValue: String; const ATamanho: Integer): Boolean;overload;
-//    class procedure TamanhoIgual(const AValue: String; const ATamanho: Integer; AMensagem: String);overload;
-//    class function TamanhoIgual(const AValue: Integer; const ATamanho: Integer): Boolean;overload;
-//    class procedure TamanhoIgual(const AValue: Integer; const ATamanho: Integer; AMensagem: String);overload;
-//    class function TamanhoMenor(const AValue: String; const ATamanho: Integer): Boolean;
-//    class function FormatarCPF(AValue : String ): String;
-//    class function FormatarCNPJ(AValue : String ): String;
-    class function FormatarCEP(AValue : String ): String;
-    class function FormatarFone(AValue : String ): String;
-//    class function FormatarNumeroDocumentoFiscal(AValue : String ): String;
-    class function Valida(const AXML: AnsiString;
-                          var AMsg: AnsiString;
-                          const APathSchemas: string = '';
-                          AURL: string = '';
-                          AServico: string = '';
-                          APrefixo: string = ''): Boolean;
+
     {$IFDEF ACBrNFSeOpenSSL}
       class function Assinar(const AXML, ArqPFX, PFXSenha: AnsiString;
                              out AXMLAssinado, FMensagem: AnsiString;
@@ -107,14 +66,6 @@ type
                              APrefixo4: string = '';
                              AProvedor: TnfseProvedor = proNenhum): Boolean;
     {$ENDIF}
-//    class function StringToFloat(AValue : String ) : Double;
-//    class function StringToFloatDef(const AValue: String; const DefaultValue: Double): Double;
-    class procedure ConfAmbiente;
-    class function PathAplication: String;
-    class function CollateBr(Str: String): String;
-    class function UpperCase2(Str: String): String;
-    class function PathWithDelim( const APath : String ) : String;
-    class function RetornarConteudoEntre(const Frase, Inicio, Fim: string): string;
 
     // Alterado por Italo em 29/10/2012
     {$IFDEF ACBrNFSeOpenSSL}
@@ -124,8 +75,24 @@ type
      class function AssinarXML(AXML, FURI, FTagI, FTagF: AnsiString; Certificado : ICertificate2;
                                out AXMLAssinado, FMensagem: AnsiString): Boolean;
     {$ENDIF}
+
+    class function Valida(const AXML: AnsiString;
+                          var AMsg: AnsiString;
+                          const APathSchemas: string = '';
+                          AURL: string = '';
+                          AServico: string = '';
+                          APrefixo: string = ''): Boolean;
+
     class function RetirarPrefixos(AXML: String): String;
     class function VersaoXML(AXML: String): String;
+
+    class procedure ConfAmbiente;
+    class function PathAplication: String;
+    class function CollateBr(Str: String): String;
+    class function UpperCase2(Str: String): String;
+
+    class function PathWithDelim( const APath : String ) : String;
+    class function RetornarConteudoEntre(const Frase, Inicio, Fim: string): string;
 
   published
 
@@ -322,618 +289,6 @@ begin
     xmlCleanupParser();
 end;
 {$ENDIF}
-
-(*
-class function NotaUtil.PosEx(const SubStr, S: AnsiString; Offset: Cardinal = 1): Integer;
-var
-  I,X: Integer;
-  Len, LenSubStr: Integer;
-begin
-  if Offset = 1 then
-    Result := Pos(SubStr, S)
-  else
-  begin
-    I         := Offset;
-    LenSubStr := Length(SubStr);
-    Len       := Length(S) - LenSubStr + 1;
-    while I <= Len do
-    begin
-      if S[I] = SubStr[1] then
-      begin
-        X := 1;
-        while (X < LenSubStr) and (S[I + X] = SubStr[X + 1]) do
-          Inc(X);
-        if (X = LenSubStr) then
-        begin
-          Result := I;
-          exit;
-        end;
-      end;
-      Inc(I);
-    end;
-    Result := 0;
-  end;
-end;
-*)
-
-(*
-class function NotaUtil.PosLast(const SubStr, S: AnsiString ): Integer;
-Var P : Integer;
-begin
-  Result := 0;
-  P      := Pos( SubStr, S);
-  while P <> 0 do
-  begin
-     Result := P;
-     P      := PosEx( SubStr, S, P+1);
-  end;
-end;
-*)
-
-(*
-class function NotaUtil.CortaD(const AString: string;
-  const ATamanho: Integer): String;
-begin
-  Result := copy(AString,1,ATamanho);
-end;
-*)
-
-(*
-class function NotaUtil.CortaE(const AString: string;
-  const ATamanho: Integer): String;
-begin
-  Result := AString;
-  if Length(AString) > ATamanho then
-    Result := copy(AString, Length(AString) - ATamanho + 1, length(AString));
-end;
-*)
-
-(*
-class function NotaUtil.EstaVazio(const AValue: String): Boolean;
-begin
-  Result := (Trim(AValue) = '');
-end;
-*)
-
-(*
-class function NotaUtil.EstaZerado(AValue: Double): Boolean;
-begin
-  Result := (AValue = 0);
-end;
-*)
-
-(*
-class procedure NotaUtil.EstaVazio(const AValue, AMensagem: String);
-begin
-  if NotaUtil.EstaVazio(AValue) then
-    raise Exception.Create(AMensagem);
-end;
-*)
-
-(*
-class function NotaUtil.EstaZerado(AValue: Integer): Boolean;
-begin
-  Result := (AValue = 0);
-end;
-*)
-
-(*
-class function NotaUtil.FormatDate(const AString: string): String;
-var
-  vTemp: TDateTime;
-{$IFDEF VER140} //delphi6
-{$ELSE}
-vFormatSettings: TFormatSettings;
-{$ENDIF}
-begin
-  try
-{$IFDEF VER140} //delphi6
-    DateSeparator   := '/';
-    ShortDateFormat := 'dd/mm/yyyy';
-{$ELSE}
-    vFormatSettings.DateSeparator   := '-';
-    vFormatSettings.ShortDateFormat := 'yyyy-mm-dd';
-//    vTemp := StrToDate(AString, FFormato);
-{$ENDIF}
-    vTemp := StrToDate(AString);
-    if vTemp = 0 then
-      Result := ''
-    else
-      Result := DateToStr(vTemp);
-  except
-    Result := '';
-  end;
-end;
-*)
-
-(*
-class function NotaUtil.FormatDateTime(const AString: string): string;
-var
-  vTemp : TDateTime;
-{$IFDEF VER140} //delphi6
-{$ELSE}
-vFormatSettings: TFormatSettings;
-{$ENDIF}
-begin
-  try
-{$IFDEF VER140} //delphi6
-    DateSeparator   := '/';
-    ShortDateFormat := 'dd/mm/yyyy';
-    ShortTimeFormat := 'hh:nn:ss';
-{$ELSE}
-    vFormatSettings.DateSeparator   := '-';
-    vFormatSettings.ShortDateFormat := 'yyyy-mm-dd';
-    //    vTemp := StrToDate(AString, FFormato);
-{$ENDIF}
-    vTemp := StrToDateTime(AString);
-    if vTemp = 0 then
-      Result := ''
-    else
-      Result := DateTimeToStr(vTemp);
-  except
-    Result := '';
-  end;
-end;
-*)
-
-(*
-class function NotaUtil.StringToDate(const AString: string): TDateTime;
-begin
-  if (AString = '0') or (AString = '') then
-     Result := 0
-  else
-     Result := StrToDate(AString);
-end;
-*)
-
-(*
-class function NotaUtil.FormatFloat(AValue: Extended;
-  const AFormat: string): string;
-{$IFDEF VER140} //delphi6
-{$ELSE}
-var
-vFormatSettings: TFormatSettings;
-{$ENDIF}
-begin
-{$IFDEF VER140} //delphi6
-  DecimalSeparator  := ',';
-  ThousandSeparator := '.';
-  Result            := SysUtils.FormatFloat(AFormat, AValue);
-{$ELSE}
-  vFormatSettings.DecimalSeparator  := ',';
-  vFormatSettings.ThousandSeparator := '.';
-  Result                     := SysUtils.FormatFloat(AFormat, AValue, vFormatSettings);
-{$ENDIF}
-end;
-*)
-
-(*
-class function NotaUtil.LasString(AString: String): String;
-begin
-  Result := Copy(AString, Length(AString), Length(AString));
-end;
-*)
-
-(*
-class function NotaUtil.LimpaNumero(AValue: String): String;
-var
-  A : Integer;
-begin
-  Result := '';
-  For A := 1 to length(AValue) do
-  begin
-     if (AValue[A] in ['0'..'9']) then
-       Result := Result + AValue[A];
-  end;
-end;
-*)
-
-(*
-class function NotaUtil.NaoEstaVazio(AValue: String): Boolean;
-begin
-  Result := not(EstaVazio(AValue));
-end;
-*)
-
-(*
-class function NotaUtil.NaoEstaZerado(AValue: Double): Boolean;
-begin
-  Result := not(EstaZerado(AValue));
-end;
-
-class function NotaUtil.NaoEstaZerado(AValue: Integer): Boolean;
-begin
-  Result := not(EstaZerado(AValue));
-end;
-*)
-
-(*
-class function NotaUtil.padC(const AString: string; const nLen: Integer;
-  const Caracter: Char): String;
-Var nCharLeft : Integer;
-    D : Double;
-begin
-  Result    := copy(AString,1,nLen);
-  D         := (nLen - Length( Result )) / 2;
-  nCharLeft := Trunc( D );
-  Result    := PadE( StringOfChar(Caracter, nCharLeft)+Result, nLen, Caracter);
-end;
-*)
-
-(*
-class function NotaUtil.PadD(const AString: string; const nLen: Integer;
-  const Caracter: Char): String;
-begin
-  Result := copy(AString,1,nLen);
-  Result := StringOfChar(Caracter, (nLen - Length(Result))) + Result;
-end;
-*)
-
-(*
-class function NotaUtil.PadE(const AString: string; const nLen: Integer;
-  const Caracter: Char): String;
-begin
-  Result := copy(AString,1,nLen);
-  Result := Result + StringOfChar(Caracter, (nLen - Length(Result)));
-end;
-*)
-
-(*
-class function NotaUtil.Poem_Zeros(const Texto: String;
-  const Tamanho: Integer): String;
-begin
-  Result := PadD(Trim(Texto),Tamanho,'0');
-end;
-
-class function NotaUtil.Poem_Zeros(const Valor, Tamanho: Integer): String;
-begin
-  Result := PadD(IntToStr(Valor), Tamanho, '0');
-end;
-*)
-
-(*
-class function NotaUtil.SeSenao(ACondicao: Boolean; ATrue,
-  AFalse: Variant): Variant;
-begin
-  Result := AFalse;
-  if ACondicao then
-    Result := ATrue;
-end;
-*)
-
-(*
-class function NotaUtil.TrataString(const AValue: String): String;
-var
-  A : Integer;
-begin
-  Result := '';
-  For A := 1 to length(AValue) do
-  begin
-    case Ord(AValue[A]) of
-      60  : Result := Result + '&lt;';  //<
-      62  : Result := Result + '&gt;';  //>
-      38  : Result := Result + '&amp;'; //&
-      34  : Result := Result + '&quot;';//"
-      39  : Result := Result + '&#39;'; //'
-      32  : begin          // Retira espaços duplos
-              if ( Ord(AValue[Pred(A)]) <> 32 ) then
-                 Result := Result + ' ';
-            end;
-      193 : Result := Result + 'A';//Á
-      224 : Result := Result + 'a';//à
-      226 : Result := Result + 'a';//â
-      234 : Result := Result + 'e';//ê
-      244 : Result := Result + 'o';//ô
-      251 : Result := Result + 'u';//û
-      227 : Result := Result + 'a';//ã
-      245 : Result := Result + 'o';//õ
-      225 : Result := Result + 'a';//á
-      233 : Result := Result + 'e';//é
-      237 : Result := Result + 'i';//í
-      243 : Result := Result + 'o';//ó
-      250 : Result := Result + 'u';//ú
-      231 : Result := Result + 'c';//ç
-      252 : Result := Result + 'u';//ü
-      192 : Result := Result + 'A';//À
-      194 : Result := Result + 'A';//Â
-      202 : Result := Result + 'E';//Ê
-      212 : Result := Result + 'O';//Ô
-      219 : Result := Result + 'U';//Û
-      195 : Result := Result + 'A';//Ã
-      213 : Result := Result + 'O';//Õ
-      201 : Result := Result + 'E';//É
-      205 : Result := Result + 'I';//Í
-      211 : Result := Result + 'O';//Ó
-      218 : Result := Result + 'U';//Ú
-      199 : Result := Result + 'C';//Ç
-      220 : Result := Result + 'U';//Ü
-    else
-      Result := Result + AValue[A];
-    end;
-  end;
-  Result := Trim(Result);
-end;
-
-class function NotaUtil.TrataString(const AValue: String;
-  const ATamanho: Integer): String;
-begin
-  Result := NotaUtil.TrataString(NotaUtil.CortaD(AValue, ATamanho));
-end;
-*)
-
-(*
-class function NotaUtil.TamanhoIgual(const AValue: String;
-  const ATamanho: Integer): Boolean;
-begin
-  Result := (Length(AValue)= ATamanho);
-end;
-
-class procedure NotaUtil.TamanhoIgual(const AValue: String;
-  const ATamanho: Integer; AMensagem: String);
-begin
-  if not(NotaUtil.TamanhoIgual(AValue, ATamanho)) then
-    raise Exception.Create(AMensagem);
-end;
-
-class function NotaUtil.TamanhoIgual(const AValue,
-  ATamanho: Integer): Boolean;
-begin
-  Result := (Length(IntToStr(AValue))= ATamanho);
-end;
-
-class procedure NotaUtil.TamanhoIgual(const AValue,
-  ATamanho: Integer; AMensagem: String);
-begin
-  if not(NotaUtil.TamanhoIgual(AValue, ATamanho)) then
-    raise Exception.Create(AMensagem);
-end;
-*)
-
-(*
-class procedure NotaUtil.EstaZerado(AValue: Integer;
-  AMensagem: String);
-begin
-  if NotaUtil.EstaZerado(AValue) then
-    raise Exception.Create(AMensagem);
-end;
-*)
-
-(*
-class function NotaUtil.FormatarCPF(AValue: String): String;
-begin
-  if Length(AValue) = 0 then
-     Result := AValue
-  else
-   begin
-     AValue := NotaUtil.LimpaNumero(AValue);
-     Result := copy(AValue,1,3) + '.' + copy(AValue,4 ,3) + '.' +
-               copy(AValue,7,3) + '-' + copy(AValue,10,2);
-   end;
-end;
-*)
-
-(*
-class function NotaUtil.FormatarCNPJ(AValue: String): String;
-begin
-  if Length(AValue) = 0 then
-     Result := AValue
-  else
-   begin
-     AValue := NotaUtil.LimpaNumero(AValue);
-     Result := copy(AValue,1,2) + '.' + copy(AValue,3,3) + '.' +
-               copy(AValue,6,3) + '/' + copy(AValue,9,4) + '-' + copy(AValue,13,2);
-   end;
-end;
-*)
-
-class function NotaUtil.FormatarCEP(AValue: String): String;
-begin
-  Result := copy(AValue,1,5) + '-' + copy(AValue,6,3);
-end;
-
-(*
-class function NotaUtil.TamanhoMenor(const AValue: String;
-  const ATamanho: Integer): Boolean;
-begin
-  Result := (Length(AValue) < ATamanho);
-end;
-*)
-
-class function NotaUtil.FormatarFone(AValue: String): String;
-begin
-  Result := AValue;
-  if DFeUtil.NaoEstaVazio(AValue) then
-  begin
-    AValue := DFeUtil.Poem_Zeros(DFeUtil.LimpaNumero(AValue), 10);
-    Result := '('+copy(AValue,1,2) + ')' + copy(AValue,3,8);
-  end;
-end;
-
-(*
-class function NotaUtil.FormatarNumeroDocumentoFiscal(
-  AValue: String): String;
-begin
-  AValue := NotaUtil.Poem_Zeros(AValue, 9);
-  Result := copy(AValue,1,3) + '.' + copy(AValue,4,3)+ '.'+
-            copy(AValue,7,3);
-end;
-*)
-
-{$IFDEF ACBrNFSeOpenSSL}
-function ValidaLibXML(const AXML: AnsiString;
-                      var AMsg: AnsiString;
-                      const APathSchemas: string = '';
-                      URL: string = '';
-                      Servico: string = ''): Boolean;
-var
- doc, schema_doc : xmlDocPtr;
- parser_ctxt : xmlSchemaParserCtxtPtr;
- schema : xmlSchemaPtr;
- valid_ctxt : xmlSchemaValidCtxtPtr;
- schemError : xmlErrorPtr;
- schema_filename : AnsiString;
-
- // schema_filename : PChar;
-// filename : String;
-// Tipo, I : Integer;
-begin
- if not DirectoryExists(DFeUtil.SeSenao(DFeUtil.EstaVazio(APathSchemas),
-                        PathWithDelim(ExtractFileDir(application.ExeName)) + 'Schemas',
-                        PathWithDelim(APathSchemas)))
-  then raise Exception.Create('Diretório de Schemas não encontrado' + sLineBreak +
-                              DFeUtil.SeSenao(DFeUtil.EstaVazio(APathSchemas),
-                              PathWithDelim(ExtractFileDir(application.ExeName)) + 'Schemas',
-                              PathWithDelim(APathSchemas)));
-
- if DFeUtil.EstaVazio(APathSchemas)
-  then schema_filename := PathWithDelim(ExtractFileDir(application.ExeName)) + 'Schemas\' + Servico
-  else schema_filename := PathWithDelim(APathSchemas) + Servico;
-
- if not FilesExists(schema_filename)
-  then raise Exception.Create('Arquivo [' + schema_filename + '] não encontrado.');
-
-// schema_filename := pchar(filename);
-
-// if RightStr(URL, 1) = '/'
-//  then Schema.add( URL + Servico, schema_filename )
-//  else Schema.add( URL, schema_filename );
-
-// doc         := nil;
-// schema_doc  := nil;
-// parser_ctxt := nil;
-// schema      := nil;
-// valid_ctxt  := nil;
-
- doc := xmlParseDoc(PAnsiChar(Axml));
- if ((doc = nil) or (xmlDocGetRootElement(doc) = nil)) then
-  begin
-    AMsg   := 'Erro: unable to parse';
-    Result := False;
-    exit;
-  end;
-
- schema_doc := xmlReadFile(PAnsiChar(schema_filename), nil, XML_DETECT_IDS);
-//  the schema cannot be loaded or is not well-formed
- if (schema_doc = nil) then
-  begin
-    AMsg   := 'Erro: Schema não pode ser carregado ou está corrompido';
-    Result := False;
-    exit;
-  end;
-
- parser_ctxt := xmlSchemaNewDocParserCtxt(schema_doc);
-// unable to create a parser context for the schema */
- if (parser_ctxt = nil) then
-  begin
-    xmlFreeDoc(schema_doc);
-    AMsg   := 'Erro: unable to create a parser context for the schema';
-    Result := False;
-    exit;
-  end;
-
- schema := xmlSchemaParse(parser_ctxt);
-// the schema itself is not valid
- if (schema = nil) then
-  begin
-    xmlSchemaFreeParserCtxt(parser_ctxt);
-    xmlFreeDoc(schema_doc);
-    AMsg   := 'Error: the schema itself is not valid ['+schema_filename+']';
-    Result := False;
-    exit;
-  end;
-
- valid_ctxt := xmlSchemaNewValidCtxt(schema);
-//   unable to create a validation context for the schema */
- if (valid_ctxt = nil) then
-  begin
-    xmlSchemaFree(schema);
-    xmlSchemaFreeParserCtxt(parser_ctxt);
-    xmlFreeDoc(schema_doc);
-    AMsg   := 'Error: unable to create a validation context for the schema';
-    Result := False;
-    exit;
-  end;
-
- if (xmlSchemaValidateDoc(valid_ctxt, doc) <> 0) then
-  begin
-    schemError := xmlGetLastError();
-    AMsg       := IntToStr(schemError^.code)+' - '+schemError^.message;
-    Result     := False;
-    exit;
-  end;
-
- xmlSchemaFreeValidCtxt(valid_ctxt);
- xmlSchemaFree(schema);
- xmlSchemaFreeParserCtxt(parser_ctxt);
- xmlFreeDoc(schema_doc);
- Result := True;
-end;
-
-{$ELSE}
-
-function ValidaMSXML(XML: AnsiString;
-                     out Msg: AnsiString;
-                     const APathSchemas: string = '';
-                     URL: string = '';
-                     Servico: string = ''): Boolean;
-var
- DOMDocument     : IXMLDOMDocument3;
- ParseError      : IXMLDOMParseError;
- Schema          : XMLSchemaCache;
- schema_filename : String;
-begin
- DOMDocument                  := CoDOMDocument50.Create;
- DOMDocument.async            := False;
- DOMDocument.resolveExternals := False;
- DOMDocument.validateOnParse  := True;
- DOMDocument.loadXML(XML);
-
- Schema := CoXMLSchemaCache50.Create;
-
- if not DirectoryExists(DFeUtil.SeSenao(DFeUtil.EstaVazio(APathSchemas),
-                        PathWithDelim(ExtractFileDir(application.ExeName)) + 'Schemas',
-                        PathWithDelim(APathSchemas)))
-  then raise Exception.Create('Diretório de Schemas não encontrado' + sLineBreak +
-                              DFeUtil.SeSenao(DFeUtil.EstaVazio(APathSchemas),
-                              PathWithDelim(ExtractFileDir(application.ExeName)) + 'Schemas',
-                              PathWithDelim(APathSchemas)));
-
- schema_filename := DFeUtil.SeSenao(DFeUtil.EstaVazio(APathSchemas),
-                    PathWithDelim(ExtractFileDir(application.ExeName)) + 'Schemas\',
-                    PathWithDelim(APathSchemas)) + Servico;
-
- if not FilesExists(schema_filename)
-  then raise Exception.Create('Arquivo ' + schema_filename + ' não encontrado.');
-
- if RightStr(URL, 1) = '/'
-  then Schema.add( URL + Servico, schema_filename )
-  else Schema.add( URL, schema_filename );
-
- DOMDocument.schemas := Schema;
-
- ParseError := DOMDocument.validate;
- Result     := (ParseError.errorCode = 0);
- Msg        := ParseError.reason;
-
- DOMDocument := nil;
- ParseError  := nil;
- Schema      := nil;
-end;
-{$ENDIF}
-
-class function NotaUtil.Valida(const AXML: AnsiString;
-                               var AMsg: AnsiString;
-                               const APathSchemas: string = '';
-                               AURL: string = '';
-                               AServico: string = '';
-                               APrefixo: string = ''): Boolean;
-begin
-{$IFDEF ACBrNFSeOpenSSL}
-  Result := ValidaLibXML(AXML, AMsg, APathSchemas, AURL, AServico);
-{$ELSE}
-  Result := ValidaMSXML(AXML, AMsg, APathSchemas, AURL, AServico);
-{$ENDIF}
-end;
 
 {$IFDEF ACBrNFSeOpenSSL}
 function AssinarLibXML(const AXML,
@@ -1513,166 +868,6 @@ begin
 {$ENDIF}
 end;
 
-(*
-class function NotaUtil.StringToFloat(AValue: String): Double;
-var
-sDecimalSeparator: string;
-{$IFDEF VER140} //delphi6
-{$ELSE}
-vFormatSettings: TFormatSettings;
-{$ENDIF}
-begin
-  AValue := Trim( AValue );
-
-{$IFDEF VER140} //D6
-  sDecimalSeparator := DecimalSeparator;
-{$ELSE}
-  sDecimalSeparator := vFormatSettings.DecimalSeparator;
-{$ENDIF}
-
-  if sDecimalSeparator <> '.' then
-     AValue := StringReplace(AValue,'.',sDecimalSeparator,[rfReplaceAll]);
-
-  if sDecimalSeparator <> ',' then
-     AValue := StringReplace(AValue,',',sDecimalSeparator,[rfReplaceAll]);
-
-  Result := StrToFloat(AValue);
-end;
-*)
-
-(*
-class function NotaUtil.StringToFloatDef(const AValue: String;
-  const DefaultValue: Double): Double;
-begin
-  try
-     Result := StringToFloat( AValue );
-  except
-     Result := DefaultValue;
-  end;
-end;
-*)
-
-class procedure NotaUtil.ConfAmbiente;
-{$IFDEF VER140} //delphi6
-{$ELSE}
-var
-vFormatSettings: TFormatSettings;
-{$ENDIF}
-begin
-{$IFDEF VER140} //delphi6
-  DecimalSeparator := ',';
-{$ELSE}
-  vFormatSettings.DecimalSeparator := ',';
-{$ENDIF}
-end;
-
-class function NotaUtil.PathAplication: String;
-begin
-  Result := ExtractFilePath(Application.ExeName);
-end;
-
-class function NotaUtil.CollateBr(Str: String): String;
-var
-   i, wTamanho: integer;
-   wChar, wResultado: Char;
-begin
-   result   := '';
-   wtamanho := Length(Str);
-   i        := 1;
-   while (i <= wtamanho) do
-   begin
-      wChar := Str[i];
-      case wChar of
-         'á', 'â', 'ã', 'à', 'ä', 'å',
-         'Á', 'Â', 'Ã', 'À', 'Ä', 'Å': wResultado := 'A';
-         'é', 'ê', 'è', 'ë',
-         'É', 'Ê', 'È', 'Ë': wResultado := 'E';
-         'í', 'î', 'ì', 'ï',
-         'Í', 'Î', 'Ì', 'Ï': wResultado := 'I';
-         'ó', 'ô', 'õ', 'ò', 'ö',
-         'Ó', 'Ô', 'Õ', 'Ò', 'Ö': wResultado := 'O';
-         'ú', 'û', 'ù', 'ü',
-         'Ú', 'Û', 'Ù', 'Ü': wResultado := 'U';
-         'ç', 'Ç': wResultado := 'C';
-         'ñ', 'Ñ': wResultado := 'N';
-         'ý', 'ÿ', 'Ý', 'Y': wResultado := 'Y';
-      else
-         wResultado := wChar;
-      end;
-      i      := i + 1;
-      Result := Result + wResultado;
-   end;
-   Result := UpperCase(Result);
-end;
-
-class function NotaUtil.UpperCase2(Str: String): String;
-var
-   i, wTamanho: integer;
-   wChar, wResultado: Char;
-begin
-   result   := '';
-   wtamanho := Length(Str);
-   i        := 1;
-   while (i <= wtamanho) do
-   begin
-      wChar := Str[i];
-      case wChar of
-         'á','Á': wResultado := 'Á';
-         'ã','Ã': wResultado := 'Ã';
-         'à','À': wResultado := 'À';
-         'â','Â': wResultado := 'Â';
-         'ä','Ä': wResultado := 'Ä';
-         'å','Å': wResultado := 'Å';
-         'é','É': wResultado := 'É';
-         'è','È': wResultado := 'È';
-         'ê','Ê': wResultado := 'Ê';
-         'ë','Ë': wResultado := 'Ë';
-         'í','Í': wResultado := 'Í';
-         'ì','Ì': wResultado := 'Ì';
-         'î','Î': wResultado := 'Î';
-         'ï','Ï': wResultado := 'Ï';
-         'ó','Ó': wResultado := 'Ó';
-         'õ','Õ': wResultado := 'Õ';
-         'ò','Ò': wResultado := 'Ò';
-         'ô','Ô': wResultado := 'Ô';
-         'ö','Ö': wResultado := 'Ö';
-         'ú','Ú': wResultado := 'Ú';
-         'ù','Ù': wResultado := 'Ù';
-         'û','Û': wResultado := 'Û';
-         'ü','Ü': wResultado := 'Ü';
-         'ç', 'Ç': wResultado := 'Ç';
-         'ñ', 'Ñ': wResultado := 'Ñ';
-         'ý', 'ÿ', 'Ý', 'Y': wResultado := 'Y';
-      else
-         wResultado := wChar;
-      end;
-      i      := i + 1;
-      Result := Result + wResultado;
-   end;
-   Result := UpperCase(Result);
-end;
-
-class function NotaUtil.PathWithDelim( const APath : String ) : String;
-begin
-  Result := Trim(APath);
-  if Result <> '' then
-     if RightStr(Result,1) <> PathDelim then   { Tem delimitador no final ? }
-        Result := Result + PathDelim;
-end;
-
-class function NotaUtil.RetornarConteudoEntre(const Frase, Inicio, Fim: string): string;
-var
-  i: integer;
-  s: string;
-begin
-  result := '';
-  i      := pos(Inicio, Frase);
-  if i = 0 then
-    exit;
-  s      := Copy(Frase, i + length(Inicio), maxInt);
-  result := Copy(s, 1, pos(Fim, s) - 1);
-end;
-
 {$IFDEF ACBrNFSeOpenSSL}
 class function NotaUtil.AssinarXML(AXML, FURI, FTagI, FTagF, ArqPFX, PFXSenha: AnsiString;
                              out AXMLAssinado, FMensagem: AnsiString): Boolean;
@@ -1886,6 +1081,182 @@ begin
 end;
 {$ENDIF}
 
+{$IFDEF ACBrNFSeOpenSSL}
+function ValidaLibXML(const AXML: AnsiString;
+                      var AMsg: AnsiString;
+                      const APathSchemas: string = '';
+                      URL: string = '';
+                      Servico: string = ''): Boolean;
+var
+ doc, schema_doc : xmlDocPtr;
+ parser_ctxt : xmlSchemaParserCtxtPtr;
+ schema : xmlSchemaPtr;
+ valid_ctxt : xmlSchemaValidCtxtPtr;
+ schemError : xmlErrorPtr;
+ schema_filename : AnsiString;
+
+ // schema_filename : PChar;
+// filename : String;
+// Tipo, I : Integer;
+begin
+ if not DirectoryExists(DFeUtil.SeSenao(DFeUtil.EstaVazio(APathSchemas),
+                        PathWithDelim(ExtractFileDir(application.ExeName)) + 'Schemas',
+                        PathWithDelim(APathSchemas)))
+  then raise Exception.Create('Diretório de Schemas não encontrado' + sLineBreak +
+                              DFeUtil.SeSenao(DFeUtil.EstaVazio(APathSchemas),
+                              PathWithDelim(ExtractFileDir(application.ExeName)) + 'Schemas',
+                              PathWithDelim(APathSchemas)));
+
+ if DFeUtil.EstaVazio(APathSchemas)
+  then schema_filename := PathWithDelim(ExtractFileDir(application.ExeName)) + 'Schemas\' + Servico
+  else schema_filename := PathWithDelim(APathSchemas) + Servico;
+
+ if not FilesExists(schema_filename)
+  then raise Exception.Create('Arquivo [' + schema_filename + '] não encontrado.');
+
+// schema_filename := pchar(filename);
+
+// if RightStr(URL, 1) = '/'
+//  then Schema.add( URL + Servico, schema_filename )
+//  else Schema.add( URL, schema_filename );
+
+// doc         := nil;
+// schema_doc  := nil;
+// parser_ctxt := nil;
+// schema      := nil;
+// valid_ctxt  := nil;
+
+ doc := xmlParseDoc(PAnsiChar(Axml));
+ if ((doc = nil) or (xmlDocGetRootElement(doc) = nil)) then
+  begin
+    AMsg   := 'Erro: unable to parse';
+    Result := False;
+    exit;
+  end;
+
+ schema_doc := xmlReadFile(PAnsiChar(schema_filename), nil, XML_DETECT_IDS);
+//  the schema cannot be loaded or is not well-formed
+ if (schema_doc = nil) then
+  begin
+    AMsg   := 'Erro: Schema não pode ser carregado ou está corrompido';
+    Result := False;
+    exit;
+  end;
+
+ parser_ctxt := xmlSchemaNewDocParserCtxt(schema_doc);
+// unable to create a parser context for the schema */
+ if (parser_ctxt = nil) then
+  begin
+    xmlFreeDoc(schema_doc);
+    AMsg   := 'Erro: unable to create a parser context for the schema';
+    Result := False;
+    exit;
+  end;
+
+ schema := xmlSchemaParse(parser_ctxt);
+// the schema itself is not valid
+ if (schema = nil) then
+  begin
+    xmlSchemaFreeParserCtxt(parser_ctxt);
+    xmlFreeDoc(schema_doc);
+    AMsg   := 'Error: the schema itself is not valid ['+schema_filename+']';
+    Result := False;
+    exit;
+  end;
+
+ valid_ctxt := xmlSchemaNewValidCtxt(schema);
+//   unable to create a validation context for the schema */
+ if (valid_ctxt = nil) then
+  begin
+    xmlSchemaFree(schema);
+    xmlSchemaFreeParserCtxt(parser_ctxt);
+    xmlFreeDoc(schema_doc);
+    AMsg   := 'Error: unable to create a validation context for the schema';
+    Result := False;
+    exit;
+  end;
+
+ if (xmlSchemaValidateDoc(valid_ctxt, doc) <> 0) then
+  begin
+    schemError := xmlGetLastError();
+    AMsg       := IntToStr(schemError^.code)+' - '+schemError^.message;
+    Result     := False;
+    exit;
+  end;
+
+ xmlSchemaFreeValidCtxt(valid_ctxt);
+ xmlSchemaFree(schema);
+ xmlSchemaFreeParserCtxt(parser_ctxt);
+ xmlFreeDoc(schema_doc);
+ Result := True;
+end;
+
+{$ELSE}
+
+function ValidaMSXML(XML: AnsiString;
+                     out Msg: AnsiString;
+                     const APathSchemas: string = '';
+                     URL: string = '';
+                     Servico: string = ''): Boolean;
+var
+ DOMDocument     : IXMLDOMDocument3;
+ ParseError      : IXMLDOMParseError;
+ Schema          : XMLSchemaCache;
+ schema_filename : String;
+begin
+ DOMDocument                  := CoDOMDocument50.Create;
+ DOMDocument.async            := False;
+ DOMDocument.resolveExternals := False;
+ DOMDocument.validateOnParse  := True;
+ DOMDocument.loadXML(XML);
+
+ Schema := CoXMLSchemaCache50.Create;
+
+ if not DirectoryExists(DFeUtil.SeSenao(DFeUtil.EstaVazio(APathSchemas),
+                        PathWithDelim(ExtractFileDir(application.ExeName)) + 'Schemas',
+                        PathWithDelim(APathSchemas)))
+  then raise Exception.Create('Diretório de Schemas não encontrado' + sLineBreak +
+                              DFeUtil.SeSenao(DFeUtil.EstaVazio(APathSchemas),
+                              PathWithDelim(ExtractFileDir(application.ExeName)) + 'Schemas',
+                              PathWithDelim(APathSchemas)));
+
+ schema_filename := DFeUtil.SeSenao(DFeUtil.EstaVazio(APathSchemas),
+                    PathWithDelim(ExtractFileDir(application.ExeName)) + 'Schemas\',
+                    PathWithDelim(APathSchemas)) + Servico;
+
+ if not FilesExists(schema_filename)
+  then raise Exception.Create('Arquivo ' + schema_filename + ' não encontrado.');
+
+ if RightStr(URL, 1) = '/'
+  then Schema.add( URL + Servico, schema_filename )
+  else Schema.add( URL, schema_filename );
+
+ DOMDocument.schemas := Schema;
+
+ ParseError := DOMDocument.validate;
+ Result     := (ParseError.errorCode = 0);
+ Msg        := ParseError.reason;
+
+ DOMDocument := nil;
+ ParseError  := nil;
+ Schema      := nil;
+end;
+{$ENDIF}
+
+class function NotaUtil.Valida(const AXML: AnsiString;
+                               var AMsg: AnsiString;
+                               const APathSchemas: string = '';
+                               AURL: string = '';
+                               AServico: string = '';
+                               APrefixo: string = ''): Boolean;
+begin
+{$IFDEF ACBrNFSeOpenSSL}
+  Result := ValidaLibXML(AXML, AMsg, APathSchemas, AURL, AServico);
+{$ELSE}
+  Result := ValidaMSXML(AXML, AMsg, APathSchemas, AURL, AServico);
+{$ENDIF}
+end;
+
 class function NotaUtil.RetirarPrefixos(AXML: String): String;
 begin
  AXML := StringReplace( AXML, 'ns2:', '', [rfReplaceAll] );
@@ -1904,6 +1275,127 @@ begin
  if i > 0
   then result := '1'
   else result := '2';
+end;
+
+class procedure NotaUtil.ConfAmbiente;
+{$IFDEF VER140} //delphi6
+{$ELSE}
+var
+vFormatSettings: TFormatSettings;
+{$ENDIF}
+begin
+{$IFDEF VER140} //delphi6
+  DecimalSeparator := ',';
+{$ELSE}
+  vFormatSettings.DecimalSeparator := ',';
+{$ENDIF}
+end;
+
+class function NotaUtil.PathAplication: String;
+begin
+  Result := ExtractFilePath(Application.ExeName);
+end;
+
+class function NotaUtil.CollateBr(Str: String): String;
+var
+   i, wTamanho: integer;
+   wChar, wResultado: Char;
+begin
+   result   := '';
+   wtamanho := Length(Str);
+   i        := 1;
+   while (i <= wtamanho) do
+   begin
+      wChar := Str[i];
+      case wChar of
+         'á', 'â', 'ã', 'à', 'ä', 'å',
+         'Á', 'Â', 'Ã', 'À', 'Ä', 'Å': wResultado := 'A';
+         'é', 'ê', 'è', 'ë',
+         'É', 'Ê', 'È', 'Ë': wResultado := 'E';
+         'í', 'î', 'ì', 'ï',
+         'Í', 'Î', 'Ì', 'Ï': wResultado := 'I';
+         'ó', 'ô', 'õ', 'ò', 'ö',
+         'Ó', 'Ô', 'Õ', 'Ò', 'Ö': wResultado := 'O';
+         'ú', 'û', 'ù', 'ü',
+         'Ú', 'Û', 'Ù', 'Ü': wResultado := 'U';
+         'ç', 'Ç': wResultado := 'C';
+         'ñ', 'Ñ': wResultado := 'N';
+         'ý', 'ÿ', 'Ý', 'Y': wResultado := 'Y';
+      else
+         wResultado := wChar;
+      end;
+      i      := i + 1;
+      Result := Result + wResultado;
+   end;
+   Result := UpperCase(Result);
+end;
+
+class function NotaUtil.UpperCase2(Str: String): String;
+var
+   i, wTamanho: integer;
+   wChar, wResultado: Char;
+begin
+   result   := '';
+   wtamanho := Length(Str);
+   i        := 1;
+   while (i <= wtamanho) do
+   begin
+      wChar := Str[i];
+      case wChar of
+         'á','Á': wResultado := 'Á';
+         'ã','Ã': wResultado := 'Ã';
+         'à','À': wResultado := 'À';
+         'â','Â': wResultado := 'Â';
+         'ä','Ä': wResultado := 'Ä';
+         'å','Å': wResultado := 'Å';
+         'é','É': wResultado := 'É';
+         'è','È': wResultado := 'È';
+         'ê','Ê': wResultado := 'Ê';
+         'ë','Ë': wResultado := 'Ë';
+         'í','Í': wResultado := 'Í';
+         'ì','Ì': wResultado := 'Ì';
+         'î','Î': wResultado := 'Î';
+         'ï','Ï': wResultado := 'Ï';
+         'ó','Ó': wResultado := 'Ó';
+         'õ','Õ': wResultado := 'Õ';
+         'ò','Ò': wResultado := 'Ò';
+         'ô','Ô': wResultado := 'Ô';
+         'ö','Ö': wResultado := 'Ö';
+         'ú','Ú': wResultado := 'Ú';
+         'ù','Ù': wResultado := 'Ù';
+         'û','Û': wResultado := 'Û';
+         'ü','Ü': wResultado := 'Ü';
+         'ç', 'Ç': wResultado := 'Ç';
+         'ñ', 'Ñ': wResultado := 'Ñ';
+         'ý', 'ÿ', 'Ý', 'Y': wResultado := 'Y';
+      else
+         wResultado := wChar;
+      end;
+      i      := i + 1;
+      Result := Result + wResultado;
+   end;
+   Result := UpperCase(Result);
+end;
+
+class function NotaUtil.PathWithDelim( const APath : String ) : String;
+begin
+  Result := Trim(APath);
+  if Result <> '' then
+     if RightStr(Result,1) <> PathDelim then   { Tem delimitador no final ? }
+        Result := Result + PathDelim;
+end;
+
+class function NotaUtil.RetornarConteudoEntre(const Frase, Inicio, Fim: string): string;
+var
+  i: integer;
+  s: string;
+begin
+  result := '';
+  i      := pos(Inicio, Frase);
+  if i = 0 then
+    exit;
+  s      := Copy(Frase, i + length(Inicio), maxInt);
+  result := Copy(s, 1, pos(Fim, s) - 1);
 end;
 
 end.

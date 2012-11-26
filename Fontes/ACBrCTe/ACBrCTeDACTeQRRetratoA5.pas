@@ -867,11 +867,11 @@ begin
         qrmDadosEmitente.Lines.Add(XLgr + IfThen(Nro = '0', '', ', ' + Nro));
         if XCpl<>'' then qrmDadosEmitente.Lines.Add(XCpl);
         if XBairro<>'' then qrmDadosEmitente.Lines.Add(XBairro);
-        qrmDadosEmitente.Lines.Add('CEP: ' + CTeUtil.FormatarCEP(FormatFloat( '00000000', CEP )) + ' - ' + XMun + ' - ' + UF);
+        qrmDadosEmitente.Lines.Add('CEP: ' + DFeUtil.FormatarCEP(FormatFloat( '00000000', CEP )) + ' - ' + XMun + ' - ' + UF);
       end;
       qrmDadosEmitente.Lines.Add('CNPJ: ' + DFeUtil.FormatarCNPJ(CNPJ));
       qrmDadosEmitente.Lines.Add('INSCRIÇÃO ESTADUAL: ' + IE);
-      qrmDadosEmitente.Lines.Add('TELEFONE: ' + CTeUtil.FormatarFone(EnderEmit.Fone));
+      qrmDadosEmitente.Lines.Add('TELEFONE: ' + DFeUtil.FormatarFone(EnderEmit.Fone));
 
       if Trim(FUrl) <> '' then
         qrmDadosEmitente.Lines.Add(FUrl);
@@ -969,23 +969,23 @@ begin
   qrlRazaoRemet.Caption := FCTe.Rem.xNome;
   qrlEnderecoRemet1.Caption := FCTe.Rem.EnderReme.xLgr + ', ' + FCTe.Rem.EnderReme.nro;
   qrlEnderecoRemet2.Caption := FCTe.Rem.EnderReme.xCpl + ' - ' + FCTe.Rem.EnderReme.xBairro;
-  qrlCEPRemet.Caption := CTeUtil.FormatarCEP(FormatFloat( '00000000', FCTe.Rem.EnderReme.CEP ));
+  qrlCEPRemet.Caption := DFeUtil.FormatarCEP(FormatFloat( '00000000', FCTe.Rem.EnderReme.CEP ));
   qrlMunRemet.Caption := FCTe.Rem.EnderReme.xMun+' - '+FCTe.Rem.EnderReme.UF;
   qrlCnpjRemet.Caption := DFeUtil.FormatarCNPJ(FCTe.Rem.CNPJCPF);
   qrlPaisRemet.Caption := FCTe.Rem.EnderReme.xPais;
   qrlInscEstRemet.Caption := FCTe.Rem.IE;
-  qrlFoneRemet.Caption := CTeUtil.FormatarFone(FCTe.Rem.fone);
+  qrlFoneRemet.Caption := DFeUtil.FormatarFone(FCTe.Rem.fone);
 
   //DADOS DESTINATARIO
   qrlRazaoDest.Caption := FCTe.Dest.xNome;
   qrlEnderecoDest1.Caption := FCTe.Dest.EnderDest.xLgr + ', ' + FCTe.Dest.EnderDest.nro;
   qrlEnderecoDest2.Caption := FCTe.Dest.EnderDest.xCpl + ' - ' + FCTe.Dest.EnderDest.xBairro;
-  qrlCEPDest.Caption := CTeUtil.FormatarCEP(FormatFloat( '00000000', FCTe.Dest.EnderDest.CEP));
+  qrlCEPDest.Caption := DFeUtil.FormatarCEP(FormatFloat( '00000000', FCTe.Dest.EnderDest.CEP));
   qrlMunDest.Caption := FCTe.Dest.EnderDest.xMun+' - '+FCTe.Dest.EnderDest.UF;
   qrlCnpjDest.Caption := DFeUtil.FormatarCNPJ(FCTe.Dest.CNPJCPF);
   qrlPaisDest.Caption := FCTe.Dest.EnderDest.xPais;
   qrlInscEstDest.Caption := FCTe.Dest.IE;
-  qrlFoneDest.Caption := CTeUtil.FormatarFone(FCTe.Dest.fone);
+  qrlFoneDest.Caption := DFeUtil.FormatarFone(FCTe.Dest.fone);
 
   (*
   //DADOS EXPEDIDOR

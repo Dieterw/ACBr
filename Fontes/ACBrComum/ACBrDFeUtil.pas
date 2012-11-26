@@ -53,11 +53,11 @@ interface
 uses
   Classes, Forms,
   {$IFDEF FPC}
-    LResources, Controls, Graphics, Dialogs
+    LResources, Controls, Graphics, Dialogs,
   {$ELSE}
     StrUtils,
-    SysUtils
-  {$ENDIF};
+  {$ENDIF}
+  SysUtils;
 
 type
   EACBrDFeException = class(Exception);

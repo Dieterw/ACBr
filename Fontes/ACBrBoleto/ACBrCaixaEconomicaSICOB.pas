@@ -171,6 +171,7 @@ begin
         01: Result := '01-Código do banco inválido';
         02: Result := '02-Código do registro inválido.';
         03: Result := '03-Código do segmento inválido.';
+        04: Result := '04-Transferência de Carteira/Entrada.';
         05: Result := '05-Código de movimento inválido.';
         06: Result := '06-Tipo/número de inscrição do cedente inválido.';
         07: Result := '07-Agência/Conta/DV inválido.';
@@ -247,8 +248,20 @@ begin
         96: Result := '96-Quantidade de lotes no arquivo divergente.';
         97: Result := '97-Quantidade de registros no arquivo inválido.';
         98: Result := '98-Quantidade de registros no arquivo divergente.';
-      else
-         Result:= IntToStrZero(CodMotivo,2) +' - Outros Motivos';
+      end;
+    toRetornoLiquidado,
+    toRetornoBaixado,
+    toRetornoLiquidadoAposBaixaOuNaoRegistro:
+      case CodMotivo of
+        02: Result := '02-Casas Lotéricas.';
+        03: Result := '03-Liquidação no próprio Banco.';
+        04: Result := '04-Compensação Eletrônica.';
+        05: Result := '05-Compensação Convencional.';
+        06: Result := '06-Outros Canais.';
+        07: Result := '07-Correspondente Não Bancário.';
+        08: Result := '08-Em Cartório.';
+        09: Result := '09-Comandada Banco.';
+        10: Result := '10-Comandada Cliente Arquivo.';
       end;
     toRetornoDebitoTarifas:
       case CodMotivo of
@@ -759,7 +772,8 @@ end;
 
 procedure TACBrCaixaEconomicaSICOB.LerRetorno240(ARetorno: TStringList);
 var
-  ContLinha: Integer;
+  ContLinha,
+  IdxMotivo: Integer;
   Titulo   : TACBrTitulo;
   Linha,
   rCedente,
@@ -777,10 +791,10 @@ begin
    rDigitoConta := Copy(ARetorno[0],72,1);
    rCedente     := trim(Copy(ARetorno[0],73,30));
 
-
    ACBrBanco.ACBrBoleto.DataArquivo   := StringToDateTimeDef(Copy(ARetorno[0],144,2)+'/'+
                                                              Copy(ARetorno[0],146,2)+'/'+
                                                              Copy(ARetorno[0],148,4),0, 'DD/MM/YYYY' );
+   ACBrBanco.ACBrBoleto.NumeroArquivo := StrToIntDef(Copy(ARetorno[0],158,6),0);                                                             
 
    if StrToIntDef(Copy(Linha,200,8),0) <> 0 then
       ACBrBanco.ACBrBoleto.DataCreditoLanc := StringToDateTimeDef(Copy(ARetorno[1],200,2)+'/'+
@@ -845,8 +859,14 @@ begin
           NossoNumero                 := Copy(Copy(Linha,47,10), // sem o DV
                                               Length(Copy(Linha,47,10))-TamanhoMaximoNossoNum ,
                                               TamanhoMaximoNossoNum);
-          OcorrenciaOriginal.Tipo     := CodOcorrenciaToTipo(StrToIntDef(
-                                                             copy(Linha,16,2),0));
+          OcorrenciaOriginal.Tipo := CodOcorrenciaToTipo(StrToIntDef(copy(Linha,16,2),0));
+
+          if (Trim(Copy(Linha,214,2)) <> '00') then
+            begin
+              MotivoRejeicaoComando.Add(copy(Linha,214,2));
+              DescricaoMotivoRejeicaoComando.Add(CodMotivoRejeicaoToDescricao(OcorrenciaOriginal.Tipo,StrToIntDef(Copy(Linha,214,2),0)));
+            end;
+            
           Vencimento := StringToDateTimeDef( Copy(Linha,74,2)+'/'+
                                              Copy(Linha,76,2)+'/'+
                                              Copy(Linha,78,4),0, 'DD/MM/YYYY' );

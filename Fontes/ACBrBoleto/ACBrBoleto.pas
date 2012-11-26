@@ -58,7 +58,7 @@ uses ACBrBase,  {Units da ACBr}
      Graphics, Contnrs, Classes;
 
 const
-  CACBrBoleto_Versao = '0.0.47a' ;
+  CACBrBoleto_Versao = '0.0.48a' ;
 
 type
   TACBrTipoCobranca =
@@ -128,6 +128,7 @@ type
 
     {Ocorrências para arquivo retorno}
     toRetornoRegistroConfirmado,
+    toRetornoTransferenciaCarteira,
     toRetornoRegistroRecusado,
     toRetornoComandoRecusado,
     toRetornoLiquidado,

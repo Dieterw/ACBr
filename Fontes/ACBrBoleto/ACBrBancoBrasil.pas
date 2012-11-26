@@ -825,6 +825,7 @@ var
   Titulo: TACBrTitulo;
   TempData, Linha, rCedente, rCNPJCPF: String;
   ContLinha : Integer;
+  idxMotivo: Integer;
 begin
    ContLinha := 0;
 
@@ -833,6 +834,12 @@ begin
    if StrToIntDef(copy(ARetorno.Strings[0], 1, 3),-1) <> Numero then
       raise Exception.create(ACBrStr(ACBrBanco.ACBrBoleto.NomeArqRetorno +
             'não' + 'é um arquivo de retorno do ' + Nome));
+
+   ACBrBanco.ACBrBoleto.DataArquivo := StringToDateTimeDef(Copy(ARetorno[0],144,2)+'/'+
+                                                           Copy(ARetorno[0],146,2)+'/'+
+                                                           Copy(ARetorno[0],148,4),0, 'DD/MM/YYYY' );
+
+   ACBrBanco.ACBrBoleto.NumeroArquivo := StrToIntDef(Copy(ARetorno[0],158,6),0);
 
    rCedente := trim(copy(ARetorno[0], 73, 30));
    rCNPJCPF := OnlyNumber( copy(ARetorno[0], 19, 14) );
@@ -927,9 +934,19 @@ begin
            NossoNumero := copy(Linha, 38, 20);
            ValorDespesaCobranca := StrToFloatDef(copy(Linha, 199, 15), 0) / 100;
 
-           OcorrenciaOriginal.Tipo      := CodOcorrenciaToTipo(StrToIntDef(copy(Linha, 16, 2), 0));
-           MotivoRejeicaoComando.Add(copy(Linha, 214, 2));
+           OcorrenciaOriginal.Tipo := CodOcorrenciaToTipo(StrToIntDef(copy(Linha, 16, 2), 0));
 
+           IdxMotivo := 214;
+
+           while (IdxMotivo < 223) do
+           begin
+             if (trim(Copy(Linha, IdxMotivo, 2)) <> '') then begin
+               MotivoRejeicaoComando.Add(Copy(Linha, IdxMotivo, 2));
+               DescricaoMotivoRejeicaoComando.Add(CodMotivoRejeicaoToDescricao(OcorrenciaOriginal.Tipo, StrToIntDef(Copy(Linha, IdxMotivo, 2), 0)));
+             end;
+             Inc(IdxMotivo, 2);
+           end;
+           
          end
          else // segmento U
          begin
@@ -957,7 +974,7 @@ function TACBrBancoBrasil.TipoOCorrenciaToCod (
 begin
    case TipoOcorrencia of
       toRetornoRegistroConfirmado                         : Result := '02';
-      toRetornoComandoRecusado                            : Result := '03';
+      toRetornoRegistroRecusado                           : Result := '03';
       toRetornoLiquidado                                  : Result := '06';
       toRetornoBaixado                                    : Result := '09';
       toRetornoBaixadoInstAgencia                         : Result := '10';
@@ -977,7 +994,7 @@ begin
       toRetornoRecebimentoInstrucaoAlterarDados           : Result := '27';
       toRetornoDebitoTarifas                              : Result := '28';
       toRetornoOcorrenciasdoSacado                        : Result := '29';
-      toRetornoRegistroRecusado                           : Result := '30';
+      toRetornoAlteracaoDadosRejeitados                   : Result := '30';
       toRetornoRecebimentoInstrucaoConcederDesconto       : Result := '36';
       toRetornoRecebimentoInstrucaoCancelarDesconto       : Result := '37';
       toRetornoProtestoOuSustacaoEstornado                : Result := '43';
@@ -995,148 +1012,251 @@ begin
 
   CodOcorrencia := StrToIntDef(TipoOCorrenciaToCod(TipoOcorrencia),0);
 
-  case CodOcorrencia of
-   02: Result:='02-Confirmação de Entrada de Título' ;
-   03: Result:='03-Comando recusado' ;
-   05: Result:='05-Liquidado sem registro' ;
-   06: Result:='06-Liquidação Normal' ;
-   07: Result:='07-Liquidação por Conta' ;
-   08: Result:='08-Liquidação por Saldo' ;
-   09: Result:='09-Baixa de Título' ;
-   10: Result:='10-Baixa Solicitada' ;
-   11: Result:='11-Titulos em Ser' ;
-   12: Result:='12-Abatimento Concedido' ;
-   13: Result:='13-Abatimento Cancelado' ;
-   14: Result:='14-Alteração de Vencimento do Titulo' ;
-   15: Result:='15-Liquidação em Cartório' ;
-   17: Result:='17-Liquidação Após Baixa ou Título não Registrado' ;
-   19: Result:='19-Confirmação de recebimento de instruções para protesto' ;
-   20: Result:='20-Débito em Conta' ;
-   21: Result:='21-Alteração do Nome do Sacado' ;
-   22: Result:='22-Alteração do Endereço do Sacado' ;
-   23: Result:='23-Indicação de encaminhamento a cartório' ;
-   24: Result:='24-Sustar Protesto' ;
-   25: Result:='25-Dispensar Juros' ;
-   28: Result:='28-Manutenção de titulo vencido' ;
-   72: Result:='72-Alteração de tipo de cobrança' ;
-   96: Result:='96-Despesas de Protesto' ;
-   97: Result:='97-Despesas de Sustação de Protesto' ;
-   98: Result:='98-Débito de Custas Antecipadas' ;
+  Case CodOcorrencia of
+    02: Result := '02-Entrada Confirmada';
+    03: Result := '03-Entrada Rejeitada';
+    04: Result := '04-Transferência de Carteira/Entrada';
+    05: Result := '05-Transferência de Carteira/Baixa';
+    06: Result := '06-Liquidação';
+    07: Result := '07-Confirmação do Recebimento da Instrução de Desconto';
+    08: Result := '08-Confirmação do Recebimento do Cancelamento do Desconto';
+    09: Result := '09-Baixa';
+    10: Result := '10-Baixa Solicitada';
+    11: Result := '11-Títulos em Carteira (Em Ser)';
+    12: Result := '12-Confirmação Recebimento Instrução de Abatimento';
+    13: Result := '13-Confirmação Recebimento Instrução de Cancelamento Abatimento';
+    14: Result := '14-Confirmação Recebimento Instrução Alteração de Vencimento';
+    15: Result := '15-Franco de Pagamento';
+    17: Result := '17-Liquidação Após Baixa ou Liquidação Título Não Registrado';
+    19: Result := '19-Confirmação Recebimento Instrução de Protesto';
+    20: Result := '20-Confirmação Recebimento Instrução de Sustação/Cancelamento de Protesto';
+    21: Result := '21-Alteração do Nome do Sacado';
+    22: Result := '22-Alteração do Endereço do Sacado';
+    23: Result := '23-Remessa a Cartório (Aponte em Cartório)';
+    24: Result := '24-Retirada de Cartório e Manutenção em Carteira';
+    25: Result := '25-Protestado e Baixado (Baixa por Ter Sido Protestado)';
+    26: Result := '26-Instrução Rejeitada';
+    27: Result := '27-Confirmação do Pedido de Alteração de Outros Dados';
+    28: Result := '28-Débito de Tarifas/Custas';
+    29: Result := '29-Ocorrências do Sacado';
+    30: Result := '30-Alteração de Dados Rejeitada';
+    33: Result := '33-Confirmação da Alteração dos Dados do Rateio de Crédito';
+    34: Result := '34-Confirmação do Cancelamento dos Dados do Rateio de Crédito';
+    35: Result := '35-Confirmação do Desagendamento do Débito Automático';
+    36: Result := '36-Confirmação de envio de e-mail/SMS';
+    37: Result := '37-Envio de e-mail/SMS rejeitado';
+    38: Result := '38-Confirmação de alteração do Prazo Limite de Recebimento (a data deve ser informada no campo 28.3.p)';
+    39: Result := '39-Confirmação de Dispensa de Prazo Limite de Recebimento';
+    40: Result := '40-Confirmação da alteração do número do título dado pelo cedente';
+    41: Result := '41-Confirmação da alteração do número controle do Participante';
+    42: Result := '42-Confirmação da alteração dos dados do Sacado';
+    43: Result := '43-Confirmação da alteração dos dados do Sacador/Avalista';
+    44: Result := '44-Título pago com cheque devolvido';
+    45: Result := '45-Título pago com cheque compensado';
+    46: Result := '46-Instrução para cancelar protesto confirmada';
+    47: Result := '47-Instrução para protesto para fins falimentares confirmada';
+    48: Result := '48-Confirmação de instrução de transferência de carteira/modalidade de cobrança';
+    49: Result := '49-Alteração de contrato de cobrança';
+    50: Result := '50-Título pago com cheque pendente de liquidação';
+    51: Result := '51-Título DDA reconhecido pelo sacado';
+    52: Result := '52-Título DDA não reconhecido pelo sacado';
+    53: Result := '53-Título DDA recusado pela CIP';
+    54: Result := '54-Confirmação da Instrução de Baixa de Título Negativado sem Protesto';
   end;
 end;
 
 function TACBrBancoBrasil.CodOcorrenciaToTipo(const CodOcorrencia:
    Integer ) : TACBrTipoOcorrencia;
 begin
-   case CodOcorrencia of
-     2 : Result := toRetornoRegistroConfirmado;
-     3 : Result := toRetornoComandoRecusado;
-     6 : Result := toRetornoLiquidado;
-     9 : Result := toRetornoBaixado;
-     10: Result := toRetornoBaixadoInstAgencia;
-     11: Result := toRetornoTituloEmSer;
-     12: Result := toRetornoRecebimentoInstrucaoConcederAbatimento;
-     13: Result := toRetornoRecebimentoInstrucaoCancelarAbatimento;
-     14: Result := toRetornoRecebimentoInstrucaoAlterarVencimento;
-     15: Result := toRetornoLiquidadoEmCartorio;
-     17: Result := toRetornoLiquidadoSemRegistro;
-     19: Result := toRetornoRecebimentoInstrucaoProtestar;
-     20: Result := toRetornoRecebimentoInstrucaoSustarProtesto;
-     22: Result := toRetornoEnderecoSacadoAlterado;
-     23: Result := toRetornoEncaminhadoACartorio;
-     24: Result := toRetornoRetiradoDeCartorio;
-     25: Result := toRetornoProtestado;
-     27: Result := toRetornoRecebimentoInstrucaoAlterarDados;
-     28: Result := toRetornoDebitoTarifas;
-     29: Result := toRetornoOcorrenciasdoSacado;
-     30: Result := toRetornoRegistroRecusado;
-     36: Result := toRetornoRecebimentoInstrucaoConcederDesconto;
-     37: Result := toRetornoRecebimentoInstrucaoCancelarDesconto;
-     43: Result := toRetornoProtestoOuSustacaoEstornado;
-     44: Result := toRetornoBaixaOuLiquidacaoEstornada;
-     45: Result := toRetornoDadosAlterados;
-   else
-      Result := toRetornoOutrasOcorrencias;
-   end;
+  Case CodOcorrencia of
+    2 : Result := toRetornoRegistroConfirmado;
+    3 : Result := toRetornoRegistroRecusado;
+    6 : Result := toRetornoLiquidado;
+    9 : Result := toRetornoBaixado;
+    10: Result := toRetornoBaixadoInstAgencia;
+    11: Result := toRetornoTituloEmSer;
+    12: Result := toRetornoRecebimentoInstrucaoConcederAbatimento;
+    13: Result := toRetornoRecebimentoInstrucaoCancelarAbatimento;
+    14: Result := toRetornoRecebimentoInstrucaoAlterarVencimento;
+    15: Result := toRetornoLiquidadoEmCartorio;
+    17: Result := toRetornoLiquidadoSemRegistro;
+    19: Result := toRetornoRecebimentoInstrucaoProtestar;
+    20: Result := toRetornoRecebimentoInstrucaoSustarProtesto;
+    22: Result := toRetornoEnderecoSacadoAlterado;
+    23: Result := toRetornoEncaminhadoACartorio;
+    24: Result := toRetornoRetiradoDeCartorio;
+    25: Result := toRetornoProtestado;
+    26: Result := toRetornoInstrucaoRejeitada;
+    27: Result := toRetornoRecebimentoInstrucaoAlterarDados;
+    28: Result := toRetornoDebitoTarifas;
+    29: Result := toRetornoOcorrenciasdoSacado;
+    30: Result := toRetornoAlteracaoDadosRejeitados;
+    36: Result := toRetornoRecebimentoInstrucaoConcederDesconto;
+    37: Result := toRetornoRecebimentoInstrucaoCancelarDesconto;
+    43: Result := toRetornoProtestoOuSustacaoEstornado;
+    44: Result := toRetornoBaixaOuLiquidacaoEstornada;
+    45: Result := toRetornoDadosAlterados;
+  else
+    Result := toRetornoOutrasOcorrencias;
+  end;
 end;
 
 function TACBrBancoBrasil.CodMotivoRejeicaoToDescricao(const TipoOcorrencia: TACBrTipoOcorrencia; CodMotivo: Integer): String;
 begin
-  case TipoOcorrencia of
-     toRetornoRegistroRecusado:
-      case CodMotivo of
-         01: Result:='01-Identificação inválida' ;
-         02: Result:='02-Variação da carteira inválida' ;
-         03: Result:='03-Valor dos juros por um dia inválido' ;
-         04: Result:='04-Valor do desconto inválido' ;
-         05: Result:='05-Espécie de título inválida para carteira' ;
-         06: Result:='06-Espécie de valor variável inválido' ;
-         07: Result:='07-Prefixo da agência usuária inválido' ;
-         08: Result:='08-Valor do título/apólice inválido' ;
-         09: Result:='09-Data de vencimento inválida' ;
-         10: Result:='10-Fora do prazo' ;
-         11: Result:='11-Inexistência de margem para desconto' ;
-         12: Result:='12-O Banco não tem agência na praça do sacado' ;
-         13: Result:='13-Razões cadastrais' ;
-         14: Result:='14-Sacado interligado com o sacador' ;
-         15: Result:='15-Título sacado contra orgão do Poder Público' ;
-         16: Result:='16-Título preenchido de forma irregular' ;
-         17: Result:='17-Título rasurado' ;
-         18: Result:='18-Endereço do sacado não localizado ou incompleto' ;
-         19: Result:='19-Código do cedente inválido' ;
-         20: Result:='20-Nome/endereco do cliente não informado /ECT/' ;
-         21: Result:='21-Carteira inválida' ;
-         22: Result:='22Quantidade de valor variável inválida' ;
-         23: Result:='23-Faixa nosso número excedida' ;
-         24: Result:='24-Valor do abatimento inválido' ;
-         25: Result:='25-Novo número do título dado pelo cedente inválido' ;
-         26: Result:='26-Valor do IOF de seguro inválido' ;
-         27: Result:='27-Nome do sacado/cedente inválido ou não informado' ;
-         28: Result:='28-Data do novo vencimento inválida' ;
-         29: Result:='29-Endereco não informado' ;
-         30: Result:='30-Registro de título já liquidado' ;
-         31: Result:='31-Numero do bordero inválido' ;
-         32: Result:='32-Nome da pessoa autorizada inválido' ;
-         33: Result:='33-Nosso número já existente' ;
-         34: Result:='34-Numero da prestação do contrato inválido' ;
-         35: Result:='35-Percentual de desconto inválido' ;
-         36: Result:='36-Dias para fichamento de protesto inválido' ;
-         37: Result:='37-Data de emissão do título inválida' ;
-         38: Result:='38-Data do vencimento anterior a data da emissão do título' ;
-         39: Result:='39-Comando de alteração indevido para a carteira' ;
-         40: Result:='40-Tipo de moeda inválido' ;
-         41: Result:='41-Abatimento não permitido' ;
-         42: Result:='42-CEP do sacado inválido /ECT/' ;
-         43: Result:='43-Codigo de unidade variavel incompativel com a data emissão do título' ;
-         44: Result:='44-Dados para debito ao sacado inválidos' ;
-         45: Result:='45-Carteira' ;
-         46: Result:='46-Convenio encerrado' ;
-         47: Result:='47-Título tem valor diverso do informado' ;
-         48: Result:='48-Motivo de baixa inválido para a carteira' ;
-         49: Result:='49-Abatimento a cancelar não consta do título' ;
-         50: Result:='50-Comando incompativel com a carteira' ;
-         51: Result:='51-Codigo do convenente inválido' ;
-         52: Result:='52-Abatimento igual ou maior que o valor do título' ;
-         53: Result:='53-Título já se encontra situação pretendida' ;
-         54: Result:='54-Título fora do prazo admitido para a conta 1' ;
-         55: Result:='55-Novo vencimento fora dos limites da carteira' ;
-         56: Result:='56-Título não pertence ao convenente' ;
-         57: Result:='57-Variação incompativel com a carteira' ;
-         58: Result:='58-Impossivel a transferencia para a carteira indicada' ;
-         59: Result:='59-Título vencido em transferencia para a carteira 51' ;
-         60: Result:='60-Título com prazo superior a 179 dias em transferencia para carteira 51' ;
-         61: Result:='61-Título já foi fichado para protesto' ;
-         62: Result:='62-Alteração da situação de debito inválida para o codigo de responsabilidade' ;
-         63: Result:='63-DV do nosso número inválido' ;
-         64: Result:='64-Título não passivel de debito/baixa - situação anormal' ;
-         65: Result:='65-Título com ordem de não protestar-não pode ser encaminhado a cartorio' ;
-         67: Result:='66-Título/carne rejeitado' ;
-         80: Result:='80-Nosso número inválido' ;
-         81: Result:='81-Data para concessão do desconto inválida' ;
-         82: Result:='82-CEP do sacado inválido' ;
-         83: Result:='83-Carteira/variação não localizada no cedente' ;
-         84: Result:='84-Título não localizado na existencia' ;
-         99: Result:='99-Outros motivos' ;
+  Case TipoOcorrencia of
+    //Associados aos códigos de movimento 02, 03, 26 e 30...
+    toRetornoRegistroConfirmado, toRetornoRegistroRecusado, toRetornoInstrucaoRejeitada, toRetornoAlteracaoDadosRejeitados:
+      Case CodMotivo of
+        01: Result :='01-Código do Banco Inválido';
+        02: Result :='02-Código do Registro Detalhe Inválido';
+        03: Result :='03-Código do Segmento Inválido';
+        04: Result :='04-Código de Movimento Não Permitido para Carteira';
+        05: Result :='05-Código de Movimento Inválido';
+        06: Result :='06-Tipo/Número de Inscrição do Cedente Inválidos';
+        07: Result :='07-Agência/Conta/DV Inválido';
+        08: Result :='08-Nosso Número Inválido';
+        09: Result :='09-Nosso Número Duplicado';
+        10: Result :='10-Carteira Inválida';
+        11: Result :='11-Forma de Cadastramento do Título Inválido';
+        12: Result :='12-Tipo de Documento Inválido';
+        13: Result :='13-Identificação da Emissão do Bloqueto Inválida';
+        14: Result :='14-Identificação da Distribuição do Bloqueto Inválida';
+        15: Result :='15-Características da Cobrança Incompatíveis';
+        16: Result :='16-Data de Vencimento Inválida';
+        17: Result :='17-Data de Vencimento Anterior a Data de Emissão';
+        18: Result :='18-Vencimento Fora do Prazo de Operação';
+        19: Result :='19-Título a Cargo de Bancos Correspondentes com Vencimento Inferior a XX Dias';
+        20: Result :='20-Valor do Título Inválido';
+        21: Result :='21-Espécie do Título Inválida';
+        22: Result :='22-Espécie do Título Não Permitida para a Carteira';
+        23: Result :='23-Aceite Inválido';
+        24: Result :='24-Data da Emissão Inválida';
+        25: Result :='25-Data da Emissão Posterior a Data de Entrada';
+        26: Result :='26-Código de Juros de Mora Inválido';
+        27: Result :='27-Valor/Taxa de Juros de Mora Inválido';
+        28: Result :='28-Código do Desconto Inválido';
+        29: Result :='29-Valor do Desconto Maior ou Igual ao Valor do Título';
+        30: Result :='30-Desconto a Conceder Não Confere';
+        31: Result :='31-Concessão de Desconto - Já Existe Desconto Anterior';
+        32: Result :='32-Valor do IOF Inválido';
+        33: Result :='33-Valor do Abatimento Inválido';
+        34: Result :='34-Valor do Abatimento Maior ou Igual ao Valor do Título';
+        35: Result :='35-Valor a Conceder Não Confere';
+        36: Result :='36-Concessão de Abatimento - Já Existe Abatimento Anterior';
+        37: Result :='37-Código para Protesto Inválido';
+        38: Result :='38-Prazo para Protesto Inválido';
+        39: Result :='39-Pedido de Protesto Não Permitido para o Título';
+        40: Result :='40-Título com Ordem de Protesto Emitida';
+        41: Result :='41-Pedido de Cancelamento/Sustação para Títulos sem Instrução de Protesto';
+        42: Result :='42-Código para Baixa/Devolução Inválido';
+        43: Result :='43-Prazo para Baixa/Devolução Inválido';
+        44: Result :='44-Código da Moeda Inválido';
+        45: Result :='45-Nome do Sacado Não Informado';
+        46: Result :='46-Tipo/Número de Inscrição do Sacado Inválidos';
+        47: Result :='47-Endereço do Sacado Não Informado';
+        48: Result :='48-CEP Inválido';
+        49: Result :='49-CEP Sem Praça de Cobrança (Não Localizado)';
+        50: Result :='50-CEP Referente a um Banco Correspondente';
+        51: Result :='51-CEP incompatível com a Unidade da Federação';
+        52: Result :='52-Unidade da Federação Inválida';
+        53: Result :='53-Tipo/Número de Inscrição do Sacador/Avalista Inválidos';
+        54: Result :='54-Sacador/Avalista Não Informado';
+        55: Result :='55-Nosso número no Banco Correspondente Não Informado';
+        56: Result :='56-Código do Banco Correspondente Não Informado';
+        57: Result :='57-Código da Multa Inválido';
+        58: Result :='58-Data da Multa Inválida';
+        59: Result :='59-Valor/Percentual da Multa Inválido';
+        60: Result :='60-Movimento para Título Não Cadastrado';
+        61: Result :='61-Alteração da Agência Cobradora/DV Inválida';
+        62: Result :='62-Tipo de Impressão Inválido';
+        63: Result :='63-Entrada para Título já Cadastrado';
+        64: Result :='64-Número da Linha Inválido';
+        65: Result :='65-Código do Banco para Débito Inválido';
+        66: Result :='66-Agência/Conta/DV para Débito Inválido';
+        67: Result :='67-Dados para Débito incompatível com a Identificação da Emissão do Bloqueto';
+        68: Result :='68-Débito Automático Agendado';
+        69: Result :='69-Débito Não Agendado - Erro nos Dados da Remessa';
+        70: Result :='70-Débito Não Agendado - Sacado Não Consta do Cadastro de Autorizante';
+        71: Result :='71-Débito Não Agendado - Cedente Não Autorizado pelo Sacado';
+        72: Result :='72-Débito Não Agendado - Cedente Não Participa da Modalidade Débito Automático';
+        73: Result :='73-Débito Não Agendado - Código de Moeda Diferente de Real (R$)';
+        74: Result :='74-Débito Não Agendado - Data Vencimento Inválida';
+        75: Result :='75-Débito Não Agendado, Conforme seu Pedido, Título Não Registrado';
+        76: Result :='76-Débito Não Agendado, Tipo/Num. Inscrição do Debitado, Inválido';
+        77: Result :='77-Transferência para Desconto Não Permitida para a Carteira do Título';
+        78: Result :='78-Data Inferior ou Igual ao Vencimento para Débito Automático';
+        79: Result :='79-Data Juros de Mora Inválido';
+        80: Result :='80-Data do Desconto Inválida';
+        81: Result :='81-Tentativas de Débito Esgotadas - Baixado';
+        82: Result :='82-Tentativas de Débito Esgotadas - Pendente';
+        83: Result :='83-Limite Excedido';
+        84: Result :='84-Número Autorização Inexistente';
+        85: Result :='85-Título com Pagamento Vinculado';
+        86: Result :='86-Seu Número Inválido';
+        87: Result :='87-e-mail/SMS enviado';
+        88: Result :='88-e-mail Lido';
+        89: Result :='89-e-mail/SMS devolvido - endereço de e-mail ou número do celular incorreto';
+        90: Result :='90-e-mail devolvido - caixa postal cheia';
+        91: Result :='91-e-mail/número do celular do sacado não informado';
+        92: Result :='92-Sacado optante por Bloqueto Eletrônico - e-mail não enviado';
+        93: Result :='93-Código para emissão de bloqueto não permite envio de e-mail';
+        94: Result :='94-Código da Carteira inválido para envio e-mail';
+        95: Result :='95-Contrato não permite o envio de e-mail';
+        96: Result :='96-Número de contrato inválido';
+        97: Result :='97-Rejeição da alteração do prazo limite de recebimento (a data deve ser informada no campo 28.3.p)';
+        98: Result :='98-Rejeição de dispensa de prazo limite de recebimento';
+        99: Result :='99-Rejeição da alteração do número do título dado pelo cedente';
+      end;
+    //Associados ao código de movimento 28...
+    toRetornoDebitoTarifas:
+      Case CodMotivo of
+        01: Result := '01-Tarifa de Extrato de Posição';
+        02: Result := '02-Tarifa de Manutenção de Título Vencido';
+        03: Result := '03-Tarifa de Sustação';
+        04: Result := '04-Tarifa de Protesto';
+        05: Result := '05-Tarifa de Outras Instruções';
+        06: Result := '06-Tarifa de Outras Ocorrências';
+        07: Result := '07-Tarifa de Envio de Duplicata ao Sacado';
+        08: Result := '08-Custas de Protesto';
+        09: Result := '09-Custas de Sustação de Protesto';
+        10: Result := '10-Custas de Cartório Distribuidor';
+        11: Result := '11-Custas de Edital';
+        12: Result := '12-Tarifa Sobre Devolução de Título Vencido';
+        13: Result := '13-Tarifa Sobre Registro Cobrada na Baixa/Liquidação';
+        14: Result := '14-Tarifa Sobre Reapresentação Automática';
+        15: Result := '15-Tarifa Sobre Rateio de Crédito';
+        16: Result := '16-Tarifa Sobre Informações Via Fax';
+        17: Result := '17-Tarifa Sobre Prorrogação de Vencimento';
+        18: Result := '18-Tarifa Sobre Alteração de Abatimento/Desconto';
+        19: Result := '19-Tarifa Sobre Arquivo mensal (Em Ser)';
+        20: Result := '20-Tarifa Sobre Emissão de Bloqueto Pré-Emitido pelo Banco';
+      end;
+    //Associados aos códigos de movimento 06, 09 e 17...
+    toRetornoLiquidado, toRetornoBaixado, toRetornoLiquidadoSemRegistro:
+      Case CodMotivo of
+        01: Result := '01-Por Saldo';
+        02: Result := '02-Por Conta';
+        03: Result := '03-Liquidação no Guichê de Caixa em Dinheiro';
+        04: Result := '04-Compensação Eletrônica';
+        05: Result := '05-Compensação Convencional';
+        06: Result := '06-Por Meio Eletrônico';
+        07: Result := '07-Após Feriado Local';
+        08: Result := '08-Em Cartório';
+        09: Result := '09-Comandada Banco';
+        10: Result := '10-Comandada Cliente Arquivo';
+        11: Result := '11-Comandada Cliente On-line';
+        12: Result := '12-Decurso Prazo - Cliente';
+        13: Result := '13-Decurso Prazo - Banco';
+        14: Result := '14-Protestado';
+        15: Result := '15-Título Excluído';
+        30: Result := '30-Liquidação no Guichê de Caixa em Cheque';
+        31: Result := '31-Liquidação em banco correspondente';
+        32: Result := '32-Liquidação Terminal de Auto-Atendimento';
+        33: Result := '33-Liquidação na Internet (Home banking)';
+        34: Result := '34-Liquidado Office Banking';
+        35: Result := '35-Liquidado Correspondente em Dinheiro';
+        36: Result := '36-Liquidado Correspondente em Cheque';
+        37: Result := '37-Liquidado por meio de Central de Atendimento (Telefone)';
       end;
   end;
 end;

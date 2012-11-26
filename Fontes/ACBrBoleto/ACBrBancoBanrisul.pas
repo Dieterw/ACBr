@@ -301,7 +301,7 @@ begin
              ' '                                   +
             space(10)                              +
             Space(268)                             + // Filler - Brancos
-            IntToStrZero(NumeroRemessa, 6);          // Nr. Sequencial de Remessa + brancos + Contador
+            IntToStrZero(1, 6);                     // 395 a 400 - NÚMERO SEQÜENCIAL DO REGISTRO NO ARQUIVO  contante "000001" 
 
     Result:=UpperCase(Result);
   end;
@@ -311,7 +311,7 @@ function TACBrBanrisul.GerarRegistroTransacao400(ACBrTitulo: TACBrTitulo): strin
 var
   Ocorrencia, Protesto, cd: string;
   TipoSacado, aTipoAceite: string;
-  TipoBoleto: Char;
+  TipoBoleto: String;
 begin
   Protesto := '';
   with ACBrTitulo do
@@ -331,12 +331,14 @@ begin
     else
       Ocorrencia:='01'; {Remessa}
     end;
-
-      {Pegando Tipo de Boleto}
-    if (ACBrBoleto.Cedente.ResponEmissao = tbCliEmite) then
-      TipoBoleto:='2'
-    else
-      TipoBoleto:='1';
+    
+    {Pegando Tipo de Boleto}
+    case ACBrBoleto.Cedente.ResponEmissao of
+      tbCliEmite : TipoBoleto:='08';   //Cobrança credenciada Banrisul
+      tbBancoReemite : TipoBoleto:='04'; //Cobrança Direta
+      else
+        TipoBoleto:='08'; //Cobrança credenciada Banrisul
+    end;
 
     { Pegando o Aceite do Titulo }
     case Aceite of
@@ -364,20 +366,19 @@ begin
                PadL(NossoNumero, 8, '0')+CalculaDigitosChaveASBACE(NossoNumero) +
                space(32)                                                        +
                space(3)                                                         +
-               '1'                                                              +
-               '01'                                                             +
+               '1'                                                              +     //padrão 1 (cobrança simples)
+               Ocorrencia                                                       +     
                padR(NumeroDocumento, 10)                                        +
                FormatDateTime('ddmmyy', Vencimento)                             +
                IntToStrZero(Round(ValorDocumento*100), 13)                      +
                '041'                                                            +
                space(5)                                                         +
-               Carteira                                                         +
+               TipoBoleto                                                       + 
                aTipoAceite                                                      +
                FormatDateTime('ddmmyy', DataDocumento)                          +// Data de Emissão
-
-               '09'                                                               + // cleonir novo 17/05/2012
+               '09'                                                             + 
                PadR(Instrucao2, 2)                                              +
-               '0'                                                                + // cleonir novo  17/05/2012
+               '0'                                                              +  
                FormatCurr('000000000000', ValorMoraJuros*100)                   +
                '000000'                                                         +
                '0000000000000'                                                  +

@@ -258,7 +258,7 @@ begin
                '0'                                             + // Zero
                padR( Agencia, 4, '0')                          + // Agencia cedente
                '55'                                            + // Sub-Conta
-               padR( Agencia+Conta+ContaDigito, 11, '0')       + // Conta Corrente
+               padR( Conta+ContaDigito, 11, '0')               + // Conta Corrente //Removi agencia repetido //ALFEU MOTA //
                padL( '', 2,' ')                                + // Uso do banco
                padL( Nome, 30,' ')                             + // Nome da Empresa
                '399'                                           + // Número do Banco na compensação
@@ -356,7 +356,7 @@ begin
                   '0'                                                                                            + // Zero
                   padR( Cedente.Agencia, 4, '0')                                                                 + // Agencia cedente
                  '55'                                                                                            + // Sub-Conta
-                  padR( Cedente.Agencia+Cedente.Conta+Cedente.ContaDigito, 11, '0')                              + // Conta Corrente
+                  padR( Cedente.Conta+Cedente.ContaDigito, 11, '0') + // REMOVI {Cedente.Agencia+}  ALFEU MOTA//
                   padL('',2,' ')                                                                                 + // uso banco
                   padL( SeuNumero,25,' ')                                                                        + // Numero de Controle do Participante
                   MontarCampoNossoNumero(ACBrTitulo)                                                             + // Nosso Numero tam 10 + digito tam 1
@@ -376,7 +376,7 @@ begin
                   padR(Instrucao1,2,'0')                                                                         + // instrução 1
                   padR(Instrucao2,2,'0')                                                                         + // instrução 2
                   IntToStrZero( round(ValorMoraJuros * 100 ), 13)                                                + // Juros de Mora
-                  IfThen(DataDesconto < EncodeDate(2000,01,01),'      ',FormatDateTime( 'ddmmyy', DataDesconto)) + // data limite para desconto
+                  IfThen(DataDesconto < EncodeDate(2000,01,01),'000000',FormatDateTime( 'ddmmyy', DataDesconto)) + // data limite para desconto  //ADICIONEI ZERO ESTAVA E BRANCO ALFEU
                   IntToStrZero( round( ValorDesconto * 100), 13)                                                 + // valor do desconto
                   IntToStrZero( round( ValorIOF * 100 ), 13)                                                     + // Valor do  IOF
                   IntToStrZero( round( ValorAbatimento * 100 ), 13)                                              + // valor do abatimento

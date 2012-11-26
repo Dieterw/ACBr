@@ -2801,8 +2801,8 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
     end
   end
   object LayoutBoleto: TQuickRep
-    Left = 11
-    Top = -177
+    Left = 19
+    Top = 39
     Width = 794
     Height = 1123
     Frame.Color = clBlack
@@ -3257,6 +3257,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           10.583333333333330000
           0.000000000000000000
           394.229166666666700000)
+        Stretch = True
       end
       object txtNumeroBanco2: TQRLabel
         Left = 196
@@ -7043,6 +7044,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           10.583333333333330000
           690.562500000000000000
           394.229166666666700000)
+        Stretch = True
       end
       object txtNumeroBanco6_1: TQRLabel
         Left = 196
@@ -10519,6 +10521,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           10.583333333333330000
           10.583333333333330000
           394.229166666666700000)
+        Stretch = True
       end
       object txtNumeroBanco6_0: TQRLabel
         Left = 196

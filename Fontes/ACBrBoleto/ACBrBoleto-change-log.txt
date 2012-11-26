@@ -81,6 +81,9 @@ Versao 0.0.09a do FastReport 02/07/12
     (por: Isaque Pinheiro)	
 
 
+Versao 0.0.13a do QuickReport 26/11/12
+[*] Corrigido layout Carnê para imprimir o Local de Pagamento.(José)
+
 Versao 0.0.12a do QuickReport 05/08/12
 [*] Efetuado pequenos ajustes para atender a Caixa Econômica Federal(Juliana Tamizou)
 
@@ -131,12 +134,27 @@ Versao 0.0.10a do FortesReport 06/07/11
     cobrança não registrada.
     (por: Regys Silveira) 
 
-Versai 0.0.47a
+
+Versao 0.0.48a
+[+] Unit Banestes - Adiconado leitura do arquivo retorno CNAB400.(Francisco)
+
+[*] Unit CaixaSicob - Alterado leitura do arquivo retorno CNAB240 para capturar os
+    motivos de rejeição e também o número do arquivo retorno.(Roger Mello)
+
+[*] Unit BancoBrasil - Alterado leitura do arquivo retorno CNAB240 para ler todos os
+    motivos de rejeição retornados.(Roger Mello)
+
+[-] Unit HSBC - Corrigida geração do arquivo remessa CNAB400(Alfeu).
+
+[-] Unit Bancoob - Corrigida função MontarCodigoBarras para considerar também a 
+    propriedade parcela do titulo.(Douglas Tybel)
+
+Versao 0.0.47a
 [*] Adicionada função CalcularTamMaximoNossoNumero para tratar o NossoNumero informado, 
-    dessa forma é validado se     o tamanho do nosso número informado é compativel com 
+    dessa forma é validado se o tamanho do nosso número informado é compativel com 
+    a carteira e convênio da conta do cliente no banco. 
     A mesma função utilizada no set do Nosso Número pode ser chamada para capturar o 
-    tamanho deste campo.
-    a carteira e convênio da conta do cliente no banco.(Juliana Tamizou)
+    tamanho deste campo.(Juliana Tamizou)
 	
 Versao 0.0.46a
 [-] Unit Sicred - Corrigida geração do arquivo remessa CNAB400. Apesar do Manual do Banco

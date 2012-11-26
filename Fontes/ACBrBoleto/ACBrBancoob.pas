@@ -65,11 +65,16 @@ type
     function GerarRegistroTransacao240(ACBrTitulo : TACBrTitulo): String; override;
     function GerarRegistroTrailler240(ARemessa : TStringList): String;  override;
     Procedure LerRetorno400(ARetorno:TStringList); override;
+    function TipoOcorrenciaToDescricao(const TipoOcorrencia: TACBrTipoOcorrencia) : String; override;
+    function CodOcorrenciaToTipo(const CodOcorrencia:Integer): TACBrTipoOcorrencia; override;
+    function TipoOCorrenciaToCod(const TipoOcorrencia: TACBrTipoOcorrencia):String; override;
+    function CodMotivoRejeicaoToDescricao(const TipoOcorrencia:TACBrTipoOcorrencia; CodMotivo:Integer): String; override;
+
    end;
 
 implementation
 
-uses ACBrUtil, StrUtils, Variants,ACBrValidador;
+uses ACBrUtil, StrUtils, Variants,ACBrValidador,math;
 
 constructor TACBrBancoob.create(AOwner: TACBrBanco);
 begin
@@ -170,7 +175,7 @@ begin
     CampoLivre    := padR(ACBrTitulo.ACBrBoleto.Cedente.Modalidade, 2, '0') +
                      padR(ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente, 7, '0') +
                      padR(Copy(ANossoNumero,1,8), 8, '0') +  //7 Sequenciais + 1 do digito
-                     '001';
+                     IntToStrZero(Max(1,ACBrTitulo.Parcela),3);
 
 
     {Codigo de Barras}
@@ -766,6 +771,166 @@ begin
            padR('', 6, '0')                                           + //Complemento
            space(205);
 //      Result := Result + #13#10;
+
+end;
+
+function TACBrBancoob.CodMotivoRejeicaoToDescricao(
+  const TipoOcorrencia: TACBrTipoOcorrencia; CodMotivo: Integer): String;
+begin
+  case TipoOcorrencia of
+
+      //Tabela 1
+      toRetornoRegistroRecusado, toRetornoEntradaRejeitadaCarne:
+      case CodMotivo  of
+         00: Result:='Outros Motivos';
+      else
+         Result := IntToStrZero(CodMotivo,2) +' - Outros Motivos';
+      end;
+
+
+      toRetornoLiquidado:
+      case CodMotivo of
+         01: Result := 'POR SALDO';
+         02: Result := 'POR CONTA';
+         03: Result := 'NO PROPRIO BANCO';
+         04: Result := 'COMPENSAÇÃO ELETRONICA';
+         05: Result := 'COMPENSAÇÃO CONVENCIONAL';
+         06: Result := 'POR MEIO ELETRÔNICO';
+         07: Result := 'DEPOIS DE FERIADO LOCAL';
+         08: Result := 'EM CARTÓRIO';
+
+      else
+         Result := IntToStrZero(CodMotivo,2) +' - Outros Motivos';
+      end;
+
+      toRetornoBaixado:
+      case CodMotivo of
+         09: Result := 'COMANDADA BANCO';
+         10: Result := 'COMANDADA CLIENTE ARQUIVO';
+         11: Result := 'COMANDADA CLIENTE ONLINE';
+         12: Result := 'DECURSO PRAZO CLIENTE';
+         13: Result := 'DECURSO PRAZO BANCO';
+         14: Result := 'PROTESTADO';
+         15: Result := 'TITULO EXCLUIDO';
+      else
+         Result := IntToStrZero(CodMotivo,2) +' - Outros Motivos';
+      end;
+
+  end;
+
+end;
+
+function TACBrBancoob.CodOcorrenciaToTipo(
+  const CodOcorrencia: Integer): TACBrTipoOcorrencia;
+begin
+  case CodOcorrencia of
+      02: Result := toRetornoRegistroConfirmado;
+      03: Result := toRetornoRegistroRecusado;
+      05: Result := toRetornoLiquidadoEmCartorio;
+      06: Result := toRetornoLiquidado;
+      07: Result := toRetornoRecebimentoInstrucaoConcederDesconto;
+      08: Result := toRetornoRecebimentoInstrucaoCancelarDesconto;
+      09: Result := toRetornoBaixaSimples;
+      11: Result := toRetornoTituloEmSer;
+      12: Result := toRetornoAbatimentoConcedido;
+      13: Result := toRetornoAbatimentoCancelado;
+      14: Result := toRetornoVencimentoAlterado;
+      17: Result := toRetornoLiquidadoAposBaixaOuNaoRegistro;
+      19: Result := toRetornoRecebimentoInstrucaoProtestar;
+      20: Result := toRetornoRecebimentoInstrucaoSustarProtesto;
+      21: Result := toRetornoRecebimentoInstrucaoProtestar;
+      23: Result := toRetornoEncaminhadoACartorio;
+      24: Result := toRetornoInstrucaoProtestoRejeitadaSustadaOuPendente;
+      25: Result := toRetornoBaixaPorProtesto;
+      26: Result := toRetornoInstrucaoRejeitada;
+      27: Result := toRetornoDadosAlterados;
+      28: Result := toRetornoDebitoTarifas;
+      30: Result := toRetornoAlteracaoDadosRejeitados;
+      40: Result := toRetornoRecebimentoInstrucaoAlterarTipoCobranca;
+      42: Result := toRetornoRecebimentoInstrucaoAlterarTipoCobranca;
+      43: Result := toRetornoRecebimentoInstrucaoAlterarTipoCobranca;
+      51: Result := toRetornoTarifaMensalRefEntradasBancosCorrespCarteira;
+      52: Result := toRetornoTarifaMensalBaixasCarteira;
+      53: Result := toRetornoTarifaMensalBaixasBancosCorrespCarteira;
+      98: Result := toRetornoProtestado;
+      99: Result := toRetornoRegistroRecusado;
+
+   else
+      Result := toRetornoOutrasOcorrencias;
+   end;
+
+end;
+
+function TACBrBancoob.TipoOCorrenciaToCod(
+  const TipoOcorrencia: TACBrTipoOcorrencia): String;
+begin
+  case TipoOcorrencia of
+      toRetornoRegistroConfirmado                           : Result :='02';
+      toRetornoRegistroRecusado                             : Result :='03';
+      toRetornoTransferenciaCarteira                        : Result :='04';
+      toRetornoLiquidadoSemRegistro                         : Result :='05';
+      toRetornoLiquidado                                    : Result :='06';
+      toRetornoBaixaSimples                                 : Result :='09';
+      toRetornoTituloEmSer                                  : Result :='11';
+      toRetornoAbatimentoConcedido                          : Result :='12';
+      toRetornoAbatimentoCancelado                          : Result :='13';
+      toRetornoVencimentoAlterado                           : Result :='14';
+      toRetornoLiquidadoEmCartorio                          : Result :='15';
+      toRetornoRecebimentoInstrucaoProtestar                : Result :='19';
+      toRetornoDebitoEmConta                                : Result :='20';
+      toRetornoNomeSacadoAlterado                           : Result :='21';
+      toRetornoEnderecoSacadoAlterado                       : Result :='22';
+      toRetornoEncaminhadoACartorio                         : Result :='23';
+      toRetornoInstrucaoProtestoRejeitadaSustadaOuPendente  : Result :='24';
+      toRetornoRecebimentoInstrucaoDispensarJuros           : Result :='25';
+      toRetornoInstrucaoRejeitada                           : Result :='26';
+      toRetornoDadosAlterados                               : Result :='27';
+      toRetornoManutencaoTituloVencido                      : Result :='28';
+      toRetornoAlteracaoDadosRejeitados                     : Result :='30';
+      toRetornoDespesasProtesto                             : Result :='96';
+      toRetornoDespesasSustacaoProtesto                     : Result :='97';
+      toRetornoDebitoCustasAntecipadas                      : Result :='98';
+   else
+      Result:= '02';
+   end;
+
+end;
+
+function TACBrBancoob.TipoOcorrenciaToDescricao(
+  const TipoOcorrencia: TACBrTipoOcorrencia): String;
+var
+   CodOcorrencia: Integer;
+begin
+   CodOcorrencia := StrToIntDef(TipoOCorrenciaToCod(TipoOcorrencia),0);
+
+   case CodOcorrencia of
+      02: Result:='02-CONFIRMAÇÃO ENTRADA TÍTULO' ;
+      03: Result:='03-COMANDO RECUSADO' ;
+      04: Result:='04-TRANSFERENCIA DE CARTEIRA - ENTRADA' ;
+      05: Result:='05-LIQUIDAÇÃO SEM REGISTRO';
+      06: Result:='06-LIQUIDAÇÃO NORMAL' ;
+      09: Result:='09-BAIXA DE TÍTULO' ;
+      10: Result:='10-BAIXA SOLICITADA';
+      11: Result:='11-TÍTULOS EM SER' ;
+      12: Result:='12-ABATIMENTO CONCEDIDO' ;
+      13: Result:='13-ABATIMENTO CANCELADO' ;
+      14: Result:='14-ALTERAÇÃO DE VENCIMENTO' ;
+      15: Result:='15-LIQUIDAÇÃO EM CARTÓRIO' ;
+      19: Result:='19-CONFIRMAÇÃO INSTRUÇÃO PROTESTO' ;
+      20: Result:='20-DÉBITO EM CONTA' ;
+      21: Result:='21-ALTERAÇÃO DE NOME DO SACADO' ;
+      22: Result:='22-ALTERAÇÃO DE ENDEREÇO SACADO' ;
+      23: Result:='23-ENCAMINHADO A PROTESTO' ;
+      24: Result:='24-SUSTAR PROTESTO' ;
+      25: Result:='25-DISPENSAR JUROS' ;
+      26: Result:='26-INSTRUÇÃO REJEITADA' ;
+      27: Result:='27-CONFIRMAÇÃO ALTERAÇÃO DADOS' ;
+      28: Result:='28-MANUTENÇÃO TÍTULO VENCIDO' ;
+      30: Result:='30-ALTERAÇÃO DADOS REJEITADA' ;
+      96: Result:='96-DESPESAS DE PROTESTO' ;
+      97: Result:='97-DESPESAS DE SUSTAÇÃO DE PROTESTO' ;
+      98: Result:='98-DESPESAS DE CUSTAS ANTECIPADAS' ;
+   end;
 
 end;
 

@@ -29,7 +29,7 @@
     <License Value="LGPL
 "/>
     <Version Minor="9"/>
-    <Files Count="9">
+    <Files Count="10">
       <Item1>
         <Filename Value="..\..\Fontes\ACBrComum\ACBrBase.pas"/>
         <UnitName Value="ACBrBase"/>
@@ -67,6 +67,10 @@
         <Filename Value="..\..\Fontes\ACBrComum\OpenSSL.pas"/>
         <UnitName Value="OpenSSL"/>
       </Item9>
+      <Item10>
+        <Filename Value="..\..\Fontes\ACBrComum\ACBrDFeUtil.pas"/>
+        <UnitName Value="ACBrDFeUtil"/>
+      </Item10>
     </Files>
     <Type Value="RunAndDesignTime"/>
     <RequiredPkgs Count="2">

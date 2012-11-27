@@ -57,9 +57,9 @@ uses
   pcnAuxiliar, pcnConversao, pcnLeitor, pcteEventoCTe;
 
 type
-  TRetInfEventoCollection     = class ;
-  TRetInfEventoCollectionItem = class ;
-  TRetEventoCTe              = class ;
+  TRetInfEventoCollection     = class;
+  TRetInfEventoCollectionItem = class;
+  TRetEventoCTe               = class;
 
   TRetInfEventoCollection = class(TCollection)
   private
@@ -151,7 +151,7 @@ end;
 { TRetEventoCTe }
 constructor TRetEventoCTe.Create;
 begin
-  FLeitor := TLeitor.Create;
+  FLeitor    := TLeitor.Create;
   FretEvento := TRetInfEventoCollection.Create(Self);
   FInfEvento := TInfEvento.Create;
 end;
@@ -191,10 +191,17 @@ begin
            infEvento.VersaoEvento         := Leitor.rAtributo('versaoEvento');
            infEvento.detEvento.descEvento := Leitor.rCampo(tcStr, 'descEvento');
            infEvento.detEvento.nProt      := Leitor.rCampo(tcStr, 'nProt');
-           infEvento.detEvento.dtEnc      := Leitor.rCampo(tcDat, 'dtEnc');
-           infEvento.detEvento.cUF        := Leitor.rCampo(tcInt, 'cUF');
-           infEvento.detEvento.cMun       := Leitor.rCampo(tcInt, 'cMun');
            infEvento.detEvento.xJust      := Leitor.rCampo(tcStr, 'xJust');
+           infEvento.detEvento.vICMS      := Leitor.rCampo(tcDe2, 'vICMS');
+           infEvento.detEvento.vTPrest    := Leitor.rCampo(tcDe2, 'vTPrest');
+           infEvento.detEvento.vCarga     := Leitor.rCampo(tcDe2, 'vCarga');
+           infEvento.detEvento.toma       := StrToTpTomador(ok, Leitor.rCampo(tcStr, 'toma'));
+           infEvento.detEvento.UF         := Leitor.rCampo(tcStr, 'UF');
+           infEvento.detEvento.CNPJCPF    := Leitor.rCampoCNPJCPF;
+           infEvento.detEvento.IE         := Leitor.rCampo(tcStr, 'IE');
+           infEvento.detEvento.modal      := StrToTpModal(ok, Leitor.rCampo(tcStr, 'modal'));
+           infEvento.detEvento.UFIni      := Leitor.rCampo(tcStr, 'UFIni');
+           infEvento.detEvento.UFFim      := Leitor.rCampo(tcStr, 'UFFim');
          end;
       end;
     end;
@@ -221,7 +228,7 @@ begin
          FretEvento.Items[i].FRetInfEvento.cStat    := Leitor.rCampo(tcInt, 'cStat');
          FretEvento.Items[i].FRetInfEvento.xMotivo  := Leitor.rCampo(tcStr, 'xMotivo');
 
-         // Os campos abaixos seram retornados caso o cStat = 135 ou 136
+         // Os campos abaixos seram retornados caso o cStat = 134 ou 135 ou 136
          FretEvento.Items[i].FRetInfEvento.chCTe       := Leitor.rCampo(tcStr, 'chCTe');
          FretEvento.Items[i].FRetInfEvento.tpEvento    := StrToTpEvento(ok,Leitor.rCampo(tcStr, 'tpEvento'));
          FretEvento.Items[i].FRetInfEvento.xEvento     := Leitor.rCampo(tcStr, 'xEvento');

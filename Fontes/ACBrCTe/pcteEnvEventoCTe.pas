@@ -57,10 +57,10 @@ uses
   pcnAuxiliar, pcnConversao, pcnGerador, pcnLeitor, pcteEventoCTe;
 
 type
-  TInfEventoCollection  = class;
+  TInfEventoCollection     = class;
   TInfEventoCollectionItem = class;
-  TEventoCTe = class;
-  EventoException = class(Exception);
+  TEventoCTe               = class;
+  EventoCTeException       = class(Exception);
 
   TInfEventoCollection = class(TCollection)
   private
@@ -80,7 +80,7 @@ type
     constructor Create; reintroduce;
     destructor Destroy; override;
   published
-    property InfEvento: TInfEvento read FInfEvento write FInfEvento;
+    property InfEvento: TInfEvento       read FInfEvento    write FInfEvento;
     property RetInfEvento: TRetInfEvento read FRetInfEvento write FRetInfEvento;
   end;
 
@@ -111,8 +111,8 @@ uses
 
 constructor TEventoCTe.Create;
 begin
-  FGerador   := TGerador.Create;
-  FEvento    := TInfEventoCollection.Create(Self);
+  FGerador := TGerador.Create;
+  FEvento  := TInfEventoCollection.Create(Self);
 end;
 
 destructor TEventoCTe.Destroy;
@@ -125,10 +125,11 @@ end;
 function TEventoCTe.ObterNomeArquivo(tpEvento: TpcnTpEvento): string;
 begin
  case tpEvento of
-    teCancelamento : Result := Evento.Items[0].InfEvento.chCTe + '-can-eve.xml'; // Cancelamento da CTe como Evento
-    teEncerramento : Result := Evento.Items[0].InfEvento.chCTe + '-ped-eve.xml'; // Encerramento
+    teCCe         : Result := IntToStr(Self.idLote) + '-cce.xml';
+    teCancelamento: Result := Evento.Items[0].InfEvento.chCTe + '-can-eve.xml';
+    teEPEC        : Result := Evento.Items[0].InfEvento.chCTe + '-ped-epec.xml';
   else
-    raise EventoException.Create('Obter nome do arquivo de Evento não Implementado!');
+    raise EventoCTeException.Create('Obter nome do arquivo de Evento não Implementado!');
  end;
 end;
 
@@ -137,7 +138,7 @@ var
   sDoc : String;
 begin
   Gerador.ArquivoFormatoXML := '';
-  Gerador.wGrupo('eventoCTe ' + NAME_SPACE_CTe + ' versao="' + CTeEventoCTe + '"');
+  Gerador.wGrupo('eventoCTe ' + NAME_SPACE_CTE + ' versao="' + CTeEventoCTe + '"');
 
   Evento.Items[0].InfEvento.id := 'ID'+ Evento.Items[0].InfEvento.TipoEvento +
                                         SomenteNumeros(Evento.Items[0].InfEvento.chCTe) +
@@ -168,10 +169,9 @@ begin
   if not ValidarChave('NFe' + SomenteNumeros(Evento.Items[0].InfEvento.chCTe))
    then Gerador.wAlerta('EP08', 'chCTe', '', 'Chave de CTe inválida');
 
-  // Segundo o manual a data deve conter o UTC mas no schema não contem
   Gerador.wCampo(tcStr, 'EP09', 'dhEvento', 01, 27,   1, FormatDateTime('yyyy-mm-dd"T"hh:nn:ss',Evento.Items[0].InfEvento.dhEvento)
-                                                           {+ GetUTC( CodigoParaUF(Evento.Items[0].InfEvento.cOrgao),
-                                                                     Evento.Items[0].InfEvento.dhEvento)} );
+                                                           + GetUTC( CodigoParaUF(Evento.Items[0].InfEvento.cOrgao),
+                                                                     Evento.Items[0].InfEvento.dhEvento) );
 
   Gerador.wCampo(tcInt, 'EP10', 'tpEvento  ', 6, 6, 1, Evento.Items[0].InfEvento.TipoEvento);
   Gerador.wCampo(tcInt, 'EP11', 'nSeqEvento', 1, 2, 1, Evento.Items[0].InfEvento.nSeqEvento);
@@ -186,15 +186,30 @@ begin
        Gerador.wCampo(tcStr, 'EP04', 'xJust     ', 015, 255, 1, Evento.Items[0].InfEvento.detEvento.xJust);
        Gerador.wGrupo('/evCancCTe');
      end;
-   teEncerramento:
+   teEPEC:
      begin
-       Gerador.wGrupo('evEncCTe');
+       Gerador.wGrupo('evEPECCTe');
        Gerador.wCampo(tcStr, 'EP02', 'descEvento', 05, 12, 1, Evento.Items[0].InfEvento.DescEvento);
-       Gerador.wCampo(tcStr, 'EP03', 'nProt     ', 15, 15, 1, Evento.Items[0].InfEvento.detEvento.nProt);
-       Gerador.wCampo(tcDat, 'EP04', 'dtEnc     ', 10, 10, 1, Evento.Items[0].InfEvento.detEvento.dtEnc);
-       Gerador.wCampo(tcInt, 'EP05', 'cUF       ', 02, 02, 1, Evento.Items[0].InfEvento.detEvento.cUF);
-       Gerador.wCampo(tcInt, 'EP06', 'cMun      ', 07, 07, 1, Evento.Items[0].InfEvento.detEvento.cMun);
-       Gerador.wGrupo('/evEncCTe');
+       Gerador.wCampo(tcStr, 'EP04', 'xJust     ', 015, 255, 1, Evento.Items[0].InfEvento.detEvento.xJust);
+       Gerador.wCampo(tcDe2, 'EP05', 'vICMS     ', 01, 15, 1, Evento.Items[0].InfEvento.detEvento.vICMS, DSC_VICMS);
+       Gerador.wCampo(tcDe2, 'EP06', 'vTPrest   ', 01, 15, 1, Evento.Items[0].InfEvento.detEvento.vTPrest, DSC_VTPREST);
+       Gerador.wCampo(tcDe2, 'EP07', 'vCarga    ', 01, 15, 1, Evento.Items[0].InfEvento.detEvento.vCarga, DSC_VTMERC);
+
+       Gerador.wGrupo('toma04');
+       Gerador.wCampo(tcStr, 'EP09', 'toma', 01, 01, 1, TpTomadorToStr(Evento.Items[0].InfEvento.detEvento.toma), DSC_TOMA);
+       Gerador.wCampo(tcStr, 'EP10', 'UF  ', 02, 02, 1, Evento.Items[0].InfEvento.detEvento.UF, DSC_UF);
+       Gerador.wCampoCNPJCPF('EP11', 'EP12', Evento.Items[0].InfEvento.detEvento.CNPJCPF, CODIGO_BRASIL);
+       Gerador.wCampo(tcStr, 'EP13', 'IE  ', 02, 14, 1, SomenteNumeros(Evento.Items[0].InfEvento.detEvento.IE), DSC_IE);
+       Gerador.wGrupo('/toma04');
+
+       Gerador.wCampo(tcStr, 'EP14', 'modal   ', 02, 02, 1, TpModalToStr(Evento.Items[0].InfEvento.detEvento.modal), DSC_MODAL);
+       Gerador.wCampo(tcStr, 'EP15', 'UFIni   ', 02, 02, 1, Evento.Items[0].InfEvento.detEvento.UFIni, DSC_UF);
+       if not ValidarUF(Evento.Items[0].InfEvento.detEvento.UFIni) then
+        Gerador.wAlerta('EP15', 'UFIni', DSC_UF, ERR_MSG_INVALIDO);
+       Gerador.wCampo(tcStr, 'EP16', 'UFFim   ', 02, 02, 1, Evento.Items[0].InfEvento.detEvento.UFFim, DSC_UF);
+       if not ValidarUF(Evento.Items[0].InfEvento.detEvento.UFFim) then
+        Gerador.wAlerta('EP16', 'UFFim', DSC_UF, ERR_MSG_INVALIDO);
+       Gerador.wGrupo('/evEPECCTe');
      end;
   end;
   Gerador.wGrupo('/detEvento');

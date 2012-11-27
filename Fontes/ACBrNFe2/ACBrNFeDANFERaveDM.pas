@@ -434,8 +434,8 @@ begin
     Connection.WriteFloatData('', DFeUtil.StringToFloatDef(floattostr(VFrete),0));
     Connection.WriteFloatData('', DFeUtil.StringToFloatDef(floattostr(VSeg),0));
     Connection.WriteFloatData('', DFeUtil.StringToFloatDef(floattostr(VDesc),0));
-    Connection.WriteFloatData('', DFeUtil.StringToFloatDef(floattostr(VIPI),0));
     Connection.WriteFloatData('', DFeUtil.StringToFloatDef(floattostr(VII),0));
+    Connection.WriteFloatData('', DFeUtil.StringToFloatDef(floattostr(VIPI),0));
     Connection.WriteFloatData('', DFeUtil.StringToFloatDef(floattostr(VPIS),0));
     Connection.WriteFloatData('', DFeUtil.StringToFloatDef(floattostr(VCOFINS),0));
     Connection.WriteFloatData('', DFeUtil.StringToFloatDef(floattostr(VOutro),0));

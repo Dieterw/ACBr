@@ -71,9 +71,10 @@ type
                      stNFeCadastro, stNFeEmail, stNFeEnvDPEC, stNFeConsultaDPEC,
                      stNFeCCe, stNFeEvento, stConsNFeDest, stDownloadNFe);
 
+  // Incluido stCTeEvento por Italo em 26/11/2012
   TStatusACBrCTe = ( stCTeIdle, stCTeStatusServico, stCTeRecepcao, stCTeRetRecepcao,
                      stCTeConsulta, stCTeCancelamento, stCTeInutilizacao, stCTeRecibo,
-                     stCTeCadastro, stCTeEmail, stCTeCCe );
+                     stCTeCadastro, stCTeEmail, stCTeCCe, stCTeEvento );
 
   // Incluido por Italo em 02/08/2012
   TStatusACBrMDFe = ( stMDFeIdle, stMDFeStatusServico, stMDFeRecepcao, stMDFeRetRecepcao,
@@ -189,7 +190,7 @@ type
   // Incluido por Italo em 17/07/2012
   TpcnTpEvento = (teCCe, teCancelamento, teManifDestConfirmacao, teManifDestCiencia,
                   teManifDestDesconhecimento, teManifDestOperNaoRealizada,
-                  teEncerramento);
+                  teEncerramento, teEPEC);
 
   // Incluido por Italo em 17/07/2012
   TpcnIndicadorNFe = (inTodas, inSemManifestacaoComCiencia, inSemManifestacaoSemCiencia);
@@ -210,13 +211,14 @@ type
   TpcnBandeiraCartao = (bcVisa, bcMasterCard, bcAmericanExpress, bcSorocred, bcOutros);
 
 const
-  TpcnTpEventoString : array[0..6] of String =( '110110',
+  TpcnTpEventoString : array[0..7] of String =( '110110',
                                                 '110111',
                                                 '210200',
                                                 '210210',
                                                 '210220',
                                                 '210240',
-                                                '110112' );
+                                                '110112',
+                                                '110113' );
 
   NFeUF: array[0..26] of String =
   ('AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA',
@@ -261,7 +263,7 @@ const
   MDFeConsReciMDFe = '1.00';
   MDFeConsSitMDFe  = '1.00';
   MDFeEventoMDFe   = '1.00';
-  
+
   // Incluido por Italo em 26/09/2012
   MDFeModalRodo    = '1.00';
   MDFeModalAereo   = '1.00';
@@ -291,6 +293,7 @@ const
   CTecancCTe      = '1.04';
   CTeinutCTe      = '1.04';
   CTeconsCad      = '2.00';  // Alterado por Italo em 17/10/2011
+  CTeEventoCTe    = '1.04';  // Incluido por Italo em 26/11/2012
 {$ENDIF}
 
   // Incluido por Italo em 25/10/2012

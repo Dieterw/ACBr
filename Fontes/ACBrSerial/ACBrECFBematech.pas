@@ -2428,7 +2428,7 @@ begin
         I := pos('/', LinhaVer ) ;
         DtHrStr := copy(LinhaVer, I-2, 10 ) ;
         I := pos(':', LinhaVer ) ;
-        DtHrStr := ' ' + copy(LinhaVer, I-2, 8 ) ;
+        DtHrStr := DtHrStr + ' ' + copy(LinhaVer, I-2, 8 ) ;
 
         Result := StringToDateTime( DtHrStr, 'dd/mm/yyyy hh:nn:ss' ) ;
       end;

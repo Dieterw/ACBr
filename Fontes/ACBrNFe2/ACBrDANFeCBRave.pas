@@ -541,7 +541,7 @@ begin
     EventoRave.SystemPrinter.Orientation:=aOrientacaoPapel;
     EventoRave.SystemSetups:=[ssAllowSetup,ssAllowCopies,ssAllowCollate,ssAllowDuplex,ssAllowDestPreview,ssAllowDestPrinter,ssAllowDestFile,ssAllowPrinterSetup,ssAllowPreviewSetup];
     if not aMostrarSetup then
-       EventoRave.SystemSetups:=DANFeRave.SystemSetups - [ssAllowSetup];
+       EventoRave.SystemSetups:=EventoRave.SystemSetups - [ssAllowSetup];
     case aOpcaoDeSaida of
        tsPrint: EventoRave.DefaultDest:=rdPrinter;
        tsPreview: EventoRave.DefaultDest:=rdPreview;

@@ -512,6 +512,8 @@ begin
 
               {$IFDEF FPC}
                 RLFiltro.Pages := RLLayout.Pages ;
+                RLFiltro.FirstPage := 1;
+                RLFiltro.LastPage := RLLayout.Pages.PageCount;
                 RLFiltro.Run;
               {$ELSE}
                 RLFiltro.FilterPages( RLLayout.Pages );

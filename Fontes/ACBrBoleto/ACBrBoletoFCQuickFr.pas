@@ -50,7 +50,7 @@ uses
   //QRWebFilt ;
 
 const
-  CACBrBoletoFCQuick_Versao = '0.0.11a' ;
+  CACBrBoletoFCQuick_Versao = '0.0.13a' ;
 
 type
 
@@ -742,7 +742,7 @@ begin
    begin
     viPar       := IntToStr(fIndice+1);
     viPla       := IntToStr(ListadeBoletos.Count);
-      NossoNum       := Banco.MontarCampoNossoNumero( Titulo );
+    NossoNum       := Banco.MontarCampoNossoNumero( Titulo );
     CodCedente  := Banco.MontarCampoCodigoCedente(titulo);
 
     fBoletoFC.CarregaLogo( imgBanco4.Picture, Banco.Numero );
@@ -752,7 +752,7 @@ begin
 
     txtNumeroBanco4.Caption         := IntToStrZero(Banco.Numero, 3)+ '-' +
                                         ifthen(Banco.Digito >= 10,'X',IntToStrZero(Banco.Digito, 1));
-    lblLocalPagto.Caption           := Titulo.LocalPagamento;
+    txtLocalPagamento4.Caption      := Titulo.LocalPagamento;
     txtDataVencimento4.Caption      := FormatDateTime('dd/mm/yyyy', Titulo.Vencimento);
     txtNomeCedente4.Caption         := Cedente.Nome;
     txtCodigoCedente4.Caption       := CodCedente;

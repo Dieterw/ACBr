@@ -103,6 +103,8 @@ Versao 0.1.15a do LazReport 02/08/11
 [+] Adicionado campos Outras Deduções e Outros Acréscimos ao boleto, conforme
     solicitação da Caixa Econômica Federal(Juliana Tamizou)
 
+Versao 0.0.16a do FortesReport 27/11/12
+[-] Efetuado ajustes para corrigir problema da geração dos PDFs no Fortes4Lazarus. (Daniel Simoões)
 
 Versao 0.0.15a do FortesReport 05/08/12
 [*] Efetuado pequenos ajustes para atender a Caixa Econômica Federal(Juliana Tamizou)

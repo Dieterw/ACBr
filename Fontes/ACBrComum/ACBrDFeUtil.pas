@@ -206,7 +206,7 @@ end;
 class function DFeUtil.FormatarCEP(AValue: String): String;
 begin
   // Proposta de Italo
-  AValue := Poem_Zeros(LimpaNumero(AValue), 9);
+  AValue := Poem_Zeros(LimpaNumero(AValue), 8);
 
   if StrToInt(AValue) = 0
     then Result := Space(9)

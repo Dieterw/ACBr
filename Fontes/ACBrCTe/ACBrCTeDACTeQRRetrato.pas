@@ -1210,7 +1210,7 @@ begin
 
   for i := 0 to FCTe.InfCarga.InfQ.Count - 1 do
     TQRLabel(FindComponent('qrlQtdUndMedida' + intToStr(i + 1))).Caption :=
-      DFeUtil.FormatarValor(msk6x3, FCTe.InfCarga.InfQ.Items[i].qCarga) + '/' +
+      CTeUtil.FormatarValor(msk6x3, FCTe.InfCarga.InfQ.Items[i].qCarga) + '/' +
       FCTe.InfCarga.InfQ.Items[i].tpMed;
   }
   qrmQtdUnidMedida1.Lines.Clear;
@@ -1266,13 +1266,13 @@ begin
     end;
     (*
     case i of
-     0,4,8: qrmQtdUnidMedida1.Lines.Add(DFeUtil.FormatarValor(msk6x3,
+     0,4,8: qrmQtdUnidMedida1.Lines.Add(CTeUtil.FormatarValor(msk6x3,
             FCTe.InfCarga.InfQ.Items[i].qCarga) + '/' + FCTe.InfCarga.InfQ.Items[i].tpMed);
-     1,5,9: qrmQtdUnidMedida2.Lines.Add(DFeUtil.FormatarValor(msk6x3,
+     1,5,9: qrmQtdUnidMedida2.Lines.Add(CTeUtil.FormatarValor(msk6x3,
             FCTe.InfCarga.InfQ.Items[i].qCarga) + '/' + FCTe.InfCarga.InfQ.Items[i].tpMed);
-     2,6,10: qrmQtdUnidMedida3.Lines.Add(DFeUtil.FormatarValor(msk6x3,
+     2,6,10: qrmQtdUnidMedida3.Lines.Add(CTeUtil.FormatarValor(msk6x3,
              FCTe.InfCarga.InfQ.Items[i].qCarga) + '/' + FCTe.InfCarga.InfQ.Items[i].tpMed);
-     3,7,11: qrmQtdUnidMedida4.Lines.Add(DFeUtil.FormatarValor(msk6x3,
+     3,7,11: qrmQtdUnidMedida4.Lines.Add(CTeUtil.FormatarValor(msk6x3,
             FCTe.InfCarga.InfQ.Items[i].qCarga) + '/' + FCTe.InfCarga.InfQ.Items[i].tpMed);
     end;
     *)
@@ -1763,7 +1763,7 @@ begin
    rpDestinatario:   qrlResponsavel.Caption := 'DESTINATÁRIO';
    rpTomadorServico: qrlResponsavel.Caption := 'TOMADOR DO SERVIÇO';
   end;
-  qrlValorTotal.Caption := DFeUtil.FormatarValor(msk13x2, FCTe.Rodo.valePed.vTValePed);
+  qrlValorTotal.Caption := CTeUtil.FormatarValor(msk13x2, FCTe.Rodo.valePed.vTValePed);
 {$ENDIF}
 
   qrmTipo.Lines.Clear;

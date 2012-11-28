@@ -82,6 +82,17 @@ type
 
   (* IMPORTANTE - Sempre que alterar um Tipo efetuar a atualização das funções de conversão correspondentes *)
   // Alterado por Italo em 17/07/2012
+  // Alterado por Italo em 27/11/2012
+  TLayOut = (LayNfeRecepcao, LayNfeRetRecepcao, LayNfeCancelamento, LayNfeInutilizacao,
+             LayNfeConsulta, LayNfeStatusServico, LayNfeCadastro, LayNfeEnvDPEC,
+             LayNfeConsultaDPEC, LayNFeCCe, LayNFeEvento, LayNFeEventoAN,
+             LayNFeConsNFeDest, LayNFeDownloadNFe,
+             LayCTeRecepcao, LayCTeRetRecepcao, LayCTeCancelamento, LayCTeInutilizacao,
+             LayCTeConsultaCT, LayCTeStatusServico, LayCTeCadastro, LayCTeEvento,
+             LayMDFeRecepcao, LayMDFeRetRecepcao, LayMDFeConsulta, LayMDFeStatusServico,
+             LayMDFeEvento);
+
+(*
   TLayOut = (LayNfeRecepcao,LayNfeRetRecepcao,LayNfeCancelamento,LayNfeInutilizacao,
              LayNfeConsulta,LayNfeStatusServico,LayNfeCadastro, LayNfeEnvDPEC,
              LayNfeConsultaDPEC, LayCTeRecepcao,LayCTeRetRecepcao,LayCTeCancelamento,
@@ -89,7 +100,7 @@ type
              LayNFeCCe,LayNFeEvento, LayNFeEventoAN, LayNFeConsNFeDest, LayNFeDownloadNFe,
              LayMDFeRecepcao, LayMDFeRetRecepcao, LayMDFeConsulta,
              LayMDFeStatusServico, LayMDFeEvento);
-
+*)
   // Incluido o TsPL_CTe_103 e TsPL_CTe_104 para CTe por Italo em 03/08/2011
   // Incluido o TsPL_MDFe_100 para MDFe por Italo em 02/08/2012
   TpcnSchema = (TsPL005c, TsPL006,
@@ -132,7 +143,11 @@ type
   TpcnTipoOperacao = (toVendaConcessionaria, toFaturamentoDireto, toVendaDireta, toOutros);
   TpcnCondicaoVeiculo = (cvAcabado, cvInacabado, cvSemiAcabado);
   TpcnTipoArma = (taUsoPermitido, taUsoRestrito);
-  TpcnOrigemMercadoria = (oeNacional, oeEstrangeiraImportacaoDireta, oeEstrangeiraAdquiridaBrasil);
+  // Alterado por Italo em 28/11/2012 para atender a NT 2012/005
+  TpcnOrigemMercadoria = (oeNacional, oeEstrangeiraImportacaoDireta, oeEstrangeiraAdquiridaBrasil,
+                          oeNacionalConteudoImportacaoSuperior40, oeNacionalProcessosBasicos,
+                          oeNacionalConteudoImportacaoInferior40,
+                          oeEstrangeiraImportacaoDiretaSemSimilar, oeEstrangeiraAdquiridaBrasilSemSimilar);
   // Tipo cstICMSOutraUF, cstICMSSN incluido por Italo em 03/08/2011 (usado no CTe versão 1.04)
   TpcnCSTIcms = (cst00, cst10, cst20, cst30, cst40, cst41, cst45, cst50, cst51,
                  cst60, cst70, cst80, cst81, cst90, cstPart10, cstPart90,
@@ -727,12 +742,20 @@ end;
 
 function OrigToStr(const t: TpcnOrigemMercadoria): string;
 begin
-  result := EnumeradoToStr(t, ['0', '1', '2'], [oeNacional, oeEstrangeiraImportacaoDireta, oeEstrangeiraAdquiridaBrasil]);
+  result := EnumeradoToStr(t, ['0', '1', '2', '3', '4', '5', '6', '7'],
+     [oeNacional, oeEstrangeiraImportacaoDireta, oeEstrangeiraAdquiridaBrasil,
+      oeNacionalConteudoImportacaoSuperior40, oeNacionalProcessosBasicos,
+      oeNacionalConteudoImportacaoInferior40,
+      oeEstrangeiraImportacaoDiretaSemSimilar, oeEstrangeiraAdquiridaBrasilSemSimilar]);
 end;
 
 function StrToOrig(var ok: boolean; const s: string): TpcnOrigemMercadoria;
 begin
-  result := StrToEnumerado(ok, s, ['0', '1', '2'], [oeNacional, oeEstrangeiraImportacaoDireta, oeEstrangeiraAdquiridaBrasil]);
+  result := StrToEnumerado(ok, s, ['0', '1', '2', '3', '4', '5', '6', '7'],
+     [oeNacional, oeEstrangeiraImportacaoDireta, oeEstrangeiraAdquiridaBrasil,
+      oeNacionalConteudoImportacaoSuperior40, oeNacionalProcessosBasicos,
+      oeNacionalConteudoImportacaoInferior40,
+      oeEstrangeiraImportacaoDiretaSemSimilar, oeEstrangeiraAdquiridaBrasilSemSimilar]);
 end;
 
 //CST CSON ICMS ***********************************************************

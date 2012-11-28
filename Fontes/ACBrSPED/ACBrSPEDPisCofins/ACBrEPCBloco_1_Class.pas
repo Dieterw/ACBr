@@ -1038,10 +1038,10 @@ begin
                LFill( SUB_SER    )     +
                LFill( strCOD_SIT)      +
                LFill( VL_TOT_REC,0,2 ) +
-               LFill( QUANT_DOC )      +
+               LFill( QUANT_DOC,0 )    +
                LFill( strCST_PIS)      +
                LFill( strCST_COFINS)   +
-               LFill( CFOP )           +
+               LFill( CFOP, 4 )           +
                LFill( INF_COMPL )      +
                LFill( COD_CTA ) )      ;
 

@@ -756,7 +756,7 @@ type
     FSUB_SER    : string;
     FCOD_SIT    : TACBrSituacaoDF;
     FVL_TOT_REC : Currency;
-    FQUANT_DOC  : Currency;
+    FQUANT_DOC  : Integer;
     FCST_PIS    : TACBrSituacaoTribPIS;
     FCST_COFINS : TACBrSituacaoTribCOFINS;
     FCFOP       : Integer;
@@ -771,7 +771,7 @@ type
     property SUB_SER   : string                  read FSUB_SER     write FSUB_SER    ;
     property COD_SIT   : TACBrSituacaoDF         read FCOD_SIT     write FCOD_SIT    ;
     property VL_TOT_REC: Currency                read FVL_TOT_REC  write FVL_TOT_REC ;
-    property QUANT_DOC : Currency                read FQUANT_DOC   write FQUANT_DOC  ;
+    property QUANT_DOC : Integer                 read FQUANT_DOC   write FQUANT_DOC  ;
     property CST_PIS   : TACBrSituacaoTribPIS    read FCST_PIS     write FCST_PIS    ;
     property CST_COFINS: TACBrSituacaoTribCOFINS read FCST_COFINS  write FCST_COFINS ;
     property CFOP      : Integer                 read FCFOP        write FCFOP       ;

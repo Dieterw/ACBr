@@ -156,7 +156,6 @@ type
     RLLabel167: TRLLabel;
     RLLabel168: TRLLabel;
     RLLabel169: TRLLabel;
-    RLLabel170: TRLLabel;
     RLLabel171: TRLLabel;
     RLLabel175: TRLLabel;
     RLLabel18: TRLLabel;
@@ -213,7 +212,6 @@ type
     RLLabel90: TRLLabel;
     RLLabel91: TRLLabel;
     RLLabel92: TRLLabel;
-    RLLabel93: TRLLabel;
     RLLabel96: TRLLabel;
     RLLabel98: TRLLabel;
     txtNomeSacado: TRLLabel;

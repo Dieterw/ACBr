@@ -1,9 +1,8 @@
 object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
-  Left = 309
-  Top = 167
-  Width = 1066
+  Left = 263
+  Top = 25
+  Width = 830
   Height = 784
-  VertScrollBar.Position = 103
   Caption = 'ACBRBoletoFCFortesFr'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -16,8 +15,8 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
   PixelsPerInch = 96
   TextHeight = 13
   object LayoutBoleto: TRLReport
-    Left = 72
-    Top = -295
+    Left = 0
+    Top = 0
     Width = 794
     Height = 1123
     Margins.LeftMargin = 4.000000000000000000
@@ -2782,8 +2781,8 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
     end
   end
   object BoletoCarne: TRLReport
-    Left = 920
-    Top = -95
+    Left = 0
+    Top = 0
     Width = 794
     Height = 1123
     Font.Charset = DEFAULT_CHARSET
@@ -2803,7 +2802,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       Left = 30
       Top = 19
       Width = 745
-      Height = 360
+      Height = 374
       BeforePrint = RLBand3BeforePrint
       object RLDraw30: TRLDraw
         Left = 150

@@ -1685,7 +1685,7 @@ begin
   Acao.Free;
   Stream.Free;
 
-  NotaUtil.ConfAmbiente;
+  DFeUtil.ConfAmbiente;
   TACBrNFSe( FACBrNFSe ).SetStatus( stNFSeIdle );
  end;
 end;
@@ -1848,7 +1848,7 @@ begin
   Acao.Free;
   Stream.Free;
 
-  NotaUtil.ConfAmbiente;
+  DFeUtil.ConfAmbiente;
   TACBrNFSe( FACBrNFSe ).SetStatus( stNFSeIdle );
  end;
 end;
@@ -2109,7 +2109,7 @@ end;
   Acao.Free;
   Stream.Free;
 
-  NotaUtil.ConfAmbiente;
+  DFeUtil.ConfAmbiente;
   TACBrNFSe( FACBrNFSe ).SetStatus( stNFSeIdle );
  end;
 end;
@@ -2300,7 +2300,7 @@ begin
   Acao.Free;
   Stream.Free;
 
-  NotaUtil.ConfAmbiente;
+  DFeUtil.ConfAmbiente;
   TACBrNFSe( FACBrNFSe ).SetStatus( stNFSeIdle );
  end;
 end;
@@ -2501,7 +2501,7 @@ begin
   Acao.Free;
   Stream.Free;
 
-  NotaUtil.ConfAmbiente;
+  DFeUtil.ConfAmbiente;
   TACBrNFSe( FACBrNFSe ).SetStatus( stNFSeIdle );
  end;
 end;
@@ -2653,7 +2653,7 @@ begin
   Acao.Free;
   Stream.Free;
 
-  NotaUtil.ConfAmbiente;
+  DFeUtil.ConfAmbiente;
   TACBrNFSe( FACBrNFSe ).SetStatus( stNFSeIdle );
  end;
 end;
@@ -2911,7 +2911,7 @@ begin
   Acao.Free;
   Stream.Free;
 
-  NotaUtil.ConfAmbiente;
+  DFeUtil.ConfAmbiente;
   TACBrNFSe( FACBrNFSe ).SetStatus( stNFSeIdle );
  end;
 end;

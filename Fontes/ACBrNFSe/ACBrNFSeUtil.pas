@@ -86,10 +86,10 @@ type
     class function RetirarPrefixos(AXML: String): String;
     class function VersaoXML(AXML: String): String;
 
-    class procedure ConfAmbiente;
-    class function PathAplication: String;
-    class function CollateBr(Str: String): String;
-    class function UpperCase2(Str: String): String;
+//    class procedure ConfAmbiente;
+//    class function PathAplication: String;
+//    class function CollateBr(Str: String): String;
+//    class function UpperCase2(Str: String): String;
 
     class function PathWithDelim( const APath : String ) : String;
     class function RetornarConteudoEntre(const Frase, Inicio, Fim: string): string;
@@ -1277,6 +1277,7 @@ begin
   else result := '2';
 end;
 
+(*
 class procedure NotaUtil.ConfAmbiente;
 {$IFDEF VER140} //delphi6
 {$ELSE}
@@ -1290,12 +1291,16 @@ begin
   vFormatSettings.DecimalSeparator := ',';
 {$ENDIF}
 end;
+*)
 
+(*
 class function NotaUtil.PathAplication: String;
 begin
   Result := ExtractFilePath(Application.ExeName);
 end;
+*)
 
+(*
 class function NotaUtil.CollateBr(Str: String): String;
 var
    i, wTamanho: integer;
@@ -1329,7 +1334,9 @@ begin
    end;
    Result := UpperCase(Result);
 end;
+*)
 
+(*
 class function NotaUtil.UpperCase2(Str: String): String;
 var
    i, wTamanho: integer;
@@ -1376,6 +1383,7 @@ begin
    end;
    Result := UpperCase(Result);
 end;
+*)
 
 class function NotaUtil.PathWithDelim( const APath : String ) : String;
 begin

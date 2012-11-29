@@ -422,7 +422,7 @@ end;
 function TGeralConf.GetPathSalvar: String;
 begin
  if DFeUtil.EstaVazio(FPathSalvar)
-  then Result := NotaUtil.PathAplication
+  then Result := DFeUtil.PathAplication
   else Result := FPathSalvar;
 
  Result := NotaUtil.PathWithDelim( Trim(Result) );

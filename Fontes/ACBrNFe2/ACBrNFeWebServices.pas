@@ -1763,7 +1763,7 @@ begin
     begin
       if AInfProt.Items[i].chNFe = StringReplace(FNotasFiscais.Items[j].NFe.InfNFe.Id,'NFe','',[rfIgnoreCase]) then
        begin
-         FNotasFiscais.Items[j].Confirmada := (AInfProt.Items[i].cStat = 100);
+         FNotasFiscais.Items[j].Confirmada := (AInfProt.Items[i].cStat in [100,150]);
          FNotasFiscais.Items[j].Msg        := AInfProt.Items[i].xMotivo;
          FNotasFiscais.Items[j].NFe.procNFe.tpAmb    := AInfProt.Items[i].tpAmb;
          FNotasFiscais.Items[j].NFe.procNFe.verAplic := AInfProt.Items[i].verAplic;
@@ -2344,18 +2344,18 @@ begin
     if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
        TACBrNFe( FACBrNFe ).OnGerarLog(aMsg);
 
-    Result := (NFeRetorno.CStat in [100,101,110]);
+    Result := (NFeRetorno.CStat in [100,101,110,150,151,155]);
 
     for i:= 0 to TACBrNFe( FACBrNFe ).NotasFiscais.Count-1 do
      begin
         if StringReplace(TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NFe.infNFe.ID,'NFe','',[rfIgnoreCase]) = FNFeChave then
          begin
             watualiza:=true;
-            if ((NFeRetorno.CStat = 101) and
+            if ((NFeRetorno.CStat in [101,151,155]) and
                 (FConfiguracoes.Geral.AtualizarXMLCancelado=false)) then
                wAtualiza:=False;
 
-            TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].Confirmada := (NFeRetorno.cStat = 100);
+            TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].Confirmada := (NFeRetorno.cStat in [100,150]);
             if wAtualiza then
             begin
               TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].Msg        := NFeRetorno.xMotivo;
@@ -2555,7 +2555,7 @@ begin
     Fprotocolo:= NFeRetorno.nProt;
 
     FMsg   := NFeRetorno.XMotivo;
-    Result := (NFeRetorno.CStat = 101);
+    Result := (NFeRetorno.CStat in [101,151,155]);
 
     for i:= 0 to TACBrNFe( FACBrNFe ).NotasFiscais.Count-1 do
      begin
@@ -2575,7 +2575,7 @@ begin
 
            if FConfiguracoes.Arquivos.Salvar or DFeUtil.NaoEstaVazio(TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NomeArq) then
             begin
-              if ((NFeRetorno.CStat = 101) and
+              if ((NFeRetorno.CStat in [101,151,155]) and
                   (FConfiguracoes.Geral.AtualizarXMLCancelado)) then
               begin
                  if DFeUtil.NaoEstaVazio(TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NomeArq) then
@@ -2595,7 +2595,7 @@ begin
      end;
 
     //gerar arquivo proc de cancelamento
-    if NFeRetorno.cStat=101 then
+    if (NFeRetorno.cStat in [101,151,155]) then
     begin
       wProc := TStringList.Create;
       wProc.Add('<?xml version="1.0" encoding="UTF-8" ?>');

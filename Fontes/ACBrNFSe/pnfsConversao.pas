@@ -760,6 +760,7 @@ begin
   1400100: Cidade := 'Boa Vista/RR';
 
   1500800: Cidade := 'Ananindeua/PA';
+  1501402: Cidade := 'Belém/PA';
   1505502: Cidade := 'Paragominas/PA';
   1505536: Cidade := 'Parauapebas/PA';
   1508001: Cidade := 'Tomé-Açu/PA';
@@ -788,6 +789,7 @@ begin
   3118601: Cidade := 'Contagem/MG';
   3126109: Cidade := 'Formiga/MG';
   3131307: Cidade := 'Ipatinga/MG';
+  3132404: Cidade := 'Itajubá/MG';
   3137601: Cidade := 'Lagoa Santa/MG';
   3143302: Cidade := 'Montes Claros/MG';
   3143906: Cidade := 'Muriae/MG';
@@ -811,16 +813,20 @@ begin
   3303302: Cidade := 'Niteroi/RJ';
   3303401: Cidade := 'Nova Friburgo/RJ';
   3303500: Cidade := 'Nova Iguaçu/RJ';
+  3303708: Cidade := 'Paraíba do Sul/RJ';
   3303955: Cidade := 'Pinheiral/RJ';
   3304508: Cidade := 'Rio das Flores/RJ';
   3304557: Cidade := 'Rio de Janeiro/RJ';
   3304904: Cidade := 'São Gonçalo/RJ';
   3305505: Cidade := 'Saquarema/RJ';
+  3306008: Cidade := 'Três Rios/RJ';
   3306305: Cidade := 'Volta Redonda/RJ';
 
   3501608: Cidade := 'Americana/SP';
+  3502101: Cidade := 'Andradina/SP';
   3503208: Cidade := 'Araraquara/SP';
   3503307: Cidade := 'Araras/SP';
+  3505708: Cidade := 'Barueri/SP';
   3506359: Cidade := 'Bertioga/SP';
   3506508: Cidade := 'Birigui/SP';
   3509502: Cidade := 'Campinas/SP';
@@ -835,6 +841,7 @@ begin
   3523909: Cidade := 'Itu/SP';
   3524402: Cidade := 'Jacareí/SP';
   3524709: Cidade := 'Jaguariuna/SP';
+  3525003: Cidade := 'Jandira/SP';
   3525300: Cidade := 'Jau/SP';
   3525904: Cidade := 'Jundiai/SP';
   3526704: Cidade := 'Leme/SP';
@@ -866,6 +873,7 @@ begin
   3549904: Cidade := 'São José dos Campos/SP';
   3550308: Cidade := 'São Paulo/SP';
   3551009: Cidade := 'São Vicente/SP';
+  3552205: Cidade := 'Sorocaba/SP';
   3552502: Cidade := 'Suzano/SP';
   3552809: Cidade := 'Taboão da Serra/SP';
   3554003: Cidade := 'Tatui/SP';
@@ -883,6 +891,7 @@ begin
   4107652: Cidade := 'Fazenda Rio Grande/PR';
   4108403: Cidade := 'Francisco Beltrao/PR';
   4108601: Cidade := 'Goioerê/PR';
+  4113700: Cidade := 'Londrina/PR';
   4114302: Cidade := 'Mandirituba/PR';
   4118204: Cidade := 'Paranagua/PR';
   4118402: Cidade := 'Paranavaí/PR';
@@ -970,7 +979,6 @@ begin
   5201108: Cidade := 'Anapolis/GO';
   5201405: Cidade := 'Aparecida de Goiania/GO';
   5208707: Cidade := 'Goiânia/GO';
-
 
 
 

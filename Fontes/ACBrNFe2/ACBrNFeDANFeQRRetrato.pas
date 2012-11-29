@@ -1114,7 +1114,9 @@ begin
     begin
         if FNFe.procNFe.cStat > 0 then
         begin
-            if FNFe.procNFe.cStat = 101 then
+            // Alterado por Italo em 29/11/2012
+            // if FNFe.procNFe.cStat = 101 then
+            if FNFe.procNFe.cStat in [101, 151, 155] then
             begin
                qrlMsgTeste.Caption  := 'NF-e CANCELADA';
                qrlMsgTeste.Visible  := True;
@@ -1128,8 +1130,9 @@ begin
                qrlMsgTeste.Enabled := True;
             end;
 
-            // Alterado de 102 para 110 por Italo em 27/01/2012
-            if not FNFe.procNFe.cStat in [101, 110, 100] then
+            // Alterado por Italo em 29/11/2012
+            // if not FNFe.procNFe.cStat in [101, 110, 100] then
+            if not FNFe.procNFe.cStat in [100, 101, 110, 151, 155] then
             begin
                 qrlMsgTeste.Caption:=  FNFe.procNFe.xMotivo;
                 qrlMsgTeste.Visible := True;
@@ -1392,7 +1395,9 @@ begin
                 qrlDescricao.Caption:= 'PROTOCOLO DE AUTORIZAÇÃO DE USO';
             end;
 
-            if FNFe.procNFe.cStat = 101 then
+            // Alterado por Italo em 29/11/2012
+            // if FNFe.procNFe.cStat = 101 then
+            if FNFe.procNFe.cStat in [101, 151, 155] then
             begin
                 qrlDescricao.Caption:= 'PROTOCOLO DE HOMOLOGAÇÃO DE CANCELAMENTO';
             end;

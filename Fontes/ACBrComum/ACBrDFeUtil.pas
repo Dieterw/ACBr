@@ -67,12 +67,6 @@ type
    protected
 
    public
-     {$IFDEF ACBrNFSeOpenSSL}
- //      class function sign_file(const Axml: PAnsiChar; const key_file: PChar; const senha: PChar): AnsiString;
- //      class function sign_memory(const Axml: PChar; const key_file: Pchar; const senha: PChar; Size: Cardinal; Ponteiro: Pointer): AnsiString;
- //      class Procedure InitXmlSec;
- //      class Procedure ShutDownXmlSec;
-     {$ENDIF}
      class function PosEx(const SubStr, S: AnsiString; Offset: Cardinal = 1): Integer;
      class function PosLast(const SubStr, S: AnsiString ): Integer;
      class function PadE(const AString : string; const nLen : Integer; const Caracter : Char = ' ') : String;
@@ -110,48 +104,18 @@ type
      class function FormatarCEP(AValue : String ): String;
      class function FormatarFone(AValue : String ): String;
      class function FormatarNumeroDocumentoFiscal(AValue : String ): String;
- //    class function Valida(const AXML: AnsiString;
- //                          var AMsg: AnsiString;
- //                          const APathSchemas: string = '';
- //                          AURL: string = '';
- //                          AServico: string = '';
- //                          APrefixo: string = ''): Boolean;
- //    {$IFDEF ACBrNFSeOpenSSL}
- //      class function Assinar(const AXML, ArqPFX, PFXSenha: AnsiString;
- //                             out AXMLAssinado, FMensagem: AnsiString;
- //                             ALote: Boolean = False;
- //                             APrefixo3: string = '';
- //                             APrefixo4: string = '';
- //                             AProvedor: TnfseProvedor = proNenhum): Boolean;
- //    {$ELSE}
- //       Alterado por Italo em 12/07/2012
- //      class function Assinar(const AXML: AnsiString;
- //                             Certificado : ICertificate2;
- //                             out AXMLAssinado, FMensagem: AnsiString;
- //                             ALote: Boolean = False;
- //                             APrefixo3: string = '';
- //                             APrefixo4: string = '';
- //                             AProvedor: TnfseProvedor = proNenhum): Boolean;
- //    {$ENDIF}
      class function StringToFloat(AValue : String ) : Double;
      class function StringToFloatDef(const AValue: String; const DefaultValue: Double): Double;
- //    class procedure ConfAmbiente;
- //    class function PathAplication: String;
- //    class function CollateBr(Str: String): String;
- //    class function UpperCase2(Str: String): String;
+     // Incluido por Italo em 29/11/2012
+     class procedure ConfAmbiente;
+     class function PathAplication: String;
+     class function CollateBr(Str: String): String;
+     class function UpperCase2(Str: String): String;
  //    class function PathWithDelim( const APath : String ) : String;
  //    class function RetornarConteudoEntre(const Frase, Inicio, Fim: string): string;
-
-     // Alterado por Italo em 29/10/2012
- //    {$IFDEF ACBrNFSeOpenSSL}
- //     class function AssinarXML(AXML, FURI, FTagI, FTagF, ArqPFX, PFXSenha: AnsiString;
- //                               out AXMLAssinado, FMensagem: AnsiString): Boolean;
- //    {$ELSE}
- //     class function AssinarXML(AXML, FURI, FTagI, FTagF: AnsiString; Certificado : ICertificate2;
- //                               out AXMLAssinado, FMensagem: AnsiString): Boolean;
- //    {$ENDIF}
- //    class function RetirarPrefixos(AXML: String): String;
- //    class function VersaoXML(AXML: String): String;
+     class function ValidaUFCidade(const UF, Cidade: Integer): Boolean; overload;
+     class procedure ValidaUFCidade(const UF, Cidade: Integer; const AMensagem: string); overload;
+     class function FormatarPlaca(AValue: string): string;
 
    published
 
@@ -184,7 +148,7 @@ end;
 class procedure DFeUtil.EstaVazio(const AValue, AMensagem: String);
 begin
   if EstaVazio(AValue) then
-    raise Exception.Create(AMensagem);
+    raise EACBrDFeException.Create(AMensagem);
 end;
 
 class function DFeUtil.EstaZerado(AValue: Double): Boolean;
@@ -200,7 +164,7 @@ end;
 class procedure DFeUtil.EstaZerado(AValue: Integer; AMensagem: String);
 begin
   if EstaZerado(AValue) then
-    raise Exception.Create(AMensagem);
+    raise EACBrDFeException.Create(AMensagem);
 end;
 
 class function DFeUtil.FormatarCEP(AValue: String): String;
@@ -607,6 +571,123 @@ class function DFeUtil.TrataString(const AValue: String;
   const ATamanho: Integer): String;
 begin
   Result := TrataString(CortaD(AValue, ATamanho));
+end;
+
+class procedure DFeUtil.ConfAmbiente;
+{$IFDEF VER140} //delphi6
+{$ELSE}
+var
+vFormatSettings: TFormatSettings;
+{$ENDIF}
+begin
+{$IFDEF VER140} //delphi6
+  DecimalSeparator := ',';
+{$ELSE}
+  vFormatSettings.DecimalSeparator := ',';
+{$ENDIF}
+end;
+
+class function DFeUtil.PathAplication: String;
+begin
+  Result := ExtractFilePath(Application.ExeName);
+end;
+
+class function DFeUtil.CollateBr(Str: String): String;
+var
+   i, wTamanho: integer;
+   wChar, wResultado: Char;
+begin
+   result   := '';
+   wtamanho := Length(Str);
+   i        := 1;
+   while (i <= wtamanho) do
+   begin
+      wChar := Str[i];
+      case wChar of
+         'á', 'â', 'ã', 'à', 'ä', 'å',
+         'Á', 'Â', 'Ã', 'À', 'Ä', 'Å': wResultado := 'A';
+         'é', 'ê', 'è', 'ë',
+         'É', 'Ê', 'È', 'Ë': wResultado := 'E';
+         'í', 'î', 'ì', 'ï',
+         'Í', 'Î', 'Ì', 'Ï': wResultado := 'I';
+         'ó', 'ô', 'õ', 'ò', 'ö',
+         'Ó', 'Ô', 'Õ', 'Ò', 'Ö': wResultado := 'O';
+         'ú', 'û', 'ù', 'ü',
+         'Ú', 'Û', 'Ù', 'Ü': wResultado := 'U';
+         'ç', 'Ç': wResultado := 'C';
+         'ñ', 'Ñ': wResultado := 'N';
+         'ý', 'ÿ', 'Ý', 'Y': wResultado := 'Y';
+      else
+         wResultado := wChar;
+      end;
+      i      := i + 1;
+      Result := Result + wResultado;
+   end;
+   Result := UpperCase(Result);
+end;
+
+class function DFeUtil.UpperCase2(Str: String): String;
+var
+   i, wTamanho: integer;
+   wChar, wResultado: Char;
+begin
+   result   := '';
+   wtamanho := Length(Str);
+   i        := 1;
+   while (i <= wtamanho) do
+   begin
+      wChar := Str[i];
+      case wChar of
+         'á','Á': wResultado := 'Á';
+         'ã','Ã': wResultado := 'Ã';
+         'à','À': wResultado := 'À';
+         'â','Â': wResultado := 'Â';
+         'ä','Ä': wResultado := 'Ä';
+         'å','Å': wResultado := 'Å';
+         'é','É': wResultado := 'É';
+         'è','È': wResultado := 'È';
+         'ê','Ê': wResultado := 'Ê';
+         'ë','Ë': wResultado := 'Ë';
+         'í','Í': wResultado := 'Í';
+         'ì','Ì': wResultado := 'Ì';
+         'î','Î': wResultado := 'Î';
+         'ï','Ï': wResultado := 'Ï';
+         'ó','Ó': wResultado := 'Ó';
+         'õ','Õ': wResultado := 'Õ';
+         'ò','Ò': wResultado := 'Ò';
+         'ô','Ô': wResultado := 'Ô';
+         'ö','Ö': wResultado := 'Ö';
+         'ú','Ú': wResultado := 'Ú';
+         'ù','Ù': wResultado := 'Ù';
+         'û','Û': wResultado := 'Û';
+         'ü','Ü': wResultado := 'Ü';
+         'ç', 'Ç': wResultado := 'Ç';
+         'ñ', 'Ñ': wResultado := 'Ñ';
+         'ý', 'ÿ', 'Ý', 'Y': wResultado := 'Y';
+      else
+         wResultado := wChar;
+      end;
+      i      := i + 1;
+      Result := Result + wResultado;
+   end;
+   Result := UpperCase(Result);
+end;
+
+class function DFeUtil.ValidaUFCidade(const UF, Cidade: Integer): Boolean;
+begin
+  Result := (Copy(IntToStr(UF), 1, 2) = Copy(IntToStr(Cidade), 1, 2));
+end;
+
+class procedure DFeUtil.ValidaUFCidade(const UF, Cidade: Integer;
+  const AMensagem: string);
+begin
+  if not (ValidaUFCidade(UF, Cidade)) then
+    raise EACBrDFeException.Create(AMensagem);
+end;
+
+class function DFeUtil.FormatarPlaca(AValue: string): string;
+begin
+ Result := Copy(AValue, 1, 3) + '-' + Copy(AValue, 4, 4);
 end;
 
 end.

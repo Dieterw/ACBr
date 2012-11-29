@@ -149,7 +149,7 @@ begin
       (*ER06 *)FxMotivo   := leitor.rCampo(tcStr, 'xMotivo');
       (*ER07 *)FcUF       := leitor.rCampo(tcInt, 'cUF');
       (*EP07a*)FchNFe     := leitor.rCampo(tcStr, 'chNFe');
-      if FcStat in  [100,101] then
+      if FcStat in  [100,101,150,151,155] then
       begin
         if ((Leitor.rExtrai(1, 'protNFe') <> '') or (Leitor.rExtrai(1, 'infProt') <> '')) then
         begin
@@ -163,7 +163,7 @@ begin
           protNFe.xMotivo  := Leitor.rCampo(tcStr, 'xMotivo');
         end;
       end;
-      if FcStat = 101 then
+      if FcStat in [101,151,155] then
       begin
         if Leitor.rExtrai(1, 'infCanc') <> '' then
         begin

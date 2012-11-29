@@ -111,7 +111,7 @@ begin
       (*CR07 *)FcStat := Leitor.rCampo(tcInt, 'cStat');
       (*CR08 *)FxMotivo := Leitor.rCampo(tcStr, 'xMotivo');
       (*CR08a*)FcUF := Leitor.rCampo(tcInt, 'cUF');
-      if cStat = 101 then
+      if cStat in [101,151,155] then
       begin
         (*CR09 *)FchNFe := Leitor.rCampo(tcStr, 'chNFe');
         (*CR10 *)FdhRecbto := Leitor.rCampo(tcDatHor, 'dhRecbto');

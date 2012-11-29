@@ -52,7 +52,7 @@ uses
 
 type
 
-  TACBrCEPWebService = ( wsNenhum, wsBuscarCep, wsCepLivre, wsRepublicaVirtual, wsBases4you, wsRNSolucoes ) ;
+  TACBrCEPWebService = ( wsNenhum, wsBuscarCep, wsCepLivre, wsRepublicaVirtual, wsBases4you, wsRNSolucoes, wsKingHost ) ;
 
   EACBrCEPException = class ( Exception );
 
@@ -215,6 +215,18 @@ type
        AUF, ABairro : String ) ; override ;
   end;
 
+    TACBrWSKingHost = class(TACBrCEPWSClass)
+    private
+      FCepBusca: String;
+      procedure ProcessaResposta ;
+    public
+      constructor Create( AOwner : TACBrCEP ) ; override ;
+
+      Procedure BuscarPorCEP( ACEP : String ) ; override ;
+      Procedure BuscarPorLogradouro( AMunicipio, ATipo_Logradouro, ALogradouro,
+         AUF, ABairro : String ) ; override ;
+  end ;
+
 implementation
 
 uses ACBrUtil, strutils ;
@@ -300,6 +312,7 @@ begin
     wsRepublicaVirtual : fACBrCEPWS := TACBrWSRepublicaVirtual.Create(Self);
     wsBases4you : fACBrCEPWS := TACBrWSBases4you.Create(Self);
     wsRNSolucoes: fACBrCEPWS := TACBrWSRNSolucoes.Create(Self);
+    wsKingHost: fACBrCEPWS := TACBrWSKingHost.Create(Self);
   else
      fACBrCEPWS := TACBrCEPWSClass.Create( Self ) ;
   end ;
@@ -813,5 +826,58 @@ begin
   if Assigned(fOwner.OnBuscaEfetuada) then
     fOwner.OnBuscaEfetuada(Self);
 end;
+
+
+{ TACBrWSkingHost http://webservice.kinghost.net/*************}
+
+constructor TACBrWSKingHost.Create(AOwner: TACBrCEP);
+begin
+  inherited Create(AOwner);
+  fpURL := 'http://webservice.kinghost.net/' ;
+end;
+
+procedure TACBrWSKingHost.BuscarPorCEP(ACEP: String);
+begin
+  FCepBusca := ACep;
+  ACEP := OnlyNumber( AnsiString( ACEP ) );
+
+  fOwner.HTTPGet( fpURL + 'web_cep.php?'+
+                          'auth='+ Trim(fOwner.ChaveAcesso) +
+                          '&formato=xml'+
+                          '&cep='+ACEP ) ;
+  ProcessaResposta ;
+end;
+
+procedure TACBrWSKingHost.BuscarPorLogradouro(AMunicipio,
+  ATipo_Logradouro, ALogradouro, AUF, ABairro: String);
+begin
+  raise EACBrCEPException.Create(ACBrStr('Busca por Logradouro não disponível no site kingHost.'));
+end;
+
+procedure TACBrWSKingHost.ProcessaResposta;
+var
+  Buffer : String ;
+begin
+  fOwner.fEnderecos.Clear;
+
+  Buffer := fOwner.RespHTTP.Text;
+  if StrToIntDef(LerTagXML(Buffer, 'resultado'), 0) > 0 then
+  begin
+    with fOwner.Enderecos.New do
+    begin
+      CEP             := FCepBusca ; // kingHost nao devolve o cep na resposta
+      Tipo_Logradouro := LerTagXML(Buffer,'tipo_logradouro') ;
+      Logradouro      := LerTagXML(Buffer,'logradouro') ;
+      Complemento     := LerTagXML(Buffer,'complemento') ;
+      Bairro          := LerTagXML(Buffer,'bairro') ;
+      Municipio       := LerTagXML(Buffer,'cidade') ;
+      UF              := LerTagXML(Buffer,'uf') ;
+      IBGE_Municipio  := '';
+    end ;
+  end ;
+
+  if Assigned( fOwner.OnBuscaEfetuada ) then
+    fOwner.OnBuscaEfetuada( Self );
+end ;
 
 end.

@@ -38,6 +38,11 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+26/04/2012
+-- ACBrCEP --
+[+] Adicionado suporte ao provedor KingHost  (por: Sidnei alves)
+    http://www.djsystem.com.br/acbr/forum/viewtopic.php?f=14&t=8378
+
 13/09/2012
 -- ACBrSocket --
 [-] Corrigido Bug de perda de acentos em sistemas com Unicode na chamada da 

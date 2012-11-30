@@ -74,7 +74,7 @@
 // utilizar para facilitar a manutenção do ACBr.inc, já que ele era uma cópia
 // da jedi, essa mudança permite uma evolução melhor do arquivo.
 //------------------------------------------------------------------------------
-{$I jedi.inc}
+{$I ACBr_jedi.inc}
 
 // Para usar CLX no Windows / Delphi descomente essa linha
 //------------------------------------------------------------------------------

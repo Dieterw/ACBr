@@ -1912,7 +1912,9 @@ begin
       RespostasComando.AddField('COO', Copy(fpRespostaComando, 10, 6));
       RespostasComando.AddField('CCF', Copy(fpRespostaComando, 16, 6));
       RespostasComando.AddField('ValorCancelado', Copy(fpRespostaComando, 22, 12));
-
+			
+			fsNumCupom := RespostasComando['COO'].AsString;
+      fsNumCCF   := RespostasComando['CCF'].AsString;
     end
     else
       raise EACBrECFCMDInvalido.Create( ACBrStr('Não existe documento para cancelar.') );

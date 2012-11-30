@@ -257,11 +257,11 @@ type
     fVL_DESC       : Currency;                //06	Valor do desconto do item	N	-	02
     fNAT_BC_CRED   : TACBrBaseCalculoCredito; //07	Código da Base de Cálculo do Crédito, conforme a Tabela indicada no item 4.3.7, caso seja informado código representativo de crédito no Campo 09 (CST_PIS) ou no Campo 13 (CST_COFINS).	C	002*	-
     fIND_ORIG_CRED : TACBrOrigemCredito;      //08	Indicador da origem do crédito:0 – Operação no Mercado Interno 1 – Operação de Importação	C	001*	-
-    fCST_PIS       : TACBrSituacaoTribPIS;    //09	Código da Situação Tributária referente ao PIS/PASEP – Tabela 4.3.3.	N	002*	-
+    fCST_PIS       : TACBrCstPis;             //09	Código da Situação Tributária referente ao PIS/PASEP – Tabela 4.3.3.	N	002*	-
     fVL_BC_PIS     : Currency;                //10	Valor da base de cálculo do PIS/PASEP.	N	- 	02
     fALIQ_PIS      : Currency;                //11	Alíquota do PIS/PASEP (em percentual)	N	-	02
     fVL_PIS        : Currency;                //12	Valor do PIS/PASEP	N	-	02
-    fCST_COFINS    : TACBrSituacaoTribCOFINS; //13	Código da Situação Tributária referente ao COFINS – Tabela 4.3.4.	N	002*	-
+    fCST_COFINS    : TACBrCstCofins;          //13	Código da Situação Tributária referente ao COFINS – Tabela 4.3.4.	N	002*	-
     fVL_BC_COFINS  : Currency;                //14	Valor da base de cálculo da COFINS	N	 	02
     fALIQ_COFINS   : Currency;                //15	Alíquota do COFINS (em percentual)	N	006	02
     fVL_COFINS     : Currency;                //16	Valor da COFINS	N	-	02
@@ -275,11 +275,11 @@ type
     property VL_DESC       : Currency                read FVL_DESC       write FVL_DESC;
     property NAT_BC_CRED   : TACBrBaseCalculoCredito read FNAT_BC_CRED   write FNAT_BC_CRED;
     property IND_ORIG_CRED : TACBrOrigemCredito      read FIND_ORIG_CRED write FIND_ORIG_CRED;
-    property CST_PIS       : TACBrSituacaoTribPIS    read FCST_PIS       write FCST_PIS;
+    property CST_PIS       : TACBrCstPis             read FCST_PIS       write FCST_PIS;
     property VL_BC_PIS     : Currency                read FVL_BC_PIS     write FVL_BC_PIS;
     property ALIQ_PIS      : Currency                read FALIQ_PIS      write FALIQ_PIS;
     property VL_PIS        : Currency                read FVL_PIS        write FVL_PIS;
-    property CST_COFINS    : TACBrSituacaoTribCOFINS read FCST_COFINS    write FCST_COFINS;
+    property CST_COFINS    : TACBrCstCofins          read FCST_COFINS    write FCST_COFINS;
     property VL_BC_COFINS  : Currency                read FVL_BC_COFINS  write FVL_BC_COFINS;
     property ALIQ_COFINS   : Currency                read FALIQ_COFINS   write FALIQ_COFINS;
     property VL_COFINS     : Currency                read FVL_COFINS     write FVL_COFINS;

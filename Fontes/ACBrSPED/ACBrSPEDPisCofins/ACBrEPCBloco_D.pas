@@ -190,7 +190,7 @@ type
   private
     fIND_NAT_FRT         : TACBrNaturezaFrtContratado;     //02	IND_NAT_FRT	Indicador da Natureza do Frete Contratado, referente a:0 – Operações de vendas, com ônus suportado pelo estabelecimento vendedor;1 – Operações de vendas, com ônus suportado pelo adquirente;2 – Operações de compras (bens para revenda, matérias-prima e outros produtos, geradores de crédito);3 – Operações de compras (bens para revenda, matérias-prima e outros produtos, não geradores de crédito);4 – Transferência de produtos acabados entre estabelecimentos da pessoa jurídica;5 – Transferência de produtos em elaboração entre estabelecimentos da pessoa jurídica;9 – Outras.	C	001*	-
     fVL_ITEM             : Currency;                       //03	VL_ITEM	Valor total dos itens	N	-	02
-    fCST_PIS             : TACBrSituacaoTribPIS;           //04	CST_PIS	Código da Situação Tributária referente ao PIS/PASEP	N	002*	-
+    fCST_PIS             : TACBrCstPis;                    //04	CST_PIS	Código da Situação Tributária referente ao PIS/PASEP	N	002*	-
     fNAT_BC_CRED         : TACBrBaseCalculoCredito;        //05	NAT_BC_CRED	Código da Base de Cálculo do Crédito, conforme a Tabela indicada no item 4.3.7.	C	002*	-
     fVL_BC_PIS           : Currency;                       //06	VL_BC_PIS	Valor da base de cálculo do PIS/PASEP	N	 -	02
     fALIQ_PIS            : Currency;                       //07	ALIQ_PIS	Alíquota do PIS/PASEP (em percentual)	N	008	04
@@ -199,7 +199,7 @@ type
   public
     property IND_NAT_FRT : TACBrNaturezaFrtContratado read FIND_NAT_FRT write FIND_NAT_FRT;
     property VL_ITEM     : Currency                   read FVL_ITEM     write FVL_ITEM;
-    property CST_PIS     : TACBrSituacaoTribPIS       read FCST_PIS     write FCST_PIS;
+    property CST_PIS     : TACBrCstPis                read FCST_PIS     write FCST_PIS;
     property NAT_BC_CRED : TACBrBaseCalculoCredito    read FNAT_BC_CRED write FNAT_BC_CRED;
     property VL_BC_PIS   : Currency                   read FVL_BC_PIS   write FVL_BC_PIS;
     property ALIQ_PIS    : Currency                   read FALIQ_PIS    write FALIQ_PIS;
@@ -319,19 +319,19 @@ type
   //REGISTRO D201: TOTALIZAÇÃO DO RESUMO DIÁRIO – PIS/PASEP
   TRegistroD201 = class
   private
-    fCST_PIS           : TACBrSituacaoTribPIS; //02	CST_PIS	Código da Situação Tributária referente ao PIS/PASEP	N	002*	-
+    fCST_PIS           : TACBrCstPis;          //02	CST_PIS	Código da Situação Tributária referente ao PIS/PASEP	N	002*	-
     fVL_ITEM           : Currency;             //03	VL_ITEM	Valor total dos itens	N	-	02
     fVL_BC_PIS         : Currency;             //04	VL_BC_PIS	Valor da base de cálculo do PIS/PASEP	N	-	02
     fALIQ_PIS          : Currency;             //05	ALIQ_PIS	Alíquota do PIS/PASEP (em percentual)	N	008	04
     fVL_PIS            : Currency;             //06	VL_PIS	Valor do PIS/PASEP	N	-	02
     fCOD_CTA           : string;               //07	COD_CTA	Código da conta analítica contábil debitada/creditada	C	060	-
   public
-    property CST_PIS   : TACBrSituacaoTribPIS   read FCST_PIS   write FCST_PIS;
-    property VL_ITEM   : Currency               read FVL_ITEM   write FVL_ITEM;
-    property VL_BC_PIS : Currency               read FVL_BC_PIS write FVL_BC_PIS;
-    property ALIQ_PIS  : Currency               read FALIQ_PIS  write FALIQ_PIS;
-    property VL_PIS    : Currency               read FVL_PIS    write FVL_PIS;
-    property COD_CTA   : string                 read FCOD_CTA   write FCOD_CTA;
+    property CST_PIS   : TACBrCstPis read FCST_PIS   write FCST_PIS;
+    property VL_ITEM   : Currency    read FVL_ITEM   write FVL_ITEM;
+    property VL_BC_PIS : Currency    read FVL_BC_PIS write FVL_BC_PIS;
+    property ALIQ_PIS  : Currency    read FALIQ_PIS  write FALIQ_PIS;
+    property VL_PIS    : Currency    read FVL_PIS    write FVL_PIS;
+    property COD_CTA   : string      read FCOD_CTA   write FCOD_CTA;
   end;
 
   // Registro D201 - Lista
@@ -404,7 +404,7 @@ type
     fDT_REF               : TDateTime;               //08	DT_REF	Data do dia de referência do resumo diário	N	008*	-
     fVL_DOC               : Currency;                //09	VL_DOC	Valor total dos documentos fiscais emitidos	N	-	02
     fVL_DESC              : Currency;                //10	VL_DESC	Valor total dos descontos	N	-	02
-    fCST_PIS              : TACBrSituacaoTribPIS;    //11	CST_PIS	Código da Situação Tributária referente ao PIS/PASEP	N	002*	-
+    fCST_PIS              : TACBrCstPis;             //11	CST_PIS	Código da Situação Tributária referente ao PIS/PASEP	N	002*	-
     fVL_BC_PIS            : Currency;                //12	VL_BC_PIS	Valor da base de cálculo do PIS/PASEP	N	-	02
     fALIQ_PIS             : Currency;                //13	ALIQ_PIS	Alíquota do PIS/PASEP (em percentual)	N	008	04
     fVL_PIS               : Currency;                //14	VL_PIS	Valor do PIS/PASEP	N	-	02
@@ -428,7 +428,7 @@ type
     property DT_REF       : TDateTime               read FDT_REF       write FDT_REF;
     property VL_DOC       : Currency                read FVL_DOC       write FVL_DOC;
     property VL_DESC      : Currency                read FVL_DESC      write FVL_DESC;
-    property CST_PIS      : TACBrSituacaoTribPIS    read FCST_PIS      write FCST_PIS;
+    property CST_PIS      : TACBrCstPis             read FCST_PIS      write FCST_PIS;
     property VL_BC_PIS    : Currency                read FVL_BC_PIS    write FVL_BC_PIS;
     property ALIQ_PIS     : Currency                read FALIQ_PIS     write FALIQ_PIS;
     property VL_PIS       : Currency                read FVL_PIS       write FVL_PIS;
@@ -483,7 +483,7 @@ type
     fNUM_COO_FIN               : Integer;                 //08	NUM_COO_FIN	Número do Contador de Ordem de Operação do último documento emitido no dia. (Número do COO na Redução Z)	N	006	-
     fGT_FIN                    : Currency;                //09	GT_FIN	Valor do Grande Total final	N	-	02
     fVL_BRT                    : Currency;                //10	VL_BRT	Valor da venda bruta	N	-	02
-    fCST_PIS                   : TACBrSituacaoTribPIS;    //11	CST_PIS	Código da Situação Tributária referente ao PIS/PASEP	N	002*	-
+    fCST_PIS                   : TACBrCstPis;             //11	CST_PIS	Código da Situação Tributária referente ao PIS/PASEP	N	002*	-
     fVL_BC_PIS                 : Currency;                //12	VL_BC_PIS	Valor da base de cálculo do PIS/PASEP	N	- 	02
     fALIQ_PIS                  : Currency;                //13	ALIQ_PIS	Alíquota do PIS/PASEP (em percentual)	N	008	04
     fQUANT_BC_PIS              : Currency;                //14	QUANT_BC_PIS	Quantidade – Base de cálculo PIS/PASEP	N	- 	03
@@ -511,7 +511,7 @@ type
     property NUM_COO_FIN       : Integer                 read FNUM_COO_FIN       write FNUM_COO_FIN;
     property GT_FIN            : Currency                read FGT_FIN            write FGT_FIN;
     property VL_BRT            : Currency                read FVL_BRT            write FVL_BRT;
-    property CST_PIS           : TACBrSituacaoTribPIS    read FCST_PIS           write FCST_PIS;
+    property CST_PIS           : TACBrCstPis             read FCST_PIS           write FCST_PIS;
     property VL_BC_PIS         : Currency                read FVL_BC_PIS         write FVL_BC_PIS;
     property ALIQ_PIS          : Currency                read FALIQ_PIS          write FALIQ_PIS;
     property QUANT_BC_PIS      : Currency                read FQUANT_BC_PIS      write FQUANT_BC_PIS;
@@ -630,7 +630,7 @@ type
   //REGISTRO D501: COMPLEMENTO DA OPERAÇÃO (CÓDIGOS 21 e 22) – PIS/PASEP
   TRegistroD501 = class
   private
-    fCST_PIS             : TACBrSituacaoTribPIS;           //02	CST_PIS	Código da Situação Tributária referente ao PIS/PASEP	N	002*	-
+    fCST_PIS             : TACBrCstPis;                    //02	CST_PIS	Código da Situação Tributária referente ao PIS/PASEP	N	002*	-
     fVL_ITEM             : Currency;                       //03	VL_ITEM	Valor Total dos Itens (Serviços)	N	-	02
     fNAT_BC_CRED         : TACBrBaseCalculoCredito;        //04	NAT_BC_CRED	Código da Base de Cálculo do Crédito, conforme a Tabela indicada no item 4.3.7.	C	002*	-
     fVL_BC_PIS           : Currency;                       //05	VL_BC_PIS	Valor da base de cálculo do PIS/PASEP	N	 -	02
@@ -638,7 +638,7 @@ type
     fVL_PIS              : Currency;                       //07	VL_PIS	Valor do PIS/PASEP	N	-	02
     fCOD_CTA             : string;                         //08	COD_CTA	Código da conta analítica contábil debitada/creditada	C	060	-
   public
-    property CST_PIS     : TACBrSituacaoTribPIS    read FCST_PIS     write FCST_PIS;
+    property CST_PIS     : TACBrCstPis             read FCST_PIS     write FCST_PIS;
     property VL_ITEM     : Currency                read FVL_ITEM     write FVL_ITEM;
     property NAT_BC_CRED : TACBrBaseCalculoCredito read FNAT_BC_CRED write FNAT_BC_CRED;
     property VL_BC_PIS   : Currency                read FVL_BC_PIS   write FVL_BC_PIS;
@@ -776,20 +776,20 @@ type
     fCOD_CLASS         : Integer;              //02	COD_CLASS	Código de classificação do item do serviço de comunicação ou de telecomunicação, conforme a Tabela 4.4.1	N	004*	-
     fVL_ITEM           : Currency;             //03	VL_ITEM	Valor acumulado do item	N	-	02
     fVL_DESC           : Currency;             //04	VL_DESC	Valor acumulado dos descontos/exclusões da base de cálculo	N	-	02
-    fCST_PIS           : TACBrSituacaoTribPIS; //05	CST_PIS	Código da Situação Tributária referente ao PIS/PASEP	N	002*	-
+    fCST_PIS           : TACBrCstPis;          //05	CST_PIS	Código da Situação Tributária referente ao PIS/PASEP	N	002*	-
     fVL_BC_PIS         : Currency;             //06	VL_BC_PIS	Valor da base de cálculo do PIS/PASEP	N	 -	02
     fALIQ_PIS          : Currency;             //07	ALIQ_PIS	Alíquota do PIS/PASEP (em percentual)	N	008	04
     fVL_PIS            : Currency;             //08	VL_PIS	Valor do PIS/PASEP	N	-	02
     fCOD_CTA           : string;               //09	COD_CTA	Código da conta contábil debitada/creditada	C	060	-
   public
-    property COD_CLASS : Integer              read FCOD_CLASS write FCOD_CLASS;
-    property VL_ITEM   : Currency             read FVL_ITEM   write FVL_ITEM;
-    property VL_DESC   : Currency             read FVL_DESC   write FVL_DESC;
-    property CST_PIS   : TACBrSituacaoTribPIS read FCST_PIS   write FCST_PIS;
-    property VL_BC_PIS : Currency             read FVL_BC_PIS write FVL_BC_PIS;
-    property ALIQ_PIS  : Currency             read FALIQ_PIS  write FALIQ_PIS;
-    property VL_PIS    : Currency             read FVL_PIS    write FVL_PIS;
-    property COD_CTA   : string               read FCOD_CTA   write FCOD_CTA;
+    property COD_CLASS : Integer     read FCOD_CLASS write FCOD_CLASS;
+    property VL_ITEM   : Currency    read FVL_ITEM   write FVL_ITEM;
+    property VL_DESC   : Currency    read FVL_DESC   write FVL_DESC;
+    property CST_PIS   : TACBrCstPis read FCST_PIS   write FCST_PIS;
+    property VL_BC_PIS : Currency    read FVL_BC_PIS write FVL_BC_PIS;
+    property ALIQ_PIS  : Currency    read FALIQ_PIS  write FALIQ_PIS;
+    property VL_PIS    : Currency    read FVL_PIS    write FVL_PIS;
+    property COD_CTA   : string      read FCOD_CTA   write FCOD_CTA;
   end;
 
   // Registro D601 - Lista

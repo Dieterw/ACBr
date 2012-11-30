@@ -757,26 +757,26 @@ type
     FCOD_SIT    : TACBrSituacaoDF;
     FVL_TOT_REC : Currency;
     FQUANT_DOC  : Integer;
-    FCST_PIS    : TACBrSituacaoTribPIS;
-    FCST_COFINS : TACBrSituacaoTribCOFINS;
+    FCST_PIS    : TACBrCstPis;
+    FCST_COFINS : TACBrCstCofins;
     FCFOP       : Integer;
     FINF_COMPL  : string;
     FCOD_CTA    : string;
 
   public
 
-    property CNPJ      : string                  read FCNPJ        write FCNPJ       ;
-    property COD_MOD   : string                  read FCOD_MOD     write FCOD_MOD    ;
-    property SER       : string                  read FSER         write FSER        ;
-    property SUB_SER   : string                  read FSUB_SER     write FSUB_SER    ;
-    property COD_SIT   : TACBrSituacaoDF         read FCOD_SIT     write FCOD_SIT    ;
-    property VL_TOT_REC: Currency                read FVL_TOT_REC  write FVL_TOT_REC ;
-    property QUANT_DOC : Integer                 read FQUANT_DOC   write FQUANT_DOC  ;
-    property CST_PIS   : TACBrSituacaoTribPIS    read FCST_PIS     write FCST_PIS    ;
-    property CST_COFINS: TACBrSituacaoTribCOFINS read FCST_COFINS  write FCST_COFINS ;
-    property CFOP      : Integer                 read FCFOP        write FCFOP       ;
-    property INF_COMPL : string                  read FINF_COMPL   write FINF_COMPL  ;
-    property COD_CTA   : string                  read FCOD_CTA     write FCOD_CTA    ;
+    property CNPJ      : string          read FCNPJ        write FCNPJ       ;
+    property COD_MOD   : string          read FCOD_MOD     write FCOD_MOD    ;
+    property SER       : string          read FSER         write FSER        ;
+    property SUB_SER   : string          read FSUB_SER     write FSUB_SER    ;
+    property COD_SIT   : TACBrSituacaoDF read FCOD_SIT     write FCOD_SIT    ;
+    property VL_TOT_REC: Currency        read FVL_TOT_REC  write FVL_TOT_REC ;
+    property QUANT_DOC : Integer         read FQUANT_DOC   write FQUANT_DOC  ;
+    property CST_PIS   : TACBrCstPis     read FCST_PIS     write FCST_PIS    ;
+    property CST_COFINS: TACBrCstCofins  read FCST_COFINS  write FCST_COFINS ;
+    property CFOP      : Integer         read FCFOP        write FCFOP       ;
+    property INF_COMPL : string          read FINF_COMPL   write FINF_COMPL  ;
+    property COD_CTA   : string          read FCOD_CTA     write FCOD_CTA    ;
 
   end;
 

@@ -160,12 +160,12 @@ type
     FVL_BC_PIS_TOT            : currency;
     FVL_BC_PIS_NC             : currency;
     FVL_BC_PIS                : currency;
-    FCST_PIS                  : TACBrSituacaoTribPIS;
+    FCST_PIS                  : TACBrCstPis;
     FDESC_CRED                : string;
     FNAT_BC_CRED              : TACBrBaseCalculoCredito;
   public
     property NAT_BC_CRED      : TACBrBaseCalculoCredito read FNAT_BC_CRED      write FNAT_BC_CRED;
-    property CST_PIS          : TACBrSituacaoTribPIS    read FCST_PIS          write FCST_PIS;
+    property CST_PIS          : TACBrCstPis             read FCST_PIS          write FCST_PIS;
     property VL_BC_PIS_TOT    : currency                read FVL_BC_PIS_TOT    write FVL_BC_PIS_TOT;
     property VL_BC_PIS_CUM    : currency                read FVL_BC_PIS_CUM    write FVL_BC_PIS_CUM;
     property VL_BC_PIS_NC     : currency                read FVL_BC_PIS_NC     write FVL_BC_PIS_NC;
@@ -425,17 +425,17 @@ type
     FVL_TOT_REC           : currency;
     FDESC_COMPL           : string;
     FCOD_CTA              : string;
-    FCST_PIS              : TACBrSituacaoTribPIS;
+    FCST_PIS              : TACBrCstPis;
 
     FRegistroM410         : TRegistroM410List; // NIVEL 3
   public
     constructor Create;  virtual;              /// Create
     destructor  Destroy; override;             /// Destroy
 
-    property CST_PIS      : TACBrSituacaoTribPIS read FCST_PIS      write FCST_PIS;
-    property VL_TOT_REC   : currency             read FVL_TOT_REC   write FVL_TOT_REC;
-    property COD_CTA      : string               read FCOD_CTA      write FCOD_CTA;
-    property DESC_COMPL   : string               read FDESC_COMPL   write FDESC_COMPL;
+    property CST_PIS      : TACBrCstPis read FCST_PIS      write FCST_PIS;
+    property VL_TOT_REC   : currency    read FVL_TOT_REC   write FVL_TOT_REC;
+    property COD_CTA      : string      read FCOD_CTA      write FCOD_CTA;
+    property DESC_COMPL   : string      read FDESC_COMPL   write FDESC_COMPL;
 
     property RegistroM410 : TRegistroM410List    read FRegistroM410 write FRegistroM410;
   end;

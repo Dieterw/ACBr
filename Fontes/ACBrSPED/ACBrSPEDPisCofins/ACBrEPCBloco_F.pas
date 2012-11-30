@@ -135,7 +135,7 @@ type
     FCOD_ITEM              : string;                  //Código do item (campo 02 do Registro 0200)
     FDT_OPER               : TDateTime;
     FVL_OPER               : currency;                //Valor da Operação/Item
-    FCST_PIS               : TACBrSituacaoTribPIS;    //Código da Situação Tributária referente ao PIS/PASEP, conforme a Tabela indicada no item 4.3.3.
+    FCST_PIS               : TACBrCstPis;             //Código da Situação Tributária referente ao PIS/PASEP, conforme a Tabela indicada no item 4.3.3.
     FVL_BC_PIS             : currency;                //Valor da Base de cálculo do PIS/PASEP
     FALIQ_PIS              : currency;                //Alíquota do PIS/PASEP (em percentual)
     FVL_PIS                : currency;                //Valor do PIS/PASEP
@@ -159,7 +159,7 @@ type
     property COD_ITEM      : string                   read FCOD_ITEM      write FCOD_ITEM;
     property DT_OPER       : TDateTime                read FDT_OPER       write FDT_OPER;
     property VL_OPER       : currency                 read FVL_OPER       write FVL_OPER;
-    property CST_PIS       : TACBrSituacaoTribPIS     read FCST_PIS       write FCST_PIS;
+    property CST_PIS       : TACBrCstPis              read FCST_PIS       write FCST_PIS;
     property VL_BC_PIS     : currency                 read FVL_BC_PIS     write FVL_BC_PIS;
     property ALIQ_PIS      : currency                 read FALIQ_PIS      write FALIQ_PIS;
     property VL_PIS        : currency                 read FVL_PIS        write FVL_PIS;
@@ -226,7 +226,7 @@ type
                                                                          //9 - Outros.
     fVL_OPER_DEP                   : currency;                         //Valor do Encargo de Depreciação/Amortização Incorrido no Período
     fPARC_OPER_NAO_BC_CRED         : currency;                         //Parcela do Valor do Encargo de Depreciação/Amortização a excluir da base de cálculo de Crédito
-    fCST_PIS                       : TACBrSituacaoTribPIS;             //Código da Situação Tributária referente ao PIS/PASEP, conforme a Tabela indicada no item 4.3.3.
+    fCST_PIS                       : TACBrCstPis;                      //Código da Situação Tributária referente ao PIS/PASEP, conforme a Tabela indicada no item 4.3.3.
     fVL_BC_PIS                     : Currency;                         //Base de cálculo do Crédito de PIS/PASEP no período
     fALIQ_PIS                      : currency;                         //Alíquota do PIS/PASEP (em percentual)
     fVL_PIS                        : currency;                         //Valor do Crédito de PIS/PASEP
@@ -249,7 +249,7 @@ type
     property IND_UTIL_BEM_IMOB     : string                  read fIND_UTIL_BEM_IMOB     write fIND_UTIL_BEM_IMOB;
     property VL_OPER_DEP           : currency                read fVL_OPER_DEP           write fVL_OPER_DEP;
     property PARC_OPER_NAO_BC_CRED : currency                read fPARC_OPER_NAO_BC_CRED write fPARC_OPER_NAO_BC_CRED;
-    property CST_PIS               : TACBrSituacaoTribPIS    read fCST_PIS               write fCST_PIS;
+    property CST_PIS               : TACBrCstPis             read fCST_PIS               write fCST_PIS;
     property VL_BC_PIS             : currency                read fVL_BC_PIS             write fVL_BC_PIS;
     property ALIQ_PIS              : currency                read fALIQ_PIS              write fALIQ_PIS;
     property VL_PIS                : currency                read fVL_PIS                write fVL_PIS;
@@ -323,7 +323,7 @@ type
                                                                          //4 - 48 Meses;
                                                                          //5 - 6 Meses (Embalagens de bebidas frias)
                                                                          //9 - Outra periodicidade definida em Lei.
-    fCST_PIS                       : TACBrSituacaoTribPIS;             //Código da Situação Tributária referente ao PIS/PASEP, conforme a Tabela indicada no item 4.3.3.
+    fCST_PIS                       : TACBrCstPis;                      //Código da Situação Tributária referente ao PIS/PASEP, conforme a Tabela indicada no item 4.3.3.
     fVL_BC_PIS                     : currency;                         //Base de cálculo Mensal do Crédito de PIS/PASEP, conforme indicador informado no campo 10.
     fALIQ_PIS                      : currency;                         //Alíquota do PIS/PASEP
     fVL_PIS                        : currency;                         //Valor do Crédito de PIS/PASEP
@@ -349,7 +349,7 @@ type
     property PARC_OPER_NAO_BC_CRED : currency                read fPARC_OPER_NAO_BC_CRED write fPARC_OPER_NAO_BC_CRED;
     property VL_BC_CRED            : currency                read fVL_BC_CRED            write fVL_BC_CRED;
     property IND_NR_PARC           : integer                 read fIND_NR_PARC           write fIND_NR_PARC;
-    property CST_PIS               : TACBrSituacaoTribPIS    read fCST_PIS               write fCST_PIS;
+    property CST_PIS               : TACBrCstPis             read fCST_PIS               write fCST_PIS;
     property VL_BC_PIS             : currency                read fVL_BC_PIS             write fVL_BC_PIS;
     property ALIQ_PIS              : currency                read fALIQ_PIS              write fALIQ_PIS;
     property VL_PIS                : currency                read fVL_PIS                write fVL_PIS;
@@ -402,7 +402,7 @@ type
     FEST_IMP                : integer;                          //Parcela do estoque de abertura referente a bens, produtos e mercadorias importados, ou adquiridas no mercado interno sem direito ao crédito
     FVL_BC_EST              : currency;                         //Valor da Base de Cálculo do Crédito sobre o Estoque de Abertura (03 - 04)
     FVL_BC_MEN_EST          : currency;                         //Valor da Base de Cálculo Mensal do Crédito sobre o Estoque de Abertura (1/12 avos do campo 05)
-    FCST_PIS                : TACBrSituacaoTribPIS;             //Código da Situação Tributária referente ao PIS/PASEP, conforme a Tabela indicada no item 4.3.3.
+    FCST_PIS                : TACBrCstPis;                      //Código da Situação Tributária referente ao PIS/PASEP, conforme a Tabela indicada no item 4.3.3.
     FALIQ_PIS               : currency;                         //Alíquota do PIS/PASEP
     FVL_CRED_PIS            : currency;                         //Valor Mensal do Crédito Presumido Apurado para o Período -  PIS/PASEP  (06 x 08)
     FALIQ_COFINS            : currency;                         //Código da Situação Tributária referente a COFINS, conforme a Tabela indicada no item 4.3.4.
@@ -416,7 +416,7 @@ type
     property EST_IMP        : integer                 read FEST_IMP        write FEST_IMP;
     property VL_BC_EST      : currency                read FVL_BC_EST      write FVL_BC_EST;
     property VL_BC_MEN_EST  : currency                read FVL_BC_MEN_EST  write FVL_BC_MEN_EST;
-    property CST_PIS        : TACBrSituacaoTribPIS    read FCST_PIS        write FCST_PIS;
+    property CST_PIS        : TACBrCstPis             read FCST_PIS        write FCST_PIS;
     property ALIQ_PIS       : currency                read FALIQ_PIS       write FALIQ_PIS;
     property VL_CRED_PIS    : currency                read FVL_CRED_PIS    write FVL_CRED_PIS;
     property CST_COFINS     : TACBrSituacaoTribCOFINS read FCST_COFINS     write FCST_COFINS;
@@ -452,7 +452,7 @@ type
     FCST_COFINS             : TACBrSituacaoTribCOFINS;
     FCPF_CNPJ_ADQU          : string;
     FUNID_IMOB              : string;
-    FCST_PIS                : TACBrSituacaoTribPIS;
+    FCST_PIS                : TACBrCstPis;
     FIDENT_EMP              : string;
     FNUM_CONT               : string;
     FIND_OPER               : string;
@@ -478,7 +478,7 @@ type
     property VL_TOT_VEND    : currency                 read FVL_TOT_VEND    write FVL_TOT_VEND;
     property VL_REC_ACUM    : currency                 read FVL_REC_ACUM    write FVL_REC_ACUM;
     property VL_TOT_REC     : currency                 read FVL_TOT_REC     write FVL_TOT_REC;
-    property CST_PIS        : TACBrSituacaoTribPIS     read FCST_PIS        write FCST_PIS;
+    property CST_PIS        : TACBrCstPis              read FCST_PIS        write FCST_PIS;
     property VL_BC_PIS      : currency                 read FVL_BC_PIS      write FVL_BC_PIS;
     property ALIQ_PIS       : currency                 read FALIQ_PIS       write FALIQ_PIS;
     property VL_PIS         : currency                 read FVL_PIS         write FVL_PIS;
@@ -522,7 +522,7 @@ type
     FVL_CUS_INC_ACUM_ANT             : currency;
     FVL_CRED_COFINS_DESC             : currency;
     FVL_CUS_INC_ACUM                 : currency;
-    FCST_PIS                         : TACBrSituacaoTribPIS;
+    FCST_PIS                         : TACBrCstPis;
     FCST_COFINS                      : TACBrSituacaoTribCOFINS;
     FALIQ_PIS                        : Currency;
   public
@@ -531,7 +531,7 @@ type
     property VL_CUS_INC_ACUM         : currency                read FVL_CUS_INC_ACUM         write FVL_CUS_INC_ACUM;
     property VL_EXC_BC_CUS_INC_ACUM  : currency                read FVL_EXC_BC_CUS_INC_ACUM  write FVL_EXC_BC_CUS_INC_ACUM;
     property VL_BC_CUS_INC           : currency                read FVL_BC_CUS_INC           write FVL_BC_CUS_INC;
-    property CST_PIS                 : TACBrSituacaoTribPIS    read FCST_PIS                 write FCST_PIS;
+    property CST_PIS                 : TACBrCstPis             read FCST_PIS                 write FCST_PIS;
     property ALIQ_PIS                : currency                read FALIQ_PIS                write FALIQ_PIS;
     property VL_CRED_PIS_ACUM        : currency                read FVL_CRED_PIS_ACUM        write FVL_CRED_PIS_ACUM;
     property VL_CRED_PIS_DESC_ANT    : currency                read FVL_CRED_PIS_DESC_ANT    write FVL_CRED_PIS_DESC_ANT;
@@ -556,14 +556,14 @@ type
     FVL_CUS_ORC_AJU              : currency;
     FVL_CUS_ORC                  : currency;
     FVL_CRED_PIS_UTIL            : currency;
-    FCST_PIS                     : TACBrSituacaoTribPIS;
+    FCST_PIS                     : TACBrCstPis;
     FCST_COFINS                  : TACBrSituacaoTribCOFINS;
   public
     property VL_CUS_ORC          : currency                read FVL_CUS_ORC          write FVL_CUS_ORC;
     property VL_EXC              : currency                read FVL_EXC              write FVL_EXC;
     property VL_CUS_ORC_AJU      : currency                read FVL_CUS_ORC_AJU      write FVL_CUS_ORC_AJU;
     property VL_BC_CRED          : currency                read FVL_BC_CRED          write FVL_BC_CRED;
-    property CST_PIS             : TACBrSituacaoTribPIS    read FCST_PIS             write FCST_PIS;
+    property CST_PIS             : TACBrCstPis             read FCST_PIS             write FCST_PIS;
     property ALIQ_PIS            : currency                read FALIQ_PIS            write FALIQ_PIS;
     property VL_CRED_PIS_UTIL    : currency                read FVL_CRED_PIS_UTIL    write FVL_CRED_PIS_UTIL;
     property CST_COFINS          : TACBrSituacaoTribCOFINS read FCST_COFINS          write FCST_COFINS;
@@ -608,7 +608,7 @@ type
   TRegistroF500 = class
   private
      FVL_REC_CAIXA            : currency;
-     FCST_PIS                 : TACBrSituacaoTribPIS;
+     FCST_PIS                 : TACBrCstPis;
      FVL_DESC_PIS             : currency;
      FVL_BC_PIS               : currency;
      FALIQ_PIS                : currency;
@@ -625,7 +625,7 @@ type
 
   public
      property VL_REC_CAIXA      : currency                read  FVL_REC_CAIXA   write FVL_REC_CAIXA  ;
-     property CST_PIS           : TACBrSituacaoTribPIS    read  FCST_PIS        write FCST_PIS       ;
+     property CST_PIS           : TACBrCstPis             read  FCST_PIS        write FCST_PIS       ;
      property VL_DESC_PIS       : currency                read  FVL_DESC_PIS    write FVL_DESC_PIS   ;
      property VL_BC_PIS         : currency                read  FVL_BC_PIS      write FVL_BC_PIS     ;
      property ALIQ_PIS          : currency                read  FALIQ_PIS       write FALIQ_PIS      ;
@@ -659,7 +659,7 @@ type
   TRegistroF510 = class
   private
      FVL_REC_CAIXA            : Currency;
-     FCST_PIS                 : TACBrSituacaoTribPIS;
+     FCST_PIS                 : TACBrCstPis;
      FVL_DESC_PIS             : currency;
      FQUANT_BC_PIS            : currency;
      FALIQ_PIS_QUANT          : currency;
@@ -676,7 +676,7 @@ type
 
   public
      property  VL_REC_CAIXA        : currency                read FVL_REC_CAIXA       write FVL_REC_CAIXA     ;
-     property  CST_PIS             : TACBrSituacaoTribPIS    read FCST_PIS            write FCST_PIS          ;
+     property  CST_PIS             : TACBrCstPis             read FCST_PIS            write FCST_PIS          ;
      property  VL_DESC_PIS         : currency                read FVL_DESC_PIS        write FVL_DESC_PIS      ;
      property  QUANT_BC_PIS        : currency                read FQUANT_BC_PIS       write FQUANT_BC_PIS     ;
      property  ALIQ_PIS_QUANT      : currency                read FALIQ_PIS_QUANT     write FALIQ_PIS_QUANT   ;
@@ -713,21 +713,21 @@ type
      FNUM_DOC                  : Integer;
      FCOD_ITEM                 : string;
      FVL_REC_DET               : Currency;
-     FCST_PIS                  : TACBrSituacaoTribPIS;
+     FCST_PIS                  : TACBrCstPis;
      FCST_COFINS               : TACBrSituacaoTribCOFINS;
      FINFO_COMPL               : string;
      FCOD_CTA                  : string;
   public
-     property  VL_REC       : Currency                                    read FVL_REC     write FVL_REC     ;
-     property  IND_REC      : TACBrIndicadorDaComposicaoDaReceitaRecebida read FIND_REC    write FIND_REC    ;
-     property  CNPJ_CPF     : string                                      read FCNPJ_CPF   write FCNPJ_CPF   ;
-     property  NUM_DOC      : Integer                                     read FNUM_DOC    write FNUM_DOC    ;
-     property  COD_ITEM     : string                                      read FCOD_ITEM   write FCOD_ITEM   ;
-     property  VL_REC_DET   : Currency                                    read FVL_REC_DET write FVL_REC_DET ;
-     property  CST_PIS      : TACBrSituacaoTribPIS                        read FCST_PIS    write FCST_PIS    ;
-     property  CST_COFINS   : TACBrSituacaoTribCOFINS                     read FCST_COFINS write FCST_COFINS ;
-     property  INFO_COMPL   : string                                      read FINFO_COMPL write FINFO_COMPL ;
-     property  COD_CTA      : string                                      read FCOD_CTA    write FCOD_CTA    ;
+     property  VL_REC       : Currency       read FVL_REC     write FVL_REC     ;
+     property  IND_REC      : TACBrInd_Rec   read FIND_REC    write FIND_REC    ;
+     property  CNPJ_CPF     : string         read FCNPJ_CPF   write FCNPJ_CPF   ;
+     property  NUM_DOC      : Integer        read FNUM_DOC    write FNUM_DOC    ;
+     property  COD_ITEM     : string         read FCOD_ITEM   write FCOD_ITEM   ;
+     property  VL_REC_DET   : Currency       read FVL_REC_DET write FVL_REC_DET ;
+     property  CST_PIS      : TACBrCstPis    read FCST_PIS    write FCST_PIS    ;
+     property  CST_COFINS   : TACBrCstCofins read FCST_COFINS write FCST_COFINS ;
+     property  INFO_COMPL   : string         read FINFO_COMPL write FINFO_COMPL ;
+     property  COD_CTA      : string         read FCOD_CTA    write FCOD_CTA    ;
   end;
 
   // Registro F525 - Lista
@@ -744,12 +744,12 @@ type
   TRegistroF550 = class
   private
     FVL_REC_COMP             : currency;
-    FCST_PIS                 : TACBrSituacaoTribPIS;
+    FCST_PIS                 : TACBrCstPis;
     FVL_DESC_PIS             : currency;
     FVL_BC_PIS               : currency;
     FALIQ_PIS                : currency;
     FVL_PIS                  : currency;
-    FCST_COFINS              : TACBrSituacaoTribCOFINS;
+    FCST_COFINS              : TACBrCstCofins;
     FVL_DESC_COFINS          : currency;
     FVL_BC_COFINS            : currency;
     FALIQ_COFINS             : currency;
@@ -759,21 +759,21 @@ type
     FCOD_CTA                 : String;
     FINFO_COMPL              : String;
   public
-    property VL_REC_COMP     : currency                read FVL_REC_COMP          write FVL_REC_COMP;
-    property CST_PIS         : TACBrSituacaoTribPIS    read FCST_PIS              write FCST_PIS;
-    property VL_DESC_PIS     : currency                read FVL_DESC_PIS          write FVL_DESC_PIS;
-    property VL_BC_PIS       : currency                read FVL_BC_PIS            write FVL_BC_PIS;
-    property ALIQ_PIS        : currency                read FALIQ_PIS             write FALIQ_PIS;
-    property VL_PIS          : currency                read FVL_PIS               write FVL_PIS;
-    property CST_COFINS      : TACBrSituacaoTribCOFINS read FCST_COFINS           write FCST_COFINS;
-    property VL_DESC_COFINS  : currency                read FVL_DESC_COFINS       write FVL_DESC_COFINS;
-    property VL_BC_COFINS    : currency                read FVL_BC_COFINS         write FVL_BC_COFINS;
-    property ALIQ_COFINS     : currency                read FALIQ_COFINS          write FALIQ_COFINS;
-    property VL_COFINS       : currency                read FVL_COFINS            write FVL_COFINS;
-    property COD_MOD         : String                  read FCOD_MOD              write FCOD_MOD;
-    property CFOP            : Integer                 read FCFOP                 write FCFOP;
-    property COD_CTA         : String                  read FCOD_CTA              write FCOD_CTA;
-    property INFO_COMPL      : String                  read FINFO_COMPL           write FINFO_COMPL;
+    property VL_REC_COMP     : currency       read FVL_REC_COMP          write FVL_REC_COMP;
+    property CST_PIS         : TACBrCstPis    read FCST_PIS              write FCST_PIS;
+    property VL_DESC_PIS     : currency       read FVL_DESC_PIS          write FVL_DESC_PIS;
+    property VL_BC_PIS       : currency       read FVL_BC_PIS            write FVL_BC_PIS;
+    property ALIQ_PIS        : currency       read FALIQ_PIS             write FALIQ_PIS;
+    property VL_PIS          : currency       read FVL_PIS               write FVL_PIS;
+    property CST_COFINS      : TACBrCstCofins read FCST_COFINS           write FCST_COFINS;
+    property VL_DESC_COFINS  : currency       read FVL_DESC_COFINS       write FVL_DESC_COFINS;
+    property VL_BC_COFINS    : currency       read FVL_BC_COFINS         write FVL_BC_COFINS;
+    property ALIQ_COFINS     : currency       read FALIQ_COFINS          write FALIQ_COFINS;
+    property VL_COFINS       : currency       read FVL_COFINS            write FVL_COFINS;
+    property COD_MOD         : String         read FCOD_MOD              write FCOD_MOD;
+    property CFOP            : Integer        read FCFOP                 write FCFOP;
+    property COD_CTA         : String         read FCOD_CTA              write FCOD_CTA;
+    property INFO_COMPL      : String         read FINFO_COMPL           write FINFO_COMPL;
   end;
 
   // Registro F550 - Lista
@@ -795,12 +795,12 @@ type
   TRegistroF560 = class
   private
      FVL_REC_COMP          : currency;
-     FCST_PIS              : TACBrSituacaoTribPIS;
+     FCST_PIS              : TACBrCstPis;
      FVL_DESC_PIS          : currency;
      FQUANT_BC_PIS         : currency;
      FALIQ_PIS_QUANT       : currency;
      FVL_PIS               : currency;
-     FCST_COFINS           : TACBrSituacaoTribCOFINS;
+     FCST_COFINS           : TACBrCstCofins;
      FVL_DESC_COFINS       : currency;
      FQUANT_BC_COFINS      : currency;
      FALIQ_COFINS_QUANT    : currency;
@@ -811,21 +811,21 @@ type
      FINFO_COMPL           : string;
 
   public
-     property  VL_REC_COMP        : currency                read FVL_REC_COMP        write FVL_REC_COMP      ;
-     property  CST_PIS            : TACBrSituacaoTribPIS    read FCST_PIS            write FCST_PIS          ;
-     property  VL_DESC_PIS        : currency                read FVL_DESC_PIS        write FVL_DESC_PIS      ;
-     property  QUANT_BC_PIS       : currency                read FQUANT_BC_PIS       write FQUANT_BC_PIS     ;
-     property  ALIQ_PIS_QUANT     : currency                read FALIQ_PIS_QUANT     write FALIQ_PIS_QUANT   ;
-     property  VL_PIS             : currency                read FVL_PIS             write FVL_PIS           ;
-     property  CST_COFINS         : TACBrSituacaoTribCOFINS read FCST_COFINS         write FCST_COFINS       ;
-     property  VL_DESC_COFINS     : currency                read FVL_DESC_COFINS     write FVL_DESC_COFINS   ;
-     property  QUANT_BC_COFINS    : currency                read FQUANT_BC_COFINS    write FQUANT_BC_COFINS  ;
-     property  ALIQ_COFINS_QUANT  : currency                read FALIQ_COFINS_QUANT  write FALIQ_COFINS_QUANT;
-     property  VL_COFINS          : currency                read FVL_COFINS          write FVL_COFINS        ;
-     property  COD_MOD            : string                  read FCOD_MOD            write FCOD_MOD          ;
-     property  CFOP               : Integer                 read FCFOP               write FCFOP             ;
-     property  COD_CTA            : string                  read FCOD_CTA            write FCOD_CTA          ;
-     property  INFO_COMPL         : string                  read FINFO_COMPL         write FINFO_COMPL        ;
+     property  VL_REC_COMP        : currency       read FVL_REC_COMP        write FVL_REC_COMP      ;
+     property  CST_PIS            : TACBrCstPis    read FCST_PIS            write FCST_PIS          ;
+     property  VL_DESC_PIS        : currency       read FVL_DESC_PIS        write FVL_DESC_PIS      ;
+     property  QUANT_BC_PIS       : currency       read FQUANT_BC_PIS       write FQUANT_BC_PIS     ;
+     property  ALIQ_PIS_QUANT     : currency       read FALIQ_PIS_QUANT     write FALIQ_PIS_QUANT   ;
+     property  VL_PIS             : currency       read FVL_PIS             write FVL_PIS           ;
+     property  CST_COFINS         : TACBrCstCofins read FCST_COFINS         write FCST_COFINS       ;
+     property  VL_DESC_COFINS     : currency       read FVL_DESC_COFINS     write FVL_DESC_COFINS   ;
+     property  QUANT_BC_COFINS    : currency       read FQUANT_BC_COFINS    write FQUANT_BC_COFINS  ;
+     property  ALIQ_COFINS_QUANT  : currency       read FALIQ_COFINS_QUANT  write FALIQ_COFINS_QUANT;
+     property  VL_COFINS          : currency       read FVL_COFINS          write FVL_COFINS        ;
+     property  COD_MOD            : string         read FCOD_MOD            write FCOD_MOD          ;
+     property  CFOP               : Integer        read FCFOP               write FCFOP             ;
+     property  COD_CTA            : string         read FCOD_CTA            write FCOD_CTA          ;
+     property  INFO_COMPL         : string         read FINFO_COMPL         write FINFO_COMPL        ;
   end;
 
   // Registro F560 - Lista

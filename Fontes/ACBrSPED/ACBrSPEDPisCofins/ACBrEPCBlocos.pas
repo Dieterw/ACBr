@@ -628,22 +628,23 @@ type
   TACBrSituacaoTribICMS = TACBrCstIcms;
 
   /// Código da Situação Tributária referente ao IPI.
-  TACBrSituacaoTribIPI = (
-                          stipiEntradaRecuperacaoCredito ,// '00' // Entrada com recuperação de crédito
-                          stipiEntradaTributradaZero     ,// '01' // Entrada tributada com alíquota zero
-                          stipiEntradaIsenta             ,// '02' // Entrada isenta
-                          stipiEntradaNaoTributada       ,// '03' // Entrada não-tributada
-                          stipiEntradaImune              ,// '04' // Entrada imune
-                          stipiEntradaComSuspensao       ,// '05' // Entrada com suspensão
-                          stipiOutrasEntradas            ,// '49' // Outras entradas
-                          stipiSaidaTributada            ,// '50' // Saída tributada
-                          stipiSaidaTributadaZero        ,// '51' // Saída tributada com alíquota zero
-                          stipiSaidaIsenta               ,// '52' // Saída isenta
-                          stipiSaidaNaoTributada         ,// '53' // Saída não-tributada
-                          stipiSaidaImune                ,// '54' // Saída imune
-                          stipiSaidaComSuspensao         ,// '55' // Saída com suspensão
-                          stipiOutrasSaidas               // '99' // Outras saídas
-                         );
+  TACBrCstIpi = (
+                 stipiEntradaRecuperacaoCredito ,// '00' // Entrada com recuperação de crédito
+                 stipiEntradaTributradaZero     ,// '01' // Entrada tributada com alíquota zero
+                 stipiEntradaIsenta             ,// '02' // Entrada isenta
+                 stipiEntradaNaoTributada       ,// '03' // Entrada não-tributada
+                 stipiEntradaImune              ,// '04' // Entrada imune
+                 stipiEntradaComSuspensao       ,// '05' // Entrada com suspensão
+                 stipiOutrasEntradas            ,// '49' // Outras entradas
+                 stipiSaidaTributada            ,// '50' // Saída tributada
+                 stipiSaidaTributadaZero        ,// '51' // Saída tributada com alíquota zero
+                 stipiSaidaIsenta               ,// '52' // Saída isenta
+                 stipiSaidaNaoTributada         ,// '53' // Saída não-tributada
+                 stipiSaidaImune                ,// '54' // Saída imune
+                 stipiSaidaComSuspensao         ,// '55' // Saída com suspensão
+                 stipiOutrasSaidas               // '99' // Outras saídas
+                );
+  TACBrSituacaoTribIPI = TACBrCstIpi;
 
   /// Código da Situação Tributária referente ao PIS.
   TACBrCstPis = (
@@ -681,7 +682,7 @@ type
                   stpisOutrasOperacoesEntrada,                         // '98' // Outras Operações de Entrada
                   stpisOutrasOperacoes                                 // '99' // Outras Operações
                  );
-   TACBrSituacaoTribPIS = TACBrCstPis;
+  TACBrSituacaoTribPIS = TACBrCstPis;
 
   /// Código da Situação Tributária referente ao COFINS.
   TACBrCstCofins = (
@@ -904,14 +905,15 @@ type
                         );
 
    //Indicador da composição da receita recebida no período (RegsitroF525 - IND_REC):
-   TACBrIndicadorDaComposicaoDaReceitaRecebida = (
-                          crCliente,          //01- Clientes
-                          crAdministradora,   //02- Administradora de cartão de débito/crédito
-                          crTituloDeCredito,  //03- Título de crédito - Duplicata, nota promissória, cheque, etc.
-                          crDocumentoFiscal,  //04- Documento fiscal
-                          crItemVendido,      //05- Item vendido (produtos e serviços)
-                          crOutros            //99- Outros (Detalhar no campo 10 – Informação Complementar)
-                        );
+   TACBrInd_Rec = (
+                   crCliente,          //01- Clientes
+                   crAdministradora,   //02- Administradora de cartão de débito/crédito
+                   crTituloDeCredito,  //03- Título de crédito - Duplicata, nota promissória, cheque, etc.
+                   crDocumentoFiscal,  //04- Documento fiscal
+                   crItemVendido,      //05- Item vendido (produtos e serviços)
+                   crOutros            //99- Outros (Detalhar no campo 10 – Informação Complementar)
+                 );
+   TACBrIndicadorDaComposicaoDaReceitaRecebida = TACBrInd_Rec;
 
   TOpenBlocos = class
   private
@@ -1033,6 +1035,20 @@ csticms400 = sticmsSimplesNacionalNaoTributada;
 csticms500 = sticmsSimplesNacionalCobradoAnteriormentePorST;
 csticms900 = sticmsSimplesNacionalOutros;
 
+cstipi00 = stipiEntradaRecuperacaoCredito;
+cstipi01 = stipiEntradaTributradaZero;
+cstipi02 = stipiEntradaIsenta;
+cstipi03 = stipiEntradaNaoTributada;
+cstipi04 = stipiEntradaImune;
+cstipi05 = stipiEntradaComSuspensao;
+cstipi49 = stipiOutrasEntradas;
+cstipi50 = stipiSaidaTributada;
+cstipi51 = stipiSaidaTributadaZero;
+cstipi52 = stipiSaidaIsenta;
+cstipi53 = stipiSaidaNaoTributada;
+cstipi54 = stipiSaidaImune;
+cstipi55 = stipiSaidaComSuspensao;
+cstipi99 = stipiOutrasSaidas;
 
 function CodVerToStr(AValue: TACBrCodVer): string;
 function StrToCodVer(AValue: string): TACBrCodVer;
@@ -1072,6 +1088,8 @@ function CstCofinsToStr(AValue: TACBrCstCofins): string;
 function StrToCstCofins(AValue: String): TACBrCstCofins;
 function CstIcmsToStr(AValue: TACBrCstIcms): string;
 function StrToCstIcms(AValue: String): TACBrCstIcms;
+function CstIpiToStr(AValue: TACBrCstIpi): string;
+function StrToCstIpi(AValue: String): TACBrCstIpi;
 
 implementation
 
@@ -1579,6 +1597,25 @@ begin
       if AValue = CstIcms[ifor] then
       begin
          Result := TACBrCstIcms( ifor );
+         Break;
+      end;
+   end;
+end;
+
+function CstIpiToStr(AValue: TACBrCstIpi): string;
+begin
+   Result := CstIpi[ Integer( AValue ) ];
+end;
+
+function StrToCstIpi(AValue: String): TACBrCstIpi;
+var
+ifor: Integer;
+begin
+   for ifor := 0 to High(CstIpi) do
+   begin
+      if AValue = CstIpi[ifor] then
+      begin
+         Result := TACBrCstIpi( ifor );
          Break;
       end;
    end;

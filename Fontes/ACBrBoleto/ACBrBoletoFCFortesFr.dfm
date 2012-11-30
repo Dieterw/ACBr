@@ -1,8 +1,8 @@
 object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
-  Left = 263
-  Top = 25
-  Width = 830
-  Height = 784
+  Left = 309
+  Top = 167
+  Width = 1084
+  Height = 768
   Caption = 'ACBRBoletoFCFortesFr'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -10,13 +10,15 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
-  OldCreateOrder = True
+  OldCreateOrder = False
+  Scaled = False
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   PixelsPerInch = 96
   TextHeight = 13
   object LayoutBoleto: TRLReport
-    Left = 0
-    Top = 0
+    Left = -3
+    Top = 3
     Width = 794
     Height = 1123
     Margins.LeftMargin = 4.000000000000000000
@@ -1583,20 +1585,6 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Font.Style = []
         ParentFont = False
       end
-      object RLLabel93: TRLLabel
-        Left = 393
-        Top = 137
-        Width = 5
-        Height = 10
-        Caption = 'x'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -8
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-        Transparent = False
-      end
       object RLLabel98: TRLLabel
         Left = 0
         Top = 393
@@ -2595,20 +2583,6 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Font.Style = []
         ParentFont = False
       end
-      object RLLabel170: TRLLabel
-        Left = 397
-        Top = 151
-        Width = 5
-        Height = 10
-        Caption = 'x'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -8
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-        Transparent = False
-      end
       object RLLabel175: TRLLabel
         Left = 4
         Top = 330
@@ -2781,8 +2755,8 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
     end
   end
   object BoletoCarne: TRLReport
-    Left = 0
-    Top = 0
+    Left = 793
+    Top = 3
     Width = 794
     Height = 1123
     Font.Charset = DEFAULT_CHARSET
@@ -2802,7 +2776,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       Left = 30
       Top = 19
       Width = 745
-      Height = 374
+      Height = 360
       BeforePrint = RLBand3BeforePrint
       object RLDraw30: TRLDraw
         Left = 150

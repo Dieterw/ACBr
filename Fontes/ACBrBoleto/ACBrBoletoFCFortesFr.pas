@@ -563,7 +563,7 @@ procedure TACBRBoletoFCFortesFr.BoletoCarneBeforePrint ( Sender: TObject;
    var PrintIt: boolean ) ;
 begin
 
-   fIndice := 0 ;
+   fIndice := 0;
    txtSwHouse.Caption := BoletoFC.SoftwareHouse ;
 
 end;

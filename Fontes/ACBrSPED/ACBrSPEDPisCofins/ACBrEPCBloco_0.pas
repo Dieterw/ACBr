@@ -49,6 +49,7 @@ type
   TRegistro0100List = class;
   TRegistro0110     = class;
   TRegistro0111     = class;
+  TRegistro0120List = class;
   TRegistro0140List = class;
   TRegistro0145     = class;
   TRegistro0150List = class;
@@ -99,6 +100,7 @@ type
   private
     FRegistro0100 : TRegistro0100List;
     FRegistro0110 : TRegistro0110;
+    FRegistro0120 : TRegistro0120List;     //Implementado por Fábio Gabriel - 29/11/2012
     FRegistro0140 : TRegistro0140List;
     FRegistro0500 : TRegistro0500List;
     FRegistro0600 : TRegistro0600List;
@@ -108,6 +110,7 @@ type
 
     property Registro0100 : TRegistro0100List read FRegistro0100 write FRegistro0100;
     property Registro0110 : TRegistro0110     read FRegistro0110 write FRegistro0110;
+    property Registro0120 : TRegistro0120List read FRegistro0120 write FRegistro0120;  //Implementado por Fábio Gabriel - 29/11/2012
     property Registro0140 : TRegistro0140List read FRegistro0140 write FRegistro0140;
     property Registro0500 : TRegistro0500List read FRegistro0500 write FRegistro0500;
     property Registro0600 : TRegistro0600List read FRegistro0600 write FRegistro0600;
@@ -189,6 +192,27 @@ type
     property REC_BRU_NCUM_EXP     : currency read FREC_BRU_NCUM_EXP     write FREC_BRU_NCUM_EXP;
     property REC_BRU_CUM          : currency read FREC_BRU_CUM          write FREC_BRU_CUM;
     property REC_BRU_TOTAL        : currency read FREC_BRU_TOTAL        write FREC_BRU_TOTAL;
+  end;
+
+  //Implementado por Fábio Gabriel - 29/11/2012
+  //REGISTRO 0120: IDENTIFICAÇÃO DE PERÍODOS DISPENSADOS
+  TRegistro0120 = class
+  private
+    FMES_DISPENSA   : string; //Mês de referência do ano-calendário da escrituração, dispensada da entrega. Formato MMAAAA
+    FINF_COMP       : string; //Informação complementar do registro.
+  public
+    property MES_DISPENSA : string read FMES_DISPENSA write FMES_DISPENSA;
+    property INF_COMP     : string read FINF_COMP     write FINF_COMP;
+  end;
+
+  // Registro 0120 - Lista
+  TRegistro0120List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistro0120;
+    procedure SetItem(Index: Integer; const Value: TRegistro0120);
+  public
+    function New: TRegistro0120;
+    property Items[Index: Integer]: TRegistro0120 read GetItem write SetItem;
   end;
 
   //REGISTRO 0140: TABELA DE CADASTRO DE ESTABELECIMENTO
@@ -524,6 +548,7 @@ constructor TRegistro0001.Create;
 begin
   FRegistro0100 := TRegistro0100List.Create;
   FRegistro0110 := TRegistro0110.Create;
+  FRegistro0120 := TRegistro0120List.Create;    //Implementado por Fábio Gabriel - 29/11/2012
   FRegistro0140 := TRegistro0140List.Create;
   FRegistro0500 := TRegistro0500List.Create;
   FRegistro0600 := TRegistro0600List.Create;
@@ -533,6 +558,7 @@ destructor TRegistro0001.Destroy;
 begin
   FRegistro0100.Free;
   FRegistro0110.Free;
+  FRegistro0120.Free;  //Implementado por Fábio Gabriel - 29/11/2012
   FRegistro0140.Free;
   FRegistro0500.Free;
   FRegistro0600.Free;
@@ -553,6 +579,24 @@ begin
 end;
 
 procedure TRegistro0100List.SetItem(Index: Integer; const Value: TRegistro0100);
+begin
+  Put(Index, Value);
+end;
+
+{ TRegistro0120List }
+
+function TRegistro0120List.GetItem(Index: Integer): TRegistro0120;
+begin
+  Result := TRegistro0120(Inherited Items[Index]);
+end;
+
+function TRegistro0120List.New: TRegistro0120;
+begin
+  Result := TRegistro0120.Create;
+  Add(Result);
+end;
+
+procedure TRegistro0120List.SetItem(Index: Integer; const Value: TRegistro0120);
 begin
   Put(Index, Value);
 end;

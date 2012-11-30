@@ -206,7 +206,7 @@ begin
        begin
          FretEvento.Add;
 //         (*HR10 *)FretEvento.versao               := Leitor.rCampo(tcStr, 'versao');
-         (*HR12 *)FretEvento.Items[i].FRetInfEvento.Id       := Leitor.rCampo(tcStr, 'Id');
+         (*HR12 *)FretEvento.Items[i].FRetInfEvento.Id       := Leitor.rAtributo('Id');
          (*HR13 *)FretEvento.Items[i].FRetInfEvento.tpAmb    := StrToTpAmb(ok, Leitor.rCampo(tcStr, 'tpAmb'));
          (*HR14 *)FretEvento.Items[i].FRetInfEvento.verAplic := Leitor.rCampo(tcStr, 'verAplic');
          (*HR15 *)FretEvento.Items[i].FRetInfEvento.cOrgao   := Leitor.rCampo(tcInt, 'cOrgao');

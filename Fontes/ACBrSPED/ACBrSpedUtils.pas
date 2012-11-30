@@ -62,6 +62,10 @@ CstIcms:  array[0..42] of String = ('000', '010', '020', '030', '040', '041', '0
                                     '200', '210', '220', '230', '240', '241', '250', '251', '260', '270', '290',
                                     '101', '102', '103', '201', '202', '203', '300', '400', '500', '900');
 
+CstIpi:  array[0..13] of String = ('00', '01', '02', '03', '04', '05',
+                                   '49', '50', '51', '52', '53', '54', '55',
+                                   '99');
+
 // Funções de checagem de dados
 function funChecaUF(const UF: String): boolean;
 function funChecaMUN(const COD: Integer): Boolean;

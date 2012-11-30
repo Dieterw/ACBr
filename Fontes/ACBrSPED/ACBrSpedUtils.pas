@@ -44,6 +44,24 @@ interface
 
 uses SysUtils, Variants, Classes, ACBrUtil;
 
+const
+CstPis:    array[0..32] of String = ('01', '02', '03', '04', '05', '06', '07', '08', '09',
+                                     '49', '50', '51', '52', '53', '54', '55', '56',
+                                     '60', '61', '62', '63', '64', '65', '66', '67',
+                                     '70', '71', '72', '73', '74', '75',
+                                     '98', '99');
+
+CstCofins: array[0..32] of String = ('01', '02', '03', '04', '05', '06', '07', '08', '09',
+                                     '49', '50', '51', '52', '53', '54', '55', '56',
+                                     '60', '61', '62', '63', '64', '65', '66', '67',
+                                     '70', '71', '72', '73', '74', '75',
+                                     '98', '99');
+
+CstIcms:  array[0..42] of String = ('000', '010', '020', '030', '040', '041', '050', '051', '060', '070', '090',
+                                    '100', '110', '120', '130', '140', '141', '150', '151', '160', '170', '190',
+                                    '200', '210', '220', '230', '240', '241', '250', '251', '260', '270', '290',
+                                    '101', '102', '103', '201', '202', '203', '300', '400', '500', '900');
+
 // Funções de checagem de dados
 function funChecaUF(const UF: String): boolean;
 function funChecaMUN(const COD: Integer): Boolean;
@@ -57,8 +75,8 @@ function funChecaGENERO(const COD: String): Boolean;
 function funChecaPAISIBGE(const COD: String): Boolean;
 function funChecaMODNF(const COD: String): Boolean;
 function funChecaSITDOCTO(const COD: String): Boolean;
-function funChecaCSTCOFINS(const CST: String): Boolean;
-function funChecaCSTPIS(const CST: String): Boolean;
+//function funChecaCSTCOFINS(const CST: String): Boolean;
+//function funChecaCSTPIS(const CST: String): Boolean;
 function funStrZero(Zeros: String; Quant: Integer): String;
 function funChecaCOD_CONS(const COD_MOD, COD_CONS: AnsiString): Boolean;
 
@@ -156,29 +174,22 @@ begin
 end;
 
 function funChecaCST(const CST: String): Boolean;
-const
-  ListaCST: array[0..42] of String = (
-    '000', '010', '020', '030', '040', '041', '050', '051',
-    '060', '070', '090', '100', '110', '120', '130', '140',
-    '141', '150', '151', '160', '170', '190', '200', '210',
-    '220', '230', '240', '241', '250', '251', '260', '270',
-    '290', '101', '102', '103', '201', '202', '203', '300',
-    '400', '500', '900');
 var
-intFor: integer;
-booFind: Boolean;
+ifor: Integer;
 begin
-  intFor := 0;
-  booFind := False;
-  while (not (booFind)) and (intFor <= 42) do
-  begin
-    booFind := ListaCST[intFor] = CST;
-    inc(intFor);
-  end;
+  Result := False;
 
-  Result := booFind;
+  for ifor := 0 to High(CstIcms) do
+  begin
+     if CST = CstIcms[ifor] then
+     begin
+        Result := True;
+        Break;
+     end;
+  end;
 end;
 
+(*
 function funChecaCSTCOFINS(const CST: String): Boolean;
 const
   ListaCST: array[0..9] of String = (
@@ -238,6 +249,7 @@ begin
 
   Result := booFind;
 end;
+*)
 
 function funChecaSITDOCTO(const COD: String): Boolean;
 const

@@ -251,6 +251,7 @@ type
                         tpEntradaAquisicao, // 0 - Entrada
                         tpSaidaPrestacao    // 1 - Saída
                        );
+
   /// Indicador do emitente do documento fiscal
   TACBrEmitente = (
                     edEmissaoPropria,         // 0 - Emissão própria
@@ -554,9 +555,6 @@ type
                          ncgCompensacao,  // 05 - Contas de compensação
                          ncgOutras        // 09 - Outras
                         );
-
-
-
 
   /// Código da tabela de modelo de documento fiscais:
 //  TACBrCodModeloDoc = (

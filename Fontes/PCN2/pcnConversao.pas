@@ -146,7 +146,7 @@ type
   // Alterado por Italo em 28/11/2012 para atender a NT 2012/005
   TpcnOrigemMercadoria = (oeNacional, oeEstrangeiraImportacaoDireta, oeEstrangeiraAdquiridaBrasil,
                           oeNacionalConteudoImportacaoSuperior40, oeNacionalProcessosBasicos,
-                          oeNacionalConteudoImportacaoInferior40,
+                          oeNacionalConteudoImportacaoInferiorIgual40,
                           oeEstrangeiraImportacaoDiretaSemSimilar, oeEstrangeiraAdquiridaBrasilSemSimilar);
   // Tipo cstICMSOutraUF, cstICMSSN incluido por Italo em 03/08/2011 (usado no CTe versão 1.04)
   TpcnCSTIcms = (cst00, cst10, cst20, cst30, cst40, cst41, cst45, cst50, cst51,
@@ -745,7 +745,7 @@ begin
   result := EnumeradoToStr(t, ['0', '1', '2', '3', '4', '5', '6', '7'],
      [oeNacional, oeEstrangeiraImportacaoDireta, oeEstrangeiraAdquiridaBrasil,
       oeNacionalConteudoImportacaoSuperior40, oeNacionalProcessosBasicos,
-      oeNacionalConteudoImportacaoInferior40,
+      oeNacionalConteudoImportacaoInferiorIgual40,
       oeEstrangeiraImportacaoDiretaSemSimilar, oeEstrangeiraAdquiridaBrasilSemSimilar]);
 end;
 
@@ -754,7 +754,7 @@ begin
   result := StrToEnumerado(ok, s, ['0', '1', '2', '3', '4', '5', '6', '7'],
      [oeNacional, oeEstrangeiraImportacaoDireta, oeEstrangeiraAdquiridaBrasil,
       oeNacionalConteudoImportacaoSuperior40, oeNacionalProcessosBasicos,
-      oeNacionalConteudoImportacaoInferior40,
+      oeNacionalConteudoImportacaoInferiorIgual40,
       oeEstrangeiraImportacaoDiretaSemSimilar, oeEstrangeiraAdquiridaBrasilSemSimilar]);
 end;
 

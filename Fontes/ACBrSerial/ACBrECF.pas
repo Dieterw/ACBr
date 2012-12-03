@@ -5196,7 +5196,6 @@ begin
 
   Result := Linha ;
 end;
-{$ENDIF}
 
 procedure TACBrECF.Notification(AComponent: TComponent; Operation: TOperation);
 begin

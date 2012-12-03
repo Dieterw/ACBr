@@ -799,7 +799,8 @@ end;
 
 class function NotaUtil.FormatarCEP(AValue: String): String;
 begin
-  Result := copy(AValue,1,5) + '-' + copy(AValue,6,3);
+   Result := DFeUtil.FormatarCEP(AValue);
+//  Result := copy(AValue,1,5) + '-' + copy(AValue,6,3);
 end;
 
 (*
@@ -811,10 +812,12 @@ end;
 *)
 
 class function NotaUtil.FormatarFone(AValue: String): String;
-var
-  lTemp: string;
+//var
+//  lTemp: string;
   //i: integer;
 begin
+   Result := DFeUtil.FormatarFone(AValue);
+(*
   AValue := IntToStr(StrToInt64Def(DFeUtil.LimpaNumero(AValue),0));
   Result := AValue;
   lTemp := '';
@@ -838,7 +841,7 @@ begin
       end;
     end;
   end;
-
+*)
   {Result := AValue;
   if NotaUtil.NaoEstaVazio(AValue) then
   begin
@@ -1808,17 +1811,18 @@ begin
 {$ENDIF}
 end;
 
-
 class function NotaUtil.ValidaUFCidade(const UF, Cidade: Integer): Boolean;
 begin
-  Result := (Copy(IntToStr(UF), 1, 2) = Copy(IntToStr(Cidade), 1, 2));
+   Result := DFeUtil.ValidaUFCidade(UF, Cidade);
+//  Result := (Copy(IntToStr(UF), 1, 2) = Copy(IntToStr(Cidade), 1, 2));
 end;
 
 class procedure NotaUtil.ValidaUFCidade(const UF, Cidade: Integer;
   const AMensagem: String);
 begin
-  if not(ValidaUFCidade(UF,Cidade)) then
-    raise EACBrNFeException.Create(AMensagem);
+   DFeUtil.ValidaUFCidade(UF, Cidade, AMensagem);
+//  if not(ValidaUFCidade(UF,Cidade)) then
+//    raise EACBrNFeException.Create(AMensagem);
 end;
 
 (*
@@ -1855,7 +1859,8 @@ end;
 
 class function NotaUtil.PathAplication: String;
 begin
-  Result := ExtractFilePath(Application.ExeName);
+   Result := DFeUtil.PathAplication;
+//  Result := ExtractFilePath(Application.ExeName);
 end;
 
 class function NotaUtil.GerarChaveContingencia(FNFe:TNFe): string;
@@ -1961,10 +1966,12 @@ begin
 end;
 
 class function NotaUtil.CollateBr(Str: String): String;
-var
-   i, wTamanho: integer;
-   wChar, wResultado: Char;
+//var
+//   i, wTamanho: integer;
+//   wChar, wResultado: Char;
 begin
+   Result := DFeUtil.CollateBr(Str);
+(*
    result:='';
    wtamanho:=Length(Str);
    i:=1;
@@ -1992,13 +1999,16 @@ begin
       Result:=Result+wResultado;
    end;
    Result:=UpperCase(Result);
+*)
 end;
 
 class function NotaUtil.UpperCase2(Str: String): String;
-var
-   i, wTamanho: integer;
-   wChar, wResultado: Char;
+//var
+//   i, wTamanho: integer;
+//   wChar, wResultado: Char;
 begin
+   Result := DFeUtil.UpperCase2(Str);
+(*
    result:='';
    wtamanho:=Length(Str);
    i:=1;
@@ -2039,6 +2049,7 @@ begin
       Result:=Result+wResultado;
    end;
    Result:=UpperCase(Result);
+*)
 end;
 
 class function NotaUtil.UFtoCUF(UF : String): Integer;

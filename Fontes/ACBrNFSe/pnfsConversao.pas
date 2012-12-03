@@ -711,6 +711,7 @@ begin
   4217600, // Siderópolis/SC
   4217808, // Taió/SC
   4217907, // Tangará/SC
+  4219002, // Urussanga/SC
   4219606, // Xavantina/SC
   4219705, // Xaxim/SC
   4302105, // Bento Gonçalves/RS
@@ -949,6 +950,7 @@ begin
   4217600: Cidade := 'Siderópolis/SC';
   4217808: Cidade := 'Taió/SC';
   4217907: Cidade := 'Tangará/SC';
+  4219002: Cidade := 'Urussanga/SC';
   4219606: Cidade := 'Xavantina/SC';
   4219705: Cidade := 'Xaxim/SC';
 

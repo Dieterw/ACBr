@@ -124,7 +124,7 @@ type
 implementation
 
 uses
- IniFiles, Variants, ACBrUtil;
+ IniFiles, Variants, ACBrUtil, ACBrConsts;
 
 class function DFeUtil.EstaVazio(const AValue: String): Boolean;
 begin

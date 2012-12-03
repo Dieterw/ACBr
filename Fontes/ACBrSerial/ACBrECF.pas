@@ -4896,6 +4896,7 @@ end;
          AValue.FreeNotification(self);
    end ;
  end;
+ {$ENDIF}
 {$ENDIF}
 
  procedure TACBrECF.SetMemoParams(const AValue: TStrings);
@@ -4905,7 +4906,7 @@ end;
 
  procedure TACBrECF.MemoAdicionaCabecalho;
  begin
-   MemoLeParams ;
+   MemoLeParams;
    MemoAdicionaLinha( fsMemoCabecalho ) ;
    fsMemoItens     := 0 ;  { Zera contador de Itens }
    fsSubTotalPagto := 0;   {Zera o total pago verificador da bobina}

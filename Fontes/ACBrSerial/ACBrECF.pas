@@ -4896,7 +4896,6 @@ end;
          AValue.FreeNotification(self);
    end ;
  end;
- {$ENDIF}
 {$ENDIF}
 
  procedure TACBrECF.SetMemoParams(const AValue: TStrings);
@@ -5196,6 +5195,8 @@ begin
 
   Result := Linha ;
 end;
+
+{$ENDIF}
 
 procedure TACBrECF.Notification(AComponent: TComponent; Operation: TOperation);
 begin

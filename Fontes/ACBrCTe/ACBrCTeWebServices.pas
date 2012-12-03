@@ -64,6 +64,7 @@ uses Classes, SysUtils,
   pcnAuxiliar, pcnConversao, pcteRetConsCad,
   ACBrCTeConfiguracoes, ACBrCteConhecimentos,
   pcteRetConsReciCTe, pcteProcCte, pcteRetCancCTe, pcteConsReciCTe,
+  pcteEnvEventoCTe, pcteRetEnvEventoCTe,
   pcteRetEnvCTe, ActiveX;
 
 type
@@ -78,6 +79,7 @@ type
     procedure DoCTeRecepcao;
     procedure DoCTeRetRecepcao;
     procedure DoCTeRecibo;
+    procedure DoCTeEnvEvento;
 
     {$IFDEF ACBrCTeOpenSSL}
        procedure ConfiguraHTTP( HTTP : THTTPSend; Action : AnsiString);
@@ -343,6 +345,28 @@ type
     property CPF:  String read FCPF write SetCPF;
   end;
 
+  TCTeEnvEvento = Class(TWebServicesBase)
+  private
+    FidLote: Integer;
+    Fversao: String;
+    FEvento: TEventoCTe;
+    FcStat: Integer;
+    FxMotivo: String;
+    FTpAmb: TpcnTipoAmbiente;
+    FEventoRetorno: TRetEventoCTe;
+  public
+    constructor Create(AOwner : TComponent; AEvento : TEventoCTe); reintroduce;
+    destructor Destroy; override;
+    function Executar: Boolean; override;
+
+    property idLote: Integer               read FidLote      write FidLote;
+    property versao: String                read Fversao      write Fversao;
+    property cStat: Integer                read FcStat;
+    property xMotivo: String               read FxMotivo;
+    property TpAmb: TpcnTipoAmbiente       read FTpAmb;
+    property EventoRetorno: TRetEventoCTe  read FEventoRetorno;
+  end;
+
   TWebServices = Class(TWebServicesBase)
   private
     FACBrCTe : TComponent;
@@ -354,6 +378,7 @@ type
     FCancelamento: TCTeCancelamento;
     FInutilizacao: TCTeInutilizacao;
     FConsultaCadastro: TCTeConsultaCadastro;
+    FEnvEvento: TCTeEnvEvento;
   public
     constructor Create(AFCTe: TComponent);reintroduce;
     destructor Destroy; override;
@@ -370,6 +395,7 @@ type
     property Cancelamento: TCTeCancelamento read FCancelamento write FCancelamento;
     property Inutilizacao: TCTeInutilizacao read FInutilizacao write FInutilizacao;
     property ConsultaCadastro: TCTeConsultaCadastro read FConsultaCadastro write FConsultaCadastro;
+    property EnvEvento: TCTeEnvEvento read FEnvEvento write FEnvEvento;
   end;
 
 implementation
@@ -716,10 +742,8 @@ begin
     DoCTeInutilizacao
   else if self is TCTeConsultaCadastro then
     DoCTeConsultaCadastro
-//  else if self is TCTeEnvDPEC then
-//    DoCTeEnvDPEC
-//  else if self is TCTeConsultaDPEC then
-//    DoCTeConsultaDPEC
+  else if Self is TCTeEnvEvento then
+    DoCTeEnvEvento
 end;
 
 procedure TWebServicesBase.LoadURL;
@@ -738,10 +762,82 @@ begin
     FURL := CTeUtil.GetURL(FConfiguracoes.WebServices.UFCodigo, FConfiguracoes.WebServices.AmbienteCodigo, FConfiguracoes.Geral.FormaEmissaoCodigo, LayCTeInutilizacao)
   else if self is TCTeConsultaCadastro then
     FURL := CTeUtil.GetURL(FConfiguracoes.WebServices.UFCodigo, FConfiguracoes.WebServices.AmbienteCodigo, FConfiguracoes.Geral.FormaEmissaoCodigo, LayCTeCadastro)
-//  else if self is TCTeEnvDPEC then
-//    FURL := CTeUtil.GetURL(FConfiguracoes.WebServices.UFCodigo, FConfiguracoes.WebServices.AmbienteCodigo, FConfiguracoes.Geral.FormaEmissaoCodigo, LayCTeEnvDPEC)
-//  else if self is TCTeConsultaDPEC then
-//    FURL := CTeUtil.GetURL(FConfiguracoes.WebServices.UFCodigo, FConfiguracoes.WebServices.AmbienteCodigo, FConfiguracoes.Geral.FormaEmissaoCodigo, LayCTeConsultaDPEC)
+  else if self is TCTeEnvEvento then
+    FURL := CTeUtil.GetURL(FConfiguracoes.WebServices.UFCodigo, FConfiguracoes.WebServices.AmbienteCodigo, FConfiguracoes.Geral.FormaEmissaoCodigo, LayCTeEvento)
+end;
+
+procedure TWebServicesBase.DoCTeEnvEvento;
+var
+  EventoCTe : TEventoCTe;
+  i : integer;
+begin
+  EventoCTe        := TEventoCTe.Create;
+  EventoCTe.idLote := TCTeEnvEvento(Self).idLote;
+
+  for i := 0 to TCTeEnvEvento(Self).FEvento.Evento.Count-1 do
+   begin
+     with EventoCTe.Evento.Add do
+      begin
+        infEvento.tpAmb      := TpcnTipoAmbiente(FConfiguracoes.WebServices.AmbienteCodigo-1);
+        infEvento.CNPJ       := TCTeEnvEvento(Self).FEvento.Evento[i].InfEvento.CNPJ;
+        infEvento.chCTe      := TCTeEnvEvento(Self).FEvento.Evento[i].InfEvento.chCTe;
+        infEvento.dhEvento   := TCTeEnvEvento(Self).FEvento.Evento[i].InfEvento.dhEvento;
+        infEvento.tpEvento   := TCTeEnvEvento(Self).FEvento.Evento[i].InfEvento.tpEvento;
+        infEvento.nSeqEvento := TCTeEnvEvento(Self).FEvento.Evento[i].InfEvento.nSeqEvento;
+
+        case InfEvento.tpEvento of
+          teCancelamento:
+          begin
+            infEvento.detEvento.nProt := TCTeEnvEvento(Self).FEvento.Evento[i].InfEvento.detEvento.nProt;
+            infEvento.detEvento.xJust := TCTeEnvEvento(Self).FEvento.Evento[i].InfEvento.detEvento.xJust;
+          end;
+          teEncerramento:
+          begin
+          (*
+            infEvento.detEvento.nProt := TCTeEnvEvento(Self).FEvento.Evento[i].InfEvento.detEvento.nProt;
+            infEvento.detEvento.dtEnc := TCTeEnvEvento(Self).FEvento.Evento[i].InfEvento.detEvento.dtEnc;
+            infEvento.detEvento.cUF   := TCTeEnvEvento(Self).FEvento.Evento[i].InfEvento.detEvento.cUF;
+            infEvento.detEvento.cMun  := TCTeEnvEvento(Self).FEvento.Evento[i].InfEvento.detEvento.cMun;
+          *)  
+          end;
+        end;
+      end;
+   end;
+
+  EventoCTe.GerarXML;
+
+  {$IFDEF ACBrCTeOpenSSL}
+  if not(NotaUtil.Assinar(EventoCTe.Gerador.ArquivoFormatoXML, TConfiguracoes(FConfiguracoes).Certificados.Certificado , TConfiguracoes(FConfiguracoes).Certificados.Senha, FDadosMsg, FMsg)) then
+     begin
+       if Assigned(TACBrCTe( FACBrCTe ).OnGerarLog) then
+          TACBrCTe( FACBrCTe ).OnGerarLog('Falha ao assinar o Envio de Evento '+LineBreak+FMsg);
+       raise EACBrCTeException.Create('Falha ao assinar o Envio de Evento '+LineBreak+FMsg);
+     end;
+  {$ELSE}
+  if not(CTeUtil.Assinar(EventoCTe.Gerador.ArquivoFormatoXML, TConfiguracoes(FConfiguracoes).Certificados.GetCertificado , FDadosMsg, FMsg)) then
+     begin
+       if Assigned(TACBrCTe( FACBrCTe ).OnGerarLog) then
+          TACBrCTe( FACBrCTe ).OnGerarLog('Falha ao assinar o Envio de Evento '+LineBreak+FMsg);
+       raise EACBrCTeException.Create('Falha ao assinar o Envio de Evento '+LineBreak+FMsg);
+     end;
+  {$ENDIF}
+
+  if not(CTeUtil.Valida(FDadosMsg, FMsg, TACBrCTe( FACBrCTe ).Configuracoes.Geral.PathSchemas)) then
+     begin
+       if Assigned(TACBrCTe( FACBrCTe ).OnGerarLog) then
+          TACBrCTe( FACBrCTe ).OnGerarLog('Falha na validação dos dados do Envio de Evento '+LineBreak+FMsg);
+       raise EACBrCTeException.Create('Falha na validação dos dados do Envio de Evento '+LineBreak+FMsg);
+     end;
+
+  for i := 0 to TCTeEnvEvento(Self).FEvento.Evento.Count-1 do
+   begin
+      TCTeEnvEvento(Self).FEvento.Evento[i].InfEvento.id := EventoCTe.Evento[i].InfEvento.id;
+   end;
+  EventoCTe.Free;
+
+  FDadosMsg := StringReplace( FDadosMsg, '<'+ENCODING_UTF8_STD+'>', '', [rfReplaceAll] ) ;
+  FDadosMsg := StringReplace( FDadosMsg, '<'+ENCODING_UTF8+'>', '', [rfReplaceAll] ) ;
+  FDadosMsg := StringReplace( FDadosMsg, '<?xml version="1.0"?>', '', [rfReplaceAll] ) ;
 end;
 
 { TWebServices }
@@ -823,8 +919,7 @@ begin
   FCancelamento     := TCTeCancelamento.Create(AFCTe);
   FInutilizacao     := TCTeInutilizacao.Create(AFCTe);
   FConsultaCadastro := TCTeConsultaCadastro.Create(AFCTe);
-//  FEnviaDPEC        := TCTeEnvDPEC.Create(AFCTe);
-//  FConsultaDPEC     := TCTeConsultaDPEC.Create(AFCTe);
+  FEnvEvento        := TCTeEnvEvento.Create(AFCTe,TACBrCTe(AFCTe).EventoCTe);
 end;
 
 destructor TWebServices.Destroy;
@@ -837,8 +932,7 @@ begin
   FCancelamento.Free;
   FInutilizacao.Free;
   FConsultaCadastro.Free;
-//  FEnviaDPEC.free;
-//  FConsultaDPEC.free;
+  FEnvEvento.Free;
   inherited;
 end;
 
@@ -1006,7 +1100,7 @@ begin
     {$ENDIF}
     Acao.Free;
     Stream.Free;
-    CTeUtil.ConfAmbiente;
+    DFeUtil.ConfAmbiente;
     TACBrCTe( FACBrCTe ).SetStatus( stCTeIdle );
   end;
 end;
@@ -1142,7 +1236,7 @@ begin
     {$ENDIF}
     Acao.Free;
     Stream.Free;
-    CTeUtil.ConfAmbiente;
+    DFeUtil.ConfAmbiente;
     TACBrCTe( FACBrCTe ).SetStatus( stCTeIdle );
   end;
 end;
@@ -1365,7 +1459,7 @@ function TCteRetRecepcao.Executar: Boolean;
       {$ENDIF}
       Acao.Free;
       Stream.Free;
-      CTeUtil.ConfAmbiente;
+      DFeUtil.ConfAmbiente;
       TACBrCTe( FACBrCTe ).SetStatus( stCTeIdle );
     end;
  end;
@@ -1536,7 +1630,7 @@ begin
    {$ENDIF}
    Acao.Free;
    Stream.Free;
-   CTeUtil.ConfAmbiente;
+   DFeUtil.ConfAmbiente;
    TACBrCTe( FACBrCTe ).SetStatus( stCTeIdle );
  end;
 end;
@@ -1776,7 +1870,7 @@ begin
     CTeRetorno.Free;
     Acao.Free;
     Stream.Free;
-    CTeUtil.ConfAmbiente;
+    DFeUtil.ConfAmbiente;
     TACBrCTe( FACBrCTe ).SetStatus( stCTeIdle );
   end;
 end;
@@ -1968,7 +2062,7 @@ begin
     Acao.Free;
     Stream.Free;
     CTeRetorno.Free;
-    CTeUtil.ConfAmbiente;
+    DFeUtil.ConfAmbiente;
     TACBrCTe( FACBrCTe ).SetStatus( stCTeIdle );
   end;
 end;
@@ -2139,7 +2233,7 @@ begin
     Acao.Free;
     Stream.Free;
     CTeRetorno.Free;
-    CTeUtil.ConfAmbiente;
+    DFeUtil.ConfAmbiente;
     TACBrCTe( FACBrCTe ).SetStatus( stCTeIdle );
   end;
 end;
@@ -2290,7 +2384,7 @@ begin
     {$ENDIF}
     Acao.Free;
     Stream.Free;
-    CTeUtil.ConfAmbiente;
+    DFeUtil.ConfAmbiente;
     TACBrCTe( FACBrCTe ).SetStatus( stCTeIdle );
   end;
 end;
@@ -2323,6 +2417,207 @@ begin
      FCPF  := '';
    end;
   FIE := Value;
+end;
+
+{ TCTeEnvEvento }
+
+constructor TCTeEnvEvento.Create(AOwner: TComponent; AEvento: TEventoCTe);
+begin
+  inherited Create(AOwner);
+
+  FEvento := AEvento;
+end;
+
+destructor TCTeEnvEvento.Destroy;
+begin
+  if Assigned(FEventoRetorno) then
+     FEventoRetorno.Free;
+  inherited;
+end;
+
+function TCTeEnvEvento.Executar: Boolean;
+var
+  aMsg: string;
+  Texto : String;
+  Acao  : TStringList ;
+  Stream: TMemoryStream;
+  StrStream: TStringStream;
+  wProc  : TStringList ;
+  i,j : integer;
+  Leitor : TLeitor;
+  {$IFDEF ACBrMDFeOpenSSL}
+     HTTP: THTTPSend;
+  {$ELSE}
+     ReqResp: THTTPReqResp;
+  {$ENDIF}
+begin
+  FEvento.idLote := idLote;
+  if Assigned(FEventoRetorno) then
+     FEventoRetorno.Free;
+
+  inherited Executar;
+
+  Acao   := TStringList.Create;
+  Stream := TMemoryStream.Create;
+
+  Texto := '<?xml version="1.0" encoding="utf-8"?>';
+  Texto := Texto + '<soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">';
+  Texto := Texto +   '<soap12:Header>';
+  Texto := Texto +     '<mdfeCabecMsg xmlns="http://www.portalfiscal.inf.br/cte/wsdl/CTeRecepcaoEvento">';
+  Texto := Texto +       '<cUF>'+IntToStr(FConfiguracoes.WebServices.UFCodigo)+'</cUF>';
+  Texto := Texto +       '<versaoDados>'+CTeEventoCTe+'</versaoDados>';
+  Texto := Texto +     '</mdfeCabecMsg>';
+  Texto := Texto +   '</soap12:Header>';
+  Texto := Texto +   '<soap12:Body>';
+  Texto := Texto +     '<mdfeDadosMsg xmlns="http://www.portalfiscal.inf.br/cte/wsdl/CTeRecepcaoEvento">';
+  Texto := Texto +       FDadosMsg;
+  Texto := Texto +     '</mdfeDadosMsg>';
+  Texto := Texto +   '</soap12:Body>';
+  Texto := Texto +'</soap12:Envelope>';
+
+  Acao.Text := Texto;
+
+   {$IFDEF ACBrMDFeOpenSSL}
+     Acao.SaveToStream(Stream);
+     HTTP := THTTPSend.Create;
+  {$ELSE}
+     ReqResp := THTTPReqResp.Create(nil);
+     ConfiguraReqResp( ReqResp );
+     ReqResp.URL := FURL;
+     ReqResp.UseUTF8InHeader := True;
+     ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/cte/wsdl/CTeRecepcaoEvento/cteRecepcaoEvento';
+  {$ENDIF}
+
+  try
+    TACBrCTe( FACBrCTe ).SetStatus( stCTeEvento );
+
+    if FConfiguracoes.Geral.Salvar then
+      FConfiguracoes.Geral.Save(IntToStr(FEvento.idLote)+ '-ped-evento.xml', FDadosMsg);
+
+    if FConfiguracoes.Arquivos.Salvar then
+      FConfiguracoes.Geral.Save(IntToStr(FEvento.idLote)+ '-ped-evento.xml', FDadosMsg, FConfiguracoes.Arquivos.GetPathCTe);
+
+    {$IFDEF ACBrCTeOpenSSL}
+       HTTP.Document.LoadFromStream(Stream);
+       ConfiguraHTTP(HTTP,'SOAPAction: "http://www.portalfiscal.inf.br/cte/wsdl/CTeRecepcaoEvento/cteRecepcaoEvento"');
+       HTTP.HTTPMethod('POST', FURL);
+
+       StrStream := TStringStream.Create('');
+       StrStream.CopyFrom(HTTP.Document, 0);
+       FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
+       FRetWS := SeparaDados( FRetornoWS,'cteRecepcaoEventoResult');
+       StrStream.Free;
+    {$ELSE}
+       ReqResp.Execute(Acao.Text, Stream);
+       StrStream := TStringStream.Create('');
+       StrStream.CopyFrom(Stream, 0);
+       FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
+       FRetWS := SeparaDados( FRetornoWS,'cteRecepcaoEventoResult');
+       StrStream.Free;
+    {$ENDIF}
+
+    if FConfiguracoes.Geral.Salvar then
+      FConfiguracoes.Geral.Save(IntToStr(FEvento.idLote) + '-eve.xml', FRetWS);
+
+    if FConfiguracoes.Arquivos.Salvar then
+      FConfiguracoes.Geral.Save(IntToStr(FEvento.idLote) + '-eve.xml', FRetWS, FConfiguracoes.Arquivos.GetPathCTe);
+
+    FEventoRetorno                := TRetEventoCTe.Create;
+    FEventoRetorno.Leitor.Arquivo := FRetWS;
+    FEventoRetorno.LerXml;
+
+    TACBrCTe( FACBrCTe ).SetStatus( stCTeIdle );
+    aMsg := 'Ambiente : '+TpAmbToStr(EventoRetorno.retEvento.Items[0].RetInfEvento.tpAmb)+LineBreak+
+            'Versão Aplicativo : '+EventoRetorno.retEvento.Items[0].RetInfEvento.verAplic+LineBreak+
+            'Status Código : '+IntToStr(EventoRetorno.retEvento.Items[0].RetInfEvento.cStat)+LineBreak+
+            'Status Descrição : '+EventoRetorno.retEvento.Items[0].RetInfEvento.xMotivo+LineBreak+
+            'Recebimento : '+DFeUtil.SeSenao(EventoRetorno.retEvento.Items[0].RetInfEvento.dhRegEvento = 0, '',
+                                              DateTimeToStr(EventoRetorno.retEvento.Items[0].RetInfEvento.dhRegEvento));
+
+    if FConfiguracoes.WebServices.Visualizar then
+      ShowMessage(aMsg);
+
+    if Assigned(TACBrCTe( FACBrCTe ).OnGerarLog) then
+       TACBrCTe( FACBrCTe ).OnGerarLog(aMsg);
+
+    FcStat   := EventoRetorno.retEvento.Items[0].RetInfEvento.cStat;
+    FxMotivo := EventoRetorno.retEvento.Items[0].RetInfEvento.xMotivo;
+    FMsg     := EventoRetorno.retEvento.Items[0].RetInfEvento.xMotivo;
+    FTpAmb   := EventoRetorno.retEvento.Items[0].RetInfEvento.tpAmb;
+
+    Result   := (FcStat = 128) or (FcStat = 134) or (FcStat = 135) or (FcStat = 136);
+
+    if FConfiguracoes.Geral.Salvar then
+      FConfiguracoes.Geral.Save(IntToStr(FEvento.idLote) + '-eve.xml', FRetWS);
+
+    if FConfiguracoes.Arquivos.Salvar then
+      FConfiguracoes.Geral.Save(IntToStr(FEvento.idLote) + '-eve.xml', FRetWS, FConfiguracoes.Arquivos.GetPathCTe);
+
+    //gerar arquivo proc de evento
+    if Result then
+    begin
+      Leitor := TLeitor.Create;
+      for i := 0 to FEvento.Evento.Count-1 do
+       begin
+        for j := 0 to EventoRetorno.retEvento.Count-1 do
+         begin
+           if FEvento.Evento.Items[i].InfEvento.chCTe = EventoRetorno.retEvento.Items[j].RetInfEvento.chCTe then
+            begin
+              wProc := TStringList.Create;
+              wProc.Add('<?xml version="1.0" encoding="UTF-8" ?>');
+              wProc.Add('<procEventoCTe versao="' + CTeEventoCTe + '" xmlns="http://www.portalfiscal.inf.br/cte">');
+
+              wProc.Add('<eventoCTe versao="' + CTeEventoCTe + '">');
+              Leitor.Arquivo := FDadosMSG;
+              wProc.Add(UTF8Encode(Leitor.rExtrai(1, 'infEvento', '', i + 1)));
+              wProc.Add('</infEvento>');
+
+              wProc.Add('<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">');
+              Leitor.Arquivo := FDadosMSG;
+              wProc.Add(UTF8Encode(Leitor.rExtrai(1, 'SignedInfo', '', i + 1)));
+              wProc.Add('</SignedInfo>');
+              Leitor.Arquivo := FDadosMSG;
+              wProc.Add(UTF8Encode(Leitor.rExtrai(1, 'SignatureValue', '', i + 1)));
+              wProc.Add('</SignatureValue>');
+              Leitor.Arquivo := FDadosMSG;
+              wProc.Add(UTF8Encode(Leitor.rExtrai(1, 'KeyInfo', '', i + 1)));
+              wProc.Add('</KeyInfo>');
+              wProc.Add('</Signature>');
+
+              wProc.Add('</eventoCTe>');
+
+              wProc.Add('<retEventoCTe versao="' + CTeEventoCTe + '">');
+              Leitor.Arquivo := FRetWS;
+              wProc.Add(UTF8Encode(Leitor.rExtrai(1, 'infEvento', '', j + 1)));
+              wProc.Add('</infEvento>');
+              wProc.Add('</retEventoCTe>');
+
+              wProc.Add('</procEventoCTe>');
+
+              EventoRetorno.retEvento.Items[j].RetInfEvento.XML := wProc.Text;
+
+              if FConfiguracoes.Geral.Salvar then
+                 FConfiguracoes.Geral.Save(FEvento.Evento.Items[i].InfEvento.chCTe + '-ProcEventoCTe.xml', wProc.Text);
+              if FConfiguracoes.Arquivos.Salvar then
+                 FConfiguracoes.Geral.Save(FEvento.Evento.Items[i].InfEvento.chCTe + '-ProcEventoCTe.xml', wProc.Text, FConfiguracoes.Arquivos.GetPathCTe);
+              wProc.Free;
+              break;
+            end;
+         end;
+       end;
+      Leitor.Free;
+    end;
+  finally
+    {$IFDEF ACBrCTeOpenSSL}
+       HTTP.Free;
+    {$ELSE}
+       ReqResp.Free;
+    {$ENDIF}
+    Acao.Free;
+    Stream.Free;
+    DFeUtil.ConfAmbiente;
+    TACBrCTe( FACBrCTe ).SetStatus( stCTeIdle );
+  end;
 end;
 
 end.

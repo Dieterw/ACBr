@@ -55,10 +55,11 @@ uses
   {$ELSE}
      Dialogs,
   {$ENDIF}
-  pcteCTe, pcnConversao, ACBrCTeConhecimentos, ACBrCTeConfiguracoes,
-  ACBrCTeWebServices, ACBrCTeUtil, ACBrCTeDACTeClass, ACBrDFeUtil,
-  ACBrUtil, Forms,
-  smtpsend, ssl_openssl, mimemess, mimepart; // units para enviar email
+  Forms,
+  smtpsend, ssl_openssl, mimemess, mimepart, // units para enviar email
+  pcteCTe, pcnConversao, pcteEnvEventoCTe, pcteRetEnvEventoCTe,
+  ACBrUtil, ACBrDFeUtil, ACBrCTeUtil, ACBrCTeConhecimentos, ACBrCTeConfiguracoes,
+  ACBrCTeWebServices, ACBrCTeDACTeClass;
 
 {$IFDEF PL_103}
 const
@@ -82,6 +83,7 @@ type
     fsAbout: TACBrCTeAboutInfo;
     FDACTe : TACBrCTeDACTeClass;
     FConhecimentos: TConhecimentos;
+    FEventoCTe: TEventoCTe;
     FWebServices: TWebServices;
     FConfiguracoes: TConfiguracoes;
     FStatus : TStatusACBrCTe;
@@ -106,8 +108,10 @@ type
     function Enviar(ALote: Integer; Imprimir:Boolean = True): Boolean;
     function Cancelamento(AJustificativa:WideString): Boolean;
     function Consultar: Boolean;
+    function EnviarEventoCTe(idLote : Integer): Boolean;
     property WebServices: TWebServices read FWebServices write FWebServices;
     property Conhecimentos: TConhecimentos read FConhecimentos write FConhecimentos;
+    property EventoCTe: TEventoCTe read FEventoCTe write FEventoCTe;
     property Status: TStatusACBrCTe read FStatus;
     procedure SetStatus( const stNewStatus : TStatusACBrCTe );
     procedure EnviaEmail(const sSmtpHost,
@@ -168,6 +172,7 @@ begin
 
   FConhecimentos      := TConhecimentos.Create(Self,Conhecimento);
   FConhecimentos.Configuracoes := FConfiguracoes;
+  FEventoCTe         := TEventoCTe.Create;
   FWebServices       := TWebServices.Create(Self);
 
   if FConfiguracoes.WebServices.Tentativas <= 0 then
@@ -182,6 +187,7 @@ destructor TACBrCTe.Destroy;
 begin
   FConfiguracoes.Free;
   FConhecimentos.Free;
+  FEventoCTe.Free;
   FWebServices.Free;
   {$IFDEF ACBrCTeOpenSSL}
      CteUtil.ShutDownXmlSec ;
@@ -512,6 +518,57 @@ begin
       StreamCTe,
       NomeArq
     );
+  end;
+end;
+
+function TACBrCTe.EnviarEventoCTe(idLote: Integer): Boolean;
+var
+  i: integer;
+begin
+  if EventoCTe.Evento.Count <= 0 then
+   begin
+      if Assigned(Self.OnGerarLog) then
+         Self.OnGerarLog('ERRO: Nenhum Evento adicionado ao Lote');
+      raise EACBrCTeException.Create('ERRO: Nenhum Evento adicionado ao Lote');
+     exit;
+   end;
+
+  if EventoCTe.Evento.Count > 1 then
+   begin
+      if Assigned(Self.OnGerarLog) then
+         Self.OnGerarLog('ERRO: Conjunto de Eventos transmitidos (máximo de 1) excedido. Quantidade atual: '+IntToStr(EventoCTe.Evento.Count));
+      raise EACBrCTeException.Create('ERRO: Conjunto de Eventos transmitidos (máximo de 1) excedido. Quantidade atual: '+IntToStr(EventoCTe.Evento.Count));
+     exit;
+   end;
+
+  WebServices.EnvEvento.idLote := idLote;
+
+  {Atribuir nSeqEvento, CNPJ, Chave e/ou Protocolo quando não especificar}
+  for i:= 0 to EventoCTe.Evento.Count -1 do
+  begin
+    try
+      if EventoCTe.Evento.Items[i].InfEvento.nSeqEvento = 0 then
+        EventoCTe.Evento.Items[i].infEvento.nSeqEvento := 1;
+      if trim(EventoCTe.Evento.Items[i].InfEvento.CNPJ) = '' then
+        EventoCTe.Evento.Items[i].InfEvento.CNPJ := self.Conhecimentos.Items[i].CTe.Emit.CNPJ;
+      if trim(EventoCTe.Evento.Items[i].InfEvento.chCTe) = '' then
+        EventoCTe.Evento.Items[i].InfEvento.chCTe := copy(self.Conhecimentos.Items[i].CTe.infCTe.ID, (length(self.Conhecimentos.Items[i].CTe.infCTe.ID)-44)+1, 44);
+      if trim(EventoCTe.Evento.Items[i].infEvento.detEvento.nProt) = '' then
+      begin
+        if EventoCTe.Evento.Items[i].infEvento.tpEvento = teCancelamento then
+          EventoCTe.Evento.Items[i].infEvento.detEvento.nProt := self.Conhecimentos.Items[i].CTe.procCTe.nProt;
+      end;
+    except
+    end;
+  end;
+  {**}
+
+  Result := WebServices.EnvEvento.Executar;
+  if not Result then
+  begin
+    if Assigned(Self.OnGerarLog) then
+      Self.OnGerarLog(WebServices.EnvEvento.Msg);
+    raise EACBrCTeException.Create(WebServices.EnvEvento.Msg);
   end;
 end;
 

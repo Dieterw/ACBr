@@ -48,10 +48,35 @@ unit pcteRetConsSitCTe;
 interface
 
 uses
-  SysUtils, Classes, pcnAuxiliar, pcnConversao, pcnLeitor, pcteProcCTe,
-  pcteRetCancCTe;
+  SysUtils, Classes,
+  pcnAuxiliar, pcnConversao, pcnLeitor, pcteProcCTe,
+  pcteRetCancCTe, pcteRetEnvEventoCTe;
 
 type
+
+  TRetEventoCTeCollection = class;
+  TRetEventoCTeCollectionItem = class;
+  TRetConsSitCTe = class;
+
+  TRetEventoCTeCollection = class(TCollection)
+  private
+    function GetItem(Index: Integer): TRetEventoCTeCollectionItem;
+    procedure SetItem(Index: Integer; Value: TRetEventoCTeCollectionItem);
+  public
+    constructor Create(AOwner: TPersistent);
+    function Add: TRetEventoCTeCollectionItem;
+    property Items[Index: Integer]: TRetEventoCTeCollectionItem read GetItem write SetItem; default;
+  end;
+
+  TRetEventoCTeCollectionItem = class(TCollectionItem)
+  private
+    FRetEventoCTe: TRetEventoCTe;
+  public
+    constructor Create; reintroduce;
+    destructor Destroy; override;
+  published
+    property RetEventoCTe: TRetEventoCTe read FRetEventoCTe write FRetEventoCTe;
+  end;
 
   TRetConsSitCTe = class(TPersistent)
   private
@@ -64,6 +89,7 @@ type
     FchCTe: string;
     FprotCTe: TProcCTe;
     FretCancCTe: TRetCancCTe;
+    FprocEventoCTe: TRetEventoCTeCollection;
   public
     constructor Create;
     destructor Destroy; override;
@@ -78,6 +104,7 @@ type
     property chCTe: string read FchCTe write FchCTe;
     property protCTe: TProcCTe read FprotCTe write FprotCTe;
     property retCancCTe: TRetCancCTe read FretCancCTe write FretCancCTe;
+    property procEventoCTe: TRetEventoCTeCollection read FprocEventoCTe write FprocEventoCTe;
   end;
 
 implementation
@@ -96,12 +123,15 @@ begin
   FLeitor.Free;
   FprotCTe.Free;
   FretCancCTe.Free;
+  if Assigned(procEventoCTe) then
+    procEventoCTe.Free;
   inherited;
 end;
 
 function TRetConsSitCTe.LerXml: boolean;
 var
   ok: boolean;
+  i: Integer;
 begin
   Result := False;
   try
@@ -144,11 +174,63 @@ begin
             FchCTe              := retCancCTe.chCTe;
          end;
        end;
+
+      if Assigned(procEventoCTe) then
+        procEventoCTe.Free;
+
+      procEventoCTe := TRetEventoCTeCollection.Create(Self);
+      i := 0;
+      while Leitor.rExtrai(1, 'procEventoCTe', '', i + 1) <> '' do
+      begin
+        procEventoCTe.Add;
+        procEventoCTe.Items[i].RetEventoCTe.Leitor.Arquivo := Leitor.Grupo;
+        procEventoCTe.Items[i].RetEventoCTe.LerXml;
+        inc(i);
+      end;
+      if i = 0
+       then procEventoCTe.Add;
+
       Result := True;
     end;
   except
     Result := False;
   end;
+end;
+
+{ TRetEventoCTeCollection }
+
+function TRetEventoCTeCollection.Add: TRetEventoCTeCollectionItem;
+begin
+  Result := TRetEventoCTeCollectionItem(inherited Add);
+  Result.create;
+end;
+
+constructor TRetEventoCTeCollection.Create(AOwner: TPersistent);
+begin
+  inherited Create(TRetEventoCTeCollectionItem);
+end;
+
+function TRetEventoCTeCollection.GetItem(Index: Integer): TRetEventoCTeCollectionItem;
+begin
+  Result := TRetEventoCTeCollectionItem(inherited GetItem(Index));
+end;
+
+procedure TRetEventoCTeCollection.SetItem(Index: Integer; Value: TRetEventoCTeCollectionItem);
+begin
+  inherited SetItem(Index, Value);
+end;
+
+{ TRetEventoCTeCollectionItem }
+
+constructor TRetEventoCTeCollectionItem.Create;
+begin
+  FRetEventoCTe := TRetEventoCTe.Create;
+end;
+
+destructor TRetEventoCTeCollectionItem.Destroy;
+begin
+  FRetEventoCTe.Free;
+  inherited;
 end;
 
 end.

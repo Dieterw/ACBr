@@ -250,10 +250,17 @@ begin
          infEvento.VersaoEvento         := RetEventoCTe.InfEvento.VersaoEvento;
          infEvento.detEvento.descEvento := RetEventoCTe.InfEvento.detEvento.descEvento;
          infEvento.detEvento.nProt      := RetEventoCTe.InfEvento.detEvento.nProt;
-         infEvento.detEvento.dtEnc      := RetEventoCTe.InfEvento.detEvento.dtEnc;
-         infEvento.detEvento.cUF        := RetEventoCTe.InfEvento.detEvento.cUF;
-         infEvento.detEvento.cMun       := RetEventoCTe.InfEvento.detEvento.cMun;
          infEvento.detEvento.xJust      := RetEventoCTe.InfEvento.DetEvento.xJust;
+         infEvento.detEvento.vICMS      := RetEventoCTe.InfEvento.DetEvento.vICMS;
+         infEvento.detEvento.vTPrest    := RetEventoCTe.InfEvento.DetEvento.vTPrest;
+         infEvento.detEvento.vCarga     := RetEventoCTe.InfEvento.DetEvento.vCarga;
+         infEvento.detEvento.toma       := RetEventoCTe.InfEvento.DetEvento.toma;
+         infEvento.detEvento.UF         := RetEventoCTe.InfEvento.DetEvento.UF;
+         infEvento.detEvento.CNPJCPF    := RetEventoCTe.InfEvento.DetEvento.CNPJCPF;
+         infEvento.detEvento.IE         := RetEventoCTe.InfEvento.DetEvento.IE;
+         infEvento.detEvento.modal      := RetEventoCTe.InfEvento.DetEvento.modal;
+         infEvento.detEvento.UFIni      := RetEventoCTe.InfEvento.DetEvento.UFIni;
+         infEvento.detEvento.UFFim      := RetEventoCTe.InfEvento.DetEvento.UFFim;
 
         if RetEventoCTe.retEvento.Count > 0 then
          begin

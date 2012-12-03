@@ -72,9 +72,10 @@ uses
 
 {$IFDEF ACBrCTeOpenSSL}
 const
-  cDTD         = '<!DOCTYPE test [<!ATTLIST infCte Id ID #IMPLIED>]>';
-  cDTDCanc     = '<!DOCTYPE test [<!ATTLIST infCanc Id ID #IMPLIED>]>';
-  cDTDInut     = '<!DOCTYPE test [<!ATTLIST infInut Id ID #IMPLIED>]>';
+  cDTD     = '<!DOCTYPE test [<!ATTLIST infCte Id ID #IMPLIED>]>';
+  cDTDCanc = '<!DOCTYPE test [<!ATTLIST infCanc Id ID #IMPLIED>]>';
+  cDTDInut = '<!DOCTYPE test [<!ATTLIST infInut Id ID #IMPLIED>]>';
+  cDTDEven = '<!DOCTYPE test [<!ATTLIST infEvento Id ID #IMPLIED>]>';
 {$ELSE}
 const
   DSIGNS = 'xmlns:ds="http://www.w3.org/2000/09/xmldsig#"';
@@ -140,8 +141,8 @@ type
     class function GetURL(const AUF, AAmbiente, FormaEmissao: Integer; ALayOut: TLayOut): WideString;
     class function Valida(const AXML: AnsiString; var AMsg: AnsiString; const APathSchemas: string = ''): Boolean;
 
-    class function ValidaUFCidade(const UF, Cidade: Integer): Boolean; overload;
-    class procedure ValidaUFCidade(const UF, Cidade: Integer; const AMensagem: string); overload;
+//    class function ValidaUFCidade(const UF, Cidade: Integer): Boolean; overload;
+//    class procedure ValidaUFCidade(const UF, Cidade: Integer; const AMensagem: string); overload;
     class function FormatarChaveAcesso(AValue : String; Mascara: Boolean = False ): String;
     class function FormatarNumCTe(const AValue: Integer): string;
     class function FormatarValor(mask: TpcteMask; const AValue: real): string;
@@ -156,8 +157,8 @@ type
     class function Assinar(const AXML: AnsiString; Certificado: ICertificate2; out AXMLAssinado, FMensagem: AnsiString): Boolean;
 {$ENDIF}
 
-    class function PathAplication: String;
-    class procedure ConfAmbiente;
+//    class function PathAplication: String;
+//    class procedure ConfAmbiente;
     class function UFtoCUF(UF : String): Integer;
     // Incluido por Italo em 13/09/2012
     class function IdentificaTipoSchema(Const AXML: AnsiString; var I: Integer): integer;
@@ -235,7 +236,7 @@ begin
   //  (12,27,16,13,29,23,53,32,52,21,51,50,31,15,25,41,26,22,33,24,43,11,14,42,35,28,17);
 
  case FormaEmissao of
-  1,2,4,5 : begin
+  1,2,5   : begin
              {
              case ALayOut of
               LayCTeEnvDPEC:      Result := CTeUtil.SeSenao(AAmbiente=1, 'https://www.nfe.fazenda.gov.br/SCERecepcaoRFB/SCERecepcaoRFB.asmx', 'https://hom.nfe.fazenda.gov.br/SCERecepcaoRFB/SCERecepcaoRFB.asmx');
@@ -299,6 +300,43 @@ begin
               LayCTeStatusServico : Result := CTeUtil.SeSenao(AAmbiente=1, 'https://www.scan.fazenda.gov.br/NfeStatusServico/NfeStatusServico.asmx', 'https://hom.nfe.fazenda.gov.br/SCAN/nfestatusservico/NfeStatusServico.asmx');
              end;
              }
+            end;
+        4 : begin
+             case ALayOut of
+              LayCTeEvento : begin
+                               case AUF of
+                                11, // Rondônia
+                                12, // Acre
+                                13, // Amazonas
+                                14, // Roraima
+                                15, // Pará
+                                16, // Amapá
+                                17, // Tocantins
+                                21, // Maranhão
+                                22, // Piauí
+                                23, // Ceará
+                                24, // Rio Grande do Norte
+                                25, // Paraibá
+                                27, // Alagoas
+                                28, // Sergipe
+                                29, // Bahia
+                                31, // Minas Gerais
+                                32, // Espirito Santo
+                                33, // Rio de Janeiro
+                                41, // Paraná
+                                42, // Santa Catarina
+                                43, // Rio Grande do Sul
+                                52, // Goiás
+                                53: // Distrito Federal
+                                    Result := DFeUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.sp.gov.br/cteWEB/services/CteRecepcaoEvento.asmx', 'https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/CteRecepcaoEvento.asmx');
+                                26, // Pernanbuco
+                                35, // São Paulo
+                                50, // Mato Grosso do Sul
+                                51: // Mato Grosso
+                                    Result := DFeUtil.SeSenao(AAmbiente=1, 'https://cte.sefaz.rs.gov.br/ws/CTeRecepcao/CTeRecepcaoEvento.asmx', 'https://homologacao.cte.sefaz.rs.gov.br/ws/CTeRecepcao/CTeRecepcaoEvento.asmx');
+                               end;
+                             end;
+             end;
             end;
         7 : begin // SVC-RS
              case ALayOut of
@@ -633,22 +671,27 @@ begin
   result := FormatFloat(TpMaskToStrText(mask), AValue);
 end;
 
+(*
 class procedure CTeUtil.ConfAmbiente;
 begin
   DecimalSeparator := ',';
 end;
+*)
 
+(*
 class function CTeUtil.ValidaUFCidade(const UF, Cidade: Integer): Boolean;
 begin
   Result := (Copy(IntToStr(UF), 1, 2) = Copy(IntToStr(Cidade), 1, 2));
 end;
+*)
 
+(*
 class procedure CTeUtil.ValidaUFCidade(const UF, Cidade: Integer; const AMensagem: string);
 begin
   if not (ValidaUFCidade(UF, Cidade)) then
     raise Exception.Create(AMensagem);
 end;
-
+*)
 class function CTeUtil.FormatarChaveAcesso(AValue: String; Mascara: Boolean = False ): String;
 begin
   AValue := DFeUtil.LimpaNumero(AValue);
@@ -671,11 +714,12 @@ begin
                   copy(AValue,41,4);
 end;
 
+(*
 class function CTeUtil.PathAplication: String;
 begin
   Result := ExtractFilePath(Application.ExeName);
 end;
-
+*)
 {$IFDEF ACBrCTeOpenSSL}
 
 function ValidaLibXML(const AXML: AnsiString;
@@ -689,6 +733,8 @@ var
   schema_filename   : PChar;
   Tipo, I           : Integer;
 begin
+  Tipo := CTeUtil.IdentificaTipoSchema(AXML, I);
+  (*
   I := pos('<infCte', AXML);
   Tipo := 1;
   if I = 0 then
@@ -705,7 +751,7 @@ begin
           Tipo := 4;
      end;
   end;
-
+  *)
  if not DirectoryExists(DFeUtil.SeSenao(DFeUtil.EstaVazio(APathSchemas),
                  PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas',
                  PathWithDelim(APathSchemas))) then
@@ -771,6 +817,13 @@ begin
        else
         schema_filename := pchar(PathWithDelim(APathSchemas)+'envDPEC_v1.04.xsd');
       }
+     end;
+  5..11:
+     begin
+      if CTeUtil.EstaVazio(APathSchemas) then
+        schema_filename := pchar(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\eventoCTe_v' + CTeEventoCTe + '.xsd')
+       else
+        schema_filename := pchar(PathWithDelim(APathSchemas)+'eventoCTe_v' + CTeEventoCTe + '.xsd');
      end;
  end;
 {$ENDIF}
@@ -855,6 +908,8 @@ var
   Schema      : XMLSchemaCache;
   Tipo, I     : Integer;
 begin
+  Tipo := CTeUtil.IdentificaTipoSchema(XML, I);
+  (*
   I := pos('<infCte',XML) ;
   Tipo := 1;
   if I = 0  then
@@ -871,7 +926,7 @@ begin
            Tipo := 4;
       end;
    end;
-
+  *)
   DOMDocument                  := CoDOMDocument50.Create;
   DOMDocument.async            := False;
   DOMDocument.resolveExternals := False;
@@ -951,6 +1006,14 @@ begin
         PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',
         PathWithDelim(APathSchemas))+'envDPEC_v1.04.xsd');
       end;
+    5..11:
+      begin
+       Schema.remove('http://www.portalfiscal.inf.br/cte');
+       Schema.add( 'http://www.portalfiscal.inf.br/cte',
+        DFeUtil.SeSenao(DFeUtil.EstaVazio(APathSchemas),
+        PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',
+        PathWithDelim(APathSchemas))+'eventoCTe_v' + CTeEventoCTe + '.xsd');
+      end;
   end;
 {$ENDIF}
 
@@ -972,6 +1035,7 @@ var
   ParseError  : IXMLDOMParseError;
   Schema      : XMLSchemaCache;
   Tipo        : Integer;
+  AXML        : AnsiString;
 {$ENDIF}
 begin
 {$IFDEF PL_103}
@@ -980,6 +1044,8 @@ begin
 
 {$IFDEF PL_104}
   Tipo := 0;
+  AXML := XML;
+
   // Incluido por Italo em 19/10/2012
   XML := SeparaDados( XML, 'infModal' );
 
@@ -1022,6 +1088,21 @@ begin
     XML := '<rodo xmlns="http://www.portalfiscal.inf.br/cte">' +
             XML +
            '</rodo>';
+   end;
+
+  // Incluido por Italo em 27/11/2012
+  // Eventos
+  if Tipo = 0
+   then begin
+    XML := AXML;
+    if pos( '<evEPECCTe>', XML) <> 0
+     then begin
+      Tipo := 6;
+      XML := SeparaDados( XML, 'evEPECCTe' );
+      XML := '<evEPECCTe xmlns="http://www.portalfiscal.inf.br/cte">' +
+              XML +
+             '</evEPECCTe>';
+     end;
    end;
 
   XML := '<?xml version="1.0" encoding="UTF-8" ?>' + XML;
@@ -1077,6 +1158,12 @@ begin
           DFeUtil.SeSenao(DFeUtil.EstaVazio(APathSchemas),
           PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',
           PathWithDelim(APathSchemas))+'cteModalRodoviario_v1.04.xsd');
+      end;
+   6: begin
+       Schema.add('http://www.portalfiscal.inf.br/cte',
+          DFeUtil.SeSenao(DFeUtil.EstaVazio(APathSchemas),
+          PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',
+          PathWithDelim(APathSchemas))+'evEPECCTe_v' + CTeEventoCTe + '.xsd');
       end;
   end;
 
@@ -1145,7 +1232,8 @@ begin
   Result := ValidaLibXML(AXML, AMsg, APathSchemas);
 {$ELSE}
   // Alterado por Italo em 31/03/2012
-  if pos('<infCTeNorm>', AXML) <> 0
+  // Alterado por Italo em 27/11/2012
+  if (pos('<infCTeNorm>', AXML) <> 0) or (pos('<infEvento', AXML) <> 0)
    then Result := ValidaMSXML(AXML, AMsg, APathSchemas) and
                   ValidaModalMSXML(AXML, AMsg, APathSchemas)
    else Result := ValidaMSXML(AXML, AMsg, APathSchemas);
@@ -1215,20 +1303,23 @@ begin
   I := pos('?>', AStr);
 
   case Tipo of
-   1: AStr := copy(AStr, 1, StrToInt(VarToStr(CTeUtil.SeSenao(I > 0, I + 1, I))))
-         + cDTD + Copy(AStr, StrToInt(VarToStr(CTeUtil.SeSenao(I > 0, I + 2, I))),
+   1: AStr := copy(AStr, 1, StrToInt(VarToStr(DFeUtil.SeSenao(I > 0, I + 1, I))))
+         + cDTD + Copy(AStr, StrToInt(VarToStr(DFeUtil.SeSenao(I > 0, I + 2, I))),
           Length(AStr));
-   2: AStr := copy(AStr, 1, StrToInt(VarToStr(CTeUtil.SeSenao(I > 0, I + 1, I))))
-         + cDTDCanc + Copy(AStr, StrToInt(VarToStr(CTeUtil.SeSenao(I > 0, I + 2, I))),
+   2: AStr := copy(AStr, 1, StrToInt(VarToStr(DFeUtil.SeSenao(I > 0, I + 1, I))))
+         + cDTDCanc + Copy(AStr, StrToInt(VarToStr(DFeUtil.SeSenao(I > 0, I + 2, I))),
           Length(AStr));
-   3: AStr := copy(AStr, 1, StrToInt(VarToStr(CTeUtil.SeSenao(I > 0, I + 1, I))))
-         + cDTDInut + Copy(AStr, StrToInt(VarToStr(CTeUtil.SeSenao(I > 0, I + 2, I))),
+   3: AStr := copy(AStr, 1, StrToInt(VarToStr(DFeUtil.SeSenao(I > 0, I + 1, I))))
+         + cDTDInut + Copy(AStr, StrToInt(VarToStr(DFeUtil.SeSenao(I > 0, I + 2, I))),
           Length(AStr));
    {
-   4: AStr := copy(AStr,1,StrToInt(VarToStr(CTeUtil.SeSenao(I>0,I+1,I))))
-         + cDTDDpec + Copy(AStr,StrToInt(VarToStr(CTeUtil.SeSenao(I>0,I+2,I))),
+   4: AStr := copy(AStr,1,StrToInt(VarToStr(DFeUtil.SeSenao(I>0,I+1,I))))
+         + cDTDDpec + Copy(AStr,StrToInt(VarToStr(DFeUtil.SeSenao(I>0,I+2,I))),
           Length(AStr));
    }
+   5..11: AStr := Copy(AStr, 1, StrToInt(VarToStr(DFeUtil.SeSenao(I > 0, I + 1, I))))
+             + cDTDEven + Copy(AStr, StrToInt(VarToStr(DFeUtil.SeSenao(I > 0, I + 2, I))),
+              Length(AStr));
    else AStr := '';
   end;
 
@@ -1250,8 +1341,15 @@ begin
        if I = 0 then
         raise Exception.Create('Não encontrei final do XML: </inutCTe>');
       end;
+   5..11:
+      begin
+       // Incluido por Italo em 27/11/2012
+       I := pos('</eventoCTe>', AStr) ;
+       if I = 0 then
+        raise Exception.Create('Não encontrei final do XML: </eventoCTe>') ;
+      end;
    else
-      raise EACBrCTeException.Create('Template de Tipo não implementado.') ;
+      raise Exception.Create('Template de Tipo não implementado.') ;
   end;
 
   if pos('<Signature', AStr) > 0 then
@@ -1284,6 +1382,7 @@ begin
     1: AStr := AStr + '</CTe>';
     2: AStr := AStr + '</cancCTe>';
     3: AStr := AStr + '</inutCTe>';
+    5..11: AStr := AStr + '</eventoCTe>';
     else AStr := '';
   end;
 
@@ -1315,11 +1414,12 @@ begin
     1: XmlAss := StringReplace( XmlAss, cDTD, '', [] );
     2: XmlAss := StringReplace( XmlAss, cDTDCanc, '', [] );
     3: XmlAss := StringReplace( XmlAss, cDTDInut, '', [] );
+    5..11: XmlAss := StringReplace( XmlAss, cDTDEven, '', [] );
     else XmlAss := '';
   end;
 
   PosIni := Pos('<X509Certificate>', XmlAss) - 1;
-  PosFim := CTeUtil.PosLast('<X509Certificate>', XmlAss);
+  PosFim := DFeUtil.PosLast('<X509Certificate>', XmlAss);
 
   XmlAss := copy(XmlAss, 1, PosIni) + copy(XmlAss, PosFim, length(XmlAss));
 
@@ -1359,9 +1459,10 @@ begin
     URI := copy(XML, I + 1, J - I - 1);
 
     case Tipo of
-      1: XML := copy(XML,1,pos('</CTe>',XML)-1);
-      2: XML := copy(XML,1,pos('</cancCTe>',XML)-1);
-      3: XML := copy(XML,1,pos('</inutCTe>',XML)-1);
+      1: XML := copy(XML, 1, pos('</CTe>', XML) - 1);
+      2: XML := copy(XML, 1, pos('</cancCTe>', XML) - 1);
+      3: XML := copy(XML, 1, pos('</inutCTe>', XML) - 1);
+      5..11: XML := copy(XML, 1, pos('</eventoCTe>', XML) - 1);
       else XML := '';
     end;
 
@@ -1386,6 +1487,7 @@ begin
       1: XML := XML + '</CTe>';
       2: XML := XML + '</cancCTe>';
       3: XML := XML + '</inutCTe>';
+      5..11: XML := XML + '</eventoCTe>';
       else XML := '';
     end;
   end;
@@ -1807,19 +1909,21 @@ begin
           I := Pos('<infEvento', AXML);
           if I > 0 then
           begin
-            lTipoEvento := Trim(RetornarConteudoEntre(AXML,'<tpEvento>','</tpEvento>'));
-            if lTipoEvento = '110111' then
-              Result := 6 // Cancelamento
-            else if lTipoEvento = '210200' then
-              Result := 7 //Manif. Destinatario: Confirmação da Operação
-            else if lTipoEvento = '210210' then
-              Result := 8 //Manif. Destinatario: Ciência da Operação Realizada
-            else if lTipoEvento = '210220' then
-              Result := 9 //Manif. Destinatario: Desconhecimento da Operação
-            else if lTipoEvento = '210240' then
-              Result := 10 //Manif. Destinatario: Operação não Realizada
+            lTipoEvento := Trim(RetornarConteudoEntre(AXML, '<tpEvento>', '</tpEvento>'));
+            if lTipoEvento = '110111' then // Cancelamento
+              Result := 6
+            else if lTipoEvento = '110113' then // EPEC
+              Result := 7
+            else if lTipoEvento = '210200' then // Manif. Destinatario: Confirmação da Operação
+              Result := 8
+            else if lTipoEvento = '210210' then // Manif. Destinatario: Ciência da Operação Realizada
+              Result := 9
+            else if lTipoEvento = '210220' then // Manif. Destinatario: Desconhecimento da Operação
+              Result := 10
+            else if lTipoEvento = '210240' then // Manif. Destinatario: Operação não Realizada
+              Result := 11
             else
-              Result := 5; //Carta de Correção Eletrônica
+              Result := 5; // Carta de Correção Eletrônica
           end
           else
             Result := 4; //DPEC

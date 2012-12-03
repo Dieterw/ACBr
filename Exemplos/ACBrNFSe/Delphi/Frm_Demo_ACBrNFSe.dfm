@@ -407,6 +407,7 @@ object frmDemo_ACBrNFSe: TfrmDemo_ACBrNFSe
               'Uberaba/3170107/MG'
               'Umuarama/4128104/PR'
               'Uniao da Vitoria/4128203/PR'
+              'Urussanga/ 4219002/SC'
               'Varginha/3170701/MG'
               'Votuporanga/3557105/SP')
           end
@@ -1182,6 +1183,7 @@ object frmDemo_ACBrNFSe: TfrmDemo_ACBrNFSe
     Configuracoes.WebServices.IntervaloTentativas = 0
     Configuracoes.WebServices.AjustaAguardaConsultaRet = False
     Configuracoes.WebServices.CodigoMunicipio = 0
+    Configuracoes.WebServices.ConsultaLoteAposEnvio = True
     OnStatusChange = ACBrNFSe1StatusChange
     DANFSe = ACBrNFSeDANFSeQR1
     Left = 224

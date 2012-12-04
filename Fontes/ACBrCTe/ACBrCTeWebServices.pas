@@ -178,6 +178,9 @@ type
     function Executar: Boolean; override;
     constructor Create(AOwner : TComponent; AConhecimentos : TConhecimentos);reintroduce;
     destructor destroy; override;
+    // Incluido por Italo em 04/12/2012 (Sujestão de Nilton Other)
+    procedure Clear;
+
     property TpAmb: TpcnTipoAmbiente read FTpAmb;
     property verAplic: String read FverAplic;
     property cStat: Integer read FcStat;
@@ -1249,6 +1252,39 @@ begin
 end;
 
 { TCteRetRecepcao }
+
+// Incluido por Italo em 04/12/2012 (Sujestão de Nilton Other)
+procedure TCteRetRecepcao.Clear;
+var
+  i, j : Integer;
+begin
+  // Limpa Dados do retorno;
+  FMsg      := '';
+  FverAplic := '';
+  FcStat    := 0;
+  FxMotivo  := '';
+
+  // Limpa Dados dos retornos dos conhecimentos;
+  for i := 0 to FCTeRetorno.ProtCTe.Count - 1 do
+    begin
+      for j := 0 to FCTes.Count - 1 do
+        begin
+          if FCTeRetorno.ProtCTe.Items[i].chCTe = StringReplace(FCTes.Items[j].CTe.InfCTe.Id, 'CTe', '', [rfIgnoreCase])
+            then begin
+              FCTes.Items[j].Confirmada           := False;
+              FCTes.Items[j].Msg                  := '';
+              FCTes.Items[j].CTe.procCTe.verAplic := '';
+              FCTes.Items[j].CTe.procCTe.chCTe    := '';
+              FCTes.Items[j].CTe.procCTe.dhRecbto := 0;
+              FCTes.Items[j].CTe.procCTe.nProt    := '';
+              FCTes.Items[j].CTe.procCTe.digVal   := '';
+              FCTes.Items[j].CTe.procCTe.cStat    := 0;
+              FCTes.Items[j].CTe.procCTe.xMotivo  := '';
+            end;
+        end;
+    end;
+end;
+
 function TCteRetRecepcao.Confirma(AInfProt: TProtCteCollection): Boolean;
 var
   i,j     : Integer;

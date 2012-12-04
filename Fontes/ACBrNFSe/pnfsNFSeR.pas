@@ -95,6 +95,35 @@ begin
    NFSe.OptanteSimplesNacional   := StrToSimNao(ok, Leitor.rCampo(tcStr, 'OptanteSimplesNacional'));
    NFSe.IncentivadorCultural     := StrToSimNao(ok, Leitor.rCampo(tcStr, 'IncentivoFiscal'));
 
+   if (Leitor.rExtrai(2, 'Prestador') <> '')
+    then begin
+     NFSe.PrestadorServico.IdentificacaoPrestador.InscricaoMunicipal := Leitor.rCampo(tcStr, 'InscricaoMunicipal');
+
+     if VersaoXML='1'
+      then begin
+       if Leitor.rExtrai(4, 'CpfCnpj') <> ''
+        then begin
+          NFSe.PrestadorServico.IdentificacaoPrestador.Cnpj := Leitor.rCampo(tcStr, 'Cpf');
+          if NFSe.PrestadorServico.IdentificacaoPrestador.Cnpj = ''
+           then NFSe.PrestadorServico.IdentificacaoPrestador.Cnpj := Leitor.rCampo(tcStr, 'Cnpj');
+        end;
+      end
+      else begin
+       if Leitor.rExtrai(3, 'CpfCnpj') <> ''
+        then begin
+          NFSe.PrestadorServico.IdentificacaoPrestador.Cnpj := Leitor.rCampo(tcStr, 'Cpf');
+          if NFSe.PrestadorServico.IdentificacaoPrestador.Cnpj = ''
+           then NFSe.PrestadorServico.IdentificacaoPrestador.Cnpj := Leitor.rCampo(tcStr, 'Cnpj');
+        end
+        else
+         NFSe.PrestadorServico.IdentificacaoPrestador.Cnpj := Leitor.rCampo(tcStr, 'Cnpj');
+      end;
+
+      //...Oo...
+      NFSe.Prestador.Cnpj := NFSe.PrestadorServico.IdentificacaoPrestador.Cnpj;
+      NFSe.Prestador.InscricaoMunicipal := NFSe.PrestadorServico.IdentificacaoPrestador.InscricaoMunicipal;
+    end; // fim Prestador
+
    if (Leitor.rExtrai(2, 'ValoresServico') <> '')
     then begin
      NFSe.Servico.Valores.ValorServicos    := Leitor.rCampo(tcDe2, 'ValorServicos');
@@ -161,7 +190,7 @@ begin
       end;
 
     end; // fim lista serviço
-
+   (*
    if (Leitor.rExtrai(2, 'Prestador') <> '')
     then begin
      NFSe.Prestador.InscricaoMunicipal := Leitor.rCampo(tcStr, 'InscricaoMunicipal');
@@ -180,7 +209,7 @@ begin
       end;
 
     end; // fim Prestador
-
+   *)
    if (Leitor.rExtrai(2, 'TomadorServico') <> '')
     then begin
      NFSe.Tomador.RazaoSocial := Leitor.rCampo(tcStr, 'RazaoSocial');
@@ -556,6 +585,11 @@ begin
    NFSe.Servico.Valores.ValorServicos    := Leitor.rCampo(tcDe2, 'ValorServicos');
   end; // fim ValoresNfse
 
+ //
+ NFSe.PrestadorServico.IdentificacaoPrestador.Cnpj := NFSe.Prestador.Cnpj;
+ NFSe.PrestadorServico.IdentificacaoPrestador.InscricaoMunicipal := NFSe.Prestador.InscricaoMunicipal;
+ //
+
  if Leitor.rExtrai(3, 'EnderecoPrestadorServico') <> ''
   then begin
    NFSe.PrestadorServico.Endereco.Endereco := Leitor.rCampo(tcStr, 'Endereco');
@@ -586,9 +620,6 @@ begin
    NFSe.PrestadorServico.Endereco.xMunicipio := CodCidadeToCidade(StrToIntDef(NFSe.PrestadorServico.Endereco.CodigoMunicipio, 0));
 
   end; // fim EnderecoPrestadorServico
-
- NFSe.PrestadorServico.IdentificacaoPrestador.Cnpj := NFSe.Prestador.Cnpj;
- NFSe.PrestadorServico.IdentificacaoPrestador.InscricaoMunicipal := NFSe.Prestador.InscricaoMunicipal;
 
  if Leitor.rExtrai(3, 'OrgaoGerador') <> ''
   then begin

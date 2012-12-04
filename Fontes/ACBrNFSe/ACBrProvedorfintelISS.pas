@@ -190,7 +190,7 @@ begin
                              '<' + Prefixo3 + 'Pedido>' +
                               '<' + Prefixo4 + 'InfPedidoCancelamento' +
                                  DFeUtil.SeSenao(Identificador <> '', ' ' + Identificador + '="' + URI + '"', '') + '>';
-   acGerar:       Result := '';
+   acGerar:       Result := '<' + Prefixo3 + 'GerarNfseEnvio' + NameSpaceDad;
  end;
 end;
 
@@ -217,7 +217,7 @@ begin
    acConsNFSe:    Result := '</' + Prefixo3 + 'ConsultarNfseServicoPrestadoEnvio>';
    acCancelar:    Result := '</' + Prefixo3 + 'Pedido>' +
                             '</' + Prefixo3 + 'CancelarNfseEnvio>';
-   acGerar:       Result := '';
+   acGerar:       Result := '</' + Prefixo3 + 'GerarNfseEnvio>';
  end;
 end;
 
@@ -458,7 +458,7 @@ function TProvedorfintelISS.Gera_DadosMsgGerarNFSe(Prefixo3, Prefixo4,
   Identificador, NameSpaceDad, VersaoDados, VersaoXML, NumeroLote, CNPJ,
   IM, QtdeNotas: String; Notas, TagI, TagF: AnsiString): AnsiString;
 begin
- Result := '';
+ Result := TagI + Notas + TagF;
 end;
 
 function TProvedorfintelISS.GeraEnvelopeRecepcionarLoteRPS(URLNS: String;
@@ -577,8 +577,21 @@ end;
 function TProvedorfintelISS.GeraEnvelopeGerarNFSe(URLNS: String; CabMsg,
   DadosMsg, DadosSenha: AnsiString): AnsiString;
 begin
- Result := '';
- raise Exception.Create( 'Opção não implementada para este provedor.' );
+ Result := '<?xml version="1.0" encoding="utf-8"?>' +
+           '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '+
+                           'xmlns:xsd="http://www.w3.org/2001/XMLSchema" ' +
+                           'xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
+            '<soap:Body>' +
+             '<GerarNfse xmlns="https://iss.pontagrossa.pr.gov.br">' +
+              '<cabecalho>'+
+                StringReplace(StringReplace(CabMsg, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
+              '</cabecalho>' +
+              '<xml>' +
+                StringReplace(StringReplace(DadosMsg, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
+              '</xml>' +
+             '</GerarNfse>' +
+            '</soap:Body>'+
+           '</soap:Envelope>';
 end;
 
 function TProvedorfintelISS.GetSoapAction(Acao: TnfseAcao; NomeCidade: String): String;
@@ -590,7 +603,7 @@ begin
    acConsNFSeRps: Result := 'https://iss.pontagrossa.pr.gov.br/ConsultarNfsePorRps';
    acConsNFSe:    Result := 'https://iss.pontagrossa.pr.gov.br/ConsultarNfseServicoPrestado';
    acCancelar:    Result := 'https://iss.pontagrossa.pr.gov.br/CancelarNfse';
-   acGerar:       Result := '';
+   acGerar:       Result := 'https://iss.pontagrossa.pr.gov.br/GerarNfse';
  end;
 end;
 
@@ -604,7 +617,7 @@ begin
    acConsNFSeRps: Result := SeparaDados( RetornoWS, 'ConsultarNfsePorRpsResult' );
    acConsNFSe:    Result := SeparaDados( RetornoWS, 'ConsultarNfseServicoPrestadoResult' );
    acCancelar:    Result := SeparaDados( RetornoWS, 'CancelarNfseResult' );
-   acGerar:       Result := '';
+   acGerar:       Result := SeparaDados( RetornoWS, 'GerarNfseResult' );
  end;
 end;
 

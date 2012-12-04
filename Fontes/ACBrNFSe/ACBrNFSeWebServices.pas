@@ -1280,7 +1280,8 @@ begin
  if FConfiguracoes.WebServices.Salvar
   then FConfiguracoes.Geral.Save('-xxx1.xml', FDadosMsg);
 
- FDadosMsg := TNFSeGerarNFSe(Self).FNotasFiscais.AssinarLoteRps(TNFSeGerarNFSe(Self).NumeroRps, FDadosMSg);
+ if not (FProvedor = profintelISS) then
+  FDadosMsg := TNFSeGerarNFSe(Self).FNotasFiscais.AssinarLoteRps(TNFSeGerarNFSe(Self).NumeroRps, FDadosMSg);
 
  if FConfiguracoes.WebServices.Salvar
   then FConfiguracoes.Geral.Save('-xxx2.xml', FDadosMsg);

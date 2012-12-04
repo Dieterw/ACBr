@@ -52,9 +52,9 @@ type
     function MontarCodigoBarras(const ACBrTitulo: TACBrTitulo): string; Override;
     function MontarCampoNossoNumero(const ACBrTitulo: TACBrTitulo): string; Override;
     function MontarCampoCodigoCedente(const ACBrTitulo: TACBrTitulo): string; Override;
-    function GerarRegistroHeader400(NumeroRemessa: Integer): string; Override;
-    function GerarRegistroTransacao400(ACBrTitulo: TACBrTitulo): string; Override;
-    function GerarRegistroTrailler400(ARemessa: TStringList): string; Override;
+    procedure GerarRegistroHeader400(NumeroRemessa: Integer; aRemessa: TStringList); Override;
+    procedure GerarRegistroTransacao400(ACBrTitulo: TACBrTitulo; aRemessa: TStringList); Override;
+    procedure GerarRegistroTrailler400(ARemessa: TStringList); Override;
     function CalculaDigitosChaveASBACE(ChaveASBACESemDigito: string): string;
     procedure LerRetorno400(ARetorno: TStringList); override;
     function GerarRegistroHeader240(NumeroRemessa: Integer): String; override;
@@ -274,16 +274,16 @@ begin
          copy(ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente,8,2);
 end;
 
-function TACBrBanrisul.GerarRegistroHeader400(NumeroRemessa: Integer): string;
+procedure TACBrBanrisul.GerarRegistroHeader400(NumeroRemessa: Integer; aRemessa: TStringList);
 var
-  cd: string;
+  cd,wLinha: string;
 begin
   aTotal:=0;
   with ACBrBanco.ACBrBoleto.Cedente do
   begin
     cd:= OnlyNumber(CodigoCedente);
 
-    Result:= '0'                                   + // ID do Registro
+    wLinha:= '0'                                   + // ID do Registro
              '1'                                   + // ID do Arquivo( 1 - Remessa)
              'REMESSA'                             + // Literal de Remessa
              space(17)                             + // brancos 17
@@ -303,15 +303,16 @@ begin
             Space(268)                             + // Filler - Brancos
             IntToStrZero(1, 6);                     // 395 a 400 - NÚMERO SEQÜENCIAL DO REGISTRO NO ARQUIVO  contante "000001" 
 
-    Result:=UpperCase(Result);
+    aRemessa.Text := aRemessa.Text + UpperCase(wLinha);
   end;
 end;
 
-function TACBrBanrisul.GerarRegistroTransacao400(ACBrTitulo: TACBrTitulo): string;
+procedure TACBrBanrisul.GerarRegistroTransacao400(ACBrTitulo: TACBrTitulo; aRemessa: TStringList);
 var
   Ocorrencia, Protesto, cd: string;
   TipoSacado, aTipoAceite: string;
   TipoBoleto: String;
+  wLinha: String;
 begin
   Protesto := '';
   with ACBrTitulo do
@@ -358,7 +359,7 @@ begin
     begin
       cd:= OnlyNumber(Cedente.CodigoCedente);
 
-      Result:= '1'                                                              + // ID Registro
+      wLinha:= '1'                                                              + // ID Registro
                space(16)                                                        +
                padL(copy(Cedente.Agencia, 1, 4)+cd, 13, '0')                    + // Codigo da Empresa no Banco
                space(7)                                                         +
@@ -366,7 +367,7 @@ begin
                PadL(NossoNumero, 8, '0')+CalculaDigitosChaveASBACE(NossoNumero) +
                space(32)                                                        +
                space(3)                                                         +
-               '1'                                                              +     //padrão 1 (cobrança simples)
+               '1'                                                              + //padrão 1 (cobrança simples)
                Ocorrencia                                                       +     
                padR(NumeroDocumento, 10)                                        +
                FormatDateTime('ddmmyy', Vencimento)                             +
@@ -375,7 +376,7 @@ begin
                space(5)                                                         +
                TipoBoleto                                                       + 
                aTipoAceite                                                      +
-               FormatDateTime('ddmmyy', DataDocumento)                          +// Data de Emissão
+               FormatDateTime('ddmmyy', DataDocumento)                          + // Data de Emissão
                '09'                                                             + 
                PadR(Instrucao2, 2)                                              +
                '0'                                                              +  
@@ -397,29 +398,30 @@ begin
                PadL(OnlyNumber(Sacado.CEP), 8, '0')                             +
                PadL(Sacado.Cidade, 15)                                          +
                PadL(Sacado.UF, 2)                                               +
-               '0000'+
-               space(1)+
+               '0000'                                                           +
+               space(1)                                                         +
                '0000000000000'                                                  +
-               '04'                                                             +  // cleonir novo  17/05/2012
+               '04'                                                             +
                space(23)                                                        +
-               IntToStrZero(ListadeBoletos.IndexOf(ACBrTitulo)+2, 6);
+               IntToStrZero(aRemessa.Count + 1, 6);
 
       aTotal:=aTotal+ValorDocumento;
 
-      Result:=UpperCase(Result);
+      aRemessa.Text:= aRemessa.Text + UpperCase(wLinha);
     end;
   end;
 end;
 
-function TACBrBanrisul.GerarRegistroTrailler400(ARemessa: TStringList): string;
+procedure TACBrBanrisul.GerarRegistroTrailler400(ARemessa: TStringList);
+var
+  wLinha: String;
 begin
-  Result:='9'+
-    space(26)+
-    FormatCurr('0000000000000', aTotal*100)+
-    space(354)+
-    IntToStrZero(ARemessa.Count+1, 6); // Contador de Registros
+  wLinha:= '9'+ space(26)                          +
+           FormatCurr('0000000000000', aTotal*100) +
+           space(354)                              +
+           IntToStrZero(ARemessa.Count+1, 6);        // Contador de Registros
 
-  Result:=UpperCase(Result);
+  ARemessa.Text:= ARemessa.Text + UpperCase(wLinha);
 end;
 
 function TACBrBanrisul.GerarRegistroHeader240(

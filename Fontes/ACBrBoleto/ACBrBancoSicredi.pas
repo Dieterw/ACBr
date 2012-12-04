@@ -53,9 +53,9 @@ type
     function MontarCodigoBarras(const ACBrTitulo : TACBrTitulo): String; override;
     function MontarCampoNossoNumero(const ACBrTitulo :TACBrTitulo): String; override;
     function MontarCampoCodigoCedente(const ACBrTitulo: TACBrTitulo): String; override;
-    function GerarRegistroHeader400(NumeroRemessa : Integer): String; override;
-    function GerarRegistroTransacao400(ACBrTitulo : TACBrTitulo): String; override;
-    function GerarRegistroTrailler400(ARemessa:TStringList): String;  override;
+    procedure GerarRegistroHeader400(NumeroRemessa : Integer; aRemessa: TStringList); override;
+    procedure GerarRegistroTransacao400(ACBrTitulo : TACBrTitulo; aRemessa: TStringList); override;
+    procedure GerarRegistroTrailler400(ARemessa:TStringList);  override;
     procedure LerRetorno400(ARetorno: TStringList); override;
 
     function GerarRegistroHeader240(NumeroRemessa : Integer): String; override;
@@ -163,37 +163,40 @@ begin
              ACBrTitulo.ACBrBoleto.Cedente.Conta;
 end;
 
-function TACBrBancoSicredi.GerarRegistroHeader400(NumeroRemessa : Integer): String;
+procedure TACBrBancoSicredi.GerarRegistroHeader400(NumeroRemessa : Integer; aRemessa: TStringList);
+var
+  wLinha: String;
 begin
    with ACBrBanco.ACBrBoleto.Cedente do
    begin
-      Result:= '0'                               + // ID do Registro
-               '1'                               + // ID do Arquivo( 1 - Remessa)
-               'REMESSA'                         + // Literal de Remessa
-               '01'                              + // Código do Tipo de Serviço
-               padL( 'COBRANCA', 15 )            + // Descrição do tipo de serviço
-               padR( CodigoCedente, 5, '0')      + // Codigo da Empresa no Banco
-               padR( OnlyNumber(CNPJCPF), 14, '0')           + // CNPJ do Cedente
-               Space(31)                         + // Fillers - Branco
-               '748'                             + // Número do banco
-               padL('SICREDI', 15)               + // Código e Nome do Banco(237 - Bradesco)
-               FormatDateTime('yyyymmdd',Now)    + // Data de geração do arquivo
-               Space(8)                          + // Filler - Brancos
-               IntToStrZero(NumeroRemessa,7)     + // Nr. Sequencial de Remessa + brancos
-               Space(273)                        + // Filler - Brancos
-               '2.00'                            + // Versão do sistema
-               IntToStrZero(1,6);                  // Nr. Sequencial de Remessa + brancos + Contador
+      wLinha:= '0'                                   + // ID do Registro
+               '1'                                   + // ID do Arquivo( 1 - Remessa)
+               'REMESSA'                             + // Literal de Remessa
+               '01'                                  + // Código do Tipo de Serviço
+               padL( 'COBRANCA', 15 )                + // Descrição do tipo de serviço
+               padR( CodigoCedente, 5, '0')          + // Codigo da Empresa no Banco
+               padR( OnlyNumber(CNPJCPF), 14, '0')   + // CNPJ do Cedente
+               Space(31)                             + // Fillers - Branco
+               '748'                                 + // Número do banco
+               padL('SICREDI', 15)                   + // Código e Nome do Banco(237 - Bradesco)
+               FormatDateTime('yyyymmdd',Now)        + // Data de geração do arquivo
+               Space(8)                              + // Filler - Brancos
+               IntToStrZero(NumeroRemessa,7)         + // Nr. Sequencial de Remessa + brancos
+               Space(273)                            + // Filler - Brancos
+               '2.00'                                + // Versão do sistema
+               IntToStrZero(1,6);                      // Nr. Sequencial de Remessa + brancos + Contador
 
-      Result:= UpperCase(Result);
+      aRemessa.Text:= aRemessa.Text + UpperCase(wLinha);
    end;
 end;
 
-function TACBrBancoSicredi.GerarRegistroTransacao400(ACBrTitulo :TACBrTitulo): String;
+procedure TACBrBancoSicredi.GerarRegistroTransacao400(ACBrTitulo :TACBrTitulo; aRemessa: TStringList);
 var
   DigitoNossoNumero, Ocorrencia, CodProtesto, DiasProtesto: String;
   TipoSacado: String;
   TipoBoleto: Char;
   AceiteStr: String;
+  wLinha: String;
 begin
 
    with ACBrTitulo do
@@ -274,7 +277,7 @@ begin
 
       with ACBrBoleto do
       begin
-         Result:= '1'                                                     +  // 001 a 001 - Identificação do registro detalhe
+         wLinha:= '1'                                                     +  // 001 a 001 - Identificação do registro detalhe
                   'A'                                                     +  // 002 a 002 - Tipo de cobrança = "A" SICREDI com registro
                   'A'                                                     +  // 003 a 003 - Tipo de carteira = "A" Simples
                   'A'                                                     +  // 004 a 004 - Tipo de impressão = "A" Normal "B" Carnê
@@ -317,8 +320,8 @@ begin
                   padR(OnlyNumber(Sacado.CNPJCPF),14,'0')                 +  // 221 a 234 - CIC/CGC do sacado
                   padL( Sacado.NomeSacado, 40, ' ')                       +  // 235 a 274 - Nome do sacado
                   padL( Sacado.Logradouro +','+ Sacado.Numero +','+
-                           Sacado.Bairro +','+ Sacado.Cidade +','+
-                           Sacado.UF, 40)                                 +  // 275 a 314 - Endereço do sacado
+                        Sacado.Bairro +','+ Sacado.Cidade +','+
+                        Sacado.UF, 40)                                    +  // 275 a 314 - Endereço do sacado
                   padL('', 5, '0')                                        +  // 315 a 319 - Código do sacado na cooperativa cedente (utilizar zeros)
                   padL('', 6, '0')                                        +  // 320 a 325 - Filler - Zeros
                   Space(1)                                                +  // 326 a 326 - Filler - Brancos
@@ -326,24 +329,26 @@ begin
                   padL('', 5, '0')                                        +  // 335 a 339 - Código do sacado junto ao cliente (zeros quando inexistente)
                   padL('', 14, ' ')                                       +  // 340 a 353 - CIC/CGC do sacador avalista
                   Space(41)                                               +  // 354 a 394 - Nome do sacador avalista
-                  IntToStrZero( ListadeBoletos.IndexOf(ACBrTitulo)+2, 6 );   // 395 a 400 - Número sequencial do registro
+                  IntToStrZero(aRemessa.Count + 1, 6 );                      // 395 a 400 - Número sequencial do registro
 
-         Result:= UpperCase(Result);
+         aRemessa.Text:= aRemessa.Text + UpperCase(wLinha);
       end;
    end;
 end;
 
-function TACBrBancoSicredi.GerarRegistroTrailler400( ARemessa:TStringList ): String;
+procedure TACBrBancoSicredi.GerarRegistroTrailler400( ARemessa:TStringList );
+var
+  wLinha: String;
 begin
   with ACBrBanco.ACBrBoleto.Cedente do begin
-    Result:= '9'                                  + // 001 a 001 - Identificação do registro trailler
+    wLinha:= '9'                                  + // 001 a 001 - Identificação do registro trailler
              '1'                                  + // 002 a 002 - Identificação do arquivo remessa
              '748'                                + // 003 a 005 - Número do SICREDI
              padR( CodigoCedente, 5, '0')         + // 006 a 010 - Código do cedente
              Space(384)                           + // 011 a 394 - Filler
              IntToStrZero( ARemessa.Count + 1, 6);  // 395 a 400 - Número sequencial do registro
   end;
-   Result:= UpperCase(Result);
+  ARemessa.Text:= ARemessa.Text + UpperCase(wLinha);
 end;
 
 procedure TACBrBancoSicredi.LerRetorno400(ARetorno: TStringList);

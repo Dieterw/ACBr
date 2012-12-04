@@ -56,9 +56,9 @@ type
     function MontarCodigoBarras(const ACBrTitulo : TACBrTitulo): String; override;
     function MontarCampoNossoNumero(const ACBrTitulo :TACBrTitulo): String; override;
     function MontarCampoCodigoCedente(const ACBrTitulo: TACBrTitulo): String; override;
-    function GerarRegistroHeader400(NumeroRemessa : Integer): String; override;
-    function GerarRegistroTransacao400(ACBrTitulo : TACBrTitulo): String; override;
-    function GerarRegistroTrailler400(ARemessa:TStringList): String;  override;
+    procedure GerarRegistroHeader400(NumeroRemessa : Integer; aRemessa: TStringList); override;
+    procedure GerarRegistroTransacao400(ACBrTitulo : TACBrTitulo; aRemessa: TStringList); override;
+    procedure GerarRegistroTrailler400(ARemessa:TStringList);  override;
     Procedure LerRetorno400(ARetorno:TStringList); override;
 
     function TipoOcorrenciaToDescricao(const TipoOcorrencia: TACBrTipoOcorrencia) : String; override;
@@ -136,11 +136,13 @@ begin
              ACBrTitulo.ACBrBoleto.Cedente.ContaDigito;
 end;
 
-function TACBrBancoNordeste.GerarRegistroHeader400(NumeroRemessa : Integer): String;
+procedure TACBrBancoNordeste.GerarRegistroHeader400(NumeroRemessa : Integer; aRemessa:TStringList);
+var
+  wLinha: String;
 begin
    with ACBrBanco.ACBrBoleto.Cedente do
    begin
-      Result:= '0'                                        + // ID do Registro
+      wLinha:= '0'                                        + // ID do Registro
                '1'                                        + // ID do Arquivo( 1 - Remessa)
                'REMESSA'                                  + // Literal de Remessa
                '01'                                       + // Código do Tipo de Serviço
@@ -156,16 +158,17 @@ begin
                Space(294)                                 + // Brancos
                IntToStrZero(1,6);                           // Contador
 
-      Result:= UpperCase(Result);
+      aRemessa.Text:= aRemessa.Text + UpperCase(wLinha);
    end;
 end;
 
-function TACBrBancoNordeste.GerarRegistroTransacao400(ACBrTitulo :TACBrTitulo): String;
+procedure TACBrBancoNordeste.GerarRegistroTransacao400(ACBrTitulo :TACBrTitulo; aRemessa: TStringList);
 var
   DigitoNossoNumero, Ocorrencia, aEspecie, aAgencia :String;
   Protesto, TipoSacado, MensagemCedente, aConta     :String;
   aCarteira: String;
   TipoBoleto :Char;
+  wLinha: String;
 begin
 
    with ACBrTitulo do
@@ -235,7 +238,7 @@ begin
          if Mensagem.Text<>'' then
          MensagemCedente:= Mensagem[0];
          
-         Result:= '1'                                                     +  // ID Registro
+         wLinha:= '1'                                                     +  // ID Registro
                   Space(16)                                               +  // Filler - Brancos
                   padR( aAgencia, 4, '0')                                 +  // Cód. da Agência do cliente
                   IntToStrZero(0, 2)                                      +  // Filler - Zeros
@@ -258,7 +261,8 @@ begin
                   FormatDateTime( 'ddmmyy', DataDocumento )               +  // Data de Emissão
                   Protesto                                                +
                   IntToStrZero( round(ValorMoraJuros * 100 ), 13)         +
-                  IfThen(DataDesconto < EncodeDate(2000,01,01),'000000',FormatDateTime( 'ddmmyy', DataDesconto)) +
+                  IfThen(DataDesconto < EncodeDate(2000,01,01),'000000',
+                         FormatDateTime( 'ddmmyy', DataDesconto))         +
                   IntToStrZero( round( ValorDesconto * 100 ), 13)         +
                   IntToStrZero( round( ValorIOF * 100 ), 13)              +
                   IntToStrZero( round( ValorAbatimento * 100 ), 13)       +
@@ -270,29 +274,22 @@ begin
                   padL( Sacado.Cidade, 15 )                               +
                   padL( Sacado.UF, 2 )                                    +
                   padl( MensagemCedente, 40 )                             +
-                  '991';
+                  '991'                                                   +
+                  IntToStrZero(aRemessa.Count + 1, 6); // Nº SEQÜENCIAL DO REGISTRO NO ARQUIVO
 
-        if Mensagem.Count > 1 then
-           Result := Result + IntToStrZero(ListadeBoletos.IndexOf(ACBrTitulo) +
-                               ListadeBoletos.IndexOf(ACBrTitulo) + 1, 6) // Nº SEQÜENCIAL DO REGISTRO NO ARQUIVO
-        else
-          Result := Result + IntToStrZero(ListadeBoletos.IndexOf(ACBrTitulo) + 1, 6); // Nº SEQÜENCIAL DO REGISTRO NO ARQUIVO
-
-         Result:= UpperCase(Result);
+         aRemessa.Text:= aRemessa.Text + UpperCase(wLinha);
       end;
    end;
 end;
 
-function TACBrBancoNordeste.GerarRegistroTrailler400( ARemessa:TStringList ): String;
+procedure TACBrBancoNordeste.GerarRegistroTrailler400( ARemessa:TStringList );
+var
+  wLinha: String;
 begin
-   Result:= '9' + Space(393)                     + // ID Registro
-            IntToStrZero( Sequencia + 1, 6);  // Contador de Registros
+   wLinha:= '9' + Space(393)                     + // ID Registro
+            IntToStrZero( ARemessa.Count + 1, 6);       // Contador de Registros
 
-  //Retorna a sequencia após a escrita do trailler, caso o programador não destrua e crie novamente a classe
-  //Evitando que no novo arquivo a sequencia do trailler seja acumulada
-  Sequencia := 1;
-  //
-   Result:= UpperCase(Result);
+   ARemessa.Text:= ARemessa.Text + UpperCase(wLinha);
 end;
 
 Procedure TACBrBancoNordeste.LerRetorno400 ( ARetorno: TStringList );

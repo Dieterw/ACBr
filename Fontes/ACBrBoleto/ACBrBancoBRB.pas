@@ -45,8 +45,8 @@ type
     function MontarCodigoBarras(const ACBrTitulo: TACBrTitulo): string; override;
     function MontarCampoNossoNumero(const ACBrTitulo: TACBrTitulo): string; override;
     function MontarCampoCodigoCedente(const ACBrTitulo: TACBrTitulo): string; override;
-    function GerarRegistroHeader400(NumeroRemessa: Integer): string; override;
-    function GerarRegistroTransacao400(ACBrTitulo: TACBrTitulo): string; override;
+    procedure GerarRegistroHeader400(NumeroRemessa: Integer; aRemessa: TStringList); override;
+    procedure GerarRegistroTransacao400(ACBrTitulo: TACBrTitulo; aRemessa: TStringList); override;
     function MontarChaveASBACE(const ACBrTitulo: TACBrTitulo): string;
     function CalculaDigitosChaveASBACE(ChaveASBACESemDigito: string): string;
     procedure LerRetorno400(ARetorno: TStringList); override;
@@ -197,11 +197,13 @@ begin
     padR(ACBrTitulo.ACBrBoleto.Cedente.ContaDigito, 1, '0');
 end;
 
-function TACBrBancoBRB.GerarRegistroHeader400(NumeroRemessa: Integer): string;
+procedure TACBrBancoBRB.GerarRegistroHeader400(NumeroRemessa: Integer; aRemessa: TStringList);
+var
+  wLinha: String;
 begin
   with ACBrBanco.ACBrBoleto.Cedente do
   begin
-    Result := 'DCB'                                             + // Literal DCB
+    wLinha := 'DCB'                                             + // Literal DCB
               '001'                                             + // Versão
               '075'                                             + // Arquivo
               padR(Agencia, 3, '0')                             + // Agência
@@ -209,15 +211,16 @@ begin
               FormatDateTime('yyyymmdd', Now)                   + // Data de formatação
               FormatDateTime('hhmmss', Now)                     + // Hora da formatação
               IntToStrZero(ACBrBoleto.ListadeBoletos.Count +1,6); // Qtde de registros Header + Detalhe
-    Result := UpperCase(Result);
+    aRemessa.Text := aRemessa.Text + UpperCase(wLinha);
   end;
 end;
 
-function TACBrBancoBRB.GerarRegistroTransacao400(ACBrTitulo: TACBrTitulo): string;
+procedure TACBrBancoBRB.GerarRegistroTransacao400(ACBrTitulo: TACBrTitulo; aRemessa: TStringList);
 var
   TipoPessoa: Char;
   TipoDocumento, TipoJuros, TipoDesconto, lDataDesconto, lNossoNumero: string;
   Instrucao1, Instrucao2, Prazo1, Prazo2: string;
+  wLinha: String;
 begin
   with ACBrTitulo do
   begin
@@ -288,7 +291,7 @@ begin
 
     with ACBrBoleto do
     begin
-      Result:= '01'                                                             + // Identificação do registro
+      wLinha:= '01'                                                             + // Identificação do registro
                padR(Cedente.Agencia, 3, '0')                                    + // Agência
                padR(Cedente.Conta, 6, '0') + padR(Cedente.ContaDigito, 1, '0')  + // Conta
                PadL(OnlyNumber(Sacado.CNPJCPF), 14, '0')                        + // Código do Sacado
@@ -327,7 +330,8 @@ begin
                padL(Cedente.Nome,40)                                            + // Emitente do Título
                Space(40)                                                        + // Mensagem Livre (Observações)
                Space(32)                                                        ; // Brancos
-      Result := AnsiUpperCase(Result);
+
+      aRemessa.Text:= aRemessa.Text + AnsiUpperCase(wLinha);
     end;
   end;
 end;

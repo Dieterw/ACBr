@@ -11,11 +11,12 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   LCLVersion = '1.1'
   object LayoutBoleto: TRLReport
-    Left = 96
+    Left = 32
     Height = 1123
-    Top = -560
+    Top = -40
     Width = 794
     Margins.LeftMargin = 4
     Margins.TopMargin = 5
@@ -1954,22 +1955,6 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         RealBounds.Width = 0
         RealBounds.Height = 0
       end
-      object RLLabel93: TRLLabel
-        Left = 393
-        Height = 10
-        Top = 137
-        Width = 5
-        Caption = 'x'
-        Font.Color = clBlack
-        Font.Height = -8
-        Font.Name = 'Arial'
-        ParentFont = False
-        RealBounds.Left = 0
-        RealBounds.Top = 0
-        RealBounds.Width = 0
-        RealBounds.Height = 0
-        Transparent = False
-      end
       object RLLabel98: TRLLabel
         Left = 0
         Height = 14
@@ -2336,7 +2321,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       object imgBanco3: TRLImage
         Left = 4
         Height = 42
-        Top = 11
+        Top = 12
         Width = 179
         RealBounds.Left = 0
         RealBounds.Top = 0
@@ -3195,22 +3180,6 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         RealBounds.Width = 0
         RealBounds.Height = 0
       end
-      object RLLabel170: TRLLabel
-        Left = 397
-        Height = 10
-        Top = 151
-        Width = 5
-        Caption = 'x'
-        Font.Color = clBlack
-        Font.Height = -8
-        Font.Name = 'Arial'
-        ParentFont = False
-        RealBounds.Left = 0
-        RealBounds.Top = 0
-        RealBounds.Width = 0
-        RealBounds.Height = 0
-        Transparent = False
-      end
       object RLLabel175: TRLLabel
         Left = 4
         Height = 14
@@ -3417,9 +3386,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
     end
   end
   object BoletoCarne: TRLReport
-    Left = 424
+    Left = 800
     Height = 1123
-    Top = 88
+    Top = 72
     Width = 794
     Font.Color = clBlack
     Font.Height = -13

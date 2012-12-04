@@ -58,7 +58,7 @@ uses ACBrBase,  {Units da ACBr}
      Graphics, Contnrs, Classes;
 
 const
-  CACBrBoleto_Versao = '0.0.48a' ;
+  CACBrBoleto_Versao = '0.0.49a' ;
 
 type
   TACBrTipoCobranca =
@@ -310,11 +310,11 @@ type
     function MontarLinhaDigitavel(const CodigoBarras: String): String; virtual;
     function MontarCampoCodigoCedente(const ACBrTitulo: TACBrTitulo): String; virtual;
 
-    function GerarRegistroHeader400(NumeroRemessa : Integer): String;    Virtual;
+    procedure GerarRegistroHeader400(NumeroRemessa : Integer; ARemessa:TStringList);  Virtual;
     function GerarRegistroHeader240(NumeroRemessa : Integer): String;    Virtual;
-    function GerarRegistroTransacao400(ACBrTitulo : TACBrTitulo): String; Virtual;
+    procedure GerarRegistroTransacao400(ACBrTitulo : TACBrTitulo; aRemessa: TStringList); Virtual;
     function GerarRegistroTransacao240(ACBrTitulo : TACBrTitulo): String; Virtual;
-    function GerarRegistroTrailler400(ARemessa:TStringList): String;  Virtual;
+    procedure GerarRegistroTrailler400(ARemessa:TStringList);  Virtual;
     function GerarRegistroTrailler240(ARemessa:TStringList): String;  Virtual;
     Procedure LerRetorno400(ARetorno:TStringList); Virtual;
     Procedure LerRetorno240(ARetorno:TStringList); Virtual;
@@ -370,11 +370,11 @@ type
     function MontarCodigoBarras(const ACBrTitulo : TACBrTitulo): String;
     function MontarLinhaDigitavel(const CodigoBarras: String): String;
 
-    function GerarRegistroHeader400(NumeroRemessa : Integer): String;
+    procedure GerarRegistroHeader400(NumeroRemessa : Integer; ARemessa:TStringList);
     function GerarRegistroHeader240(NumeroRemessa : Integer): String;
-    function GerarRegistroTransacao400(ACBrTitulo : TACBrTitulo): String;
+    procedure GerarRegistroTransacao400(ACBrTitulo : TACBrTitulo;aRemessa: TStringList);
     function GerarRegistroTransacao240(ACBrTitulo : TACBrTitulo): String;
-    function GerarRegistroTrailler400(ARemessa:TStringList): String;
+    procedure GerarRegistroTrailler400(ARemessa:TStringList);
     function GerarRegistroTrailler240(ARemessa:TStringList): String;
 
     procedure LerRetorno400(ARetorno:TStringList);
@@ -1631,9 +1631,9 @@ begin
    Result:= BancoClass.MontarLinhaDigitavel(CodigoBarras);
 end;
 
-function TACBrBanco.GerarRegistroHeader400(NumeroRemessa: Integer): String;
+procedure TACBrBanco.GerarRegistroHeader400(NumeroRemessa: Integer; ARemessa:TStringList);
 begin
-  Result :=  BancoClass.GerarRegistroHeader400( NumeroRemessa );
+  BancoClass.GerarRegistroHeader400( NumeroRemessa, ARemessa );
 end;
 
 function TACBrBanco.GerarRegistroHeader240(NumeroRemessa: Integer): String;
@@ -1641,9 +1641,9 @@ begin
   Result :=  BancoClass.GerarRegistroHeader240( NumeroRemessa );
 end;
 
-function TACBrBanco.GerarRegistroTransacao400(ACBrTitulo: TACBrTitulo): String;
+procedure TACBrBanco.GerarRegistroTransacao400(ACBrTitulo: TACBrTitulo; aRemessa: TStringList);
 begin
-  Result := BancoClass.GerarRegistroTransacao400( ACBrTitulo );
+  BancoClass.GerarRegistroTransacao400( ACBrTitulo, aRemessa );
 end;
 
 function TACBrBanco.GerarRegistroTransacao240(ACBrTitulo: TACBrTitulo): String;
@@ -1651,9 +1651,9 @@ begin
   Result := BancoClass.GerarRegistroTransacao240( ACBrTitulo );
 end;
 
-function TACBrBanco.GerarRegistroTrailler400(ARemessa: TStringList): String;
+procedure TACBrBanco.GerarRegistroTrailler400(ARemessa: TStringList);
 begin
-  Result := BancoClass.GerarRegistroTrailler400( ARemessa );
+  BancoClass.GerarRegistroTrailler400( ARemessa );
 end;
 
 function TACBrBanco.GerarRegistroTrailler240(ARemessa: TStringList): String;
@@ -1707,11 +1707,10 @@ begin
    Inherited Destroy;
 end;
 
-function TACBrBancoClass.GerarRegistroHeader400( NumeroRemessa: Integer): String;
+procedure TACBrBancoClass.GerarRegistroHeader400( NumeroRemessa: Integer; aRemessa: TStringList);
 begin
   { Método implementado apenas para evitar Warnings de compilação (poderia ser abstrato)
     Você de fazer "override" desse método em todas as classes filhas de TACBrBancoClass }
-  Result := '' ;
   ErroAbstract('GerarRemessa400');
 end;
 
@@ -1722,11 +1721,10 @@ begin
   ErroAbstract('GerarRemessa240');
 end;
 
-function TACBrBancoClass.GerarRegistroTrailler400( ARemessa: TStringList): String;
+procedure TACBrBancoClass.GerarRegistroTrailler400( ARemessa: TStringList);
 begin
   { Método implementado apenas para evitar Warnings de compilação (poderia ser abstrato)
     Você de fazer "override" desse método em todas as classes filhas de TACBrBancoClass }
-  Result := '' ;
 end;
 
 function TACBrBancoClass.MontarCampoCodigoCedente(
@@ -1752,11 +1750,10 @@ begin
    ErroAbstract('LerRetorno240');
 end;
 
-function TACBrBancoClass.GerarRegistroTransacao400(  ACBrTitulo: TACBrTitulo): String;
+procedure TACBrBancoClass.GerarRegistroTransacao400(  ACBrTitulo: TACBrTitulo; aRemessa: TStringList);
 begin
   { Método implementado apenas para evitar Warnings de compilação (poderia ser abstrato)
     Você de fazer "override" desse método em todas as classes filhas de TACBrBancoClass }
-   Result:= '';
 end;
 
 function TACBrBancoClass.GerarRegistroTransacao240 ( ACBrTitulo: TACBrTitulo
@@ -1936,12 +1933,13 @@ begin
    try
       if LayoutRemessa =c400 then
       begin
-         SLRemessa.Add( Banco.GerarRegistroHeader400( NumeroRemessa ) );
+         Banco.GerarRegistroHeader400( NumeroRemessa, SLRemessa );
 
          for ContTitulos:= 0 to ListadeBoletos.Count-1 do
-             SLRemessa.Add( Banco.GerarRegistroTransacao400( ListadeBoletos[ContTitulos] ) );
+            Banco.GerarRegistroTransacao400( ListadeBoletos[ContTitulos], SLRemessa);
 
-         SLRemessa.Add( Banco.GerarRegistroTrailler400( SLRemessa ) );
+         Banco.GerarRegistroTrailler400( SLRemessa );
+
       end
       else
       begin

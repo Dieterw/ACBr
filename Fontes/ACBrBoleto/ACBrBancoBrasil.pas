@@ -57,9 +57,9 @@ type
     function GerarRegistroHeader240(NumeroRemessa : Integer): String; override;
     function GerarRegistroTransacao240(ACBrTitulo : TACBrTitulo): String; override;
     function GerarRegistroTrailler240(ARemessa : TStringList): String;  override;
-    function GerarRegistroHeader400(NumeroRemessa : Integer): String; override;
-    function GerarRegistroTransacao400(ACBrTitulo : TACBrTitulo): String; override;
-    function GerarRegistroTrailler400(ARemessa : TStringList): String;  override;
+    procedure GerarRegistroHeader400(NumeroRemessa : Integer; aRemessa:TStringList); override;
+    procedure GerarRegistroTransacao400(ACBrTitulo : TACBrTitulo; aRemessa: TStringList); override;
+    procedure GerarRegistroTrailler400(ARemessa : TStringList);  override;
     function TipoOcorrenciaToDescricao(const TipoOcorrencia: TACBrTipoOcorrencia) : String; override;
     function CodOcorrenciaToTipo(const CodOcorrencia:Integer): TACBrTipoOcorrencia; override;
     function TipoOCorrenciaToCod(const TipoOcorrencia: TACBrTipoOcorrencia):String; override;
@@ -560,10 +560,11 @@ begin
 end;
 
 
-function TACBrBancoBrasil.GerarRegistroHeader400(NumeroRemessa: Integer): String;
+procedure TACBrBancoBrasil.GerarRegistroHeader400(NumeroRemessa: Integer; aRemessa:TStringList);
 var
   TamConvenioMaior6 :Boolean;
   aAgencia, aConta  :String;
+  wLinha: String;
 begin
 
    with ACBrBanco.ACBrBoleto.Cedente do
@@ -572,7 +573,7 @@ begin
       aAgencia:= IntToStrZero(StrToIntDef(trim(Agencia),0),4);
       aConta  := IntToStrZero(StrToIntDef(trim(Conta),0),8);
 
-      Result:= '0'                            + // ID do Registro
+      wLinha:= '0'                            + // ID do Registro
                '1'                            + // ID do Arquivo( 1 - Remessa)
                'REMESSA'                      + // Literal de Remessa
                '01'                           + // Código do Tipo de Serviço
@@ -584,31 +585,30 @@ begin
 
 
       if TamConvenioMaior6 then
-         Result:= Result + '000000'                         // Complemento
+         wLinha:= wLinha + '000000'                         // Complemento
       else
-         Result:= Result + padR(trim(Convenio),6,'0');      //Convenio;
+         wLinha:= wLinha + padR(trim(Convenio),6,'0');      //Convenio;
 
-      Result:= Result + padL( Nome, 30)                      + // Nome da Empresa
+      wLinha:= wLinha + padL( Nome, 30)                      + // Nome da Empresa
                IntToStrZero( Numero, 3)                      + // Código do Banco
                padL('BANCO DO BRASIL', 15)                   + // Nome do Banco(BANCO DO BRASIL)
                FormatDateTime('ddmmyy',Now)                  + // Data de geração do arquivo
                IntToStrZero(NumeroRemessa,7);                  // Numero Remessa
 
       if TamConvenioMaior6 then
-         Result:= Result + Space(22)                                     + // Nr. Sequencial de Remessa + brancos
+         wLinha:= wLinha + Space(22)                                     + // Nr. Sequencial de Remessa + brancos
                   padR(trim(ACBrBanco.ACBrBoleto.Cedente.Convenio),7,'0')+ //Nr. Convenio
                   space(258)                                               //Brancos
       else
-         Result:= Result + Space(287);
+         wLinha:= wLinha + Space(287);
 
-      Result:= Result + IntToStrZero(1,6); // Nr. Sequencial do registro-informar 000001
+      wLinha:= wLinha + IntToStrZero(1,6); // Nr. Sequencial do registro-informar 000001
 
-      Result:= UpperCase(Result);
+      aRemessa.Text:= aRemessa.Text + UpperCase(wLinha);
    end;
 end;
 
-function TACBrBancoBrasil.GerarRegistroTransacao400(
-  ACBrTitulo: TACBrTitulo): String;
+procedure TACBrBancoBrasil.GerarRegistroTransacao400(ACBrTitulo: TACBrTitulo; aRemessa: TStringList);
 var
   ANossoNumero, ADigitoNossoNumero :String;
   ATipoOcorrencia, AInstrucao      :String;
@@ -620,6 +620,7 @@ var
   NumRegT, NumRegM, incNumReg      :Integer;
   ATipoBoleto                      :Char;
   TamConvenioMaior6                :Boolean;
+  wLinha: String;
 
 begin
 
@@ -732,16 +733,12 @@ begin
 
       with ACBrBoleto do
       begin
-         incNumReg:= 2 + ListadeBoletos.IndexOf(ACBrTitulo);
-         NumRegT:= ListadeBoletos.IndexOf(ACBrTitulo)+ incNumReg;
-         NumRegM:= NumRegT+1;
-
          if TamConvenioMaior6 then
-            Result:= '7'
+            wLinha:= '7'
          else
-            Result:= '1';
+            wLinha:= '1';
 
-         Result:= Result                                                  + // ID Registro
+         wLinha:= wLinha                                                  + // ID Registro
                   ATipoCendente + padR(OnlyNumber(Cedente.CNPJCPF),14,'0')+ // Tipo de inscrição da empresa 01-CPF / 02-CNPJ  + Inscrição da empresa
                   aAgencia                                                + // Prefixo da agencia
                   padL( Cedente.AgenciaDigito, 1)                         + // DV-prefixo da agencia
@@ -749,27 +746,27 @@ begin
                   padL( Cedente.ContaDigito, 1);                            // DV-código do cedente
 
          if TamConvenioMaior6 then
-            Result:= Result + padR( trim(Cedente.Convenio), 7)              // Número do convenio
+            wLinha:= wLinha + padR( trim(Cedente.Convenio), 7)              // Número do convenio
          else
-            Result:= Result + padR( trim(Cedente.Convenio), 6);             // Número do convenio
+            wLinha:= wLinha + padR( trim(Cedente.Convenio), 6);             // Número do convenio
 
-         Result:= Result + padL( SeuNumero, 25 );                           // Numero de Controle do Participante
+         wLinha:= wLinha + padL( SeuNumero, 25 );                           // Numero de Controle do Participante
 
          if TamConvenioMaior6 then
-            Result:= Result + padR( ANossoNumero, 17, '0')                  // Nosso numero
+            wLinha:= wLinha + padR( ANossoNumero, 17, '0')                  // Nosso numero
          else
-            Result:= Result + padR( ANossoNumero,11)+ ADigitoNossoNumero;
+            wLinha:= wLinha + padR( ANossoNumero,11)+ ADigitoNossoNumero;
 
 
-         Result:= Result +
+         wLinha:= wLinha +
                   '0000' + Space(7) + aModalidade;                          // Zeros + Brancos + Prefixo do titulo + Variação da carteira
 
          if TamConvenioMaior6  then
-            Result:= Result + IntToStrZero(0,7)                             // Zero + Zeros + Zero + Zeros
+            wLinha:= wLinha + IntToStrZero(0,7)                             // Zero + Zeros + Zero + Zeros
          else
-            Result:= Result + IntToStrZero(0,13);
+            wLinha:= wLinha + IntToStrZero(0,13);
 
-         Result:= Result +
+         wLinha:= wLinha +
                   '     '                                                 + // Tipo de cobrança
                   Carteira                                                + // Carteira
                   ATipoOcorrencia                                         + // Ocorrência "Comando"
@@ -787,37 +784,42 @@ begin
                   IntToStrZero( round( ValorAbatimento * 100 ), 13)       + // Valor do abatimento permitido
                   ATipoSacado + padR(OnlyNumber(Sacado.CNPJCPF),14,'0')   + // Tipo de inscricao do sacado + CNPJ ou CPF do sacado
                   padL( Sacado.NomeSacado, 37) + '   '                    + // Nome do sacado + Brancos
-                  padL(trim(Sacado.Logradouro) +
-                        ', ' +
-                        trim(Sacado.Numero) + ' '+ trim(Sacado.Bairro), 52)          + // Endereço do sacado
+                  padL(trim(Sacado.Logradouro) + ', ' +
+                       trim(Sacado.Numero) + ' '+ trim(Sacado.Bairro),
+                       52)                                                + // Endereço do sacado
                   padR( OnlyNumber(Sacado.CEP), 8 )                       + // CEP do endereço do sacado
                   padL( trim(Sacado.Cidade), 15)                          + // Cidade do sacado
                   padL( Sacado.UF, 2 )                                    + // UF da cidade do sacado
                   padL( AMensagem, 40)                                    + // Observações
                   DiasProtesto + ' '                                      + // Número de dias para protesto + Branco
-                  IntToStrZero( NumRegT, 6 );
+                  IntToStrZero( aRemessa.Count + 1{NumRegT}, 6 );
 
 
-         Result:= Result + #13#10                                  +
+         wLinha:= wLinha + sLineBreak                              +
                   '5'                                              + //Tipo Registro
                   '99'                                             + //Tipo de Serviço (Cobrança de Multa)
                   IfThen(PercentualMulta > 0, '2','9')             + //Cod. Multa 2- Percentual 9-Sem Multa
-                  IfThen(PercentualMulta > 0,FormatDateTime('ddmmyy', DataMoraJuros),'000000') + //Data Multa
+                  IfThen(PercentualMulta > 0,
+                         FormatDateTime('ddmmyy', DataMoraJuros),
+                                        '000000')                  + //Data Multa
                   IntToStrZero( round( PercentualMulta * 100), 12) + //Perc. Multa
                   Space(372)                                       + //Brancos
-                  IntToStrZero(NumRegM,6);
+                  IntToStrZero(aRemessa.Count + 2 {NumRegM},6);
 
-         Result:= UpperCase(Result);
+         aRemessa.Text := aRemessa.Text + UpperCase(wLinha);
       end;
    end;
 end;
 
-function TACBrBancoBrasil.GerarRegistroTrailler400(
-  ARemessa: TStringList): String;
+procedure TACBrBancoBrasil.GerarRegistroTrailler400(
+  ARemessa: TStringList);
+var
+  wLinha: String;
 begin
-   Result:= '9' + Space(393)                     + // ID Registro
-            IntToStrZero( (ARemessa.Count * 2), 6);  // Contador de Registros
-   Result:= UpperCase(Result);
+   wLinha := '9' + Space(393)                     + // ID Registro
+             IntToStrZero(ARemessa.Count + 1 {(ARemessa.Count * 2)}, 6);  // Contador de Registros
+
+   ARemessa.Text:= ARemessa.Text + UpperCase(wLinha);
 end;
 
 procedure TACBrBancoBrasil.LerRetorno240(ARetorno: TStringList);

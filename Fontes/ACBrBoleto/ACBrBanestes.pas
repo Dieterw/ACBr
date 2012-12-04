@@ -59,9 +59,9 @@ type
     function MontarCodigoBarras(const ACBrTitulo : TACBrTitulo): String; override;
     function MontarCampoNossoNumero(const ACBrTitulo :TACBrTitulo): String; override;
     function MontarCampoCodigoCedente(const ACBrTitulo: TACBrTitulo): String; override;
-    function GerarRegistroHeader400(NumeroRemessa : Integer): String; override;
-    function GerarRegistroTransacao400(ACBrTitulo : TACBrTitulo): String; override;
-    function GerarRegistroTrailler400(ARemessa:TStringList): String;  override;
+    procedure GerarRegistroHeader400(NumeroRemessa : Integer; ARemessa: TStringList); override;
+    procedure GerarRegistroTransacao400(ACBrTitulo : TACBrTitulo; aRemessa: TStringList); override;
+    procedure GerarRegistroTrailler400(ARemessa:TStringList);  override;
     Procedure LerRetorno400(ARetorno:TStringList); override;
 
     function TipoOcorrenciaToDescricao(const TipoOcorrencia: TACBrTipoOcorrencia) : String; override;
@@ -213,42 +213,48 @@ begin
              ACBrTitulo.ACBrBoleto.Cedente.ContaDigito;
 end;
 
-function TACBrBanestes.GerarRegistroHeader400(NumeroRemessa: Integer): String;
+procedure TACBrBanestes.GerarRegistroHeader400(NumeroRemessa: Integer; aRemessa: TStringList );
+var
+  wLinha: String;
 begin
    with ACBrBanco.ACBrBoleto.Cedente do begin
-      Result:= '0'                                        + // ID do Registro
-               '1'                                        + // ID do Arquivo( 1 - Remessa)
-               'REMESSA'                                  + // Literal de Remessa
-               '01'                                       + // Código do Tipo de Serviço
-               padL('COBRANCA', 15 )+
-               padR(Conta, 10, '0')+                      // Codigo da Empresa no Banco
-               padR(ContaDigito, 1, '0')+
-               space(9) +                                               // COMPLEMENTO DO REGISTRO
-               padL(Nome, 30)                                 + // Nome da Empresa
-               IntToStrzero(Numero,3)+
-               padL('BANESTES', 8)        +                  // Código e Nome do Banco(237 - Bradesco)
-               space(7) +                                    // COMPLEMENTO DO REGISTRO
-               FormatDateTime('ddmmyy',Now)+
-               Space(294)+                                  // Data de geração do arquivo + brancos
-               IntToStrZero(1,6);                           // Nr. Sequencial de Remessa + brancos + Contador
+      wLinha:= '0'                             + // ID do Registro
+               '1'                             + // ID do Arquivo( 1 - Remessa)
+               'REMESSA'                       + // Literal de Remessa
+               '01'                            + // Código do Tipo de Serviço
+               padL('COBRANCA', 15 )           +
+               padR(Conta, 10, '0')            + // Codigo da Empresa no Banco
+               padR(ContaDigito, 1, '0')       +
+               space(9)                        + // COMPLEMENTO DO REGISTRO
+               padL(Nome, 30)                  + // Nome da Empresa
+               IntToStrzero(Numero,3)          +
+               padL('BANESTES', 8)             + // Código e Nome do Banco(237 - Bradesco)
+               space(7)                        + // COMPLEMENTO DO REGISTRO
+               FormatDateTime('ddmmyy',Now)    +
+               Space(294)                      + // Data de geração do arquivo + brancos
+               IntToStrZero(1,6);                // Nr. Sequencial de Remessa + brancos + Contador
 
-      Result:= UpperCase(Result);
+      aRemessa.Text:= aRemessa.Text + UpperCase(wLinha);
    end;
 
 end;
 
-function TACBrBanestes.GerarRegistroTrailler400(ARemessa: TStringList): String;
+procedure TACBrBanestes.GerarRegistroTrailler400(ARemessa: TStringList);
+var
+  wLinha: String;
 begin
-   Result:= '9' + Space(393)                     + // ID Registro
+   wLinha:= '9' + Space(393)                     + // ID Registro
             IntToStrZero( ARemessa.Count + 1, 6);  // Contador de Registros
-   Result:= UpperCase(Result);
+
+   aRemessa.Text := aRemessa.Text + UpperCase(wLinha);
+
 end;
 
-function TACBrBanestes.GerarRegistroTransacao400(
-  ACBrTitulo: TACBrTitulo): String;
+procedure TACBrBanestes.GerarRegistroTransacao400(ACBrTitulo: TACBrTitulo; aRemessa: TStringList);
 var
    ATipoInscricao,TipoBoleto,ATipoAceite,DigitoNossoNumero, Ocorrencia, aEspecie, aAgencia :String;
    PracaPostagem,acarteira,Protesto, TipoSacado, MensagemCedente, aConta     :String;
+   wLinha: String;
 begin
    case ACBrBanco.ACBrBoleto.Cedente.TipoInscricao of
       pFisica  : ATipoInscricao := '01';
@@ -327,7 +333,7 @@ begin
          if Mensagem.Text<>'' then MensagemCedente:= Mensagem[0];
 
 
-         Result:= '1'                                                     +  // ID Registro
+         wLinha:= '1'                                              +  // ID Registro
                   atipoinscricao                                   + // TIPO INSCRICAO EMPRESA(CNPJ, CPF);
                   padL(Cedente.CNPJCPF,14,'0')+
                   padL(cedente.Conta,10,'0')+
@@ -371,9 +377,10 @@ begin
                   padl( MensagemCedente, 40 )+
                   '00'+
                   '0';
-           Result := Result + IntToStrZero(ListadeBoletos.IndexOf(ACBrTitulo) +
-                               ListadeBoletos.IndexOf(ACBrTitulo) + 2, 6);
-           Result:= UpperCase(Result);
+           wLinha := wLinha + IntToStrZero(aRemessa.Count + 1 {ListadeBoletos.IndexOf(ACBrTitulo) +
+                               ListadeBoletos.IndexOf(ACBrTitulo) + 2}, 6);
+
+           aRemessa.Text:= aRemessa.Text +UpperCase(wLinha);
       end;
    end;
 

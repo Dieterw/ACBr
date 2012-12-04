@@ -986,6 +986,7 @@ begin
   
   Acao   := TStringList.Create;
   Stream := TMemoryStream.Create;
+  FcStat := 0;
 
   Texto := '<?xml version="1.0" encoding="utf-8"?>';
   Texto := Texto + '<soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">';
@@ -1132,6 +1133,7 @@ begin
   Result := False;
   Acao   := TStringList.Create;
   Stream := TMemoryStream.Create;
+  FcStat := 0;
 
   Texto := '<?xml version="1.0" encoding="utf-8"?>';
   Texto := Texto + '<soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">';
@@ -1469,6 +1471,7 @@ var
 begin
   {Result :=} inherited Executar;
   Result := False;
+  FcStat := 0;
 
   TACBrCTe( FACBrCTe ).SetStatus( stCTeRetRecepcao );
   Sleep(TACBrCTe( FACBrCTe ).Configuracoes.WebServices.AguardarConsultaRet);
@@ -1531,6 +1534,7 @@ begin
 
   Acao   := TStringList.Create;
   Stream := TMemoryStream.Create;
+  FcStat := 0;
 
   Texto := '<?xml version="1.0" encoding="utf-8"?>';
   Texto := Texto + '<soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">';
@@ -1673,6 +1677,7 @@ begin
 
   Acao   := TStringList.Create;
   Stream := TMemoryStream.Create;
+  FcStat := 0;
 
   Texto := '<?xml version="1.0" encoding="utf-8"?>';
   Texto := Texto + '<soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">';
@@ -1896,6 +1901,7 @@ begin
 
   Acao   := TStringList.Create;
   Stream := TMemoryStream.Create;
+  FcStat := 0;
 
   Texto := '<?xml version="1.0" encoding="utf-8"?>';
   Texto := Texto + '<soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">';
@@ -2108,6 +2114,7 @@ begin
 
   Acao   := TStringList.Create;
   Stream := TMemoryStream.Create;
+  FcStat := 0;
 
   Texto := '<?xml version="1.0" encoding="utf-8"?>';
   Texto := Texto + '<soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">';
@@ -2288,6 +2295,7 @@ begin
 
   Acao := TStringList.Create;
   Stream := TMemoryStream.Create;
+  FcStat := 0;
 
   Texto := '<?xml version="1.0" encoding="utf-8"?>';
   Texto := Texto + '<soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">';
@@ -2459,6 +2467,7 @@ begin
 
   Acao   := TStringList.Create;
   Stream := TMemoryStream.Create;
+  FcStat := 0;
 
   Texto := '<?xml version="1.0" encoding="utf-8"?>';
   Texto := Texto + '<soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">';

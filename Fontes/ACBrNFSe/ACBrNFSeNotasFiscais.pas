@@ -177,12 +177,15 @@ begin
     if TACBrNFSe( TNotasFiscais( Collection ).ACBrNFSe ).DANFSE <> nil
      then begin
       TACBrNFSe( TNotasFiscais( Collection ).ACBrNFSe ).DANFSE.ImprimirDANFSEPDF(NFSe);
-      // Alterado por Italo em 05/11/2012
-      if NomeArq <> ''
-       then NomeArqPDF := NomeArq
-       else NomeArqPDF := StringReplace(NFSe.Numero, 'NFSe', '', [rfIgnoreCase]);
+      // Alterado por Italo em 04/12/2012
+      NomeArqPDF := Trim(NomeArq);
+      if NomeArqPDF <> ''
+       then begin
+         NomeArqPDF := StringReplace(NFSe.Numero, 'NFSe', '', [rfIgnoreCase]);
+         NomeArqPDF := PathWithDelim(TACBrNFSe( TNotasFiscais( Collection ).ACBrNFSe ).DANFSE.PathPDF) + NomeArqPDF + '.pdf';
+       end
+       else NomeArqPDF := StringReplace(NomeArqPDF, '-nfse.xml', '.pdf', [rfIgnoreCase]);
 
-      NomeArqPDF := PathWithDelim(TACBrNFSe( TNotasFiscais( Collection ).ACBrNFSe ).DANFSE.PathPDF) + NomeArqPDF + '.pdf';
       m.AddPartBinaryFromFile(NomeArqPDF, p);
      end;
    end;

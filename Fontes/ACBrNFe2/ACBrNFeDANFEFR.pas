@@ -67,6 +67,7 @@ type
     FEspessuraBorda: Integer;
     FFastFileEvento: String;
     function GetPreparedReport: TfrxReport;
+    function GetPreparedReportEvento: TfrxReport;
     function PrepareReport(NFE: TNFe = nil): Boolean;
     function PrepareReportEvento: Boolean;
    public
@@ -82,6 +83,7 @@ type
     property dmDanfe: TdmACBrNFeFR read FdmDanfe write FdmDanfe;
     property EspessuraBorda: Integer read FEspessuraBorda write FEspessuraBorda;
     property PreparedReport: TfrxReport read GetPreparedReport;
+    property PreparedReportEvento: TfrxReport read GetPreparedReportEvento;
   end;
 
 implementation
@@ -109,6 +111,19 @@ begin
   else
   begin
     if PrepareReport(nil) then
+      Result := dmDanfe.frxReport
+    else
+      Result := nil;
+  end;
+end;
+
+function TACBrNFeDANFEFR.GetPreparedReportEvento: TfrxReport;
+begin
+  if Trim(FFastFileEvento) = '' then
+    Result := nil
+  else
+  begin
+    if PrepareReportEvento then
       Result := dmDanfe.frxReport
     else
       Result := nil;

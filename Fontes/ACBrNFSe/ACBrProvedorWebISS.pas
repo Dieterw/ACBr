@@ -90,7 +90,7 @@ var
  ConfigCidade: TConfigCidade;
 begin
  ConfigCidade.VersaoSoap    := '1.1';
- ConfigCidade.CodigoSchemas := 3;
+ ConfigCidade.CodigoSchemas := 1;
  case ACodigo of
   2910800: ConfigCidade.CodigoURLs := 01; // Feira de Santana/BA
   3104205: ConfigCidade.CodigoURLs := 02; // Arcos/MG
@@ -100,7 +100,10 @@ begin
   5107909: ConfigCidade.CodigoURLs := 06; // Sinop/MT
   3105608: ConfigCidade.CodigoURLs := 07; // Barbacena/MG
   3105905: ConfigCidade.CodigoURLs := 08; // Barroso/MG
-  4301602: ConfigCidade.CodigoURLs := 09; // Bage/RS
+  4301602: begin
+            ConfigCidade.CodigoURLs := 09; // Bage/RS
+            ConfigCidade.CodigoSchemas := 2;
+           end;
  end;
  ConfigCidade.Prefixo2      := '';
  ConfigCidade.Prefixo3      := '';
@@ -121,19 +124,38 @@ function TProvedorWebISS.GetConfigSchema(ACodigo: Integer): TConfigSchema;
 var
  ConfigSchema: TConfigSchema;
 begin
- ConfigSchema.VersaoCabecalho := '1.00';
- ConfigSchema.VersaoDados     := '1.00';
- ConfigSchema.VersaoXML       := '2';
- ConfigSchema.NameSpaceXML    := 'http://www.abrasf.org.br/';
- ConfigSchema.Cabecalho       := 'nfse.xsd';
- ConfigSchema.ServicoEnviar   := 'nfse.xsd';
- ConfigSchema.ServicoConSit   := 'nfse.xsd';
- ConfigSchema.ServicoConLot   := 'nfse.xsd';
- ConfigSchema.ServicoConRps   := 'nfse.xsd';
- ConfigSchema.ServicoConNfse  := 'nfse.xsd';
- ConfigSchema.ServicoCancelar := 'nfse.xsd';
- ConfigSchema.DefTipos        := '';
-
+ case ACodigo of
+  1: begin
+      ConfigSchema.VersaoCabecalho := '1.00';
+      ConfigSchema.VersaoDados     := '1.00';
+      ConfigSchema.VersaoXML       := '2';
+      ConfigSchema.NameSpaceXML    := 'http://www.abrasf.org.br/';
+      ConfigSchema.Cabecalho       := 'nfse.xsd';
+      ConfigSchema.ServicoEnviar   := 'nfse.xsd';
+      ConfigSchema.ServicoConSit   := 'nfse.xsd';
+      ConfigSchema.ServicoConLot   := 'nfse.xsd';
+      ConfigSchema.ServicoConRps   := 'nfse.xsd';
+      ConfigSchema.ServicoConNfse  := 'nfse.xsd';
+      ConfigSchema.ServicoCancelar := 'nfse.xsd';
+      ConfigSchema.ServicoGerar    := '';
+      ConfigSchema.DefTipos        := '';
+     end;
+  2: begin
+      ConfigSchema.VersaoCabecalho := '1.00';
+      ConfigSchema.VersaoDados     := '1.00';
+      ConfigSchema.VersaoXML       := '2';
+      ConfigSchema.NameSpaceXML    := 'http://www.abrasf.org.br/nfse';
+      ConfigSchema.Cabecalho       := '';
+      ConfigSchema.ServicoEnviar   := 'servico_enviar_lote_rps_envio.xsd';
+      ConfigSchema.ServicoConSit   := 'servico_consultar_situacao_lote_rps_envio.xsd';
+      ConfigSchema.ServicoConLot   := 'servico_consultar_lote_rps_envio.xsd';
+      ConfigSchema.ServicoConRps   := 'servico_consultar_nfse_rps_envio.xsd';
+      ConfigSchema.ServicoConNfse  := 'servico_consultar_nfse_envio.xsd';
+      ConfigSchema.ServicoCancelar := 'servico_cancelar_nfse_envio.xsd';
+      ConfigSchema.ServicoGerar    := 'servico_gerar_nfse_envio.xsd';
+      ConfigSchema.DefTipos        := 'tipos_complexos.xsd';
+     end;
+ end;
  Result := ConfigSchema;
 end;
 
@@ -192,6 +214,7 @@ begin
        ConfigURL.HomConsultaSitLoteRPS := 'https://www1.webiss.com.br/' + ConfigURL.HomNomeCidade + '_wsnfse_homolog/NfseServices.svc';
        ConfigURL.HomConsultaNFSe       := 'https://www1.webiss.com.br/' + ConfigURL.HomNomeCidade + '_wsnfse_homolog/NfseServices.svc';
        ConfigURL.HomCancelaNFSe        := 'https://www1.webiss.com.br/' + ConfigURL.HomNomeCidade + '_wsnfse_homolog/NfseServices.svc';
+       ConfigURL.HomGerarNFSe          := 'https://www1.webiss.com.br/' + ConfigURL.HomNomeCidade + '_wsnfse_homolog/NfseServices.svc';
 
        ConfigURL.ProRecepcaoLoteRPS    := 'https://www1.webiss.com.br/' + ConfigURL.ProNomeCidade + '_wsnfse/NfseServices.svc';
        ConfigURL.ProConsultaLoteRPS    := 'https://www1.webiss.com.br/' + ConfigURL.ProNomeCidade + '_wsnfse/NfseServices.svc';
@@ -199,6 +222,7 @@ begin
        ConfigURL.ProConsultaSitLoteRPS := 'https://www1.webiss.com.br/' + ConfigURL.ProNomeCidade + '_wsnfse/NfseServices.svc';
        ConfigURL.ProConsultaNFSe       := 'https://www1.webiss.com.br/' + ConfigURL.ProNomeCidade + '_wsnfse/NfseServices.svc';
        ConfigURL.ProCancelaNFSe        := 'https://www1.webiss.com.br/' + ConfigURL.ProNomeCidade + '_wsnfse/NfseServices.svc';
+       ConfigURL.ProGerarNFSe          := 'https://www1.webiss.com.br/' + ConfigURL.ProNomeCidade + '_wsnfse/NfseServices.svc';
       end;
   01,
   05: begin
@@ -274,7 +298,7 @@ begin
                              '<' + Prefixo3 + 'Pedido>' +
                               '<' + Prefixo4 + 'InfPedidoCancelamento' +
                                  DFeUtil.SeSenao(Identificador <> '', ' ' + Identificador + '="' + URI + '"', '') + '>';
-   acGerar:       Result := '';
+   acGerar:       Result := '<' + Prefixo3 + 'GerarNfseEnvio' + NameSpaceDad;
  end;
 end;
 
@@ -301,7 +325,7 @@ begin
    acConsNFSe:    Result := '</' + Prefixo3 + 'ConsultarNfseEnvio>';
    acCancelar:    Result := '</' + Prefixo3 + 'Pedido>' +
                             '</' + Prefixo3 + 'CancelarNfseEnvio>';
-   acGerar:       Result := '';
+   acGerar:       Result := '</' + Prefixo3 + 'GerarNfseEnvio>';
  end;
 end;
 
@@ -526,8 +550,40 @@ end;
 function TProvedorWebISS.Gera_DadosMsgGerarNFSe(Prefixo3, Prefixo4,
   Identificador, NameSpaceDad, VersaoDados, VersaoXML, NumeroLote, CNPJ,
   IM, QtdeNotas: String; Notas, TagI, TagF: AnsiString): AnsiString;
+var
+ DadosMsg: AnsiString;
 begin
- Result := '';
+ DadosMsg := '<' + Prefixo3 + 'LoteRps'+
+               DFeUtil.SeSenao(Identificador <> '', ' ' + Identificador + '="' + NumeroLote + '"', '') +
+               ' versao="' + VersaoDados + '">' +
+              '<' + Prefixo4 + 'NumeroLote>' +
+                NumeroLote +
+              '</' + Prefixo4 + 'NumeroLote>' +
+
+              DFeUtil.SeSenao(VersaoXML = '1',
+
+                '<' + Prefixo4 + 'CpfCnpj>' +
+                '<' + Prefixo4 + 'Cnpj>' +
+                  Cnpj +
+                '</' + Prefixo4 + 'Cnpj>' +
+                '</' + Prefixo4 + 'CpfCnpj>',
+
+                '<' + Prefixo4 + 'Cnpj>' +
+                  Cnpj +
+                '</' + Prefixo4 + 'Cnpj>') +
+
+              '<' + Prefixo4 + 'InscricaoMunicipal>' +
+                IM +
+              '</' + Prefixo4 + 'InscricaoMunicipal>' +
+              '<' + Prefixo4 + 'QuantidadeRps>' +
+                QtdeNotas +
+              '</' + Prefixo4 + 'QuantidadeRps>' +
+              '<' + Prefixo4 + 'ListaRps>' +
+               Notas +
+              '</' + Prefixo4 + 'ListaRps>' +
+             '</' + Prefixo3 + 'LoteRps>';
+
+  Result := TagI + DadosMsg + TagF;
 end;
 
 function TProvedorWebISS.GeraEnvelopeRecepcionarLoteRPS(URLNS: String;
@@ -665,8 +721,23 @@ end;
 function TProvedorWebISS.GeraEnvelopeGerarNFSe(URLNS: String; CabMsg,
   DadosMsg, DadosSenha: AnsiString): AnsiString;
 begin
- Result := '';
- raise Exception.Create( 'Opção não implementada para este provedor.' );
+ result := '<?xml version="1.0" encoding="utf-8"?>' +
+           '<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" ' +
+                       'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
+                       'xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
+            '<S:Body>' +
+             '<GerarNfse xmlns="' + URLNS + '/">' +
+              '<cabec>' +
+                '&lt;?xml version="1.0" encoding="utf-8"?&gt;' +
+                StringReplace(StringReplace(CabMsg, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
+              '</cabec>' +
+              '<msg>' +
+                '&lt;?xml version="1.0" encoding="utf-8"?&gt;' +
+                StringReplace(StringReplace(DadosMsg, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
+              '</msg>' +
+             '</GerarNfse>' +
+            '</S:Body>' +
+           '</S:Envelope>';
 end;
 
 function TProvedorWebISS.GetSoapAction(Acao: TnfseAcao; NomeCidade: String): String;
@@ -678,7 +749,7 @@ begin
    acConsNFSeRps: Result := 'http://tempuri.org/INfseServices/ConsultarNfsePorRps';
    acConsNFSe:    Result := 'http://tempuri.org/INfseServices/ConsultarNfse';
    acCancelar:    Result := 'http://tempuri.org/INfseServices/CancelarNfse';
-   acGerar:       Result := '';
+   acGerar:       Result := 'http://tempuri.org/INfseServices/GerarNfse';
  end;
 end;
 
@@ -691,7 +762,7 @@ begin
    acConsNFSeRps: Result := SeparaDados( RetornoWS, 'ConsultarNfsePorRpsResult' );
    acConsNFSe:    Result := SeparaDados( RetornoWS, 'ConsultarNfseResult' );
    acCancelar:    Result := SeparaDados( RetornoWS, 'CancelarNfseResult' );
-   acGerar:       Result := '';
+   acGerar:       Result := SeparaDados( RetornoWS, 'GerarNfseResult' );
  end;
 end;
 

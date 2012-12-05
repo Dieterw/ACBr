@@ -126,6 +126,8 @@ begin
  ConfigSchema.ServicoConNfse  := 'nfse.xsd';
  ConfigSchema.ServicoCancelar := 'nfse.xsd';
  ConfigSchema.DefTipos        := '';
+ //Incluido por Lutzem Massao Aihara...
+ ConfigSchema.ServicoGerar    := 'nfse.xsd';
 
  Result := ConfigSchema;
 end;
@@ -141,6 +143,8 @@ begin
  ConfigURL.HomConsultaSitLoteRPS := 'https://iss.pontagrossa.pr.gov.br:4431/Homologacao/Services.asmx';
  ConfigURL.HomConsultaNFSe       := 'https://iss.pontagrossa.pr.gov.br:4431/Homologacao/Services.asmx';
  ConfigURL.HomCancelaNFSe        := 'https://iss.pontagrossa.pr.gov.br:4431/Homologacao/Services.asmx';
+ //Incluido por Lutzem Massao Aihara...
+ ConfigURL.HomGerarNFSe          := 'https://iss.pontagrossa.pr.gov.br:4431/Homologacao/Services.asmx';
 
  ConfigURL.ProNomeCidade         := 'pontagrossa.pr';
  ConfigURL.ProRecepcaoLoteRPS    := 'https://iss.pontagrossa.pr.gov.br:4431/Services.asmx';
@@ -149,6 +153,8 @@ begin
  ConfigURL.ProConsultaSitLoteRPS := 'https://iss.pontagrossa.pr.gov.br:4431/Services.asmx';
  ConfigURL.ProConsultaNFSe       := 'https://iss.pontagrossa.pr.gov.br:4431/Services.asmx';
  ConfigURL.ProCancelaNFSe        := 'https://iss.pontagrossa.pr.gov.br:4431/Services.asmx';
+ //Incluido por Lutzem Massao Aihara...
+ ConfigURL.ProGerarNFSe          := 'https://iss.pontagrossa.pr.gov.br:4431/Services.asmx';
 
  Result := ConfigURL;
 end;

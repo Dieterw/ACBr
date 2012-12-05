@@ -42,7 +42,7 @@ interface
 
 uses
   ACBrBase, ACBrConsts, ACBrDevice, ACBrSMSClass,
-  SysUtils , Classes, Forms;
+  SysUtils , Classes{$IFNDEF FRAMEWORK}, Forms{$ENDIF};
 
 type
   TACBrSMS = class(TACBrComponent)
@@ -238,7 +238,9 @@ begin
     fsSMS.EnviarSMS(ALote[I].Telefone, ALote[I].Mensagem, IndMsgAtual);
     AIndice := AIndice + ',' + IndMsgAtual;
 
+    {$IFNDEF FRAMEWORK}
     Application.ProcessMessages;
+    {$ENDIF}
 
     // chamar o evento para a aplicação
     if Assigned(fsOnProgresso) then

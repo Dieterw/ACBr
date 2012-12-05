@@ -47,12 +47,15 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+05/12/12 (Regys Silveira, Itamar Bermond) 
+---------------
+[+] Inclusão da impressão e geração de PDF de Eventos com FastReport.  
+
 22/11/2012
 -- ACBrDFeUtil 
 [+] Unificação de funções de mesma funcionalidade das units:
     ACBrNFeUtil, ACBrNFEsUtil, ACBrCTeUtil
     (por Isaque Pinheiro)
-
 
 Alterações   08/11/12 (João Henrique)
 ---------------

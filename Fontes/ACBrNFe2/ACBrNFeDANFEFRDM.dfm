@@ -1,11 +1,12 @@
 object dmACBrNFeFR: TdmACBrNFeFR
   OldCreateOrder = False
-  Height = 341
-  Width = 539
+  Height = 526
+  Width = 720
   object frxPDFExport: TfrxPDFExport
     UseFileCache = True
     ShowProgress = True
     OverwritePrompt = False
+    DataOnly = False
     PrintOptimized = True
     Outline = False
     Background = True
@@ -252,19 +253,34 @@ object dmACBrNFeFR: TdmACBrNFeFR
     Top = 148
   end
   object frxReport: TfrxReport
-    Version = '4.10.5'
+    Version = '4.12.15'
     DotMatrixReport = False
     IniFile = '\Software\Fast Reports'
     PreviewOptions.AllowEdit = False
     PreviewOptions.Buttons = [pbPrint, pbZoom, pbFind, pbNavigator, pbExportQuick]
     PreviewOptions.Zoom = 1.000000000000000000
-    PrintOptions.Printer = 'Default'
+    PrintOptions.Printer = 'Padr'#227'o'
     PrintOptions.PrintOnSheet = 0
-    ReportOptions.CreateDate = 40401.475989294000000000
-    ReportOptions.LastChange = 40415.404595682900000000
+    ReportOptions.CreateDate = 41247.809339340300000000
+    ReportOptions.LastChange = 41248.021882731480000000
     ScriptLanguage = 'PascalScript'
     StoreInDFM = False
     Left = 48
     Top = 36
+  end
+  object cdsEventos: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 272
+    Top = 320
+  end
+  object frxEventos: TfrxDBDataset
+    UserName = 'Eventos'
+    CloseDataSource = False
+    OpenDataSource = False
+    DataSet = cdsEventos
+    BCDToCurrency = False
+    Left = 304
+    Top = 320
   end
 end

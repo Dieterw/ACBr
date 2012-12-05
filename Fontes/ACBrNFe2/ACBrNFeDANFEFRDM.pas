@@ -66,6 +66,7 @@ unit ACBrNFeDANFEFRDM;
 interface
 
 uses
+  pcnEnvEventoNFe,
   SysUtils, Classes, ACBrNFeDANFEClass, pcnNFe, frxClass, frxExportPDF, DB,
   DBClient, frxDBSet, pcnConversao, frxBarcode;
 
@@ -104,11 +105,13 @@ type
     frxInformacoesAdicionais: TfrxDBDataset;
     frxBarCodeObject: TfrxBarCodeObject;
     frxReport: TfrxReport;
+    cdsEventos: TClientDataSet;
+    frxEventos: TfrxDBDataset;
     constructor Create(AOwner: TComponent); override;
   private
-    { Private declarations }
     FDANFEClassOwner: TACBrNFeDANFEClass;
     FNFe: TNFe;
+    FEvento: TEventoNFe;
     procedure CarregaIdentificacao;
     procedure CarregaEmitente;
     procedure CarregaDestinatario;
@@ -125,10 +128,11 @@ type
     procedure CarregaFatura;
     procedure CarregaInformacoesAdicionais;
   public
-    { Public declarations }
     property NFe: TNFe read FNFe write FNFe;
+    property Evento: TEventoNFe read FEvento write FEvento;
     property DANFEClassOwner: TACBrNFeDANFEClass read FDANFEClassOwner;
-    procedure CarregaDados;
+    procedure CarregaDadosNFe;
+    procedure CarregaDadosEventos;
   end;
 
 var
@@ -302,7 +306,7 @@ begin
   end;
 end;
 
-procedure TdmACBrNFeFR.CarregaDados;
+procedure TdmACBrNFeFR.CarregaDadosNFe;
 begin
   CarregaIdentificacao;
   CarregaEmitente;
@@ -1316,6 +1320,99 @@ begin
   end;
 end;
 
+procedure TdmACBrNFeFR.CarregaDadosEventos;
+var
+  i: Integer;
+  CondicoesUso, Correcao: String;
+begin
+  with cdsEventos do
+  begin
+    Close;
+    FieldDefs.Clear;
+
+    FieldDefs.Add('DescricaoTipoEvento', ftString, 150);
+    FieldDefs.Add('Modelo', ftString, 2);
+    FieldDefs.Add('Serie', ftString, 3);
+    FieldDefs.Add('Numero', ftString, 9);
+    FieldDefs.Add('MesAno', ftString, 5);
+    FieldDefs.Add('Barras', ftString, 44);
+    FieldDefs.Add('ChaveAcesso', ftString, 60);
+
+    FieldDefs.Add('cOrgao', ftInteger);
+    FieldDefs.Add('tpAmb', ftString, 100);
+    FieldDefs.Add('dhEvento', ftDateTime);
+    FieldDefs.Add('TipoEvento', ftString, 6);
+    FieldDefs.Add('DescEvento', ftString, 100);
+    FieldDefs.Add('nSeqEvento', ftInteger);
+    FieldDefs.Add('versaoEvento', ftString, 10);
+    FieldDefs.Add('cStat', ftInteger);
+    FieldDefs.Add('xMotivo', ftString, 100);
+    FieldDefs.Add('nProt', ftString, 20);
+    FieldDefs.Add('dhRegEvento', ftDateTime);
+
+    FieldDefs.Add('xJust', ftBlob);
+    FieldDefs.Add('xCondUso', ftBlob);
+    FieldDefs.Add('xCorrecao', ftBlob);
+
+    CreateDataSet;
+
+    for i := 0 to FEvento.Evento.Count - 1 do
+    begin
+      Append;
+
+      with Evento.Evento[i] do
+      begin
+        FieldByName('DescricaoTipoEvento').AsString := InfEvento.DescricaoTipoEvento(InfEvento.tpEvento);
+
+        // nota fiscal eletronica
+        FieldByName('Modelo').AsString      := Copy(InfEvento.chNFe, 21, 2);
+        FieldByName('Serie').AsString       := Copy(InfEvento.chNFe, 23, 3);
+        FieldByName('Numero').AsString      := Copy(InfEvento.chNFe, 26, 9);
+        FieldByName('MesAno').AsString      := Copy(InfEvento.chNFe, 05, 2) + '/' + copy(InfEvento.chNFe, 03, 2);
+        FieldByName('Barras').AsString      := InfEvento.chNFe;
+        FieldByName('ChaveAcesso').AsString := NotaUtil.FormatarChaveAcesso(InfEvento.chNFe);
+
+        // Carta de correção eletrônica
+        FieldByName('cOrgao').AsInteger := InfEvento.cOrgao;
+
+        case InfEvento.tpAmb of
+          taProducao:    FieldByName('tpAmb').AsString := 'PRODUÇÃO';
+          taHomologacao: FieldByName('tpAmb').AsString := 'HOMOLOGAÇÃO - SEM VALOR FISCAL';
+        end;
+
+        FieldByName('dhEvento').AsDateTime    := InfEvento.dhEvento;
+        FieldByName('TipoEvento').AsString    := InfEvento.TipoEvento;
+        FieldByName('DescEvento').AsString    := InfEvento.DescEvento;
+        FieldByName('nSeqEvento').AsInteger   := InfEvento.nSeqEvento;
+        FieldByName('versaoEvento').AsString  := InfEvento.versaoEvento;
+        FieldByName('cStat').AsInteger        := RetInfEvento.cStat;
+        FieldByName('xMotivo').AsString       := RetInfEvento.xMotivo;
+        FieldByName('nProt').AsString         := RetInfEvento.nProt;
+        FieldByName('dhRegEvento').AsDateTime := RetInfEvento.dhRegEvento;
+
+        if InfEvento.tpEvento <> teCCe then
+        begin
+          FieldByName('xJust').AsString := InfEvento.detEvento.xJust;
+        end
+        else
+        begin
+          CondicoesUso := InfEvento.detEvento.xCondUso;
+          CondicoesUso := StringReplace(CondicoesUso, 'com: I', 'com:'+#13+' I', [rfReplaceAll]);
+          CondicoesUso := StringReplace(CondicoesUso, ';', ';' + #13, [rfReplaceAll]);
+
+          Correcao := InfEvento.detEvento.xCorrecao;
+          Correcao := StringReplace(InfEvento.detEvento.xCorrecao, ';', #13, [rfReplaceAll]);
+
+          FieldByName('xCondUso').AsString  := CondicoesUso;
+          FieldByName('xCorrecao').AsString := Correcao;
+        end;
+      end;
+
+      Post;
+    end;
+  end;
+end;
+
 constructor TdmACBrNFeFR.Create(AOwner: TComponent);
 begin
   inherited;
@@ -1323,3 +1420,4 @@ begin
 end;
 
 end.
+

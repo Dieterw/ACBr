@@ -113,7 +113,7 @@ type
     Dados: TTabSheet;
     MemoDados: TMemo;
     OpenDialog1: TOpenDialog;
-    Label30: TLabel;
+    lblSchemas: TLabel;
     edtSchemas: TEdit;
     sbtSchemas: TSpeedButton;
     Label32: TLabel;
@@ -136,6 +136,7 @@ type
     btnEnviaremail: TButton;
     Label31: TLabel;
     edtEmailRemetente: TEdit;
+    Label30: TLabel;
     procedure sbtnCaminhoCertClick(Sender: TObject);
     procedure sbtnGetCertClick(Sender: TObject);
     procedure sbtnLogoMarcaClick(Sender: TObject);
@@ -392,6 +393,7 @@ begin
    ACBrNFSe1.DANFSe.Prefeitura := edtPrefeitura.Text;
   end;
 
+ lblSchemas.Caption := ACBrNFSe1.Configuracoes.WebServices.xProvedor;
 end;
 
 procedure TfrmDemo_ACBrNFSe.LoadXML(MyMemo: TMemo;

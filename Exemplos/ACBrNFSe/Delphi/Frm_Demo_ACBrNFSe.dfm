@@ -93,7 +93,7 @@ object frmDemo_ACBrNFSe: TfrmDemo_ACBrNFSe
         Top = 15
         Width = 277
         Height = 368
-        ActivePage = TabSheet2
+        ActivePage = TabSheet4
         Align = alClient
         MultiLine = True
         TabOrder = 0
@@ -1090,6 +1090,15 @@ object frmDemo_ACBrNFSe: TfrmDemo_ACBrNFSe
         TabOrder = 9
         OnClick = btnEnviaremailClick
       end
+      object btnLinkNFSe: TButton
+        Left = 192
+        Top = 104
+        Width = 177
+        Height = 25
+        Caption = 'Link NFSe'
+        TabOrder = 10
+        OnClick = btnLinkNFSeClick
+      end
     end
     object PageControl2: TPageControl
       Left = 1
@@ -1116,12 +1125,12 @@ object frmDemo_ACBrNFSe: TfrmDemo_ACBrNFSe
         object WBResposta: TWebBrowser
           Left = 0
           Top = 0
-          Width = 556
-          Height = 400
+          Width = 564
+          Height = 368
           Align = alClient
           TabOrder = 0
           ControlData = {
-            4C00000077390000572900000000000000000000000000000000000000000000
+            4C0000004B3A0000092600000000000000000000000000000000000000000000
             000000004C000000000000000000000001000000E0D057007335CF11AE690800
             2B2E126208000000000000004C0000000114020000000000C000000000000046
             8000000000000000000000000000000000000000000000000000000000000000
@@ -1134,8 +1143,8 @@ object frmDemo_ACBrNFSe: TfrmDemo_ACBrNFSe
         object memoLog: TMemo
           Left = 0
           Top = 0
-          Width = 556
-          Height = 400
+          Width = 564
+          Height = 368
           Align = alClient
           ScrollBars = ssVertical
           TabOrder = 0
@@ -1172,8 +1181,8 @@ object frmDemo_ACBrNFSe: TfrmDemo_ACBrNFSe
         object MemoDados: TMemo
           Left = 0
           Top = 0
-          Width = 556
-          Height = 400
+          Width = 564
+          Height = 368
           Align = alClient
           TabOrder = 0
         end

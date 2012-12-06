@@ -137,6 +137,7 @@ type
     Label31: TLabel;
     edtEmailRemetente: TEdit;
     Label30: TLabel;
+    btnLinkNFSe: TButton;
     procedure sbtnCaminhoCertClick(Sender: TObject);
     procedure sbtnGetCertClick(Sender: TObject);
     procedure sbtnLogoMarcaClick(Sender: TObject);
@@ -162,6 +163,7 @@ type
     function RoundTo5(Valor: Double; Casas: Integer): Double;
     procedure btnGerarEnviarNFSeClick(Sender: TObject);
     procedure btnEnviaremailClick(Sender: TObject);
+    procedure btnLinkNFSeClick(Sender: TObject);
     {
     procedure lblMouseEnter(Sender: TObject);
     procedure lblMouseLeave(Sender: TObject);
@@ -976,6 +978,21 @@ begin
    LoadXML(MemoResp, WBResposta);
    PageControl2.ActivePageIndex := 1;
   end;
+end;
+
+procedure TfrmDemo_ACBrNFSe.btnLinkNFSeClick(Sender: TObject);
+var
+ vNumNFSe, sCodVerif, sLink : String;
+begin
+ if not(InputQuery('Gerar o Link da NFSe', 'Numero da NFSe', vNumNFSe))
+  then exit;
+ if not(InputQuery('Gerar o Link da NFSe', 'Codigo de Verificacao', sCodVerif))
+  then exit;
+
+ sLink := ACBrNFSe1.LinkNFSe(StrToIntDef(vNumNFSe, 0), sCodVerif);
+
+ MemoResp.Lines.Add('Link Gerado: ' + sLink);
+ PageControl2.ActivePageIndex := 0;
 end;
 
 end.

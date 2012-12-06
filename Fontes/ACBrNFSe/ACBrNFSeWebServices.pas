@@ -48,6 +48,8 @@ type
     procedure DoNFSeConsultarNFSe;
     procedure DoNFSeCancelarNFSe;
     procedure DoNFSeGerarNFSe;
+    procedure DoNFSeLinkNFSe;
+
     {$IFDEF ACBrNFSeOpenSSL}
       procedure ConfiguraHTTP( HTTP : THTTPSend; Action : AnsiString);
     {$ELSE}
@@ -100,6 +102,7 @@ type
     FConsultaNFSe: String;
     FCancelaNFSe: String;
     FGerarNFSe: String;
+    FLinkNFSe: String;
 
     procedure LoadMsgEntrada;
     procedure LoadURL;
@@ -145,6 +148,7 @@ type
     property ConsultaNFSe: String read FConsultaNFSe;
     property CancelaNFSe: String read FCancelaNFSe;
     property GerarNFSe: String read FGerarNFSe;
+    property LinkNFSe: String read FLinkNFSe;
   end;
 
   TNFSeEnviarLoteRPS = Class(TWebServicesBase)
@@ -279,6 +283,21 @@ type
     property NFSeRetorno: TGerarretNfse read FNFSeRetorno write FNFSeRetorno;
   end;
 
+  TNFSeLinkNFSe = Class(TWebServicesBase)
+  private
+    FNotasFiscais : TNotasFiscais;
+    FNumeroNFSe: integer;
+    FCodVerif: String;
+    FLink: String;
+  public
+    function Executar: Boolean; override;
+    constructor Create(AOwner : TComponent; ANotasFiscais : TNotasFiscais); reintroduce;
+
+    property NumeroNFSe: integer read FNumeroNFSe;
+    property CodVerif: String read FCodVerif;
+    property Link: String read FLink;
+  end;
+
   TWebServices = Class(TWebServicesBase)
   private
     FACBrNFSe: TComponent;
@@ -289,6 +308,7 @@ type
     FConsNfse: TNFSeConsultarNfse;
     FCancNfse: TNFSeCancelarNfse;
     FGerarNfse: TNFSeGerarNfse;
+    FLinkNfse: TNFSeLinkNfse;
   public
     constructor Create(AFNotaFiscalEletronica: TComponent); reintroduce;
     destructor Destroy; override;
@@ -315,6 +335,7 @@ type
     property ConsNfse: TNFSeConsultarNfse read FConsNfse write FConsNfse;
     property CancNfse: TNFSeCancelarNfse read FCancNfse write FCancNfse;
     property GerarNfse: TNFSeGerarNfse read FGerarNfse write FGerarNfse;
+    property LinkNfse: TNFSeLinkNfse read FLinkNfse write FLinkNfse;
   end;
 
 implementation
@@ -399,8 +420,6 @@ begin
  CertContext.Get_CertContext(Integer(PCertContext));
 
  if not (FProvedor in [proGovBr, proSimplISS, proAbaco])
-// if (FProvedor <> proGovBr) and
-//    (FProvedor <> proSimplISS)
   then begin
    if not InternetSetOption(Data, INTERNET_OPTION_CLIENT_CERT_CONTEXT, PCertContext, Sizeof(CERT_CONTEXT)*5)
     then begin
@@ -1119,7 +1138,9 @@ begin
   else if self is TNFSeCancelarNfse
   then DoNFSeCancelarNfse
   else if self is TNFSeGerarNfse
-  then DoNFSeGerarNfse;
+  then DoNFSeGerarNfse
+  else if self is TNFSeLinkNfse
+  then DoNFSeLinkNfse
 end;
 
 procedure TWebServicesBase.LoadURL;
@@ -1298,6 +1319,14 @@ begin
   end;
 end;
 
+procedure TWebServicesBase.DoNFSeLinkNFSe;
+begin
+ TNFSeLinkNFSe(Self).FLink := FProvedorClass.GetLinkNFSe(FConfiguracoes.WebServices.CodigoMunicipio,
+                                      TNFSeLinkNFSe(Self).FNumeroNFSe,
+                                      TNFSeLinkNFSe(Self).FCodVerif,
+                                      FConfiguracoes.WebServices.AmbienteCodigo);
+end;
+
 { TWebServices }
 
 constructor TWebServices.Create(AFNotaFiscalEletronica: TComponent);
@@ -1312,6 +1341,7 @@ begin
  FConsNfse    := TNFSeConsultarNfse.Create(AFNotaFiscalEletronica, TACBrNFSe(AFNotaFiscalEletronica).NotasFiscais);
  FCancNfse    := TNFSeCancelarNfse.Create(AFNotaFiscalEletronica, TACBrNFSe(AFNotaFiscalEletronica).NotasFiscais);
  FGerarNFSe   := TNFSeGerarNFSe.Create(AFNotaFiscalEletronica, TACBrNFSe(AFNotaFiscalEletronica).NotasFiscais);
+ FLinkNfse    := TNFSeLinkNFSe.Create(AFNotaFiscalEletronica, TACBrNFSe(AFNotaFiscalEletronica).NotasFiscais);
 end;
 
 destructor TWebServices.Destroy;
@@ -1323,7 +1353,8 @@ begin
  FConsNfse.Free;
  FCancNfse.Free;
  FGerarNFSe.Free;
- 
+ FLinkNfse.Free;
+
  inherited;
 end;
 
@@ -1530,10 +1561,17 @@ end;
 function TWebServices.LinkNFSeGerada(ANumeroNFSe: Integer;
   ACodVerificacao: String): String;
 begin
- Result := FProvedorClass.GetLinkNFSe(FConfiguracoes.WebServices.CodigoMunicipio,
-                                      ANumeroNFSe,
-                                      ACodVerificacao,
-                                      FConfiguracoes.WebServices.AmbienteCodigo);
+ self.LinkNfse.FNumeroNFSe := ANumeroNFSe;
+ self.LinkNFSe.FCodVerif   := ACodVerificacao;
+
+ if not (Self.LinkNfse.Executar)
+  then begin
+   if Assigned(TACBrNFSe( FACBrNFSe ).OnGerarLog)
+    then TACBrNFSe( FACBrNFSe ).OnGerarLog(Self.LinkNfse.Msg);
+   raise Exception.Create(Self.LinkNfse.Msg);
+  end;
+
+ Result := self.LinkNFSe.FLink;
 end;
 
 { TNFSeEnviarLoteRPS }
@@ -1547,7 +1585,6 @@ end;
 
 function TNFSeEnviarLoteRPS.Executar: Boolean;
 var
-// NFSeRetorno : TretEnvLote;
  aMsg        : String;
  Texto       : String;
  Acao        : TStringList;
@@ -1567,7 +1604,7 @@ begin
  if Assigned(NFSeRetorno)
   then NFSeRetorno.Free;
 
- Texto := FProvedorClass.GeraEnvelopeRecepcionarLoteRPS(URLNS1, FCabMSg, FDadosMsg, FDadosSenha);
+ Texto := TiraAcentos(FProvedorClass.GeraEnvelopeRecepcionarLoteRPS(URLNS1, FCabMSg, FDadosMsg, FDadosSenha));
 
  Acao      := TStringList.Create;
  Stream    := TMemoryStream.Create;
@@ -1675,8 +1712,6 @@ begin
 
   Result := (NFSeRetorno.InfRec.Protocolo<>'');
 
-//  NFSeRetorno.Free;
-
  finally
   {$IFDEF ACBrNFSeOpenSSL}
     HTTP.Free;
@@ -1703,7 +1738,6 @@ function TNFSeConsultarSituacaoLoteRPS.Executar: Boolean;
 
 function Processando: Boolean;
 var
-// NFSeRetorno : TretSitLote;
  aMsg        : String;
  Texto       : String;
  Acao        : TStringList;
@@ -1725,7 +1759,7 @@ begin
  if Assigned(NFSeRetorno)
   then NFSeRetorno.Free;
 
- Texto := FProvedorClass.GeraEnvelopeConsultarSituacaoLoteRPS(URLNS1, FCabMSg, FDadosMsg, FDadosSenha);
+ Texto := TiraAcentos(FProvedorClass.GeraEnvelopeConsultarSituacaoLoteRPS(URLNS1, FCabMSg, FDadosMsg, FDadosSenha));
 
  Acao      := TStringList.Create;
  Stream    := TMemoryStream.Create;
@@ -1838,8 +1872,6 @@ begin
 
   Result := (FSituacao = '2'); // Não Processado
 
-//  NFSeRetorno.Free;
-
  finally
   {$IFDEF ACBrNFSeOpenSSL}
     HTTP.Free;
@@ -1895,7 +1927,6 @@ end;
 
 function TNFSeConsultarLoteRPS.Executar: Boolean;
 var
-// NFSeRetorno : TretLote;
  aMsg        : String;
  Texto       : String;
  Acao        : TStringList;
@@ -1922,7 +1953,7 @@ begin
  if Assigned(NFSeRetorno)
   then NFSeRetorno.Free;
 
- Texto := FProvedorClass.GeraEnvelopeConsultarLoteRPS(URLNS1, FCabMSg, FDadosMsg, FDadosSenha);
+ Texto := TiraAcentos(FProvedorClass.GeraEnvelopeConsultarLoteRPS(URLNS1, FCabMSg, FDadosMsg, FDadosSenha));
 
  Acao      := TStringList.Create;
  Stream    := TMemoryStream.Create;
@@ -2099,8 +2130,6 @@ end;
 
   Result := (FMsg = '');
 
-//  NFSeRetorno.Free;
-
  finally
   {$IFDEF ACBrNFSeOpenSSL}
     HTTP.Free;
@@ -2151,7 +2180,7 @@ begin
  if Assigned(NFSeRetorno)
   then NFSeRetorno.Free;
 
- Texto := FProvedorClass.GeraEnvelopeConsultarNFSeporRPS(URLNS1, FCabMSg, FDadosMsg, FDadosSenha);
+ Texto := TiraAcentos(FProvedorClass.GeraEnvelopeConsultarNFSeporRPS(URLNS1, FCabMSg, FDadosMsg, FDadosSenha));
 
  Acao      := TStringList.Create;
  Stream    := TMemoryStream.Create;
@@ -2317,7 +2346,6 @@ end;
 
 function TNFSeConsultarNfse.Executar: Boolean;
 var
-// NFSeRetorno : TretNfse;
  aMsg        : String;
  Texto       : String;
  Acao        : TStringList;
@@ -2343,7 +2371,7 @@ begin
  if Assigned(NFSeRetorno)
   then NFSeRetorno.Free;
 
- Texto := FProvedorClass.GeraEnvelopeConsultarNFSe(URLNS1, FCabMSg, FDadosMsg, FDadosSenha);
+ Texto := TiraAcentos(FProvedorClass.GeraEnvelopeConsultarNFSe(URLNS1, FCabMSg, FDadosMsg, FDadosSenha));
 
  Acao      := TStringList.Create;
  Stream    := TMemoryStream.Create;
@@ -2518,7 +2546,6 @@ end;
 
 function TNFSeCancelarNfse.Executar: Boolean;
 var
-// NFSeRetorno : TretCancNfse;
  aMsg        : String;
  Texto       : String;
  Acao        : TStringList;
@@ -2538,7 +2565,7 @@ begin
  if Assigned(NFSeRetorno)
   then NFSeRetorno.Free;
 
- Texto := FProvedorClass.GeraEnvelopeCancelarNFSe(URLNS1, FCabMSg, FDadosMsg, FDadosSenha);
+ Texto := TiraAcentos(FProvedorClass.GeraEnvelopeCancelarNFSe(URLNS1, FCabMSg, FDadosMsg, FDadosSenha));
 
  Acao      := TStringList.Create;
  Stream    := TMemoryStream.Create;
@@ -2643,8 +2670,6 @@ begin
 
   Result := (FMsg='');
 
-//  NFSeRetorno.Free;
-
  finally
   {$IFDEF ACBrNFSeOpenSSL}
     HTTP.Free;
@@ -2695,7 +2720,7 @@ begin
  if Assigned(NFSeRetorno)
   then NFSeRetorno.Free;
 
- Texto := FProvedorClass.GeraEnvelopeGerarNFSe(URLNS1, FCabMSg, FDadosMsg, FDadosSenha);
+ Texto := TiraAcentos(FProvedorClass.GeraEnvelopeGerarNFSe(URLNS1, FCabMSg, FDadosMsg, FDadosSenha));
 
  Acao      := TStringList.Create;
  Stream    := TMemoryStream.Create;
@@ -2915,6 +2940,21 @@ begin
   DFeUtil.ConfAmbiente;
   TACBrNFSe( FACBrNFSe ).SetStatus( stNFSeIdle );
  end;
+end;
+
+{ TNFSeLinkNFSe }
+
+constructor TNFSeLinkNFSe.Create(AOwner: TComponent;
+  ANotasFiscais: TNotasFiscais);
+begin
+ inherited Create(AOwner);
+
+ FNotasFiscais := ANotasFiscais;
+end;
+
+function TNFSeLinkNFSe.Executar: Boolean;
+begin
+ inherited Executar;
 end;
 
 end.

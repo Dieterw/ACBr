@@ -1159,7 +1159,7 @@ end;
 
 function StrToIndMov(AValue: string): TACBrIndMov;
 begin
-   Result := TACBrIndMov( StrToIntDef( AValue, 1) -1 );
+   Result := TACBrIndMov( StrToIntDef( AValue, 1) );
 
 //   Result := StrToEnumerado(AValue, ['0', '1'], [imComDados,
 //                                                 imSemDados]);
@@ -1175,7 +1175,7 @@ end;
 
 function StrToTipoEscrit(AValue: string): TACBrTipoEscrit;
 begin
-   Result := TACBrTipoEscrit( StrToIntDef( AValue, 1) -1 );
+   Result := TACBrTipoEscrit( StrToIntDef( AValue, 0) );
 
 //   Result := StrToEnumerado(AValue, ['0', '1'], [tpEscrOriginal,
 //                                                 tpEscrRetificadora]);
@@ -1198,7 +1198,7 @@ end;
 
 function StrToIndSitEsp(AValue: string): TACBrIndSitEsp;
 begin
-   Result := TACBrIndSitEsp( StrToIntDef( AValue, 1) -1 );
+   Result := TACBrIndSitEsp( StrToIntDef( AValue, 0) );
 
 //   Result := StrToEnumerado(AValue, ['0', '1', '2', '3', '4', ''], [indSitAbertura,
 //                                                                    indSitCisao,
@@ -1219,7 +1219,7 @@ end;
 
 function StrToIndNatPJ(AValue: string): TACBrIndNatPJ;
 begin
-   Result := TACBrIndNatPJ( StrToIntDef( AValue, 1) -1 );
+   Result := TACBrIndNatPJ( StrToIntDef( AValue, 0) );
 
 //   Result := StrToEnumerado(AValue, ['0', '1', '2'], [indNatPJSocEmpresariaGeral,
 //                                                      indNatPJSocCooperativa,
@@ -1243,7 +1243,10 @@ end;
 
 function StrToIndAtiv(AValue: string): TACBrIndAtiv;
 begin
-   Result := TACBrIndAtiv( StrToIntDef( AValue, 1) -1 );
+   if AValue = '9' then
+      Result := indAtivoOutros
+   else
+      Result := TACBrIndAtiv( StrToIntDef( AValue, 9) );
 
 //   Result := StrToEnumerado(AValue, ['0', '1', '2', '3', '4', '9'], [indAtivIndustrial,
 //                                                                     indAtivPrestadorServico,
@@ -1317,7 +1320,10 @@ end;
 
 function StrToIndRegCum(AValue: string): TACBrIndRegCum;
 begin
-   Result := TACBrIndRegCum( StrToIntDef( AValue, 1) -1 );
+   if AValue = '9' then
+      Result := codRegimeCompetEscritDetalhada
+   else
+      Result := TACBrIndRegCum( StrToIntDef( AValue, 1) -1 );
 
 //   Result := StrToEnumerado(AValue, ['1', '2', '9'], [codRegimeCaixa,
 //                                                      codRegimeCompetEscritConsolidada,
@@ -1348,7 +1354,10 @@ end;
 
 function StrToTipoItem(AValue: string): TACBrTipoItem;
 begin
-   Result := TACBrTipoItem( StrToIntDef( AValue, 1) -1 );
+   if AValue = '99' then
+      Result := tiOutras
+   else
+      Result := TACBrTipoItem( StrToIntDef( AValue, 0) );
 
 //   Result := StrToEnumerado(AValue, ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '99'],
 //                                    [tiMercadoriaRevenda,
@@ -1375,7 +1384,7 @@ end;
 
 function StrToIndOper(AVAlue: string): TACBrIndOper;
 begin
-   Result := TACBrIndOper( StrToIntDef( AValue, 1) -1 );
+   Result := TACBrIndOper( StrToIntDef( AValue, 0) );
 
 //   Result := StrToEnumerado(AVAlue, ['0', '1'], [itoContratado,
 //                                                 itoPrestado]);
@@ -1391,7 +1400,7 @@ end;
 
 function StrToIndEmit(AValue: string): TACBrIndEmit;
 begin
-   Result := TACBrIndEmit( StrToIntDef( AValue, 1) -1 );
+   Result := TACBrIndEmit( StrToIntDef( AValue, 0) );
 
 //   Result := StrToEnumerado(AValue, ['0', '1'], [iedfProprio,
 //                                                 iedfTerceiro]);
@@ -1415,7 +1424,7 @@ end;
 
 function StrToCodSit(AValue: string): TACBrCodSit;
 begin
-   Result := TACBrCodSit( StrToIntDef( AValue, 1) -1 );
+   Result := TACBrCodSit( StrToIntDef( AValue, 0) );
 
 //   Result := StrToEnumerado(AValue, ['00', '01', '02', '03', '04', '05', '06', '07', '08'],
 //                                    [sdfRegular,
@@ -1447,7 +1456,13 @@ end;
 
 function StrToIndPgto(AValue: string): TACBrIndPgto;
 begin
-   Result := TACBrIndPgto( StrToIntDef( AValue, 1) -1 );
+   if AValue = '9' then
+      Result := tpSemPagamento
+   else
+   if AValue = ''  then
+      Result := tpNenhum
+   else
+      Result := TACBrIndPgto( StrToIntDef( AValue, 9) );
 
 //   Result := StrToEnumerado(AValue, ['0', '1', '9', ''], [tpVista,
 //                                                          tpPrazo,
@@ -1534,7 +1549,7 @@ begin
    if AValue = '' then
       Result := opcVazio
    else
-      Result := TACBrIndOrigCred( StrToIntDef( AValue, 1) -1 );
+      Result := TACBrIndOrigCred( StrToIntDef( AValue, 0) );
 
 //   Result := StrToEnumerado(AValue, ['0', '1', ''],
 //                                    [opcMercadoInterno,      // 0 – Operação no Mercado Interno

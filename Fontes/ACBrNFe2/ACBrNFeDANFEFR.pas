@@ -277,9 +277,15 @@ begin
     dmDanfe.frxPDFExport.Keywords   := TITULO_PDF;
     dmDanfe.frxPDFExport.ShowDialog := False;
 
+    {
     NomeArq := TACBrNFe(ACBrNFe).EventoNFe.Evento[0].InfEvento.chNFe;
     NomeArq := NomeArq + '-' + TACBrNFe(ACBrNFe).EventoNFe.Evento[0].InfEvento.TipoEvento;
     NomeArq := NomeArq + '-' + IntToStr(TACBrNFe(ACBrNFe).EventoNFe.Evento[0].InfEvento.nSeqEvento);
+    }
+
+    NomeArq := TACBrNFe(ACBrNFe).EventoNFe.Evento[0].InfEvento.TipoEvento;
+    NomeArq := NomeArq + TACBrNFe(ACBrNFe).EventoNFe.Evento[0].InfEvento.chNFe;
+    NomeArq := PathWithDelim(Self.PathPDF) + NomeArq + 'evento.pdf';
 
     dmDanfe.frxPDFExport.FileName := PathWithDelim(Self.PathPDF) + NomeArq + '.pdf';
     dmDanfe.frxReport.Export(dmDanfe.frxPDFExport);

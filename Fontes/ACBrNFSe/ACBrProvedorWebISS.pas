@@ -153,7 +153,7 @@ begin
       ConfigSchema.ServicoConNfse  := 'servico_consultar_nfse_envio.xsd';
       ConfigSchema.ServicoCancelar := 'servico_cancelar_nfse_envio.xsd';
       ConfigSchema.ServicoGerar    := 'servico_gerar_nfse_envio.xsd';
-      ConfigSchema.DefTipos        := 'tipos_complexos.xsd';
+      ConfigSchema.DefTipos        := ''; //'tipos_complexos.xsd';
      end;
  end;
  Result := ConfigSchema;
@@ -336,8 +336,8 @@ var
  DadosMsg: AnsiString;
 begin
  DadosMsg := '<' + Prefixo3 + 'LoteRps'+
-               DFeUtil.SeSenao(Identificador <> '', ' ' + Identificador + '="' + NumeroLote + '"', '') +
-               ' versao="' + VersaoDados + '">' +
+               DFeUtil.SeSenao(Identificador <> '', ' ' + Identificador + '="' + NumeroLote + '"', '') + '>' +
+//               ' versao="' + VersaoDados + '">' +
               '<' + Prefixo4 + 'NumeroLote>' +
                 NumeroLote +
               '</' + Prefixo4 + 'NumeroLote>' +
@@ -554,8 +554,8 @@ var
  DadosMsg: AnsiString;
 begin
  DadosMsg := '<' + Prefixo3 + 'LoteRps'+
-               DFeUtil.SeSenao(Identificador <> '', ' ' + Identificador + '="' + NumeroLote + '"', '') +
-               ' versao="' + VersaoDados + '">' +
+               DFeUtil.SeSenao(Identificador <> '', ' ' + Identificador + '="' + NumeroLote + '"', '') + '>' +
+//               ' versao="' + VersaoDados + '">' +
               '<' + Prefixo4 + 'NumeroLote>' +
                 NumeroLote +
               '</' + Prefixo4 + 'NumeroLote>' +

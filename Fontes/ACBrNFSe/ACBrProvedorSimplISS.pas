@@ -453,9 +453,10 @@ function TProvedorSimplISS.GeraEnvelopeRecepcionarLoteRPS(URLNS: String;
   CabMsg, DadosMsg, DadosSenha: AnsiString): AnsiString;
 begin
  result := '<?xml version="1.0" encoding="utf-8"?>' +
-           '<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">' +
-            '<s:Body xmlns:xsd="http://www.w3.org/2001/XMLSchema" ' +
-                    'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">' +
+           '<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" ' +
+                       'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
+                       'xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
+            '<s:Body>' +
              '<RecepcionarLoteRps xmlns="' + URLNS + '">' +
                 DadosMsg +
               '<pParam>' +

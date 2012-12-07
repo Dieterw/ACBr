@@ -146,6 +146,8 @@ begin
   else
     raise EACBrNFeDANFEFR.Create('Caminho do arquivo de impressão do DANFE não assinalado.');
 
+  dmDanfe.frxReport.PrintOptions.Copies := NumCopias;
+
   // preparar relatorio
   if Assigned(NFE) then
   begin
@@ -175,11 +177,7 @@ begin
 end;
 
 function TACBrNFeDANFEFR.PrepareReportEvento: Boolean;
-var
-  I: Integer;
 begin
-  Result := False;
-
   if Trim(FastFileEvento) <> '' then
   begin
     if FileExists(FastFileEvento) then
@@ -189,6 +187,8 @@ begin
   end
   else
     raise EACBrNFeDANFEFR.Create('Caminho do arquivo de impressão do EVENTO não assinalado.');
+
+  dmDanfe.frxReport.PrintOptions.Copies := NumCopias;
 
   // preparar relatorio
   if Assigned(ACBrNFe) then
@@ -264,7 +264,6 @@ procedure TACBrNFeDANFEFR.ImprimirEVENTOPDF(NFE: TNFe);
 const
   TITULO_PDF = 'Eventos Nota Fiscal Eletrônica';
 var
-  I: Integer;
   NomeArq: String;
 begin
   if PrepareReportEvento then

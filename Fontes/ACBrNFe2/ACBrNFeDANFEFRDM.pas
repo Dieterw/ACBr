@@ -336,6 +336,9 @@ var
   j: Integer;
   wInfAdProd: String;
 begin
+  if not cdsParametros.Active then
+    CarregaParametros;
+
   { dados dos produtos }
   with cdsDadosProdutos do
   begin

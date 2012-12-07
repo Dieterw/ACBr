@@ -132,20 +132,20 @@ var
  ConfigURL: TConfigURL;
 begin
  ConfigURL.HomNomeCidade         := '';
- ConfigURL.HomRecepcaoLoteRPS    := 'https://betim.rps.com.br/sgm/zend/nfs/ambienteteste/wsdl';
- ConfigURL.HomConsultaLoteRPS    := 'https://betim.rps.com.br/sgm/zend/nfs/ambienteteste/wsdl';
- ConfigURL.HomConsultaNFSeRPS    := 'https://betim.rps.com.br/sgm/zend/nfs/ambienteteste/wsdl';
- ConfigURL.HomConsultaSitLoteRPS := 'https://betim.rps.com.br/sgm/zend/nfs/ambienteteste/wsdl';
- ConfigURL.HomConsultaNFSe       := 'https://betim.rps.com.br/sgm/zend/nfs/ambienteteste/wsdl';
- ConfigURL.HomCancelaNFSe        := 'https://betim.rps.com.br/sgm/zend/nfs/ambienteteste/wsdl';
+ ConfigURL.HomRecepcaoLoteRPS    := 'https://betim.rps.com.br/sgm/zend/nfs/ambienteteste';  // /wsdl
+ ConfigURL.HomConsultaLoteRPS    := 'https://betim.rps.com.br/sgm/zend/nfs/ambienteteste';
+ ConfigURL.HomConsultaNFSeRPS    := 'https://betim.rps.com.br/sgm/zend/nfs/ambienteteste';
+ ConfigURL.HomConsultaSitLoteRPS := 'https://betim.rps.com.br/sgm/zend/nfs/ambienteteste';
+ ConfigURL.HomConsultaNFSe       := 'https://betim.rps.com.br/sgm/zend/nfs/ambienteteste';
+ ConfigURL.HomCancelaNFSe        := 'https://betim.rps.com.br/sgm/zend/nfs/ambienteteste';
 
  ConfigURL.ProNomeCidade         := '';
- ConfigURL.ProRecepcaoLoteRPS    := 'https://betim.rps.com.br/sgm/zend/nfs/nfs/wsdl';
- ConfigURL.ProConsultaLoteRPS    := 'https://betim.rps.com.br/sgm/zend/nfs/nfs/wsdl';
- ConfigURL.ProConsultaNFSeRPS    := 'https://betim.rps.com.br/sgm/zend/nfs/nfs/wsdl';
- ConfigURL.ProConsultaSitLoteRPS := 'https://betim.rps.com.br/sgm/zend/nfs/nfs/wsdl';
- ConfigURL.ProConsultaNFSe       := 'https://betim.rps.com.br/sgm/zend/nfs/nfs/wsdl';
- ConfigURL.ProCancelaNFSe        := 'https://betim.rps.com.br/sgm/zend/nfs/nfs/wsdl';
+ ConfigURL.ProRecepcaoLoteRPS    := 'https://betim.rps.com.br/sgm/zend/nfs/nfs'; // /wsdl
+ ConfigURL.ProConsultaLoteRPS    := 'https://betim.rps.com.br/sgm/zend/nfs/nfs';
+ ConfigURL.ProConsultaNFSeRPS    := 'https://betim.rps.com.br/sgm/zend/nfs/nfs';
+ ConfigURL.ProConsultaSitLoteRPS := 'https://betim.rps.com.br/sgm/zend/nfs/nfs';
+ ConfigURL.ProConsultaNFSe       := 'https://betim.rps.com.br/sgm/zend/nfs/nfs';
+ ConfigURL.ProCancelaNFSe        := 'https://betim.rps.com.br/sgm/zend/nfs/nfs';
 
  Result := ConfigURL;
 end;
@@ -556,13 +556,13 @@ end;
 function TProvedorBetim.GetSoapAction(Acao: TnfseAcao; NomeCidade: String): String;
 begin
  case Acao of
-   acRecepcionar: Result := 'http://betim.rps.com.br/sgm/zend/default/xsd/nfse?format=xml';
-   acConsSit:     Result := 'http://www.abrasf.org.br/ABRASF/arquivos/nfse.xsd/WSNacional/ConsultarSituacaoLoteRps';
-   acConsLote:    Result := 'http://www.abrasf.org.br/ABRASF/arquivos/nfse.xsd/WSNacional/ConsultarLoteRps';
-   acConsNFSeRps: Result := 'http://www.abrasf.org.br/ABRASF/arquivos/nfse.xsd/WSNacional/ConsultarNfsePorRps';
-   acConsNFSe:    Result := 'http://www.abrasf.org.br/ABRASF/arquivos/nfse.xsd/WSNacional/ConsultarNfse';
-   acCancelar:    Result := 'http://www.abrasf.org.br/ABRASF/arquivos/nfse.xsd/WSNacional/CancelarNfse';
-   acGerar:       Result := '';
+   acRecepcionar: Result := 'https://betim.rps.com.br/sgm/zend/nfs/ambienteteste#RecepcionarLoteRps';
+   acConsSit:     Result := 'https://betim.rps.com.br/sgm/zend/nfs/ambienteteste#ConsultarSituacaoLoteRps';
+   acConsLote:    Result := 'https://betim.rps.com.br/sgm/zend/nfs/ambienteteste#ConsultarLoteRps';
+   acConsNFSeRps: Result := 'https://betim.rps.com.br/sgm/zend/nfs/ambienteteste#ConsultarNfsePorRps';
+   acConsNFSe:    Result := 'https://betim.rps.com.br/sgm/zend/nfs/ambienteteste#ConsultarNfse';
+   acCancelar:    Result := 'https://betim.rps.com.br/sgm/zend/nfs/ambienteteste#CancelarNfse';
+   acGerar:       Result := 'https://betim.rps.com.br/sgm/zend/nfs/ambienteteste#GerarNfse';
  end;
 end;
 

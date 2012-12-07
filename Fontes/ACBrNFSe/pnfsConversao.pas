@@ -622,6 +622,7 @@ begin
   3143302, // Montes Claros/MG
   3202405, // Guarapari/ES
   3305505, // Saquarema/RJ
+  3530300, // Mirassol/SP'
   3541505, // Presidente Venceslau/SP
   4205902, // Gaspar/SC
   4309407, // Guapore/RS
@@ -849,6 +850,7 @@ begin
   3527207: Cidade := 'Lorena/SP';
   3529005: Cidade := 'Marília/SP';
   3529401: Cidade := 'Maua/SP';
+  3530300: Cidade := 'Mirassol/SP';
   3530508: Cidade := 'Mococa/SP';
   3530607: Cidade := 'Mogi das Cruzes/SP';
   3531803: Cidade := 'Monte Mor/SP';

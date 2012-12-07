@@ -100,6 +100,7 @@ begin
   4309407:ConfigCidade.CodigoURLs := 06; // Guapore/RS
   3541505:ConfigCidade.CodigoURLs := 07; // Presidente Venceslau/SP
   4310207:ConfigCidade.CodigoURLs := 08; // Ijui/RS
+  3530300:ConfigCidade.CodigoURLs := 09; // Mirassol/SP por Daniel Junior
  end;
  ConfigCidade.Prefixo2      := '';
  ConfigCidade.Prefixo3      := '';
@@ -276,6 +277,23 @@ begin
        ConfigURL.ProConsultaSitLoteRPS := 'http://server21.ijui.rs.gov.br/nfsews/Services.svc';
        ConfigURL.ProConsultaNFSe       := 'http://server21.ijui.rs.gov.br/nfsews/Services.svc';
        ConfigURL.ProCancelaNFSe        := 'http://server21.ijui.rs.gov.br/nfsews/Services.svc';
+      end;
+  09: begin
+       ConfigURL.HomNomeCidade         := '';
+       ConfigURL.HomRecepcaoLoteRPS    := 'http://nfse.mirassol.sp.gov.br:5555/NFSEWSteste/Services.svc';
+       ConfigURL.HomConsultaLoteRPS    := 'http://nfse.mirassol.sp.gov.br:5555/NFSEWSteste/Services.svc';
+       ConfigURL.HomConsultaNFSeRPS    := 'http://nfse.mirassol.sp.gov.br:5555/NFSEWSteste/Services.svc';
+       ConfigURL.HomConsultaSitLoteRPS := 'http://nfse.mirassol.sp.gov.br:5555/NFSEWSteste/Services.svc';
+       ConfigURL.HomConsultaNFSe       := 'http://nfse.mirassol.sp.gov.br:5555/NFSEWSteste/Services.svc';
+       ConfigURL.HomCancelaNFSe        := 'http://nfse.mirassol.sp.gov.br:5555/NFSEWSteste/Services.svc';
+
+       ConfigURL.ProNomeCidade         := '';
+       ConfigURL.ProRecepcaoLoteRPS    := 'http://nfse.mirassol.sp.gov.br:5555/NFSEWS/Services.svc';
+       ConfigURL.ProConsultaLoteRPS    := 'http://nfse.mirassol.sp.gov.br:5555/NFSEWS/Services.svc';
+       ConfigURL.ProConsultaNFSeRPS    := 'http://nfse.mirassol.sp.gov.br:5555/NFSEWS/Services.svc';
+       ConfigURL.ProConsultaSitLoteRPS := 'http://nfse.mirassol.sp.gov.br:5555/NFSEWS/Services.svc';
+       ConfigURL.ProConsultaNFSe       := 'http://nfse.mirassol.sp.gov.br:5555/NFSEWS/Services.svc';
+       ConfigURL.ProCancelaNFSe        := 'http://nfse.mirassol.sp.gov.br:5555/NFSEWS/Services.svc';
       end;
  end;
 

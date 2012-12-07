@@ -359,6 +359,7 @@ object frmDemo_ACBrNFSe: TfrmDemo_ACBrNFSe
               'Marica/3302700/RJ'
               'Manaus/1302603/AM'
               'Maua/3529401/SP'
+              'Mirassol/3530300/SP'
               'Mococa/3530508/SP'
               'Mogi das Cruzes/3530607/SP'
               'Montes Claros/3143302/MG'

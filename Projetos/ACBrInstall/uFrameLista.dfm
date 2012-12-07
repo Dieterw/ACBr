@@ -2,7 +2,7 @@ object framePacotes: TframePacotes
   Left = 0
   Top = 0
   Width = 545
-  Height = 367
+  Height = 420
   Color = clBtnFace
   ParentBackground = False
   ParentColor = False
@@ -40,7 +40,7 @@ object framePacotes: TframePacotes
   object Label3: TLabel
     AlignWithMargins = True
     Left = 4
-    Top = 96
+    Top = 91
     Width = 99
     Height = 13
     Margins.Left = 5
@@ -55,7 +55,7 @@ object framePacotes: TframePacotes
   object Label4: TLabel
     AlignWithMargins = True
     Left = 184
-    Top = 96
+    Top = 91
     Width = 100
     Height = 13
     Margins.Left = 5
@@ -70,7 +70,7 @@ object framePacotes: TframePacotes
   object Label5: TLabel
     AlignWithMargins = True
     Left = 4
-    Top = 220
+    Top = 211
     Width = 63
     Height = 13
     Margins.Left = 5
@@ -85,7 +85,7 @@ object framePacotes: TframePacotes
   object Label6: TLabel
     AlignWithMargins = True
     Left = 367
-    Top = 220
+    Top = 211
     Width = 35
     Height = 13
     Margins.Left = 5
@@ -100,7 +100,7 @@ object framePacotes: TframePacotes
   object Label7: TLabel
     AlignWithMargins = True
     Left = 184
-    Top = 220
+    Top = 211
     Width = 62
     Height = 13
     Margins.Left = 5
@@ -115,7 +115,7 @@ object framePacotes: TframePacotes
   object Label8: TLabel
     AlignWithMargins = True
     Left = 367
-    Top = 96
+    Top = 91
     Width = 100
     Height = 13
     Margins.Left = 5
@@ -127,15 +127,99 @@ object framePacotes: TframePacotes
     Font.Style = []
     ParentFont = False
   end
+  object Label9: TLabel
+    Left = 48
+    Top = 249
+    Width = 62
+    Height = 13
+    Caption = '(FastReport)'
+  end
+  object Label10: TLabel
+    Left = 48
+    Top = 334
+    Width = 67
+    Height = 13
+    Caption = '(QuickReport)'
+    Visible = False
+  end
+  object Label11: TLabel
+    Left = 48
+    Top = 367
+    Width = 72
+    Height = 13
+    Caption = '(FortesReport)'
+    Visible = False
+  end
+  object Label12: TLabel
+    Left = 48
+    Top = 298
+    Width = 33
+    Height = 13
+    Caption = '(Rave)'
+  end
+  object Label13: TLabel
+    Left = 227
+    Top = 249
+    Width = 62
+    Height = 13
+    Caption = '(FastReport)'
+  end
+  object Label14: TLabel
+    Left = 227
+    Top = 334
+    Width = 67
+    Height = 13
+    Caption = '(QuickReport)'
+    Visible = False
+  end
+  object Label15: TLabel
+    Left = 399
+    Top = 249
+    Width = 62
+    Height = 13
+    Caption = '(FastReport)'
+  end
+  object Label16: TLabel
+    Left = 399
+    Top = 334
+    Width = 67
+    Height = 13
+    Caption = '(QuickReport)'
+    Visible = False
+  end
+  object Label17: TLabel
+    Left = 399
+    Top = 367
+    Width = 72
+    Height = 13
+    Caption = '(FortesReport)'
+    Visible = False
+  end
+  object Label18: TLabel
+    Left = 3
+    Top = 192
+    Width = 444
+    Height = 13
+    Caption = 
+      'S'#243' selecione os pacotes abaixo, que voc'#234' tenha a suite instalada' +
+      ' no seu delphi.'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clRed
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
   object pnlBotoesPacotes: TPanel
     Left = 0
-    Top = 335
+    Top = 388
     Width = 545
     Height = 32
     Align = alBottom
     BevelOuter = bvNone
     ParentBackground = False
     TabOrder = 0
+    ExplicitTop = 335
     object btnPacotesDesmarcarTodos: TSpeedButton
       AlignWithMargins = True
       Left = 513
@@ -348,7 +432,7 @@ object framePacotes: TframePacotes
   object ACBr_Boleto_dpk: TCheckBox
     AlignWithMargins = True
     Left = 34
-    Top = 117
+    Top = 112
     Width = 116
     Height = 17
     Margins.Left = 25
@@ -368,7 +452,7 @@ object framePacotes: TframePacotes
   object ACBr_Sintegra_dpk: TCheckBox
     AlignWithMargins = True
     Left = 34
-    Top = 134
+    Top = 129
     Width = 116
     Height = 17
     Margins.Left = 25
@@ -388,7 +472,7 @@ object framePacotes: TframePacotes
   object ACBr_SPED_dpk: TCheckBox
     AlignWithMargins = True
     Left = 34
-    Top = 151
+    Top = 146
     Width = 116
     Height = 17
     Margins.Left = 25
@@ -408,7 +492,7 @@ object framePacotes: TframePacotes
   object ACBr_PAF_dpk: TCheckBox
     AlignWithMargins = True
     Left = 34
-    Top = 168
+    Top = 163
     Width = 116
     Height = 17
     Margins.Left = 25
@@ -428,7 +512,7 @@ object framePacotes: TframePacotes
   object ACBrOpenSSL_dpk: TCheckBox
     AlignWithMargins = True
     Left = 214
-    Top = 117
+    Top = 112
     Width = 116
     Height = 17
     Margins.Left = 25
@@ -448,7 +532,7 @@ object framePacotes: TframePacotes
   object ACBrCapicom_dpk: TCheckBox
     AlignWithMargins = True
     Left = 214
-    Top = 134
+    Top = 129
     Width = 116
     Height = 17
     Margins.Left = 25
@@ -468,7 +552,7 @@ object framePacotes: TframePacotes
   object PCN2_dpk: TCheckBox
     AlignWithMargins = True
     Left = 214
-    Top = 151
+    Top = 146
     Width = 116
     Height = 17
     Margins.Left = 25
@@ -488,7 +572,7 @@ object framePacotes: TframePacotes
   object ACBr_NFe2_dpk: TCheckBox
     AlignWithMargins = True
     Left = 387
-    Top = 117
+    Top = 112
     Width = 116
     Height = 17
     Margins.Left = 25
@@ -508,7 +592,7 @@ object framePacotes: TframePacotes
   object ACBr_CTe_dpk: TCheckBox
     AlignWithMargins = True
     Left = 387
-    Top = 134
+    Top = 129
     Width = 116
     Height = 17
     Margins.Left = 25
@@ -528,7 +612,7 @@ object framePacotes: TframePacotes
   object ACBrNFeDanfeFR_dpk: TCheckBox
     AlignWithMargins = True
     Left = 34
-    Top = 241
+    Top = 232
     Width = 140
     Height = 17
     Margins.Left = 25
@@ -548,7 +632,7 @@ object framePacotes: TframePacotes
   object ACBr_BoletoFC_FR_dpk: TCheckBox
     AlignWithMargins = True
     Left = 387
-    Top = 241
+    Top = 232
     Width = 150
     Height = 17
     Margins.Left = 25
@@ -568,7 +652,7 @@ object framePacotes: TframePacotes
   object ACBrCTeDacteFR_dpk: TCheckBox
     AlignWithMargins = True
     Left = 214
-    Top = 241
+    Top = 232
     Width = 140
     Height = 17
     Margins.Left = 25
@@ -589,7 +673,7 @@ object framePacotes: TframePacotes
     Tag = 1
     AlignWithMargins = True
     Left = 34
-    Top = 258
+    Top = 317
     Width = 140
     Height = 17
     Margins.Left = 25
@@ -605,13 +689,14 @@ object framePacotes: TframePacotes
     Font.Style = []
     ParentFont = False
     TabOrder = 18
+    Visible = False
     OnClick = VerificarCheckboxes
   end
   object ACBrNFeDanfeRL_dpk: TCheckBox
     Tag = 1
     AlignWithMargins = True
     Left = 34
-    Top = 275
+    Top = 350
     Width = 140
     Height = 17
     Margins.Left = 25
@@ -627,12 +712,13 @@ object framePacotes: TframePacotes
     Font.Style = []
     ParentFont = False
     TabOrder = 19
+    Visible = False
     OnClick = VerificarCheckboxes
   end
   object ACBrNFeDanfeRV_dpk: TCheckBox
     AlignWithMargins = True
     Left = 34
-    Top = 292
+    Top = 264
     Width = 140
     Height = 17
     Margins.Left = 25
@@ -653,7 +739,7 @@ object framePacotes: TframePacotes
     Tag = 1
     AlignWithMargins = True
     Left = 214
-    Top = 258
+    Top = 317
     Width = 140
     Height = 17
     Margins.Left = 25
@@ -669,13 +755,14 @@ object framePacotes: TframePacotes
     Font.Style = []
     ParentFont = False
     TabOrder = 23
+    Visible = False
     OnClick = VerificarCheckboxes
   end
   object ACBr_BoletoFC_Fortes_dpk: TCheckBox
     Tag = 1
     AlignWithMargins = True
     Left = 387
-    Top = 275
+    Top = 350
     Width = 150
     Height = 17
     Margins.Left = 25
@@ -691,13 +778,14 @@ object framePacotes: TframePacotes
     Font.Style = []
     ParentFont = False
     TabOrder = 26
+    Visible = False
     OnClick = VerificarCheckboxes
   end
   object ACBr_BoletoFC_Quick_dpk: TCheckBox
     Tag = 1
     AlignWithMargins = True
     Left = 387
-    Top = 258
+    Top = 317
     Width = 150
     Height = 17
     Margins.Left = 25
@@ -713,12 +801,13 @@ object framePacotes: TframePacotes
     Font.Style = []
     ParentFont = False
     TabOrder = 25
+    Visible = False
     OnClick = VerificarCheckboxes
   end
   object ACBrNFeDanfeRVCodeBase_dpk: TCheckBox
     AlignWithMargins = True
     Left = 34
-    Top = 309
+    Top = 282
     Width = 171
     Height = 17
     Margins.Left = 25
@@ -739,7 +828,7 @@ object framePacotes: TframePacotes
   object ACBr_NFSe_dpk: TCheckBox
     AlignWithMargins = True
     Left = 387
-    Top = 151
+    Top = 146
     Width = 116
     Height = 17
     Margins.Left = 25

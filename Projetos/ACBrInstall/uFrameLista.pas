@@ -88,6 +88,16 @@ type
     ACBrNFeDanfeRVCodeBase_dpk: TCheckBox;
     Label8: TLabel;
     ACBr_NFSe_dpk: TCheckBox;
+    Label9: TLabel;
+    Label10: TLabel;
+    Label11: TLabel;
+    Label12: TLabel;
+    Label13: TLabel;
+    Label14: TLabel;
+    Label15: TLabel;
+    Label16: TLabel;
+    Label17: TLabel;
+    Label18: TLabel;
     procedure btnPacotesMarcarTodosClick(Sender: TObject);
     procedure btnPacotesDesmarcarTodosClick(Sender: TObject);
     procedure VerificarCheckboxes(Sender: TObject);

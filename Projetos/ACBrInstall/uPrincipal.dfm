@@ -1,11 +1,11 @@
 object frmPrincipal: TfrmPrincipal
   Left = 0
   Top = 0
-  ActiveControl = edtDirDestino
+  ActiveControl = frameDpk.ACBrSerial_dpk
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'Instalador ACBr'
-  ClientHeight = 500
+  ClientHeight = 553
   ClientWidth = 720
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -23,8 +23,8 @@ object frmPrincipal: TfrmPrincipal
     Left = 0
     Top = 0
     Width = 720
-    Height = 500
-    ActivePage = wizPgConfiguracao
+    Height = 553
+    ActivePage = wizPgPacotes
     ButtonBarHeight = 42
     ButtonStart.Caption = 'Para o in'#237'cio'
     ButtonStart.NumGlyphs = 1
@@ -51,9 +51,10 @@ object frmPrincipal: TfrmPrincipal
     ShowRouteMap = True
     OnFinishButtonClick = wizPrincipalFinishButtonClick
     OnCancelButtonClick = wizPrincipalCancelButtonClick
+    ExplicitHeight = 500
     DesignSize = (
       720
-      500)
+      553)
     object wizPgInicio: TJvWizardWelcomePage
       Header.Visible = False
       Header.Height = 50
@@ -85,6 +86,7 @@ object frmPrincipal: TfrmPrincipal
       WaterMark.Image.Alignment = iaCenter
       WaterMark.Image.Layout = ilTop
       WaterMark.Width = 80
+      ExplicitHeight = 387
       object Label6: TLabel
         Left = 25
         Top = 34
@@ -2215,6 +2217,7 @@ object frmPrincipal: TfrmPrincipal
       Header.Subtitle.Font.Style = []
       Caption = 'Configura'#231#245'es'
       OnNextButtonClick = wizPgConfiguracaoNextButtonClick
+      ExplicitHeight = 387
       object Label4: TLabel
         Left = 17
         Top = 68
@@ -2361,25 +2364,34 @@ object frmPrincipal: TfrmPrincipal
       Header.Subtitle.Font.Name = 'Tahoma'
       Header.Subtitle.Font.Style = []
       Caption = 'Pacotes'
+      ExplicitHeight = 387
       inline frameDpk: TframePacotes
         AlignWithMargins = True
         Left = 3
         Top = 3
         Width = 548
-        Height = 381
+        Height = 434
         Align = alClient
         Color = clBtnFace
         ParentBackground = False
         ParentColor = False
         TabOrder = 0
+        ExplicitLeft = 3
+        ExplicitTop = 3
+        ExplicitWidth = 548
+        ExplicitHeight = 381
         inherited pnlBotoesPacotes: TPanel
-          Top = 349
+          Top = 402
           Width = 548
+          ExplicitTop = 349
+          ExplicitWidth = 548
           inherited btnPacotesDesmarcarTodos: TSpeedButton
             Left = 516
+            ExplicitLeft = 516
           end
           inherited btnPacotesMarcarTodos: TSpeedButton
             Left = 484
+            ExplicitLeft = 484
           end
         end
       end
@@ -2408,6 +2420,10 @@ object frmPrincipal: TfrmPrincipal
       Caption = 'Reposit'#243'rio'
       OnEnterPage = wizPgObterFontesEnterPage
       OnNextButtonClick = wizPgObterFontesNextButtonClick
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label1: TLabel
         Left = 77
         Top = 167
@@ -2492,6 +2508,7 @@ object frmPrincipal: TfrmPrincipal
       Caption = 'Instala'#231#227'o'
       OnEnterPage = wizPgInstalacaoEnterPage
       OnNextButtonClick = wizPgInstalacaoNextButtonClick
+      ExplicitHeight = 459
       object btnInstalarACBr: TSpeedButton
         Left = 430
         Top = 345
@@ -2564,6 +2581,10 @@ object frmPrincipal: TfrmPrincipal
       VisibleButtons = [bkFinish]
       Color = clWhite
       Caption = 'Fim'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label3: TLabel
         Left = 39
         Top = 58
@@ -2670,7 +2691,7 @@ object frmPrincipal: TfrmPrincipal
       Left = 0
       Top = 71
       Width = 166
-      Height = 387
+      Height = 440
       ItemHeight = 30
       AllowClickableNodes = False
       Color = clBlack
@@ -2683,6 +2704,7 @@ object frmPrincipal: TfrmPrincipal
       Image.Layout = ilTop
       Indent = 15
       UsePageTitle = False
+      ExplicitHeight = 387
     end
     object pnlTopo: TPanel
       Left = 0
@@ -2697,7 +2719,7 @@ object frmPrincipal: TfrmPrincipal
       object Label9: TLabel
         Left = 14
         Top = 19
-        Width = 313
+        Width = 312
         Height = 19
         Caption = 'Assistente de instala'#231#227'o do Projeto ACBr'
         Color = clWhite
@@ -2719,7 +2741,7 @@ object frmPrincipal: TfrmPrincipal
         Cursor = crHandPoint
         Animate = True
         Center = True
-        FrameIndex = 3
+        FrameIndex = 5
         Image.Data = {
           688B00004749463839613F012800F70000FFFFFFFFFFE5FFFFCCF7FAFDFFFF99
           FFF7B9FFF9A9FFFA84EAFA9EFFF573FFF74AFFFF00FFF268F2F478FFF456E9F5

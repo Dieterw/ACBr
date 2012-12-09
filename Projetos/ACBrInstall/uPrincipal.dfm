@@ -1,7 +1,7 @@
 object frmPrincipal: TfrmPrincipal
   Left = 0
   Top = 0
-  ActiveControl = frameDpk.ACBrSerial_dpk
+  ActiveControl = wizPgInicio
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'Instalador ACBr'
@@ -24,7 +24,7 @@ object frmPrincipal: TfrmPrincipal
     Top = 0
     Width = 720
     Height = 553
-    ActivePage = wizPgPacotes
+    ActivePage = wizPgInicio
     ButtonBarHeight = 42
     ButtonStart.Caption = 'Para o in'#237'cio'
     ButtonStart.NumGlyphs = 1
@@ -51,7 +51,6 @@ object frmPrincipal: TfrmPrincipal
     ShowRouteMap = True
     OnFinishButtonClick = wizPrincipalFinishButtonClick
     OnCancelButtonClick = wizPrincipalCancelButtonClick
-    ExplicitHeight = 500
     DesignSize = (
       720
       553)
@@ -86,7 +85,6 @@ object frmPrincipal: TfrmPrincipal
       WaterMark.Image.Alignment = iaCenter
       WaterMark.Image.Layout = ilTop
       WaterMark.Width = 80
-      ExplicitHeight = 387
       object Label6: TLabel
         Left = 25
         Top = 34
@@ -2065,7 +2063,7 @@ object frmPrincipal: TfrmPrincipal
       end
       object lblUrlACBrSac1: TLabel
         Left = 93
-        Top = 169
+        Top = 194
         Width = 268
         Height = 13
         Cursor = crHandPoint
@@ -2080,7 +2078,7 @@ object frmPrincipal: TfrmPrincipal
       end
       object lblUrlForum1: TLabel
         Left = 93
-        Top = 262
+        Top = 287
         Width = 221
         Height = 13
         Cursor = crHandPoint
@@ -2095,7 +2093,7 @@ object frmPrincipal: TfrmPrincipal
       end
       object lblUrlACBr1: TLabel
         Left = 93
-        Top = 214
+        Top = 239
         Width = 173
         Height = 13
         Cursor = crHandPoint
@@ -2110,7 +2108,7 @@ object frmPrincipal: TfrmPrincipal
       end
       object Label19: TLabel
         Left = 25
-        Top = 198
+        Top = 223
         Width = 259
         Height = 13
         Caption = 'Para maiores informa'#231#245'es sobre o projeto ACBr visite:'
@@ -2123,7 +2121,7 @@ object frmPrincipal: TfrmPrincipal
       end
       object Label20: TLabel
         Left = 25
-        Top = 153
+        Top = 178
         Width = 472
         Height = 13
         Caption = 
@@ -2138,7 +2136,7 @@ object frmPrincipal: TfrmPrincipal
       end
       object Label21: TLabel
         Left = 25
-        Top = 246
+        Top = 271
         Width = 241
         Height = 13
         Caption = 'Para tirar d'#250'vidas, ajudar ou dar sugest'#245'es visite:'
@@ -2151,7 +2149,7 @@ object frmPrincipal: TfrmPrincipal
       end
       object Label11: TLabel
         Left = 93
-        Top = 309
+        Top = 334
         Width = 137
         Height = 13
         Cursor = crHandPoint
@@ -2166,7 +2164,7 @@ object frmPrincipal: TfrmPrincipal
       end
       object Label12: TLabel
         Left = 25
-        Top = 293
+        Top = 318
         Width = 250
         Height = 13
         Caption = 'Para baixar o cliente de SVN TORTOISE visite o site:'
@@ -2178,8 +2176,8 @@ object frmPrincipal: TfrmPrincipal
         ParentFont = False
       end
       object Label7: TLabel
-        Left = 20
-        Top = 354
+        Left = 15
+        Top = 414
         Width = 518
         Height = 13
         Alignment = taCenter
@@ -2217,7 +2215,6 @@ object frmPrincipal: TfrmPrincipal
       Header.Subtitle.Font.Style = []
       Caption = 'Configura'#231#245'es'
       OnNextButtonClick = wizPgConfiguracaoNextButtonClick
-      ExplicitHeight = 387
       object Label4: TLabel
         Left = 17
         Top = 68
@@ -2364,7 +2361,6 @@ object frmPrincipal: TfrmPrincipal
       Header.Subtitle.Font.Name = 'Tahoma'
       Header.Subtitle.Font.Style = []
       Caption = 'Pacotes'
-      ExplicitHeight = 387
       inline frameDpk: TframePacotes
         AlignWithMargins = True
         Left = 3
@@ -2379,11 +2375,11 @@ object frmPrincipal: TfrmPrincipal
         ExplicitLeft = 3
         ExplicitTop = 3
         ExplicitWidth = 548
-        ExplicitHeight = 381
+        ExplicitHeight = 434
         inherited pnlBotoesPacotes: TPanel
           Top = 402
           Width = 548
-          ExplicitTop = 349
+          ExplicitTop = 402
           ExplicitWidth = 548
           inherited btnPacotesDesmarcarTodos: TSpeedButton
             Left = 516
@@ -2420,13 +2416,9 @@ object frmPrincipal: TfrmPrincipal
       Caption = 'Reposit'#243'rio'
       OnEnterPage = wizPgObterFontesEnterPage
       OnNextButtonClick = wizPgObterFontesNextButtonClick
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label1: TLabel
         Left = 77
-        Top = 167
+        Top = 177
         Width = 91
         Height = 13
         Caption = 'URL do  reposit'#243'rio'
@@ -2439,7 +2431,7 @@ object frmPrincipal: TfrmPrincipal
       end
       object lblInfoObterFontes: TLabel
         Left = 77
-        Top = 112
+        Top = 122
         Width = 103
         Height = 13
         Caption = 'Texto de informa'#231#227'o.'
@@ -2452,7 +2444,7 @@ object frmPrincipal: TfrmPrincipal
       end
       object btnSVNCheckoutUpdate: TSpeedButton
         Left = 365
-        Top = 210
+        Top = 220
         Width = 106
         Height = 25
         Caption = 'Checkout'
@@ -2460,7 +2452,7 @@ object frmPrincipal: TfrmPrincipal
       end
       object edtURL: TEdit
         Left = 77
-        Top = 183
+        Top = 193
         Width = 394
         Height = 21
         Enabled = False
@@ -2475,7 +2467,7 @@ object frmPrincipal: TfrmPrincipal
       end
       object ckbFecharTortoise: TCheckBox
         Left = 77
-        Top = 250
+        Top = 260
         Width = 358
         Height = 17
         Caption = 
@@ -2508,10 +2500,9 @@ object frmPrincipal: TfrmPrincipal
       Caption = 'Instala'#231#227'o'
       OnEnterPage = wizPgInstalacaoEnterPage
       OnNextButtonClick = wizPgInstalacaoNextButtonClick
-      ExplicitHeight = 459
       object btnInstalarACBr: TSpeedButton
         Left = 430
-        Top = 345
+        Top = 395
         Width = 106
         Height = 25
         Caption = 'Instalar'
@@ -2519,7 +2510,7 @@ object frmPrincipal: TfrmPrincipal
       end
       object btnVisualizarLogCompilacao: TSpeedButton
         Left = 20
-        Top = 345
+        Top = 395
         Width = 106
         Height = 25
         Caption = 'Visualizar log'
@@ -2529,13 +2520,13 @@ object frmPrincipal: TfrmPrincipal
         Left = 20
         Top = 72
         Width = 516
-        Height = 244
+        Height = 294
         ItemHeight = 13
         TabOrder = 0
       end
       object pgbInstalacao: TProgressBar
         Left = 20
-        Top = 322
+        Top = 372
         Width = 516
         Height = 17
         TabOrder = 1
@@ -2581,10 +2572,6 @@ object frmPrincipal: TfrmPrincipal
       VisibleButtons = [bkFinish]
       Color = clWhite
       Caption = 'Fim'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label3: TLabel
         Left = 39
         Top = 58
@@ -2704,7 +2691,6 @@ object frmPrincipal: TfrmPrincipal
       Image.Layout = ilTop
       Indent = 15
       UsePageTitle = False
-      ExplicitHeight = 387
     end
     object pnlTopo: TPanel
       Left = 0
@@ -2741,7 +2727,7 @@ object frmPrincipal: TfrmPrincipal
         Cursor = crHandPoint
         Animate = True
         Center = True
-        FrameIndex = 5
+        FrameIndex = 3
         Image.Data = {
           688B00004749463839613F012800F70000FFFFFFFFFFE5FFFFCCF7FAFDFFFF99
           FFF7B9FFF9A9FFFA84EAFA9EFFF573FFF74AFFFF00FFF268F2F478FFF456E9F5

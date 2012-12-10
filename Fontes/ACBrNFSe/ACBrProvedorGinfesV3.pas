@@ -592,7 +592,7 @@ begin
  if AAmbiente = 1
   then begin
    case ACodMunicipio of
-    3143906: Result := 'http://muriae.ginfes.com.br/birt/frameset?_report=nfs_novo.rptdesign&cdVerificacao=' +
+    3143906: Result := 'http://muriae.ginfes.com.br/birt/frameset?__report=nfs_novo.rptdesign&cdVerificacao=' +
                        ACodVerificacao + '&numNota=' + IntToStr(ANumeroNFSe);
     3503208: Result := 'http://araraquara.ginfes.com.br/birt/frameset?_report=nfs_novo.rptdesign&cdVerificacao=' +
                        ACodVerificacao + '&numNota=' + IntToStr(ANumeroNFSe);

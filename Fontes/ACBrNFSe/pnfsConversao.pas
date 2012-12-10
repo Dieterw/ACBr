@@ -767,6 +767,8 @@ begin
   1505536: Cidade := 'Parauapebas/PA';
   1508001: Cidade := 'Tomé-Açu/PA';
 
+  2111300: Cidade := 'São Luis/MA';
+
   2304400: Cidade := 'Fortaleza/CE';
 
   2507507: Cidade := 'João Pessoa/PB';
@@ -789,6 +791,7 @@ begin
   3115300: Cidade := 'Cataguases/MG';
   3116704: Cidade := 'Coimbra/MG';
   3118601: Cidade := 'Contagem/MG';
+  3122306: Cidade := 'Divinópolis/MG';
   3126109: Cidade := 'Formiga/MG';
   3131307: Cidade := 'Ipatinga/MG';
   3132404: Cidade := 'Itajubá/MG';
@@ -797,6 +800,7 @@ begin
   3143906: Cidade := 'Muriae/MG';
   3147105: Cidade := 'Para de Minas/MG';
   3148103: Cidade := 'Patrocinio/MG';
+  3152501: Cidade := 'Pouso Alegre/MG';
   3154606: Cidade := 'Ribeirão das Neves/MG';
   3169901: Cidade := 'Uba/MG';
   3170107: Cidade := 'Uberaba/MG';
@@ -857,7 +861,9 @@ begin
   3533908: Cidade := 'Olimpia/SP';
   3534401: Cidade := 'Osasco/SP';
   3536505: Cidade := 'Paulinia/SP';
+  3537305: Cidade := 'Penápolis/SP';
   3538006: Cidade := 'Pindamonhangaba/SP';
+  3538709: Cidade := 'Piracicaba/SP';
   3540705: Cidade := 'Porto Ferreira/SP';
   3541406: Cidade := 'Presidente Prudente/SP';
   3541505: Cidade := 'Presidente Venceslau/SP';
@@ -896,6 +902,7 @@ begin
   4108601: Cidade := 'Goioerê/PR';
   4113700: Cidade := 'Londrina/PR';
   4114302: Cidade := 'Mandirituba/PR';
+  4115804: Cidade := 'Medianeira/PR';
   4118204: Cidade := 'Paranagua/PR';
   4118402: Cidade := 'Paranavaí/PR';
   4119905: Cidade := 'Ponta Grossa/PR';

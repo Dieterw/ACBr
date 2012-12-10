@@ -8,7 +8,7 @@ uses IniFiles, ShellAPI, pcnRetConsReciNFe,
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, Buttons, ComCtrls, OleCtrls, SHDocVw,
   ACBrNFe, pcnConversao, ACBrNFeDANFEClass, ACBrNFeDANFERave, ACBrUtil,
-  pcnNFeW, pcnNFeRTXT, pcnAuxiliar,
+  pcnNFeW, pcnNFeRTXT, pcnAuxiliar, ACBrDFeUtil,
   XMLIntf, XMLDoc, ACBrNFeDANFERaveCB;
 
 type
@@ -927,7 +927,7 @@ begin
     exit;
  if not(InputQuery('WebServices Consulta Cadastro ', 'Documento(CPF/CNPJ)',    Documento)) then
     exit;
-  Documento :=  Trim(NotaUtil.LimpaNumero(Documento));
+  Documento :=  Trim(DFeUtil.LimpaNumero(Documento));
 
   ACBrNFe1.WebServices.ConsultaCadastro.UF  := UF;
   if Length(Documento) > 11 then

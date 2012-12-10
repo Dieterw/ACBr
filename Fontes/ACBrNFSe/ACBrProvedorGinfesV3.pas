@@ -607,7 +607,7 @@ begin
   end
   else begin
    case ACodMunicipio of
-    3143906: Result := 'http://muriae.ginfesh.com.br/birt/frameset?_report=nfs_novo.rptdesign&cdVerificacao=' +
+    3143906: Result := 'http://muriae.ginfesh.com.br/birt/frameset?__report=nfs_novo.rptdesign&cdVerificacao=' +
                        ACodVerificacao + '&numNota=' + IntToStr(ANumeroNFSe);
     3503208: Result := 'http://araraquara.ginfesh.com.br/birt/frameset?_report=nfs_novo.rptdesign&cdVerificacao=' +
                        ACodVerificacao + '&numNota=' + IntToStr(ANumeroNFSe);

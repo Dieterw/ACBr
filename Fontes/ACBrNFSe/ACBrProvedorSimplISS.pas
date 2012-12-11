@@ -202,10 +202,18 @@ end;
 
 function TProvedorSimplISS.Gera_DadosSenha(CNPJ, Senha: String): AnsiString;
 begin
+(*
  Result := '<P1 xmlns="http://www.sistema.com.br/Sistema.Ws.Nfse.Cn">' +
              SomenteNumeros(CNPJ) +
            '</P1>' +
            '<P2 xmlns="http://www.sistema.com.br/Sistema.Ws.Nfse.Cn">' +
+             Senha +
+           '</P2>';
+*)
+ Result := '<P1>' +
+             SomenteNumeros(CNPJ) +
+           '</P1>' +
+           '<P2>' +
              Senha +
            '</P2>';
 end;

@@ -1,6 +1,6 @@
 object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
-  Left = 309
-  Top = 167
+  Left = 330
+  Top = 206
   Width = 1084
   Height = 768
   Caption = 'ACBRBoletoFCFortesFr'
@@ -1858,7 +1858,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         DrawKind = dkLine
       end
       object txtLinhaDigitavel: TRLLabel
-        Left = 280
+        Left = 270
         Top = 34
         Width = 488
         Height = 19
@@ -1872,7 +1872,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         ParentFont = False
       end
       object RLDraw82: TRLDraw
-        Left = 271
+        Left = 261
         Top = 17
         Width = 11
         Height = 41
@@ -1882,7 +1882,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       object txtNumeroBanco3: TRLLabel
         Left = 187
         Top = 24
-        Width = 90
+        Width = 78
         Height = 29
         Alignment = taCenter
         AutoSize = False

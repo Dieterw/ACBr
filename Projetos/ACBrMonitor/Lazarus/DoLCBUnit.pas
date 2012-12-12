@@ -94,7 +94,7 @@ begin
          end
 
         else if Cmd.Metodo = 'excluirsufixo' then
-           Cmd.Resposta := BoolToStr( ExcluirSufixo )
+           Cmd.Resposta := BoolToStr( ExcluirSufixo, True)
 
         else if Cmd.Metodo = 'setexcluirsufixo' then
          begin
@@ -103,7 +103,7 @@ begin
          end
 
         else if Cmd.Metodo = 'usarfila' then
-           Cmd.Resposta := BoolToStr( UsarFila )
+           Cmd.Resposta := BoolToStr( UsarFila, True )
 
         else if Cmd.Metodo = 'setusarfila ' then
          begin

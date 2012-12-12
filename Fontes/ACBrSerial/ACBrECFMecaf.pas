@@ -286,7 +286,10 @@ begin
                  'Erro inicializando a impressora '+fpModeloStr ));
 
      if IsOldMecaf then
-        fpColunas := 48   // Mecaf antiga aceita 48 colunas
+        fpColunas := 48;   // Mecaf antiga aceita 48 colunas
+     
+     if pos('302',NumVersao) > 0 then
+        fpColunas := 40;
   except
      Desativar ;
      raise ;
@@ -1261,7 +1264,7 @@ end;
 
 function TACBrECFMecaf.IsOldMecaf: Boolean;
 begin
-  Result := (pos('201', fsNumVersao) > 0) or (pos('301', fsNumVersao) > 0) ;
+  Result := (pos('201', fsNumVersao) > 0) or (pos('301', fsNumVersao) > 0) or (pos('400', fsNumVersao) > 0) or (pos('302', fsNumVersao) > 0);
 end;
 
 procedure TACBrECFMecaf.AbreNaoFiscal( CPF_CNPJ, Nome, Endereco: String );

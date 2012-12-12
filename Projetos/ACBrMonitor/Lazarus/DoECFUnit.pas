@@ -95,7 +95,7 @@ begin
            Cmd.Resposta := IntToStr( Colunas )
 
         else if Cmd.Metodo = 'paramdescontoissqn' then
-              Cmd.Resposta:= BoolToStr(ParamDescontoISSQN)
+              Cmd.Resposta:= BoolToStr(ParamDescontoISSQN, True)
 
         else if Cmd.Metodo = 'enviainfo' then
             Cmd.Resposta :=   RetornaInfoECF(Cmd.Params(0))
@@ -152,8 +152,20 @@ begin
         else if Cmd.Metodo = 'numgnf' then
            Cmd.Resposta := NumGNF
 
+        else if Cmd.Metodo = 'numgnfc' then
+           Cmd.Resposta := NumGNFC
+
         else if Cmd.Metodo = 'numcdc' then
            Cmd.Resposta := NumCDC
+
+        else if Cmd.Metodo = 'numccdc' then
+           Cmd.Resposta := NumCCDC
+
+        else if Cmd.Metodo = 'numcfd' then
+           Cmd.Resposta := NumCFD
+
+        else if Cmd.Metodo = 'numncn' then
+           Cmd.Resposta := NumNCN
 
         else if Cmd.Metodo = 'numcrz' then
            Cmd.Resposta := NumCRZ
@@ -163,6 +175,9 @@ begin
 
         else if Cmd.Metodo = 'numserie' then
            Cmd.Resposta := NumSerie
+
+        else if Cmd.Metodo = 'numseriemfd' then
+           Cmd.Resposta := NumSerieMFD
 
         else if Cmd.Metodo = 'numversao' then
            Cmd.Resposta := NumVersao
@@ -190,6 +205,12 @@ begin
 
         else if Cmd.Metodo = 'datahorasb' then
            Cmd.Resposta := FormatDateTime('dd/mm/yy hh:nn:ss', DataHoraSB )
+
+        else if Cmd.Metodo = 'decimaisqtd' then
+           Cmd.Resposta := FloatToStr( DecimaisQtd )
+
+        else if Cmd.Metodo = 'decimaispreco' then
+           Cmd.Resposta := FloatToStr( DecimaisPreco )
 
         else if Cmd.Metodo = 'submodeloecf' then
            Cmd.Resposta := SubModeloECF

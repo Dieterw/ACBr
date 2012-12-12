@@ -2541,6 +2541,9 @@ begin
    end ;
   {$ENDIF}
 
+  if Assigned( FOnDepoisVendeItem ) then
+     FOnDepoisVendeItem( Codigo, Descricao, AliquotaICMS, Qtd, ValorUnitario, ValorDescontoAcrescimo, Unidade, TipoDescontoAcrescimo, DescontoAcrescimo);
+
   if RFDAtivo then
   begin
      case AliquotaICMS[1] of
@@ -2570,10 +2573,6 @@ begin
                       ValorDescontoAcrescimo, AliquotaICMS ) ;
 
   end ;
-
-  if Assigned( FOnDepoisVendeItem ) then
-     FOnDepoisVendeItem( Codigo, Descricao, AliquotaICMS, Qtd, ValorUnitario, ValorDescontoAcrescimo, Unidade, TipoDescontoAcrescimo, DescontoAcrescimo);
-
 end;
 
 procedure TACBrECF.DescontoAcrescimoItemAnterior( ValorDescontoAcrescimo: Double;

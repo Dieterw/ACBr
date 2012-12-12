@@ -137,6 +137,10 @@ Versao 0.0.10a do FortesReport 06/07/11
     (por: Regys Silveira) 
 
 
+Versao 0.0.50a	
+[-]Unit Bradesco - Corrigido bug na geração do arquivo remessa CNAB400.(Juliana Tamizou)
+
+
 Versao 0.0.49a	
 Modificado rotinas de geração do arquivo remessa padrão CNAB400 para controlar
 melhor o número sequencial da linha.(Juliana Tamizou)

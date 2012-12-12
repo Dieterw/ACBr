@@ -170,11 +170,11 @@ var
     begin
       if Mensagem.Count <= 1 then   //verifica se o indice é 1 porque a primeira instrução vai no registro 1
       begin
-         Result := AStr;
+         Result := '';
          Exit;
       end;
 
-      Result := AStr + sLineBreak +
+      Result := sLineBreak +
                 '2'               +                                    // IDENTIFICAÇÃO DO LAYOUT PARA O REGISTRO
                 Copy(padL(Mensagem[1], 80, ' '), 1, 80);               // CONTEÚDO DA 1ª LINHA DE IMPRESSÃO DA ÁREA "INSTRUÇÕES” DO BOLETO
 

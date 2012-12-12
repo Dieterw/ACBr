@@ -603,14 +603,14 @@ begin
  DadosMsg :=StringReplace(DadosMsg, '>', '&gt;', [rfReplaceAll]);
  DadosMsg :=StringReplace(DadosMsg, ' xmlns="http://www.abrasf.org.br/ABRASF/arquivos/nfse.xsd"', '', [rfReplaceAll]);
 
- result := '<?xml version="1.0" encoding="utf-8"?>' +
+ result := '<?xml version="1.0" encoding="UTF-8"?>' +
            '<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" ' +
                        'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
                        'xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
             '<s:Body>' +
              '<RecepcionarLoteRps xmlns="' + URLNS + '/">' +
               '<xmlEnvio>' +
-                '&lt;?xml version="1.0" encoding="utf-8"?&gt;' +
+                '&lt;?xml version="1.0" encoding="UTF-8"?&gt;' +
                 DadosMsg +
               '</xmlEnvio>' +
              '</RecepcionarLoteRps>' +
@@ -625,14 +625,14 @@ begin
  DadosMsg :=StringReplace(DadosMsg, '>', '&gt;', [rfReplaceAll]);
  DadosMsg :=StringReplace(DadosMsg, ' xmlns="http://www.abrasf.org.br/ABRASF/arquivos/nfse.xsd"', '', [rfReplaceAll]);
 
- result := '<?xml version="1.0" encoding="utf-8"?>' +
+ result := '<?xml version="1.0" encoding="UTF-8"?>' +
            '<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" ' +
                        'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
                        'xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
             '<s:Body>' +
              '<ConsultarSituacaoLoteRps xmlns="' + URLNS + '/">' +
               '<xmlEnvio>' +
-                '&lt;?xml version="1.0" encoding="utf-8"?&gt;' +
+                '&lt;?xml version="1.0" encoding="UTF-8"?&gt;' +
                 DadosMsg +
               '</xmlEnvio>' +
              '</ConsultarSituacaoLoteRps>' +
@@ -647,14 +647,14 @@ begin
  DadosMsg :=StringReplace(DadosMsg, '>', '&gt;', [rfReplaceAll]);
  DadosMsg :=StringReplace(DadosMsg, ' xmlns="http://www.abrasf.org.br/ABRASF/arquivos/nfse.xsd"', '', [rfReplaceAll]);
 
- result := '<?xml version="1.0" encoding="utf-8"?>' +
+ result := '<?xml version="1.0" encoding="UTF-8"?>' +
            '<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" ' +
                        'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
                        'xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
             '<s:Body>' +
              '<ConsultarLoteRps xmlns="' + URLNS + '/">' +
               '<xmlEnvio>' +
-                '&lt;?xml version="1.0" encoding="utf-8"?&gt;' +
+                '&lt;?xml version="1.0" encoding="UTF-8"?&gt;' +
                 DadosMsg +
               '</xmlEnvio>' +
              '</ConsultarLoteRps>' +
@@ -669,14 +669,14 @@ begin
  DadosMsg :=StringReplace(DadosMsg, '>', '&gt;', [rfReplaceAll]);
  DadosMsg :=StringReplace(DadosMsg, ' xmlns="http://www.abrasf.org.br/ABRASF/arquivos/nfse.xsd"', '', [rfReplaceAll]);
 
- result := '<?xml version="1.0" encoding="utf-8"?>' +
+ result := '<?xml version="1.0" encoding="UTF-8"?>' +
            '<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" ' +
                        'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
                        'xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
             '<s:Body>' +
              '<ConsultarNfsePorRps xmlns="' + URLNS + '/">' +
               '<xmlEnvio>' +
-                '&lt;?xml version="1.0" encoding="utf-8"?&gt;' +
+                '&lt;?xml version="1.0" encoding="UTF-8"?&gt;' +
                 DadosMsg +
               '</xmlEnvio>' +
              '</ConsultarNfsePorRps>' +
@@ -691,14 +691,14 @@ begin
  DadosMsg :=StringReplace(DadosMsg, '>', '&gt;', [rfReplaceAll]);
  DadosMsg :=StringReplace(DadosMsg, ' xmlns="http://www.abrasf.org.br/ABRASF/arquivos/nfse.xsd"', '', [rfReplaceAll]);
 
- result := '<?xml version="1.0" encoding="utf-8"?>' +
+ result := '<?xml version="1.0" encoding="UTF-8"?>' +
            '<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" ' +
                        'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
                        'xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
             '<s:Body>' +
              '<ConsultarNfse xmlns="' + URLNS + '/">' +
               '<xmlEnvio>' +
-                '&lt;?xml version="1.0" encoding="utf-8"?&gt;' +
+                '&lt;?xml version="1.0" encoding="UTF-8"?&gt;' +
                 DadosMsg +
               '</xmlEnvio>' +
              '</ConsultarNfse>' +
@@ -713,7 +713,7 @@ begin
  DadosMsg :=StringReplace(DadosMsg, '>', '&gt;', [rfReplaceAll]);
  DadosMsg :=StringReplace(DadosMsg, ' xmlns="http://www.abrasf.org.br/ABRASF/arquivos/nfse.xsd"', '', [rfReplaceAll]);
 
- result := '<?xml version="1.0" encoding="utf-8"?>' +
+ result := '<?xml version="1.0" encoding="UTF-8"?>' +
            '<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" ' +
                        'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
                        'xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
@@ -763,7 +763,7 @@ end;
 function TProvedorGovBR.GeraRetornoNFSe(Prefixo: String;
   RetNFSe: AnsiString; NomeCidade: String): AnsiString;
 begin
- Result := '<?xml version="1.0" encoding="utf-8"?>' +
+ Result := '<?xml version="1.0" encoding="UTF-8"?>' +
            '<' + Prefixo + 'CompNfse xmlns="http://www.abrasf.org.br/ABRASF/arquivos/">' +
              RetNfse +
            '</' + Prefixo + 'CompNfse>';

@@ -449,7 +449,7 @@ end;
 function TProvedorPublica.GeraEnvelopeRecepcionarLoteRPS(URLNS: String;
   CabMsg, DadosMsg, DadosSenha: AnsiString): AnsiString;
 begin
- result := '<?xml version="1.0" encoding="utf-8"?>' +
+ result := '<?xml version="1.0" encoding="UTF-8"?>' +
            '<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns2="' + URLNS + '">' +
             '<S:Body>' +
              '<ns2:RecepcionarLoteRps>' +
@@ -464,7 +464,7 @@ end;
 function TProvedorPublica.GeraEnvelopeConsultarSituacaoLoteRPS(
   URLNS: String; CabMsg, DadosMsg, DadosSenha: AnsiString): AnsiString;
 begin
- result := '<?xml version="1.0" encoding="utf-8"?>' +
+ result := '<?xml version="1.0" encoding="UTF-8"?>' +
            '<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns2="' + URLNS + '">' +
             '<S:Body>' +
              '<ns2:ConsultarSituacaoLoteRps>' +
@@ -479,7 +479,7 @@ end;
 function TProvedorPublica.GeraEnvelopeConsultarLoteRPS(URLNS: String;
   CabMsg, DadosMsg, DadosSenha: AnsiString): AnsiString;
 begin
- result := '<?xml version="1.0" encoding="utf-8"?>' +
+ result := '<?xml version="1.0" encoding="UTF-8"?>' +
            '<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns2="' + URLNS + '">' +
             '<S:Body>' +
              '<ns2:ConsultarLoteRps>' +
@@ -494,7 +494,7 @@ end;
 function TProvedorPublica.GeraEnvelopeConsultarNFSeporRPS(URLNS: String;
   CabMsg, DadosMsg, DadosSenha: AnsiString): AnsiString;
 begin
- result := '<?xml version="1.0" encoding="utf-8"?>' +
+ result := '<?xml version="1.0" encoding="UTF-8"?>' +
            '<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns2="' + URLNS + '">' +
             '<S:Body>' +
              '<ns2:ConsultarNfsePorRps>' +
@@ -509,7 +509,7 @@ end;
 function TProvedorPublica.GeraEnvelopeConsultarNFSe(URLNS: String; CabMsg,
   DadosMsg, DadosSenha: AnsiString): AnsiString;
 begin
- result := '<?xml version="1.0" encoding="utf-8"?>' +
+ result := '<?xml version="1.0" encoding="UTF-8"?>' +
            '<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns2="' + URLNS + '">' +
             '<S:Body>' +
              '<ns2:ConsultarNfseFaixa>' +
@@ -524,7 +524,7 @@ end;
 function TProvedorPublica.GeraEnvelopeCancelarNFSe(URLNS: String; CabMsg,
   DadosMsg, DadosSenha: AnsiString): AnsiString;
 begin
- result := '<?xml version="1.0" encoding="utf-8"?>' +
+ result := '<?xml version="1.0" encoding="UTF-8"?>' +
            '<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns2="' + URLNS + '">' +
             '<S:Body>' +
              '<ns2:CancelarNfse>' +
@@ -572,7 +572,7 @@ end;
 function TProvedorPublica.GeraRetornoNFSe(Prefixo: String;
   RetNFSe: AnsiString; NomeCidade: String): AnsiString;
 begin
- Result := '<?xml version="1.0" encoding="utf-8"?>' +
+ Result := '<?xml version="1.0" encoding="UTF-8"?>' +
            '<CompNfse xmlns:ns4="http://www.ginfes.com.br/tipos_v03.xsd">' +
             RetNFSe +
            '</CompNfse>';

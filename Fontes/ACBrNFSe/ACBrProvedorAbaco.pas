@@ -445,7 +445,7 @@ end;
 function TProvedorAbaco.GeraEnvelopeRecepcionarLoteRPS(URLNS: String;
   CabMsg, DadosMsg, DadosSenha: AnsiString): AnsiString;
 begin
- result := '<?xml version="1.0" encoding="utf-8"?>' +
+ result := '<?xml version="1.0" encoding="UTF-8"?>' +
            '<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" ' +
                        'xmlns:e="' + URLNS + '">' +
             '<S:Header/>' +
@@ -453,11 +453,11 @@ begin
               '<e:RecepcionarLoteRps.Execute>' +
 
                '<e:Nfsecabecmsg>' +
-                 '&lt;?xml version="1.0" encoding="utf-8"?&gt;' +
+                 '&lt;?xml version="1.0" encoding="UTF-8"?&gt;' +
                  StringReplace(StringReplace(CabMsg, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
                '</e:Nfsecabecmsg>' +
                '<e:Nfsedadosmsg>' +
-                 '&lt;?xml version="1.0" encoding="utf-8"?&gt;' +
+                 '&lt;?xml version="1.0" encoding="UTF-8"?&gt;' +
                  StringReplace(StringReplace(DadosMsg, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
                '</e:Nfsedadosmsg>' +
 
@@ -469,7 +469,7 @@ end;
 function TProvedorAbaco.GeraEnvelopeConsultarSituacaoLoteRPS(
   URLNS: String; CabMsg, DadosMsg, DadosSenha: AnsiString): AnsiString;
 begin
- result := '<?xml version="1.0" encoding="utf-8"?>' +
+ result := '<?xml version="1.0" encoding="UTF-8"?>' +
            '<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" ' +
                        'xmlns:e="' + URLNS + '">' +
             '<S:Header/>' +
@@ -477,11 +477,11 @@ begin
               '<e:ConsultarSituacaoLoteRps.Execute>' +
 
                '<e:Nfsecabecmsg>' +
-                 '&lt;?xml version="1.0" encoding="utf-8"?&gt;' +
+                 '&lt;?xml version="1.0" encoding="UTF-8"?&gt;' +
                  StringReplace(StringReplace(CabMsg, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
                '</e:Nfsecabecmsg>' +
                '<e:Nfsedadosmsg>' +
-                 '&lt;?xml version="1.0" encoding="utf-8"?&gt;' +
+                 '&lt;?xml version="1.0" encoding="UTF-8"?&gt;' +
                  StringReplace(StringReplace(DadosMsg, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
                '</e:Nfsedadosmsg>' +
 
@@ -493,7 +493,7 @@ end;
 function TProvedorAbaco.GeraEnvelopeConsultarLoteRPS(URLNS: String;
   CabMsg, DadosMsg, DadosSenha: AnsiString): AnsiString;
 begin
- result := '<?xml version="1.0" encoding="utf-8"?>' +
+ result := '<?xml version="1.0" encoding="UTF-8"?>' +
            '<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" ' +
                        'xmlns:e="' + URLNS + '">' +
             '<S:Header/>' +
@@ -501,11 +501,11 @@ begin
               '<e:ConsultarLoteRps.Execute>' +
 
                '<e:Nfsecabecmsg>' +
-                 '&lt;?xml version="1.0" encoding="utf-8"?&gt;' +
+                 '&lt;?xml version="1.0" encoding="UTF-8"?&gt;' +
                  StringReplace(StringReplace(CabMsg, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
                '</e:Nfsecabecmsg>' +
                '<e:Nfsedadosmsg>' +
-                 '&lt;?xml version="1.0" encoding="utf-8"?&gt;' +
+                 '&lt;?xml version="1.0" encoding="UTF-8"?&gt;' +
                  StringReplace(StringReplace(DadosMsg, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
                '</e:Nfsedadosmsg>' +
 
@@ -517,7 +517,7 @@ end;
 function TProvedorAbaco.GeraEnvelopeConsultarNFSeporRPS(URLNS: String;
   CabMsg, DadosMsg, DadosSenha: AnsiString): AnsiString;
 begin
- result := '<?xml version="1.0" encoding="utf-8"?>' +
+ result := '<?xml version="1.0" encoding="UTF-8"?>' +
            '<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" ' +
                        'xmlns:e="' + URLNS + '">' +
             '<S:Header/>' +
@@ -525,11 +525,11 @@ begin
               '<e:ConsultarNfsePorRps.Execute>' +
 
                '<e:Nfsecabecmsg>' +
-                 '&lt;?xml version="1.0" encoding="utf-8"?&gt;' +
+                 '&lt;?xml version="1.0" encoding="UTF-8"?&gt;' +
                  StringReplace(StringReplace(CabMsg, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
                '</e:Nfsecabecmsg>' +
                '<e:Nfsedadosmsg>' +
-                 '&lt;?xml version="1.0" encoding="utf-8"?&gt;' +
+                 '&lt;?xml version="1.0" encoding="UTF-8"?&gt;' +
                  StringReplace(StringReplace(DadosMsg, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
                '</e:Nfsedadosmsg>' +
 
@@ -541,7 +541,7 @@ end;
 function TProvedorAbaco.GeraEnvelopeConsultarNFSe(URLNS: String; CabMsg,
   DadosMsg, DadosSenha: AnsiString): AnsiString;
 begin
- result := '<?xml version="1.0" encoding="utf-8"?>' +
+ result := '<?xml version="1.0" encoding="UTF-8"?>' +
            '<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" ' +
                        'xmlns:e="' + URLNS + '">' +
             '<S:Header/>' +
@@ -549,11 +549,11 @@ begin
               '<e:ConsultarNfse.Execute>' +
 
                '<e:Nfsecabecmsg>' +
-                 '&lt;?xml version="1.0" encoding="utf-8"?&gt;' +
+                 '&lt;?xml version="1.0" encoding="UTF-8"?&gt;' +
                  StringReplace(StringReplace(CabMsg, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
                '</e:Nfsecabecmsg>' +
                '<e:Nfsedadosmsg>' +
-                 '&lt;?xml version="1.0" encoding="utf-8"?&gt;' +
+                 '&lt;?xml version="1.0" encoding="UTF-8"?&gt;' +
                  StringReplace(StringReplace(DadosMsg, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
                '</e:Nfsedadosmsg>' +
 
@@ -565,7 +565,7 @@ end;
 function TProvedorAbaco.GeraEnvelopeCancelarNFSe(URLNS: String; CabMsg,
   DadosMsg, DadosSenha: AnsiString): AnsiString;
 begin
- result := '<?xml version="1.0" encoding="utf-8"?>' +
+ result := '<?xml version="1.0" encoding="UTF-8"?>' +
            '<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" ' +
                        'xmlns:e="' + URLNS + '">' +
             '<S:Header/>' +
@@ -573,11 +573,11 @@ begin
               '<e:CancelarNfse.Execute>' +
 
                '<e:Nfsecabecmsg>' +
-                 '&lt;?xml version="1.0" encoding="utf-8"?&gt;' +
+                 '&lt;?xml version="1.0" encoding="UTF-8"?&gt;' +
                  StringReplace(StringReplace(CabMsg, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
                '</e:Nfsecabecmsg>' +
                '<e:Nfsedadosmsg>' +
-                 '&lt;?xml version="1.0" encoding="utf-8"?&gt;' +
+                 '&lt;?xml version="1.0" encoding="UTF-8"?&gt;' +
                  StringReplace(StringReplace(DadosMsg, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
                '</e:Nfsedadosmsg>' +
 
@@ -632,7 +632,7 @@ end;
 function TProvedorAbaco.GeraRetornoNFSe(Prefixo: String;
   RetNFSe: AnsiString; NomeCidade: String): AnsiString;
 begin
- Result := '<?xml version="1.0" encoding="utf-8"?>' +
+ Result := '<?xml version="1.0" encoding="UTF-8"?>' +
            '<' + Prefixo + 'CompNfse xmlns="http://www.e-nfs.com.br">' +
              RetNfse +
            '</' + Prefixo + 'CompNfse>';

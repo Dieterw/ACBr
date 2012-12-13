@@ -432,8 +432,8 @@ begin
 //     NaturezaOperacao := noTributacaoNoMunicipio51; 
 
      // TnfseRegimeEspecialTributacao = ( retNenhum, retMicroempresaMunicipal, retEstimativa, retSociedadeProfissionais, retCooperativa, retMicroempresarioIndividual, retMicroempresarioEmpresaPP );
-     RegimeEspecialTributacao := retNenhum;
-//     RegimeEspecialTributacao := retMicroempresaMunicipal;
+//     RegimeEspecialTributacao := retNenhum;
+     RegimeEspecialTributacao := retMicroempresaMunicipal;
 
      // TnfseSimNao = ( snSim, snNao );
      OptanteSimplesNacional := snSim;

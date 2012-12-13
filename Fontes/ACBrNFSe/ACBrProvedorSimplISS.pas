@@ -91,7 +91,11 @@ var
 begin
  ConfigCidade.VersaoSoap    := '1.1';
  ConfigCidade.CodigoSchemas := 6;
- ConfigCidade.CodigoURLs    := 14;
+ case ACodigo of
+  3148103: ConfigCidade.CodigoURLs := 1; // Patrocinio/MG
+  3503307: ConfigCidade.CodigoURLs := 2; // Araras/SP
+  3541406: ConfigCidade.CodigoURLs := 3; // Presidente Prudente/SP
+ end;
  ConfigCidade.Prefixo2      := '';
  ConfigCidade.Prefixo3      := '';
  ConfigCidade.Prefixo4      := '';
@@ -139,13 +143,18 @@ begin
  ConfigURL.HomConsultaNFSe       := 'http://200.144.16.82:8080/ws_homologacao/nfseservice.svc';
  ConfigURL.HomCancelaNFSe        := 'http://200.144.16.82:8080/ws_homologacao/nfseservice.svc';
 
- ConfigURL.ProNomeCidade         := '';
- ConfigURL.ProRecepcaoLoteRPS    := 'http://200.144.16.82:8080/ws_Homologacao/nfseservice.svc';
- ConfigURL.ProConsultaLoteRPS    := 'http://200.144.16.82:8080/ws_homologacao/nfseservice.svc';
- ConfigURL.ProConsultaNFSeRPS    := 'http://200.144.16.82:8080/ws_homologacao/nfseservice.svc';
- ConfigURL.ProConsultaSitLoteRPS := 'http://200.144.16.82:8080/ws_homologacao/nfseservice.svc';
- ConfigURL.ProConsultaNFSe       := 'http://200.144.16.82:8080/ws_homologacao/nfseservice.svc';
- ConfigURL.ProCancelaNFSe        := 'http://200.144.16.82:8080/ws_homologacao/nfseservice.svc';
+ case ACodigo of
+  1: ConfigURL.ProNomeCidade := 'patrocinio';
+  2: ConfigURL.ProNomeCidade := 'araras';
+  3: ConfigURL.ProNomeCidade := 'presidenteprudente';
+ end;
+
+ ConfigURL.ProRecepcaoLoteRPS    := 'http://200.144.16.82:8080/ws_' + ConfigURL.ProNomeCidade + '/nfseservice.svc';
+ ConfigURL.ProConsultaLoteRPS    := 'http://200.144.16.82:8080/ws_' + ConfigURL.ProNomeCidade + '/nfseservice.svc';
+ ConfigURL.ProConsultaNFSeRPS    := 'http://200.144.16.82:8080/ws_' + ConfigURL.ProNomeCidade + '/nfseservice.svc';
+ ConfigURL.ProConsultaSitLoteRPS := 'http://200.144.16.82:8080/ws_' + ConfigURL.ProNomeCidade + '/nfseservice.svc';
+ ConfigURL.ProConsultaNFSe       := 'http://200.144.16.82:8080/ws_' + ConfigURL.ProNomeCidade + '/nfseservice.svc';
+ ConfigURL.ProCancelaNFSe        := 'http://200.144.16.82:8080/ws_' + ConfigURL.ProNomeCidade + '/nfseservice.svc';
 
  Result := ConfigURL;
 end;

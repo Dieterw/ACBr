@@ -39,7 +39,8 @@ type
 
   TnfseProvedor = ( proNenhum, proTiplan, proISSNET, proWebISS, proGINFES, proDSF, proProdemge, proAbaco, proBetha,
                     proEquiplano, proISSIntel, proProdam, proGovBR, proRecife, proSimplISS, proThema, proRJ,
-                    proPublica, profintelISS, proDigifred, proBetim, proSaatri, proFISSLEX );
+                    proPublica, profintelISS, proDigifred, proBetim, proSaatri, proFISSLEX,
+                    proGoiania, proIssCuritiba );
 
   TnfseAcao = ( acRecepcionar, acConsSit, acConsLote, acConsNFSeRps, acConsNFSe, acCancelar, acGerar );
 
@@ -286,11 +287,11 @@ begin
                            ['Nenhum', 'Tiplan', 'ISS.NET', 'WebISS', 'GINFES', 'DSF', 'Prodemge', 'Abaco',
                             'Betha', 'Equiplano', 'ISSIntel', 'Prodam', 'GovBR', 'Recife',
                             'SimplISS', 'Thema', 'RJ', 'Publica', 'fintelISS', 'Digifred', 'Betim', 'Saatri',
-                            'FISSLEX'],
+                            'FISSLEX', 'Goiania', 'IssCuritiba'],
                            [proNenhum, proTiplan, proISSNET, proWebISS, proGINFES, proDSF, proProdemge, proAbaco,
                             proBetha, proEquiplano, proISSIntel, proProdam, proGovBR, proRecife,
                             proSimplISS, proThema, proRJ, proPublica, profintelISS, proDigifred, proBetim,
-                            proSaatri, proFISSLEX]);
+                            proSaatri, proFISSLEX, proGoiania, proIssCuritiba]);
 end;
 
 function StrToProvedor(var ok: boolean; const s: string):TnfseProvedor;
@@ -299,11 +300,11 @@ begin
                            ['Nenhum', 'Tiplan', 'ISS.NET', 'WebISS', 'GINFES', 'DSF', 'Prodemge', 'Abaco',
                             'Betha', 'Equiplano', 'ISSIntel', 'Prodam', 'GovBR', 'Recife',
                             'SimplISS', 'Thema', 'RJ', 'Publica', 'fintelISS', 'Digifred', 'Betim', 'Saatri',
-                            'FISSLEX'],
+                            'FISSLEX', 'Goiania', 'IssCuritiba'],
                            [proNenhum, proTiplan, proISSNET, proWebISS, proGINFES, proDSF, proProdemge, proAbaco,
                             proBetha, proEquiplano, proISSIntel, proProdam, proGovBR, proRecife,
                             proSimplISS, proThema, proRJ, proPublica, profintelISS, proDigifred, proBetim,
-                            proSaatri, proFISSLEX]);
+                            proSaatri, proFISSLEX, proGoiania, proIssCuritiba]);
 end;
 
 // Descrição do Serviço ********************************************************
@@ -745,6 +746,13 @@ begin
 
   4304606  // Canoas/RS
          : Provedor := 'Abaco';
+
+  5208707  // Goiania/GO
+         : Provedor := 'Goiania';
+
+  4106902  // Curitiba/PR
+         : Provedor := 'IssCuritiba';
+
  end;
  Result := Provedor;
 end;
@@ -897,6 +905,7 @@ begin
   4101002: Cidade := 'Ampére/PR';
   4104253: Cidade := 'Campo Magro/PR';
   4106407: Cidade := 'Cornélio Procópio/PR';
+  4106902: Cidade := 'Curitiba/PR';
   4107652: Cidade := 'Fazenda Rio Grande/PR';
   4108403: Cidade := 'Francisco Beltrao/PR';
   4108601: Cidade := 'Goioerê/PR';

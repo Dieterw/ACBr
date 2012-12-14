@@ -361,7 +361,7 @@ uses
  ACBrProvedorRecife, ACBrProvedorSimplISS, ACBrProvedorThema,
  ACBrProvedorEquiplano, ACBrProvedorfintelISS, ACBrProvedorDigifred,
  ACBrProvedorBetha, ACBrProvedorBetim, ACBrProvedorSaatri,
- ACBrProvedorAbaco;
+ ACBrProvedorAbaco, ACBrProvedorGoiania, ACBrProvedorIssCuritiba;
 
 { TConfiguracoes }
 
@@ -660,25 +660,27 @@ begin
  FProvedorClass.Free;
 
  case FProvedor of
-  proGINFES:    FProvedorClass := TProvedorGinfesV3.Create;
-  proPublica:   FProvedorClass := TProvedorPublica.Create;
-  proRJ:        FProvedorClass := TProvedorRJ.Create;
-  proTiplan:    FProvedorClass := TProvedorTiplan.Create;
-  proISSNet:    FProvedorClass := TProvedorISSNet.Create;
-  proWebISS:    FProvedorClass := TProvedorWebISS.Create;
-  proProdemge:  FProvedorClass := TProvedorProdemge.Create;
-  proISSIntel:  FProvedorClass := TProvedorISSIntel.Create;
-  proGovBR:     FProvedorClass := TProvedorGovBR.Create;
-  proRecife:    FProvedorClass := TProvedorRecife.Create;
-  proSimplISS:  FProvedorClass := TProvedorSimplISS.Create;
-  proThema:     FProvedorClass := TProvedorThema.Create;
-  proEquiplano: FProvedorClass := TProvedorEquiplano.Create;
-  profintelISS: FProvedorClass := TProvedorfintelISS.Create;
-  proDigifred:  FProvedorClass := TProvedorDigifred.Create;
-  proBetha:     FProvedorClass := TProvedorBetha.Create;
-  proBetim:     FProvedorClass := TProvedorBetim.Create;
-  proSaatri:    FProvedorClass := TProvedorSaatri.Create;
-  proAbaco:     FProvedorClass := TProvedorAbaco.Create;
+  proGINFES:      FProvedorClass := TProvedorGinfesV3.Create;
+  proPublica:     FProvedorClass := TProvedorPublica.Create;
+  proRJ:          FProvedorClass := TProvedorRJ.Create;
+  proTiplan:      FProvedorClass := TProvedorTiplan.Create;
+  proISSNet:      FProvedorClass := TProvedorISSNet.Create;
+  proWebISS:      FProvedorClass := TProvedorWebISS.Create;
+  proProdemge:    FProvedorClass := TProvedorProdemge.Create;
+  proISSIntel:    FProvedorClass := TProvedorISSIntel.Create;
+  proGovBR:       FProvedorClass := TProvedorGovBR.Create;
+  proRecife:      FProvedorClass := TProvedorRecife.Create;
+  proSimplISS:    FProvedorClass := TProvedorSimplISS.Create;
+  proThema:       FProvedorClass := TProvedorThema.Create;
+  proEquiplano:   FProvedorClass := TProvedorEquiplano.Create;
+  profintelISS:   FProvedorClass := TProvedorfintelISS.Create;
+  proDigifred:    FProvedorClass := TProvedorDigifred.Create;
+  proBetha:       FProvedorClass := TProvedorBetha.Create;
+  proBetim:       FProvedorClass := TProvedorBetim.Create;
+  proSaatri:      FProvedorClass := TProvedorSaatri.Create;
+  proAbaco:       FProvedorClass := TProvedorAbaco.Create;
+  proGoiania:     FProvedorClass := TProvedorGoiania.Create;
+  proIssCuritiba: FProvedorClass := TProvedorIssCuritiba.Create;
  end;
 
  ConfigCidade   := FProvedorClass.GetConfigCidade(FCodigoMunicipio, FAmbienteCodigo);

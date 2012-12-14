@@ -35,7 +35,7 @@ uses
     ACBrProvedorRecife, ACBrProvedorSimplISS, ACBrProvedorThema,
     ACBrProvedorEquiplano, ACBrProvedorfintelISS, ACBrProvedorDigifred,
     ACBrProvedorBetha, ACBrProvedorBetim, ACBrProvedorSaatri,
-    ACBrProvedorAbaco;
+    ACBrProvedorAbaco, ACBrProvedorGoiania, ACBrProvedorIssCuritiba;
 
 type
 
@@ -511,7 +511,7 @@ begin
   then begin
    for i := 0 to TNFSeEnviarLoteRPS(Self).FNotasFiscais.Count-1 do
     begin
-     if (FProvedor in [profintelISS, proSaatri])
+     if (FProvedor in [profintelISS, proSaatri, proGoiania])
       then vNotas := vNotas + '<' + Prefixo4 + 'Rps>' +
                                '<' + Prefixo4 + 'InfDeclaracaoPrestacaoServico' +
                                  RetornarConteudoEntre(TNFSeEnviarLoteRPS(Self).FNotasFiscais.Items[I].XML_Rps_Ass,
@@ -528,7 +528,7 @@ begin
   else begin
    for i := 0 to TNFSeEnviarLoteRPS(Self).FNotasFiscais.Count-1 do
     begin
-     if (FProvedor in [profintelISS, proSaatri])
+     if (FProvedor in [profintelISS, proSaatri, proGoiania])
       then vNotas := vNotas + '<' + Prefixo4 + 'Rps>' +
                                '<' + Prefixo4 + 'InfDeclaracaoPrestacaoServico' +
                                  RetornarConteudoEntre(TNFSeEnviarLoteRPS(Self).FNotasFiscais.Items[I].XML_Rps,
@@ -1085,25 +1085,27 @@ begin
  FProvedorClass.Free;
 
  case FProvedor of
-  proGINFES:    FProvedorClass := TProvedorGinfesV3.Create;
-  proPublica:   FProvedorClass := TProvedorPublica.Create;
-  proRJ:        FProvedorClass := TProvedorRJ.Create;
-  proTiplan:    FProvedorClass := TProvedorTiplan.Create;
-  proISSNet:    FProvedorClass := TProvedorISSNet.Create;
-  proWebISS:    FProvedorClass := TProvedorWebISS.Create;
-  proProdemge:  FProvedorClass := TProvedorProdemge.Create;
-  proISSIntel:  FProvedorClass := TProvedorISSIntel.Create;
-  proGovBR:     FProvedorClass := TProvedorGovBR.Create;
-  proRecife:    FProvedorClass := TProvedorRecife.Create;
-  proSimplISS:  FProvedorClass := TProvedorSimplISS.Create;
-  proThema:     FProvedorClass := TProvedorThema.Create;
-  proEquiplano: FProvedorClass := TProvedorEquiplano.Create;
-  profintelISS: FProvedorClass := TProvedorfintelISS.Create;
-  proDigifred:  FProvedorClass := TProvedorDigifred.Create;
-  proBetha:     FProvedorClass := TProvedorBetha.Create;
-  proBetim:     FProvedorClass := TProvedorBetim.Create;
-  proSaatri:    FProvedorClass := TProvedorSaatri.Create;
-  proAbaco:     FProvedorClass := TProvedorAbaco.Create;
+  proGINFES:      FProvedorClass := TProvedorGinfesV3.Create;
+  proPublica:     FProvedorClass := TProvedorPublica.Create;
+  proRJ:          FProvedorClass := TProvedorRJ.Create;
+  proTiplan:      FProvedorClass := TProvedorTiplan.Create;
+  proISSNet:      FProvedorClass := TProvedorISSNet.Create;
+  proWebISS:      FProvedorClass := TProvedorWebISS.Create;
+  proProdemge:    FProvedorClass := TProvedorProdemge.Create;
+  proISSIntel:    FProvedorClass := TProvedorISSIntel.Create;
+  proGovBR:       FProvedorClass := TProvedorGovBR.Create;
+  proRecife:      FProvedorClass := TProvedorRecife.Create;
+  proSimplISS:    FProvedorClass := TProvedorSimplISS.Create;
+  proThema:       FProvedorClass := TProvedorThema.Create;
+  proEquiplano:   FProvedorClass := TProvedorEquiplano.Create;
+  profintelISS:   FProvedorClass := TProvedorfintelISS.Create;
+  proDigifred:    FProvedorClass := TProvedorDigifred.Create;
+  proBetha:       FProvedorClass := TProvedorBetha.Create;
+  proBetim:       FProvedorClass := TProvedorBetim.Create;
+  proSaatri:      FProvedorClass := TProvedorSaatri.Create;
+  proAbaco:       FProvedorClass := TProvedorAbaco.Create;
+  proGoiania:     FProvedorClass := TProvedorGoiania.Create;
+  proIssCuritiba: FProvedorClass := TProvedorIssCuritiba.Create;
  end;
 
  FPrefixo2     := FConfiguracoes.WebServices.Prefixo2;
@@ -1239,7 +1241,7 @@ begin
   then begin
    for i := 0 to TNFSeGerarNFSe(Self).FNotasFiscais.Count-1 do
     begin
-     if (FProvedor in [profintelISS, proSaatri])
+     if (FProvedor in [profintelISS, proSaatri, proGoiania])
       then vNotas := vNotas + '<' + Prefixo4 + 'Rps>' +
                                '<' + Prefixo4 + 'InfDeclaracaoPrestacaoServico' +
                                  RetornarConteudoEntre(TNFSeGerarNFSe(Self).FNotasFiscais.Items[I].XML_Rps_Ass,
@@ -1256,7 +1258,7 @@ begin
   else begin
    for i := 0 to TNFSeGerarNFSe(Self).FNotasFiscais.Count-1 do
     begin
-     if (FProvedor in [profintelISS, proSaatri])
+     if (FProvedor in [profintelISS, proSaatri, proGoiania])
       then vNotas := vNotas + '<' + Prefixo4 + 'Rps>' +
                                '<' + Prefixo4 + 'InfDeclaracaoPrestacaoServico' +
                                  RetornarConteudoEntre(TNFSeGerarNFSe(Self).FNotasFiscais.Items[I].XML_Rps,

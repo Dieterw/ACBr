@@ -80,6 +80,8 @@ contains
   ACBrProvedorFISSLEX in '..\..\..\Fontes\ACBrNFSe\ACBrProvedorfISSLex.pas',
   ACBrProvedorSaatri in '..\..\..\Fontes\ACBrNFSe\ACBrProvedorSaatri.pas',
   pnfsGerarNfseResposta in '..\..\..\Fontes\ACBrNFSe\pnfsGerarNfseResposta.pas',
-  ACBrProvedorAbaco in '..\..\..\Fontes\ACBrNFSe\ACBrProvedorAbaco.pas';
+  ACBrProvedorAbaco in '..\..\..\Fontes\ACBrNFSe\ACBrProvedorAbaco.pas',
+  ACBrProvedorGoiania in '..\..\..\Fontes\ACBrNFSe\ACBrProvedorGoiania.pas',
+  ACBrProvedorIssCuritiba in '..\..\..\Fontes\ACBrNFSe\ACBrProvedorISSCuritiba.pas';
 
 end.

@@ -43,7 +43,6 @@ type
     procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
-    wretorno: Integer;
     procedure GerarRegistro10;
     procedure GerarRegistro11;
     procedure GerarRegistro50;
@@ -55,60 +54,10 @@ type
     procedure GerarRegistro60D;
     procedure GerarRegistro70;
 
-    procedure GerarRegistro10Dll;
-    procedure GerarRegistro11Dll;
-    procedure GerarRegistro50Dll;
-    procedure GerarRegistro51Dll;
-    procedure GerarRegistro53Dll;
-    procedure GerarRegistro54Dll;
-    procedure GerarRegistro60MDll;
-    procedure GerarRegistro60ADll;
-    procedure GerarRegistro70Dll;
-
-
   public
     { Public declarations }
   end;
 
-  //funcoes de inicializacao;
-  function ACBr_SintegraAtivar: Integer; stdcall; external 'ACBr.dll';
-  function ACBr_SintegraDesativar: Integer; stdcall; external 'ACBr.dll';
-
-  //funcoes sintegra
-  function ACBr_SintegraRegistro10(CNPJ,Inscricao,RazaoSocial,Cidade,Estado,
-    Telefone,DataInicial,DataFinal,CodigoConvenio,NaturezaInformacoes,
-    FinalidadeArquivo: PChar): Integer; stdcall; external 'ACBr.dll';
-  function ACBr_SintegraRegistro11(Endereco,Numero,Bairro,Cep,Responsavel,
-    Telefone: PChar): Integer; stdcall; external 'ACBr.dll';
-  function ACBr_SintegraRegistro50(CPFCNPJ,Inscricao,DataDocumento,UF,Modelo,
-    Serie,Numero,Cfop,EmissorDocumento,ValorContabil,BasedeCalculo,Icms,
-    Isentas,Outras,Aliquota,Situacao: PChar): Integer; stdcall; external 'ACBr.dll';
-  function ACBr_SintegraRegistro51(CPFCNPJ,Inscricao,DataDocumento,Estado,
-    Serie,Numero,CFOP,ValorContabil,ValorIpi,ValorOutras,ValorIsentas,
-    Situacao: PChar): Integer; stdcall; external 'ACBr.dll';
-  function ACBr_SintegraRegistro53(CPFCNPJ,Inscricao,DataDocumento,Estado,
-    Modelo,Serie,Numero,CFOP,Emitente,BaseST,IcmsRetido,Despesas,
-    Situacao,CodigoAntecipacao: PChar): Integer; stdcall; external 'ACBr.dll';
-  function ACBr_SintegraRegistro54(CPFCNPJ,Modelo,Serie,Numero,CFOP,CST,
-    NumeroItem,Codigo,Descricao,Quantidade,Valor,ValorDescontoDespesa,
-    BasedeCalculo,BaseST,ValorIpi,Aliquota: PChar): Integer; stdcall; external 'ACBr.dll';
-  function ACBr_SintegraRegistro60M(Emissao,NumSerie,NumOrdem,ModeloDoc,
-    CooInicial,CooFinal,CRZ,CRO,VendaBruta,ValorGT: PChar): Integer; stdcall; external 'ACBr.dll';
-  function ACBr_SintegraRegistro60A(Emissao,NumSerie,Aliquota,
-    Valor: PChar): Integer; stdcall; external 'ACBr.dll';
-  function ACBr_SintegraRegistro70(CPFCNPJ,Inscricao,DataDocumento,UF,
-    Modelo,Serie,SubSerie,Numero,Cfop,ValorContabil,
-    BasedeCalculo,Icms,Isentas,Outras,CifFobOutros,
-    Situacao: PChar): Integer; stdcall; external 'ACBr.dll';
-  function ACBr_SintegraRegistro75(DataInicial,DataFinal,Codigo,NCM,
-    Descricao,Unidade,AliquotaIpi,AliquotaICMS,Reducao,
-    BaseST: PChar): Integer; stdcall; external 'ACBr.dll';
-  function ACBr_SintegraGeraArquivo(Arquivo: PChar;
-    VersaoValidador: Integer): Integer; stdcall; external 'ACBr.dll';
-
-  //funcoes de informacao
-  function ACBr_VersaoDll(var Versao: ShortString): Integer; stdcall;
-    external 'ACBr.dll';
 var
   Form1: TForm1;
 
@@ -141,9 +90,7 @@ except
 end;
 SaveDialog1.InitialDir:=ExtractFilePath(Application.ExeName);
 if ComboBox4.ItemIndex=0 then
-  SaveDialog1.FileName:='ArquivoSintegraVCL'
-else
-  SaveDialog1.FileName:='ArquivoSintegraDLL';
+  SaveDialog1.FileName:='ArquivoSintegraVCL';
 
 if SaveDialog1.Execute then
 begin
@@ -172,40 +119,6 @@ begin
         if CheckListBox1.Checked[7] then
           GerarRegistro70;
         ACBrSintegra.GeraArquivo;
-      end
-      else
-      begin
-        try
-          wretorno:=ACBr_SintegraAtivar;
-          if wretorno=1 then
-          begin
-            GerarRegistro10Dll;
-            GerarRegistro11Dll;
-            //geracao via dll
-            if CheckListBox1.Checked[0] then
-              GerarRegistro50Dll;
-            if CheckListBox1.Checked[1] then
-              GerarRegistro51Dll;
-            if CheckListBox1.Checked[2] then
-              GerarRegistro53Dll;
-            if CheckListBox1.Checked[3] then
-              GerarRegistro54Dll;
-            if CheckListBox1.Checked[4] then
-              GerarRegistro60MDll;
-            if CheckListBox1.Checked[5] then
-              GerarRegistro60ADll;
-            if CheckListBox1.Checked[6] then
-              GerarRegistro70Dll;
-            ACBr_SintegraGeraArquivo(PChar(SaveDialog1.FileName),
-              ComboBox5.ItemIndex);
-          end
-          else
-          begin
-            raise Exception.Create('Erro ao inicializar ACBrSintegra '+IntToStr(wretorno));
-          end;
-        finally
-          ACBr_SintegraDesativar;
-        end;
       end;
       MessageBox(0,'Geração concluída','Informação',mb_iconinformation+mb_taskmodal);
     except
@@ -221,18 +134,11 @@ end;
 end;
 
 procedure TForm1.Button2Click(Sender: TObject);
-var
-  str: Shortstring;
 begin
 if ComboBox4.ItemIndex=0 then
 begin
   ShowMessage(ACBrSintegra.Versao);
 end
-else
-begin
-  ACBr_VersaoDll(str);
-  ShowMessage(str);
-end;
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
@@ -263,17 +169,6 @@ begin
 end;
 end;
 
-procedure TForm1.GerarRegistro10Dll;
-begin
-wretorno:=ACBr_SintegraRegistro10(PChar(Edit2.Text),PChar(Edit3.Text),
-  PChar('EMPRESA DE TESTE'),PChar('CIDADE DE TESTE'),PChar('MG'),
-  PChar('3511111111'),PChar(MaskEdit1.Text),PChar(MaskEdit2.Text),
-  PChar(IntToStr(ComboBox1.ItemIndex + 1)),PChar(IntToStr(ComboBox2.ItemIndex + 1)),
-  PChar(Copy(ComboBox3.Items[ComboBox3.ItemIndex],1,1)));
-if wretorno<>1 then
-  raise Exception.Create('Erro ao gerar registro 10!'+IntToStr(wretorno));
-end;
-
 procedure TForm1.GerarRegistro11;
 begin
 with ACBrSintegra do
@@ -285,14 +180,6 @@ begin
   Registro11.Responsavel:='RESPONSAVEL';
   Registro11.Telefone:='1111111111';
 end;
-end;
-
-procedure TForm1.GerarRegistro11Dll;
-begin
-wretorno:=ACBr_SintegraRegistro11('ENDERECO DA EMPRESA','1','BAIRRO DA EMPRESA',
-  '11.111-111','RESPONSAVEL','1111111111');
-if wretorno<>1 then
-  raise Exception.Create('Erro ao gerar registro 11!'+IntToStr(wretorno));
 end;
 
 procedure TForm1.GerarRegistro50;
@@ -322,31 +209,12 @@ begin
   end;
 end;
 
-procedure TForm1.GerarRegistro50Dll;
-begin
-wretorno:=ACBr_SintegraRegistro50('43.214.055/0042-85','349016872110',
-  PChar(MaskEdit1.Text),'SP','1','1','123','2.102','T','1500,00','1500,00',
-  '270,00','0','0','18','N');
-if wretorno<>1 then
-  raise Exception.Create('Erro ao gerar registro 50!'+IntToStr(wretorno));
-end;
-
 procedure TForm1.GerarRegistro51;
 begin
 
 end;
 
-procedure TForm1.GerarRegistro51Dll;
-begin
-
-end;
-
 procedure TForm1.GerarRegistro53;
-begin
-
-end;
-
-procedure TForm1.GerarRegistro53Dll;
 begin
 
 end;
@@ -384,21 +252,6 @@ wregistro75.Descricao:='PRODUTO DE TESTE';
 wregistro75.Unidade:='UN';
 ACBrSintegra.Registros75.Add(wregistro75);
 
-end;
-
-procedure TForm1.GerarRegistro54Dll;
-begin
-wretorno:=ACBr_SintegraRegistro54('43.214.055/0042-85','1','1','123','2.102',
-  '000','1','0000000000017','PRODUTO DE TESTE','1,000','1500,00','0','1500,00',
-  '0','0','18');
-if wretorno<>1 then
-  raise Exception.Create('Erro ao gerar registro 54!'+IntToStr(wretorno));
-
-//para cada 54 gerado um 75 deve ser informado
-wretorno:=ACBr_SintegraRegistro75(PChar(MaskEdit1.Text),PChar(MaskEdit2.Text),
-  '0000000000017','','PRODUTO DE TESTE','UN','0','18','0','0');
-if wretorno<>1 then
-  raise Exception.Create('Erro ao gerar registro 75!'+IntToStr(wretorno));
 end;
 
 procedure TForm1.GerarRegistro60A;
@@ -447,40 +300,6 @@ wregistro60A.StAliquota:='1800';
 wregistro60A.Valor:=100;
 ACBrSintegra.Registros60A.Add(wregistro60A);
 
-end;
-
-procedure TForm1.GerarRegistro60ADll;
-begin
-wretorno:=ACBr_SintegraRegistro60A(PChar(MaskEdit1.Text),
-  '000000987456','F','500,00');
-if wretorno<>1 then
-  raise Exception.Create('Erro ao gerar registro 60A!'+IntToStr(wretorno));
-
-wretorno:=ACBr_SintegraRegistro60A(PChar(MaskEdit1.Text),
-'000000987456','I','550,00');
-if wretorno<>1 then
-  raise Exception.Create('Erro ao gerar registro 60A!'+IntToStr(wretorno));
-
-wretorno:=ACBr_SintegraRegistro60A(PChar(MaskEdit1.Text),
-'000000987456','1800','1000,35');
-if wretorno<>1 then
-  raise Exception.Create('Erro ao gerar registro 60A!'+IntToStr(wretorno));
-
-//outro ecf
-wretorno:=ACBr_SintegraRegistro60A(PChar(MaskEdit1.Text),
-'000000777777','F','100,00');
-if wretorno<>1 then
-  raise Exception.Create('Erro ao gerar registro 60A!'+IntToStr(wretorno));
-
-wretorno:=ACBr_SintegraRegistro60A(PChar(MaskEdit1.Text),
-'000000777777','I','100,00');
-if wretorno<>1 then
-  raise Exception.Create('Erro ao gerar registro 60A!'+IntToStr(wretorno));
-
-wretorno:=ACBr_SintegraRegistro60A(PChar(MaskEdit1.Text),
-'000000777777','1800','100,00');
-if wretorno<>1 then
-  raise Exception.Create('Erro ao gerar registro 60A!'+IntToStr(wretorno));
 end;
 
 procedure TForm1.GerarRegistro60D;
@@ -564,28 +383,10 @@ ACBrSintegra.Registros60M.Add(wregistro60M);
 
 end;
 
-procedure TForm1.GerarRegistro60MDll;
-begin
-wretorno:=ACBr_SintegraRegistro60M(PChar(MaskEdit1.Text),
-  '000000987456','1','2D','1000','1050','1','1','2050,35','10000,00');
-if wretorno<>1 then
-  raise Exception.Create('Erro ao gerar registro 60M!'+IntToStr(wretorno));
-
-wretorno:=ACBr_SintegraRegistro60M(PChar(MaskEdit1.Text),
-  '000000777777','2','2D','2000','2010','1','1','300,00','15000,00');
-if wretorno<>1 then
-  raise Exception.Create('Erro ao gerar registro 60M!'+IntToStr(wretorno));
-end;
-
 procedure TForm1.GerarRegistro70;
 begin
 
 end;
 
-
-procedure TForm1.GerarRegistro70Dll;
-begin
-
-end;
 
 end.

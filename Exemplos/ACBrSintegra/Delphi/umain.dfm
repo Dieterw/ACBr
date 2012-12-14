@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 263
-  Top = 193
+  Left = 729
+  Top = 230
   Width = 545
   Height = 400
   Caption = 'ACBrSintegra'
@@ -353,8 +353,7 @@ object Form1: TForm1
       TabOrder = 0
       Text = 'VCL'
       Items.Strings = (
-        'VCL'
-        'DLL')
+        'VCL')
     end
     object ComboBox5: TComboBox
       Left = 157

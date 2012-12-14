@@ -635,12 +635,25 @@ begin
      begin
         with RegD001.RegistroD100.Items[intFor] do
         begin
-          case IND_FRT of
-            tfPorContaTerceiros:    strIND_FRT := '0';
-            tfPorContaEmitente:     strIND_FRT := '1';
-            tfPorContaDestinatario: strIND_FRT := '2';
-            tfSemCobrancaFrete:     strIND_FRT := '9';
-            tfNenhum:               strIND_FRT := '';
+          if DT_INI < EncodeDate(2011,07,01) then
+          begin
+             case IND_FRT of
+               tfPorContaTerceiros:    strIND_FRT := '0';
+               tfPorContaEmitente:     strIND_FRT := '1';
+               tfPorContaDestinatario: strIND_FRT := '2';
+               tfSemCobrancaFrete:     strIND_FRT := '9';
+               tfNenhum:               strIND_FRT := '';
+             end
+          end
+          else
+          begin
+             case IND_FRT of
+               tfPorContaTerceiros:    strIND_FRT := '2';
+               tfPorContaEmitente:     strIND_FRT := '0';
+               tfPorContaDestinatario: strIND_FRT := '1';
+               tfSemCobrancaFrete:     strIND_FRT := '9';
+               tfNenhum:               strIND_FRT := '';
+             end;
           end;
           case COD_SIT of
             sdRegular:               strCOD_SIT := '00';

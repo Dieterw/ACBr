@@ -207,10 +207,10 @@ begin
            Cmd.Resposta := FormatDateTime('dd/mm/yy hh:nn:ss', DataHoraSB )
 
         else if Cmd.Metodo = 'decimaisqtd' then
-           Cmd.Resposta := FloatToStr( DecimaisQtd )
+           Cmd.Resposta := IntToStr( DecimaisQtd )
 
         else if Cmd.Metodo = 'decimaispreco' then
-           Cmd.Resposta := FloatToStr( DecimaisPreco )
+           Cmd.Resposta := IntToStr( DecimaisPreco )
 
         else if Cmd.Metodo = 'submodeloecf' then
            Cmd.Resposta := SubModeloECF
@@ -226,6 +226,9 @@ begin
 
         else if Cmd.Metodo = 'grandetotal' then
            Cmd.Resposta := FloatToStr( GrandeTotal )
+
+        else if Cmd.Metodo = 'totaltroco' then
+           Cmd.Resposta := FloatToStr( TotalTroco )
 
         else if Cmd.Metodo = 'totalcancelamentos' then
            Cmd.Resposta := FloatToStr( TotalCancelamentos )
@@ -265,6 +268,15 @@ begin
 
         else if Cmd.Metodo = 'totalnaofiscal' then
            Cmd.Resposta := FloatToStr( TotalNaoFiscal )
+
+        else if Cmd.Metodo = 'totalcancelamentosopnf' then
+           Cmd.Resposta := FloatToStr( TotalCancelamentosOPNF )
+
+        else if Cmd.Metodo = 'totaldescontosopnf' then
+           Cmd.Resposta := FloatToStr( TotalDescontosOPNF )
+
+        else if Cmd.Metodo = 'totalacrescimosopnf' then
+           Cmd.Resposta := FloatToStr( TotalAcrescimosOPNF )
 
         else if Cmd.Metodo = 'numultitem' then
            Cmd.Resposta := IntToStr( NumUltItem )
@@ -550,6 +562,9 @@ begin
         else if Cmd.Metodo = 'reducaoz' then
            ReducaoZ( StringToDateTimeDef(Cmd.Params(0),0) )
 
+        else if Cmd.Metodo = 'tipoultimodocumento' then
+           Cmd.Resposta := GetEnumName(TypeInfo(TACBrECFTipoDocumento),Integer(TipoUltimoDocumento))
+
         else if Cmd.Metodo = 'poucopapel' then
            Cmd.Resposta := BoolToStr( PoucoPapel, true )
 
@@ -570,6 +585,9 @@ begin
 
         else if Cmd.Metodo = 'termica' then
            Cmd.Resposta := BoolToStr( Termica, true )
+
+        else if Cmd.Metodo = 'identificaconsumidorrodape' then
+           Cmd.Resposta := BoolToStr( IdentificaConsumidorRodape, True)
 
         else if Cmd.Metodo = 'estado' then
            Cmd.Resposta := GetEnumName(TypeInfo(TACBrECFEstado),Integer(Estado))
@@ -671,6 +689,9 @@ begin
               Linhas.Free ;
            end ;
          end
+
+        else if Cmd.Metodo = 'estornaccd' then
+             Cmd.Resposta := IntToStr(EstornaCCD(StrToBoolDef(Trim(Cmd.Params(0)),true))) {Estorna todos CCD}
 
         else if Cmd.Metodo = 'fecharelatorio' then
            FechaRelatorio

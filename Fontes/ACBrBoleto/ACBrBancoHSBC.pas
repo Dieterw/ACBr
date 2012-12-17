@@ -92,14 +92,17 @@ end;
 function TACBrBancoHSBC.CalcularTamMaximoNossoNumero(
   const Carteira: String): Integer;
 begin
-   Result := 16;
+   Result := fpTamanhoMaximoNossoNum;
 
    if (trim(Carteira) = '') then
       raise Exception.Create(ACBrStr('Banco HSBC requer que a carteira seja '+
                                      'informada antes do Nosso Número.'));
 
    if (trim(Carteira) = 'CSB') or (trim(Carteira) = '1') then
-       Result:= 5;
+   begin
+    Result := 5;
+    fpTamanhoMaximoNossoNum := 5;
+   end;
 end;
 
 constructor TACBrBancoHSBC.create(AOwner: TACBrBanco);
@@ -207,7 +210,7 @@ begin
   else if (ACBrTitulo.Carteira = 'CNR')then
      ACarteira := '2'
   else if (ACBrTitulo.Carteira <> '1') and  (ACBrTitulo.Carteira <> '2') then
-     raise Exception.Create( ACBrStr('Carteira Inválida.'+sLineBreak+'Utilize "CSB","1", "CNR" ou "2"') ) ;
+     raise Exception.Create( ACBrStr('Carteira Inválida.'+sLineBreak+'Utilize "CSB", "CNR", "1" ou "2"') ) ;
 
   ANossoNumero := MontarCampoNossoNumero(ACBrTitulo);   // precisa passar nosso numero + digito
 
@@ -600,7 +603,7 @@ Begin
       Carteira := Copy(Linha, 108, 1);
       If Trim(Copy(ARetorno[0], 12, 15)) <> 'COBRANCA CNR' Then
         NossoNumero := Copy(Linha, 127, 11)
-      Else
+      Else // 3 ultimos digitos são digitos verificadores
         NossoNumero := Copy(Linha, 63, 16);
 
       ValorDespesaCobranca := StrToFloatDef(Copy(Linha, 176, 13), 0) / 100;

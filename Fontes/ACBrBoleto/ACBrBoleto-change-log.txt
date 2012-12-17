@@ -47,6 +47,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+-- ACBrBancoHSBC -- 
+[-] Acertos de campos que estavam lendo errado e alguns tratamentos do arquivo
+    de retorno (regys silveira)
+[-] Acertos para remoção de alguns warnings.
+
 
 -- ACBrBoletoFC --
 [+] Adicionado novo tipo de Layout: lPadraoEntrega, para substituir a

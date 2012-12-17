@@ -219,7 +219,7 @@ procedure TACBrBancoBRB.GerarRegistroTransacao400(ACBrTitulo: TACBrTitulo; aReme
 var
   TipoPessoa: Char;
   TipoDocumento, TipoJuros, TipoDesconto, lDataDesconto, lNossoNumero: string;
-  Instrucao1, Instrucao2, Prazo1, Prazo2: string;
+  Prazo1, Prazo2: string;
   wLinha: String;
 begin
   with ACBrTitulo do

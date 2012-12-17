@@ -267,7 +267,7 @@ type
 
   TACBrBancoClass = class
   private
-     function GetNumero: Integer;
+     //function GetNumero: Integer;
      procedure ErroAbstract( NomeProcedure : String ) ;
   protected
     fpDigito: Integer;
@@ -329,8 +329,8 @@ type
   private
     fACBrBoleto        : TACBrBoleto;
     fNumeroBanco       : Integer;
-    fOrientacoesBanco  : TStringList;
-    FTamanhoMaximoNossoNum: Integer;
+    //fOrientacoesBanco  : TStringList;
+    //FTamanhoMaximoNossoNum: Integer;
     fTipoCobranca      : TACBrTipoCobranca;
     fBancoClass        : TACBrBancoClass;
     function GetNome   : String;
@@ -546,7 +546,7 @@ type
     procedure SetNossoNumero ( const AValue: String ) ;
     procedure SetParcela ( const AValue: Integer ) ;
     procedure SetTotalParcelas ( const AValue: Integer );
-    procedure SetTipoOcorrencia ( const AValue: TACBrTipoOcorrencia ) ;
+    //procedure SetTipoOcorrencia ( const AValue: TACBrTipoOcorrencia ) ;
    public
      constructor Create(ACBrBoleto:TACBrBoleto);
      destructor Destroy; override;
@@ -632,12 +632,12 @@ TACBrBoleto = class( TACBrComponent )
     fDataCreditoLanc : TDateTime; {Data de crédito dos lançamentos do arquivo retorno} //Implementado por Carlos Fitl - 27/12/2010
     fLeCedenteRetorno: boolean;
     function GetAbout: String;
-    function GetDirArqRemessa : String ;
-    function GetDirArqRetorno : String ;
+    //function GetDirArqRemessa : String ;
+    //function GetDirArqRetorno : String ;
     procedure SetAbout(const AValue: String);
     procedure SetACBrBoletoFC(const Value: TACBrBoletoFCClass);
-    procedure SetNomeArqRemessa(const AValue: String);
-    procedure SetNomeArqRetorno(const AValue: String);
+    //procedure SetNomeArqRemessa(const AValue: String);
+    //procedure SetNomeArqRetorno(const AValue: String);
   protected
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
   public
@@ -828,8 +828,8 @@ begin
 end;
 
 procedure TACBrCedente.SetConta(const AValue: String);
-var  aConta: Integer;
-  tamconta: LongInt;
+var
+  aConta: Integer;
 begin
   if fConta = AValue then
      exit;
@@ -840,8 +840,6 @@ begin
 
   if aConta = 0 then
      exit;
-
-  tamconta:=ACBrBoleto.Banco.TamanhoConta;
 
   fConta:= IntToStrZero(aConta, ACBrBoleto.Banco.TamanhoConta );
 end;
@@ -947,18 +945,18 @@ begin
                              'o Total de Parcelas do Carnê') );
    fTotalParcelas := AValue;
 end;
-
+{
 procedure TACBrTitulo.SetTipoOcorrencia ( const AValue: TACBrTipoOcorrencia ) ;
 begin
-   {with ACBrBoleto.Banco do
-   begin
-      if AValue in OcorrenciasValidas then}
+   //with ACBrBoleto.Banco do
+   //begin
+   //   if AValue in OcorrenciasValidas then
          fOcorrenciaOriginal.Tipo := AValue
-    {  else
-         raise Exception.Create(ACBrStr('Ocorrência inválida para o banco '+ Nome));
-   end;}
+   //   else
+   //      raise Exception.Create(ACBrStr('Ocorrência inválida para o banco '+ Nome));
+   //end;
 end;
-
+}
 { TACBrTitulo }
 
 constructor TACBrTitulo.Create(ACBrBoleto:TACBrBoleto);
@@ -1046,13 +1044,13 @@ function TACBrBoleto.GetAbout: String;
 begin
   Result := 'ACBrBoleto Ver: '+CACBrBoleto_Versao;
 end;
-
+{
 function TACBrBoleto.GetDirArqRemessa : String ;
 begin
   if fDirArqRemessa = '' then
      if not (csDesigning in Self.ComponentState) then
         fDirArqRemessa := ExtractFilePath(
-        {$IFNDEF CONSOLE} Application.ExeName {$ELSE} ParamStr(0) {$ENDIF}
+        //$IFNDEF CONSOLE// Application.ExeName //$ELSE// ParamStr(0) //$ENDIF//
                                       ) + 'remessa' ;
 
   Result := fDirArqRemessa ;
@@ -1063,17 +1061,17 @@ begin
   if fDirArqRetorno = '' then
      if not (csDesigning in Self.ComponentState) then
         fDirArqRetorno := ExtractFilePath(
-        {$IFNDEF CONSOLE} Application.ExeName {$ELSE} ParamStr(0) {$ENDIF}
+        //$IFNDEF CONSOLE// Application.ExeName //$ELSE// ParamStr(0) //$ENDIF//
                                       ) + 'retorno' ;
 
   Result := fDirArqRetorno ;
 end;
-
+}
 procedure TACBrBoleto.SetAbout(const AValue: String);
 begin
   {}
 end;
-
+{
 procedure TACBrBoleto.SetNomeArqRemessa(const AValue: String);
 var
   APath, AName : AnsiString;
@@ -1101,7 +1099,7 @@ begin
   if AName <> '' then
      fNomeArqRetorno := AName;
 end ;
-
+}
 procedure TACBrBoleto.Notification ( AComponent: TComponent;
    Operation: TOperation ) ;
 begin
@@ -1796,12 +1794,12 @@ function TACBrBancoClass.CodMotivoRejeicaoToDescricao(
 begin
   Result := '';
 end ;
-
+{
  function TACBrBancoClass.GetNumero: Integer;
 begin
    Result:= ACBrBanco.Numero;
 end;
-
+}
 procedure TACBrBancoClass.ErroAbstract(NomeProcedure: String);
 begin
    raise Exception.Create(Format(ACBrStr('Função %s não implementada '+

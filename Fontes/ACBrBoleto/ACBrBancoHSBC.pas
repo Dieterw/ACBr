@@ -48,10 +48,11 @@ type
   TACBrBancoHSBC = class(TACBrBancoClass)
   private
     function DataToJuliano(const AData: TDateTime): String;
-  protected
-    function CalcularTamMaximoNossoNumero(const Carteira : String): Integer; override;
   public
     Constructor create(AOwner: TACBrBanco);
+
+    function CalcularTamMaximoNossoNumero(const Carteira : String): Integer; override;
+
     function CalcularDigitoVerificador(const ACBrTitulo:TACBrTitulo): String; override;
     function MontarCodigoBarras(const ACBrTitulo : TACBrTitulo): String; override;
     function MontarCampoNossoNumero(const ACBrTitulo :TACBrTitulo): String; override;
@@ -91,7 +92,7 @@ end;
 function TACBrBancoHSBC.CalcularTamMaximoNossoNumero(
   const Carteira: String): Integer;
 begin
-   Result := 13;
+   Result := 16;
 
    if (trim(Carteira) = '') then
       raise Exception.Create(ACBrStr('Banco HSBC requer que a carteira seja '+
@@ -107,7 +108,7 @@ begin
    fpDigito                := 9;
    fpNome                  := 'HSBC';
    fpNumero                := 399;
-   fpTamanhoMaximoNossoNum := 0;
+   fpTamanhoMaximoNossoNum := 16;
    fpTamanhoAgencia        := 4;
    fpTamanhoConta          := 7;
    fpTamanhoCarteira       := 3;
@@ -424,18 +425,18 @@ Procedure TACBrBancoHSBC.LerRetorno400 ( ARetorno: TStringList );
 var
   Titulo : TACBrTitulo;
   ContLinha, CodOcorrencia, CodMotivo, i, MotivoLinha : Integer;
-  CodMotivo_19, rAgencia, rConta, rDigitoConta, Linha, rCedente, rCNPJCPF: String;
+  CodMotivo_19, rAgencia, rConta, rDigitoConta, Linha, rCedente, rCNPJCPF,
+  rCodigoCedente: String;
 Begin
-  ContLinha := 0;
-
   If StrToIntDef(copy(ARetorno.Strings[0], 77, 3), -1) <> Numero Then
     Raise Exception.Create(ACBrStr(ACBrBanco.ACBrBoleto.NomeArqRetorno +
       'não é um arquivo de retorno do ' + Nome));
 
-  rCedente := trim(Copy(ARetorno[0], 47, 30));
-  rAgencia := trim(Copy(ARetorno[0], 28, 4));
-  rConta := trim(Copy(ARetorno[0], 38, 6));
-  rDigitoConta := Copy(ARetorno[0], 44, 1);
+  rCedente       := trim(Copy(ARetorno[0], 47, 30));
+  rCodigoCedente := Copy(ARetorno[0], 109, 10);
+  rAgencia       := trim(Copy(ARetorno[0], 28, 4));
+  rConta         := trim(Copy(ARetorno[0], 38, 6));
+  rDigitoConta   := Copy(ARetorno[0], 44, 1);
 
   ACBrBanco.ACBrBoleto.NumeroArquivo := StrToIntDef(Copy(ARetorno[0], 389, 5), 0);
 
@@ -452,17 +453,38 @@ Begin
     11: rCNPJCPF := Copy(ARetorno[1], 7, 11);
     14: rCNPJCPF := Copy(ARetorno[1], 4, 14);
   Else
-    rCNPJCPF := Copy(ARetorno[1], 4, 14);
+    rCNPJCPF := '';
   End;
 
   With ACBrBanco.ACBrBoleto Do
   Begin
-    If (Not LeCedenteRetorno) And (rCNPJCPF <> OnlyNumber(Cedente.CNPJCPF)) Then
-      Raise Exception.Create(ACBrStr('CNPJ\CPF do arquivo inválido'));
+    // alguns arquivos não estão vindo a informação
+    if rCNPJCPF <> '' then
+    begin
+      If (Not LeCedenteRetorno) And (rCNPJCPF <> OnlyNumber(Cedente.CNPJCPF)) Then
+        Raise Exception.Create(ACBrStr('CNPJ\CPF do arquivo inválido'));
+    end;
 
-    If (Not LeCedenteRetorno) And ((rAgencia <> OnlyNumber(Cedente.Agencia)) Or
-      (rConta <> OnlyNumber(Cedente.Conta))) Then
-      Raise Exception.Create(ACBrStr('Agencia\Conta do arquivo inválido'));
+    If Not(LeCedenteRetorno) And (StrToIntDef(rCodigoCedente, -1) <> StrToIntDef(OnlyNumber(Cedente.CodigoCedente), 0)) Then
+    begin
+      Raise Exception.Create(ACBrStr('Cedente do arquivo inválido' + #13 + #13 +
+                                      'Informado = ' + OnlyNumber(Cedente.CodigoCedente) + #13 +
+                                      'Esperado = '+ rCodigoCedente));
+    end;
+
+    If Not(LeCedenteRetorno) And (rAgencia <> OnlyNumber(Cedente.Agencia)) then
+    begin
+      Raise Exception.Create( ACBrStr('Agencia do arquivo inválido' + #13 + #13 +
+                                       'Informado = ' + OnlyNumber(Cedente.Agencia) + #13 +
+                                       'Esperado = '+ rAgencia));
+    end;
+
+    If (Not LeCedenteRetorno) And (StrToIntDef(rConta, -1) <> StrToIntDef(Cedente.Conta, 0)) then
+    begin
+      Raise Exception.Create(ACBrStr('Conta do arquivo inválido' + #13 + #13 +
+                                     'Informado = ' + IntToStr(StrToIntDef(Cedente.Conta, 0)) + #13 +
+                                     'Esperado = '+ IntToStr(StrToIntDef(rConta, 0))));
+    end;
 
     Cedente.Nome := rCedente;
     If Trim(Copy(ARetorno[0], 12, 15)) <> 'COBRANCA CNR' Then
@@ -575,12 +597,12 @@ Begin
       ValorOutrosCreditos := 0;
       ValorRecebido := StrToFloatDef(Copy(Linha, 254, 13), 0) / 100;
 
+      Carteira := Copy(Linha, 108, 1);
       If Trim(Copy(ARetorno[0], 12, 15)) <> 'COBRANCA CNR' Then
         NossoNumero := Copy(Linha, 127, 11)
-      Else //Verificar se é melhor copiar com os 3 ultimos digitos que são digitos verificadores ou não
-        NossoNumero := Copy(Linha, 63, 13);
+      Else
+        NossoNumero := Copy(Linha, 63, 16);
 
-      Carteira := Copy(Linha, 108, 1);
       ValorDespesaCobranca := StrToFloatDef(Copy(Linha, 176, 13), 0) / 100;
       ValorOutrasDespesas := 0;
 

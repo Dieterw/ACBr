@@ -1802,7 +1802,7 @@ begin
   if FCTe.Rodo.moto.Count>0
    then begin
     qrlNomeMotorista.Caption := FCTe.Rodo.moto.Items[0].xNome;
-    qrlCPFMotorista.Caption  := DFeUtil.FormatarCNPJ(FCTe.Rodo.moto.Items[0].CPF);
+    qrlCPFMotorista.Caption  := DFeUtil.FormatarCPF(FCTe.Rodo.moto.Items[0].CPF);
    end;
 
   for i := 0 to FCTe.Rodo.Lacres.Count - 1 do
@@ -1854,7 +1854,7 @@ begin
   if FCTe.Rodo.moto.Count>0
    then begin
     qrlNomeMotorista2.Caption := FCTe.Rodo.moto.Items[0].xNome;
-    qrlCPFMotorista2.Caption  := DFeUtil.FormatarCNPJ(FCTe.Rodo.moto.Items[0].CPF);
+    qrlCPFMotorista2.Caption  := DFeUtil.FormatarCPF(FCTe.Rodo.moto.Items[0].CPF);
    end;
 
   for i := 0 to FCTe.Rodo.Lacres.Count - 1 do

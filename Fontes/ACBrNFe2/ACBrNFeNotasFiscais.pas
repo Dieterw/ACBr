@@ -136,7 +136,7 @@ type
   TSendMailThread = class(TThread)
   private
     FException : Exception;
-    FOwner: NotaFiscal;
+    //FOwner: NotaFiscal;
     procedure DoHandleException;
   public
     OcorreramErros: Boolean;
@@ -653,9 +653,8 @@ end;
 
 procedure TSendMailThread.DoHandleException;
 begin
-  TACBrNFe(TNotasFiscais(FOwner.GetOwner).ACBrNFe).SetStatus( stIdle );
-
-  FOwner.Alertas := FException.Message;
+  //TACBrNFe(TNotasFiscais(FOwner.GetOwner).ACBrNFe).SetStatus( stIdle );
+  //FOwner.Alertas := FException.Message;
 
   if FException is Exception then
     Application.ShowException(FException)

@@ -35,7 +35,8 @@ uses
     ACBrProvedorRecife, ACBrProvedorSimplISS, ACBrProvedorThema,
     ACBrProvedorEquiplano, ACBrProvedorfintelISS, ACBrProvedorDigifred,
     ACBrProvedorBetha, ACBrProvedorBetim, ACBrProvedorSaatri,
-    ACBrProvedorAbaco, ACBrProvedorGoiania, ACBrProvedorIssCuritiba;
+    ACBrProvedorAbaco, ACBrProvedorGoiania, ACBrProvedorIssCuritiba,
+    ACBrProvedorBHISS;
 
 type
 
@@ -1106,6 +1107,7 @@ begin
   proAbaco:       FProvedorClass := TProvedorAbaco.Create;
   proGoiania:     FProvedorClass := TProvedorGoiania.Create;
   proIssCuritiba: FProvedorClass := TProvedorIssCuritiba.Create;
+  proBHISS:       FProvedorClass := TProvedorBHISS.Create;
  end;
 
  FPrefixo2     := FConfiguracoes.WebServices.Prefixo2;

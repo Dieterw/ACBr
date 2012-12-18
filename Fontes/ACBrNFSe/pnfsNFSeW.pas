@@ -127,7 +127,7 @@ begin
  Gerador.ArquivoFormatoXML := '';
  Gerador.Prefixo           := FPrefixo4;
 
- if (FProvedor in [proProdemge, profintelISS, proGovBR, proSaatri, ProGoiania])
+ if (FProvedor in [proProdemge, proBHISS, profintelISS, proGovBR, proSaatri, ProGoiania])
   then FDefTipos := FServicoEnviar;
 
  if (RightStr(FURL, 1) <> '/') and (FDefTipos <> '')
@@ -456,6 +456,7 @@ begin
   proGinfes,
   proThema,
   proProdemge,
+  proBHISS,
   proBetim,
   proWebISS,
   proGovBR,

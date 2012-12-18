@@ -5515,7 +5515,7 @@ end;
 procedure TACBrECF.PafMF_GerarCAT52(const DataInicial, DataFinal: TDateTime;
   const DirArquivos: String);
 begin
-  fsECF.PafMF_GerarCAT52(DataInicial, DataFinal, DirArquivos);
+  fsECF.PafMF_GerarCAT52(DataInicial, DataFinal, IncludeTrailingPathDelimiter(DirArquivos));
 end;
 
 procedure TACBrECF.PafMF_LMFC_Cotepe1704(const DataInicial, DataFinal: TDateTime;

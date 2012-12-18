@@ -353,6 +353,7 @@ object frmDemo_ACBrNFSe: TfrmDemo_ACBrNFSe
               'Jau/3525300/SP'
               'Joacaba/4209003/SC'
               'Joao Pessoa/2507507/PB'
+              'Juiz de Fora/3136702/MG'
               'Jundiai/3525904/SP'
               'Lages/4209300/SC'
               'Lagoa Santa/3137601/MG'

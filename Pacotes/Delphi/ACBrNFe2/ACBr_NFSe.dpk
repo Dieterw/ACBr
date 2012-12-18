@@ -82,6 +82,7 @@ contains
   pnfsGerarNfseResposta in '..\..\..\Fontes\ACBrNFSe\pnfsGerarNfseResposta.pas',
   ACBrProvedorAbaco in '..\..\..\Fontes\ACBrNFSe\ACBrProvedorAbaco.pas',
   ACBrProvedorGoiania in '..\..\..\Fontes\ACBrNFSe\ACBrProvedorGoiania.pas',
-  ACBrProvedorIssCuritiba in '..\..\..\Fontes\ACBrNFSe\ACBrProvedorISSCuritiba.pas';
+  ACBrProvedorIssCuritiba in '..\..\..\Fontes\ACBrNFSe\ACBrProvedorISSCuritiba.pas',
+  ACBrProvedorBHISS in '..\..\..\Fontes\ACBrNFSe\ACBrProvedorBHISS.pas';
 
 end.

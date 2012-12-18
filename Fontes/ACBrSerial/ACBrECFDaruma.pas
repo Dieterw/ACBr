@@ -4996,14 +4996,18 @@ begin
                                          'Cod.: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp) )) ;
     end;
 
-    if not FileExists( PathDest ) then
-      raise EACBrECFERRO.Create( ACBrStr( 'Erro na execução de xrGerarRelatorio_ECF_Daruma.'+sLineBreak+
-                                       'Cod: '+ IntToStr(Resp) + ' ' + GetDescricaoErroDLL(Resp) + sLineBreak +
-                                       'Modo: ' + IfThen(OldAtivo, 'On-Line', 'Off-Line') + sLineBreak +
-                                       'Arquivo: "'+ NomeArq +'" não gerado' )) ;
+    // tratar por a NFP gera os arquivos com nome no formato conforme a legislação
+    if not(Finalidade in [finNFP, finNFPTDM]) then
+    begin
+      if not FileExists( PathDest ) then
+        raise EACBrECFERRO.Create( ACBrStr( 'Erro na execução de xrGerarRelatorio_ECF_Daruma.'+sLineBreak+
+                                         'Cod: '+ IntToStr(Resp) + ' ' + GetDescricaoErroDLL(Resp) + sLineBreak +
+                                         'Modo: ' + IfThen(OldAtivo, 'On-Line', 'Off-Line') + sLineBreak +
+                                         'Arquivo: "'+ NomeArq +'" não gerado' )) ;
 
-    if AnsiUpperCase(PathDest) <> AnsiUpperCase(NomeArquivo) then
-      CopyFileTo(PathDest, NomeArquivo) ;
+      if AnsiUpperCase(PathDest) <> AnsiUpperCase(NomeArquivo) then
+        CopyFileTo(PathDest, NomeArquivo) ;
+    end;
   finally
     UnloadDLLFunctions;
     Ativo := OldAtivo;

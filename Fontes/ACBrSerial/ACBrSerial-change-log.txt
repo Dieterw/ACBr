@@ -97,6 +97,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 18/12/2012
+-- ACBrECFDaruma --
+[-] Acerto na geração de arquivos da NFP. (por: Regys Silveira)
+
 Data: 29/11/2012
 -- ACBrECFDaruma --
 [-] Acerto para retornar corretamente o número do CCF quando efetuar o 

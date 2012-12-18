@@ -134,7 +134,7 @@ type
   TSendMailThread = class(TThread)
   private
     FException : Exception;
-    FOwner: Conhecimento;
+    // FOwner: Conhecimento;
     procedure DoHandleException;
   public
     OcorreramErros: Boolean;
@@ -661,9 +661,9 @@ end;
 
 procedure TSendMailThread.DoHandleException;
 begin
-  TACBrCTe(TConhecimentos(FOwner.GetOwner).ACBrCTe).SetStatus( stCTeIdle );
+  // TACBrCTe(TConhecimentos(FOwner.GetOwner).ACBrCTe).SetStatus( stCTeIdle );
 
-  FOwner.Alertas := FException.Message;
+  // FOwner.Alertas := FException.Message;
 
   if FException is Exception then
     Application.ShowException(FException)

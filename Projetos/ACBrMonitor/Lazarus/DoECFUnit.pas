@@ -612,6 +612,9 @@ begin
         else if Cmd.Metodo = 'chequepronto' then
            Cmd.Resposta := BoolToStr( ChequePronto, true )
 
+        else if Cmd.Metodo = 'leituracmc7' then
+           Cmd.Resposta := LeituraCMC7
+
         else if Cmd.Metodo = 'mudahorarioverao' then
            if Cmd.Params(0) <> '' then
               MudaHorarioVerao( StrToBool(Trim(Cmd.Params(0))) )

@@ -1905,15 +1905,15 @@ begin
       except
       end;
 
-
       EnviaComando(FS + 'F' + #211, 15) ;  // Cancela Cupom
 
       RespostasComando.Clear;
       RespostasComando.AddField('COO', Copy(fpRespostaComando, 10, 6));
       RespostasComando.AddField('CCF', Copy(fpRespostaComando, 16, 6));
       RespostasComando.AddField('ValorCancelado', Copy(fpRespostaComando, 22, 12));
-			
-			fsNumCupom := RespostasComando['COO'].AsString;
+
+      // Cancelamento retorna dados do Cupom Fiscal Cancelado e nao do Cancelamento
+      fsNumCupom := '' ; // RespostasComando['COO'].AsString;
       fsNumCCF   := RespostasComando['CCF'].AsString;
     end
     else

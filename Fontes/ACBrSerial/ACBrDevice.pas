@@ -139,6 +139,9 @@ TACBrAlinhamento = (alDireita, alEsquerda, alCentro);
 
 TACBrECFCHQEstado = (chqIdle, chqPosicione, chqImprimindo, chqFimImpressao, chqRetire, chqAutenticacao);
 
+TACBrDeviceHookEnviaString = procedure(const cmd: AnsiString) of object;
+TACBrDeviceHookLeString = procedure(const NumBytes, ATimeOut: Integer; var Retorno: AnsiString) of object;
+
 { ACBrDevice é um componente apenas para usarmos o recurso de AutoExpand do
   ObjectInspector para SubComponentes, poderia ser uma Classe }
 
@@ -147,6 +150,8 @@ TACBrECFCHQEstado = (chqIdle, chqPosicione, chqImprimindo, chqFimImpressao, chqR
 TACBrDevice = class( TComponent )
   private
     fsHardFlow: Boolean;
+    fsHookEnviaString: TACBrDeviceHookEnviaString;
+    fsHookLeString: TACBrDeviceHookLeString;
     fsSoftFlow: Boolean;
     fsParity: Char ;
     fsData : Integer;
@@ -204,11 +209,14 @@ TACBrDevice = class( TComponent )
     procedure Ativar ;
     procedure Desativar ;
     Procedure EnviaString( const AString : AnsiString ) ;
+    Function LeString( ATimeOut: Integer=0; NumBytes: Integer=0 ): String;
+    Function LeByte( ATimeOut: Integer=0 ): Byte;
 
     Procedure ImprimePos(const Linha, Coluna : Integer; const AString: AnsiString) ;
     Procedure Eject ;
 
     Procedure SetDefaultValues ;
+
     Function IsSerialPort : Boolean ;
     Function IsTXTFilePort: Boolean ;
     Function IsDLLPort: Boolean ;
@@ -242,6 +250,10 @@ TACBrDevice = class( TComponent )
         write fProcessMessages default True ;
 
      property OnStatus : THookSerialStatus read GetOnStatus write SetOnStatus ;
+     property HookEnviaString : TACBrDeviceHookEnviaString read fsHookEnviaString
+        write fsHookEnviaString;
+     property HookLeString : TACBrDeviceHookLeString read fsHookLeString
+        write fsHookLeString;
 end ;
 
 { Essa classe é usada pela função EnviaStrThread para detectar se os Dados
@@ -280,6 +292,9 @@ begin
   fsSendBytesInterval := 0 ;
 
   fProcessMessages := True ;
+
+  fsHookEnviaString := nil;
+  fsHookLeString    := nil;
 
   SetDefaultValues ;
 end;
@@ -749,7 +764,13 @@ begin
   if IsSerialPort then
      EnviaStringSerial( AString )
 
-  else if not IsDLLPort then
+  else if IsDLLPort then
+   begin
+     if Assigned( HookEnviaString ) then
+        HookEnviaString( AString );
+   end
+
+  else
    begin
      {$IFNDEF ThreadEnviaLPT}
        EnviaStringArquivo( AString )
@@ -757,6 +778,57 @@ begin
        EnviaStrThread( AString )
      {$ENDIF} ;
    end ;
+end;
+
+function TACBrDevice.LeString(ATimeOut: Integer; NumBytes: Integer): String;
+var
+   Buffer: AnsiString;
+   AChar: AnsiChar;
+   Fim: TDateTime;
+begin
+  Result := '';
+
+  if ATimeOut = 0 then
+     ATimeOut := Self.TimeOut;
+
+  if IsSerialPort then
+   begin
+     if NumBytes = 0 then
+        Result := Serial.RecvPacket( ATimeOut )
+     else
+        Result := Serial.RecvBufferStr( NumBytes, ATimeOut) ;
+   end
+
+  else if IsDLLPort and Assigned( HookLeString ) then
+   begin
+     Fim := IncMilliSecond( Now, ATimeOut );
+     repeat
+        Buffer := '';
+        HookLeString( max(NumBytes,1), ATimeOut, Buffer );
+        Result := Result + Buffer;
+     until (now > Fim) or ( (NumBytes > 0) and (Length(Result) >= NumBytes) );
+   end;
+end;
+
+function TACBrDevice.LeByte(ATimeOut: Integer): Byte;
+Var
+  Buffer: AnsiString;
+begin
+  Result := 0;
+
+  if ATimeOut = 0 then
+     ATimeOut := Self.TimeOut;
+
+  if IsSerialPort then
+     Result := Serial.RecvByte( ATimeOut )
+
+  else if IsDLLPort and Assigned( HookLeString ) then
+   begin
+     Buffer := '';
+     HookLeString( 1, ATimeOut, Buffer );
+     if Length(Buffer) > 0 then
+        Result := Ord( Buffer[1] );
+   end;
 end;
 
 procedure TACBrDevice.EnviaStringSerial(const AString : AnsiString) ;

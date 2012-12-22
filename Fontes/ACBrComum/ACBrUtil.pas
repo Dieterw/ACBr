@@ -100,7 +100,7 @@ interface
 Uses SysUtils, Math, Classes, ACBrConsts
     {$IFDEF COMPILER6_UP} ,StrUtils, DateUtils {$ELSE} ,ACBrD5, FileCtrl {$ENDIF}
     {$IFDEF FPC}
-      ,dynlibs
+      ,dynlibs, LazUTF8
       {$IFDEF USE_LConvEncoding} ,LConvEncoding {$ENDIF}
       {$IFDEF USE_LCLIntf} ,LCLIntf {$ENDIF}
     {$ENDIF}
@@ -283,7 +283,11 @@ begin
  {$IFDEF USE_LConvEncoding}
    Result := CP1252ToUTF8( AString ) ;
  {$ELSE}
-   Result := AnsiToUtf8( AString ) ;
+   {$IFDEF FPC}
+     Result := SysToUTF8( AString ) ;
+   {$ELSE}
+     Result := AnsiToUtf8( AString ) ;
+   {$ENDIF}
  {$ENDIF}
 {$ELSE}
   Result := AString

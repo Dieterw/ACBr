@@ -315,9 +315,10 @@ TACBrECFBematech = class( TACBrECFClass )
     fsACK, fsST1, fsST2, fsST3: Integer ; { Status da Bematech }
     { Tamanho da Resposta Esperada ao comando. Necessário, pois a Bematech nao
       usa um Sufixo padrão no fim da resposta da Impressora. }
-    fs25MFD     : Boolean ;  // True se for MP25 ou Superior (MFD)
-    fsPAF       : String ;
-    fsBytesResp : Integer ;
+    fs25MFD      : Boolean ;  // True se for MP25 ou Superior (MFD)
+    fsEnviaPorDLL: Boolean ;  // True se a DLL suporta envio e recebimento de dados (USB)
+    fsPAF        : String ;
+    fsBytesResp  : Integer ;
     fsFalhasFimImpressao : Integer ;
     fsNumVersao : String ;
     fsNumECF    : String ;
@@ -349,9 +350,19 @@ TACBrECFBematech = class( TACBrECFClass )
     xBematech_FI_DownloadMFD: function(cNomeArquivoMFD, cTipoDownload,
       cDadoInicial, cDadoFinal, cUsuario: AnsiString): Integer; stdcall;
 
+    xBematech_FI_EnviaComando: function(cComando: AnsiString;
+      iTamanhoComando: Integer): Integer; stdcall;
+    xBematech_FI_LeituraRetorno: function(cRetorno: AnsiString;
+      iTamanhoRetorno: Integer): Integer; stdcall;
+
     {$IFDEF MSWINDOWS}
-    procedure LoadDLLFunctions;
-    procedure AbrePortaSerialDLL(const Porta, Path : String ) ;
+     procedure LoadDLLFunctions;
+     procedure AbrePortaSerialDLL(const aPath: String='');
+     procedure FechaPortaSerialDLL(const OldAtivo : Boolean) ;
+     function AnalisarRetornoDll(const ARetorno: Integer): String;
+
+     procedure EnviaStringDLL(const cmd: AnsiString) ;
+     procedure LeStringDLL(const NumBytes, ATimeOut: Integer; var Retorno: AnsiString);
     {$ENDIF}
 
     function GetTotalizadoresParciais : String ;
@@ -364,7 +375,6 @@ TACBrECFBematech = class( TACBrECFClass )
     property TotalizadoresParciais : String read GetTotalizadoresParciais ;
 
     Function PreparaCmd( cmd : AnsiString ) : AnsiString ;
-    function AnalisarRetornoDll(const ARetorno: Integer): String;
 
     function GetDataHora: TDateTime; override ;
     function GetNumCupom: String; override ;
@@ -436,12 +446,12 @@ TACBrECFBematech = class( TACBrECFClass )
     Function VerificaFimLeitura(var Retorno: AnsiString;
        var TempoLimite: TDateTime) : Boolean ; override ;
     function VerificaFimImpressao(var TempoLimite: TDateTime) : Boolean ; override ;
-
  public
     Constructor create( AOwner : TComponent  )  ;
     Destructor Destroy  ; override ;
 
     procedure Ativar ; override ;
+    procedure Desativar ; override ;
 
     Property ACK   : Integer read fsACK ;
     Property ST1   : Integer read fsST1 ;
@@ -620,11 +630,28 @@ procedure TACBrECFBematech.Ativar;
 var
   wRetentar : Boolean ;
 begin
-  if not fpDevice.IsSerialPort  then
-     raise EACBrECFErro.Create( ACBrStr('A impressora: '+fpModeloStr+' requer'+sLineBreak+
-                            'Porta Serial:  (COM1, COM2, COM3, ...)'));
+  fsEnviaPorDLL := False;
 
-  fpDevice.HandShake := hsRTS_CTS ;
+  {$IFDEF MSWINDOWS}
+   if fpDevice.IsDLLPort then
+   begin
+     fsEnviaPorDLL := True;
+
+     // Lendo métodos da DLL, Se falhar a carga dos novos métodos, dispara exception
+     LoadDLLFunctions ;
+
+     // Programando Hooks de leitua e envio //
+     fpDevice.HookEnviaString := EnviaStringDLL;
+     fpDevice.HookLeString    := LeStringDLL;
+
+     AbrePortaSerialDLL;
+   end
+   else
+  {$ENDIF}
+     if not fpDevice.IsSerialPort  then
+        raise EACBrECFERRO.Create(ACBrStr('A impressora: '+fpModeloStr+' requer'+sLineBreak+
+                                'Porta Serial:  (COM1, COM2, COM3, ...)'));
+
   inherited Ativar ; { Abre porta serial }
 
   fsNumVersao := '' ;
@@ -637,10 +664,10 @@ begin
   fsArredonda := ' ';
   fsTotalizadoresParciais := '' ;
   fsNumCOOInicial := '' ;
-  fsNFCodCNF := '' ;
-  fsNFCodFPG := '' ;
-  fsNFValor  := 0 ;
-  fs25MFD    := false ;
+  fsNFCodCNF  := '' ;
+  fsNFCodFPG  := '' ;
+  fsNFValor   := 0 ;
+  fs25MFD     := false ;
 
   try
      { Testando a comunicaçao com a porta }
@@ -673,6 +700,18 @@ begin
      Desativar ;
      raise ;
   end ;
+end;
+
+procedure TACBrECFBematech.Desativar;
+begin
+  if fsEnviaPorDLL and Ativo then
+     try
+        FechaPortaSerialDLL(False);
+     except
+        {Exceção muda pois Porta pode já estar fechada}
+     end ;
+
+  inherited Desativar ;
 end;
 
 
@@ -708,7 +747,8 @@ begin
      while (fsACK <> 6) do     { Se ACK = 6 Comando foi reconhecido }
      begin
         fsACK := 0 ;
-        fpDevice.Serial.Purge ;                   { Limpa a Porta }
+        if not fsEnviaPorDLL then
+           fpDevice.Serial.Purge ;                   { Limpa a Porta }
 
         if not TransmiteComando( cmd ) then
            continue ;
@@ -716,7 +756,7 @@ begin
         try
            { espera ACK chegar na Porta por 4s }
            try
-              fsACK := fpDevice.Serial.RecvByte( 4000 ) ;
+              fsACK := fpDevice.LeByte( 4000 ) ;
            except
            end ;
 
@@ -734,7 +774,8 @@ begin
         except
            on E : EACBrECFSemResposta do
             begin
-              fpDevice.Serial.Purge ;
+              if not fsEnviaPorDLL then
+                 fpDevice.Serial.Purge ;
 
               Inc( FalhasACK ) ;
               GravaLog('Bematech EnviaComando_ECF: ACK = '+IntToStr(ACK)+' Falha: '+IntToStr(FalhasACK) ) ;
@@ -906,11 +947,12 @@ begin
      try
 //      GravaLog('Bematech VerificaFimImpressao: Pedindo o Status') ;
 
-        fpDevice.Serial.Purge ;              // Limpa buffer de Entrada e Saida //
-        fpDevice.EnviaString( Cmd );   // Envia comando //}
+        if not fsEnviaPorDLL then
+           fpDevice.Serial.Purge ;           // Limpa buffer de Entrada e Saida //
+        fpDevice.EnviaString( Cmd );         // Envia comando //
 
         // espera ACK chegar na Porta por 1,5s //
-        wACK := fpDevice.Serial.RecvByte( 1500 ) ;
+        wACK := fpDevice.LeByte( 1500 ) ;
 
         if wACK = 6 then   // ECF Respondeu corretamente, portanto está trabalhando //
          begin
@@ -919,7 +961,7 @@ begin
            fsFalhasFimImpressao := 0 ;
 
            // Aguarda ST1 e ST2 por mais 2 segundos //
-           RetCmd := fpDevice.Serial.RecvBufferStr(2,2000) ;
+           RetCmd := fpDevice.LeString( 2000, 2 ) ;
            Result := (Length( RetCmd ) >= 2) ;
          end
         else
@@ -3195,40 +3237,60 @@ procedure TACBrECFBematech.LoadDLLFunctions;
    end ;
  end ;
 begin
+   if fsEnviaPorDLL and Ativo then exit; // Já fez a leitura
+
    BematechFunctionDetect( 'Bematech_FI_AbrePortaSerial',@xBematech_FI_AbrePortaSerial );
    BematechFunctionDetect( 'Bematech_FI_FechaPortaSerial',@xBematech_FI_FechaPortaSerial );
    BematechFunctionDetect( 'Bematech_FI_ArquivoMFD',@xBematech_FI_ArquivoMFD );
    BematechFunctionDetect( 'Bematech_FI_EspelhoMFD',@xBematech_FI_EspelhoMFD );
    BematechFunctionDetect( 'Bematech_FI_GeraRegistrosCAT52MFD',@xBematech_FI_GeraRegistrosCAT52MFD );
    BematechFunctionDetect( 'Bematech_FI_DownloadMFD',@xBematech_FI_DownloadMFD );
+
+   if fpDevice.IsDLLPort then
+   begin
+     BematechFunctionDetect( 'Bematech_FI_EnviaComando',@xBematech_FI_EnviaComando );
+     BematechFunctionDetect( 'Bematech_FI_LeituraRetorno',@xBematech_FI_LeituraRetorno );
+   end;
 end;
 
-procedure TACBrECFBematech.AbrePortaSerialDLL(const Porta, Path : String ) ;
+procedure TACBrECFBematech.AbrePortaSerialDLL(const aPath: String);
 Var
   Resp : Integer ;
-  IniFile : String ;
+  aPorta, IniFile : String ;
 
-  procedure ConfiguraBemaFI32ini(const Porta, Path : String ) ;
+  procedure ConfiguraBemaFI32ini(const aPorta, aPath : String ) ;
   var
     Ini : TIniFile ;
   begin
+    GravaLog( '   Verificando arquivo: '+IniFile+', Porta:'+aPorta+', Path:'+aPath );
+
     Ini := TIniFile.Create( IniFile );
     try
-       Ini.WriteString('Sistema','Porta',Porta ) ;
-       Ini.WriteString('Sistema','Path',Path ) ;
+       Ini.WriteString('Sistema','Porta',aPorta ) ;
+       if aPath <> '' then
+          Ini.WriteString('Sistema','Path',aPath ) ;
     finally
        Ini.Free ;
     end ;
   end;
 
 begin
-  Ativo := False;
-  Sleep( 300 ) ;
+  aPorta := fpDevice.Porta;
+
+  if not fsEnviaPorDLL then
+  begin
+     GravaLog( '   Desativando ACBrECF' );
+     Ativo := False ;
+     Sleep( 300 ) ;
+  end;
 
   IniFile := ExtractFilePath( ParamStr(0) )+'BemaFi32.INI' ;
   if FileExists( IniFile ) then
-     ConfiguraBemaFI32ini(Porta, Path);
+     ConfiguraBemaFI32ini(aPorta, aPath);
 
+  if fsEnviaPorDLL and Ativo then exit;
+
+  GravaLog( '   xBematech_FI_AbrePortaSerial' );
   Resp := xBematech_FI_AbrePortaSerial();
 {
   1: OK.
@@ -3237,22 +3299,41 @@ begin
 }
   if Resp = -4 then
   begin
-     ConfiguraBemaFI32ini( Porta, Path ) ;
+     GravaLog( '      Erro = -4' );
+     ConfiguraBemaFI32ini( aPorta, aPath ) ;
+     GravaLog( '   xBematech_FI_AbrePortaSerial' );
      Resp := xBematech_FI_AbrePortaSerial();
   end ;
 
   if Resp = -5 then
   begin
-     ConfiguraBemaFI32ini( 'Default', Path ) ;
+     GravaLog( '      Erro = -5' );
+     ConfiguraBemaFI32ini( 'Default', aPath ) ;
+     GravaLog( '   xBematech_FI_AbrePortaSerial' );
      Resp := xBematech_FI_AbrePortaSerial();
   end ;
 
   if Resp <> 1 then
      raise EACBrECFErro.Create( ACBrStr('Erro em Bematech_FI_AbrePortaSerial'+sLineBreak+
-                             AnalisarRetornoDll(Resp) ));
+                                AnalisarRetornoDll(Resp) ));
 end ;
 
-{$ENDIF}
+procedure TACBrECFBematech.FechaPortaSerialDLL(const OldAtivo: Boolean);
+Var
+  Resp: Integer;
+begin
+  if fsEnviaPorDLL and OldAtivo then exit;
+
+  GravaLog( '   xBematech_FI_FechaPortaSerial' ) ;
+  Resp := xBematech_FI_FechaPortaSerial ;
+  if Resp <> 1 then
+     raise EACBrECFErro.Create( ACBrStr( 'Erro ao executar xBematech_FI_FechaPortaSerial.'+sLineBreak+
+                                AnalisarRetornoDll(Resp) )) ;
+
+  GravaLog( '   Ativar ACBr: '+ifthen(OldAtivo,'SIM','NAO') ) ;
+  if OldAtivo then
+     Ativo := OldAtivo;
+end;
 
 function TACBrECFBematech.AnalisarRetornoDll(const ARetorno: Integer): String;
 begin
@@ -3282,6 +3363,39 @@ begin
 
   Result := 'Cod.: '+IntToStr(ARetorno) + ifthen(Result='','',' - ') + Result;
 end;
+
+procedure TACBrECFBematech.EnviaStringDLL(const cmd: AnsiString);
+var
+   LenCMD, Resp: Integer;
+begin
+  LenCMD := Length(cmd);
+  GravaLog( '   xBematech_FI_EnviaComando -> '+IntToStr(LenCMD)+' bytes' );
+  Resp := xBematech_FI_EnviaComando( cmd, Length(cmd) );
+  if Resp <> 1 then
+     raise EACBrECFTimeOut.Create( ACBrStr( 'Erro ao executar Bematech_FI_EnviaComando.'+sLineBreak+
+                                AnalisarRetornoDll(Resp) )) ;
+end;
+
+procedure TACBrECFBematech.LeStringDLL(const NumBytes, ATimeOut: Integer;
+   var Retorno: AnsiString);
+Var
+  Resp: Integer;
+  Ret : AnsiString;
+begin
+  //ATimeOut não é usado
+  Ret  := StringOfChar( #0, NumBytes + 1 );
+
+  GravaLog( '   xBematech_FI_LeituraRetorno, '+IntToStr(NumBytes)+' bytes' );
+  Resp := xBematech_FI_LeituraRetorno( Ret, NumBytes );
+  Retorno := IfThen(Resp = 1, LeftStr(Ret,NumBytes), '') ;
+
+  GravaLog( '      Resp:'+IntToStr(Resp)+ ' Retorno:'+Retorno, True );
+  if Resp <> 1 then
+     raise EACBrECFTimeOut.Create( ACBrStr( 'Erro ao executar Bematech_FI_LeituraRetorno.'+sLineBreak+
+                                   AnalisarRetornoDll(Resp) )) ;
+end;
+
+{$ENDIF}
 
 procedure TACBrECFBematech.EspelhoMFD_DLL(DataInicial,
   DataFinal: TDateTime; NomeArquivo: AnsiString;
@@ -3331,7 +3445,7 @@ begin
   OldAtivo := Ativo ;
   try
      DeleteFile(NomeArquivo);
-     AbrePortaSerialDLL( fpDevice.Porta, ExtractFilePath( NomeArquivo ) ) ;
+     AbrePortaSerialDLL( ExtractFilePath( NomeArquivo ) ) ;
 
      Resp := xBematech_FI_EspelhoMFD( NomeArquivo, DiaIni, DiaFim, 'D',
                                       Prop, cChavePublica, cChavePrivada );
@@ -3344,8 +3458,7 @@ begin
         raise EACBrECFErro.Create( ACBrStr( 'Erro na execução de Bematech_FI_EspelhoMFD.'+sLineBreak+
                                 'Arquivo: "'+NomeArquivo + '" não gerado' )) ;
   finally
-     xBematech_FI_FechaPortaSerial();
-     Ativo := OldAtivo ;
+     FechaPortaSerialDLL( OldAtivo );
   end;
  {$ENDIF}
 end;
@@ -3394,7 +3507,7 @@ begin
   OldAtivo := Ativo ;
   try
      DeleteFile(NomeArquivo);
-     AbrePortaSerialDLL( fpDevice.Porta, ExtractFilePath( NomeArquivo ) ) ;
+     AbrePortaSerialDLL( ExtractFilePath( NomeArquivo ) ) ;
 
      Resp := xBematech_FI_EspelhoMFD( NomeArquivo, CooIni, CooFim, 'C',
                                       Prop, cChavePublica, cChavePrivada );
@@ -3407,8 +3520,7 @@ begin
         raise EACBrECFErro.Create( ACBrStr( 'Erro na execução de Bematech_FI_EspelhoMFD.'+sLineBreak+
                                 'Arquivo: "'+NomeArquivo + '" não gerado' )) ;
   finally
-     xBematech_FI_FechaPortaSerial();
-     Ativo := OldAtivo ;
+     FechaPortaSerialDLL( OldAtivo );
   end;
  {$ENDIF}
 end;
@@ -3442,7 +3554,7 @@ begin
     // gerar arquivos de um arquivo MFD, então baixamos a MFD para o periodo
     // e rodamos um loop com a data gerando o arquivo para cada dia dentro
     // do período
-    AbrePortaSerialDLL( fpDevice.Porta, FilePath ) ;
+    AbrePortaSerialDLL( FilePath ) ;
 
     // fazer primeiro o download da MFD para o período
     Resp := xBematech_FI_DownloadMFD( FileMFD, '1', DiaIni, DiaFim, NumUsu );
@@ -3476,8 +3588,7 @@ begin
     until DataArquivo > DataFinal;
 
   finally
-    xBematech_FI_FechaPortaSerial();
-    Ativo := OldAtivo ;
+    FechaPortaSerialDLL( OldAtivo );
   end;
  {$ENDIF}
 end;
@@ -3542,7 +3653,7 @@ begin
      DeleteFile( NomeArquivo );
      DeleteFiles( FileMask );
 
-     AbrePortaSerialDLL( fpDevice.Porta, FilePath ) ;
+     AbrePortaSerialDLL( FilePath ) ;
 
      Resp := xBematech_FI_ArquivoMFD( '', DiaIni, DiaFim, 'D', Prop, Tipo,
                                       cChavePublica, cChavePrivada, 1 ) ;
@@ -3560,8 +3671,7 @@ begin
      RenameFile( Arquivos[0], NomeArquivo );
   finally
      Arquivos.Free;
-     xBematech_FI_FechaPortaSerial();
-     Ativo := OldAtivo ;
+     FechaPortaSerialDLL( OldAtivo );
   end;
  {$ENDIF}
 end;
@@ -3627,7 +3737,7 @@ begin
      DeleteFile( NomeArquivo );
      DeleteFiles( FileMask );
 
-     AbrePortaSerialDLL( fpDevice.Porta, FilePath ) ;
+     AbrePortaSerialDLL( FilePath ) ;
 
      Resp := xBematech_FI_ArquivoMFD( '', COOIni, COOFim, 'C', Prop, Tipo,
                                       cChavePublica, cChavePrivada, 1 ) ;
@@ -3645,8 +3755,7 @@ begin
   finally
      Arquivos.Free;
      //DeleteFile( ArqTmp ) ;
-     xBematech_FI_FechaPortaSerial();
-     Ativo := OldAtivo ;
+     FechaPortaSerialDLL( OldAtivo );
   end;
  {$ENDIF}
 end;

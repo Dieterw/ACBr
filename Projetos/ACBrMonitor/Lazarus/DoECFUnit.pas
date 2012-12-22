@@ -97,7 +97,7 @@ begin
         else if Cmd.Metodo = 'paramdescontoissqn' then
               Cmd.Resposta:= BoolToStr(ParamDescontoISSQN, True)
 
-        else if Cmd.Metodo = 'enviainfo' then
+        else if (Cmd.Metodo = 'enviainfo') or (Cmd.Metodo = 'retornainfoecf') then
             Cmd.Resposta :=   RetornaInfoECF(Cmd.Params(0))
 
         else if Cmd.Metodo = 'comandoenviado' then
@@ -550,13 +550,18 @@ begin
 
         else if Cmd.Metodo = 'leituraxserial' then
          begin
-           Linhas := TStringList.Create ;
-           try
-              LeituraXSerial( Linhas ) ;                             { Retorno }
-              Cmd.Resposta := Linhas.Text ;
-           finally
-              Linhas.Free ;
-           end ;
+           if Cmd.Params(0) <> '' then
+              LeituraXSerial( Cmd.Params(0) )
+           else
+            begin
+              Linhas := TStringList.Create ;
+              try
+                 LeituraXSerial( Linhas ) ;                             { Retorno }
+                 Cmd.Resposta := Linhas.Text ;
+              finally
+                 Linhas.Free ;
+              end ;
+            end;
          end
 
         else if Cmd.Metodo = 'reducaoz' then

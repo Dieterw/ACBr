@@ -97,6 +97,15 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 21/12/2012
+-- ACBrDevice --
+[*] Ajuste para permitir Hooks de comunicação com outras bibliotecas ou DLLs
+
+-- ACBrECFBematech --
+[*] EXPERIMENTAL. Inicio dos ajustes para funcionar com portas USB através da
+    Bemafi32.DLL, usando os NOVOS métodos Bematech_FI_EnviaComando,
+    Bematech_FI_LeituraRetorno
+
 Data: 20/12/2012
 -- ACBrECFDaruma --
 [-] Correção de bug introduzido em 29/11/2012, onde a leitura do COO fica

@@ -1133,7 +1133,7 @@ end;
 
 procedure TACBrECFEpson.Desativar ;
 begin
-  if fsUsarDLL then
+  if fsUsarDLL and Ativo then
      try
         FechaPortaSerialDLL(False);
      except

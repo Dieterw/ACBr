@@ -160,10 +160,11 @@
         <UnitName Value="ECFTeste1"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="678"/>
-        <CursorPos X="29" Y="686"/>
+        <TopLine Value="4"/>
+        <CursorPos X="27" Y="11"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit1>
       <Unit2>
         <Filename Value="configuraserial.pas"/>
@@ -218,8 +219,8 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="VendeItem"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="74"/>
-        <CursorPos X="29" Y="87"/>
+        <TopLine Value="85"/>
+        <CursorPos X="23" Y="81"/>
         <UsageCount Value="201"/>
       </Unit6>
       <Unit7>
@@ -278,36 +279,6 @@
     </Other>
   </CompilerOptions>
   <Debugging>
-    <BreakPoints Count="4">
-      <Item1>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="..\..\..\Fontes\ACBrSerial\ACBrECFBematech.pas"/>
-        <Line Value="2428"/>
-      </Item1>
-      <Item2>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="..\..\..\Fontes\ACBrSerial\ACBrECFEpson.pas"/>
-        <Line Value="3305"/>
-      </Item2>
-      <Item3>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="..\..\..\Fontes\ACBrSerial\ACBrECFFiscNET.pas"/>
-        <Line Value="3068"/>
-      </Item3>
-      <Item4>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="..\..\..\Fontes\ACBrSerial\ACBrECFFiscNET.pas"/>
-        <Line Value="3078"/>
-      </Item4>
-    </BreakPoints>
     <Watches Count="1">
       <Item1>
         <Expression Value="R"/>

@@ -1781,7 +1781,7 @@ begin
            Fim  := False ;
            try
               fpRespostaComando := fpRespostaComando + { Le conteudo da porta }
-                                   fpDevice.Serial.RecvPacket(100) ;
+                                   fpDevice.LeString(100) ;
 
               LenResp := Length( fpRespostaComando ) ;
               if LenResp <> fsBytesRec then
@@ -1807,7 +1807,7 @@ begin
 
         {$IFNDEF CONSOLE}
           if fpDevice.ProcessMessages then
-	          Application.ProcessMessages;
+	     Application.ProcessMessages;
         {$ENDIF}
      until Fim ;
   finally

@@ -407,6 +407,7 @@ object frmDemo_ACBrNFSe: TfrmDemo_ACBrNFSe
               'Sinop/5107909/MT'
               'Tangara da Serra/5107958/MT'
               'Tatui/3554003/SP'
+              'Telemaco Borba/4127106/PR'
               'Uba/3169901/MG'
               'Uberaba/3170107/MG'
               'Umuarama/4128104/PR'

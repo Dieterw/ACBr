@@ -673,6 +673,7 @@ begin
   4118402, // Paranavaí/PR
   4120853, // Quatro Pontes/PR
   4125605, // São Mateus do Sul/PR
+  4127106, // Telemaco Borba/PR
   4128203, // União da Vitória/PR
   4202131, // Bela Vista do Toldo/SC
   4202305, // Biguaçu/SC

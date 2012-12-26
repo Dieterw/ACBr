@@ -724,7 +724,7 @@ begin
 
       MensagemPadrao.Clear;
       MensagemPadrao.Text := Titulo.Mensagem.Text;
-      ACBrBoletoFC.ACBrBoleto.AdicionarMensagensPadroes(Titulo,MensagemPadrao);
+//      ACBrBoletoFC.ACBrBoleto.AdicionarMensagensPadroes(Titulo,MensagemPadrao);
 
       fBoletoFC.CarregaLogo( ImgLoja.Picture, Banco.Numero );
       fBoletoFC.CarregaLogo( imgBancoCarne.Picture, Banco.Numero );

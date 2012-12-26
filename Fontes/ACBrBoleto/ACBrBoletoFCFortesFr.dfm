@@ -1,6 +1,6 @@
 object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
-  Left = 330
-  Top = 206
+  Left = 89
+  Top = 247
   Width = 1084
   Height = 768
   Caption = 'ACBRBoletoFCFortesFr'
@@ -3563,8 +3563,8 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Transparent = False
       end
       object ImgLoja: TRLImage
-        Left = -9
-        Top = 30
+        Left = -2
+        Top = 0
         Width = 143
         Height = 41
         Center = True
@@ -3573,7 +3573,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       object txtTotPar: TRLLabel
         Left = 29
         Top = 55
-        Width = 13
+        Width = 20
         Height = 14
         Caption = '/X'
         Font.Charset = DEFAULT_CHARSET

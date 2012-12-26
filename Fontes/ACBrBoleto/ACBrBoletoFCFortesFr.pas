@@ -754,7 +754,7 @@ begin
       txtCarteira.Caption             := Titulo.Carteira;
       txtEspecie2.Caption             := 'R$';
       txtParcela.Caption              := IntToStrZero(Titulo.Parcela,2)+' /';
-      txtTotPar.Caption               := IntToStrZero(Titulo.TotalParcelas,2);
+      txtTotPar.Caption               := IntToStrZero(Titulo.TotalParcelas,3);
 
       txtEndSacado.Caption            := Titulo.Sacado.Logradouro + ' '+
                                          Titulo.Sacado.Numero + Titulo.Sacado.Complemento;

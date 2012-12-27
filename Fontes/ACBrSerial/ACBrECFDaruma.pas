@@ -4780,6 +4780,12 @@ begin
     -110: Result := 'Indica que o GT foi atualizado no arquivo de registro do PAF';
     -112: Result := 'O numero de serie ja existe no arquivo do PAF';
     -113: Result := 'ECF conectado nao cadastrado no arquivo do PAF';
+    -114: Result := 'MFD Danificada';
+    -115: Result := 'Erro ao abrir arquivos .idx/.dat/.mf';
+    -116: Result := 'Intervalo solicitado não é válido';
+    -117: Result := 'Impressora não identificada durante download dos binários';
+    -118: Result := 'Erro ao abrir porta serial';
+    -119: Result := 'Leitura dos binários abortada';
   else
     Result := 'Erro desconhecido.';
   end;

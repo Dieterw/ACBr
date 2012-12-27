@@ -794,6 +794,7 @@ begin
   2927408: Cidade := 'Salvador/BA';
 
   3104205: Cidade := 'Arcos/MG';
+  3104403: Cidade := 'Argirita/MG';
   3105608: cidade := 'Barbacena/MG';
   3105905: cidade := 'Barroso/MG';
   3106200: Cidade := 'Belo Horizonte/MG';
@@ -807,6 +808,7 @@ begin
   3132404: Cidade := 'Itajubá/MG';
   3136702: Cidade := 'Juiz de Fora/MG';
   3137601: Cidade := 'Lagoa Santa/MG';
+  3142205: Cidade := 'Mirai/MG';
   3143302: Cidade := 'Montes Claros/MG';
   3143906: Cidade := 'Muriae/MG';
   3146701: Cidade := 'Palma/MG';

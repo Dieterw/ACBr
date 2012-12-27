@@ -809,6 +809,7 @@ begin
   3137601: Cidade := 'Lagoa Santa/MG';
   3143302: Cidade := 'Montes Claros/MG';
   3143906: Cidade := 'Muriae/MG';
+  3146701: Cidade := 'Palma/MG';
   3147105: Cidade := 'Para de Minas/MG';
   3148103: Cidade := 'Patrocinio/MG';
   3152501: Cidade := 'Pouso Alegre/MG';
@@ -818,15 +819,22 @@ begin
   3170701: Cidade := 'Varginha/MG';
 
   3200607: Cidade := 'Aracruz/ES';
+  3201209: Cidade := 'Cachoeiro de Itapemirim/ES';
+  3201308: Cidade := 'Cariacica/ES';
+  3201506: Cidade := 'Colatina/ES';
   3202405: Cidade := 'Guarapari/ES';
   3205002: Cidade := 'Serra/ES';
+  3205200: Cidade := 'Vila Velha/ES';
   3205309: Cidade := 'Vitória/ES';
 
   3300456: Cidade := 'Belford Roxo/RJ';
   3301009: Cidade := 'Campos dos Goytacazes/RJ';
   3301702: Cidade := 'Duque de Caxias/RJ';
+  3302106: Cidade := 'Itaocara/RJ';
   3302254: Cidade := 'Itatiaia/RJ';
+  3302403: Cidade := 'Macae/RJ';
   3302700: Cidade := 'Marica/RJ';
+  3303104: Cidade := 'Natividade/RJ';
   3303302: Cidade := 'Niteroi/RJ';
   3303401: Cidade := 'Nova Friburgo/RJ';
   3303500: Cidade := 'Nova Iguaçu/RJ';
@@ -834,6 +842,7 @@ begin
   3303955: Cidade := 'Pinheiral/RJ';
   3304508: Cidade := 'Rio das Flores/RJ';
   3304557: Cidade := 'Rio de Janeiro/RJ';
+  3304706: Cidade := 'Santo Antonio de Padua/RJ';
   3304904: Cidade := 'São Gonçalo/RJ';
   3305505: Cidade := 'Saquarema/RJ';
   3306008: Cidade := 'Três Rios/RJ';
@@ -1002,7 +1011,6 @@ begin
   5201108: Cidade := 'Anapolis/GO';
   5201405: Cidade := 'Aparecida de Goiania/GO';
   5208707: Cidade := 'Goiânia/GO';
-
 
 
 

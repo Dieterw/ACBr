@@ -2489,7 +2489,7 @@ var
   wProc  : TStringList ;
   i,j : integer;
   Leitor : TLeitor;
-  {$IFDEF ACBrMDFeOpenSSL}
+  {$IFDEF ACBrCTeOpenSSL}
      HTTP: THTTPSend;
   {$ELSE}
      ReqResp: THTTPReqResp;
@@ -2508,21 +2508,21 @@ begin
   Texto := '<?xml version="1.0" encoding="utf-8"?>';
   Texto := Texto + '<soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">';
   Texto := Texto +   '<soap12:Header>';
-  Texto := Texto +     '<mdfeCabecMsg xmlns="http://www.portalfiscal.inf.br/cte/wsdl/CTeRecepcaoEvento">';
+  Texto := Texto +     '<cteCabecMsg xmlns="http://www.portalfiscal.inf.br/cte/wsdl/CTeRecepcaoEvento">';
   Texto := Texto +       '<cUF>'+IntToStr(FConfiguracoes.WebServices.UFCodigo)+'</cUF>';
   Texto := Texto +       '<versaoDados>'+CTeEventoCTe+'</versaoDados>';
-  Texto := Texto +     '</mdfeCabecMsg>';
+  Texto := Texto +     '</cteCabecMsg>';
   Texto := Texto +   '</soap12:Header>';
   Texto := Texto +   '<soap12:Body>';
-  Texto := Texto +     '<mdfeDadosMsg xmlns="http://www.portalfiscal.inf.br/cte/wsdl/CTeRecepcaoEvento">';
+  Texto := Texto +     '<cteDadosMsg xmlns="http://www.portalfiscal.inf.br/cte/wsdl/CTeRecepcaoEvento">';
   Texto := Texto +       FDadosMsg;
-  Texto := Texto +     '</mdfeDadosMsg>';
+  Texto := Texto +     '</cteDadosMsg>';
   Texto := Texto +   '</soap12:Body>';
   Texto := Texto +'</soap12:Envelope>';
 
   Acao.Text := Texto;
 
-   {$IFDEF ACBrMDFeOpenSSL}
+   {$IFDEF ACBrCTeOpenSSL}
      Acao.SaveToStream(Stream);
      HTTP := THTTPSend.Create;
   {$ELSE}

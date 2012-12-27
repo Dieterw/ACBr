@@ -341,6 +341,7 @@ type
     chIgnorarTagsFormatacao: TCheckBox;
     cbxUF: TComboBox;
     Label29: TLabel;
+    chbCupomMania: TCheckBox;
     procedure cbxModeloChange(Sender: TObject);
     procedure Sair1Click(Sender: TObject);
     procedure bAtivarClick(Sender: TObject);
@@ -543,6 +544,7 @@ type
     procedure BitBtn6Click(Sender: TObject);
     procedure speBarrasLarguraChange(Sender: TObject);
     procedure speBarrasAlturaChange(Sender: TObject);
+    procedure chbCupomManiaClick(Sender: TObject);
   private
     { Private declarations }
     Function Converte( cmd : String) : String;
@@ -3855,6 +3857,11 @@ end;
 procedure TForm1.speBarrasAlturaChange(Sender: TObject);
 begin
   ACBrECF1.ConfigBarras.Altura := speBarrasAltura.Value;
+end;
+
+procedure TForm1.chbCupomManiaClick(Sender: TObject);
+begin
+  ACBrECF1.InfoRodapeCupom.CupomMania := chbCupomMania.Checked;
 end;
 
 end.

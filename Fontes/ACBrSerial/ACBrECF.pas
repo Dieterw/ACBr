@@ -2945,24 +2945,26 @@ begin
 end;
 
 function TACBrECF.GetRodapeUF: String;
+Var
+  Rodape : String ;
 begin
-  Result := EmptyStr;
+  Rodape := EmptyStr;
 
   if InfoRodapeCupom.CupomMania then
   begin
-    Result := Result + #10 + 'CUPOM MANIA, CONCORRA A PRÊMIOS';
-    Result := Result + #10 + 'ENVIE SMS P/ 6789: ' +
+    Rodape := Rodape + #10 + 'CUPOM MANIA, CONCORRA A PRÊMIOS';
+    Rodape := Rodape + #10 + 'ENVIE SMS P/ 6789: ' +
       Copy(OnlyNumber(fsECF.IE), 1, 8) +    // 8 primeiros digitos da Inscr.Estadual
       FormatDateTime('ddmmyy', Date) +      // data atual
       Format('%6.6d', [StrToInt(NumCOO)]) + // numero do coo do cupom
       Format('%3.3d', [StrToInt(NumECF)]);  // numero do ecf
 
-    Result := Result + #10 + 'PROCON – R da Ajuda 5 – RJ – (21) 151';
-    Result := Result + #10 + 'ALERJ – R 1º de Março s/n – RJ – (21) 25881418';
+    Rodape := Rodape + #10 + 'PROCON – R da Ajuda 5 – RJ – (21) 151';
+    Rodape := Rodape + #10 + 'ALERJ – R 1º de Março s/n – RJ – (21) 25881418';
   end
   else if InfoRodapeCupom.MinasLegal then
   begin
-    Result := Result + #10 + Format(
+    Rodape := Rodape + #10 + Format(
       'MINAS LEGAL: %s %s %s', [
       OnlyNumber(Self.CNPJ),
       FormatDateTime('ddmmyyyy', Self.DataHora),
@@ -2971,7 +2973,7 @@ begin
   end
   else if InfoRodapeCupom.ParaibaLegal then
   begin
-    Result := Result + #10 +
+    Rodape := Rodape + #10 +
       'PARAÍBA LEGAL – RECEITA CIDADÃ' + #10 +
       Format(
         'TORPEDO PREMIADO: %s %s %s %s', [
@@ -2985,19 +2987,21 @@ begin
   begin
     if InfoRodapeCupom.NotaLegalDF.ProgramaDeCredito then
     begin
-      Result := Result + #10 +
+      Rodape := Rodape + #10 +
         'ESTABELECIMENTO INCLUÍDO NO PROGRAMA DE'#10 +
         'CONCESSÃO DE CRÉDITOS - LEI 4.159/08.';
     end;
 
-    Result := Result + #10 + '<n>NOTA LEGAL:</n>';
+    Rodape := Rodape + #10 + '<n>NOTA LEGAL:</n>';
 
     if InfoRodapeCupom.NotaLegalDF.ValorICMS > 0.00 then
-      Result := Result + ' ICMS = ' + FormatFloat(',#0.00', InfoRodapeCupom.NotaLegalDF.ValorICMS);
+      Rodape := Rodape + ' ICMS = ' + FormatFloat(',#0.00', InfoRodapeCupom.NotaLegalDF.ValorICMS);
 
     if InfoRodapeCupom.NotaLegalDF.ValorISS > 0.00 then
-      Result := Result + ' ISS = ' + FormatFloat(',#0.00', InfoRodapeCupom.NotaLegalDF.ValorISS);
+      Rodape := Rodape + ' ISS = ' + FormatFloat(',#0.00', InfoRodapeCupom.NotaLegalDF.ValorISS);
   end;
+
+  Result := ACBrStr( Rodape );
 end;
 
 procedure TACBrECF.Sangria(Valor: Double; Obs: AnsiString;

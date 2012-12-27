@@ -67,6 +67,7 @@ type
     cbxModelo: TComboBox;
     cbxPorta: TComboBox;
     chAACFlush : TCheckBox ;
+    chCupomMania: TCheckBox;
     chIgnorarTagsFormatacao : TCheckBox ;
     chProcessMessages : TCheckBox ;
     chArredondaPorQtd: TCheckBox;
@@ -447,6 +448,7 @@ type
     procedure chArredondaPorQtdChange(Sender : TObject) ;
     procedure chBarrasImprimeTextoChange(Sender: TObject);
     procedure chBloqueiaChange(Sender : TObject) ;
+    procedure chCupomManiaChange(Sender: TObject);
     procedure chDescricaoGrandeChange(Sender : TObject) ;
     procedure chExibeMsgChange(Sender : TObject) ;
     procedure chGavetaSinalInvertidoChange(Sender : TObject) ;
@@ -1415,6 +1417,11 @@ end;
 procedure TForm1.chBloqueiaChange(Sender : TObject) ;
 begin
   ACBrECF1.BloqueiaMouseTeclado := chBloqueia.Checked ;
+end;
+
+procedure TForm1.chCupomManiaChange(Sender: TObject);
+begin
+  ACBrECF1.InfoRodapeCupom.CupomMania := chCupomMania.Checked ;
 end;
 
 procedure TForm1.chDescricaoGrandeChange(Sender : TObject) ;

@@ -160,8 +160,8 @@
         <UnitName Value="ECFTeste1"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="4"/>
-        <CursorPos X="27" Y="11"/>
+        <TopLine Value="1422"/>
+        <CursorPos X="4" Y="1430"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -279,6 +279,22 @@
     </Other>
   </CompilerOptions>
   <Debugging>
+    <BreakPoints Count="2">
+      <Item1>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="..\..\..\Fontes\ACBrSerial\ACBrDevice.pas"/>
+        <Line Value="829"/>
+      </Item1>
+      <Item2>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="..\..\..\Fontes\ACBrSerial\ACBrECFBematech.pas"/>
+        <Line Value="3388"/>
+      </Item2>
+    </BreakPoints>
     <Watches Count="1">
       <Item1>
         <Expression Value="R"/>

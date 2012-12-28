@@ -459,12 +459,11 @@ begin
  result := '<?xml version="1.0" encoding="UTF-8"?>' +
            '<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" ' +
                        'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
-                       'xmlns:xsd="http://www.w3.org/2001/XMLSchema" ' +
-                       'xmlns="' + URLNS + '">' +
+                       'xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
             '<S:Body>' +
-             '<EnviarLoteRpsEnvio>' +
+             '<ns2:EnviarLoteRpsEnvio xmlns:ns2="' + URLNS + '">' +
                AXML +
-             '</EnviarLoteRpsEnvio>' +
+             '</ns2:EnviarLoteRpsEnvio>' +
             '</S:Body>' +
            '</S:Envelope>';
 end;

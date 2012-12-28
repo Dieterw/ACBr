@@ -456,7 +456,8 @@ begin
                        'xmlns:xsd="http://www.w3.org/2001/XMLSchema" ' +
                        'xmlns="' + URLNS + '">' +
             '<S:Body>' +
-                DadosMsg +
+             '<?xml version="1.0" encoding="UTF-8"?>' +
+              DadosMsg +
             '</S:Body>' +
            '</S:Envelope>';
 end;

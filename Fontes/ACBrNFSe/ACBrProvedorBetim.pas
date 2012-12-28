@@ -455,9 +455,9 @@ begin
                        'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
                        'xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
             '<S:Body>' +
-             '<tns:RecepcionarLoteRpsIn xmlns:tns="' + URLNS + '">' +
+             '<tns:RecepcionarLoteRps xmlns:tns="' + URLNS + '">' +
                 DadosMsg +
-             '</tns:RecepcionarLoteRpsIn>' +
+             '</tns:RecepcionarLoteRps>' +
             '</S:Body>' +
            '</S:Envelope>';
 end;

@@ -97,9 +97,13 @@ begin
  ConfigCidade.Prefixo4      := '';
  ConfigCidade.Identificador := 'Id';
 
+// if AAmbiente = 1
+//  then ConfigCidade.NameSpaceEnvelope := 'http://betim.rps.com.br/sgm/zend/default/xsd/nfse?format=xml'
+//  else ConfigCidade.NameSpaceEnvelope := 'http://betim.rps.com.br/sgm/zend/default/xsd/nfse?format=xml';
+
  if AAmbiente = 1
-  then ConfigCidade.NameSpaceEnvelope := 'http://betim.rps.com.br/sgm/zend/default/xsd/nfse?format=xml'
-  else ConfigCidade.NameSpaceEnvelope := 'http://betim.rps.com.br/sgm/zend/default/xsd/nfse?format=xml';
+  then ConfigCidade.NameSpaceEnvelope := 'https://betim.rps.com.br/sgm/zend/nfs/nfs'
+  else ConfigCidade.NameSpaceEnvelope := 'https://betim.rps.com.br/sgm/zend/nfs/ambienteteste';
 
  ConfigCidade.AssinaRPS  := False;
  ConfigCidade.AssinaLote := False;
@@ -451,12 +455,9 @@ begin
                        'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
                        'xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
             '<S:Body>' +
-//             '<EnviarLoteRpsEnvio xmlns="' + URLNS + '">' +
-//              '<MensagemXML>' +
+             '<tns:RecepcionarLoteRpsIn xmlns:tns="' + URLNS + '">' +
                 DadosMsg +
-//                StringReplace(StringReplace(DadosMsg, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
-//              '</MensagemXML>' +
-//             '</EnviarLoteRpsEnvio>' +
+             '</tns:RecepcionarLoteRpsIn>' +
             '</S:Body>' +
            '</S:Envelope>';
 end;

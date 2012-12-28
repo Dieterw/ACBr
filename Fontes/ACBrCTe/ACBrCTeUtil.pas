@@ -820,7 +820,7 @@ begin
      end;
   5..11:
      begin
-      if CTeUtil.EstaVazio(APathSchemas) then
+      if DFeUtil.EstaVazio(APathSchemas) then
         schema_filename := pchar(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\eventoCTe_v' + CTeEventoCTe + '.xsd')
        else
         schema_filename := pchar(PathWithDelim(APathSchemas)+'eventoCTe_v' + CTeEventoCTe + '.xsd');
@@ -1287,13 +1287,13 @@ begin
   if I = 0 then
     raise Exception.Create('Não encontrei inicio do URI: <infCte');
   *)
-  I := CTeUtil.PosEx('Id=', AStr, I + 6);
+  I := DFeUtil.PosEx('Id=', AStr, I + 6);
   if I = 0 then
     raise Exception.Create('Não encontrei inicio do URI: Id=');
-  I := CTeUtil.PosEx('"', AStr, I + 2);
+  I := DFeUtil.PosEx('"', AStr, I + 2);
   if I = 0 then
     raise Exception.Create('Não encontrei inicio do URI: aspas inicial');
-  J := CTeUtil.PosEx('"', AStr, I + 1);
+  J := DFeUtil.PosEx('"', AStr, I + 1);
   if J = 0 then
     raise Exception.Create('Não encontrei inicio do URI: aspas final');
 
@@ -1850,9 +1850,9 @@ begin
    // Checar esse trecho
 
 {$IFDEF PL_103}
-   if (CTeUtil.NaoEstaZerado(FCTe.Imp.ICMS.CST00.vICMS))
+   if (DFeUtil.NaoEstaZerado(FCTe.Imp.ICMS.CST00.vICMS))
     then wicms_p := '1';
-   if (CTeUtil.NaoEstaZerado(FCTe.Imp.ICMS.CST80.vICMS))
+   if (DFeUtil.NaoEstaZerado(FCTe.Imp.ICMS.CST80.vICMS))
     then wicms_s := '1';
 {$ENDIF}
 {$IFDEF PL_104}

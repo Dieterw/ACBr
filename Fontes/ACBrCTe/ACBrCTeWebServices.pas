@@ -810,7 +810,7 @@ begin
   EventoCTe.GerarXML;
 
   {$IFDEF ACBrCTeOpenSSL}
-  if not(NotaUtil.Assinar(EventoCTe.Gerador.ArquivoFormatoXML, TConfiguracoes(FConfiguracoes).Certificados.Certificado , TConfiguracoes(FConfiguracoes).Certificados.Senha, FDadosMsg, FMsg)) then
+  if not(CTeUtil.Assinar(EventoCTe.Gerador.ArquivoFormatoXML, TConfiguracoes(FConfiguracoes).Certificados.Certificado , TConfiguracoes(FConfiguracoes).Certificados.Senha, FDadosMsg, FMsg)) then
      begin
        if Assigned(TACBrCTe( FACBrCTe ).OnGerarLog) then
           TACBrCTe( FACBrCTe ).OnGerarLog('Falha ao assinar o Envio de Evento '+LineBreak+FMsg);

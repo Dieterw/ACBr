@@ -454,7 +454,7 @@ var
 begin
  AXML := '<?xml version="1.0" encoding="UTF-8"?>' +
          DadosMsg;
- AXML := StringReplace(StringReplace(AXML, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
+ AXML := StringReplace(StringReplace(AXML, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]);
 
  result := '<?xml version="1.0" encoding="UTF-8"?>' +
            '<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" ' +

@@ -754,7 +754,7 @@ type
     FCOD_MOD    : string;
     FSER        : string;
     FSUB_SER    : string;
-    FCOD_SIT    : TACBrSituacaoDF;
+    FCOD_SIT    : TACBrCodSitF;
     FVL_TOT_REC : Currency;
     FQUANT_DOC  : Integer;
     FCST_PIS    : TACBrCstPis;
@@ -769,7 +769,7 @@ type
     property COD_MOD   : string          read FCOD_MOD     write FCOD_MOD    ;
     property SER       : string          read FSER         write FSER        ;
     property SUB_SER   : string          read FSUB_SER     write FSUB_SER    ;
-    property COD_SIT   : TACBrSituacaoDF read FCOD_SIT     write FCOD_SIT    ;
+    property COD_SIT   : TACBrCodSitF    read FCOD_SIT     write FCOD_SIT    ;
     property VL_TOT_REC: Currency        read FVL_TOT_REC  write FVL_TOT_REC ;
     property QUANT_DOC : Integer         read FQUANT_DOC   write FQUANT_DOC  ;
     property CST_PIS   : TACBrCstPis     read FCST_PIS     write FCST_PIS    ;

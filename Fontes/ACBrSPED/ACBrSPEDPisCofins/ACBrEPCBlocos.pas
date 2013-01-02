@@ -166,6 +166,13 @@ type
                  );
   TACBrIndicadorEmitenteDF = TACBrIndEmit;
 
+  /// Código da situação do documento fiscal (Registro 1900):
+  TACBrCodSitF = (
+                  csffRegular,            // 00 – Documento regular
+                  csfCancelado,           // 02 – Documento cancelado
+                  csfOutros               // 99 – Outros
+                  );
+
   /// Código da situação do documento fiscal:
   TACBrCodSit = (
                  sdfRegular,                 // 00 – Documento regular
@@ -915,9 +922,9 @@ type
 
   TOpenBlocos = class
   private
-    FIND_MOV: TACBrIndicadorMovimento;    /// Indicador de movimento: 0- Bloco com dados informados, 1- Bloco sem dados informados.
+    FIND_MOV: TACBrIndMov;    /// Indicador de movimento: 0- Bloco com dados informados, 1- Bloco sem dados informados.
   public
-    property IND_MOV: TACBrIndicadorMovimento read FIND_MOV write FIND_MOV;
+    property IND_MOV: TACBrIndMov read FIND_MOV write FIND_MOV;
   end;
 
 const
@@ -1074,6 +1081,8 @@ function IndEmitToStr(AValue: TACBrIndEmit): string;
 function StrToIndEmit(AValue: string): TACBrIndEmit;
 function CodSitToStr(AValue: TACBrCodSit): string;
 function StrToCodSit(AValue: string): TACBrCodSit;
+function CodSitFToStr(AValue: TACBrCodSitF): string;
+function StrToCodSitF(AValue: string): TACBrCodSitF;
 function IndPgtoToStr(AValue: TACBrIndPgto): string;
 function StrToIndPgto(AValue: string): TACBrIndPgto;
 function NatBcCredToStr(AValue: TACBrNatBcCred): string;
@@ -1436,6 +1445,30 @@ begin
 //                                     sdfComplementar,
 //                                     sdfExtComplementar,
 //                                     sdfEspecial]);
+end;
+
+function CodSitFToStr(AValue: TACBrCodSitF): string;
+begin
+   if AValue = csffRegular then
+      Result := '00'
+   else
+   if AValue = csfCancelado then
+      Result := '02'
+   else
+   if AValue = csfOutros then
+      Result := '99';
+end;
+
+function StrToCodSitF(AValue: string): TACBrCodSitF;
+begin
+   if AValue = '00' then
+      Result := csffRegular
+   else
+   if AValue = '02' then
+      Result := csfCancelado
+   else
+   if AValue = '99' then
+      Result := csfOutros;
 end;
 
 function IndPgtoToStr(AValue: TACBrIndPgto): string;

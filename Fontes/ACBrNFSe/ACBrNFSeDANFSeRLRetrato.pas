@@ -338,9 +338,9 @@ begin
  rllAliquota.Caption            := DFeUtil.FormatFloat( FNFSe.Servico.Valores.Aliquota );//Astrogildo em 13/12/12
  // TnfseSimNao = ( snSim, snNao )
  case FNFSe.Servico.Valores.IssRetido of
-  stRetencao     : qrlISSReter.Caption := 'Sim';//Astrogildo em 13/12/12
-  stNormal       : qrlISSReter.Caption := 'Não';//Astrogildo em 13/12/12
-  stSubstituicao : qrlISSReter.Caption := 'ST';//Astrogildo em 13/12/12
+  stRetencao     : rllISSReter.Caption := 'Sim';//Astrogildo em 13/12/12
+  stNormal       : rllISSReter.Caption := 'Não';//Astrogildo em 13/12/12
+  stSubstituicao : rllISSReter.Caption := 'ST';//Astrogildo em 13/12/12
  end;
  rllValorISS.Caption := DFeUtil.FormatFloat( FNFSe.Servico.Valores.ValorIss );
 

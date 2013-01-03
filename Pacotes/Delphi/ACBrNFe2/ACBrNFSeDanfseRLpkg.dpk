@@ -34,24 +34,13 @@ requires
   ACBr_NFSe,
   PCN2,
   ACBrComum,
-  designide,
-  vclactnband,
-  dsnap,
-  inet,
-  xmlrtl,
-  soaprtl,
-  synapse,
-  ACBrCapicom,
-  visualclx,
-  vcljpg,
-  qrpt,
-  RLibWinD7vcl,
-  vcldb;
+  vclimg,
+  RLibWinD2010;
 
 contains
-  ACBrNFSeDANFSeRL in 'ACBrNFSeDANFSeRL.pas' {frlDANFSeRL},
-  ACBrNFSeDANFSeRLClass in 'ACBrNFSeDANFSeRLClass.pas',
-  ACBrNFSeDANFSeRLReg in 'ACBrNFSeDANFSeRLReg.pas',
-  ACBrNFSeDANFSeRLRetrato in 'ACBrNFSeDANFSeRLRetrato.pas' {frlDANFSeRLRetrato};
+  ACBrNFSeDANFSeRLClass in '..\..\..\Fontes\ACBrNFSe\ACBrNFSeDANFSeRLClass.pas',
+  ACBrNFSeDANFSeRLReg in '..\..\..\Fontes\ACBrNFSe\ACBrNFSeDANFSeRLReg.pas',
+  ACBrNFSeDANFSeRL in '..\..\..\Fontes\ACBrNFSe\ACBrNFSeDANFSeRL.pas' {frlDANFSeRL},
+  ACBrNFSeDANFSeRLRetrato in '..\..\..\Fontes\ACBrNFSe\ACBrNFSeDANFSeRLRetrato.pas' {frlDANFSeRLRetrato};
 
 end.

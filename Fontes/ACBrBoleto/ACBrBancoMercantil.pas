@@ -161,7 +161,7 @@ begin
                'REMESSA'                                  + // Literal de Remessa
                '01'                                       + // Código do Tipo de Serviço
                padL( 'COBRANCA', 15 )                     + // Descrição do tipo de serviço
-               padL( Agencia, 4)                          + // agencia origem
+               padL( OnlyNumber(Agencia), 4)              + // agencia origem
 	       padR( OnlyNumber(CNPJCPF),15,'0')          + // CNPJ/CPF CEDENTE
 	       ' '                                        + // BRANCO
 	       padL( Nome, 30)                            + // Nome da Empresa

@@ -106,7 +106,7 @@ begin
 
       CodigoBarras := IntToStr( Numero )+'9'+ FatorVencimento +
                       IntToStrZero(Round(ACBrTitulo.ValorDocumento*100),10) +
-                      padR(Cedente.Agencia,4,'0') +
+                      padR(OnlyNumber(Cedente.Agencia),4,'0') +
                       ACBrTitulo.Carteira +
                       ACBrTitulo.NossoNumero +
 
@@ -214,8 +214,8 @@ begin
    begin
       DigitoNossoNumero := CalcularDigitoVerificador(ACBrTitulo);
 
-      aAgencia := IntToStrZero(StrToIntDef(trim(ACBrBoleto.Cedente.Agencia),0),5);
-      aConta   := IntToStrZero(StrToIntDef(trim(ACBrBoleto.Cedente.Conta),0),7);
+      aAgencia := IntToStrZero(StrToIntDef(OnlyNumber(ACBrBoleto.Cedente.Agencia),0),5);
+      aConta   := IntToStrZero(StrToIntDef(OnlyNumber(ACBrBoleto.Cedente.Conta),0),7);
       aCarteira:= IntToStrZero(StrToIntDef(trim(Carteira),0), 3);
 
       {Pegando Código da Ocorrencia}

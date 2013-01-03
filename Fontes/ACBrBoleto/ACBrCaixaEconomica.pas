@@ -239,10 +239,10 @@ begin
                '0'                                     + //8 - Tipo de registro - Registro header de arquivo
                padL('', 9, ' ')                        + //9 a 17 Uso exclusivo FEBRABAN/CNAB
                ATipoInscricao                          + //18 - Tipo de inscrição do cedente
-               padR(OnlyNumber(CNPJCPF), 14, '0')                  + //19 a 32 -Número de inscrição do cedente
+               padR(OnlyNumber(CNPJCPF), 14, '0')      + //19 a 32 -Número de inscrição do cedente
                //padL(CodigoCedente, 18, '0') + '  '     + //33 a 52 - Código do convênio no banco [ Alterado conforme instruções da CSO Brasília ] 27-07-09
                padL('',20, '0')                        +  //33 a 52 - Código do convênio no banco
-               padR(Agencia, 5, '0')                   + //53 a 57 - Código da agência do cedente
+               padR(OnlyNumber(Agencia), 5, '0')       + //53 a 57 - Código da agência do cedente
                padL(AgenciaDigito, 1 , '0')            + //58 - Dígito da agência do cedente
                padR(CodigoCedente, 6, '0')             + //59 a 64 - Código Cedente (Código do Convênio no Banco)
                padL('', 7, '0')                        + //65 a 71 - Uso Exclusivo CAIXA
@@ -276,7 +276,7 @@ begin
                padR(OnlyNumber(CNPJCPF), 15, '0')      + //19 a 33 -Número de inscrição do cedente
                padR(CodigoCedente, 6, '0')             + //34 a 39 - Código do convênio no banco (código do cedente)
                padL('', 14, '0')                       + //40 a 53 - Uso Exclusivo Caixa
-               padR(Agencia, 5 , '0')                  + //54 a 58 - Dígito da agência do cedente
+               padR(OnlyNumber(Agencia), 5 , '0')      + //54 a 58 - Dígito da agência do cedente
                padL(AgenciaDigito, 1 , '0')            + //59 - Dígito da agência do cedente
                padR(CodigoCedente, 6, '0')             + //60 a 65 - Código do convênio no banco (código do cedente)
                padL('',7,'0')                          + //66 a 72 - Código do Modelo Personalizado (Código fornecido pela CAIXA/gráfica, utilizado somente quando o modelo do bloqueto for personalizado)
@@ -374,7 +374,7 @@ begin
                'P'                                                        + //14 - Código do segmento do registro detalhe
                ' '                                                        + //15 - Uso exclusivo FEBRABAN/CNAB: Branco
                ATipoOcorrencia                                            + //16 a 17 - Código de movimento
-               padR(ACBrBoleto.Cedente.Agencia, 5, '0')                   + //18 a 22 - Agência mantenedora da conta
+               padR(OnlyNumber(ACBrBoleto.Cedente.Agencia), 5, '0')       + //18 a 22 - Agência mantenedora da conta
                padL(ACBrBoleto.Cedente.AgenciaDigito, 1 , '0')            + //23 -Dígito verificador da agência
                padL(ACBrBoleto.Cedente.CodigoCedente, 6, '0')             + //24 a 29 - Código do Convênio no Banco (Codigo do cedente)
                padL('', 11, '0')                                          + //30 a 40 - Uso Exclusivo da CAIXA

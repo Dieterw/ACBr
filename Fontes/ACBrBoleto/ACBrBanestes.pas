@@ -97,7 +97,7 @@ var
   nResult, nResultTemp, nDigAsbace01, nDigAsbace02: Integer;
 begin
    cLivreAsbace := copy(ACBrTitulo.NossoNumero,2,8)+
-                   copy(ACBrTitulo.ACBrBoleto.Cedente.Conta,2,10)+
+                   copy(trim(ACBrTitulo.ACBrBoleto.Cedente.Conta),2,10)+
                    ACBrTitulo.ACBrBoleto.Cedente.ContaDigito+
                    '4'+
                    IntToStrZero(fpNumero,3);
@@ -223,7 +223,7 @@ begin
                'REMESSA'                       + // Literal de Remessa
                '01'                            + // Código do Tipo de Serviço
                padL('COBRANCA', 15 )           +
-               padR(Conta, 10, '0')            + // Codigo da Empresa no Banco
+               padR(OnlyNumber(Conta), 10, '0')+ // Codigo da Empresa no Banco
                padR(ContaDigito, 1, '0')       +
                space(9)                        + // COMPLEMENTO DO REGISTRO
                padL(Nome, 30)                  + // Nome da Empresa
@@ -336,7 +336,7 @@ begin
          wLinha:= '1'                                              +  // ID Registro
                   atipoinscricao                                   + // TIPO INSCRICAO EMPRESA(CNPJ, CPF);
                   padL(Cedente.CNPJCPF,14,'0')+
-                  padL(cedente.Conta,10,'0')+
+                  padL(OnlyNumber(cedente.Conta),10,'0')+
                   cedente.ContaDigito+
                   space(9)+
                   padL( SeuNumero,25,' ')+

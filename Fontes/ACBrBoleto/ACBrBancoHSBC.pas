@@ -227,8 +227,8 @@ begin
       CalcularFatorVencimento(Vencimento) +
       IntToStrZero(Round(ValorDocumento * 100), 10) +
       RightStr(padR(ANossoNumero, 13, '0'),11) +       // precisa passar nosso numero + digito
-      padR(ACBrBoleto.Cedente.Agencia, 4, '0') +
-      padR(ACBrBoleto.Cedente.Conta, 7, '0') +
+      padR(OnlyNumber(ACBrBoleto.Cedente.Agencia), 4, '0') +
+      padR(OnlyNumber(ACBrBoleto.Cedente.Conta), 7, '0') +
       '00';
     end
     else // 'CNR' Cobranca Nao Registrada
@@ -236,7 +236,7 @@ begin
       Parte2 :=
       CalcularFatorVencimento(Vencimento) +
       IntToStrZero(Round(ValorDocumento * 100), 10) +
-      padR(ACBrBoleto.Cedente.CodigoCedente, 7, '0') +
+      padR(trim(ACBrBoleto.Cedente.CodigoCedente), 7, '0') +
       padR(NossoNumero, 13, '0') +
       DataToJuliano(Vencimento);
     end;
@@ -262,9 +262,9 @@ begin
                '01'                                            + // Código do Tipo de Serviço
                padL( 'COBRANCA', 15 )                          + // Descrição do tipo de serviço
                '0'                                             + // Zero
-               padR( Agencia, 4, '0')                          + // Agencia cedente
+               padR(OnlyNumber(Agencia), 4, '0')               + // Agencia cedente
                '55'                                            + // Sub-Conta
-               padR( Conta+ContaDigito, 11, '0')               + // Conta Corrente //Removi agencia repetido //ALFEU MOTA //
+               padR(OnlyNumber(Conta)+ContaDigito, 11, '0')    + // Conta Corrente //Removi agencia repetido //ALFEU MOTA //
                padL( '', 2,' ')                                + // Uso do banco
                padL( Nome, 30,' ')                             + // Nome da Empresa
                '399'                                           + // Número do Banco na compensação
@@ -361,9 +361,9 @@ begin
                   '02'                                                          + //Código de Inscrição
                   padR(OnlyNumber(Cedente.CNPJCPF),14,'0')                      + //Número de inscrição do Cliente (CPF/CNPJ)
                   '0'                                                           + // Zero
-                  padR( Cedente.Agencia, 4, '0')                                + // Agencia cedente
+                  padR(OnlyNumber(Cedente.Agencia), 4, '0')                     + // Agencia cedente
                  '55'                                                           + // Sub-Conta
-                  padR( Cedente.Conta+Cedente.ContaDigito, 11, '0')             +
+                  padR(OnlyNumber(Cedente.Conta)+Cedente.ContaDigito, 11, '0')  +
                   padL('',2,' ')                                                + // uso banco
                   padL( SeuNumero,25,' ')                                       + // Numero de Controle do Participante
                   OnlyNumber(MontarCampoNossoNumero(ACBrTitulo))                + // Nosso Numero tam 10 + digito tam 1

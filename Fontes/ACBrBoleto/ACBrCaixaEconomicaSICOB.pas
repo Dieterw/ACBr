@@ -322,16 +322,23 @@ var
 begin
    with ACBrTitulo do
    begin
+
       ANossoNumero := OnlyNumber(NossoNumero);
-      if Carteira = 'SR' then
-       begin
-         if TamanhoMaximoNossoNum = 14 then
-            ANossoNumero:= '8'+ padr(Copy(ANossoNumero,Length(ANossoNumero)-13,14),14)    
-         else
-            ANossoNumero:= '82'+ padr(Copy(ANossoNumero,Length(ANossoNumero)-7,8),8);
-       end
+
+      if (Length(ANossoNumero) = 10) or (Length(ANossoNumero) = 15) then
+             ANossoNumero:= ANossoNumero
       else
-        ANossoNumero:= '9' + padR(Copy(ANossoNumero,Length(ANossoNumero)-8,9),9);
+       begin
+         if Carteira = 'SR' then
+          begin
+            if TamanhoMaximoNossoNum = 14 then
+               ANossoNumero:= '8'+ padr(Copy(ANossoNumero,Length(ANossoNumero)-13,14),14)
+            else
+              ANossoNumero:= '82'+ padr(Copy(ANossoNumero,Length(ANossoNumero)-7,8),8);
+          end
+         else
+            ANossoNumero:= '9' + padR(Copy(ANossoNumero,Length(ANossoNumero)-8,9),9);
+       end;
    end;
    Result := ANossoNumero;
 end;
@@ -474,7 +481,7 @@ begin
              padL(OnlyNumber(CNPJCPF), 14, '0')           + //  19 a  32 - Número de inscrição do cedente
              padL(CodigoCedente, 15, '0')+ACodCedenteDVAg + //  33 a  48 - Código do convênio no banco - Cedente
              space(4)                                     + //  49 a  52 - Uso Exclusivo CAIXA
-             padR(Agencia,5,'0')                          +
+             padR(OnlyNumber(Agencia),5,'0')              +
              padR(AgenciaDigito,1,'0')                    +
              padR(aCodCedente,12, '0')                    + //  59 a  70 - Código do Cedente + DV Código Cedente
              ACodCedenteDV                                + //  71 a  71 - DV Codigo Cedente
@@ -507,7 +514,7 @@ begin
              padR(OnlyNumber(CNPJCPF), 15, '0')       + //  19 a  33 - Número de inscrição da Empresa
              ACodConvenio                             + //  34 a  39 - Código do convênio no banco (código do cedente)
              space(4)                                 + //  50 a  53 - Uso Exclusivo da CAIXA
-             padR(Agencia, 5 , '0')                   + //  54 a  58 - Agência Mantenedora da Conta
+             padR(OnlyNumber(Agencia), 5 , '0')       + //  54 a  58 - Agência Mantenedora da Conta
              padR(AgenciaDigito, 1 , '0')             + //  59 a  59 - Dígito Verificador da Agência
              padR(aCodCedente,12, '0')                + //  60 a  71 - Cód. Cedente + Dígito Verificador do Cedente
              ACodCedenteDV                            + //  72 a  72 - DV Codigo Cedente
@@ -661,7 +668,7 @@ begin
              'P'                                                        + //  14 a  14 - Cód. Segmento do Registro Detalhe
              ' '                                                        + //  15 a  15 - Uso Exclusivo FEBRABAN/CNAB
              ATipoOcorrencia                                            + //  16 a  17 - Código de Movimento Remessa
-             padR(ACBrBoleto.Cedente.Agencia, 5, '0')                   + //  18 a  22 - Agência mantenedora da conta
+             padR(OnlyNumber(ACBrBoleto.Cedente.Agencia), 5, '0')       + //  18 a  22 - Agência mantenedora da conta
              padR(ACBrBoleto.Cedente.AgenciaDigito, 1 , '0')            + //  23 a  23 - Dígito verificador da agência
              padR(aCodCedente, 12, '0')                                 + //  24 a  35 - Código do Cedente
              ACodCedenteDV                                              + //  36 a  36 - Digito Verificador do Cedente

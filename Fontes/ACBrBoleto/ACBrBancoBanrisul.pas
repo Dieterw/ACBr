@@ -202,8 +202,8 @@ begin
      FatorVencimento:=CalcularFatorVencimento(ACBrTitulo.Vencimento);
 
      CampoLivre:= Modalidade +'1'+
-                  padR(copy(ACBrBoleto.Cedente.Agencia,2,3), 3, '0')+{ Código agência (cooperativa) }
-                  padR(ACBrBoleto.Cedente.Conta, 7, '0')+{ Código cedente = Número da conta }
+                  padR(copy(trim(ACBrBoleto.Cedente.Agencia),2,3), 3, '0')+{ Código agência (cooperativa) }
+                  padR(OnlyNumber(ACBrBoleto.Cedente.Conta), 7, '0')+{ Código cedente = Número da conta }
                   padR(NossoNumero, 8, '0')+{ Nosso número }
                   '041';
 
@@ -287,7 +287,7 @@ begin
              '1'                                   + // ID do Arquivo( 1 - Remessa)
              'REMESSA'                             + // Literal de Remessa
              space(17)                             + // brancos 17
-             padR(copy(Agencia, 1, 4)+cd, 13, '0') + // Codigo da Empresa no Banco
+             padR(copy(trim(Agencia), 1, 4)+cd, 13, '0') + // Codigo da Empresa no Banco
              space(7)                              +
              padR(Nome, 30, ' ')                   + // nome do Cedente
              '041'                                 + // Número do banco
@@ -324,7 +324,6 @@ begin
       toRemessaConcederAbatimento: Ocorrencia:='04'; {Concessão de Abatimento}
       toRemessaCancelarAbatimento: Ocorrencia:='05'; {Cancelamento de Abatimento concedido}
       toRemessaAlterarVencimento : Ocorrencia:='06'; {Alteração de vencimento}
-      //toRemessaAlterarNumeroControle         : Ocorrencia := '08'; {Alteração de seu número}
       toRemessaProtestar                    : Ocorrencia :='09'; {Pedido de protesto}
       toRemessaCancelarInstrucaoProtestoBaixa: Ocorrencia:='18'; {Sustar protesto e baixar}
       toRemessaCancelarInstrucaoProtesto    : Ocorrencia:='19'; {Sustar protesto e manter na carteira}
@@ -361,7 +360,7 @@ begin
 
       wLinha:= '1'                                                              + // ID Registro
                space(16)                                                        +
-               padL(copy(Cedente.Agencia, 1, 4)+cd, 13, '0')                    + // Codigo da Empresa no Banco
+               padL(copy(trim(Cedente.Agencia), 1, 4)+cd, 13, '0')              + // Codigo da Empresa no Banco
                space(7)                                                         +
                space(25)                                                        +
                PadL(NossoNumero, 8, '0')+CalculaDigitosChaveASBACE(NossoNumero) +

@@ -105,7 +105,7 @@ begin
 
       CodigoBarras := '033'+'9'+ FatorVencimento +
                       IntToStrZero(Round(ACBrTitulo.ValorDocumento*100),10) +
-                      '9'+ padR(Cedente.CodigoCedente,7,'0') +
+                      '9'+ padR(trim(Cedente.CodigoCedente),7,'0') +
                       padR(ACBrTitulo.NossoNumero + DigitoNossoNumero, 13) +
                       '0'+ padR(trim(Cedente.Modalidade),3,'0');
 
@@ -185,7 +185,7 @@ begin
       aCarteira:= 4;
 
    if aCarteira = 5 then
-      aAgencia := padR(ACBrTitulo.ACBrBoleto.Cedente.Agencia +
+      aAgencia := padR(OnlyNumber(ACBrTitulo.ACBrBoleto.Cedente.Agencia) +
                        ACBrTitulo.ACBrBoleto.Cedente.AgenciaDigito,5,'0')
    else
       aAgencia:= '00000';

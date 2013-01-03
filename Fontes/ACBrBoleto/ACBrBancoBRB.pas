@@ -206,8 +206,8 @@ begin
     wLinha := 'DCB'                                             + // Literal DCB
               '001'                                             + // Versão
               '075'                                             + // Arquivo
-              padR(Agencia, 3, '0')                             + // Agência
-              padR(Conta, 6, '0') + padR(ContaDigito, 1, '0')   + // Conta
+              padR(OnlyNumber(Agencia), 3, '0')                 + // Agência
+              padR(OnlyNumber(Conta), 6, '0') + padR(ContaDigito, 1, '0')   + // Conta
               FormatDateTime('yyyymmdd', Now)                   + // Data de formatação
               FormatDateTime('hhmmss', Now)                     + // Hora da formatação
               IntToStrZero(ACBrBoleto.ListadeBoletos.Count +1,6); // Qtde de registros Header + Detalhe
@@ -422,10 +422,10 @@ begin
      raise Exception.Create(ACBrStr('Campo Modalidade não informado, impossivel continuar.'));
 
   ChaveASBACESemDigito := '000';
-  ChaveASBACESemDigito := ChaveASBACESemDigito + padR(ACBrTitulo.ACBrBoleto.Cedente.Agencia, 3, '0');
-  ChaveASBACESemDigito := ChaveASBACESemDigito + padR(ACBrTitulo.ACBrBoleto.Cedente.Conta, 6, '0');
+  ChaveASBACESemDigito := ChaveASBACESemDigito + padR(OnlyNumber(ACBrTitulo.ACBrBoleto.Cedente.Agencia), 3, '0');
+  ChaveASBACESemDigito := ChaveASBACESemDigito + padR(OnlyNumber(ACBrTitulo.ACBrBoleto.Cedente.Conta), 6, '0');
   ChaveASBACESemDigito := ChaveASBACESemDigito + padR(ACBrTitulo.ACBrBoleto.Cedente.ContaDigito, 1, '0');
-  ChaveASBACESemDigito := ChaveASBACESemDigito + padL(ACBrTitulo.ACBrBoleto.Cedente.Modalidade, 1); //Categoria da Cobrança
+  ChaveASBACESemDigito := ChaveASBACESemDigito + padL(trim(ACBrTitulo.ACBrBoleto.Cedente.Modalidade), 1); //Categoria da Cobrança
   ChaveASBACESemDigito := ChaveASBACESemDigito + padR(ACBrTitulo.NossoNumero, 6, '0');
   ChaveASBACESemDigito := ChaveASBACESemDigito + padR(IntToStr(Numero), 3, '0');
   Result := ChaveASBACESemDigito + CalculaDigitosChaveASBACE(ChaveASBACESemDigito);

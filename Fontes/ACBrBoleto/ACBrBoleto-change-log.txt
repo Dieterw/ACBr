@@ -142,6 +142,17 @@ Versao 0.0.10a do FortesReport 06/07/11
     (por: Regys Silveira) 
 
 
+Versao 0.0.52a	
+[*]Todas as units - Melhorado rotinas de montagem do código de barras e geração dos arquivos 
+   remessa para respeitar o tamanho de cada campo, na maioria das units a alteração foi feita 
+   nos campos Agencia e Conta.(Juliana Tamizou)
+
+Versao 0.0.51a	
+[*]Unit CaixaEconomicaSicob - Melhorado rotina de formatação do Nosso Número, desta
+   forma é possível que o componente receba o nosso número já formatado de acordo com o
+   manual do banco.(Juliana Tamizou)
+
+
 Versao 0.0.50a	
 [-]Unit Bradesco - Corrigido bug na geração do arquivo remessa CNAB400.(Juliana Tamizou)
 

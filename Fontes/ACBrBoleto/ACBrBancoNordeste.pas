@@ -109,8 +109,8 @@ begin
 
       CodigoBarras := IntToStrZero( Numero, 3 )+'9'+ FatorVencimento +
                       IntToStrZero(Round(ACBrTitulo.ValorDocumento*100),10) +
-                      padR(Cedente.Agencia,4,'0') +
-                      padR(Cedente.Conta,7,'0') +
+                      padR(OnlyNumber(Cedente.Agencia),4,'0') +
+                      padR(OnlyNumber(Cedente.Conta),7,'0') +
                       padR(Cedente.ContaDigito,1,'0') +
                       ACBrTitulo.NossoNumero +
                       CalcularDigitoVerificador(ACBrTitulo) +
@@ -147,9 +147,9 @@ begin
                'REMESSA'                                  + // Literal de Remessa
                '01'                                       + // Código do Tipo de Serviço
                padL( 'COBRANCA', 15 )                     + // Descrição do tipo de serviço
-               padR( Agencia, 4, '0')                     + // Cód. da Agência do cliente
+               padR(OnlyNumber(Agencia), 4, '0')          + // Cód. da Agência do cliente
                IntToStrZero(0, 2)                         + // Filler - Zeros
-               padR( Conta, 7, '0')                       + // Conta corrente de cobrança
+               padR(OnlyNumber(Conta), 7, '0')            + // Conta corrente de cobrança
                padR( ContaDigito, 1, '0')                 + // Dígito da conta corrente
                Space(6)                                   + // Filler - Brancos
                padL( Nome, 30)                            + // Nome da Empresa
@@ -175,8 +175,8 @@ begin
    begin
       DigitoNossoNumero := CalcularDigitoVerificador(ACBrTitulo);
 
-      aAgencia := IntToStrZero(StrToIntDef(trim(ACBrBoleto.Cedente.Agencia),0),4);
-      aConta   := IntToStrZero(StrToIntDef(trim(ACBrBoleto.Cedente.Conta),0),7) + IntToStrZero(StrToIntDef(trim(ACBrBoleto.Cedente.ContaDigito),0),1);
+      aAgencia := IntToStrZero(StrToIntDef(OnlyNumber(ACBrBoleto.Cedente.Agencia),0),4);
+      aConta   := IntToStrZero(StrToIntDef(OnlyNumber(ACBrBoleto.Cedente.Conta),0),7) + IntToStrZero(StrToIntDef(trim(ACBrBoleto.Cedente.ContaDigito),0),1);
       aCarteira:= IntToStrZero(StrToIntDef(trim(Carteira),0), 2);
 
       {Pegando Código da Ocorrencia}

@@ -111,17 +111,17 @@ begin
    with ACBrTitulo.ACBrBoleto do
    begin
       FatorVencimento := CalcularFatorVencimento(ACBrTitulo.Vencimento);
-      Modalidade := IfThen(Cedente.Modalidade='','1',Cedente.Modalidade);
+      Modalidade := IfThen(Cedente.Modalidade='','1',Copy(trim(Cedente.Modalidade),1,1));
 
       { Monta o campo livre }
-      CampoLivre :=   Modalidade                            + { 1-Sem registro ou 3-Com registro. Por enquanto vou deixar 1 mais tenho que tratar menhor essa informação }
-                      '1'                                   + { 1-Carteira simples }
-                      padR(ACBrTitulo.NossoNumero,8,'0')    + { Nosso número }
-                      CalcularDigitoVerificador(ACBrTitulo) + { Dígito verificador do nosso número }
-                      Cedente.Agencia                       + { Código agência (cooperativa) }
-                      padR(Cedente.AgenciaDigito,2,'0')     + { Dígito da agência (posto da cooperativa) }
-                      Cedente.Conta                         + { Código cedente = Número da conta }
-                      '1'                                   + { Filler - zero. Obs: Será 1 quando o valor do documento for diferente se zero }
+      CampoLivre :=   Modalidade                              + { 1-Sem registro ou 3-Com registro. Por enquanto vou deixar 1 mais tenho que tratar menhor essa informação }
+                      '1'                                     + { 1-Carteira simples }
+                      padR(ACBrTitulo.NossoNumero,8,'0')      + { Nosso número }
+                      CalcularDigitoVerificador(ACBrTitulo)   + { Dígito verificador do nosso número }
+                      padR(OnlyNumber(Cedente.Agencia),4,'0') + { Código agência (cooperativa) }
+                      padR(Cedente.AgenciaDigito,2,'0')       + { Dígito da agência (posto da cooperativa) }
+                      Cedente.Conta                           + { Código cedente = Número da conta }
+                      '1'                                     + { Filler - zero. Obs: Será 1 quando o valor do documento for diferente se zero }
                       '0';                                    { Filler - zero }
       { Calcula o dígito do campo livre }
       Modulo.CalculoPadrao;
@@ -209,7 +209,6 @@ begin
          toRemessaConcederAbatimento             : Ocorrencia := '04'; {Concessão de Abatimento}
          toRemessaCancelarAbatimento             : Ocorrencia := '05'; {Cancelamento de Abatimento concedido}
          toRemessaAlterarVencimento              : Ocorrencia := '06'; {Alteração de vencimento}
-         //toRemessaAlterarNumeroControle         : Ocorrencia := '08'; {Alteração de seu número}
          toRemessaProtestar                      : Ocorrencia := '09'; {Pedido de protesto}
          toRemessaCancelarInstrucaoProtestoBaixa : Ocorrencia := '18'; {Sustar protesto e baixar}
          toRemessaCancelarInstrucaoProtesto      : Ocorrencia := '19'; {Sustar protesto e manter na carteira}

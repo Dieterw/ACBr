@@ -172,8 +172,8 @@ begin
        raise Exception.Create( ACBrStr('Carteira Inválida.'+sLineBreak) ) ;
 
     {Montando Campo Livre}
-    CampoLivre    := padR(ACBrTitulo.ACBrBoleto.Cedente.Modalidade, 2, '0') +
-                     padR(ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente, 7, '0') +
+    CampoLivre    := padR(trim(ACBrTitulo.ACBrBoleto.Cedente.Modalidade), 2, '0') +
+                     padR(trim(ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente), 7, '0') +
                      padR(Copy(ANossoNumero,1,8), 8, '0') +  //7 Sequenciais + 1 do digito
                      IntToStrZero(Max(1,ACBrTitulo.Parcela),3);
 
@@ -186,7 +186,7 @@ begin
                       FatorVencimento +
                       IntToStrZero(Round(ACBrTitulo.ValorDocumento * 100), 10) +
                       padR(ACarteira, 1, '0') +
-                      padR(Cedente.Agencia,4,'0') +
+                      padR(OnlyNumber(Cedente.Agencia),4,'0') +
                       CampoLivre;
     end;
 
@@ -218,7 +218,7 @@ begin
                '01'                                       + // Código do Tipo de Serviço
                padL( 'COBRANÇA', 8 )                      + // Descrição do tipo de serviço
                Space(7)                                   + // Brancos
-               padR( Agencia, 4 )                         + // Prefixo da Cooperativa
+               padR( OnlyNumber(Agencia), 4 )             + // Prefixo da Cooperativa
                padR( AgenciaDigito, 1 )                   + // Dígito Verificador do Prefixo
                padR( trim(CodigoCedente), 9,'0' )         + // Código do Cliente/Cedente
                Space(6)                                   + // Brancos
@@ -326,9 +326,9 @@ begin
          wLinha:= '1'                                                     +  // ID Registro
                   TipoCedente                                             +  // Identificação do Tipo de Inscrição do Sacado 01 - CPF 02 - CNPJ
                   padR(onlyNumber(Cedente.CNPJCPF),14,'0')                +  // Número de Inscrição do Cedente
-                  padR(Cedente.Agencia, 4, '0')                           +  // Agência
+                  padR(OnlyNumber(Cedente.Agencia), 4, '0')               +  // Agência
                   padR( Cedente.AgenciaDigito, 1, '0')                    +  // Agência digito
-                  padR( RightStr(Cedente.Conta,8)                         +  // Conta Corrente
+                  padR( OnlyNumber(Cedente.Conta)                         +  // Conta Corrente
                   Cedente.ContaDigito, 9, '0')                            +  // Dígito Conta Corrente
                   padR( '0', 6, '0')                                      +  // Número do Convênio de Cobrança do Cedente fixo zeros: "000000"
                   Space(25)                                               +  // Brancos
@@ -344,13 +344,13 @@ begin
                   IntToStrZero( 0, 1)                                     +  // DV do código de responsabilidade: "0"
                   IntToStrZero( 0, 6)                                     +  // Numero do borderô: “000000”
                   Space(5)                                                +  // Brancos
-                  padR( Cedente.Modalidade, 2, '0')                       +  // Carteira/Modalidade
+                  padR( trim(Cedente.Modalidade), 2, '0')                 +  // Carteira/Modalidade
                   Ocorrencia                                              +  // Ocorrencia (remessa)
                   padL( NumeroDocumento,  10)                             +  // Número do Documento
                   FormatDateTime( 'ddmmyy', Vencimento)                   +  // Data de Vencimento do Título
                   IntToStrZero( Round( ValorDocumento * 100 ), 13)        +  // Valor do Título
                   IntToStrZero( Banco.Numero, 3)                          +  // Número Banco: "756"
-                  padR( Cedente.Agencia, 4, '0')                          +  // Prefixo da Agência Cobradora: “0000”
+                  padR(OnlyNumber(Cedente.Agencia), 4, '0')               +  // Prefixo da Agência Cobradora: “0000”
                   Space(1)                                                +  // Dígito Verificador do Prefixo da Agência Cobradora: Brancos
                   padL(aEspecie,2)                                        +  // Espécie do Título
                   ATipoAceite                                             +  // Identificação
@@ -502,12 +502,12 @@ begin
                '0'                                      + //8 - Tipo de registro - Registro header de arquivo
                space(9)                                 + //9 a 17 Uso exclusivo FEBRABAN/CNAB
                ATipoInscricao                           + //18 - Tipo de inscrição do cedente
-               padR(OnlyNumber(CNPJCPF), 14, '0')                   + //19 a 32 -Número de inscrição do cedente
+               padR(OnlyNumber(CNPJCPF), 14, '0')       + //19 a 32 -Número de inscrição do cedente
                space(20)                                + // 33 a 52 - Brancos
                '0'                                      + // 53 - Zeros
-               padR(Agencia, 4, '0')                    + //54 a 57 - Código da agência do cedente
+               padR(OnlyNumber(Agencia), 4, '0')        + //54 a 57 - Código da agência do cedente
                padL(AgenciaDigito, 1, '0')              + //58 - Digito agência do cedente
-               padR(Conta, 12, '0')                     + // 59 a 70 - Número da conta do cedente
+               padR(OnlyNumber(Conta), 12, '0')         + // 59 a 70 - Número da conta do cedente
                padL(ContaDigito, 1, '0')                + //71 - Digito conta do cedente
                ' '                                      + // 72 - Dígito verificador Ag/Conta (Brancos)
                padL(Nome, 30, ' ')                      + // 73 a 102 - Nome do cedente
@@ -536,9 +536,9 @@ begin
                padR(OnlyNumber(CNPJCPF), 15, '0')      + //19 a 33 -Número de inscrição do cedente
                space(20)                               + //34 a 53 - Brancos
                '0'                                     + // 54 - Zeros
-               padR(Agencia, 4, '0')                   + //55 a 58 - Código da agência do cedente
+               padR(OnlyNumber(Agencia), 4, '0')       + //55 a 58 - Código da agência do cedente
                padR(AgenciaDigito, 1, '0')             + //59 - Digito da agencia do cedente
-               padR(Conta, 12, '0')                    + //60 - 71  Número da conta do cedente
+               padR(OnlyNumber(Conta), 12, '0')        + //60 - 71  Número da conta do cedente
                padR(ContaDigito, 1, '0')               + //72 - Digito da conta
                ' '                                     + //73
                padL(Nome, 30, ' ')                     + //74 a 103 - Nome do cedente
@@ -567,10 +567,7 @@ begin
         toRemessaAlterarVencimento         : ATipoOcorrencia := '06';
         toRemessaConcederDesconto          : ATipoOcorrencia := '07';
         toRemessaCancelarDesconto          : ATipoOcorrencia := '08';
-      //  toRemessaSustarProtesto            : ATipoOcorrencia := '18';
         toRemessaCancelarInstrucaoProtesto : ATipoOcorrencia := '10';
-    //  toRemessaAlterarNomeEnderecoSacado : ATipoOcorrencia := '12';
-    //  toRemessaDispensarJuros            : ATipoOcorrencia := '31';
       else
        ATipoOcorrencia := '01';
       end;
@@ -616,9 +613,9 @@ begin
                ' '                                                        + //15 - Uso exclusivo FEBRABAN/CNAB: Branco
                ATipoOcorrencia                                            + //16 a 17 - Código de movimento
                '0'                                                        + // 18
-               ACBrBoleto.Cedente.Agencia                                 + //19 a 22 - Agência mantenedora da conta
+               padR(OnlyNumber(ACBrBoleto.Cedente.Agencia),4,'0')         + //19 a 22 - Agência mantenedora da conta
                padR(ACBrBoleto.Cedente.AgenciaDigito, 1, '0')             + //23 Digito agencia
-               padR(ACBrBoleto.Cedente.Conta, 12, '0')                    + //24 a 35 - Número da Conta Corrente
+               padR(OnlyNumber(ACBrBoleto.Cedente.Conta), 12, '0')        + //24 a 35 - Número da Conta Corrente
                padR(ACBrBoleto.Cedente.ContaDigito , 1, '0')              + //36 - Dígito da Conta Corrente
                ' ';                                                        //37 - DV Agência/COnta Brancos
                if (ACBrBoleto.Cedente.ResponEmissao = tbCliEmite) then

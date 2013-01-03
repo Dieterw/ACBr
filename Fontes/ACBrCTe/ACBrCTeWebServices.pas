@@ -99,8 +99,9 @@ type
     procedure LoadMsgEntrada;
     procedure LoadURL;
   public
-    function Executar: Boolean;virtual;
     constructor Create(AOwner : TComponent); virtual;
+    function Executar: Boolean;virtual;
+
     property CabMsg: AnsiString read FCabMsg;
     property DadosMsg: AnsiString read FDadosMsg;
     property RetornoWS: AnsiString read FRetornoWS;
@@ -121,6 +122,7 @@ type
     FxObs :  String;
   public
     function Executar: Boolean; override;
+
     property tpAmb : TpcnTipoAmbiente read FtpAmb;
     property verAplic : String read FverAplic;
     property cStat : Integer read FcStat;
@@ -146,8 +148,9 @@ type
     FTMed: Integer;
     function GetLote: Integer;
   public
-    function Executar: Boolean; override;
     constructor Create(AOwner : TComponent; ACTes : TConhecimentos);reintroduce;
+    function Executar: Boolean; override;
+
     property Recibo: String read FRecibo;
     property TpAmb: TpcnTipoAmbiente read FTpAmb;
     property verAplic: String read FverAplic;
@@ -175,11 +178,11 @@ type
     FxMsg: String;
     function Confirma(AInfProt: TProtCteCollection): Boolean;
   public
-    function Executar: Boolean; override;
     constructor Create(AOwner : TComponent; AConhecimentos : TConhecimentos);reintroduce;
     destructor destroy; override;
-    // Incluido por Italo em 04/12/2012 (Sujestão de Nilton Other)
+    // Incluido por Italo em 04/12/2012 (Sujestão de Nilton Olher)
     procedure Clear;
+    function Executar: Boolean; override;
 
     property TpAmb: TpcnTipoAmbiente read FTpAmb;
     property verAplic: String read FverAplic;
@@ -206,9 +209,12 @@ type
     FxMsg: String;
     FcMsg: Integer;
   public
-    function Executar: Boolean; override;
     constructor Create(AOwner : TComponent);reintroduce;
     destructor destroy; override;
+    // Incluido por Italo em 03/01/2013 (Sujestão de Nilton Olher)
+    procedure Clear;
+    function Executar: Boolean; override;
+
     property TpAmb: TpcnTipoAmbiente read FTpAmb;
     property verAplic: String read FverAplic;
     property cStat: Integer read FcStat;
@@ -236,8 +242,10 @@ type
   public
     constructor Create(AOwner : TComponent); reintroduce;
     destructor Destroy; override;
-
+    // Incluido por Italo em 03/01/2013 (Sujestão de Nilton Olher)
+    procedure Clear;
     function Executar: Boolean;override;
+
     property CTeChave: WideString read FCTeChave write FCTeChave;
     property Protocolo: WideString read FProtocolo write FProtocolo;
     property DhRecbto: TDateTime read FDhRecbto write FDhRecbto;
@@ -265,7 +273,10 @@ type
     FXML_ProcCancCTe: AnsiString;
     procedure SetJustificativa(AValue: WideString);
   public
+    // Incluido por Italo em 03/01/2013 (Sujestão de Nilton Olher)
+    procedure Clear;
     function Executar: Boolean;override;
+
     property TpAmb: TpcnTipoAmbiente read FTpAmb;
     property verAplic: String read FverAplic;
     property cStat: Integer read FcStat;
@@ -298,7 +309,10 @@ type
     FXML_ProcInutCTe: AnsiString;
     procedure SetJustificativa(AValue: WideString);
   public
+    // Incluido por Italo em 03/01/2013 (Sujestão de Nilton Olher)
+    procedure Clear;
     function Executar: Boolean;override;
+
     property CTeChave: WideString read FCTeChave write FCTeChave;
     property Protocolo: String read FProtocolo write FProtocolo;
     property Modelo: Integer read FModelo write FModelo;
@@ -333,8 +347,11 @@ type
     procedure SetCPF(const Value: String);
     procedure SetIE(const Value: String);
   public
-    function Executar: Boolean;override;
     destructor Destroy; override;
+    // Incluido por Italo em 03/01/2013 (Sujestão de Nilton Olher)
+    procedure Clear;
+    function Executar: Boolean;override;
+
     property verAplic: String read FverAplic;
     property cStat: Integer read FcStat;
     property xMotivo: String read FxMotivo;
@@ -360,6 +377,8 @@ type
   public
     constructor Create(AOwner : TComponent; AEvento : TEventoCTe); reintroduce;
     destructor Destroy; override;
+    // Incluido por Italo em 03/01/2013 (Sujestão de Nilton Olher)
+    procedure Clear;
     function Executar: Boolean; override;
 
     property idLote: Integer               read FidLote      write FidLote;
@@ -1253,7 +1272,7 @@ end;
 
 { TCteRetRecepcao }
 
-// Incluido por Italo em 04/12/2012 (Sujestão de Nilton Other)
+// Incluido por Italo em 04/12/2012 (Sujestão de Nilton Olher)
 procedure TCteRetRecepcao.Clear;
 var
   i, j : Integer;
@@ -1537,6 +1556,16 @@ end;
 
 { TCteRecibo }
 
+// Incluido por Italo em 03/01/2013 (Sujestão de Nilton Olher)
+procedure TCteRecibo.Clear;
+begin
+  // Limpa Dados do retorno;
+  FMsg      := '';
+  FverAplic := '';
+  FcStat    := 0;
+  FxMotivo  := '';
+end;
+
 constructor TCteRecibo.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
@@ -1676,6 +1705,17 @@ begin
 end;
 
 { TCTeConsulta }
+
+// Incluido por Italo em 03/01/2013 (Sujestão de Nilton Olher)
+procedure TCTeConsulta.Clear;
+begin
+  // Limpa Dados do retorno;
+  FMsg      := '';
+  FverAplic := '';
+  FcStat    := 0;
+  FxMotivo  := '';
+end;
+
 constructor TCTeConsulta.Create(AOwner: TComponent);
 begin
   FConfiguracoes := TConfiguracoes( TACBrCTe( AOwner ).Configuracoes );
@@ -1917,6 +1957,17 @@ begin
 end;
 
 { TCTeCancelamento }
+
+// Incluido por Italo em 03/01/2013 (Sujestão de Nilton Olher)
+procedure TCTeCancelamento.Clear;
+begin
+  // Limpa Dados do retorno;
+  FMsg      := '';
+  FverAplic := '';
+  FcStat    := 0;
+  FxMotivo  := '';
+end;
+
 function TCTeCancelamento.Executar: Boolean;
 var
   CTeRetorno: TRetCancCTe;
@@ -2131,6 +2182,17 @@ begin
 end;
 
 { TCTeInutilizacao }
+
+// Incluido por Italo em 03/01/2013 (Sujestão de Nilton Olher)
+procedure TCTeInutilizacao.Clear;
+begin
+  // Limpa Dados do retorno;
+  FMsg      := '';
+  FverAplic := '';
+  FcStat    := 0;
+  FxMotivo  := '';
+end;
+
 function TCTeInutilizacao.Executar: Boolean;
 var
   CTeRetorno: TRetInutCTe;
@@ -2303,6 +2365,17 @@ begin
 end;
 
 { TCTeConsultaCadastro }
+
+// Incluido por Italo em 03/01/2013 (Sujestão de Nilton Olher)
+procedure TCTeConsultaCadastro.Clear;
+begin
+  // Limpa Dados do retorno;
+  FMsg      := '';
+  FverAplic := '';
+  FcStat    := 0;
+  FxMotivo  := '';
+end;
+
 destructor TCTeConsultaCadastro.destroy;
 begin
   FRetConsCad.Free;
@@ -2464,6 +2537,15 @@ begin
 end;
 
 { TCTeEnvEvento }
+
+// Incluido por Italo em 03/01/2013 (Sujestão de Nilton Olher)
+procedure TCTeEnvEvento.Clear;
+begin
+  // Limpa Dados do retorno;
+  FMsg      := '';
+  FcStat    := 0;
+  FxMotivo  := '';
+end;
 
 constructor TCTeEnvEvento.Create(AOwner: TComponent; AEvento: TEventoCTe);
 begin

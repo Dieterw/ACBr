@@ -612,7 +612,6 @@
 	</xsd:element>
 
 
-
 	<xsd:element name="GerarNfseEnvio">
 		<xsd:complexType>
 			<xsd:sequence>

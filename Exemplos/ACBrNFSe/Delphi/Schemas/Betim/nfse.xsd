@@ -1,4 +1,4 @@
-ï»¿<?xml version="1.0"?>
+<?xml version="1.0"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
             xmlns="http://betim.rps.com.br/sgm/zend/default/xsd/nfse?format=xml" 
             xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" 
@@ -459,7 +459,7 @@
 	</xsd:complexType>
 	<!--
     	ADICIONADO...
-    	MOTIVO: Evitar grandes tamanhos no retorno de notas fiscais quando pesquisado por perÃ­odo.
+    	MOTIVO: Evitar grandes tamanhos no retorno de notas fiscais quando pesquisado por período.
      -->
 	<xsd:complexType name="tcPaginacao">
 		<xsd:sequence>
@@ -753,7 +753,7 @@
 		</xsd:complexType>
 	</xsd:element>
 	<!--
-	CabeÃ§alho de dados
+	Cabeçalho de dados
     -->
 	<xsd:element name="cabecalho">
 		<xsd:complexType>
@@ -766,7 +766,7 @@
 
 
 	<!--
-	Novos elementos para atender aos serviÃ§os de geraÃ§Ã£o dos lanÃ§amentos e emissÃ£o das guias
+	Novos elementos para atender aos serviços de geração dos lançamentos e emissão das guias
 	-->
 
     <xsd:simpleType name="tsNumLancamento">

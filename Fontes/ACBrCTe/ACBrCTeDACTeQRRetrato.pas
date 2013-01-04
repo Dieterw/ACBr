@@ -933,7 +933,7 @@ begin
   qrlSerie2.Caption  := FormatFloat( '000', FCTe.Ide.serie);
   qrlNumCte2.Caption := FormatFloat( '000,000,000', FCTe.Ide.nCT );
   // TpcteTipoCTe = (tcNormal, tcComplemento, tcAnulacao, tcSubstituto);
-  qrb_01_Recibo.Enabled := (FCTe.Ide.tpCTe = tcNormal);
+  qrb_01_Recibo.Enabled := (FCTe.Ide.tpCTe = tcNormal) or (FCTe.Ide.tpCTe = tcComplemento);
 end;
 
 procedure TfrmDACTeQRRetrato.qrb_01_Recibo_AereoBeforePrint(
@@ -942,7 +942,7 @@ begin
   inherited;
   PrintBand := (QRCTe.PageNumber = 1) and (FCTe.Ide.modal = mdAereo);
 
-  qrb_01_Recibo_Aereo.Enabled := (FCTe.Ide.tpCTe = tcNormal);
+  qrb_01_Recibo_Aereo.Enabled := (FCTe.Ide.tpCTe = tcNormal) or (FCTe.Ide.tpCTe = tcComplemento);
 end;
 
 procedure TfrmDACTeQRRetrato.qrb_02_CabecalhoBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
@@ -1559,7 +1559,7 @@ begin
 
   // Imprime os Documentos Originários se o Tipo de CTe for Normal
   // TpcteTipoCTe = (tcNormal, tcComplemento, tcAnulacao, tcSubstituto);
-  qrb_08_Itens.Enabled:=(FCTe.Ide.tpCTe = tcNormal);
+  qrb_08_Itens.Enabled:=(FCTe.Ide.tpCTe = tcNormal)  or (FCTe.Ide.tpCTe = tcComplemento);
 
   for i := 1 to 2 do
     if Trim(cdsDocumentos.FieldByName('DOCUMENTO_' + IntToStr(i)).AsString) = '' then
@@ -2019,7 +2019,8 @@ begin
   // TpcteTipoCTe = (tcNormal, tcComplemento, tcAnulacao, tcSubstituto);
   if PrintBand
    then begin
-    qrb_18_Recibo.Enabled := (FCTe.Ide.tpCTe = tcNormal) and (FCTe.Ide.modal <> mdAereo) and (FPosRecibo = prRodape);
+    qrb_18_Recibo.Enabled := ((FCTe.Ide.tpCTe = tcNormal) or (FCTe.Ide.tpCTe = tcComplemento)) and
+                             (FCTe.Ide.modal <> mdAereo) and (FPosRecibo = prRodape);
     if qrb_18_Recibo.Enabled
      then qrb_18_Recibo.Height  := 68
      else qrb_18_Recibo.Height  := 0;

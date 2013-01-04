@@ -605,10 +605,10 @@ var
   wDia, wMes, wAno : Word;
   Dir : String;
 begin
-  if DFeUtil.EstaVazio(FPathMDe) then
+  if DFeUtil.EstaVazio(FPathEvento) then
      Dir := TConfiguracoes( Self.Owner ).Geral.PathSalvar
   else
-     Dir := FPathMDe;
+     Dir := FPathEvento;
 
   if FMensal then
    begin

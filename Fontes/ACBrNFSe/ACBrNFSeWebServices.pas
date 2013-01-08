@@ -2293,10 +2293,12 @@ begin
       FNotasFiscais.Items[i].NFSe.Numero            := NFSeRetorno.ListaNfse.CompNfse.Items[i].Nfse.Numero;
       FNotasFiscais.Items[i].XML_NFSe               := FRetNfse;
 
-      FRetCompNfse:='';
+      FNotasFiscais.Items[i].NFSe.NfseCancelamento.DataHora := NFSeRetorno.ListaNfse.CompNfse.Items[i].Nfse.NfseCancelamento.DataHora;
+
+      FRetCompNfse := '';
       inc(i);
      end
-     else FRetCompNfse:='';
+     else FRetCompNfse := '';
    end;
 
   TACBrNFSe( FACBrNFSe ).SetStatus( stNFSeIdle );

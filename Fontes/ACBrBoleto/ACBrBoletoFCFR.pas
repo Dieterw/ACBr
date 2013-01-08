@@ -52,7 +52,7 @@ uses
   frxClass, frxDBSet, frxBarcode, frxExportHTML, frxExportPDF;
 
 const
-  CACBrBoletoFCFR_Versao = '0.0.9a';
+  CACBrBoletoFCFR_Versao = '0.0.11a';
 
 type
   EACBrBoletoFCFR = class(Exception);
@@ -179,6 +179,7 @@ begin
      FieldDefs.Add('Sacado_NomeSacado', ftString, 100);
      FieldDefs.Add('Sacado_CNPJCPF', ftString, 18);
      FieldDefs.Add('Sacado_Logradouro', ftString, 100);
+     FieldDefs.Add('Sacado_Complemento', ftString, 100);
      FieldDefs.Add('Sacado_Numero', ftString, 10);
      FieldDefs.Add('Sacado_Bairro', ftString, 100);
      FieldDefs.Add('Sacado_Cidade', ftString, 100);
@@ -353,6 +354,7 @@ begin
             FieldByName('Sacado_NomeSacado').AsString   := ListadeBoletos[iFor].Sacado.NomeSacado;
             FieldByName('Sacado_CNPJCPF').AsString      := ListadeBoletos[iFor].Sacado.CNPJCPF;
             FieldByName('Sacado_Logradouro').AsString   := ListadeBoletos[iFor].Sacado.Logradouro;
+            FieldByName('Sacado_Complemento').AsString  := ListadeBoletos[iFor].Sacado.Complemento;
             FieldByName('Sacado_Numero').AsString       := ListadeBoletos[iFor].Sacado.Numero;
             FieldByName('Sacado_Bairro').AsString       := ListadeBoletos[iFor].Sacado.Bairro;
             FieldByName('Sacado_Cidade').AsString       := ListadeBoletos[iFor].Sacado.Cidade;

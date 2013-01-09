@@ -500,21 +500,25 @@ begin
          raise Exception.Create(ACBrStr('CNPJ\CPF do arquivo inválido'));
 
       if (not LeCedenteRetorno) and ((rAgencia <> OnlyNumber(Cedente.Agencia)) or
-          (rConta <> OnlyNumber(Cedente.CodigoCedente))) then
+          (rConta+rDigitoConta  <> OnlyNumber(Cedente.CodigoCedente))) then
          raise Exception.Create(ACBrStr('Agencia\Conta do arquivo inválido'));
 
-      Cedente.Nome    := rCedente;
-      Cedente.CNPJCPF := rCNPJCPF;
-      Cedente.Agencia := rAgencia;
-      Cedente.AgenciaDigito:= '0';
-      Cedente.Conta   := rConta;
-      Cedente.ContaDigito:= rDigitoConta;
+      if LeCedenteRetorno then
+      begin
+         Cedente.Nome    := rCedente;
+         Cedente.CNPJCPF := rCNPJCPF;
+         Cedente.Agencia := rAgencia;
+         Cedente.AgenciaDigito:= '0';
+         Cedente.Conta   := rConta;
+         Cedente.ContaDigito:= rDigitoConta;
+         Cedente.CodigoCedente:= rConta+rDigitoConta;
 
-      case StrToIntDef(Copy(ARetorno[1],18,1),0) of
-         1: Cedente.TipoInscricao:= pFisica;
-         2: Cedente.TipoInscricao:= pJuridica;
-         else
-            Cedente.TipoInscricao:= pJuridica;
+         case StrToIntDef(Copy(ARetorno[1],18,1),0) of
+            1: Cedente.TipoInscricao:= pFisica;
+            2: Cedente.TipoInscricao:= pJuridica;
+            else
+               Cedente.TipoInscricao:= pJuridica;
+         end;
       end;
 
       ACBrBanco.ACBrBoleto.ListadeBoletos.Clear;

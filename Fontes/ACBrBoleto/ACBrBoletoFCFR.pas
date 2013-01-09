@@ -52,7 +52,7 @@ uses
   frxClass, frxDBSet, frxBarcode, frxExportHTML, frxExportPDF;
 
 const
-  CACBrBoletoFCFR_Versao = '0.0.11a';
+  CACBrBoletoFCFR_Versao = '0.0.12a';
 
 type
   EACBrBoletoFCFR = class(Exception);
@@ -217,6 +217,7 @@ begin
         case Filtro of
           fiNenhum:
           begin
+             frxReport.PrintOptions.ShowDialog := MostrarSetup;
              if MostrarPreview then
                 frxReport.ShowReport(False)
              else
@@ -224,11 +225,13 @@ begin
           end;
           fiPDF:
           begin
+             frxPDFExport.ShowDialog := MostrarSetup;
              frxPDFExport.FileName := NomeArquivo;
              frxReport.Export(DmBoleto.frxPDFExport);
           end;
           fiHTML:
           begin
+             frxPDFExport.ShowDialog := MostrarSetup;
              frxHTMLExport.FileName := NomeArquivo;
              frxReport.Export(DmBoleto.frxHTMLExport);
           end;

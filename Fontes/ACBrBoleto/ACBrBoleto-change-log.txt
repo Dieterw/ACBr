@@ -72,6 +72,10 @@ Versao 0.0.1 do FastReport 05/08/11
     (por: Isaque Pinheiro)
 
 
+Versao 0.0.12a do FastReport 09/01/13
+[-] Alterado componente para respeitar a propriedade MostrarSetup.(NazarenoNeto)	
+
+
 Versao 0.0.11a do FastReport 13/10/12
 [*] Adicionado impressão do complemento do endereço do sacado.(Juliana Tamizou)	
 

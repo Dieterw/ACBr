@@ -77,28 +77,29 @@ var
   Soma: integer;
   Contador, Peso, Digito: integer;
 begin
-  Soma := 0;
-  Peso := 2;
-  for Contador := Length(Valor) downto 1 do
-  begin
-    Soma := Soma + (StrToInt(Valor[Contador]) * Peso);
-    if Peso < Base then
-      Peso := Peso + 1
-    else
-      Peso := 2;
-  end;
-  if Resto then
-    Result := IntToStr(Soma mod 11)
-  else
-  begin
-    Digito := (Soma mod 11);
-    if (Digito in [0..1]) or (Digito = 10) then
-      Digito := 1
-    else
-      Digito := 11 - (Soma mod 11);
+   Soma := 0;
+   Peso := 2;
+   for Contador := Length(Valor) downto 1 do
+   begin
+      Soma := Soma + (StrToInt(Valor[Contador]) * Peso);
+      if Peso < Base then
+         Peso := Peso + 1
+      else
+         Peso := 2;
+   end;
 
-    Result := IntToStr(Digito);
-  end
+   if Resto then
+      Result := IntToStr(Soma mod 11)
+   else
+    begin
+      Digito := (Soma mod 11);
+      if (Digito in [0..1]) or (Digito = 10) then
+         Digito := 1
+      else
+         Digito := 11 - (Soma mod 11);
+
+      Result := IntToStr(Digito);
+    end
 end;
 
 function TACBrBancoBRB.CalculaDigitosChaveASBACE(ChaveASBACESemDigito: string): string;
@@ -116,26 +117,30 @@ var
   var
     Auxiliar, Soma, Contador, Peso, Digito1: integer;
   begin
-    Soma := 0;
-    Peso := 2;
-    ChaveASBACESemDigito := Copy(ChaveASBACESemDigito, 1, 23);
-    for Contador := Length(ChaveASBACESemDigito) downto 1 do
-    begin
-      Auxiliar := (StrToInt(ChaveASBACESemDigito[Contador]) * Peso);
-      if Auxiliar > 9 then
-        Auxiliar := Auxiliar - 9;
-      Soma := Soma + Auxiliar;
-      if Peso = 1 then
-        Peso := 2
-      else
-        Peso := 1;
-    end;
-    Digito1 := Soma mod 10;
-    if (Digito1 = 0) then
-      Result := Digito1
-    else
-      Result := 10 - Digito1;
+     Soma := 0;
+     Peso := 2;
+     ChaveASBACESemDigito := Copy(ChaveASBACESemDigito, 1, 23);
+
+     for Contador := Length(ChaveASBACESemDigito) downto 1 do
+     begin
+        Auxiliar := (StrToInt(ChaveASBACESemDigito[Contador]) * Peso);
+        if Auxiliar > 9 then
+           Auxiliar := Auxiliar - 9;
+
+        Soma := Soma + Auxiliar;
+        if Peso = 1 then
+           Peso := 2
+        else
+           Peso := 1;
+     end;
+
+     Digito1 := Soma mod 10;
+     if (Digito1 = 0) then
+        Result := Digito1
+     else
+        Result := 10 - Digito1;
   end;
+
   function CalcularDigito2(ChaveASBACESemDigito: string; var Digito1: integer):
       integer;
     {Calcula o segundo dígito}
@@ -143,58 +148,59 @@ var
     Digito2: integer;
     ChaveASBACEComDigito1: string;
   begin
-    ChaveASBACEComDigito1 := Copy(ChaveASBACESemDigito, 1, 23) + IntToStr(Digito1);
-    Digito2 := StrToInt(Modulo11(ChaveASBACEComDigito1, 7, true));
+     ChaveASBACEComDigito1 := Copy(ChaveASBACESemDigito, 1, 23) + IntToStr(Digito1);
+     Digito2 := StrToInt(Modulo11(ChaveASBACEComDigito1, 7, true));
 
-    if Digito2 = 0 then
-      Digito2 := 0
-    else if Digito2 > 1 then
-      Digito2 := 11 - Digito2
-    else
+     if Digito2 = 0 then
+        Digito2 := 0
+     else if Digito2 > 1 then
+        Digito2 := 11 - Digito2
+     else
       {Se o resto for igual a 1, Dv 2 teria de ser reclaculado com um novo Dv 1}
-    begin
-      Digito1 := Digito1 + 1;
-      {Se, após incrementar o dígito1, ele ficar igual 10, deve-se
-       substituí-lo por 0}
-      if Digito1 = 10 then
-        Digito1 := 0;
-      Digito2 := CalcularDigito2(ChaveASBACESemDigito, Digito1);
-    end;
+      begin
+        Digito1 := Digito1 + 1;
+        {Se, após incrementar o dígito1, ele ficar igual 10, deve-se
+         substituí-lo por 0}
+        if Digito1 = 10 then
+           Digito1 := 0;
+        Digito2 := CalcularDigito2(ChaveASBACESemDigito, Digito1);
+      end;
 
-    Result := Digito2;
+     Result := Digito2;
   end;
 begin
-  Digito1 := CalcularDigito1(ChaveASBACESemDigito);
-  Digito2 := CalcularDigito2(ChaveASBACESemDigito, Digito1);
-  Result := IntToStr(Digito1) + IntToStr(Digito2);
+   Digito1 := CalcularDigito1(ChaveASBACESemDigito);
+   Digito2 := CalcularDigito2(ChaveASBACESemDigito, Digito1);
+   Result  := IntToStr(Digito1) + IntToStr(Digito2);
 end;
 
 function TACBrBancoBRB.MontarCodigoBarras(const ACBrTitulo: TACBrTitulo): string;
 var
   Campo1, FatorVencimento, Valor, ChaveASBACE, DV: string;
 begin
-  with ACBrTitulo do
-  begin
-    Campo1 := padR(IntToStr(Numero), 3, '0') + '9';
-    FatorVencimento := CalcularFatorVencimento(ACBrTitulo.Vencimento);
-    Valor := IntToStrZero(Round(ValorDocumento * 100), 10);
-    ChaveASBACE := MontarChaveASBACE(ACBrTitulo);
-    DV := Modulo11(Campo1 + FatorVencimento + Valor + ChaveASBACE);
-  end;
-  Result := Campo1 + DV + FatorVencimento + Valor + ChaveASBACE;
+   with ACBrTitulo do
+   begin
+      Campo1 := padR(IntToStr(Numero), 3, '0') + '9';
+      FatorVencimento := CalcularFatorVencimento(ACBrTitulo.Vencimento);
+      Valor := IntToStrZero(Round(ValorDocumento * 100), 10);
+      ChaveASBACE := MontarChaveASBACE(ACBrTitulo);
+      DV := Modulo11(Campo1 + FatorVencimento + Valor + ChaveASBACE);
+   end;
+
+   Result := Campo1 + DV + FatorVencimento + Valor + ChaveASBACE;
 end;
 
 function TACBrBancoBRB.MontarCampoNossoNumero(const ACBrTitulo: TACBrTitulo): string;
 begin
-  Result := Copy(MontarChaveASBACE(ACBrTitulo), 14, 12);
+   Result := Copy(MontarChaveASBACE(ACBrTitulo), 14, 12);
 end;
 
 function TACBrBancoBRB.MontarCampoCodigoCedente(const ACBrTitulo: TACBrTitulo): string;
 begin
-  Result := '000-' +
-    padR(ACBrTitulo.ACBrBoleto.Cedente.Agencia, 3, '0') + '.' +
-    FormatFloat('000,000', StrToFloat(ACBrTitulo.ACBrBoleto.Cedente.Conta)) + '-' +
-    padR(ACBrTitulo.ACBrBoleto.Cedente.ContaDigito, 1, '0');
+   Result := '000-' +
+             padR(ACBrTitulo.ACBrBoleto.Cedente.Agencia, 3, '0') + '.' +
+             FormatFloat('000,000', StrToFloat(ACBrTitulo.ACBrBoleto.Cedente.Conta)) + '-' +
+             padR(ACBrTitulo.ACBrBoleto.Cedente.ContaDigito, 1, '0');
 end;
 
 procedure TACBrBancoBRB.GerarRegistroHeader400(NumeroRemessa: Integer; aRemessa: TStringList);
@@ -203,136 +209,134 @@ var
 begin
   with ACBrBanco.ACBrBoleto.Cedente do
   begin
-    wLinha := 'DCB'                                             + // Literal DCB
-              '001'                                             + // Versão
-              '075'                                             + // Arquivo
-              padR(OnlyNumber(Agencia), 3, '0')                 + // Agência
-              padR(OnlyNumber(Conta), 6, '0') + padR(ContaDigito, 1, '0')   + // Conta
-              FormatDateTime('yyyymmdd', Now)                   + // Data de formatação
-              FormatDateTime('hhmmss', Now)                     + // Hora da formatação
-              IntToStrZero(ACBrBoleto.ListadeBoletos.Count +1,6); // Qtde de registros Header + Detalhe
-    aRemessa.Text := aRemessa.Text + UpperCase(wLinha);
+     wLinha := 'DCB'                                             + // Literal DCB
+               '001'                                             + // Versão
+               '075'                                             + // Arquivo
+               padR(OnlyNumber(Agencia), 3, '0')                 + // Agência
+               padR(OnlyNumber(Conta), 6, '0') + padR(ContaDigito, 1, '0')   + // Conta
+               FormatDateTime('yyyymmdd', Now)                   + // Data de formatação
+               FormatDateTime('hhmmss', Now)                     + // Hora da formatação
+               IntToStrZero(ACBrBoleto.ListadeBoletos.Count +1,6); // Qtde de registros Header + Detalhe
+     aRemessa.Text := aRemessa.Text + UpperCase(wLinha);
   end;
 end;
 
 procedure TACBrBancoBRB.GerarRegistroTransacao400(ACBrTitulo: TACBrTitulo; aRemessa: TStringList);
 var
   TipoPessoa: Char;
-  TipoDocumento, TipoJuros, TipoDesconto, lDataDesconto, lNossoNumero: string;
-  Prazo1, Prazo2: string;
-  wLinha: String;
+  TipoDocumento, TipoJuros, TipoDesconto, lDataDesconto: String;
+  Prazo1, Prazo2, wLinha, lNossoNumero: String;
 begin
   with ACBrTitulo do
   begin
-    { Código Tipo Pessoa }
-    case Sacado.Pessoa of
-      pFisica  : TipoPessoa := '1';
-      pJuridica: TipoPessoa := '2';
-    else
-      TipoPessoa:='9';
-    end;
+     { Código Tipo Pessoa }
+     case Sacado.Pessoa of
+       pFisica  : TipoPessoa := '1';
+       pJuridica: TipoPessoa := '2';
+     else
+       TipoPessoa:='9';
+     end;
 
+     { Código Tipo Documento }
+     if AnsiUpperCase(EspecieDoc) = 'DM' then //Duplicata Mercantil
+        TipoDocumento := '21'
+     else if AnsiUpperCase(EspecieDoc) = 'NP' then //Nota Promissória
+        TipoDocumento := '22'
+     else if AnsiUpperCase(EspecieDoc) = 'RC' then //Recibo
+        TipoDocumento := '25'
+     else if AnsiUpperCase(EspecieDoc) = 'DP' then //Duplicata Prestação
+        TipoDocumento := '31'
+     else //Outras
+        TipoDocumento:='39';
 
-    { Código Tipo Documento }
-    if AnsiUpperCase(EspecieDoc) = 'DM' then //Duplicata Mercantil
-      TipoDocumento := '21'
-    else if AnsiUpperCase(EspecieDoc) = 'NP' then //Nota Promissória
-      TipoDocumento := '22'
-    else if AnsiUpperCase(EspecieDoc) = 'RC' then //Recibo
-      TipoDocumento := '25'
-    else if AnsiUpperCase(EspecieDoc) = 'DP' then //Duplicata Prestação
-      TipoDocumento := '31'
-    else //Outras
-      TipoDocumento:='39';
+     { Nosso Número }
+     if StrToIntDef(ACBrBoleto.Cedente.Modalidade, 1) in [1..2] then
+        lNossoNumero := padR(MontarCampoNossoNumero(ACBrTitulo), 12, '0')
+     else
+        lNossoNumero := StringOfChar('0', 12);
 
-    { Nosso Número }
-    if StrToIntDef(ACBrBoleto.Cedente.Modalidade, 1) in [1..2] then
-      lNossoNumero := padR(MontarCampoNossoNumero(ACBrTitulo), 12, '0')
-    else
-      lNossoNumero := StringOfChar('0', 12);
+     { Juros de Mora }
+     if ValorMoraJuros > 0 then
+      begin
+        TipoJuros := '50';
+        Instrucao1 := '01'; // 01- Não Dispensar Juros de Mora
+        Prazo1 := '01';
+      end
+     else
+      begin
+        TipoJuros := '00';
+        Instrucao1 := '00'; // 00- Sem Instrução
+        Prazo1 := '00';
+      end;
 
-    { Juros de Mora }
-    if ValorMoraJuros > 0 then
-    begin
-      TipoJuros := '50';
-      Instrucao1 := '01'; // 01- Não Dispensar Juros de Mora
-      Prazo1 := '01';
-    end
-    else
-    begin
-      TipoJuros := '00';
-      Instrucao1 := '00'; // 00- Sem Instrução
-      Prazo1 := '00';
-    end;
+     { Multa }
+     if PercentualMulta > 0 then
+      begin
+       Instrucao2 := '03'; // 03- Cobrar multa de ...% sobre o valor do título
+       Prazo2 := '01';
+      end
+     else
+      begin
+        Instrucao2 := '00'; // 00- Sem Instrução
+        Prazo2 := '00';
+      end;
 
-    { Multa }
-    if PercentualMulta > 0 then
-    begin
-      Instrucao2 := '03'; // 03- Cobrar multa de ...% sobre o valor do título
-      Prazo2 := '01';
-    end
-    else
-    begin
-      Instrucao2 := '00'; // 00- Sem Instrução
-      Prazo2 := '00';
-    end;
+     { Descontos }
+     if ValorDesconto > 0 then
+      begin
+        TipoDesconto := '53';
+        lDataDesconto := FormatDateTime('ddmmyyyy',DataDesconto);
+      end
+     else
+      begin
+        TipoDesconto := '00';
+        lDataDesconto := '00000000';
+      end;
 
-    { Descontos }
-    if ValorDesconto > 0 then
-    begin
-      TipoDesconto := '53';
-      lDataDesconto := FormatDateTime('ddmmyyyy',DataDesconto);
-    end
-    else
-    begin
-      TipoDesconto := '00';
-      lDataDesconto := '00000000';
-    end;
+     with ACBrBoleto do
+     begin
+        wLinha:= '01'                                                             + // Identificação do registro
+                 padR(Cedente.Agencia, 3, '0')                                    + // Agência
+                 padR(Cedente.Conta, 6, '0') + padR(Cedente.ContaDigito, 1, '0')  + // Conta
+                 PadL(OnlyNumber(Sacado.CNPJCPF), 14, '0')                        + // Código do Sacado
+                 padL(Sacado.NomeSacado, 35)                                      + // Nome do Sacado
+                 PadL(Sacado.Logradouro + ', '                                    +
+                      Sacado.Numero+' '                                           +
+                      Sacado.Complemento, 35)                                     + // Endereço do Sacado
+                 PadL(Sacado.Cidade, 15)                                          + // Cidade do Sacado
+                 PadL(Sacado.UF, 2)                                               + // UF do sacado
+                 PadL(OnlyNumber(Sacado.CEP), 8, '0')                             + // CEP do sacado
+                 TipoPessoa                                                       + // Código Tipo Pessoa 1- Física; 2- Jurídica ou 9- Isenta
+                 padL(SeuNumero, 13)                                              + // Seu número
+                 padL(Cedente.Modalidade, 1)                                      + // Cód. carteira cobrança 1- Sem Registro; 2- Com Registro- Impressão Local ou 3- Com Registro- Impressão pelo BRB
+                 FormatDateTime('ddmmyyyy', DataDocumento)                        + // Data de Emissão
+                 TipoDocumento                                                    + // Código Tipo Documento 21- Duplicata Mercantil; 22- Nota Promissória; 25- Recibo; 31- Duplicata Prestação ou 39- Outros
+                 '0'                                                              + // Código da Natureza 0 - Simples
+                 '0'                                                              + // Código da Condição Pagto 0- No vencimento; 1- À Vista ou 2- Contra Apresentação
+                 '02'                                                             + // Código da Moeda 02- Real; 51- UFIR ou 91- UPDF
+                 '070'                                                            + // Número do Banco
+                 '0000'                                                           + // Número da Agência Cobradora - Confirmar no suporte
+                 Space(30)                                                        + // Praça de Cobrança - Confirmar no suporte
+                 FormatDateTime('ddmmyyyy', Vencimento)                           + // Data de vencimento
+                 IntToStrZero(Round(ValorDocumento*100), 14)                      + // Valor do título
+                 lNossoNumero                                                     + // Nosso número 000000000000 (Se Código da Categoria de Cobrança= 3)
+                 TipoJuros                                                        + // Código do Tipo de Juros 00- Sem Juros ('Não Cobrar Juros'); 50-Diário ("Juro de mora ao dia de...") ou 51- Mensal ("Juro de mora ao mês de ...%")
+                 FormatCurr('00000000000000', ValorMoraJuros * 100)               + // Valor do Juros (Nominal/Tx) 00000000000000 (Se não houver Juros)
+                 FormatCurr('00000000000000', ValorAbatimento * 100)              + // Valor do Abatimento (Nominal/Tx) 00000000000000 (Se não houver Abatimento)
+                 TipoDesconto                                                     + // Código do Desconto 00- Sem Desconto; 52- Diário ("Desconto por dia de...") ou 53- Mensal ("Desconto Mensal de... até..."
+                 lDataDesconto                                                    + // Data limite para Desconto 00000000 (Se não houver Desconto)
+                 FormatCurr('00000000000000', ValorDesconto * 100)                + // Valor do Desconto 00000000000000 (Se não houver Desconto)
+                 Instrucao1                                                       + // Código da 1º Instrução
+                 Prazo1                                                           + // Prazo da 1º Instrução 00 (Se não houver 1ª Instrução)
+                 Instrucao2                                                       + // Código da 2º Instrução
+                 Prazo2                                                           + // Prazo da 2º Instrução 00 (Se não houver 1ª Instrução)
+                 FormatCurr('00000', PercentualMulta * 100)                       + // Taxa ref, a uma das duas Inst. 00000 (Se não houver Instrução ou Taxa) Confirmar a formatação - 5% coloquei assim 00500
+                 padL(Cedente.Nome,40)                                            + // Emitente do Título
+                 Space(40)                                                        + // Mensagem Livre (Observações)
+                 Space(32)                                                        ; // Brancos
 
-    with ACBrBoleto do
-    begin
-      wLinha:= '01'                                                             + // Identificação do registro
-               padR(Cedente.Agencia, 3, '0')                                    + // Agência
-               padR(Cedente.Conta, 6, '0') + padR(Cedente.ContaDigito, 1, '0')  + // Conta
-               PadL(OnlyNumber(Sacado.CNPJCPF), 14, '0')                        + // Código do Sacado
-               padL(Sacado.NomeSacado, 35)                                      + // Nome do Sacado
-               PadL(Sacado.Logradouro + ', '                                    +
-                    Sacado.Numero+' '                                           +
-                    Sacado.Complemento, 35)                                     + // Endereço do Sacado
-               PadL(Sacado.Cidade, 15)                                          + // Cidade do Sacado
-               PadL(Sacado.UF, 2)                                               + // UF do sacado
-               PadL(OnlyNumber(Sacado.CEP), 8, '0')                             + // CEP do sacado
-               TipoPessoa                                                       + // Código Tipo Pessoa 1- Física; 2- Jurídica ou 9- Isenta
-               padL(SeuNumero, 13)                                              + // Seu número
-               padL(Cedente.Modalidade, 1)                                      + // Cód. carteira cobrança 1- Sem Registro; 2- Com Registro- Impressão Local ou 3- Com Registro- Impressão pelo BRB
-               FormatDateTime('ddmmyyyy', DataDocumento)                        + // Data de Emissão
-               TipoDocumento                                                    + // Código Tipo Documento 21- Duplicata Mercantil; 22- Nota Promissória; 25- Recibo; 31- Duplicata Prestação ou 39- Outros
-               '0'                                                              + // Código da Natureza 0 - Simples
-               '0'                                                              + // Código da Condição Pagto 0- No vencimento; 1- À Vista ou 2- Contra Apresentação
-               '02'                                                             + // Código da Moeda 02- Real; 51- UFIR ou 91- UPDF
-               '070'                                                            + // Número do Banco
-               '0000'                                                           + // Número da Agência Cobradora - Confirmar no suporte
-               Space(30)                                                        + // Praça de Cobrança - Confirmar no suporte
-               FormatDateTime('ddmmyyyy', Vencimento)                           + // Data de vencimento
-               IntToStrZero(Round(ValorDocumento*100), 14)                      + // Valor do título
-               lNossoNumero                                                     + // Nosso número 000000000000 (Se Código da Categoria de Cobrança= 3)
-               TipoJuros                                                        + // Código do Tipo de Juros 00- Sem Juros ('Não Cobrar Juros'); 50-Diário ("Juro de mora ao dia de...") ou 51- Mensal ("Juro de mora ao mês de ...%")
-               FormatCurr('00000000000000', ValorMoraJuros * 100)               + // Valor do Juros (Nominal/Tx) 00000000000000 (Se não houver Juros)
-               FormatCurr('00000000000000', ValorAbatimento * 100)              + // Valor do Abatimento (Nominal/Tx) 00000000000000 (Se não houver Abatimento)
-               TipoDesconto                                                     + // Código do Desconto 00- Sem Desconto; 52- Diário ("Desconto por dia de...") ou 53- Mensal ("Desconto Mensal de... até..."
-               lDataDesconto                                                    + // Data limite para Desconto 00000000 (Se não houver Desconto)
-               FormatCurr('00000000000000', ValorDesconto * 100)                + // Valor do Desconto 00000000000000 (Se não houver Desconto)
-               Instrucao1                                                       + // Código da 1º Instrução
-               Prazo1                                                           + // Prazo da 1º Instrução 00 (Se não houver 1ª Instrução)
-               Instrucao2                                                       + // Código da 2º Instrução
-               Prazo2                                                           + // Prazo da 2º Instrução 00 (Se não houver 1ª Instrução)
-               FormatCurr('00000', PercentualMulta * 100)                       + // Taxa ref, a uma das duas Inst. 00000 (Se não houver Instrução ou Taxa) Confirmar a formatação - 5% coloquei assim 00500
-               padL(Cedente.Nome,40)                                            + // Emitente do Título
-               Space(40)                                                        + // Mensagem Livre (Observações)
-               Space(32)                                                        ; // Brancos
-
-      aRemessa.Text:= aRemessa.Text + AnsiUpperCase(wLinha);
-    end;
+        aRemessa.Text:= aRemessa.Text + AnsiUpperCase(wLinha);
+     end;
   end;
 end;
 

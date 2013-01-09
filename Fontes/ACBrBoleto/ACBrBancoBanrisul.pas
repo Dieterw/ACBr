@@ -90,8 +90,7 @@ end;
 
 function Modulo11(Valor: string; Base: Integer=9; Resto: boolean=false): string;
 var
-  Soma: integer;
-  Contador, Peso, Digito: integer;
+  Soma, Contador, Peso, Digito: integer;
 begin
   Soma:=0;
   Peso:=2;
@@ -309,12 +308,9 @@ end;
 
 procedure TACBrBanrisul.GerarRegistroTransacao400(ACBrTitulo: TACBrTitulo; aRemessa: TStringList);
 var
-  Ocorrencia, Protesto, cd: string;
-  TipoSacado, aTipoAceite: string;
-  TipoBoleto: String;
-  wLinha: String;
+  Ocorrencia, cd,TipoSacado     :String;
+  aTipoAceite,TipoBoleto,wLinha :String;
 begin
-  Protesto := '';
   with ACBrTitulo do
   begin
 

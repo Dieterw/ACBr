@@ -104,10 +104,10 @@ begin
       FatorVencimento   := CalcularFatorVencimento(ACBrTitulo.Vencimento);
 
       CodigoBarras := '033'+'9'+ FatorVencimento +
-                      IntToStrZero(Round(ACBrTitulo.ValorDocumento*100),10) +
-                      '9'+ padR(trim(Cedente.CodigoCedente),7,'0') +
-                      padR(ACBrTitulo.NossoNumero + DigitoNossoNumero, 13) +
-                      '0'+ padR(trim(Cedente.Modalidade),3,'0');
+                       IntToStrZero(Round(ACBrTitulo.ValorDocumento*100),10) +
+                       '9'+ padR(trim(Cedente.CodigoCedente),7,'0') +
+                       padR(ACBrTitulo.NossoNumero + DigitoNossoNumero, 13) +
+                       '0'+ padR(trim(Cedente.Modalidade),3,'0');
 
 
 
@@ -166,13 +166,9 @@ end;
 
 procedure TACBrBancoSantander.GerarRegistroTransacao400(ACBrTitulo :TACBrTitulo; aRemessa: TStringList);
 var
-  DigitoNossoNumero,
-  Ocorrencia,aEspecie,
-  Protesto, aAgencia,
-  TipoSacado: String;
-  TipoBoleto: Char;
-  aCarteira, I, iSomaMensagem: Integer;
-  wLinha: String;
+  DigitoNossoNumero, Ocorrencia,aEspecie :String;
+  Protesto, aAgencia, TipoSacado, wLinha :String;
+  aCarteira, I: Integer;
 begin
 
    aCarteira := StrToIntDef(ACBrTitulo.Carteira, 0 );
@@ -207,13 +203,6 @@ begin
          toRemessaCancelarInstrucaoProtesto     : Ocorrencia := '18'; {Sustar protesto e manter na carteira}
       else
          Ocorrencia := '01';                                          {Remessa}
-      end;
-
-      {Pegando Tipo de Boleto}
-      case ACBrBoleto.Cedente.ResponEmissao of
-         tbCliEmite : TipoBoleto := '2';
-      else
-         TipoBoleto := '1';
       end;
 
       {Pegando Especie}
@@ -255,13 +244,6 @@ begin
 
       with ACBrBoleto do
       begin
-
-         {iSomaMensagem := ListadeBoletos.IndexOf(ACBrTitulo);
-         if ListadeBoletos.IndexOf(ACBrTitulo) > 0 then Begin //percorre a lista ate o boleto anterior para pegar a qtde de mensagem e somar..
-            for I := 0 to (ListadeBoletos.IndexOf(ACBrTitulo) - 1) do
-              iSomaMensagem := iSomaMensagem + ListadeBoletos[I].Mensagem.Count;
-         end;}
-
          wLinha:= '1'                                                     +  // ID Registro
                   IfThen(Length(Cedente.CNPJCPF) > 12,'02','01')          +
                   padR(trim(OnlyNumber(Cedente.CNPJCPF)),14,'0')          +
@@ -309,16 +291,16 @@ begin
          wLinha:= UpperCase(wLinha);
 
          for I := 0 to Mensagem.count-1 do
-             wLinha:= wLinha + sLineBreak                         +
-                      '2' + space(16)                             +
-                      padL(Cedente.CodigoTransmissao,20,'0')      +
-                      Space(10) + IntToStrZero(I+1,2)             +
-                      padL(Mensagem[I],50)                        +
-                      Space(283) + 'I'                            +
-                      Copy(Cedente.Conta,Length(Cedente.Conta),1) +
-                      Cedente.ContaDigito                         +
-                      Space(9)                                    +
-                      IntToStrZero( aRemessa.Count  + I + 2 , 6 );
+            wLinha:= wLinha + sLineBreak                         +
+                     '2' + space(16)                             +
+                     padL(Cedente.CodigoTransmissao,20,'0')      +
+                     Space(10) + IntToStrZero(I+1,2)             +
+                     padL(Mensagem[I],50)                        +
+                     Space(283) + 'I'                            +
+                     Copy(Cedente.Conta,Length(Cedente.Conta),1) +
+                     Cedente.ContaDigito                         +
+                     Space(9)                                    +
+                     IntToStrZero( aRemessa.Count  + I + 2 , 6 );
 
          aRemessa.Text:= aRemessa.Text + UpperCase(wLinha);
       end;

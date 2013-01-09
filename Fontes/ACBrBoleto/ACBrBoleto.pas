@@ -58,7 +58,7 @@ uses ACBrBase,  {Units da ACBr}
      Graphics, Contnrs, Classes;
 
 const
-  CACBrBoleto_Versao = '0.0.52a' ;
+  CACBrBoleto_Versao = '0.0.53a' ;
 
 type
   TACBrTipoCobranca =
@@ -267,7 +267,6 @@ type
 
   TACBrBancoClass = class
   private
-     //function GetNumero: Integer;
      procedure ErroAbstract( NomeProcedure : String ) ;
   protected
     fpDigito: Integer;
@@ -298,7 +297,7 @@ type
     property OrientacoesBanco: TStringList read fpOrientacoesBanco;
 
     function CalcularDigitoVerificador(const ACBrTitulo : TACBrTitulo): String; virtual;
-    function CalcularTamMaximoNossoNumero(const Carteira : String): Integer; virtual;
+    function CalcularTamMaximoNossoNumero(const Carteira : String; NossoNumero : String = ''): Integer; virtual;
 
     function TipoOcorrenciaToDescricao(const TipoOcorrencia: TACBrTipoOcorrencia): String; virtual;
     function CodOcorrenciaToTipo(const CodOcorrencia:Integer): TACBrTipoOcorrencia; virtual;
@@ -329,8 +328,6 @@ type
   private
     fACBrBoleto        : TACBrBoleto;
     fNumeroBanco       : Integer;
-    //fOrientacoesBanco  : TStringList;
-    //FTamanhoMaximoNossoNum: Integer;
     fTipoCobranca      : TACBrTipoCobranca;
     fBancoClass        : TACBrBancoClass;
     function GetNome   : String;
@@ -363,7 +360,7 @@ type
     function CodMotivoRejeicaoToDescricao(const TipoOcorrencia: TACBrTipoOcorrencia;CodMotivo:Integer): String;
 
     function CalcularDigitoVerificador(const ACBrTitulo : TACBrTitulo): String;
-    function CalcularTamMaximoNossoNumero(const Carteira : String): Integer;
+    function CalcularTamMaximoNossoNumero(const Carteira : String; NossoNumero : String = ''): Integer;
 
     function MontarCampoCodigoCedente(const ACBrTitulo: TACBrTitulo): String;
     function MontarCampoNossoNumero(const ACBrTitulo :TACBrTitulo): String;
@@ -394,7 +391,6 @@ type
   TACBrCaracTitulo = (tcSimples,tcVinculada,tcCaucionada,tcDescontada,tcVendor);
   TACBrPessoa = (pFisica,pJuridica,pOutras);
   TACBrPessoaCedente = pFisica..pJuridica;
-//  TACBrTipoInscricao = (tiPessoaFisica, tiPessoaJuridica, tiOutro);
 
   {Aceite do titulo}
   TACBrAceiteTitulo = (atSim, atNao);   
@@ -486,9 +482,6 @@ type
     property Fone        : String  read fFone        write fFone;
   end;
 
-  {Tipos de ocorrências permitidas no arquivos remessa / retorno}
-  {TACBrTipoOcorrencia = }
-
   { TACBrTitulo }
 
   TACBrTitulo = class
@@ -516,9 +509,6 @@ type
     fInstrucoes        : TStrings;
     fSacado            : TACBrSacado;
 
-    //fTipoOcorrencia                 : TACBrTipoOcorrencia;
-    //fOcorrenciaOriginal             : String;
-    //fDescricaoOcorrenciaOriginal    : String;
     fMotivoRejeicaoComando          : TStrings;
     fDescricaoMotivoRejeicaoComando : TStrings; 
 
@@ -546,7 +536,6 @@ type
     procedure SetNossoNumero ( const AValue: String ) ;
     procedure SetParcela ( const AValue: Integer ) ;
     procedure SetTotalParcelas ( const AValue: Integer );
-    //procedure SetTipoOcorrencia ( const AValue: TACBrTipoOcorrencia ) ;
    public
      constructor Create(ACBrBoleto:TACBrBoleto);
      destructor Destroy; override;
@@ -612,10 +601,10 @@ type
       read GetObject write SetObject; default;
   end;
 
-TACBrBolLayOut = (lPadrao, lCarne, lFatura, lPadraoEntrega) ;
+  TACBrBolLayOut = (lPadrao, lCarne, lFatura, lPadraoEntrega) ;
 
-{ TACBrBoleto }
-TACBrBoleto = class( TACBrComponent )
+  { TACBrBoleto }
+ TACBrBoleto = class( TACBrComponent )
   private
     fBanco: TACBrBanco;
     fACBrBoletoFC: TACBrBoletoFCClass;
@@ -627,17 +616,13 @@ TACBrBoleto = class( TACBrComponent )
     fCedente        : TACBrCedente;
     fNomeArqRemessa: String;
     fNomeArqRetorno: String;
-    fNumeroArquivo : integer;     {Número seqüencial do arquivo remessa ou retorno}    //Implementado por Carlos Fitl - 27/12/2010
-    fDataArquivo : TDateTime;     {Data da geração do arquivo remessa ou retorno}      //Implementado por Carlos Fitl - 27/12/2010
-    fDataCreditoLanc : TDateTime; {Data de crédito dos lançamentos do arquivo retorno} //Implementado por Carlos Fitl - 27/12/2010
+    fNumeroArquivo : integer;     {Número seqüencial do arquivo remessa ou retorno}
+    fDataArquivo : TDateTime;     {Data da geração do arquivo remessa ou retorno}
+    fDataCreditoLanc : TDateTime; {Data de crédito dos lançamentos do arquivo retorno}
     fLeCedenteRetorno: boolean;
     function GetAbout: String;
-    //function GetDirArqRemessa : String ;
-    //function GetDirArqRetorno : String ;
     procedure SetAbout(const AValue: String);
     procedure SetACBrBoletoFC(const Value: TACBrBoletoFCClass);
-    //procedure SetNomeArqRemessa(const AValue: String);
-    //procedure SetNomeArqRetorno(const AValue: String);
   protected
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
   public
@@ -695,12 +680,12 @@ TACBrBoleto = class( TACBrComponent )
     procedure ChecarDadosObrigatorios;
   end;
 
-{TACBrBoletoFCClass}
-TACBrBoletoFCFiltro = (fiNenhum, fiPDF, fiHTML ) ;
+ {TACBrBoletoFCClass}
+ TACBrBoletoFCFiltro = (fiNenhum, fiPDF, fiHTML ) ;
 
-TACBrBoletoFCOnObterLogo = procedure( const PictureLogo : TPicture; const NumeroBanco: Integer ) of object ;
+ TACBrBoletoFCOnObterLogo = procedure( const PictureLogo : TPicture; const NumeroBanco: Integer ) of object ;
 
-TACBrBoletoFCClass = class(TACBrComponent)
+ TACBrBoletoFCClass = class(TACBrComponent)
   private
     fDirLogo        : String;
     fDirArqPDF_HTML : String;
@@ -831,34 +816,32 @@ procedure TACBrCedente.SetConta(const AValue: String);
 var
   aConta: Integer;
 begin
-  if fConta = AValue then
-     exit;
+   if fConta = AValue then
+      exit;
 
+   fConta:= AValue;
+   aConta:= StrToIntDef(trim(AValue),0);
 
-  fConta:= AValue;
-  aConta:= StrToIntDef(trim(AValue),0);
+   if aConta = 0 then
+      exit;
 
-  if aConta = 0 then
-     exit;
-
-  fConta:= IntToStrZero(aConta, ACBrBoleto.Banco.TamanhoConta );
+   fConta:= IntToStrZero(aConta, ACBrBoleto.Banco.TamanhoConta );
 end;
 
 procedure TACBrCedente.SetAgencia(const AValue: String);
 var  aAgencia: Integer;
 begin
-  if fAgencia = AValue then
-     exit;
+   if fAgencia = AValue then
+      exit;
 
-  fAgencia:= AValue;
+   fAgencia:= AValue;
 
-  aAgencia:= StrToIntDef(trim(AValue),0);
+   aAgencia:= StrToIntDef(trim(AValue),0);
 
-  if aAgencia = 0 then
-     exit;
+   if aAgencia = 0 then
+      exit;
 
-  fAgencia:= IntToStrZero(aAgencia, ACBrBoleto.Banco.TamanhoAgencia );
-
+   fAgencia:= IntToStrZero(aAgencia, ACBrBoleto.Banco.TamanhoAgencia );
 end;
 
 procedure TACBrCedente.SetTipoInscricao ( const AValue: TACBrPessoaCedente ) ;
@@ -871,20 +854,20 @@ end;
 
 constructor TACBrCedente.Create( AOwner : TComponent );
 begin
-  inherited Create(AOwner);
+   inherited Create(AOwner);
 
-  fNomeCedente   := '';
-  fAgencia       := '';
-  fAgenciaDigito := '';
-  fConta         := '';
-  fContaDigito   := '';
-  fModalidade    := '';
-  fConvenio      := '';
-  fCNPJCPF       := '';
-  fResponEmissao := tbCliEmite;
-  fCaracTitulo   := tcSimples;
-  fTipoInscricao := pJuridica;
-  fAcbrBoleto    := TACBrBoleto(AOwner);
+   fNomeCedente   := '';
+   fAgencia       := '';
+   fAgenciaDigito := '';
+   fConta         := '';
+   fContaDigito   := '';
+   fModalidade    := '';
+   fConvenio      := '';
+   fCNPJCPF       := '';
+   fResponEmissao := tbCliEmite;
+   fCaracTitulo   := tcSimples;
+   fTipoInscricao := pJuridica;
+   fAcbrBoleto    := TACBrBoleto(AOwner);
 end;
 
 destructor TACBrCedente.Destroy;
@@ -894,13 +877,13 @@ end;
 
 procedure TACBrTitulo.SetNossoNumero ( const AValue: String ) ;
 var
-  wTamNossoNumero: Integer;
+   wTamNossoNumero: Integer;
 begin
    with ACBrBoleto.Banco do
    begin
       wTamNossoNumero := TamanhoMaximoNossoNum;
       if wTamNossoNumero < 1 then
-         wTamNossoNumero:= CalcularTamMaximoNossoNumero(Carteira);
+         wTamNossoNumero:= CalcularTamMaximoNossoNumero(Carteira, AValue);
 
       if Length(trim(AValue)) > wTamNossoNumero then
          raise Exception.Create( ACBrStr('Tamanho Máximo do Nosso Número é: '+ IntToStr(wTamNossoNumero) ));
@@ -911,30 +894,30 @@ end;
 
 procedure TACBrTitulo.SetCarteira(const AValue: String);
 var
-  aCarteira: LongInt;
+  aCarteira: Integer;
 begin
-  if fCarteira = AValue then
-     exit;
+   if fCarteira = AValue then
+      exit;
 
-  with ACBrBoleto.Banco do
-  begin
-     aCarteira:= StrToIntDef(trim(AValue),0);
+   with ACBrBoleto.Banco do
+   begin
+      aCarteira:= StrToIntDef(trim(AValue),0);
 
-     fCarteira:=  AValue;
+      fCarteira:=  AValue;
 
-     if aCarteira < 1 then
-        exit;
+      if aCarteira < 1 then
+         exit;
 
-     fCarteira:= IntToStrZero(aCarteira,TamanhoCarteira);
+      fCarteira:= IntToStrZero(aCarteira,TamanhoCarteira);
 
-  end;
+   end;
 end;
 
 procedure TACBrTitulo.SetParcela ( const AValue: Integer ) ;
 begin
    if (AValue > TotalParcelas) and (ACBrBoleto.ACBrBoletoFC.LayOut = lCarne) then
       raise Exception.Create( ACBrStr('Numero da Parcela Atual deve ser menor ' +
-                             'que o Total de Parcelas do Carnê') );
+                                      'que o Total de Parcelas do Carnê') );
    fParcela := AValue;
 end;
 
@@ -942,164 +925,100 @@ procedure TACBrTitulo.SetTotalParcelas ( const AValue: Integer ) ;
 begin
    if (AValue < Parcela) and (ACBrBoleto.ACBrBoletoFC.LayOut = lCarne) then
       raise Exception.Create( ACBrStr('Numero da Parcela Atual deve ser menor ou igual ' +
-                             'o Total de Parcelas do Carnê') );
+                                      'o Total de Parcelas do Carnê') );
    fTotalParcelas := AValue;
 end;
-{
-procedure TACBrTitulo.SetTipoOcorrencia ( const AValue: TACBrTipoOcorrencia ) ;
-begin
-   //with ACBrBoleto.Banco do
-   //begin
-   //   if AValue in OcorrenciasValidas then
-         fOcorrenciaOriginal.Tipo := AValue
-   //   else
-   //      raise Exception.Create(ACBrStr('Ocorrência inválida para o banco '+ Nome));
-   //end;
-end;
-}
+
 { TACBrTitulo }
 
 constructor TACBrTitulo.Create(ACBrBoleto:TACBrBoleto);
 begin
-  inherited Create;
+   inherited Create;
 
-  fACBrBoleto        := ACBrBoleto;
-  fLocalPagamento    := 'Pagar preferencialmente nas agencias do '+ ACBrBoleto.Banco.Nome;
-  fVencimento        := 0;
-  fDataDocumento     := 0;
-  fNumeroDocumento   := '';
-  fEspecieDoc        := 'DM';
-  fAceite            := atNao;
-  fDataProcessamento := now;
-  fNossoNumero       := '';
-  fUsoBanco          := '';
-  fCarteira          := '';
-  fEspecieMod        := '';
-  fValorDocumento    := 0;
-  fMensagem          := TStringList.Create;
-  fInstrucoes        := TStringList.Create;
-  fSacado            := TACBrSacado.Create;
-  fOcorrenciaOriginal:= TACBrOcorrencia.Create(Self);
-  //fTipoOcorrencia                 := toRemessaRegistrar;
-  //fOcorrenciaOriginal             := '';
-  //fDescricaoOcorrenciaOriginal    := '';
-  fMotivoRejeicaoComando          := TStringList.Create;
-  fDescricaoMotivoRejeicaoComando := TStringList.Create;
+   fACBrBoleto        := ACBrBoleto;
+   fLocalPagamento    := 'Pagar preferencialmente nas agencias do '+ ACBrBoleto.Banco.Nome;
+   fVencimento        := 0;
+   fDataDocumento     := 0;
+   fNumeroDocumento   := '';
+   fEspecieDoc        := 'DM';
+   fAceite            := atNao;
+   fDataProcessamento := now;
+   fNossoNumero       := '';
+   fUsoBanco          := '';
+   fCarteira          := '';
+   fEspecieMod        := '';
+   fValorDocumento    := 0;
+   fMensagem          := TStringList.Create;
+   fInstrucoes        := TStringList.Create;
+   fSacado            := TACBrSacado.Create;
 
-  fDataOcorrencia       := 0;
-  fDataCredito          := 0;
-  fDataAbatimento       := 0;
-  fDataDesconto         := 0;
-  fDataMoraJuros        := 0;
-  fDataProtesto         := 0;
-  fDataBaixa            := 0;
-  fValorDespesaCobranca := 0;
-  fValorAbatimento      := 0;
-  fValorDesconto        := 0;
-  fValorMoraJuros       := 0;
-  fValorIOF             := 0;
-  fValorOutrasDespesas  := 0;
-  fValorOutrosCreditos  := 0;
-  fValorRecebido        := 0;
-  fReferencia           := '';
-  fVersao               := '';
+   fOcorrenciaOriginal:= TACBrOcorrencia.Create(Self);
+   fMotivoRejeicaoComando          := TStringList.Create;
+   fDescricaoMotivoRejeicaoComando := TStringList.Create;
+
+   fDataOcorrencia       := 0;
+   fDataCredito          := 0;
+   fDataAbatimento       := 0;
+   fDataDesconto         := 0;
+   fDataMoraJuros        := 0;
+   fDataProtesto         := 0;
+   fDataBaixa            := 0;
+   fValorDespesaCobranca := 0;
+   fValorAbatimento      := 0;
+   fValorDesconto        := 0;
+   fValorMoraJuros       := 0;
+   fValorIOF             := 0;
+   fValorOutrasDespesas  := 0;
+   fValorOutrosCreditos  := 0;
+   fValorRecebido        := 0;
+   fReferencia           := '';
+   fVersao               := '';
 end;
 
 destructor TACBrTitulo.Destroy;
 begin
-  fMensagem.Free;
-  fSacado.Free;
-  fInstrucoes.Free;
-  fOcorrenciaOriginal.Free;
-  fMotivoRejeicaoComando.Free;
-  fDescricaoMotivoRejeicaoComando.Free;
-  inherited;
+   fMensagem.Free;
+   fSacado.Free;
+   fInstrucoes.Free;
+   fOcorrenciaOriginal.Free;
+   fMotivoRejeicaoComando.Free;
+   fDescricaoMotivoRejeicaoComando.Free;
+   inherited;
 end;
 
 procedure TACBrBoleto.SetACBrBoletoFC ( const Value: TACBrBoletoFCClass ) ;
 Var OldValue: TACBrBoletoFCClass;
 begin
-  if Value <> fACBrBoletoFC then
-  begin
-     if Assigned(fACBrBoletoFC) then
-        fACBrBoletoFC.RemoveFreeNotification(Self);
+   if Value <> fACBrBoletoFC then
+   begin
+      if Assigned(fACBrBoletoFC) then
+         fACBrBoletoFC.RemoveFreeNotification(Self);
 
-     OldValue      := fACBrBoletoFC ;   // Usa outra variavel para evitar Loop Infinito
-     fACBrBoletoFC := Value;            // na remoção da associação dos componentes
+      OldValue      := fACBrBoletoFC ;   // Usa outra variavel para evitar Loop Infinito
+      fACBrBoletoFC := Value;            // na remoção da associação dos componentes
 
-     if Assigned(OldValue) then
-        if Assigned(OldValue.ACBrBoleto) then
-           OldValue.ACBrBoleto := nil ;
+      if Assigned(OldValue) then
+         if Assigned(OldValue.ACBrBoleto) then
+            OldValue.ACBrBoleto := nil ;
 
-     if Value <> nil then
-     begin
-        Value.FreeNotification(self);
-        Value.ACBrBoleto := self ;
-     end ;
-  end ;
-
+      if Value <> nil then
+      begin
+         Value.FreeNotification(self);
+         Value.ACBrBoleto := self ;
+      end ;
+   end ;
 end;
 
 function TACBrBoleto.GetAbout: String;
 begin
   Result := 'ACBrBoleto Ver: '+CACBrBoleto_Versao;
 end;
-{
-function TACBrBoleto.GetDirArqRemessa : String ;
-begin
-  if fDirArqRemessa = '' then
-     if not (csDesigning in Self.ComponentState) then
-        fDirArqRemessa := ExtractFilePath(
-        //$IFNDEF CONSOLE// Application.ExeName //$ELSE// ParamStr(0) //$ENDIF//
-                                      ) + 'remessa' ;
 
-  Result := fDirArqRemessa ;
-end;
-
-function TACBrBoleto.GetDirArqRetorno : String ;
-begin
-  if fDirArqRetorno = '' then
-     if not (csDesigning in Self.ComponentState) then
-        fDirArqRetorno := ExtractFilePath(
-        //$IFNDEF CONSOLE// Application.ExeName //$ELSE// ParamStr(0) //$ENDIF//
-                                      ) + 'retorno' ;
-
-  Result := fDirArqRetorno ;
-end;
-}
 procedure TACBrBoleto.SetAbout(const AValue: String);
 begin
   {}
 end;
-{
-procedure TACBrBoleto.SetNomeArqRemessa(const AValue: String);
-var
-  APath, AName : AnsiString;
-begin
-  AName := Trim(ExtractFileName( AValue ));
-  APath := Trim(ExtractFilePath( AValue ));
 
-  if APath <> '' then
-     fDirArqRemessa := PathWithoutDelim( APath ) ;
-
-  if AName <> '' then
-     fNomeArqRemessa := AName;
-end;
-
-procedure TACBrBoleto.SetNomeArqRetorno(const AValue : String) ;
-var
-  APath, AName : AnsiString;
-begin
-  AName := Trim(ExtractFileName( AValue ));
-  APath := Trim(ExtractFilePath( AValue ));
-
-  if APath <> '' then
-     fDirArqRetorno := PathWithoutDelim( APath ) ;
-
-  if AName <> '' then
-     fNomeArqRetorno := AName;
-end ;
-}
 procedure TACBrBoleto.Notification ( AComponent: TComponent;
    Operation: TOperation ) ;
 begin
@@ -1113,71 +1032,64 @@ end;
 
 constructor TACBrBoleto.Create(AOwner: TComponent);
 begin
-  inherited Create(AOwner);
+   inherited Create(AOwner);
 
-  fACBrBoletoFC           := nil;
-  fImprimirMensagemPadrao := True;
+   fACBrBoletoFC           := nil;
+   fImprimirMensagemPadrao := True;
 
-  fListadeBoletos := TListadeBoletos.Create(true);
+   fListadeBoletos := TListadeBoletos.Create(true);
 
-  //fCedente      := TACBrCedente.Create(self);
-  //fCedente.Name := 'Cedente';
-  //{$IFDEF COMPILER6_UP}
-  // fCedente.SetSubComponent(True);   // Ajustando como SubComponente para aparecer no ObjectInspector
-  //{$ENDIF}
+   fBanco := TACBrBanco.Create(self);
+   fBanco.Name := 'Banco';
+   {$IFDEF COMPILER6_UP}
+    fBanco.SetSubComponent(True);   // Ajustando como SubComponente para aparecer no ObjectInspector
+   {$ENDIF}
 
-  fBanco := TACBrBanco.Create(self);
-  fBanco.Name := 'Banco';
-  {$IFDEF COMPILER6_UP}
-   fBanco.SetSubComponent(True);   // Ajustando como SubComponente para aparecer no ObjectInspector
-  {$ENDIF}
-
-  fCedente      := TACBrCedente.Create(self);
-  fCedente.Name := 'Cedente';
-  {$IFDEF COMPILER6_UP}
-   fCedente.SetSubComponent(True);   // Ajustando como SubComponente para aparecer no ObjectInspector
-  {$ENDIF}
-
+   fCedente      := TACBrCedente.Create(self);
+   fCedente.Name := 'Cedente';
+   {$IFDEF COMPILER6_UP}
+    fCedente.SetSubComponent(True);   // Ajustando como SubComponente para aparecer no ObjectInspector
+   {$ENDIF}
 end;
 
 destructor TACBrBoleto.Destroy;
 begin
-  fListadeBoletos.Free;
-  fCedente.Free;
-  fBanco.Free;
+   fListadeBoletos.Free;
+   fCedente.Free;
+   fBanco.Free;
 
-  inherited;
+   inherited;
 end;
 
 function TACBrBoleto.CriarTituloNaLista: TACBrTitulo;
 var
    I : Integer;
 begin
-  I      := fListadeBoletos.Add(TACBrTitulo.Create(self));
-  Result := fListadeBoletos[I];
+   I      := fListadeBoletos.Add(TACBrTitulo.Create(self));
+   Result := fListadeBoletos[I];
 end;
 
 Procedure TACBrBoleto.Imprimir;
 begin
-  if not Assigned(ACBrBoletoFC) then
-     raise Exception.Create( ACBrStr('Nenhum componente "ACBrBoletoFC" associado' ) ) ;
+   if not Assigned(ACBrBoletoFC) then
+      raise Exception.Create( ACBrStr('Nenhum componente "ACBrBoletoFC" associado' ) ) ;
 
-  if Banco.Numero = 0 then
-     raise Exception.Create( ACBrStr('Banco não definido, impossivel listar boleto') );
+   if Banco.Numero = 0 then
+      raise Exception.Create( ACBrStr('Banco não definido, impossivel listar boleto') );
 
-  ChecarDadosObrigatorios;
+   ChecarDadosObrigatorios;
 
-  ACBrBoletoFC.Imprimir;
+   ACBrBoletoFC.Imprimir;
 end;
 
 procedure TACBrBoleto.GerarPDF;
 begin
    if not Assigned(ACBrBoletoFC) then
-     raise Exception.Create( ACBrStr('Nenhum componente "ACBrBoletoFC" associado' ) ) ;
+      raise Exception.Create( ACBrStr('Nenhum componente "ACBrBoletoFC" associado' ) ) ;
 
-  ChecarDadosObrigatorios;
+   ChecarDadosObrigatorios;
 
-  ACBrBoletoFC.GerarPDF;
+   ACBrBoletoFC.GerarPDF;
 end;
 
 
@@ -1198,34 +1110,34 @@ procedure TACBrBoleto.EnviarEmail(const sSmtpHost,
                                       NomeRemetente: String = '';
                                       TLS : Boolean = True);
 var
- ThreadSMTP : TSendMailThread;
- m:TMimemess;
- p: TMimepart;
- StreamNFe : TStringStream;
- NomeArq : String;
- i: Integer;
+  ThreadSMTP : TSendMailThread;
+  m:TMimemess;
+  p: TMimepart;
+  StreamNFe : TStringStream;
+  NomeArq : String;
+  i: Integer;
 begin
- m:=TMimemess.create;
+  m:=TMimemess.create;
 
- ThreadSMTP := TSendMailThread.Create(Self) ;  // Não Libera, pois usa FreeOnTerminate := True ;
- StreamNFe  := TStringStream.Create('');
- try
+  ThreadSMTP := TSendMailThread.Create(Self) ;  // Não Libera, pois usa FreeOnTerminate := True ;
+  StreamNFe  := TStringStream.Create('');
+  try
     p := m.AddPartMultipart('mixed', nil);
     if sMensagem <> nil then
        m.AddPartText(sMensagem, p);
 
     if (EnviaPDF) then
-    begin
-      ACBrBoletoFC.DirArqPDF_HTML:=ExtractFilePath(Application.ExeName);
-      ACBrBoletoFC.NomeArquivo :='boleto.pdf';
+     begin
+       ACBrBoletoFC.DirArqPDF_HTML:=ExtractFilePath(Application.ExeName);
+       ACBrBoletoFC.NomeArquivo :='boleto.pdf';
        NomeArq:=ExtractFilePath(Application.ExeName)+'boleto.pdf';
        GerarPDF;
        m.AddPartBinaryFromFile(NomeArq, p);
-
-    end else
+     end
+    else
      begin
-      ACBrBoletoFC.DirArqPDF_HTML:=ExtractFilePath(Application.ExeName);
-      ACBrBoletoFC.NomeArquivo :='boleto.html';
+       ACBrBoletoFC.DirArqPDF_HTML:=ExtractFilePath(Application.ExeName);
+       ACBrBoletoFC.NomeArquivo :='boleto.html';
        NomeArq:=ExtractFilePath(Application.ExeName)+'boleto.html';
        GerarHTML;
        m.AddPartBinaryFromFile(NomeArq, p);
@@ -1233,17 +1145,17 @@ begin
 
 
     if assigned(Anexos) then
-      for i := 0 to Anexos.Count - 1 do
-      begin
-        m.AddPartBinaryFromFile(Anexos[i], p);
-      end;
+       for i := 0 to Anexos.Count - 1 do
+       begin
+          m.AddPartBinaryFromFile(Anexos[i], p);
+       end;
 
     m.header.tolist.add(sTo);
 
     if Trim(NomeRemetente) <> '' then
-      m.header.From := Format('%s<%s>', [NomeRemetente, sFrom])
+       m.header.From := Format('%s<%s>', [NomeRemetente, sFrom])
     else
-      m.header.From := sFrom;
+       m.header.From := sFrom;
 
     m.header.subject:= sAssunto;
     m.Header.ReplyTo := sFrom;
@@ -1272,11 +1184,10 @@ begin
     if AguardarEnvio then
     begin
       repeat
-        Sleep(1000);
-        Application.ProcessMessages;
+         Sleep(1000);
+         Application.ProcessMessages;
       until ThreadSMTP.Terminado;
     end;
-
  finally
     m.free;
     StreamNFe.Free ;
@@ -1286,100 +1197,99 @@ end;
 // email
 procedure TSendMailThread.DoHandleException;
 begin
-
-  if FException is Exception then
-    Application.ShowException(FException)
-  else
-    SysUtils.ShowException(FException, nil);
+   if FException is Exception then
+      Application.ShowException(FException)
+   else
+      SysUtils.ShowException(FException, nil);
 end;
 
 // email
 constructor TSendMailThread.Create(AOwner: TACBrBoleto);
 begin
-  FOwner      := AOwner;
-  smtp        := TSMTPSend.Create;
-  slmsg_Lines := TStringList.Create;
-  sCC         := TStringList.Create;
-  sFrom       := '';
-  sTo         := '';
+   FOwner      := AOwner;
+   smtp        := TSMTPSend.Create;
+   slmsg_Lines := TStringList.Create;
+   sCC         := TStringList.Create;
+   sFrom       := '';
+   sTo         := '';
 
-  FreeOnTerminate := True;
+   FreeOnTerminate := True;
 
-  inherited Create(True);
+   inherited Create(True);
 end;
 
 
 destructor TSendMailThread.Destroy;
 begin
-  slmsg_Lines.Free;
-  sCC.Free;
-  smtp.Free;
+   slmsg_Lines.Free;
+   sCC.Free;
+   smtp.Free;
 
-  inherited;
+   inherited;
 end;
 
 procedure TSendMailThread.Execute;
 var
    I: integer;
 begin
-  inherited;
+   inherited;
 
-  try
-    Terminado := False;
-    try
-      if not smtp.Login() then
-        raise Exception.Create('SMTP ERROR: Login:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+   try
+     Terminado := False;
+     try
+       if not smtp.Login() then
+          raise Exception.Create('SMTP ERROR: Login:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
 
-      if not smtp.MailFrom( sFrom, Length(sFrom)) then
-        raise Exception.Create('SMTP ERROR: MailFrom:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+       if not smtp.MailFrom( sFrom, Length(sFrom)) then
+          raise Exception.Create('SMTP ERROR: MailFrom:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
 
-      if not smtp.MailTo(sTo) then
-        raise Exception.Create('SMTP ERROR: MailTo:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+       if not smtp.MailTo(sTo) then
+          raise Exception.Create('SMTP ERROR: MailTo:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
 
-      if (sCC <> nil) then
-      begin
-        for I := 0 to sCC.Count - 1 do
-        begin
-          if not smtp.MailTo(sCC.Strings[i]) then
-            raise Exception.Create('SMTP ERROR: MailTo:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
-        end;
-      end;
+       if (sCC <> nil) then
+       begin
+          for I := 0 to sCC.Count - 1 do
+          begin
+             if not smtp.MailTo(sCC.Strings[i]) then
+                raise Exception.Create('SMTP ERROR: MailTo:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+          end;
+       end;
 
-      if not smtp.MailData(slmsg_Lines) then
-        raise Exception.Create('SMTP ERROR: MailData:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+       if not smtp.MailData(slmsg_Lines) then
+          raise Exception.Create('SMTP ERROR: MailData:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
 
-      if not smtp.Logout() then
-        raise Exception.Create('SMTP ERROR: Logout:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
-    finally
-      try
-        smtp.Sock.CloseSocket;
-      except
-      end ;
-      Terminado := True;
-    end;
-  except
-    Terminado := True;
-    HandleException;
-  end;
+       if not smtp.Logout() then
+          raise Exception.Create('SMTP ERROR: Logout:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+     finally
+       try
+         smtp.Sock.CloseSocket;
+       except
+       end ;
+       Terminado := True;
+     end;
+   except
+     Terminado := True;
+     HandleException;
+   end;
 end;
 
 procedure TSendMailThread.HandleException;
 begin
-  FException := Exception(ExceptObject);
-  try
-    // Não mostra mensagens de EAbort
-    if not (FException is EAbort) then
-      Synchronize(DoHandleException);
-  finally
-    FException := nil;
-  end;
+   FException := Exception(ExceptObject);
+   try
+     // Não mostra mensagens de EAbort
+     if not (FException is EAbort) then
+        Synchronize(DoHandleException);
+   finally
+     FException := nil;
+   end;
 end;
 
 
 procedure TACBrBoleto.GerarHTML;
 begin
    if not Assigned(ACBrBoletoFC) then
-     raise Exception.Create( ACBrStr('Nenhum componente "ACBrBoletoFC" associado' ) );
+      raise Exception.Create( ACBrStr('Nenhum componente "ACBrBoletoFC" associado' ) );
 
    ChecarDadosObrigatorios;
 
@@ -1480,13 +1390,13 @@ end;
 
 destructor TACBrBanco.Destroy ;
 begin
-  fBancoClass.Free;
-  inherited ;
+   fBancoClass.Free;
+   inherited ;
 end ;
 
 function TACBrBanco.GetNome: String;
 begin
-  Result:= ACBrStr(fBancoClass.Nome);
+   Result:= ACBrStr(fBancoClass.Nome);
 end;
 
 function TACBrBanco.GetDigito: Integer;
@@ -1547,34 +1457,34 @@ end;
 
 procedure TACBrBanco.SetOrientacoesBanco(const Avalue: TStringList);
 begin
-  BancoClass.fpOrientacoesBanco.Text := AValue.Text;
+   BancoClass.fpOrientacoesBanco.Text := AValue.Text;
 end;
 
 procedure TACBrBanco.SetTipoCobranca(const AValue: TACBrTipoCobranca);
 begin
-  if fTipoCobranca = AValue then
-     exit;
+   if fTipoCobranca = AValue then
+      exit;
 
-  fBancoClass.Free;
+   fBancoClass.Free;
 
-  case AValue of
-    cobBancoDoBrasil  : fBancoClass := TACBrBancoBrasil.create(Self);         {001}
-    cobBancoDoNordeste:fBancoClass  := TACBrBancoNordeste.create(Self);       {004}
-    cobBanestes       : fBancoClass := TACBrBanestes.create(self);            {021}
-    cobSantander      : fBancoClass := TACBrBancoSantander.create(Self);      {033,353,008}
-    cobBanrisul       : fBancoClass := TACBrBanrisul.create(Self);            {041}
-    cobBRB            : fBancoClass := TACBrBancoBRB.create(self);             {070}
-    cobCaixaEconomica : fBancoClass := TACBrCaixaEconomica.create(Self);      {104}
-    cobCaixaSicob     : fBancoClass := TACBrCaixaEconomicaSICOB.create(Self); {104}
-    cobBradesco       : fBancoClass := TACBrBancoBradesco.create(Self);       {237}
-    cobItau           : fBancoClass := TACBrBancoItau.Create(self);           {341}
-    cobBancoMercantil : fBancoClass := TACBrBancoMercantil.create(Self);      {389}
-    cobSicred         : fBancoClass := TACBrBancoSicredi.Create(self);        {748}
-    cobBancoob        : fBancoClass := TACBrBancoob.create(self);              {756}
-    cobHSBC           : fBancoClass := TACBrBancoHSBC.create(self);            {399}
-  else
-    fBancoClass := TACBrBancoClass.create(Self);
-  end;
+   case AValue of
+     cobBancoDoBrasil  : fBancoClass := TACBrBancoBrasil.create(Self);         {001}
+     cobBancoDoNordeste:fBancoClass  := TACBrBancoNordeste.create(Self);       {004}
+     cobBanestes       : fBancoClass := TACBrBanestes.create(self);            {021}
+     cobSantander      : fBancoClass := TACBrBancoSantander.create(Self);      {033,353,008}
+     cobBanrisul       : fBancoClass := TACBrBanrisul.create(Self);            {041}
+     cobBRB            : fBancoClass := TACBrBancoBRB.create(self);             {070}
+     cobCaixaEconomica : fBancoClass := TACBrCaixaEconomica.create(Self);      {104}
+     cobCaixaSicob     : fBancoClass := TACBrCaixaEconomicaSICOB.create(Self); {104}
+     cobBradesco       : fBancoClass := TACBrBancoBradesco.create(Self);       {237}
+     cobItau           : fBancoClass := TACBrBancoItau.Create(self);           {341}
+     cobBancoMercantil : fBancoClass := TACBrBancoMercantil.create(Self);      {389}
+     cobSicred         : fBancoClass := TACBrBancoSicredi.Create(self);        {748}
+     cobBancoob        : fBancoClass := TACBrBancoob.create(self);              {756}
+     cobHSBC           : fBancoClass := TACBrBancoHSBC.create(self);            {399}
+   else
+     fBancoClass := TACBrBancoClass.create(Self);
+   end;
 
    fTipoCobranca := AValue;
 end;
@@ -1608,9 +1518,9 @@ begin
    Result:=  BancoClass.CalcularDigitoVerificador(ACBrTitulo);
 end;
 
-function TACBrBanco.CalcularTamMaximoNossoNumero(const Carteira: String): Integer;
+function TACBrBanco.CalcularTamMaximoNossoNumero(const Carteira: String; NossoNumero : String = ''): Integer;
 begin
-  Result:= BancoClass.CalcularTamMaximoNossoNumero(Carteira);
+  Result:= BancoClass.CalcularTamMaximoNossoNumero(Carteira,NossoNumero);
 end;
 
 function TACBrBanco.MontarCampoNossoNumero ( const ACBrTitulo: TACBrTitulo
@@ -1766,7 +1676,7 @@ begin
 end;
 
 function TACBrBancoClass.CalcularTamMaximoNossoNumero(
-  const Carteira: String): Integer;
+  const Carteira: String; NossoNumero : String = ''): Integer;
 begin
   Result := ACBrBanco.TamanhoMaximoNossoNum;
 end;

@@ -116,9 +116,9 @@ begin
    Res:= IntToStr(Modulo.ModuloFinal);
 
    if Length(Res) > 1 then
-    Result := '0'
-  else
-    Result := Res[1];
+      Result := '0'
+   else
+      Result := Res[1];
 
 end;
 
@@ -135,37 +135,34 @@ begin
     Res := intTostr(Modulo.ModuloFinal);
 
     if Length(Res) > 1 then
-     Result := '0'
-	  else
-     Result := Res[1];
+       Result := '0'
+    else
+       Result := Res[1];
 end;
 
 function TACBrCaixaEconomica.FormataNossoNumero(const ACBrTitulo :TACBrTitulo): String;
 var
-  ANossoNumero, AConvenio : string;
+  ANossoNumero :String;
 begin
    with ACBrTitulo do
    begin
-      AConvenio := ACBrBoleto.Cedente.Convenio;
       ANossoNumero := OnlyNumber(NossoNumero);
 
       if (ACBrTitulo.Carteira = 'RG') then         {carterira registrada}
-          ANossoNumero := '14' + padR(ANossoNumero, 15, '0')
+         ANossoNumero := '14' + padR(ANossoNumero, 15, '0')
       else if (ACBrTitulo.Carteira = 'SR')then     {carteira 2 sem registro}
-          ANossoNumero := '24'+padR(ANossoNumero, 15, '0')
+         ANossoNumero := '24'+padR(ANossoNumero, 15, '0')
       else
-        raise Exception.Create( ACBrStr('Carteira Inválida.'+sLineBreak+'Utilize "RG" ou "SR"') ) ;
-      
-      
+         raise Exception.Create( ACBrStr('Carteira Inválida.'+sLineBreak+'Utilize "RG" ou "SR"') ) ;
    end;
 
-    Result := ANossoNumero;
+   Result := ANossoNumero;
 end;
 
 function TACBrCaixaEconomica.MontarCodigoBarras(const ACBrTitulo : TACBrTitulo): String;
 var
-  CodigoBarras, FatorVencimento, DigitoCodBarras, ANossoNumero :String;
-  CampoLivre,DVCampoLivre : String;
+  CodigoBarras, FatorVencimento, DigitoCodBarras :String;
+  CampoLivre,DVCampoLivre, ANossoNumero : String;
 begin
 
     FatorVencimento := CalcularFatorVencimento(ACBrTitulo.Vencimento);
@@ -173,9 +170,11 @@ begin
     ANossoNumero := FormataNossoNumero(ACBrTitulo);
 
     {Montando Campo Livre}
-    CampoLivre   := padR(ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente,6,'0') + CalcularDVCedente(ACBrTitulo) +
-                	Copy(ANossoNumero,3,3) + Copy(ANossoNumero,1,1) +	Copy(ANossoNumero,6,3) +
-                    '4' + Copy(ANossoNumero,9,9);
+    CampoLivre := padR(ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente,6,'0') +
+                  CalcularDVCedente(ACBrTitulo) + Copy(ANossoNumero,3,3)  +
+                  Copy(ANossoNumero,1,1) + Copy(ANossoNumero,6,3)         +
+                  '4' + Copy(ANossoNumero,9,9);
+
     Modulo.CalculoPadrao;
     Modulo.MultiplicadorFinal   := 2;
     Modulo.MultiplicadorInicial := 9;
@@ -188,16 +187,14 @@ begin
 
     CampoLivre := CampoLivre + DVCampoLivre;
     
-
-
     {Codigo de Barras}
     with ACBrTitulo.ACBrBoleto do
     begin
-	  CodigoBarras := IntToStrZero(Banco.Numero, 3) +
-                      '9' +
-                      FatorVencimento +
-                      IntToStrZero(Round(ACBrTitulo.ValorDocumento * 100), 10) +
-                      CampoLivre;
+       CodigoBarras := IntToStrZero(Banco.Numero, 3) +
+                       '9' +
+                       FatorVencimento +
+                       IntToStrZero(Round(ACBrTitulo.ValorDocumento * 100), 10) +
+                       CampoLivre;
     end;
 
     DigitoCodBarras := CalcularDigitoCodigoBarras(CodigoBarras);
@@ -207,8 +204,8 @@ end;
 function TACBrCaixaEconomica.MontarCampoCodigoCedente (
    const ACBrTitulo: TACBrTitulo ) : String;
 begin
-  Result := ACBrTitulo.ACBrBoleto.Cedente.Agencia + '/'+
-            ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente+'-'+
+  Result := ACBrTitulo.ACBrBoleto.Cedente.Agencia      + '/' +
+            ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente+ '-' +
                 CalcularDVCedente(ACBrTitulo);
 end;
 
@@ -293,26 +290,14 @@ end;
 
 function TACBrCaixaEconomica.GerarRegistroTransacao240(ACBrTitulo : TACBrTitulo): String;
 var
-   ATipoInscricao,
-   ATipoOcorrencia,
-   ATipoBoleto,
-   ADataMoraJuros,
-   ADataDesconto,
-   ANossoNumero,
-   ATipoAceite,
-   AEspecieDoc : String;
+   ATipoOcorrencia, ATipoBoleto, ADataMoraJuros :String;
+   ADataDesconto, ANossoNumero, ATipoAceite     :String;
 begin
    with ACBrTitulo do
    begin
       ANossoNumero := FormataNossoNumero(ACBrTitulo);
 
       {SEGMENTO P}
-
-      {Pegando tipo de pessoa do Cendente}
-      case ACBrBoleto.Cedente.TipoInscricao of
-         pFisica  : ATipoInscricao := '1';
-         pJuridica: ATipoInscricao := '2';
-      end;
 
       {Pegando o Tipo de Ocorrencia}
       case OcorrenciaOriginal.Tipo of
@@ -384,7 +369,6 @@ begin
                '1'                                                        + //59 - Forma de cadastramento do título no banco: com cadastramento  1-cobrança Registrada
                '2'                                                        + //60 - Tipo de documento: Tradicional
                ATipoBoleto                                                + //61 e 62(juntos)- Quem emite e quem distribui o boleto?
-               //padL(NumeroDocumento, 10, '0')                             + //63 a 73 - Número que identifica o título na empresa [ Alterado conforme instruções da CSO Brasília ] {27-07-09}
                padL(NumeroDocumento, 11, ' ')                             + //63 a 73 - Número que identifica o título na empresa
                padL('', 4, ' ')                                           + //74 a 77 - Uso Exclusivo Caixa
                FormatDateTime('ddmmyyyy', Vencimento)                     + //78 a 85 - Data de vencimento do título
@@ -472,9 +456,7 @@ procedure TACBrCaixaEconomica.LerRetorno240(ARetorno: TStringList);
 var
   ContLinha: Integer;
   Titulo   : TACBrTitulo;
-  Linha,
-  rCedente,
-  rCNPJCPF,
+  Linha, rCedente, rCNPJCPF: String;
   rAgencia, rConta,rDigitoConta: String;
 begin
    ContLinha := 0;
@@ -493,10 +475,10 @@ begin
                                                              Copy(ARetorno[1],194,2)+'/'+
                                                              Copy(ARetorno[1],198,2),0, 'DD/MM/YY' );
 
-   if StrToIntDef(Copy(Linha,200,6),0) <> 0 then
+   if StrToIntDef(Copy(ARetorno[1],200,6),0) <> 0 then
       ACBrBanco.ACBrBoleto.DataCreditoLanc := StringToDateTimeDef(Copy(ARetorno[1],200,2)+'/'+
                                                                   Copy(ARetorno[1],202,2)+'/'+
-                                                                  Copy(ARetorno[1],204,2),0, 'DD/MM/YY' );
+                                                                  Copy(ARetorno[1],204,4),0, 'DD/MM/YY' );
    rCNPJCPF := trim( Copy(ARetorno[0],19,14)) ;
 
    if ACBrBanco.ACBrBoleto.Cedente.TipoInscricao = pJuridica then
@@ -542,69 +524,64 @@ begin
    begin
       Linha := ARetorno[ContLinha] ;
 
-      if Copy(Linha,14,1)= 'T' then //segmento T - Só cria após passar pelo seguimento T depois U
+      {Segmento T - Só cria após passar pelo seguimento T depois U}
+      if Copy(Linha,14,1)= 'T' then
          Titulo := ACBrBanco.ACBrBoleto.CriarTituloNaLista;
 
       with Titulo do
       begin
-
-        if Copy(Linha,14,1)= 'T' then //segmento T
-        begin
-         SeuNumero                   := copy(Linha,59,11);
-         NumeroDocumento             := copy(Linha,59,11);
-         OcorrenciaOriginal.Tipo     := CodOcorrenciaToTipo(StrToIntDef(
-                                        copy(Linha,16,2),0));
-         //05 = Liquidação Sem Registro
-         Vencimento := StringToDateTimeDef( Copy(Linha,74,2)+'/'+
-                                            Copy(Linha,76,2)+'/'+
-                                            Copy(Linha,78,2),0, 'DD/MM/YY' );
-
-         ValorDocumento       := StrToFloatDef(Copy(Linha,82,15),0)/100;
-         ValorDespesaCobranca := StrToFloatDef(Copy(Linha,199,15),0)/100;
-         NossoNumero          := Copy(Linha,40,11);
-         Carteira             := Copy(Linha,40,2);
-
-         end //if segmento
-         else
-      if Copy(Linha,14,1)= 'U' then //segmento U
-        begin
-
-         if StrToIntDef(Copy(Linha,138,6),0) <> 0 then
-            DataOcorrencia := StringToDateTimeDef( Copy(Linha,138,2)+'/'+
-                                                Copy(Linha,140,2)+'/'+
-                                                Copy(Linha,142,4),0, 'DD/MM/YYYY' );
-
-         if StrToIntDef(Copy(Linha,146,6),0) <> 0 then
-            DataCredito:= StringToDateTimeDef( Copy(Linha,146,2)+'/'+
-                                               Copy(Linha,148,2)+'/'+
-                                               Copy(Linha,150,4),0, 'DD/MM/YYYY' );
-
-         ValorMoraJuros       := StrToFloatDef(Copy(Linha,18,15),0)/100;
-         ValorDesconto        := StrToFloatDef(Copy(Linha,33,15),0)/100;
-         ValorAbatimento      := StrToFloatDef(Copy(Linha,48,15),0)/100;
-         ValorIOF             := StrToFloatDef(Copy(Linha,63,15),0)/100;
-         ValorRecebido        := StrToFloatDef(Copy(Linha,93,15),0)/100;
-         ValorOutrasDespesas  := StrToFloatDef(Copy(Linha,108,15),0)/100;
-         ValorOutrosCreditos  := StrToFloatDef(Copy(Linha,123,15),0)/100;
-
-        end
-        else
-          if Copy(Linha, 14, 1) = 'W' then //segmento W
+         {Segmento T}
+         if Copy(Linha,14,1)= 'T' then
           begin
-            //verifica o motivo de rejeição
-            MotivoRejeicaoComando.Add(copy(Linha,29,2));
-            DescricaoMotivoRejeicaoComando.Add(CodMotivoRejeicaoToDescricao(
-                                               CodOcorrenciaToTipo(
-                                                StrToIntDef(copy(Linha, 16, 2), 0)),
-              StrToInt(Copy(Linha, 29, 2))));
-          end;
+            SeuNumero                   := copy(Linha,59,11);
+            NumeroDocumento             := copy(Linha,59,11);
+            OcorrenciaOriginal.Tipo     := CodOcorrenciaToTipo(StrToIntDef(
+                                        copy(Linha,16,2),0));
+            //05 = Liquidação Sem Registro
+            Vencimento := StringToDateTimeDef( Copy(Linha,74,2)+'/'+
+                                               Copy(Linha,76,2)+'/'+
+                                               Copy(Linha,78,2),0, 'DD/MM/YY' );
 
+            ValorDocumento       := StrToFloatDef(Copy(Linha,82,15),0)/100;
+            ValorDespesaCobranca := StrToFloatDef(Copy(Linha,199,15),0)/100;
+            NossoNumero          := Copy(Linha,40,11);
+            Carteira             := Copy(Linha,40,2);
 
+          end
+         {Ssegmento U}
+         else if Copy(Linha,14,1)= 'U' then
+          begin
 
-      end; //with
+            if StrToIntDef(Copy(Linha,138,6),0) <> 0 then
+               DataOcorrencia := StringToDateTimeDef( Copy(Linha,138,2)+'/'+
+                                                      Copy(Linha,140,2)+'/'+
+                                                      Copy(Linha,142,4),0, 'DD/MM/YYYY' );
 
+            if StrToIntDef(Copy(Linha,146,6),0) <> 0 then
+               DataCredito:= StringToDateTimeDef( Copy(Linha,146,2)+'/'+
+                                                  Copy(Linha,148,2)+'/'+
+                                                  Copy(Linha,150,4),0, 'DD/MM/YYYY' );
 
-   end; //for
+            ValorMoraJuros       := StrToFloatDef(Copy(Linha,18,15),0)/100;
+            ValorDesconto        := StrToFloatDef(Copy(Linha,33,15),0)/100;
+            ValorAbatimento      := StrToFloatDef(Copy(Linha,48,15),0)/100;
+            ValorIOF             := StrToFloatDef(Copy(Linha,63,15),0)/100;
+            ValorRecebido        := StrToFloatDef(Copy(Linha,93,15),0)/100;
+            ValorOutrasDespesas  := StrToFloatDef(Copy(Linha,108,15),0)/100;
+            ValorOutrosCreditos  := StrToFloatDef(Copy(Linha,123,15),0)/100;
+         end
+        {Segmento W}
+        else if Copy(Linha, 14, 1) = 'W' then
+         begin
+           //verifica o motivo de rejeição
+           MotivoRejeicaoComando.Add(copy(Linha,29,2));
+           DescricaoMotivoRejeicaoComando.Add(CodMotivoRejeicaoToDescricao(
+                                              CodOcorrenciaToTipo(
+                                              StrToIntDef(copy(Linha, 16, 2), 0)),
+                                              StrToInt(Copy(Linha, 29, 2))));
+         end;
+      end;
+   end;
 
 end;
 function TACBrCaixaEconomica.CodOcorrenciaToTipo(

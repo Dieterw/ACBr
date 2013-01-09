@@ -94,7 +94,7 @@ function TACBrBanestes.CalcularCampoASBACE(
 var
   cIndice, cLivreAsbace: String;
   nContAsbace: Word;
-  nResult, nResultTemp, nDigAsbace01, nDigAsbace02: Integer;
+  nResult, nResultTemp, nDigAsbace01: Integer;
 begin
    cLivreAsbace := copy(ACBrTitulo.NossoNumero,2,8)+
                    copy(trim(ACBrTitulo.ACBrBoleto.Cedente.Conta),2,10)+
@@ -105,11 +105,11 @@ begin
   nResult      := 0;
   for nContAsbace := 23 downto 1 do
   begin
-    nResultTemp := (StrToInt(cIndice[nContAsbace]) * StrToInt(cLivreAsbace[nContAsbace]));
-    If nResultTemp > 9 then
-       nResult := nResult + (nResultTemp - 9)
-      else
-       nResult := nResult + nResultTemp;
+     nResultTemp := (StrToInt(cIndice[nContAsbace]) * StrToInt(cLivreAsbace[nContAsbace]));
+     if nResultTemp > 9 then
+        nResult := nResult + (nResultTemp - 9)
+     else
+        nResult := nResult + nResultTemp;
   end;
 
   nResult := nResult Mod 10;
@@ -121,40 +121,38 @@ begin
   cLivreAsbace := cLivreAsbace + IntToStr(nResult);
   cIndice      := '765432765432765432765432';
   nResult      := 0;
+
   for nContAsbace := 24 downto 1 do
-  begin
     nResult := nResult + (StrToInt(cIndice[nContAsbace]) * StrToInt(cLivreAsbace[nContAsbace]));
-  end;
 
   nResult := nResult Mod 11;
-  If nResult = 0 then
-    nResult := 0
-  else
-  if nResult = 1 then
-  begin
+  if nResult = 0 then
+     nResult := 0
+  else if nResult = 1 then
+   begin
      while nResult = 1 do
      begin
-       nDigAsbace01 := nDigAsbace01 + 1;
-       if nDigAsbace01 = 10 then
-          nDigAsbace01 := 0;
-       cLivreAsbace := copy(cLivreAsbace,1,23) + IntToStr(nDigAsbace01);
-       cIndice      := '765432765432765432765432';
-       nResult      := 0;
-       for nContAsbace := 24 downto 1 do
-       begin
-         nResult := nResult + (StrToInt(cIndice[nContAsbace]) * StrToInt(cLivreAsbace[nContAsbace]));
-       end;
+        nDigAsbace01 := nDigAsbace01 + 1;
 
-       nResult := nResult Mod 11;
-       If nResult = 0 then 
+        if nDigAsbace01 = 10 then
+           nDigAsbace01 := 0;
+        cLivreAsbace := copy(cLivreAsbace,1,23) + IntToStr(nDigAsbace01);
+        cIndice      := '765432765432765432765432';
+        nResult      := 0;
+
+        for nContAsbace := 24 downto 1 do
+         nResult := nResult + (StrToInt(cIndice[nContAsbace]) * StrToInt(cLivreAsbace[nContAsbace]));
+
+        nResult := nResult Mod 11;
+        if nResult = 0 then
           nResult := 0
-       else if nResult > 1 then 
+        else if nResult > 1 then
           nResult := 11 - nResult;
      end;
-  end
+   end
   else
-  if nResult > 1 then
-    nResult := 11 - nResult;
+   if nResult > 1 then
+      nResult := 11 - nResult;
 
   cLivreAsbace := cLivreAsbace + IntToStr(nResult);
   result := cLivreAsbace;
@@ -176,9 +174,7 @@ end;
 
 function TACBrBanestes.MontarCodigoBarras ( const ACBrTitulo: TACBrTitulo) : String;
 var
-  cIndice, CodigoBarras,
-  FatorVencimento, DigitoCodBarras:String;
-  nConter, nMult: Word;
+  CodigoBarras,FatorVencimento, DigitoCodBarras:String;
 begin
   with ACBrTitulo.ACBrBoleto do
   begin
@@ -201,7 +197,7 @@ end;
 function TACBrBanestes.MontarCampoNossoNumero (
    const ACBrTitulo: TACBrTitulo ) : String;
 begin
-  Result := ACBrTitulo.NossoNumero+'-'+CalcularDigitoVerificador(ACBrTitulo);
+   Result := ACBrTitulo.NossoNumero+'-'+CalcularDigitoVerificador(ACBrTitulo);
 end;
 
 function TACBrBanestes.MontarCampoCodigoCedente (
@@ -252,20 +248,22 @@ end;
 
 procedure TACBrBanestes.GerarRegistroTransacao400(ACBrTitulo: TACBrTitulo; aRemessa: TStringList);
 var
-   ATipoInscricao,TipoBoleto,ATipoAceite,DigitoNossoNumero, Ocorrencia, aEspecie, aAgencia :String;
-   PracaPostagem,acarteira,Protesto, TipoSacado, MensagemCedente, aConta     :String;
-   wLinha: String;
+   ATipoInscricao,TipoBoleto,ATipoAceite :String;
+   DigitoNossoNumero,Ocorrencia          :String;
+   PracaPostagem,acarteira,Protesto      :String;
+   TipoSacado, MensagemCedente,wLinha    :String;
 begin
+
    case ACBrBanco.ACBrBoleto.Cedente.TipoInscricao of
       pFisica  : ATipoInscricao := '01';
       pJuridica: ATipoInscricao := '02';
    end;
 
-   with ACBrTitulo do BEGIN
+   with ACBrTitulo do
+   begin
       DigitoNossoNumero := CalcularDigitoVerificador(ACBrTitulo);
-      aAgencia := IntToStrZero(StrToIntDef(trim(ACBrBoleto.Cedente.Agencia),0),5);
-      aConta   := IntToStrZero(StrToIntDef(trim(ACBrBoleto.Cedente.Conta),0),7);
       aCarteira:= IntToStrZero(StrToIntDef(trim(Carteira),0), 1);
+
       {Pegando Código da Ocorrencia}
       case OcorrenciaOriginal.Tipo of
          toRemessaBaixar                         : Ocorrencia := '02'; {Pedido de Baixa}
@@ -288,26 +286,13 @@ begin
          tbBancoEmite      : TipoBoleto  := '21';
          tbBancoReemite    : TipoBoleto  := '21';
       end;
+
       case ACBrBoleto.Cedente.ResponEmissao of
          tbCliEmite        : PracaPostagem  := '00501';
          tbBancoNaoReemite : PracaPostagem  := '00501';
          tbBancoEmite      : PracaPostagem  := '00000';
          tbBancoReemite    : PracaPostagem  := '00000';
       end;
-
-      {Pegando Especie}
-      if trim(EspecieDoc) = 'DM' then
-         aEspecie:= '01'
-      else if trim(EspecieDoc) = 'NP' then
-         aEspecie:= '02'
-      else if trim(EspecieDoc) = 'NS' then
-         aEspecie:= '03'
-      else if trim(EspecieDoc) = 'CS' then
-         aEspecie:= '04'
-      else if trim(EspecieDoc) = 'DS' then
-         aEspecie:= '11'
-      else
-         aEspecie := EspecieDoc;
 
       {Pegando campo Intruções}
       if (DataProtesto > 0) and (DataProtesto > Vencimento) then

@@ -103,9 +103,8 @@ begin
 
    base := 0;
    for i := 1 to Length(Num) do
-   begin
      base := base + ( StrToInt(copy(Num,i,1)) * StrToInt(copy(indice,i,1)) );
-   end;
+
    digito := 11-((  base )-( trunc(base/11) * 11));
    //(Se o Resto for igual a 0 ou 1 então o DV é igual a 0)
    if (digito > 9) then
@@ -181,13 +180,13 @@ begin
     {Codigo de Barras}
     with ACBrTitulo.ACBrBoleto do
     begin
-	  CodigoBarras := IntToStrZero(Banco.Numero, 3) +
-                      '9' +
-                      FatorVencimento +
-                      IntToStrZero(Round(ACBrTitulo.ValorDocumento * 100), 10) +
-                      padR(ACarteira, 1, '0') +
-                      padR(OnlyNumber(Cedente.Agencia),4,'0') +
-                      CampoLivre;
+       CodigoBarras := IntToStrZero(Banco.Numero, 3) +
+                       '9' +
+                       FatorVencimento +
+                       IntToStrZero(Round(ACBrTitulo.ValorDocumento * 100), 10) +
+                       padR(ACarteira, 1, '0') +
+                       padR(OnlyNumber(Cedente.Agencia),4,'0') +
+                       CampoLivre;
     end;
 
     DigitoCodBarras := CalcularDigitoCodigoBarras(CodigoBarras);
@@ -235,21 +234,13 @@ end;
 
 procedure TACBrBancoob.GerarRegistroTransacao400(ACBrTitulo :TACBrTitulo; aRemessa: TStringList);
 var
-  DigitoNossoNumero,
-  Ocorrencia,aEspecie,
-  Protesto,
-  TipoSacado: String;
-  ATipoAceite:String;
-  MensagemCedente: String;
-  ACarteira      : String;
+  DigitoNossoNumero, Ocorrencia,aEspecie :String;
+  TipoSacado, ATipoAceite,MensagemCedente:String;
+  TipoCedente, wLinha :String;
   I: Integer;
-  TipoCedente: String;
-  wLinha: String;
 begin
 
-    if (Length(ACBrTitulo.Carteira) > 0 )then
-       ACarteira := '1'
-    else
+    if (Length(ACBrTitulo.Carteira) < 1 )then
        raise Exception.Create( ACBrStr('Carteira Inválida.'+sLineBreak) ) ;
 
    with ACBrTitulo do
@@ -293,14 +284,6 @@ begin
       else
          aEspecie := EspecieDoc;
 
-      {Pegando campo Intruções}
-      if (DataProtesto > 0) and (DataProtesto > Vencimento) then
-          Protesto := '06' + IntToStrZero(DaysBetween(DataProtesto,Vencimento),2)
-      else if Ocorrencia = '31' then
-         Protesto := '9999'
-      else
-         Protesto := Instrucao1+Instrucao2;
-
       {Pegando Tipo de Sacado}
       case Sacado.Pessoa of
          pFisica   : TipoSacado := '01';
@@ -317,6 +300,7 @@ begin
 
       with ACBrBoleto do
       begin
+         MensagemCedente:= '';
          for I:= 0 to Mensagem.count-1 do
              MensagemCedente:= MensagemCedente + trim(Mensagem[i]);
 
@@ -605,10 +589,8 @@ begin
        ADataDesconto := padR('', 8, '0');
       Result:= IntToStrZero(ACBrBanco.Numero, 3)                          + //1 a 3 - Código do banco
                '0001'                                                     + //4 a 7 - Lote de serviço
-               '3'                                                         +
-               IntToStrZero((i)+ 1 ,5)+ //9 a 13 - Número seqüencial do registro no lote - Cada registro possui dois segmentos
-
-            //   IntToStrZero((ACBrBoleto.ListadeBoletos.IndexOf(ACBrTitulo))+ 1 ,5)+ //9 a 13 - Número seqüencial do registro no lote - Cada registro possui dois segmentos
+               '3'                                                        +
+               IntToStrZero((i)+ 1 ,5)                                    + //9 a 13 - Número seqüencial do registro no lote - Cada registro possui dois segmentos
                'P'                                                        + //14 - Código do segmento do registro detalhe
                ' '                                                        + //15 - Uso exclusivo FEBRABAN/CNAB: Branco
                ATipoOcorrencia                                            + //16 a 17 - Código de movimento
@@ -619,17 +601,16 @@ begin
                padR(ACBrBoleto.Cedente.ContaDigito , 1, '0')              + //36 - Dígito da Conta Corrente
                ' ';                                                        //37 - DV Agência/COnta Brancos
                if (ACBrBoleto.Cedente.ResponEmissao = tbCliEmite) then
-                 begin
-                   Result := Result+padR(NossoNum, 10, '0')+ // 38 a 57 - Carteira
-                                    padR('01', 02, '0')+
-                                    padR('02', 02, '0')+
-                                    '4'+
-                                    Space(5);
-                 end
+                begin
+                  Result := Result+padR(NossoNum, 10, '0')+ // 38 a 57 - Carteira
+                            padR('01', 02, '0')+
+                            padR('02', 02, '0')+
+                            '4'+
+                            Space(5);
+                end
                else
-                 begin
-                   Result := Result+Space(20);
-                 end;
+                  Result := Result+Space(20);
+
                Result := Result+Carteira                                  +//58 a 58 carteira
                          '0'                                              +//59 Forma de cadastramento no banco
                          ' '                                              +//60 Brancos
@@ -647,7 +628,6 @@ begin
                          ADataMoraJuros                                             + //119 a 126 - Data a partir da qual serão cobrados juros
                          IfThen(ValorMoraJuros > 0, IntToStrZero( round(ValorMoraJuros * 100), 15),
                          padR('', 15, '0'))                                        + //127 a 141 - Valor de juros de mora por dia
-//                       ValorMoraJuros                                             + //127 a 141 - Valor de Mora por dia de atraso
                          '0'                                                        + // 142 - Zeros
                          ADataDesconto                                             + // 143 a 150 - Data limite para desconto
                          IfThen(ValorDesconto > 0, IntToStrZero( round(ValorDesconto * 100), 15),
@@ -674,8 +654,7 @@ begin
                IntToStrZero(ACBrBanco.Numero, 3)                          + //Código do banco
                '0001'                                                     + //Número do lote
                '3'                                                        + //Tipo do registro: Registro detalhe
-               IntToStrZero((i)+ 1 ,5)+ //9 a 13 - Número seqüencial do registro no lote - Cada registro possui dois segmentos
-  //             IntToStrZero((ACBrBoleto.ListadeBoletos.IndexOf(ACBrTitulo)*2)+ 1 ,5)+ //Número seqüencial do registro no lote - Cada registro possui dois segmentos
+               IntToStrZero((i)+ 1 ,5)                                    + //9 a 13 - Número seqüencial do registro no lote - Cada registro possui dois segmentos
                'Q'                                                        + //Código do segmento do registro detalhe
                ' '                                                        + //Uso exclusivo FEBRABAN/CNAB: Branco
                '01'                                                       + // 16 a 17
@@ -701,9 +680,7 @@ begin
                IntToStrZero(ACBrBanco.Numero, 3)                          + //Código do banco
                '0001'                                                     + //Número do lote
                '3'                                                        + //Tipo do registro: Registro detalhe
-               IntToStrZero((i)+ 1 ,5)+ //9 a 13 - Número seqüencial do registro no lote - Cada registro possui dois segmentos
-
-       //        IntToStrZero((ACBrBoleto.ListadeBoletos.IndexOf(ACBrTitulo)*3)+ 1 ,5)+ //Número seqüencial do registro no lote - Cada registro possui dois segmentos
+               IntToStrZero((i)+ 1 ,5)                                    + //9 a 13 - Número seqüencial do registro no lote - Cada registro possui dois segmentos
                'R'                                                        + //Código do segmento do registro detalhe
                ' '                                                        + //Uso exclusivo FEBRABAN/CNAB: Branco
                '01'                                                       + // 16 a 17
@@ -736,8 +713,6 @@ begin
                '0001'                                                     + //Número do lote
                '3'                                                        + //Tipo do registro: Registro detalhe
                IntToStrZero((i)+ 1 ,5)+ //9 a 13 - Número seqüencial do registro no lote - Cada registro possui dois segmentos
-
-      //         IntToStrZero((ACBrBoleto.ListadeBoletos.IndexOf(ACBrTitulo)*4)+ 1 ,5) + //Número seqüencial do registro no lote - Cada registro possui dois segmentos
                'S'                                                        + //Código do segmento do registro detalhe
                ' '                                                        + //Uso exclusivo FEBRABAN/CNAB: Branco
                '01'                                                       + // 16 a 17
@@ -774,7 +749,6 @@ begin
            IntToStrZero(ARemessa.Count, 6)                            + //Quantidade de registros do arquivo, inclusive este registro que está sendo criado agora}
            padR('', 6, '0')                                           + //Complemento
            space(205);
-//      Result := Result + #13#10;
 
 end;
 

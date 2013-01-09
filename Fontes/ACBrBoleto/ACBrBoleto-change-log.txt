@@ -145,6 +145,14 @@ Versao 0.0.10a do FortesReport 06/07/11
     cobrança não registrada.
     (por: Regys Silveira) 
 
+versao 0.0.55a
+[-] Unit CaixaEconomicaSicob - Corrigida leitura do arquivo retorno CNAB240 onde 
+    os campos Agencia e Conta não estavam sendo checados corretamente impedindo o 
+    processamento do arquivo.
+    Passado a respeitar a propriedade LeRetorno para atribuir ao componente as 
+    informações lidas do arquivo.(Juliana Tamizou)
+
+
 versao 0.0.54a
 [-] Unit CaixaEconomica - Corrigida leitura do arquivo retorno CNAB240 onde o campo
     Conta e CódigoCedente não estavam sendo checados corretamente impedindo o 

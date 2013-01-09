@@ -84,6 +84,8 @@ begin
    fpNome   := 'Caixa Economica Federal';
    fpNumero:= 104;
    fpTamanhoMaximoNossoNum := 15;
+   fpTamanhoAgencia := 5;
+   fpTamanhoConta   := 8;
 end;
 
 function TACBrCaixaEconomicaSICOB.CalcularDigitoVerificador(const ACBrTitulo: TACBrTitulo ): String;
@@ -780,7 +782,7 @@ begin
                              'não é um arquivo de retorno do '+ Nome));
 
    rAgencia     := trim(Copy(ARetorno[0],53,5));
-   rConta       := trim(Copy(ARetorno[0],59,12));
+   rConta       := trim(Copy(ARetorno[0],63,8));
    rDigitoConta := Copy(ARetorno[0],72,1);
    rCedente     := trim(Copy(ARetorno[0],73,30));
 
@@ -820,17 +822,20 @@ begin
          (rConta <> OnlyNumber(Cedente.Conta))) then
         raise Exception.Create(ACBrStr('Agencia\Conta do arquivo inválido'));
 
-     Cedente.Nome    := rCedente;
-     Cedente.CNPJCPF := rCNPJCPF;
-     Cedente.Agencia := rAgencia;
-     Cedente.AgenciaDigito:= '0';
-     Cedente.Conta   := rConta;
-     Cedente.ContaDigito:= rDigitoConta;
+     if LeCedenteRetorno then
+     begin
+        Cedente.Nome    := rCedente;
+        Cedente.CNPJCPF := rCNPJCPF;
+        Cedente.Agencia := rAgencia;
+        Cedente.AgenciaDigito:= '0';
+        Cedente.Conta   := rConta;
+        Cedente.ContaDigito:= rDigitoConta;
 
-     case StrToIntDef(Copy(ARetorno[1],18,1),0) of
-       1: Cedente.TipoInscricao:= pFisica;
-       else
-          Cedente.TipoInscricao:= pJuridica;
+        case StrToIntDef(Copy(ARetorno[1],18,1),0) of
+          1: Cedente.TipoInscricao:= pFisica;
+        else
+             Cedente.TipoInscricao:= pJuridica;
+        end;
      end;
      ListadeBoletos.Clear;
    end;

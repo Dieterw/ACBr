@@ -12,6 +12,9 @@
         <UnitOutputDirectory Value="..\..\Fontes\ACBrBoleto\lib\$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
       <Other>
+        <CompilerMessages>
+          <IgnoredMessages idx4079="True" idx4080="True" idx4081="True" idx5024="True"/>
+        </CompilerMessages>
         <CompilerPath Value="$(CompPath)"/>
       </Other>
     </CompilerOptions>

@@ -142,7 +142,8 @@ begin
      end;
   2: begin
       ConfigSchema.VersaoCabecalho := '1.00';
-      ConfigSchema.VersaoDados     := '1.00';
+      // Alterado por Italo em 10/01/2013
+      ConfigSchema.VersaoDados     := ''; // '1.00';
       ConfigSchema.VersaoXML       := '2';
       ConfigSchema.NameSpaceXML    := 'http://www.abrasf.org.br/nfse';
       ConfigSchema.Cabecalho       := '';
@@ -336,8 +337,8 @@ var
  DadosMsg: AnsiString;
 begin
  DadosMsg := '<' + Prefixo3 + 'LoteRps'+
-               DFeUtil.SeSenao(Identificador <> '', ' ' + Identificador + '="' + NumeroLote + '"', '') + '>' +
-//               ' versao="' + VersaoDados + '">' +
+               DFeUtil.SeSenao(Identificador <> '', ' ' + Identificador + '="' + NumeroLote + '"', '') +
+               DFeUtil.SeSenao(VersaoDados <> '', ' versao="' + VersaoDados + '"', '') + '>' +
               '<' + Prefixo4 + 'NumeroLote>' +
                 NumeroLote +
               '</' + Prefixo4 + 'NumeroLote>' +
@@ -554,8 +555,8 @@ var
  DadosMsg: AnsiString;
 begin
  DadosMsg := '<' + Prefixo3 + 'LoteRps'+
-               DFeUtil.SeSenao(Identificador <> '', ' ' + Identificador + '="' + NumeroLote + '"', '') + '>' +
-//               ' versao="' + VersaoDados + '">' +
+               DFeUtil.SeSenao(Identificador <> '', ' ' + Identificador + '="' + NumeroLote + '"', '') +
+               DFeUtil.SeSenao(VersaoDados <> '', ' versao="' + VersaoDados + '"', '') + '>' +
               '<' + Prefixo4 + 'NumeroLote>' +
                 NumeroLote +
               '</' + Prefixo4 + 'NumeroLote>' +

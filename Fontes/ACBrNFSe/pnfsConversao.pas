@@ -603,6 +603,7 @@ begin
          : Provedor := 'GINFES';
 
   3530607, // Mogi das Cruzes/SP
+  4313409, // Novo Hamburgo/RS
   5103403, // Cuiaba/MT
   5201108, // Anapolis/GO
   5201405  // Aparecida de Goiania/GO
@@ -994,6 +995,7 @@ begin
   4309308: Cidade := 'Guaiba/RS';
   4309407: Cidade := 'Guapore/RS';
   4310207: Cidade := 'Ijui/RS';
+  4313409: Cidade := 'Novo Hamburgo/RS';
   4314407: Cidade := 'Pelotas/RS';
   4314902: Cidade := 'Porto Alegre/RS';
   4318002: Cidade := 'São Borja/RS';

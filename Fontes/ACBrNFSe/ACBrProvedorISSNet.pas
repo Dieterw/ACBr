@@ -92,10 +92,11 @@ begin
  ConfigCidade.VersaoSoap    := '1.1';
  ConfigCidade.CodigoSchemas := 2;
  case ACodigo of
-  3530607: ConfigCidade.CodigoURLs := 15; // Mogi das Cruzes/SP
-  5103403: ConfigCidade.CodigoURLs := 09; // Cuiaba/MT
-  5201108: ConfigCidade.CodigoURLs := 02; // Anapolis/GO
-  5201405: ConfigCidade.CodigoURLs := 04; // Aparecida de Goiania/GO
+  3530607: ConfigCidade.CodigoURLs := 01; // Mogi das Cruzes/SP
+  4313409: ConfigCidade.CodigoURLs := 02; // Novo Hamburgo/RS
+  5103403: ConfigCidade.CodigoURLs := 03; // Cuiaba/MT
+  5201108: ConfigCidade.CodigoURLs := 04; // Anapolis/GO
+  5201405: ConfigCidade.CodigoURLs := 05; // Aparecida de Goiania/GO
  end;
  ConfigCidade.Prefixo2      := '';
  ConfigCidade.Prefixo3      := '';
@@ -137,21 +138,25 @@ var
  ConfigURL: TConfigURL;
 begin
  case ACodigo of
+  01: begin
+       ConfigURL.HomNomeCidade         := 'mogidascruzes';
+       ConfigURL.ProNomeCidade         := 'mogidascruzes';
+      end;
   02: begin
-       ConfigURL.HomNomeCidade         := 'anapolis';
-       ConfigURL.ProNomeCidade         := 'anapolis';
+       ConfigURL.HomNomeCidade         := 'novohamburgo';
+       ConfigURL.ProNomeCidade         := 'novohamburgo';
       end;
-  04: begin
-       ConfigURL.HomNomeCidade         := 'aparecidadegoiania';
-       ConfigURL.ProNomeCidade         := 'aparecidadegoiania';
-      end;
-  09: begin
+  03: begin
        ConfigURL.HomNomeCidade         := 'cuiaba';
        ConfigURL.ProNomeCidade         := 'cuiaba';
       end;
-  15: begin
-       ConfigURL.HomNomeCidade         := 'mogidascruzes';
-       ConfigURL.ProNomeCidade         := 'mogidascruzes';
+  04: begin
+       ConfigURL.HomNomeCidade         := 'anapolis';
+       ConfigURL.ProNomeCidade         := 'anapolis';
+      end;
+  05: begin
+       ConfigURL.HomNomeCidade         := 'aparecidadegoiania';
+       ConfigURL.ProNomeCidade         := 'aparecidadegoiania';
       end;
  end;
 

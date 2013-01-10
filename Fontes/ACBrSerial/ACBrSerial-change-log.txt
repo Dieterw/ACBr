@@ -97,6 +97,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 10/01/2013
+-- ACBrECFFiscNet --
+[-] Correção de erro em DescontoAcrescimoItemAnterior que ocorria em alguns modelos:
+    http://www.projetoacbr.com.br/forum/index.php?/topic/
+    1957-descontoacrescimoitemanterior-swedastx/?p=48234
+
 Data: 21/12/2012
 -- ACBrDevice --
 [*] Ajuste para permitir Hooks de comunicação com outras bibliotecas ou DLLs

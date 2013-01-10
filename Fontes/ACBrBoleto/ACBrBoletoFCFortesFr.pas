@@ -753,7 +753,7 @@ begin
       txtUsoBanco2.Caption            := Titulo.UsoBanco;
       txtCarteira.Caption             := Titulo.Carteira;
       txtEspecie2.Caption             := 'R$';
-      txtParcela.Caption              := IntToStrZero(Titulo.Parcela,2)+' /';
+      txtParcela.Caption              := IntToStrZero(Titulo.Parcela,3)+' /';
       txtTotPar.Caption               := IntToStrZero(Titulo.TotalParcelas,3);
 
       txtEndSacado.Caption            := Titulo.Sacado.Logradouro + ' '+

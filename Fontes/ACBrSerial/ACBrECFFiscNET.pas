@@ -1300,15 +1300,13 @@ begin
      ValorDescontoAcrescimo := -ValorDescontoAcrescimo ;
 
   FiscNETComando.NomeComando := 'AcresceItemFiscal' ;
+  FiscNETComando.AddParamBool('Cancelar',False);
+  if NumItem > 0 then
+     FiscNETComando.AddParamInteger('NumItem',NumItem) ;
   if TipoDescontoAcrescimo = '%' then
      FiscNETComando.AddParamDouble('ValorPercentual',ValorDescontoAcrescimo)
   else
      FiscNETComando.AddParamDouble('ValorAcrescimo',ValorDescontoAcrescimo);
-
-  if NumItem > 0 then
-     FiscNETComando.AddParamInteger('NumItem',NumItem) ;
-
-  FiscNETComando.AddParamBool('Cancelar',False);
 
   EnviaComando ;
 end ;

@@ -1129,16 +1129,16 @@ begin
     if (EnviaPDF) then
      begin
        ACBrBoletoFC.DirArqPDF_HTML:=ExtractFilePath(Application.ExeName);
-       ACBrBoletoFC.NomeArquivo :='boleto.pdf';
-       NomeArq:=ExtractFilePath(Application.ExeName)+'boleto.pdf';
+       NomeArq := ExtractFilePath(Application.ExeName)+'boleto.pdf';
+       ACBrBoletoFC.NomeArquivo := NomeArq;
        GerarPDF;
        m.AddPartBinaryFromFile(NomeArq, p);
      end
     else
      begin
        ACBrBoletoFC.DirArqPDF_HTML:=ExtractFilePath(Application.ExeName);
-       ACBrBoletoFC.NomeArquivo :='boleto.html';
-       NomeArq:=ExtractFilePath(Application.ExeName)+'boleto.html';
+       NomeArq := ExtractFilePath(Application.ExeName)+'boleto.html';
+       ACBrBoletoFC.NomeArquivo := NomeArq;
        GerarHTML;
        m.AddPartBinaryFromFile(NomeArq, p);
      end;

@@ -150,8 +150,8 @@ Versao 0.0.10a do FortesReport 06/07/11
     (por: Regys Silveira) 
 
 versao 0.0.56a
-[-] Unit CaixaEconomicaSicob - Efetuado correção para que o nosso número de 10
-    posições seja impresso corretamente.(Jeter Rabelo)
+[-] Corrigido rotina de envio de boletos por email ao anexar os pdfs gerados.
+    (Embrati)
 
 versao 0.0.55a
 [-] Unit CaixaEconomicaSicob - Corrigida leitura do arquivo retorno CNAB240 onde 

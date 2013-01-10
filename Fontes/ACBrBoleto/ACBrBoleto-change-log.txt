@@ -149,6 +149,9 @@ Versao 0.0.10a do FortesReport 06/07/11
     cobrança não registrada.
     (por: Regys Silveira) 
 
+versao 0.0.56a
+[-] Unit Banrisul - Corrigida geração da linha digitável.(José)
+
 versao 0.0.55a
 [-] Unit CaixaEconomicaSicob - Corrigida leitura do arquivo retorno CNAB240 onde 
     os campos Agencia e Conta não estavam sendo checados corretamente impedindo o 

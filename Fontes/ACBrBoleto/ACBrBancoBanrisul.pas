@@ -204,7 +204,7 @@ begin
                   padR(copy(trim(ACBrBoleto.Cedente.Agencia),2,3), 3, '0')+{ Código agência (cooperativa) }
                   padR(OnlyNumber(ACBrBoleto.Cedente.Conta), 7, '0')+{ Código cedente = Número da conta }
                   padR(NossoNumero, 8, '0')+{ Nosso número }
-                  '041';
+                  '40';
 
      {Calculando Módulo 10}
      Modulo.MultiplicadorInicial:= 1;

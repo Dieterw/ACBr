@@ -49,7 +49,7 @@ uses
   lr_e_pdf, PrintersDlgs, Printers, strutils, LResources, PReport ;
 
 const
-  CACBrBoletoFCLazReport_Versao = '0.1.15a';
+  CACBrBoletoFCLazReport_Versao = '0.1.16a';
 
 type
 
@@ -213,9 +213,7 @@ begin
 
           fiPDF :
             begin
-              frReport1.ExportTo(TfrTNPDFExportFilter, DirArqPDF_HTML +
-                                                       PathDelim +
-                                                       NomeArquivo) ;
+              frReport1.ExportTo(TfrTNPDFExportFilter, NomeArquivo) ;
             end;
 
           fiHTML :

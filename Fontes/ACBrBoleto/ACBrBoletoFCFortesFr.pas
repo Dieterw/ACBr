@@ -52,7 +52,7 @@ uses
   ACBrBoleto, ACBrBarCode ;
 
 const
-  CACBrBoletoFCFortes_Versao = '0.0.16a' ;
+  CACBrBoletoFCFortes_Versao = '0.0.17a' ;
 
 type
 
@@ -504,9 +504,7 @@ begin
               {$IFDEF FPC}
                 RLFiltro.Copies := NumCopias ;
               {$ENDIF}
-              RLFiltro.FileName := DirArqPDF_HTML +
-                                   PathDelim +
-                                   NomeArquivo ;
+              RLFiltro.FileName := NomeArquivo ;
 
               {$IFDEF FPC}
                 RLFiltro.Pages := RLLayout.Pages ;

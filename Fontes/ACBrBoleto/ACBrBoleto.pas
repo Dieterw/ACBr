@@ -58,7 +58,7 @@ uses ACBrBase,  {Units da ACBr}
      Graphics, Contnrs, Classes;
 
 const
-  CACBrBoleto_Versao = '0.0.56a' ;
+  CACBrBoleto_Versao = '0.0.57a' ;
 
 type
   TACBrTipoCobranca =
@@ -688,7 +688,6 @@ type
  TACBrBoletoFCClass = class(TACBrComponent)
   private
     fDirLogo        : String;
-    fDirArqPDF_HTML : String;
     fFiltro: TACBrBoletoFCFiltro;
     fLayOut         : TACBrBolLayOut;
     fMostrarPreview : Boolean;
@@ -699,11 +698,10 @@ type
     fSoftwareHouse  : String;
     function GetAbout: String;
     function GetArqLogo: String;
-    function GetDirArqPDF_HTML: String;
     function GetDirLogo: String;
+    function GetNomeArquivo: String;
     procedure SetAbout(const AValue: String);
     procedure SetACBrBoleto(const Value: TACBrBoleto);
-    procedure SetDirArqPDF_HTML(const AValue: String);
     procedure SetDirLogo(const AValue: String);
   protected
     fpAbout : String ;
@@ -732,9 +730,8 @@ type
     property MostrarSetup   : Boolean         read fMostrarSetup   write fMostrarSetup   default True ;
     property NumCopias      : Integer         read fNumCopias      write SetNumCopias    default 1;
     property Filtro         : TACBrBoletoFCFiltro read fFiltro     write fFiltro         default fiNenhum ;
-    property NomeArquivo    : String          read fNomeArquivo    write fNomeArquivo ;
+    property NomeArquivo    : String          read GetNomeArquivo  write fNomeArquivo ;
     property SoftwareHouse  : String          read fSoftwareHouse  write fSoftwareHouse;
-    property DirArqPDF_HTML : String          read GetDirArqPDF_HTML write SetDirArqPDF_HTML;
   end;
 
   //email
@@ -1128,17 +1125,15 @@ begin
 
     if (EnviaPDF) then
      begin
-       ACBrBoletoFC.DirArqPDF_HTML:=ExtractFilePath(Application.ExeName);
-       NomeArq := ExtractFilePath(Application.ExeName)+'boleto.pdf';
-       ACBrBoletoFC.NomeArquivo := NomeArq;
+       if ACBrBoletoFC.NomeArquivo = '' then
+          ACBrBoletoFC.NomeArquivo := 'boleto.pdf';;
        GerarPDF;
        m.AddPartBinaryFromFile(NomeArq, p);
      end
     else
      begin
-       ACBrBoletoFC.DirArqPDF_HTML:=ExtractFilePath(Application.ExeName);
-       NomeArq := ExtractFilePath(Application.ExeName)+'boleto.html';
-       ACBrBoletoFC.NomeArquivo := NomeArq;
+       if ACBrBoletoFC.NomeArquivo = '' then
+          ACBrBoletoFC.NomeArquivo := 'boleto.html';;
        GerarHTML;
        m.AddPartBinaryFromFile(NomeArq, p);
      end;
@@ -1987,11 +1982,6 @@ begin
 
 end;
 
-procedure TACBrBoletoFCClass.SetDirArqPDF_HTML(const AValue: String);
-begin
-  fDirArqPDF_HTML:= PathWithoutDelim(AValue);
-end;
-
 procedure TACBrBoletoFCClass.SetDirLogo(const AValue: String);
 begin
   fDirLogo := PathWithoutDelim( AValue );
@@ -2000,17 +1990,6 @@ end;
 function TACBrBoletoFCClass.GetArqLogo: String;
 begin
    Result := DirLogo + PathDelim + IntToStrZero( ACBrBoleto.Banco.Numero, 3)+'.bmp';
-end;
-
-function TACBrBoletoFCClass.GetDirArqPDF_HTML: String;
-begin
-   if fDirArqPDF_HTML = '' then
-     if not (csDesigning in Self.ComponentState) then
-        fDirArqPDF_HTML := ExtractFilePath(
-        {$IFNDEF CONSOLE} Application.ExeName {$ELSE} ParamStr(0) {$ENDIF}
-                                      );
-
-   Result := fDirArqPDF_HTML ;
 end;
 
 function TACBrBoletoFCClass.GetAbout: String;
@@ -2027,6 +2006,22 @@ begin
                                       ) + 'Logos' ;
 
   Result := fDirLogo ;
+end;
+
+function TACBrBoletoFCClass.GetNomeArquivo: String;
+var
+  wPath: String;
+begin
+   wPath  := ExtractFilePath(fNomeArquivo);
+   Result := '';
+
+   if wPath = '' then
+      if not (csDesigning in Self.ComponentState) then
+         Result := ExtractFilePath(
+         {$IFNDEF CONSOLE} Application.ExeName {$ELSE} ParamStr(0) {$ENDIF}
+                                      ) ;
+
+   Result := trim(Result + fNomeArquivo);
 end;
 
 procedure TACBrBoletoFCClass.SetAbout(const AValue: String);

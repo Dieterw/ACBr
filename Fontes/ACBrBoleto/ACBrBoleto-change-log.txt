@@ -47,6 +47,30 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 11/01/13
+-- ACBrBoletoFCFortes ver 0.0.17a -- 
+[*] Removido propriedade fDirArqPDF_HTML e alterado a propriedade NomeArquivo
+    para receber o path completo do arquivo a ser gerado.
+	
+-- ACBrBoletoFCQuick ver 0.0.14a -- 
+[*] Removido propriedade fDirArqPDF_HTML e alterado a propriedade NomeArquivo
+    para receber o path completo do arquivo a ser gerado.	
+	
+-- ACBrBoletoFCLazReport ver 0.1.16a -- 
+[*] Removido propriedade fDirArqPDF_HTML e alterado a propriedade NomeArquivo
+    para receber o path completo do arquivo a ser gerado.
+[*] Modificado rotinas de geração do boleto em pdf e HTML para utilizar 
+    corretamente a propriedade NomeArquivo.(Juliana Tamizou)
+
+-- ACBrBoleto ver 0.0.57a --
+[*] Alterado rotinas de envio de boletos por email para utilizar corretamente a 
+    propriedade NomeArquivo.(Juliana Tamizou)
+	
+Obs. Após efetuar a atualização e compilação dos componentes provavelmente você
+terá um erro de compilação dos projetos que usam este componente, para resolver 
+basta informar na propriedade o path completo ou se desejar que seja gravado na
+mesma pasta do aplicativo, apenas o nome do arquivo.
+    
 Data: 10/01/13
 -- ACBrBoleto ver 0.0.56a --
 [-] Corrigido rotina de envio de boletos por email ao anexar os pdfs gerados.

@@ -62,6 +62,11 @@ Data: 11/01/13
 [*] Modificado rotinas de geração do boleto em pdf e HTML para utilizar 
     corretamente a propriedade NomeArquivo.(Juliana Tamizou)
 
+-- ACBrBoleto ver 0.0.58a --
+-- ACBrCaixaEconomicaSicob  --
+[-] Efetuado ajustes para que seja possível utilizar carteiras com tamanho 
+    inferior a 15 dígitos.(Juliana Tamizou, Jeter Rabelo)
+	
 -- ACBrBoleto ver 0.0.57a --
 [*] Alterado rotinas de envio de boletos por email para utilizar corretamente a 
     propriedade NomeArquivo.(Juliana Tamizou)

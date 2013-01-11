@@ -71,11 +71,13 @@ type
     function CodOcorrenciaToTipo(const CodOcorrencia:Integer): TACBrTipoOcorrencia; override;
     function TipoOCorrenciaToCod(const TipoOcorrencia: TACBrTipoOcorrencia):String; override;
     function CodMotivoRejeicaoToDescricao(const TipoOcorrencia:TACBrTipoOcorrencia; CodMotivo:Integer): String; override;
+
+    function CalcularTamMaximoNossoNumero(const Carteira : String; NossoNumero : String = ''): Integer; override;
    end;
 
 implementation
 
-uses ACBrUtil, StrUtils, Variants;
+uses ACBrUtil, StrUtils, Variants, math;
 
 constructor TACBrCaixaEconomicaSICOB.create(AOwner: TACBrBanco);
 begin
@@ -83,7 +85,7 @@ begin
    fpDigito := 0;
    fpNome   := 'Caixa Economica Federal';
    fpNumero:= 104;
-   fpTamanhoMaximoNossoNum := 15;
+   fpTamanhoMaximoNossoNum := 0;
    fpTamanhoAgencia := 5;
    fpTamanhoConta   := 8;
 end;
@@ -282,6 +284,20 @@ begin
   end;
 end;
 
+function TACBrCaixaEconomicaSICOB.CalcularTamMaximoNossoNumero(
+  const Carteira: String; NossoNumero: String): Integer;
+var
+  wTamNossoNumero: Integer;
+begin
+   Result:= 15;
+
+   wTamNossoNumero:= length(NossoNumero);
+
+   if ((wTamNossoNumero >= 8)  and (wTamNossoNumero <= 10)) or
+      ((wTamNossoNumero >= 14) and (wTamNossoNumero <= 15)) then
+      Result := wTamNossoNumero;
+end;
+
 function TACBrCaixaEconomicaSICOB.CodOcorrenciaToTipo(
   const CodOcorrencia: Integer): TACBrTipoOcorrencia;
 begin
@@ -321,19 +337,21 @@ end;
 function TACBrCaixaEconomicaSICOB.FormataNossoNumero(const ACBrTitulo :TACBrTitulo): String;
 var
   ANossoNumero: String;
+  wTamNossoNum: Integer;
 begin
    with ACBrTitulo do
    begin
 
       ANossoNumero := OnlyNumber(NossoNumero);
+      wTamNossoNum := CalcularTamMaximoNossoNumero(Carteira,ANossoNumero);
 
-      if (Length(ANossoNumero) = 10) or (Length(ANossoNumero) = 15) then
+      if (wTamNossoNum = 10) or (wTamNossoNum = 15) then
          ANossoNumero:= ANossoNumero
       else
        begin
          if Carteira = 'SR' then
           begin
-            if TamanhoMaximoNossoNum = 14 then
+            if wTamNossoNum = 14 then
                ANossoNumero:= '8'+ padr(Copy(ANossoNumero,Length(ANossoNumero)-13,14),14)
             else
               ANossoNumero:= '82'+ padr(Copy(ANossoNumero,Length(ANossoNumero)-7,8),8);
@@ -355,7 +373,12 @@ begin
    ANossoNumero := FormataNossoNumero(ACBrTitulo);
 
    {Montando Campo Livre}
-   CampoLivre := ANossoNumero + ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente;
+   if Length(ANossoNumero) > 11 then
+      CampoLivre := ANossoNumero + ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente
+   else
+      CampoLivre := ANossoNumero +
+                    ACBrTitulo.ACBrBoleto.Cedente.Agencia +
+                    ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente;
 
    {Codigo de Barras}
    with ACBrTitulo.ACBrBoleto do

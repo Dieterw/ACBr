@@ -1,7 +1,7 @@
 object frmDemo: TfrmDemo
-  Left = 340
+  Left = 453
   Height = 601
-  Top = 124
+  Top = 184
   Width = 811
   Caption = 'Demo ACBrBoleto'
   ClientHeight = 601
@@ -10,7 +10,7 @@ object frmDemo: TfrmDemo
   Position = poScreenCenter
   LCLVersion = '1.1'
   object GroupBox2: TGroupBox
-    Left = 6
+    Left = 8
     Height = 72
     Top = 8
     Width = 794
@@ -530,6 +530,15 @@ object frmDemo: TfrmDemo
       Caption = 'LayOut'
       ParentColor = False
     end
+    object Button3: TButton
+      Left = 633
+      Height = 25
+      Top = 112
+      Width = 75
+      Caption = 'Button3'
+      OnClick = Button3Click
+      TabOrder = 11
+    end
   end
   object GroupBox5: TGroupBox
     Left = 6
@@ -700,16 +709,16 @@ object frmDemo: TfrmDemo
   object ACBrBoleto1: TACBrBoleto
     Banco.Numero = 104
     Banco.TamanhoMaximoNossoNum = 15
-    Banco.TipoCobranca = cobCaixaEconomica
-    Banco.OrientacoesBanco.Strings = (
-      'SAC CAIXA: 0800 726 0101 (informações,reclamações e elogios) '#13#10'Para pessoas com deficiência auditiva ou de fala: 0800 726 2492 '#13#10'Ouvidoria: 0800 725 7474 (reclamações não solucionadas e denúncias)'#13#10'     caixa.gov.br      '
-    )
-    Cedente.Nome = 'TodaObra Materias p/ Construcao'
-    Cedente.CodigoCedente = '403005'
-    Cedente.Agencia = '1172'
-    Cedente.AgenciaDigito = '0'
-    Cedente.Conta = '0000403005'
-    Cedente.ContaDigito = '5'
+    Banco.TipoCobranca = cobCaixaSicob
+    Cedente.Nome = 'teste cedente'
+    Cedente.CodigoCedente = '166087000000032'
+    Cedente.Agencia = '01073'
+    Cedente.AgenciaDigito = '2'
+    Cedente.Conta = '00000051'
+    Cedente.ContaDigito = '8'
+    Cedente.Modalidade = '019'
+    Cedente.Convenio = '899283'
+    Cedente.CNPJCPF = '82.961.095/0001-74'
     Cedente.TipoInscricao = pJuridica
     Cedente.Logradouro = 'Rua  XI de Agosto'
     Cedente.NumeroRes = '100'
@@ -717,27 +726,28 @@ object frmDemo: TfrmDemo
     Cedente.Cidade = 'Tatui'
     Cedente.UF = 'SP'
     Cedente.CEP = '18270000'
+    DirArqRemessa = 'c:\temp'
+    NomeArqRetorno = 'ret281.ret'
+    DirArqRetorno = '.\'
     NumeroArquivo = 0
     DataArquivo = 0
     DataCreditoLanc = 0
-    ACBrBoletoFC = ACBrBoletoFCLazReport1
+    ACBrBoletoFC = ACBrBoletoFCFortes1
     left = 200
     top = 264
   end
   object ACBrBoletoFCLazReport1: TACBrBoletoFCLazReport
-    ACBrBoleto = ACBrBoleto1
     DirLogo = '..\..\..\Fontes\ACBrBoleto\Logos\Colorido'
     NomeArquivo = 'boleto.pdf'
     SoftwareHouse = 'Projeto ACBr - http://acbr.sf.net'
-    DirArqPDF_HTML = 'c:'
     left = 80
     top = 264
   end
   object ACBrBoletoFCFortes1: TACBrBoletoFCFortes
+    ACBrBoleto = ACBrBoleto1
     DirLogo = '..\..\..\Fontes\ACBrBoleto\Logos\Colorido'
-    NomeArquivo = 'boleto.pdf'
+    NomeArquivo = 'teste2.pdf'
     SoftwareHouse = 'Projeto ACBr - http://acbr.sf.net'
-    DirArqPDF_HTML = 'c:\temp'
     left = 80
     top = 224
   end

@@ -25,6 +25,7 @@ type
      btnZerar: TButton;
      Button1: TButton;
      Button2: TButton;
+     Button3: TButton;
      cbxAceite: TComboBox;
      cbxLayOut : TComboBox ;
      edtInstrucoes1: TEdit;
@@ -102,6 +103,7 @@ type
      procedure btnZerarClick ( Sender: TObject ) ;
      procedure Button1Click ( Sender: TObject ) ;
      procedure Button2Click ( Sender: TObject ) ;
+     procedure Button3Click(Sender: TObject);
      procedure cbxLayOutChange(Sender : TObject) ;
      procedure FormCreate ( Sender: TObject ) ;
   private
@@ -155,8 +157,8 @@ begin
         EspecieDoc        := 'DM';
         Aceite            := atSim;
         DataProcessamento := Now;
-        NossoNumero       := IntToStrZero(I,ACBrBoleto1.Banco.TamanhoMaximoNossoNum);
-        Carteira          := 'RG';
+        Carteira          := 'CSB';
+        NossoNumero       := IntToStr(I);//IntToStrZero(I,ACBrBoleto1.Banco.TamanhoMaximoNossoNum);
         ValorDocumento    := 100.10 * (I+0.5);
         Sacado.NomeSacado := 'Jose Luiz Pedroso';
         Sacado.CNPJCPF    := '12345678901';
@@ -220,9 +222,9 @@ begin
            Aceite := atSim
         else
            Aceite := atNao;
-        DataProcessamento := Now;
-        NossoNumero       := padR(edtNossoNro.Text,ACBrBoleto.Banco.TamanhoMaximoNossoNum);
         Carteira          :=  teste2; //edtCarteira.Text;
+        DataProcessamento := Now;
+        NossoNumero       := edtNossoNro.Text;
         ValorDocumento    := StrToCurr(edtValorDoc.Text);
         Sacado.NomeSacado := edtNome.Text;
         Sacado.CNPJCPF    := OnlyNumber(edtCPFCNPJ.Text);
@@ -271,6 +273,11 @@ procedure TfrmDemo.Button2Click ( Sender: TObject ) ;
 begin
    ACBrBoletoFCLazReport1.NomeArquivo := './teste.html' ;
    ACBrBoleto1.GerarHTML;
+end;
+
+procedure TfrmDemo.Button3Click(Sender: TObject);
+begin
+   ACBrBoleto1.LerRetorno();
 end;
 
 procedure TfrmDemo.cbxLayOutChange(Sender : TObject) ;

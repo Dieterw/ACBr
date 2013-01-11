@@ -631,28 +631,35 @@ object frmDemo: TfrmDemo
     end
   end
   object ACBrBoleto1: TACBrBoleto
-    Banco.Numero = 237
-    Banco.TamanhoMaximoNossoNum = 11
-    Banco.TipoCobranca = cobBradesco
+    Banco.Numero = 341
+    Banco.TamanhoMaximoNossoNum = 8
+    Banco.TipoCobranca = cobItau
     Cedente.Nome = 'TodaObra Materias p/ Construcao'
     Cedente.CodigoCedente = '4266443'
     Cedente.Agencia = '0284'
     Cedente.AgenciaDigito = '5'
-    Cedente.Conta = '0000079489'
+    Cedente.Conta = '79489'
     Cedente.ContaDigito = '9'
-    Cedente.TipoInscricao = pOutras
-    NomeArqRemessa = '.'
+    Cedente.CNPJCPF = '05.481.336/0001-37'
+    Cedente.TipoInscricao = pJuridica
+    DirArqRemessa = 'c:\temp'
     NumeroArquivo = 0
-    LayoutRemessa = c240
-    ACBrBoletoFC = ACBrBoletoFCFortes1
+    ACBrBoletoFC = ACBrBoletoFCQuick1
     Left = 64
     Top = 231
   end
   object ACBrBoletoFCFortes1: TACBrBoletoFCFortes
-    ACBrBoleto = ACBrBoleto1
     DirLogo = '..\..\..\Fontes\ACBrBoleto\Logos\Colorido'
+    MostrarPreview = False
+    MostrarSetup = False
     SoftwareHouse = 'Projeto ACBr - http://acbr.sf.net'
     Left = 160
     Top = 231
+  end
+  object ACBrBoletoFCQuick1: TACBrBoletoFCQuick
+    ACBrBoleto = ACBrBoleto1
+    DirLogo = '..\..\..\Fontes\ACBrBoleto\Logos\Colorido'
+    Left = 160
+    Top = 279
   end
 end

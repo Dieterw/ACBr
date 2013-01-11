@@ -47,6 +47,61 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 10/01/13
+-- ACBrBoleto ver 0.0.56a --
+[-] Corrigido rotina de envio de boletos por email ao anexar os pdfs gerados.
+    (Embrati)
+
+Data: 09/01/13
+-- ACBrBoletoFCFR ver 0.0.12a --
+[-] Alterado componente para respeitar a propriedade MostrarSetup.(NazarenoNeto)
+
+-- ACBrBoleto ver 0.0.56a --
+-- ACBrBancoBarisul --
+[-] Corrigida função MontarCodigoBarras.(José)
+
+-- ACBrBoleto ver 0.0.55a --
+-- ACBrCaixaEconomicaSicob  --
+[-] Corrigida leitura do arquivo retorno CNAB240 onde os campos Agencia e Conta
+    não estavam sendo checados corretamente impedindo o processamento do arquivo.
+    Passado a respeitar a propriedade LeRetorno para atribuir ao componente as 
+    informações lidas do arquivo.(Juliana Tamizou)
+
+-- ACBrBoleto ver 0.0.54a --
+-- ACBrCaixaEconomica  --
+[-] Corrigida leitura do arquivo retorno CNAB240 onde o campo
+    Conta e CódigoCedente não estavam sendo checados corretamente impedindo o 
+    processamento do arquivo.
+    Passado a respeitar a propriedade LeRetorno para atribuir ao componente as 
+    informações lidas do arquivo.(Juliana Tamizou)
+
+-- ACBrBoleto ver 0.0.53a  --
+[*] Melhorado rotinas removendo variáveis não utilizadas e reorganizados
+    os códigos para facilitar o entendimento.(Juliana Tamizou)
+
+-- ACBrBancoBrasil --
+[*] Alterado unit para suportar além do Convênio de 6 posições com Nosso Número de 17
+    digitos suportar também o convênio de 6 posições com Nosso Número de 11 dígitos
+    (Convênio + Nosso Número).
+    Observação importante: 
+    Para utilizar o Nosso Número de 17 posições informe um Nosso Número com pelo menos 
+    11 dígitos(preencha com zeros a esquerda se desejar).
+    Para utilizar o Nosso Número de 11 posições (6 Convênio + 5 Nosso Número) informe
+    o nosso número com até 5 posições.
+    
+
+-- ACBrBoleto ver 0.0.52a --
+[*] Melhorado rotinas de montagem do código de barras e geração dos arquivos 
+    remessa para respeitar o tamanho de cada campo, na maioria das units a alteração foi feita 
+    nos campos Agencia e Conta.(Juliana Tamizou)	
+
+Data: 08/01/13
+-- ACBrBoletoFCFR ver 0.0.11a -
+[*] Adicionado impressão do complemento do endereço do sacado.(Juliana Tamizou)	
+
+	
+Alterações anteriores a 01/01/2013
+	
 -- ACBrBancoHSBC -- 
 [-] Acertos de campos que estavam lendo errado e alguns tratamentos do arquivo
     de retorno (regys silveira)
@@ -71,19 +126,10 @@ Versao 0.0.1 do FastReport 05/08/11
 [-] Lançado a 1a versão para impressão dos boletos em FastReport.
     (por: Isaque Pinheiro)
 
-
-Versao 0.0.12a do FastReport 09/01/13
-[-] Alterado componente para respeitar a propriedade MostrarSetup.(NazarenoNeto)	
-
-
-Versao 0.0.11a do FastReport 13/10/12
-[*] Adicionado impressão do complemento do endereço do sacado.(Juliana Tamizou)	
-
 Versao 0.0.10a do FastReport 13/08/12
 [+] Adicionado suporte a impressão de boletos em carnê.(Rodrigo Rodrigues)
 [*] Efetuado ajuste para que todas as versões do Delphi consigam ler corretamente
     a propriedade displayformat dos componentes utilizados para data.(Fábio)
-
 
 	
 Versao 0.0.10a do FastReport 13/10/12
@@ -149,52 +195,13 @@ Versao 0.0.10a do FortesReport 06/07/11
     cobrança não registrada.
     (por: Regys Silveira) 
 
-versao 0.0.56a
-[-] Corrigido rotina de envio de boletos por email ao anexar os pdfs gerados.
-    (Embrati)
-
-versao 0.0.55a
-[-] Unit CaixaEconomicaSicob - Corrigida leitura do arquivo retorno CNAB240 onde 
-    os campos Agencia e Conta não estavam sendo checados corretamente impedindo o 
-    processamento do arquivo.
-    Passado a respeitar a propriedade LeRetorno para atribuir ao componente as 
-    informações lidas do arquivo.(Juliana Tamizou)
-
-
-versao 0.0.54a
-[-] Unit CaixaEconomica - Corrigida leitura do arquivo retorno CNAB240 onde o campo
-    Conta e CódigoCedente não estavam sendo checados corretamente impedindo o 
-    processamento do arquivo.
-    Passado a respeitar a propriedade LeRetorno para atribuir ao componente as 
-    informações lidas do arquivo.(Juliana Tamizou)
-
-versao 0.0.53a
-[*] Todas as units - Melhorado rotinas removendo variáveis não utilizadas e reorganizados
-    os códigos para facilitar o entendimento.(Juliana Tamizou)
-
-[*] Unit BancodoBrasil - Alterado unit para suportar além do Convênio de 6 posições com
-    Nosso Número de 17 digitos suportar também o convênio de 6 posições com Nosso Número 
-    de 11 dígitos(Convênio + Nosso Número).
-    Observação importante: 
-    Para utilizar o Nosso Número de 17 posições informe um Nosso Número com pelo menos 
-    11 dígitos(preencha com zeros a esquerda se desejar).
-    Para utilizar o Nosso Número de 11 posições (6 Convênio + 5 Nosso Número) informe
-    o nosso número com até 5 posições.
-    
-Versao 0.0.52a	
-[*]Todas as units - Melhorado rotinas de montagem do código de barras e geração dos arquivos 
-   remessa para respeitar o tamanho de cada campo, na maioria das units a alteração foi feita 
-   nos campos Agencia e Conta.(Juliana Tamizou)
-
 Versao 0.0.51a	
 [*]Unit CaixaEconomicaSicob - Melhorado rotina de formatação do Nosso Número, desta
    forma é possível que o componente receba o nosso número já formatado de acordo com o
    manual do banco.(Juliana Tamizou)
 
-
 Versao 0.0.50a	
 [-]Unit Bradesco - Corrigido bug na geração do arquivo remessa CNAB400.(Juliana Tamizou)
-
 
 Versao 0.0.49a	
 Modificado rotinas de geração do arquivo remessa padrão CNAB400 para controlar

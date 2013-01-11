@@ -51,6 +51,9 @@ Data: 10/01/13
 -- ACBrBoleto ver 0.0.56a --
 [-] Corrigido rotina de envio de boletos por email ao anexar os pdfs gerados.
     (Embrati)
+	
+-- ACBrBoletoFCFortes ver 0.0.16a --
+[-] Corrigida impressão do número da parcela atual no layout carnê.(Daniel simões)	
 
 Data: 09/01/13
 -- ACBrBoletoFCFR ver 0.0.12a --

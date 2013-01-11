@@ -121,7 +121,6 @@ end;
 
 procedure TfrmDemo.Button2Click(Sender: TObject);
 begin
-   ACBrBoleto1.ACBrBoletoFC.NomeArquivo := 'c:\temp\teste.pdf';
    ACBrBoleto1.GerarPDF;
 end;
 

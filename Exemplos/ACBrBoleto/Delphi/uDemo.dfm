@@ -644,20 +644,21 @@ object frmDemo: TfrmDemo
     Cedente.TipoInscricao = pJuridica
     DirArqRemessa = 'c:\temp'
     NumeroArquivo = 0
-    ACBrBoletoFC = ACBrBoletoFCQuick1
+    ACBrBoletoFC = ACBrBoletoFCFortes1
     Left = 64
     Top = 231
   end
   object ACBrBoletoFCFortes1: TACBrBoletoFCFortes
+    ACBrBoleto = ACBrBoleto1
     DirLogo = '..\..\..\Fontes\ACBrBoleto\Logos\Colorido'
     MostrarPreview = False
     MostrarSetup = False
+    NomeArquivo = 'boleto.pdf'
     SoftwareHouse = 'Projeto ACBr - http://acbr.sf.net'
     Left = 160
     Top = 231
   end
   object ACBrBoletoFCQuick1: TACBrBoletoFCQuick
-    ACBrBoleto = ACBrBoleto1
     DirLogo = '..\..\..\Fontes\ACBrBoleto\Logos\Colorido'
     Left = 160
     Top = 279

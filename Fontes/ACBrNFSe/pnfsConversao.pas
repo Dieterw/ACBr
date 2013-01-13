@@ -737,8 +737,7 @@ begin
   4318705  // Sao Leopoldo/RS
          : Provedor := 'Thema';
 
-  3131307, // Ipatinga/MG
-  5107602  // Rondonopolis/MT
+  3131307  // Ipatinga/MG
          : Provedor := 'ISSIntel';
 
   1400100  // Boa Vista/RR
@@ -747,7 +746,8 @@ begin
   5107958  // Tangara da Serra/MT
          : Provedor := 'FISSLEX';
 
-  4304606  // Canoas/RS
+  4304606, // Canoas/RS
+  5107602  // Rondonopolis/MT
          : Provedor := 'Abaco';
 
   5208707  // Goiania/GO

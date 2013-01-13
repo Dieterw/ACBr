@@ -94,6 +94,7 @@ begin
 
  case ACodigo of
   4304606: ConfigCidade.CodigoURLs := 1; // Canoas/RS
+  5107602: ConfigCidade.CodigoURLs := 2; // Rondonopolis/MT
  end;
 
  ConfigCidade.Prefixo2      := '';
@@ -113,7 +114,6 @@ function TProvedorAbaco.GetConfigSchema(ACodigo: Integer): TConfigSchema;
 var
  ConfigSchema: TConfigSchema;
 begin
- // Schema 04
  ConfigSchema.VersaoCabecalho := '201001';
  ConfigSchema.VersaoDados     := 'V2010';
  ConfigSchema.VersaoXML       := '2';
@@ -138,6 +138,10 @@ begin
   01: begin
        ConfigURL.HomNomeCidade := 'canoas';
        ConfigURL.ProNomeCidade := 'canoas';
+      end;
+  02: begin
+       ConfigURL.HomNomeCidade := 'roo';
+       ConfigURL.ProNomeCidade := 'roo';
       end;
  end;
 

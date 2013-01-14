@@ -1,5 +1,7 @@
 program ACBrInstall;
 
+{$R UAC.res}
+
 uses
   Forms,
   SVN_Class in 'SVN_Class.pas',

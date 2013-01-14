@@ -1,7 +1,5 @@
 program ACBrInstall;
 
-{$R UAC.res}
-
 uses
   Forms,
   SVN_Class in 'SVN_Class.pas',
@@ -9,6 +7,7 @@ uses
   uFrameLista in 'uFrameLista.pas' {framePacotes: TFrame};
 
 {$R *.res}
+{$R UAC.res}
 
 begin
   {$IFDEF VER230} // XE2

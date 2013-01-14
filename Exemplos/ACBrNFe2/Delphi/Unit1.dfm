@@ -1,9 +1,9 @@
 object Form1: TForm1
   Left = 269
   Top = 149
-  Width = 894
-  Height = 631
   Caption = 'ACBrNFe - Demonstra'#231#227'o'
+  ClientHeight = 593
+  ClientWidth = 878
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -102,7 +102,7 @@ object Form1: TForm1
         Top = 15
         Width = 277
         Height = 360
-        ActivePage = TabSheet1
+        ActivePage = TabSheet2
         Align = alClient
         MultiLine = True
         TabOrder = 0
@@ -368,7 +368,6 @@ object Form1: TForm1
               Font.Height = -13
               Font.Name = 'MS Sans Serif'
               Font.Style = []
-              ItemHeight = 16
               ItemIndex = 24
               ParentFont = False
               TabOrder = 1
@@ -780,8 +779,6 @@ object Form1: TForm1
       Width = 153
       Height = 25
       Caption = 'Salvar Configura'#231#245'es'
-      TabOrder = 1
-      OnClick = btnSalvarConfigClick
       Glyph.Data = {
         76010000424D7601000000000000760000002800000020000000100000000100
         04000000000000010000130B0000130B00001000000000000000000000000000
@@ -796,6 +793,8 @@ object Form1: TForm1
         99337F3FF7F3733777F30F08F0F0337999337F7737F73F7777330FFFF0039999
         93337FFFF7737777733300000033333333337777773333333333}
       NumGlyphs = 2
+      TabOrder = 1
+      OnClick = btnSalvarConfigClick
     end
   end
   object Panel2: TPanel
@@ -1061,7 +1060,7 @@ object Form1: TForm1
           Left = 0
           Top = 0
           Width = 571
-          Height = 321
+          Height = 291
           Align = alClient
           ScrollBars = ssVertical
           TabOrder = 0
@@ -1092,7 +1091,7 @@ object Form1: TForm1
           Left = 0
           Top = 0
           Width = 571
-          Height = 321
+          Height = 291
           Align = alClient
           ScrollBars = ssVertical
           TabOrder = 0
@@ -1118,7 +1117,7 @@ object Form1: TForm1
           Left = 0
           Top = 0
           Width = 571
-          Height = 321
+          Height = 291
           Align = alClient
           ScrollBars = ssVertical
           TabOrder = 0
@@ -1131,7 +1130,7 @@ object Form1: TForm1
           Left = 0
           Top = 0
           Width = 571
-          Height = 321
+          Height = 291
           Align = alClient
           ScrollBars = ssVertical
           TabOrder = 0
@@ -1205,6 +1204,7 @@ object Form1: TForm1
   end
   object ACBrNFeDANFERaveCB1: TACBrNFeDANFERaveCB
     ACBrNFe = ACBrNFe1
+    Logo = 'C:\VBSAUTOMACAO\logo_empresa.jpg'
     Sistema = 'DJSYSTEM'
     Usuario = 'Andr'#233
     PathPDF = 'C:\Program Files\Borland\Delphi7\Bin\'
@@ -1230,6 +1230,7 @@ object Form1: TForm1
     TamanhoFonte_ANTT = 10
     Fonte = ftCourier
     EspessuraBorda = 2
+    MostrarSetup = False
     Left = 726
     Top = 409
   end

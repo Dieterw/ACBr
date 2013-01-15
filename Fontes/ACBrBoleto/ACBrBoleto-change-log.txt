@@ -47,6 +47,18 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 15/01/13
+-- ACBrBoleto ver. 0.0.60a --
+--ACBrBancoSicred --
+[-] Corrigido rotina de geração de remessa CNAB400 para formatar corretamente o 
+    campo Nosso Número. (Juliana Tamizou)
+
+--ACBrCaixaEconomicaSicob --
+[-] Adicionado tratamento para usar apenas 4 digitos da agência na montagem da 
+    linha digitável e do código de barras (demais rotinas o formato é de 5 dígitos)
+    (Juliana Tamizou)
+
+
 Data: 14/01/13
 -- ACBrBoleto ver. 0.0.59a --
 --ACBrBancoSicred --

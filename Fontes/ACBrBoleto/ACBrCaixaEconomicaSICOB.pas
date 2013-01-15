@@ -373,12 +373,9 @@ begin
    ANossoNumero := FormataNossoNumero(ACBrTitulo);
 
    {Montando Campo Livre}
-   if Length(ANossoNumero) > 11 then
-      CampoLivre := ANossoNumero + ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente
-   else
-      CampoLivre := ANossoNumero +
-                    ACBrTitulo.ACBrBoleto.Cedente.Agencia +
-                    ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente;
+   CampoLivre := ANossoNumero +
+                 Copy(ACBrTitulo.ACBrBoleto.Cedente.Agencia, 2, 4) +
+                 ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente;
 
    {Codigo de Barras}
    with ACBrTitulo.ACBrBoleto do

@@ -77,7 +77,6 @@ uses ACBrUtil, StrUtils;
 
 { TACBrBancoSicredi }
 
-
 constructor TACBrBancoSicredi.create(AOwner: TACBrBanco);
 begin
    inherited create(AOwner);
@@ -152,9 +151,10 @@ begin
 end;
 
 function TACBrBancoSicredi.MontarCampoNossoNumero (const ACBrTitulo: TACBrTitulo ) : String;
+var
+  aNossoNumero: String;
 begin
    ACBrTitulo.NossoNumero:=FormatDateTime('yy',date)+'2'+copy(ACBrTitulo.NossoNumero,4,6);
-
    Result:= copy(ACBrTitulo.NossoNumero,1,2) + '/' +
             copy(ACBrTitulo.NossoNumero,3,6) + '-' +
             CalcularDigitoVerificador(ACBrTitulo);
@@ -204,6 +204,7 @@ begin
 
    with ACBrTitulo do
    begin
+      MontarCampoNossoNumero(ACBrTitulo);
       DigitoNossoNumero := CalcularDigitoVerificador(ACBrTitulo);
 
       {Pegando Código da Ocorrencia}

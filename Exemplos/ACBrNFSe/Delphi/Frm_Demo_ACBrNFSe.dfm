@@ -391,6 +391,7 @@ object frmDemo_ACBrNFSe: TfrmDemo_ACBrNFSe
               'Rio de Janeiro/3304557/RJ'
               'Rio do Sul/4214805/SC'
               'Rondonopolis/5107602/MT'
+              'Santa Luzia/3157807/MG'
               'Santo Andre/3547809/SP'
               'Santos/3548500/SP'
               'Sao Bento do Sul/4215802/SC'

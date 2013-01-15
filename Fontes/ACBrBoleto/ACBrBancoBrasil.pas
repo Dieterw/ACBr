@@ -606,7 +606,7 @@ var
   ATipoAceite, ATipoEspecieDoc     :String;
   AMensagem, DiasProtesto          :String;
   aDataDesconto, aAgencia, aConta  :String;
-  aModalidade,wLinha               :String;
+  aModalidade,wLinha, aTipoCobranca:String;
   TamConvenioMaior6                :Boolean;
   wCarteira: Integer;
 begin
@@ -664,23 +664,61 @@ begin
       else if EspecieDoc = 'ND' then
          ATipoEspecieDoc   := '13'
       else if EspecieDoc = 'RC' then
-         ATipoEspecieDoc   := '05';
+         ATipoEspecieDoc   := '05'
+      else if EspecieDoc = 'LC' then 
+         ATipoEspecieDoc   := '08'
+      else if EspecieDoc = 'DS' then
+         ATipoEspecieDoc   := '12'
+      else if EspecieDoc = 'ND' then
+         ATipoEspecieDoc   := '13'; 
 
-      {Pegando campo Intruções}
+      { Pegando Tipo de Cobrança}
+      case StrToInt(ACBrTitulo.Carteira) of
+        11,17 :
+          case ACBrBoleto.Cedente.CaracTitulo of
+            tcSimples: aTipoCobranca:='     ';
+            tcDescontada: aTipoCobranca:='04DSC';
+            tcVendor: aTipoCobranca:='08VDR';
+            tcVinculada: aTipoCobranca:='02VIN';
+          else
+            aTipoCobranca:='     ';
+          end;
+      else
+        aTipoCobranca:='     ';
+      end;
+
+      
       if (DataProtesto > 0) and (DataProtesto > Vencimento) then
-       begin
-         if (trim(Instrucao1) = '') or (trim(Instrucao1) = '06') then
-            AInstrucao := '06'+ padR(trim(Instrucao2),2,'0')
-         else if(trim(Instrucao2) = '') or (trim(Instrucao2) = '06') then
-            AInstrucao := padR(trim(Instrucao2),2,'0')+ '06';
-
-         DiasProtesto:=  IntToStrZero(DaysBetween(DataProtesto,Vencimento),2);
+      begin
+        DiasProtesto:='  ';
+        case (DaysBetween(DataProtesto,Vencimento)) of
+          3: // Protestar no 3º dia util após vencimento
+          begin
+            if (trim(Instrucao1) = '') or (trim(Instrucao1) = '03') then
+              AInstrucao := '03'+ padR(trim(Instrucao2),2,'0');
+          end;
+          4: // Protestar no 4º dia util após vencimento
+          begin
+            if (trim(Instrucao1) = '') or (trim(Instrucao1) = '04') then
+              AInstrucao := '04'+ padR(trim(Instrucao2),2,'0');
+          end;
+          5: // Protestar no 5º dia util após vencimento
+          begin
+            if (trim(Instrucao1) = '') or (trim(Instrucao1) = '05') then
+              AInstrucao := '05'+ padR(trim(Instrucao2),2,'0');
+          end;
+        else
+          if (trim(Instrucao1) = '') or (trim(Instrucao1) = '06') then
+            AInstrucao := '06'+ padR(trim(Instrucao2),2,'0');
+          DiasProtesto:=IntToStr(DaysBetween(DataProtesto,Vencimento));
+        end;
        end
       else
        begin
-         AInstrucao := padR(trim(Instrucao1),2,'0') + padR(trim(Instrucao2),2,'0');
-         DiasProtesto:= '00';
-      end;
+         Instrucao1:='07'; //Não Protestar
+         AInstrucao := padR(Trim(Instrucao1),2,'0') + padR(Trim(Instrucao2),2,'0');
+         DiasProtesto:= '  ';
+       end; 
 
       aDataDesconto:= '000000';
 
@@ -748,7 +786,7 @@ begin
             wLinha:= wLinha + IntToStrZero(0,13);
 
          wLinha:= wLinha +
-                  '     '                                                 + // Tipo de cobrança
+                  aTipoCobranca                                           + // Tipo de cobrança - 11, 17 (04DSC, 08VDR, 02VIN, BRANCOS) 12,31,51 (BRANCOS)
                   Carteira                                                + // Carteira
                   ATipoOcorrencia                                         + // Ocorrência "Comando"
                   padL( NumeroDocumento, 10, ' ')                         + // Seu Numero - Nr. titulo dado pelo cedente
@@ -953,7 +991,49 @@ begin
   CodOcorrencia := StrToIntDef(TipoOCorrenciaToCod(TipoOcorrencia),0);
 
   Case CodOcorrencia of
-    02: Result := '02-Entrada Confirmada';
+   {Segundo manual técnico CNAB400 Abril/2012 BB pag.20 os comandos são os seguintes:}
+   02: Result:='02-Confirmação de Entrada de Título' ;
+   03: Result:='03-Comando recusado' ;
+   05: Result:='05-Liquidado sem registro' ;
+   06: Result:='06-Liquidação Normal' ;
+   07: Result:='07-Liquidação por Conta' ;
+   08: Result:='08-Liquidação por Saldo' ;
+   09: Result:='09-Baixa de Título' ;
+   10: Result:='10-Baixa Solicitada' ;
+   11: Result:='11-Titulos em Ser' ;
+   12: Result:='12-Abatimento Concedido' ;
+   13: Result:='13-Abatimento Cancelado' ;
+   14: Result:='14-Alteração de Vencimento do Titulo' ;
+   15: Result:='15-Liquidação em Cartório' ;
+   16: Result:='16-Confirmação de alteração de juros de mora' ;
+   19: Result:='19-Confirmação de recebimento de instruções para protesto' ;
+   20: Result:='20-Débito em Conta' ;
+   21: Result:='21-Alteração do Nome do Sacado' ;
+   22: Result:='22-Alteração do Endereço do Sacado' ;
+   23: Result:='23-Indicação de encaminhamento a cartório' ;
+   24: Result:='24-Sustar Protesto' ;
+   25: Result:='25-Dispensar Juros' ;
+   26: Result:='26-Alteração do número do título dado pelo Cedente (Seu número) - 10 e 15 posições' ;
+   28: Result:='28-Manutenção de titulo vencido' ;
+   31: Result:='31-Conceder desconto' ;
+   32: Result:='32-Não conceder desconto' ;
+   33: Result:='33-Retificar desconto' ;
+   34: Result:='34-Alterar data para desconto' ;
+   35: Result:='35-Cobrar multa' ;
+   36: Result:='36-Dispensar multa' ;
+   37: Result:='37-Dispensar indexador' ;
+   38: Result:='38-Dispensar prazo limite para recebimento' ;
+   39: Result:='39-Alterar prazo limite para recebimento' ;
+   41: Result:='41-Alteração do número do controle do participante (25 posições)' ;
+   42: Result:='42-Alteração do número do documento do sacado (CNPJ/CPF)' ;
+   44: Result:='44-Título pago com cheque devolvido' ;
+   46: Result:='46-Título pago com cheque, aguardando compensação' ;
+   72: Result:='72-Alteração de tipo de cobrança' ;
+   96: Result:='96-Despesas de Protesto' ;
+   97: Result:='97-Despesas de Sustação de Protesto' ;
+   98: Result:='98-Débito de Custas Antecipadas' ;
+   //Códigos que estavam no Projeto ACBr
+   {02: Result := '02-Entrada Confirmada';
     03: Result := '03-Entrada Rejeitada';
     04: Result := '04-Transferência de Carteira/Entrada';
     05: Result := '05-Transferência de Carteira/Baixa';
@@ -1001,7 +1081,7 @@ begin
     51: Result := '51-Título DDA reconhecido pelo sacado';
     52: Result := '52-Título DDA não reconhecido pelo sacado';
     53: Result := '53-Título DDA recusado pela CIP';
-    54: Result := '54-Confirmação da Instrução de Baixa de Título Negativado sem Protesto';
+    54: Result := '54-Confirmação da Instrução de Baixa de Título Negativado sem Protesto';}
   end;
 end;
 
@@ -1043,7 +1123,119 @@ end;
 
 function TACBrBancoBrasil.CodMotivoRejeicaoToDescricao(const TipoOcorrencia: TACBrTipoOcorrencia; CodMotivo: Integer): String;
 begin
-  Case TipoOcorrencia of
+   case TipoOcorrencia of
+    toRetornoRegistroRecusado: //03 (Recusado)
+      case CodMotivo of
+        01: Result:='01-Identificação inválida' ;
+        02: Result:='02-Variação da carteira inválida' ;
+        03: Result:='03-Valor dos juros por um dia inválido' ;
+        04: Result:='04-Valor do desconto inválido' ;
+        05: Result:='05-Espécie de título inválida para carteira' ;
+        06: Result:='06-Espécie de valor variável inválido' ;
+        07: Result:='07-Prefixo da agência usuária inválido' ;
+        08: Result:='08-Valor do título/apólice inválido' ;
+        09: Result:='09-Data de vencimento inválida' ;
+        10: Result:='10-Fora do prazo' ;
+        11: Result:='11-Inexistência de margem para desconto' ;
+        12: Result:='12-O Banco não tem agência na praça do sacado' ;
+        13: Result:='13-Razões cadastrais' ;
+        14: Result:='14-Sacado interligado com o sacador' ;
+        15: Result:='15-Título sacado contra orgão do Poder Público' ;
+        16: Result:='16-Título preenchido de forma irregular' ;
+        17: Result:='17-Título rasurado' ;
+        18: Result:='18-Endereço do sacado não localizado ou incompleto' ;
+        19: Result:='19-Código do cedente inválido' ;
+        20: Result:='20-Nome/endereco do cliente não informado /ECT/' ;
+        21: Result:='21-Carteira inválida' ;
+        22: Result:='22Quantidade de valor variável inválida' ;
+        23: Result:='23-Faixa nosso número excedida' ;
+        24: Result:='24-Valor do abatimento inválido' ;
+        25: Result:='25-Novo número do título dado pelo cedente inválido' ;
+        26: Result:='26-Valor do IOF de seguro inválido' ;
+        27: Result:='27-Nome do sacado/cedente inválido ou não informado' ;
+        28: Result:='28-Data do novo vencimento inválida' ;
+        29: Result:='29-Endereco não informado' ;
+        30: Result:='30-Registro de título já liquidado' ;
+        31: Result:='31-Numero do bordero inválido' ;
+        32: Result:='32-Nome da pessoa autorizada inválido' ;
+        33: Result:='33-Nosso número já existente' ;
+        34: Result:='34-Numero da prestação do contrato inválido' ;
+        35: Result:='35-Percentual de desconto inválido' ;
+        36: Result:='36-Dias para fichamento de protesto inválido' ;
+        37: Result:='37-Data de emissão do título inválida' ;
+        38: Result:='38-Data do vencimento anterior a data da emissão do título' ;
+        39: Result:='39-Comando de alteração indevido para a carteira' ;
+        40: Result:='40-Tipo de moeda inválido' ;
+        41: Result:='41-Abatimento não permitido' ;
+        42: Result:='42-CEP do sacado inválido /ECT/' ;
+        43: Result:='43-Codigo de unidade variavel incompativel com a data emissão do título' ;
+        44: Result:='44-Dados para debito ao sacado inválidos' ;
+        45: Result:='45-Carteira' ;
+        46: Result:='46-Convenio encerrado' ;
+        47: Result:='47-Título tem valor diverso do informado' ;
+        48: Result:='48-Motivo de baixa inválido para a carteira' ;
+        49: Result:='49-Abatimento a cancelar não consta do título' ;
+        50: Result:='50-Comando incompativel com a carteira' ;
+        51: Result:='51-Codigo do convenente inválido' ;
+        52: Result:='52-Abatimento igual ou maior que o valor do título' ;
+        53: Result:='53-Título já se encontra situação pretendida' ;
+        54: Result:='54-Título fora do prazo admitido para a conta 1' ;
+        55: Result:='55-Novo vencimento fora dos limites da carteira' ;
+        56: Result:='56-Título não pertence ao convenente' ;
+        57: Result:='57-Variação incompativel com a carteira' ;
+        58: Result:='58-Impossivel a transferencia para a carteira indicada' ;
+        59: Result:='59-Título vencido em transferencia para a carteira 51' ;
+        60: Result:='60-Título com prazo superior a 179 dias em transferencia para carteira 51' ;
+        61: Result:='61-Título já foi fichado para protesto' ;
+        62: Result:='62-Alteração da situação de debito inválida para o codigo de responsabilidade' ;
+        63: Result:='63-DV do nosso número inválido' ;
+        64: Result:='64-Título não passivel de debito/baixa - situação anormal' ;
+        65: Result:='65-Título com ordem de não protestar-não pode ser encaminhado a cartorio' ;
+        67: Result:='66-Título/carne rejeitado' ;
+        80: Result:='80-Nosso número inválido' ;
+        81: Result:='81-Data para concessão do desconto inválida' ;
+        82: Result:='82-CEP do sacado inválido' ;
+        83: Result:='83-Carteira/variação não localizada no cedente' ;
+        84: Result:='84-Título não localizado na existencia' ;
+        99: Result:='99-Outros motivos' ;
+      end;
+      //Apartir daqui adicionado por Anderson
+    toRetornoLiquidado: //05,06,07,08,15 ou 46
+      case CodMotivo of
+        01: Result:='01-Liquidação normal';
+        02: Result:='02-Liquidação parcial';
+        03: Result:='03-Liquidação por saldo';
+        04: Result:='04-Liquidação com cheque a compensar';
+        05: Result:='05-Liquidação de título sem registro (carteira 7 tipo 4)';
+        07: Result:='07-Liquidação na apresentação';
+        09: Result:='09-Liquidação em cartório';
+      end;
+    toRetornoRegistroConfirmado: //02 (Entrada)
+      case CodMotivo of
+        00: Result:='00-Por meio magnético';
+        11: Result:='11-Por via convencional';
+        16: Result:='16-Por alteração do código do cedente';
+        17: Result:='17-Por alteração da variação';
+        18: Result:='18-Por alteração de carteira';
+      end;
+    toRetornoBaixado, toRetornoBaixadoInstAgencia: //09,10 ou 20 (Baixa) ver ocorrencia 20 componente esta errado
+      case CodMotivo of
+        00: Result:='00-Solicitada pelo cliente';
+        15: Result:='15-Protestado';
+        18: Result:='18-Por alteração de carteira';
+        19: Result:='19-Débito automático';
+        31: Result:='31-Liquidado anteriormente';
+        32: Result:='32-Habilitado em processo';
+        33: Result:='33-Incobrável por nosso intermédio';
+        34: Result:='34-Transferido para créditos em liquidação';
+        46: Result:='46-Por alteração da variação';
+        47: Result:='47-Por alteração da variação';
+        51: Result:='51-Acerto';
+        90: Result:='90-Baixa automática';
+      end;
+  end; //---Fim Anderson
+  //Código Projeto ACBr
+  {  Case TipoOcorrencia of
     //Associados aos códigos de movimento 02, 03, 26 e 30...
     toRetornoRegistroConfirmado, toRetornoRegistroRecusado, toRetornoInstrucaoRejeitada, toRetornoAlteracaoDadosRejeitados:
       Case CodMotivo of
@@ -1198,7 +1390,7 @@ begin
         36: Result := '36-Liquidado Correspondente em Cheque';
         37: Result := '37-Liquidado por meio de Central de Atendimento (Telefone)';
       end;
-  end;
+  end;}
 end;
 
 
@@ -1287,7 +1479,7 @@ begin
 
          CodOcorrencia := StrToInt(IfThen(copy(Linha,109,2) = '00','00',copy(Linha,109,2)));
 
-         if(CodOcorrencia = 3) then
+         if(CodOcorrencia >= 2) and ((CodOcorrencia <= 10)) then
          begin
            MotivoLinha:= 87;
            CodMotivo:= StrToInt(IfThen(copy(Linha,MotivoLinha,2) = '00','00',copy(Linha,87,2)));
@@ -1312,7 +1504,7 @@ begin
          ValorOutrosCreditos  := StrToFloatDef(Copy(Linha,280,13),0)/100;
          NossoNumero          := Copy(Linha,64,17);
          Carteira             := Copy(Linha,92,3);
-//         ValorDespesaCobranca := StrToFloatDef(Copy(Linha,176,13),0)/100;
+         ValorDespesaCobranca := StrToFloatDef(Copy(Linha,182,07),0)/100; //--Anderson: Valor tarifa
          ValorOutrasDespesas  := StrToFloatDef(Copy(Linha,189,13),0)/100;
 
          if StrToIntDef(Copy(Linha,296,6),0) <> 0 then

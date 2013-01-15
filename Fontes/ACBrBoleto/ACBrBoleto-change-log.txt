@@ -47,6 +47,21 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 14/01/13
+-- ACBrBoleto ver. 0.0.59a --
+--ACBrBancoSicred --
+[*] Adicionado rotina para cálculo do nome do arquivo remessa conforme padrão 
+    exigido pelo banco. (Anderson)
+[*] Melhorado rotinas de geração do arquivo remessa para informar se o boleto
+    é carnê ou o padrão. (Anderson)
+[*] Efetuado ajustes nas rotinas de leitura do arquivo retorno.
+
+--ACBrBancoBrasil --
+[*] Ajustado geração do arquivo remessa CNAB400 para informar corretamente todas as 
+    possibilidades de instrução de protesto. (Anderson) 
+[*] Ajustado rotina de leitura do arquivo retorno  CNAB400. (Anderson)
+
+	
 Data: 11/01/13
 -- ACBrBoletoFCFortes ver 0.0.17a -- 
 [*] Removido propriedade fDirArqPDF_HTML e alterado a propriedade NomeArquivo

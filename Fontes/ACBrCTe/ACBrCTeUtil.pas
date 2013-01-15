@@ -649,12 +649,12 @@ class function CTeUtil.GetURLPR(AAmbiente: Integer;
   ALayOut: TLayOut): WideString;
 begin
   case ALayOut of
-    LayCTeRecepcao:      Result := DFeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.pr.gov.br/cte/CteRecepcao'     , 'https://homologacao.cte.fazenda.pr.gov.br/cte/CteRecepcao'); //?WSDL
-    LayCTeRetRecepcao:   Result := DFeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.pr.gov.br/cte/CteRetRecepcao'  , 'https://homologacao.cte.fazenda.pr.gov.br/cte/CteRetRecepcao'); //?WSDL
-    LayCTeCancelamento:  Result := DFeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.pr.gov.br/cte/CteCancelamento' , 'https://homologacao.cte.fazenda.pr.gov.br/cte/CteCancelamento');
-    LayCTeInutilizacao:  Result := DFeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.pr.gov.br/cte/CteInutilizacao' , 'https://homologacao.cte.fazenda.pr.gov.br/cte/CteInutilizacao');
-    LayCTeConsultaCT:    Result := DFeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.pr.gov.br/cte/CteConsulta'     , 'https://homologacao.cte.fazenda.pr.gov.br/cte/CteConsulta');
-    LayCTeStatusServico: Result := DFeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.pr.gov.br/cte/CteStatusServico', 'https://homologacao.cte.fazenda.pr.gov.br/cte/CteStatusServico'); //?WSDL
+    LayCTeRecepcao:      Result := DFeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.pr.gov.br/cte/CteRecepcao?wsdl'     , 'https://homologacao.cte.fazenda.pr.gov.br/cte/CteRecepcao?wsdl'); //?WSDL
+    LayCTeRetRecepcao:   Result := DFeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.pr.gov.br/cte/CteRetRecepcao?wsdl'  , 'https://homologacao.cte.fazenda.pr.gov.br/cte/CteRetRecepcao?wsdl'); //?WSDL
+    LayCTeCancelamento:  Result := DFeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.pr.gov.br/cte/CteCancelamento?wsdl' , 'https://homologacao.cte.fazenda.pr.gov.br/cte/CteCancelamento?wsdl');
+    LayCTeInutilizacao:  Result := DFeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.pr.gov.br/cte/CteInutilizacao?wsdl' , 'https://homologacao.cte.fazenda.pr.gov.br/cte/CteInutilizacao?wsdl');
+    LayCTeConsultaCT:    Result := DFeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.pr.gov.br/cte/CteConsulta?wsdl'     , 'https://homologacao.cte.fazenda.pr.gov.br/cte/CteConsulta?wsdl');
+    LayCTeStatusServico: Result := DFeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.pr.gov.br/cte/CteStatusServico?wsdl', 'https://homologacao.cte.fazenda.pr.gov.br/cte/CteStatusServico?wsdl'); //?WSDL
     // Incluido por Italo em 03/10/2012 conforme sugestão de Moacir
     LayCTeCadastro:      Result := DFeUtil.SeSenao(AAmbiente = 1, 'https://nfe2.fazenda.pr.gov.br/nfe/CadConsultaCadastro2', 'https://homologacao.nfe2.fazenda.pr.gov.br/nfe/CadConsultaCadastro2');
 //    LayCTeCadastro: Result      := DFeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.mt.gov.br/ctews/services/cadConsultaCadastro', 'https://homologacao.sefaz.mt.gov.br/ctews/services/cadConsultaCadastro');

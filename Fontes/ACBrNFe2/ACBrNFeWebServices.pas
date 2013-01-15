@@ -3408,7 +3408,7 @@ begin
             begin
               wProc := TStringList.Create;
               wProc.Add('<?xml version="1.0" encoding="UTF-8" ?>');
-              wProc.Add('<ProcEventoNFe versao="' + NFeCCeNFe + '" xmlns="http://www.portalfiscal.inf.br/nfe">');
+              wProc.Add('<procEventoNFe  versao="' + NFeCCeNFe + '" xmlns="http://www.portalfiscal.inf.br/nfe">');
               wProc.Add('<evento versao="' + NFeCCeNFe + '">');
               Leitor.Arquivo := FDadosMSG;
               wProc.Add(UTF8Encode(Leitor.rExtrai(1, 'infEvento', '', i + 1)));
@@ -3432,14 +3432,14 @@ begin
               wProc.Add(UTF8Encode(Leitor.rExtrai(1, 'infEvento', '', j + 1)));
               wProc.Add('</infEvento>');
               wProc.Add('</retEvento>');
-              wProc.Add('</ProcEventoNFe>');
+              wProc.Add('</procEventoNFe >');
 
               CCeRetorno.retEvento.Items[j].RetInfEvento.XML:=wProc.Text;
 
               NomeArq := FCCe.Evento.Items[i].InfEvento.chNFe +
                          '110110' +
                          IntToStr(FCCe.Evento.Items[i].InfEvento.nSeqEvento) +
-                         '-ProcEventoNFe.xml';
+                         '-procEventoNFe .xml';
 
               if FConfiguracoes.Geral.Salvar then
                  FConfiguracoes.Geral.Save(NomeArq, wProc.Text);
@@ -3616,7 +3616,7 @@ begin
             begin
               wProc := TStringList.Create;
               wProc.Add('<?xml version="1.0" encoding="UTF-8" ?>');
-              wProc.Add('<ProcEventoNFe versao="' + NFeEventoNFe + '" xmlns="http://www.portalfiscal.inf.br/nfe">');
+              wProc.Add('<procEventoNFe  versao="' + NFeEventoNFe + '" xmlns="http://www.portalfiscal.inf.br/nfe">');
               wProc.Add('<evento versao="' + NFeEventoNFe + '">');
               Leitor.Arquivo := FDadosMSG;
               wProc.Add(UTF8Encode(Leitor.rExtrai(1, 'infEvento', '', i + 1)));
@@ -3640,7 +3640,7 @@ begin
               wProc.Add(UTF8Encode(Leitor.rExtrai(1, 'infEvento', '', j + 1)));
               wProc.Add('</infEvento>');
               wProc.Add('</retEvento>');
-              wProc.Add('</ProcEventoNFe>');
+              wProc.Add('</procEventoNFe >');
 
               EventoRetorno.retEvento.Items[j].RetInfEvento.XML:=wProc.Text;
 
@@ -3649,7 +3649,7 @@ begin
               NomeArq := FEvento.Evento.Items[i].InfEvento.chNFe +
                          FEvento.Evento.Items[i].InfEvento.TipoEvento +
                          IntToStr(FEvento.Evento.Items[i].InfEvento.nSeqEvento) +
-                         '-ProcEventoNFe.xml';
+                         '-procEventoNFe .xml';
 
               if FConfiguracoes.Geral.Salvar then
                  FConfiguracoes.Geral.Save(NomeArq, wProc.Text);

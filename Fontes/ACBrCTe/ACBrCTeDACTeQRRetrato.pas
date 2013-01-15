@@ -1773,9 +1773,13 @@ begin
 
   for i:= 0 to FCTe.Rodo.veic.Count - 1 do
   begin
-   if TpPropriedadeToStr(FCTe.Rodo.veic.Items[i].tpProp) = 'P'
-    then qrmTipo.Lines.Add('Próprio')
-    else qrmTipo.Lines.Add('Terceiro');
+   // TpcteTipoVeiculo = (tvTracao, tvReboque);
+   if FCTe.Rodo.veic.Items[i].tpVeic = tvTracao
+    then qrmTipo.Lines.Add('Tração')
+    else qrmTipo.Lines.Add('Reboque');
+//   if TpPropriedadeToStr(FCTe.Rodo.veic.Items[i].tpProp) = 'P'
+//    then qrmTipo.Lines.Add('Próprio')
+//    else qrmTipo.Lines.Add('Terceiro');
    qrmPlaca.Lines.Add(FCTe.Rodo.veic.Items[i].placa);
    qrmUF.Lines.Add(FCTe.Rodo.veic.Items[i].UF);
    qrmRNTRC.Lines.Add(FCTe.Rodo.veic.Items[i].Prop.RNTRC);
@@ -1827,9 +1831,13 @@ begin
 
   for i:= 0 to FCTe.Rodo.veic.Count - 1 do
   begin
-   if TpPropriedadeToStr(FCTe.Rodo.veic.Items[i].tpProp) = 'P'
-    then qrmTipo2.Lines.Add('Próprio')
-    else qrmTipo2.Lines.Add('Terceiro');
+   // TpcteTipoVeiculo = (tvTracao, tvReboque);
+   if FCTe.Rodo.veic.Items[i].tpVeic = tvTracao
+    then qrmTipo2.Lines.Add('Tração')
+    else qrmTipo2.Lines.Add('Reboque');
+//   if TpPropriedadeToStr(FCTe.Rodo.veic.Items[i].tpProp) = 'P'
+//    then qrmTipo2.Lines.Add('Próprio')
+//    else qrmTipo2.Lines.Add('Terceiro');
    qrmPlaca2.Lines.Add(FCTe.Rodo.veic.Items[i].placa);
    qrmUF2.Lines.Add(FCTe.Rodo.veic.Items[i].UF);
    qrmRNTRC2.Lines.Add(FCTe.Rodo.veic.Items[i].Prop.RNTRC);

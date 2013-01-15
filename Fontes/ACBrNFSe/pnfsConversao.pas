@@ -737,7 +737,8 @@ begin
   4318705  // Sao Leopoldo/RS
          : Provedor := 'Thema';
 
-  3131307  // Ipatinga/MG
+  3131307, // Ipatinga/MG
+  3157807  // Santa Luzia/MG
          : Provedor := 'ISSIntel';
 
   1400100  // Boa Vista/RR
@@ -817,6 +818,7 @@ begin
   3148103: Cidade := 'Patrocinio/MG';
   3152501: Cidade := 'Pouso Alegre/MG';
   3154606: Cidade := 'Ribeirão das Neves/MG';
+  3157807: Cidade := 'Santa Luzia/MG';
   3169901: Cidade := 'Uba/MG';
   3170107: Cidade := 'Uberaba/MG';
   3170701: Cidade := 'Varginha/MG';

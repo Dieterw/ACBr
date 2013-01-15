@@ -98,19 +98,17 @@ begin
 
  case ACodigo of
   3131307: begin // Ipatinga/MG
-            ConfigCidade.CodigoURLs    := 1;
+            ConfigCidade.CodigoURLs := 1;
             if AAmbiente = 1
              then ConfigCidade.NameSpaceEnvelope := 'https://ipatinga-mg.issintel.com.br/webservices/abrasf/api'
              else ConfigCidade.NameSpaceEnvelope := 'https://ipatinga-mg.treino-issintel.com.br/webservices/abrasf/api';
            end;
-  {
-  5107602: begin // Rondonopolis/MT
-            ConfigCidade.CodigoURLs    := 2;
+  3157807: begin // Santa Luzia/MG
+            ConfigCidade.CodigoURLs := 2;
             if AAmbiente = 1
-             then ConfigCidade.NameSpaceEnvelope := 'https://rondonopolis-mt.issintel.com.br/webservices/abrasf/api'
-             else ConfigCidade.NameSpaceEnvelope := 'https://rondonopolis-mt.treino-issintel.com.br/webservices/abrasf/api';
+             then ConfigCidade.NameSpaceEnvelope := 'https://santaluzia-mg.issintel.com.br/webservices/abrasf/api'
+             else ConfigCidade.NameSpaceEnvelope := 'https://santaluzia-mg.treino-issintel.com.br/webservices/abrasf/api';
            end;
-  }
  end;
  ConfigCidade.AssinaRPS  := False;
  ConfigCidade.AssinaLote := True;
@@ -147,12 +145,10 @@ begin
       ConfigURL.HomNomeCidade         := 'ipatinga-mg';
       ConfigURL.ProNomeCidade         := 'ipatinga-mg';
      end;
-  {
   2: begin
-      ConfigURL.HomNomeCidade         := 'rondonopolis-mt';
-      ConfigURL.ProNomeCidade         := 'rondonopolis-mt';
+      ConfigURL.HomNomeCidade         := 'santaluzia-mg';
+      ConfigURL.ProNomeCidade         := 'santaluzia-mg';
      end;
-  }   
  end;
 
  ConfigURL.HomRecepcaoLoteRPS    := 'https://' + ConfigURL.HomNomeCidade + '.treino-issintel.com.br/webservices/abrasf/api';

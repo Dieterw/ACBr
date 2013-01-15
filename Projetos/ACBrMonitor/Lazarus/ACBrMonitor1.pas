@@ -1702,9 +1702,9 @@ begin
     MostrarPreview := ckgBOLMostrar.Checked[0];
     MostrarSetup   := ckgBOLMostrar.Checked[1];
     if Filtro = fiHTML then
-       NomeArquivo := deBOLDirArquivo.Text+'boleto.html'
+       NomeArquivo := deBOLDirArquivo.Text + PathDelim + 'boleto.html'
     else
-       NomeArquivo := deBOLDirArquivo.Text+'boleto.pdf';
+       NomeArquivo := deBOLDirArquivo.Text + PathDelim + 'boleto.pdf';
   end;
 
   if cbxTCModelo.ItemIndex > 0 then

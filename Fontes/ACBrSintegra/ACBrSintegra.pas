@@ -3421,8 +3421,6 @@ begin
 end;
 
 destructor TRegistro60M.Destroy;
-var
- i: Integer;
 begin
   FRegs60A.Free;
   FRegs60D.Free;

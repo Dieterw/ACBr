@@ -105,7 +105,7 @@ begin
         else if Cmd.Metodo = 'usarfila' then
            Cmd.Resposta := BoolToStr( UsarFila, True )
 
-        else if Cmd.Metodo = 'setusarfila ' then
+        else if Cmd.Metodo = 'setusarfila' then
          begin
            UsarFila := StrToBool( Cmd.Params(0) ) ;
            {$IFNDEF CONSOLE}FrmACBrMonitor.rbLCBFila.Checked := UsarFila ;{$ENDIF}

@@ -114,9 +114,7 @@ var
    MudouDados: boolean;
    NumeroBanco: LongInt;
    IndiceACBr: LongInt;
-   teste: Boolean;
 begin
-  teste:= FileExists(aStr);
   MudouDados := False;
   IniBoletos := TMemIniFile.Create('boletos.ini');
   SL         := TStringList.Create;

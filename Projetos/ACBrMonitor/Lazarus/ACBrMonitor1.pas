@@ -66,105 +66,306 @@ type
     ACBrIBGE1 : TACBrIBGE ;
     ACBrValidador1 : TACBrValidador ;
     ApplicationProperties1: TApplicationProperties;
-    bCEPTestar : TButton ;
-    bIBGETestar : TButton ;
+    bBALAtivar: TBitBtn;
+    bBALTestar: TBitBtn;
+    bCEPTestar: TButton;
+    bCHQTestar: TBitBtn;
+    bDISAnimar: TBitBtn;
+    bDISLimpar: TBitBtn;
+    bDISTestar: TBitBtn;
+    bECFAtivar: TBitBtn;
+    bECFLeituraX: TBitBtn;
+    bECFTestar: TBitBtn;
+    Bevel1: TBevel;
+    Bevel2: TBevel;
+    Bevel3: TBevel;
+    bExecECFTeste: TBitBtn;
+    bGAVAbrir: TBitBtn;
+    bGAVAtivar: TBitBtn;
+    bGAVEstado: TBitBtn;
+    bIBGETestar: TButton;
+    bLCBAtivar: TBitBtn;
+    bLCBSerial: TBitBtn;
+    bRFDID: TButton;
+    bRFDINI: TButton;
+    bRFDINISalvar: TButton;
+    bRFDMF: TBitBtn;
+    bRSAeECFc: TButton;
     bRSALoadKey: TButton;
     bRSAPrivKey: TButton;
     bRSAPubKey: TButton;
-    bRSAeECFc : TButton ;
-    cbCEPWebService : TComboBox ;
-    cbxBOLUF: TComboBox;
+    bTCAtivar: TBitBtn;
+    cbBALModelo: TComboBox;
+    cbBALPorta: TComboBox;
+    cbCEPWebService: TComboBox;
+    cbCHQModelo: TComboBox;
+    cbCHQPorta: TComboBox;
+    cbComandos: TCheckBox;
+    cbDISModelo: TComboBox;
+    cbDISPorta: TComboBox;
+    cbECFModelo: TComboBox;
+    cbECFPorta: TComboBox;
+    cbETQModelo: TComboBox;
+    cbETQPorta: TComboBox;
+    cbGAVAcaoAberturaAntecipada: TComboBox;
+    cbGAVModelo: TComboBox;
+    cbGAVPorta: TComboBox;
+    cbGAVStrAbre: TComboBox;
+    cbLCBDispositivo: TComboBox;
+    cbLCBPorta: TComboBox;
+    cbLCBSufixo: TComboBox;
+    cbLCBSufixoLeitor: TComboBox;
+    cbLog: TCheckBox;
+    cbRFDModelo: TComboBox;
+    cbSenha: TCheckBox;
     cbxBOLBanco: TComboBox;
     cbxBOLEmissao: TComboBox;
-    chECFArredondaMFD: TCheckBox;
-    ckgBOLMostrar: TCheckGroup;
-    cbxBOLLayout: TComboBox;
     cbxBOLFiltro: TComboBox;
     cbxBOLF_J: TComboBox;
+    cbxBOLLayout: TComboBox;
+    cbxBOLUF: TComboBox;
     cbxCNAB: TComboBox;
-    deBOLDirLogo: TDirectoryEdit;
+    cbxTCModelo: TComboBox;
+    chCHQVerForm: TCheckBox;
+    chECFArredondaMFD: TCheckBox;
+    chECFArredondaPorQtd: TCheckBox;
+    chECFDescrGrande: TCheckBox;
+    chECFSinalGavetaInvertido: TCheckBox;
+    chECFIgnorarTagsFormatacao: TCheckBox;
+    chLCBExcluirSufixo: TCheckBox;
+    chRFD: TCheckBox;
+    chRFDIgnoraMFD: TCheckBox;
+    ckgBOLMostrar: TCheckGroup;
     deBOLDirArquivo: TDirectoryEdit;
+    deBOLDirLogo: TDirectoryEdit;
     deBolDirRemessa: TDirectoryEdit;
     deBolDirRetorno: TDirectoryEdit;
-    edCEPChaveBuscarCEP : TEdit ;
-    edCONProxyHost : TEdit ;
-    edCONProxyPass : TEdit ;
-    edCONProxyPort : TEdit ;
-    edCONProxyUser : TEdit ;
-    edCEPTestar : TEdit ;
-    edIBGECodNome : TEdit ;
-    edtConvenio: TEdit;
-    edtModalidade: TEdit;
-    edtCodTransmissao: TEdit;
-    Image1 : TImage ;
-    Label5: TLabel;
-    Label73: TLabel;
-    Label74: TLabel;
-    Label75: TLabel;
-    mRSAKey: TMemo;
-    Panel1: TPanel;
-    SelectDirectoryDialog1 : TSelectDirectoryDialog ;
-    seRFDGTCadastro : TFloatSpinEdit ;
-    edTimeOutTCP : TEdit ;
-    edtCodCliente: TEdit;
-    edtBOLSH: TEdit;
-    edtBOLComplemento: TEdit;
-    edtBOLDigitoConta: TEdit;
-    edtBOLConta: TEdit;
-    edtBOLDigitoAgencia: TEdit;
+    deUSUDataCadastro: TDateEdit;
+    deRFDDataSwBasico: TDateEdit;
+    edCEPChaveBuscarCEP: TEdit;
+    edCEPTestar: TEdit;
+    edCHQBemafiINI: TEdit;
+    edCHQCidade: TEdit;
+    edCHQFavorecido: TEdit;
+    edCONProxyHost: TEdit;
+    edCONProxyPass: TEdit;
+    edCONProxyPort: TEdit;
+    edCONProxyUser: TEdit;
+    edECFLog: TEdit;
+    edEntTXT: TEdit;
+    edIBGECodNome: TEdit;
+    edLCBPreExcluir: TEdit;
+    edLogArq: TEdit;
+    edPortaTCP: TEdit;
+    edUSUCNPJ: TEdit;
+    edRFDDir: TEdit;
+    edUSUEndereco: TEdit;
+    edUSUIE: TEdit;
+    edUSURazaoSocial: TEdit;
+    edSaiTXT: TEdit;
+    edSenha: TEdit;
+    edSH_Aplicativo: TEdit;
+    edSH_CNPJ: TEdit;
+    edSH_COO: TEdit;
+    edSH_IE: TEdit;
+    edSH_IM: TEdit;
+    edSH_Linha1: TEdit;
+    edSH_Linha2: TEdit;
+    edSH_NumeroAP: TEdit;
+    edSH_RazaoSocial: TEdit;
+    edSH_VersaoAP: TEdit;
     edtBOLAgencia: TEdit;
     edtBOLBairro: TEdit;
     edtBOLCEP: TMaskEdit;
     edtBOLCidade: TEdit;
     edtBOLCNPJ: TMaskEdit;
+    edtBOLComplemento: TEdit;
+    edtBOLConta: TEdit;
+    edtBOLDigitoAgencia: TEdit;
+    edtBOLDigitoConta: TEdit;
     edtBOLLogradouro: TEdit;
     edtBOLNumero: TEdit;
     edtBOLRazaoSocial: TEdit;
-    gbCEPProxy : TGroupBox ;
-    gbCEPTestar : TGroupBox ;
-    gbCEP : TGroupBox ;
+    edtBOLSH: TEdit;
+    edTCArqPrecos: TEdit;
+    edTCNaoEncontrado: TEdit;
+    edtCodCliente: TEdit;
+    edtCodTransmissao: TEdit;
+    edtConvenio: TEdit;
+    edTCPort: TEdit;
+    edTimeOutTCP: TEdit;
+    edtModalidade: TEdit;
+    gbCEP: TGroupBox;
+    gbCEPProxy: TGroupBox;
+    gbCEPTestar: TGroupBox;
+    gbCHQDados: TGroupBox;
+    gbLog: TGroupBox;
+    gbRFDECF: TGroupBox;
+    gbSenha: TGroupBox;
+    gbTCP: TGroupBox;
+    gbTXT: TGroupBox;
+    GroupBox1: TGroupBox;
+    GroupBox2: TGroupBox;
+    Image1 : TImage ;
+    Label1: TLabel;
+    Label10: TLabel;
     Label11: TLabel;
+    Label12: TLabel;
+    Label13: TLabel;
+    Label14: TLabel;
+    Label15: TLabel;
+    Label16: TLabel;
+    Label17: TLabel;
+    Label18: TLabel;
+    Label19: TLabel;
+    Label2: TLabel;
+    Label20: TLabel;
+    Label21: TLabel;
+    Label22: TLabel;
+    Label23: TLabel;
+    Label24: TLabel;
+    Label25: TLabel;
+    Label26: TLabel;
+    Label27: TLabel;
+    Label28: TLabel;
+    Label29: TLabel;
+    Label3: TLabel;
+    Label30: TLabel;
+    Label31: TLabel;
+    Label32: TLabel;
+    Label4: TLabel;
+    Label43: TLabel;
+    Label44: TLabel;
+    Label45: TLabel;
+    Label46: TLabel;
+    Label47: TLabel;
+    Label48: TLabel;
+    Label49: TLabel;
+    Label5: TLabel;
+    Label50: TLabel;
+    Label51: TLabel;
+    Label52: TLabel;
+    Label53: TLabel;
+    Label54: TLabel;
+    Label55: TLabel;
+    Label56: TLabel;
+    Label57: TLabel;
+    Label58: TLabel;
+    Label59: TLabel;
+    Label6: TLabel;
+    Label60: TLabel;
+    Label61: TLabel;
+    Label62: TLabel;
+    Label63: TLabel;
+    Label64: TLabel;
+    Label65: TLabel;
+    Label66: TLabel;
+    Label67: TLabel;
     Label68: TLabel;
     Label69: TLabel;
+    Label7: TLabel;
     Label70: TLabel;
     Label71: TLabel;
     Label72: TLabel;
-    lTimeOutTCP : TLabel ;
-    lIBGECodNome : TLabel ;
-    lCEPChave : TLabel ;
-    lCEPProxyServidor : TLabel ;
-    lCEPProxyPorta : TLabel ;
-    lCEPProxyUsuario : TLabel ;
-    lCEPProxySenha : TLabel ;
-    lCEPCEP : TLabel ;
-    lCEPWebService : TLabel ;
+    Label73: TLabel;
+    Label74: TLabel;
+    Label75: TLabel;
+    Label76: TLabel;
+    Label77: TLabel;
     Label78: TLabel;
     Label79: TLabel;
-    lblBOLCep: TLabel;
-    lblBOLPessoa: TLabel;
-    lblBOLDirLogo: TLabel;
-    lblBOLComplemento: TLabel;
-    lblBOLBanco: TLabel;
-    Label67: TLabel;
+    Label8: TLabel;
+    Label80: TLabel;
+    Label82: TLabel;
+    Label83: TLabel;
+    Label84: TLabel;
+    Label85: TLabel;
+    Label86: TLabel;
+    Label87: TLabel;
+    Label88: TLabel;
+    Label89: TLabel;
+    Label9: TLabel;
+    Label90: TLabel;
+    Label91: TLabel;
+    Label92: TLabel;
+    lAdSufixo: TLabel;
     lblBOLAgencia: TLabel;
-    lblBOLDigAgencia: TLabel;
-    Label76: TLabel;
-    lblBOLConta: TLabel;
-    lblBOLDigConta: TLabel;
-    lblBOLEmissao: TLabel;
-    lblBOLNomeRazao: TLabel;
-    lblBOLCPFCNPJ: TLabel;
-    lblBOLLogradouro: TLabel;
-    lblBOLNumero: TLabel;
     lblBOLBairro: TLabel;
+    lblBOLBanco: TLabel;
+    lblBOLCep: TLabel;
     lblBOLCidade: TLabel;
-    lblCep: TLabel;
+    lblBOLComplemento: TLabel;
+    lblBOLConta: TLabel;
+    lblBOLCPFCNPJ: TLabel;
+    lblBOLDigAgencia: TLabel;
+    lblBOLDigConta: TLabel;
+    lblBOLDirLogo: TLabel;
+    lblBOLEmissao: TLabel;
+    lblBOLLogradouro: TLabel;
+    lblBOLNomeRazao: TLabel;
+    lblBOLNumero: TLabel;
+    lblBOLPessoa: TLabel;
+    lCEPCEP: TLabel;
+    lCEPChave: TLabel;
+    lCEPProxyPorta: TLabel;
+    lCEPProxySenha: TLabel;
+    lCEPProxyServidor: TLabel;
+    lCEPProxyUsuario: TLabel;
+    lCEPWebService: TLabel;
+    lGAVEstado: TLabel;
+    lIBGECodNome: TLabel;
     lLCBCodigoLido: TPanel;
-    deRFDDataCadastro : TDateEdit ;
-    deRFDDataSwBasico : TDateEdit ;
+    lNumPortaTCP: TLabel;
+    lRFDID: TLabel;
+    lRFDMarca: TLabel;
+    lTimeOutTCP: TLabel;
+    meUSUHoraCadastro: TMaskEdit;
+    meRFDHoraSwBasico: TMaskEdit;
+    mRFDINI: TMemo;
+    mRSAKey: TMemo;
+    mTCConexoes: TMemo;
+    PageControl1: TPageControl;
+    pgECFParams: TPageControl;
+    pgCadastro: TPageControl;
+    pgSwHouse: TPageControl;
+    Panel4: TPanel;
+    pConfig: TPanel;
     pgBoleto: TPageControl;
-    spBOLCopias: TSpinEdit;
+    pgConRFD: TPageControl;
+    rbLCBFila: TRadioButton;
+    rbLCBTeclado: TRadioButton;
+    rbTCP: TRadioButton;
+    rbTXT: TRadioButton;
+    sbCHQBemafiINI: TSpeedButton;
+    sbCHQSerial: TSpeedButton;
+    sbDirRFD: TSpeedButton;
+    sbECFLog: TSpeedButton;
+    sbECFSerial: TSpeedButton;
+    sbLog: TSpeedButton;
+    sbTCArqPrecosEdit: TSpeedButton;
+    sbTCArqPrecosFind: TSpeedButton;
+    sedBALIntervalo: TSpinEdit;
+    sedECFIntervalo: TSpinEdit;
+    sedECFTimeout: TSpinEdit;
+    sedGAVIntervaloAbertura: TSpinEdit;
+    sedIntervalo: TSpinEdit;
+    seDISIntByte: TSpinEdit;
+    seDISIntervalo: TSpinEdit;
+    seDISPassos: TSpinEdit;
+    sedLCBIntervalo: TSpinEdit;
+    sedLogLinhas: TSpinEdit;
+    SelectDirectoryDialog1 : TSelectDirectoryDialog ;
+    lblCep: TLabel;
     sbSobre : TSpeedButton ;
+    sedECFMaxLinhasBuffer: TSpinEdit;
+    sedECFPaginaCodigo: TSpinEdit;
+    sedECFLinhasEntreCupons: TSpinEdit;
+    seUSUCROCadastro: TSpinEdit;
+    seUSUGTCadastro: TFloatSpinEdit;
+    seUSUNumeroCadastro: TSpinEdit;
+    shpLCB: TShape;
+    shpTC: TShape;
+    spBOLCopias: TSpinEdit;
     StatusBar1: TStatusBar;
     ImageList1: TImageList;
     ACBrCHQ1: TACBrCHQ;
@@ -187,230 +388,43 @@ type
     mResp: TMemo;
     pTopRespostas: TPanel;
     Splitter1: TSplitter;
-    pConfig: TPanel;
-    PageControl1: TPageControl;
+    TabControl1: TTabControl;
     TabSheet1: TTabSheet;
-    tsChaveRSA: TTabSheet;
-    tsConsultas : TTabSheet ;
-    tsACBrBoleto: TTabSheet;
-    TabSheet2: TTabSheet;
-    tsBoleto: TTabSheet;
-    tsCedente: TTabSheet;
+    tsContaBancaria: TTabSheet;
+    tsECFParamI: TTabSheet;
+    tsECFParamII: TTabSheet;
+    tsCadUsuario: TTabSheet;
+    tsCadSwH: TTabSheet;
+    tsCadSwDados: TTabSheet;
+    tsCadSwChaveRSA: TTabSheet;
+    tsCadastro: TTabSheet;
     TrayIcon1: TTrayIcon;
-    tsMonitor: TTabSheet;
-    cbLog: TCheckBox;
-    gbTCP: TGroupBox;
-    lNumPortaTCP: TLabel;
-    edPortaTCP: TEdit;
-    gbTXT: TGroupBox;
-    Label6: TLabel;
-    Label7: TLabel;
-    edEntTXT: TEdit;
-    edSaiTXT: TEdit;
-    rbTCP: TRadioButton;
-    rbTXT: TRadioButton;
-    tsECF: TTabSheet;
-    Label8: TLabel;
-    cbECFModelo: TComboBox;
-    Label9: TLabel;
-    cbECFPorta: TComboBox;
-    Label10: TLabel;
-    chECFArredondaPorQtd: TCheckBox;
-    bECFTestar: TBitBtn;
-    bECFLeituraX: TBitBtn;
-    bECFAtivar: TBitBtn;
-    tsCHQ: TTabSheet;
-    Label12: TLabel;
-    cbCHQModelo: TComboBox;
-    Label13: TLabel;
-    cbCHQPorta: TComboBox;
-    bCHQTestar: TBitBtn;
-    chCHQVerForm: TCheckBox;
-    tsGAV: TTabSheet;
-    Label15: TLabel;
-    cbGAVModelo: TComboBox;
-    Label16: TLabel;
-    cbGAVPorta: TComboBox;
-    bGAVAbrir: TBitBtn;
-    bGAVEstado: TBitBtn;
-    lGAVEstado: TLabel;
-    Label21: TLabel;
-    tsDIS: TTabSheet;
-    Label17: TLabel;
-    cbDISPorta: TComboBox;
-    Label18: TLabel;
-    cbDISModelo: TComboBox;
-    bDISTestar: TBitBtn;
-    bDISLimpar: TBitBtn;
-    tsLCB: TTabSheet;
-    cbLCBPorta: TComboBox;
-    chLCBExcluirSufixo: TCheckBox;
-    Label1: TLabel;
-    Label2: TLabel;
-    Label22: TLabel;
-    bLCBAtivar: TBitBtn;
-    Label23: TLabel;
-    edLCBPreExcluir: TEdit;
     bCancelar: TBitBtn;
     Timer1: TTimer;
     TcpServer: TACBrTCPServer;
-    chECFDescrGrande: TCheckBox;
-    Label24: TLabel;
-    cbLCBSufixoLeitor: TComboBox;
-    cbGAVStrAbre: TComboBox;
-    bExecECFTeste: TBitBtn;
-    Bevel1: TBevel;
-    cbComandos: TCheckBox;
     sbProcessando: TStatusBar;
-    chECFSinalGavetaInvertido: TCheckBox;
-    gbSenha: TGroupBox;
-    edSenha: TEdit;
-    gbLog: TGroupBox;
-    edLogArq: TEdit;
-    Label4: TLabel;
-    Label26: TLabel;
-    sedIntervalo: TSpinEdit;
-    sedLogLinhas: TSpinEdit;
-    sedECFTimeout: TSpinEdit;
-    sedLCBIntervalo: TSpinEdit;
-    Label27: TLabel;
-    sedGAVIntervaloAbertura: TSpinEdit;
-    bGAVAtivar: TBitBtn;
-    Label28: TLabel;
-    cbGAVAcaoAberturaAntecipada: TComboBox;
-    gbCHQDados: TGroupBox;
-    Label14: TLabel;
-    edCHQFavorecido: TEdit;
-    Label29: TLabel;
-    edCHQCidade: TEdit;
-    edCHQBemafiINI: TEdit;
-    Label30: TLabel;
-    sbCHQBemafiINI: TSpeedButton;
     OpenDialog1: TOpenDialog;
-    bLCBSerial: TBitBtn;
-    Bevel2: TBevel;
-    lAdSufixo: TLabel;
-    cbLCBSufixo: TComboBox;
-    Bevel3: TBevel;
-    rbLCBTeclado: TRadioButton;
-    rbLCBFila: TRadioButton;
-    shpLCB: TShape;
-    Label25: TLabel;
-    sedECFIntervalo: TSpinEdit;
-    cbLCBDispositivo: TComboBox;
-    Label31: TLabel;
-    seDISIntByte: TSpinEdit;
-    GroupBox1: TGroupBox;
-    Label19: TLabel;
-    seDISIntervalo: TSpinEdit;
-    Label20: TLabel;
-    seDISPassos: TSpinEdit;
-    bDISAnimar: TBitBtn;
-    tsRFD: TTabSheet;
-    pgConRFD: TPageControl;
-    tsRFDSwH: TTabSheet;
-    Label33: TLabel;
-    Label34: TLabel;
-    edSH_RazaoSocial: TEdit;
-    edSH_COO: TEdit;
-    Label35: TLabel;
-    Label36: TLabel;
-    Label37: TLabel;
-    edSH_CNPJ: TEdit;
-    edSH_IE: TEdit;
-    edSH_IM: TEdit;
-    Label38: TLabel;
-    edSH_Aplicativo: TEdit;
-    Label39: TLabel;
-    edSH_NumeroAP: TEdit;
-    Label40: TLabel;
-    edSH_VersaoAP: TEdit;
-    Label41: TLabel;
-    edSH_Linha1: TEdit;
-    Label42: TLabel;
-    edSH_Linha2: TEdit;
-    tsRFDINI: TTabSheet;
-    Panel4: TPanel;
-    bRFDINISalvar: TButton;
-    mRFDINI: TMemo;
-    tsRFDConfig: TTabSheet;
-    chRFD: TCheckBox;
-    Label32: TLabel;
-    edRFDDir: TEdit;
-    sbDirRFD: TSpeedButton;
-    bRFDMF: TBitBtn;
-    gbRFDECF: TGroupBox;
-    Label43: TLabel;
-    Label44: TLabel;
-    cbRFDModelo: TComboBox;
     ACBrRFD1: TACBrRFD;
-    Label45: TLabel;
-    lRFDID: TLabel;
-    lRFDMarca: TLabel;
-    tsRFDUsuario: TTabSheet;
-    Label46: TLabel;
-    edRFDRazaoSocial: TEdit;
-    Label47: TLabel;
-    edRFDCNPJ: TEdit;
-    Label48: TLabel;
-    edRFDIE: TEdit;
-    Label49: TLabel;
-    edRFDEndereco: TEdit;
-    GroupBox2: TGroupBox;
-    Label50: TLabel;
-    seRFDNumeroCadastro: TSpinEdit;
-    Label51: TLabel;
-    Label52: TLabel;
-    Label53: TLabel;
-    seRFDCROCadastro: TSpinEdit;
-    Label54: TLabel;
-    bRFDINI: TButton;
-    bRFDID: TButton;
-    meRFDHoraCadastro: TMaskEdit;
-    cbSenha: TCheckBox;
-    Label3: TLabel;
-    chRFDIgnoraMFD: TCheckBox;
-    Label55: TLabel;
-    edECFLog: TEdit;
-    sbLog: TSpeedButton;
-    sbECFLog: TSpeedButton;
-    tsBAL: TTabSheet;
-    Label56: TLabel;
-    cbBALModelo: TComboBox;
-    Label57: TLabel;
-    cbBALPorta: TComboBox;
-    Label58: TLabel;
-    sedBALIntervalo: TSpinEdit;
-    bBALAtivar: TBitBtn;
-    bBALTestar: TBitBtn;
     ACBrBAL1: TACBrBAL;
-    sbECFSerial: TSpeedButton;
-    Label59: TLabel;
-    meRFDHoraSwBasico: TMaskEdit;
-    tsETQ: TTabSheet;
-    Label60: TLabel;
-    cbETQModelo: TComboBox;
-    cbETQPorta: TComboBox;
-    Label61: TLabel;
     ACBrETQ1: TACBrETQ;
-    tsTC: TTabSheet;
     TCPServerTC: TACBrTCPServer;
-    Label63: TLabel;
-    cbxTCModelo: TComboBox;
-    Label62: TLabel;
-    edTCPort: TEdit;
-    Label64: TLabel;
-    mTCConexoes: TMemo;
-    Label65: TLabel;
-    edTCArqPrecos: TEdit;
-    sbTCArqPrecosEdit: TSpeedButton;
-    bTCAtivar: TBitBtn;
-    shpTC: TShape;
-    sbTCArqPrecosFind: TSpeedButton;
-    Label66: TLabel;
-    edTCNaoEncontrado: TEdit;
     TimerTC: TTimer;
-    sbCHQSerial: TSpeedButton;
+    tsACBrBoleto: TTabSheet;
+    tsBAL: TTabSheet;
+    tsBoleto: TTabSheet;
+    tsCedente: TTabSheet;
+    tsCHQ: TTabSheet;
+    tsConsultas: TTabSheet;
+    tsDIS: TTabSheet;
+    tsECF: TTabSheet;
+    tsETQ: TTabSheet;
+    tsGAV: TTabSheet;
+    tsLCB: TTabSheet;
+    tsMonitor: TTabSheet;
+    tsRFD: TTabSheet;
+    tsRFDConfig: TTabSheet;
+    tsRFDINI: TTabSheet;
+    tsTC: TTabSheet;
     procedure ACBrEAD1GetChavePrivada(var Chave: AnsiString);
     procedure ACBrGIF1Click(Sender : TObject) ;
     procedure ApplicationProperties1Exception(Sender: TObject; E: Exception);
@@ -423,12 +437,13 @@ type
     procedure cbxBOLF_JChange ( Sender: TObject ) ;
     procedure cbCEPWebServiceChange(Sender : TObject) ;
     procedure chECFArredondaMFDClick(Sender: TObject);
+    procedure chECFIgnorarTagsFormatacaoClick(Sender: TObject);
     procedure chRFDChange(Sender : TObject) ;
     procedure deBOLDirArquivoExit ( Sender: TObject ) ;
     procedure deBOLDirLogoExit ( Sender: TObject ) ;
     procedure deBolDirRemessaExit ( Sender: TObject ) ;
     procedure deBolDirRetornoExit ( Sender: TObject ) ;
-    procedure deRFDDataCadastroExit(Sender : TObject) ;
+    procedure deUSUDataCadastroExit(Sender : TObject) ;
     procedure deRFDDataSwBasicoExit(Sender : TObject) ;
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);{%h-}
     procedure FormCreate(Sender: TObject);
@@ -440,9 +455,12 @@ type
     procedure bECFTestarClick(Sender: TObject);
     procedure bECFLeituraXClick(Sender: TObject);
     procedure bECFAtivarClick(Sender: TObject);
-    procedure meRFDHoraCadastroExit(Sender : TObject) ;
+    procedure meUSUHoraCadastroExit(Sender : TObject) ;
     procedure meRFDHoraSwBasicoExit(Sender : TObject) ;
     procedure sbSobreClick(Sender : TObject) ;
+    procedure sedECFLinhasEntreCuponsChange(Sender: TObject);
+    procedure sedECFMaxLinhasBufferChange(Sender: TObject);
+    procedure sedECFPaginaCodigoChange(Sender: TObject);
     procedure TcpServerConecta(const TCPBlockSocket: TTCPBlockSocket;
       var Enviar: ansistring);{%h-}
     procedure TcpServerDesConecta(const TCPBlockSocket: TTCPBlockSocket;
@@ -527,8 +545,8 @@ type
     procedure cbRFDModeloChange(Sender: TObject);
     procedure bRFDIDClick(Sender: TObject);
     procedure tsRFDINIShow(Sender: TObject);
-    procedure seRFDGTCadastroKeyPress(Sender: TObject; var Key: char);
-    procedure seRFDGTCadastroExit(Sender: TObject);
+    procedure seUSUGTCadastroKeyPress(Sender: TObject; var Key: char);
+    procedure seUSUGTCadastroExit(Sender: TObject);
     procedure tsRFDRSAShow(Sender: TObject);
     procedure cbSenhaClick(Sender: TObject);
     procedure bRSAPrivKeyClick(Sender: TObject);
@@ -784,6 +802,9 @@ begin
   cbxBOLF_JChange(Self);
   cbxBOLFiltroChange(Self);
 
+  pgCadastro.ActivePageIndex := 0;
+  pgSwHouse.ActivePageIndex  := 0;
+
   Application.Title := Caption;
 
   AppDir := ExtractFilePath(Application.ExeName);
@@ -1002,6 +1023,11 @@ begin
                                  (chECFArredondaMFD.Checked))
 end;
 
+procedure TFrmACBrMonitor.chECFIgnorarTagsFormatacaoClick(Sender: TObject);
+begin
+  ACBrECF1.IgnorarTagsFormatacao := chECFIgnorarTagsFormatacao.Checked;
+end;
+
 procedure TFrmACBrMonitor.chRFDChange(Sender : TObject) ;
 begin
   ACBrECF1.Desativar;
@@ -1063,12 +1089,12 @@ begin
    end;
 end;
 
-procedure TFrmACBrMonitor.deRFDDataCadastroExit(Sender : TObject) ;
+procedure TFrmACBrMonitor.deUSUDataCadastroExit(Sender : TObject) ;
 begin
-   if (deRFDDataCadastro.Date = 0) then
+   if (deUSUDataCadastro.Date = 0) then
    begin
       mResp.Lines.Add( 'Data Inválida' );
-      deRFDDataCadastro.SetFocus;
+      deUSUDataCadastro.SetFocus;
    end ;
 end;
 
@@ -1396,11 +1422,14 @@ begin
     cbECFPorta.Text := Ini.ReadString('ECF', 'Porta', 'Procurar');
     sedECFTimeout.Value := Ini.ReadInteger('ECF', 'Timeout', 3);
     sedECFIntervalo.Value := Ini.ReadInteger('ECF', 'IntervaloAposComando', 100);
+    sedECFMaxLinhasBuffer.Value := Ini.ReadInteger('ECF', 'MaxLinhasBuffer', 0);
+    sedECFPaginaCodigo.Value := Ini.ReadInteger('ECF', 'PaginaCodigo', 0);
+    sedECFLinhasEntreCupons.Value := Ini.ReadInteger('ECF', 'LinhasEntreCupons', 0);
     chECFArredondaPorQtd.Checked := Ini.ReadBool('ECF', 'ArredondamentoPorQtd', False);
     chECFArredondaMFD.Checked := Ini.ReadBool('ECF', 'ArredondamentoItemMFD', False);
     chECFDescrGrande.Checked := Ini.ReadBool('ECF', 'DescricaoGrande', True);
-    chECFSinalGavetaInvertido.Checked :=
-      Ini.ReadBool('ECF', 'GavetaSinalInvertido', False);
+    chECFSinalGavetaInvertido.Checked := Ini.ReadBool('ECF', 'GavetaSinalInvertido', False);
+    chECFIgnorarTagsFormatacao.Checked := Ini.ReadBool('ECF', 'IgnorarTagsFormatacao', False);
     edECFLog.Text := Ini.ReadString('ECF', 'ArqLog', '');
 
     { Parametros do CHQ }
@@ -1529,6 +1558,9 @@ begin
       Device.ParamsString := ECFDeviceParams;
     TimeOut := sedECFTimeout.Value;
     IntervaloAposComando := sedECFIntervalo.Value;
+    MaxLinhasBuffer := sedECFMaxLinhasBuffer.Value;
+    PaginaDeCodigo := sedECFPaginaCodigo.Value;
+    LinhasEntreCupons := sedECFLinhasEntreCupons.Value;
     ArredondaPorQtd := chECFArredondaPorQtd.Checked;
     ArredondaItemMFD := ((chECFArredondaMFD.Enabled) and
                          (chECFArredondaMFD.Checked));
@@ -1536,6 +1568,7 @@ begin
     GavetaSinalInvertido := chECFSinalGavetaInvertido.Checked;
     BloqueiaMouseTeclado := False;
     ExibeMensagem := False;
+    IgnorarTagsFormatacao := chECFIgnorarTagsFormatacao.Checked;
     ArqLOG := edECFLog.Text;
     Ativo := ECFAtivado;
   end;
@@ -1835,10 +1868,14 @@ begin
     Ini.WriteString( 'ECF', 'SerialParams', ACBrECF1.Device.ParamsString);
     Ini.WriteInteger('ECF', 'Timeout', sedECFTimeout.Value);
     Ini.WriteInteger('ECF', 'IntervaloAposComando', sedECFIntervalo.Value);
+    Ini.WriteInteger('ECF', 'MaxLinhasBuffer', sedECFMaxLinhasBuffer.Value);
+    Ini.WriteInteger('ECF', 'PaginaCodigo', sedECFPaginaCodigo.Value);
+    Ini.WriteInteger('ECF', 'LinhasEntreCupons', sedECFLinhasEntreCupons.Value);
     Ini.WriteBool(   'ECF', 'ArredondamentoPorQtd', chECFArredondaPorQtd.Checked);
     Ini.WriteBool(   'ECF', 'ArredondamentoItemMFD', chECFArredondaMFD.Checked);
     Ini.WriteBool(   'ECF', 'DescricaoGrande', chECFDescrGrande.Checked);
     Ini.WriteBool(   'ECF', 'GavetaSinalInvertido', chECFSinalGavetaInvertido.Checked);
+    Ini.WriteBool(   'ECF', 'IgnorarTagsFormatacao', chECFIgnorarTagsFormatacao.Checked);
     Ini.WriteString( 'ECF', 'ArqLog', edECFLog.Text);
 
     { Parametros do CHQ }
@@ -1919,19 +1956,19 @@ begin
     begin
        if Ativo then
        begin
-          CONT_RazaoSocial      := edRFDRazaoSocial.Text;
-          CONT_CNPJ             := edRFDCNPJ.Text;
-          CONT_Endereco         := edRFDEndereco.Text;
-          CONT_IE               := edRFDIE.Text;
-          CONT_NumUsuario       := seRFDNumeroCadastro.Value;
-          CONT_DataHoraCadastro := deRFDDataCadastro.Date ;
+          CONT_RazaoSocial      := edUSURazaoSocial.Text;
+          CONT_CNPJ             := edUSUCNPJ.Text;
+          CONT_Endereco         := edUSUEndereco.Text;
+          CONT_IE               := edUSUIE.Text;
+          CONT_NumUsuario       := seUSUNumeroCadastro.Value;
+          CONT_DataHoraCadastro := deUSUDataCadastro.Date ;
           try
              CONT_DataHoraCadastro := CONT_DataHoraCadastro +
-                                      StrToTime(meRFDHoraCadastro.Text, ':');
+                                      StrToTime(meUSUHoraCadastro.Text, ':');
           except
           end ;
-          CONT_CROCadastro      := seRFDCROCadastro.Value;
-          CONT_GTCadastro       := seRFDGTCadastro.Value;
+          CONT_CROCadastro      := seUSUCROCadastro.Value;
+          CONT_GTCadastro       := seUSUGTCadastro.Value;
           ECF_RFDID             := lRFDID.Caption;
           ECF_DataHoraSwBasico  := deRFDDataSwBasico.Date;
           try
@@ -2085,11 +2122,12 @@ begin
      begin
         if (Chave = '') and chRFD.Checked then
         begin
-          PageControl1.ActivePage := tsChaveRSA;
+          PageControl1.ActivePage := tsCadastro;
+          pgCadastro.ActivePage   := tsCadSwH;
+          pgSwHouse.ActivePage    := tsCadSwChaveRSA;
 
           raise Exception.Create('Para trabalhar com RFD é necessário ' +
             'definir uma Chave Privada');
-
         end ;
     end;
 
@@ -2504,13 +2542,12 @@ begin
   bECFAtivar.Enabled :=
     ((ACBrECF1.Modelo <> ecfNenhum) or
     (cbECFModelo.Text = 'Procurar'));
-  chECFArredondaPorQtd.Enabled := bECFAtivar.Enabled;
-  chECFArredondaMFD.Enabled := bECFAtivar.Enabled;
-  chECFDescrGrande.Enabled := bECFAtivar.Enabled;
-  cbECFPorta.Enabled := bECFAtivar.Enabled;
-  sedECFTimeout.Enabled := bECFAtivar.Enabled;
+
+  cbECFPorta.Enabled      := bECFAtivar.Enabled;
+  sedECFTimeout.Enabled   := bECFAtivar.Enabled;
   sedECFIntervalo.Enabled := bECFAtivar.Enabled;
-  chECFSinalGavetaInvertido.Enabled := bECFAtivar.Enabled;
+  tsECFParamI.Enabled     := bECFAtivar.Enabled;
+  tsECFParamII.Enabled    := bECFAtivar.Enabled;
 
   bECFTestar.Enabled := ACBrECF1.Ativo;
   bECFLeituraX.Enabled := ACBrECF1.Ativo;
@@ -2647,13 +2684,13 @@ begin
   AvaliaEstadoTsRFD;
 end;
 
-procedure TFrmACBrMonitor.meRFDHoraCadastroExit(Sender : TObject) ;
+procedure TFrmACBrMonitor.meUSUHoraCadastroExit(Sender : TObject) ;
 begin
   try
-     StrToTime(meRFDHoraCadastro.Text,':');
+     StrToTime(meUSUHoraCadastro.Text,':');
   except
      mResp.Lines.Add( 'Hora Inválida' );
-     meRFDHoraCadastro.SetFocus;
+     meUSUHoraCadastro.SetFocus;
   end ;
 end;
 
@@ -2676,6 +2713,21 @@ begin
   finally
     FreeAndNil(frmSobre);
   end;
+end;
+
+procedure TFrmACBrMonitor.sedECFLinhasEntreCuponsChange(Sender: TObject);
+begin
+   ACBrECF1.LinhasEntreCupons := sedECFLinhasEntreCupons.Value;
+end;
+
+procedure TFrmACBrMonitor.sedECFMaxLinhasBufferChange(Sender: TObject);
+begin
+   ACBrECF1.MaxLinhasBuffer := sedECFMaxLinhasBuffer.Value;
+end;
+
+procedure TFrmACBrMonitor.sedECFPaginaCodigoChange(Sender: TObject);
+begin
+   ACBrECF1.PaginaDeCodigo := sedECFPaginaCodigo.Value;
 end;
 
 procedure TFrmACBrMonitor.TcpServerConecta(const TCPBlockSocket: TTCPBlockSocket;
@@ -3222,15 +3274,13 @@ begin
   edRFDDir.Enabled := not bRFDMF.Enabled;
   cbRFDModelo.Enabled := bRFDMF.Enabled;
 
-  tsRFDUsuario.Enabled := ACBrECF1.Ativo and ACBrRFD1.Ativo;
-  tsRFDSwH.Enabled := tsRFDUsuario.Enabled;
-  tsRFDINI.Enabled := tsRFDUsuario.Enabled;
+  tsRFDINI.Enabled := ACBrECF1.Ativo and ACBrRFD1.Ativo;
 
   lRFDID.Caption := ACBrRFD1.ECF_RFDID;
   deRFDDataSwBasico.Date    := ACBrRFD1.ECF_DataHoraSwBasico ;
-  deRFDDataSwBasico.Enabled := tsRFDUsuario.Enabled;
+  deRFDDataSwBasico.Enabled := tsRFDINI.Enabled;
   meRFDHoraSwBasico.Text    := FormatDateTime('hh:nn', ACBrRFD1.ECF_DataHoraSwBasico);
-  meRFDHoraSwBasico.Enabled := tsRFDUsuario.Enabled;
+  meRFDHoraSwBasico.Enabled := tsRFDINI.Enabled;
 
   if ACBrECF1.Ativo then
     gbRFDECF.Hint := 'Selecione o Modelo do ECF'
@@ -3272,15 +3322,15 @@ begin
 
       if not fsRFDLeuParams then
       begin
-        edRFDRazaoSocial.Text     := ACBrRFD1.CONT_RazaoSocial;
-        edRFDEndereco.Text        := ACBrRFD1.CONT_Endereco;
-        edRFDCNPJ.Text            := ACBrRFD1.CONT_CNPJ;
-        edRFDIE.Text              := ACBrRFD1.CONT_IE;
-        seRFDNumeroCadastro.Value := ACBrRFD1.CONT_NumUsuario;
-        deRFDDataCadastro.Date    := ACBrRFD1.CONT_DataHoraCadastro ;
-        seRFDCROCadastro.Value    := ACBrRFD1.CONT_CROCadastro;
-        meRFDHoraCadastro.Text    := FormatDateTime('hh:nn', ACBrRFD1.CONT_DataHoraCadastro) ;
-        seRFDGTCadastro.Value     := ACBrRFD1.CONT_GTCadastro;
+        edUSURazaoSocial.Text     := ACBrRFD1.CONT_RazaoSocial;
+        edUSUEndereco.Text        := ACBrRFD1.CONT_Endereco;
+        edUSUCNPJ.Text            := ACBrRFD1.CONT_CNPJ;
+        edUSUIE.Text              := ACBrRFD1.CONT_IE;
+        seUSUNumeroCadastro.Value := ACBrRFD1.CONT_NumUsuario;
+        deUSUDataCadastro.Date    := ACBrRFD1.CONT_DataHoraCadastro ;
+        seUSUCROCadastro.Value    := ACBrRFD1.CONT_CROCadastro;
+        meUSUHoraCadastro.Text    := FormatDateTime('hh:nn', ACBrRFD1.CONT_DataHoraCadastro) ;
+        seUSUGTCadastro.Value     := ACBrRFD1.CONT_GTCadastro;
 
         fsRFDLeuParams := True;
       end;
@@ -3317,7 +3367,7 @@ begin
 end;
 
 
-procedure TFrmACBrMonitor.seRFDGTCadastroKeyPress(Sender: TObject; var Key: char);
+procedure TFrmACBrMonitor.seUSUGTCadastroKeyPress(Sender: TObject; var Key: char);
 begin
   if Key in [',', '.'] then
     Key := DecimalSeparator;
@@ -3326,11 +3376,11 @@ begin
     Key := #0;
 end;
 
-procedure TFrmACBrMonitor.seRFDGTCadastroExit(Sender: TObject);
+procedure TFrmACBrMonitor.seUSUGTCadastroExit(Sender: TObject);
 begin
   ACBrRFD1.CONT_GTCadastro :=
-    StrToFloatDef(seRFDGTCadastro.Text, ACBrRFD1.CONT_GTCadastro);
-  seRFDGTCadastro.Text := FormatFloat('0.00', ACBrRFD1.CONT_GTCadastro);
+    StrToFloatDef(seUSUGTCadastro.Text, ACBrRFD1.CONT_GTCadastro);
+  seUSUGTCadastro.Text := FormatFloat('0.00', ACBrRFD1.CONT_GTCadastro);
 end;
 
 {------------------------------ Aba Chave RSA --------------------------------}

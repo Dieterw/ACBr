@@ -40,7 +40,7 @@ Uses Classes, TypInfo, SysUtils, CmdUnit ;
 Procedure DoBAL( Cmd : TACBrCmd ) ;
 
 implementation
-uses  ACBrUtil,
+uses  ACBrUtil, ACBrBAL,
   {$IFNDEF CONSOLE}ACBrMonitor1 {$ELSE}ACBrMonitorConsoleDM {$ENDIF} ;
 
 Procedure DoBAL( Cmd : TACBrCmd ) ;
@@ -64,6 +64,12 @@ begin
         else if Cmd.Metodo = 'ativo' then
            Cmd.Resposta := BoolToStr(Ativo, true)
 
+        else if Cmd.Metodo = 'modelostr' then
+           Cmd.Resposta := ModeloStr
+
+        else if Cmd.Metodo = 'modelo' then
+           Cmd.Resposta := GetEnumName(TypeInfo(TACBrBALModelo),Integer(Modelo))
+
         else if Cmd.Metodo = 'porta' then
            Cmd.Resposta := Porta
 
@@ -83,6 +89,12 @@ begin
 
         else if Cmd.Metodo = 'ultimopesolido' then
            Cmd.Resposta := FormatFloat('#####0.000', UltimoPesoLido)
+
+        else if Cmd.Metodo = 'ultimaresposta' then
+           Cmd.Resposta := UltimaResposta
+
+        else if Cmd.Metodo = 'monitorarbalanca' then
+           Cmd.Resposta := BoolToStr( MonitorarBalanca, true )
 
         ELSE
            raise Exception.Create('Comando inválido ('+Cmd.Comando+')') ;

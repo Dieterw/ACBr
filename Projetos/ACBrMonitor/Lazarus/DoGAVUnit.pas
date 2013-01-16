@@ -35,12 +35,12 @@
 unit DoGAVUnit ;
 
 interface
-Uses Classes, TypInfo, SysUtils, CmdUnit ;
+Uses Classes, TypInfo, SysUtils, CmdUnit;
 
 Procedure DoGAV( Cmd : TACBrCmd ) ;
 
 implementation
-uses ACBrGAV, ACBrUtil,
+uses ACBrGAV, ACBrUtil, ACBrDevice,
   {$IFNDEF CONSOLE}ACBrMonitor1 {$ELSE}ACBrMonitorConsoleDM {$ENDIF} ;
 
 Procedure DoGAV( Cmd : TACBrCmd ) ;
@@ -95,6 +95,9 @@ begin
            AberturaIntervalo := StrToIntDef( Cmd.Params(0), AberturaIntervalo) ;
            {$IFNDEF CONSOLE}FrmACBrMonitor.sedGAVIntervaloAbertura.Value := AberturaIntervalo ;{$ENDIF}
          end
+
+        else if Cmd.Metodo = 'aberturaantecipada' then
+           Cmd.Resposta := GetEnumName(TypeInfo(TACBrGAVAberturaAntecipada),Integer(AberturaAntecipada))
 
         ELSE
            raise Exception.Create('Comando inválido ('+Cmd.Comando+')') ;

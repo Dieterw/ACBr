@@ -121,6 +121,42 @@ begin
         else if Cmd.Metodo = 'settimeout' then
            TimeOut := StrToInt( Trim(Cmd.Params(0)) )
 
+        else if Cmd.Metodo = 'intervaloaposcomando' then
+           Cmd.Resposta := IntToStr( IntervaloAposComando )
+
+        else if Cmd.Metodo = 'descricaogrande' then
+           Cmd.Resposta := BoolToStr( DescricaoGrande, true )
+
+        else if Cmd.Metodo = 'gavetasinalinvertido' then
+           Cmd.Resposta := BoolToStr( GavetaSinalInvertido, true )
+
+        else if Cmd.Metodo = 'ignorartagsformatacao' then
+           Cmd.Resposta := BoolToStr( IgnorarTagsFormatacao, true )
+
+        else if Cmd.Metodo = 'operador' then
+           Cmd.Resposta := Operador
+
+        else if Cmd.Metodo = 'msgaguarde' then
+           Cmd.Resposta := MsgAguarde
+
+        else if Cmd.Metodo = 'msgtrabalhando' then
+           Cmd.Resposta := MsgTrabalhando
+
+        else if Cmd.Metodo = 'msgpoucopapel' then
+           Cmd.Resposta := IntToStr( MsgPoucoPapel )
+
+        else if Cmd.Metodo = 'exibemensagem' then
+           Cmd.Resposta := BoolToStr( ExibeMensagem, true )
+
+        else if Cmd.Metodo = 'bloqueiamouseteclado' then
+           Cmd.Resposta := BoolToStr( BloqueiaMouseTeclado, true )
+
+        else if Cmd.Metodo = 'linhasentrecupons' then
+           Cmd.Resposta := IntToStr( LinhasEntreCupons )
+
+        else if Cmd.Metodo = 'paginadecodigo' then
+           Cmd.Resposta := IntToStr( PaginaDeCodigo )
+
         else if Cmd.Metodo = 'maxlinhasbuffer' then
            Cmd.Resposta := IntToStr( MaxLinhasBuffer )
 
@@ -158,6 +194,9 @@ begin
         else if Cmd.Metodo = 'numcdc' then
            Cmd.Resposta := NumCDC
 
+        else if Cmd.Metodo = 'numcfc' then
+           Cmd.Resposta := NumCFC
+
         else if Cmd.Metodo = 'numccdc' then
            Cmd.Resposta := NumCCDC
 
@@ -184,6 +223,9 @@ begin
 
         else if Cmd.Metodo = 'mfadicional' then
            Cmd.Resposta := MFAdicional
+
+        else if Cmd.Metodo = 'rfdid' then
+           Cmd.Resposta := RFDID
 
         else if Cmd.Metodo = 'datamovimento' then
            Cmd.Resposta := FormatDateTime('dd/mm/yy', DataMovimento )
@@ -286,6 +328,9 @@ begin
 
         else if Cmd.Metodo = 'dadosultimareducaoz' then
            Cmd.Resposta := DadosUltimaReducaoZ
+
+        else if Cmd.Metodo = 'numreducoeszrestantes' then
+           Cmd.Resposta := NumReducoesZRestantes
 
         else if Cmd.Metodo = 'aliquotas' then
            Cmd.Resposta := PegaAliquotas
@@ -452,6 +497,9 @@ begin
                       Cmd.Params(1),                                    { NOME }
                       Cmd.Params(2) )                               { ENDERECO }
 
+        else if Cmd.Metodo = 'legendainmetroproximoitem' then
+           LegendaInmetroProximoItem
+
         else if Cmd.Metodo = 'vendeitem' then
          begin
            VendeItem( Cmd.Params(0), Cmd.Params(1),           { Cod, Descricao }
@@ -486,6 +534,12 @@ begin
                             Cmd.Params(2),                        { Observacao }
                             StrToBoolDef(Trim(Cmd.Params(3)),false) ){ Imp.Vinculado }
 
+        else if Cmd.Metodo = 'estornapagamento' then
+                   EstornaPagamento( Cmd.Params(0),                 { CodFormaPagamentoEstornar }
+                                     Cmd.Params(1),                 { CodFormaPagamentoEfetivar }
+                                     StringToFloat( Cmd.Params(2)),    { Valor }
+                                     Cmd.Params(3) )                { Observacao }
+
         else if Cmd.Metodo = 'fechacupom' then
            FechaCupom( Cmd.Params(0) )
 
@@ -493,7 +547,17 @@ begin
            CancelaCupom
 
         else if Cmd.Metodo = 'cancelaitemvendido' then
-           CancelaItemVendido( StrToInt(Trim(Cmd.Params(0)) ) )      { NumItem }
+           CancelaItemVendido( StrToInt(Trim(Cmd.Params(0)) ) )           { NumItem }
+
+        else if Cmd.Metodo = 'cancelaitemvendidoparcial' then
+           CancelaItemVendidoParcial( StrToInt(Trim(Cmd.Params(0)) ),     { NumItem }
+                                      StringToFloat(Cmd.Params(1)) )      { Valor }
+
+        else if Cmd.Metodo = 'canceladescontoacrescimoitem' then
+           CancelaDescontoAcrescimoItem( StrToInt(Trim(Cmd.Params(0)) ) ) { NumItem }
+
+        else if Cmd.Metodo = 'canceladescontoacrescimosubtotal' then
+           CancelaDescontoAcrescimoSubTotal(padL(Trim(Cmd.Params(0)),1,'D')[1]){ Tipo : D - Desconto, A - Acréscimo }
 
         else if Cmd.Metodo = 'subtotal' then
            Cmd.Resposta := FloatToStr( Subtotal )
@@ -530,6 +594,9 @@ begin
                               StringToFloat(Cmd.Params(1)),            { Valor }
                               Cmd.Params(2) )                            { Obs }
 
+        else if Cmd.Metodo = 'cancelaitemnaofiscal' then
+           CancelaItemNaoFiscal( StrToInt(Trim(Cmd.Params(0)) ) )       { NumItem }
+
         else if Cmd.Metodo = 'subtotalizanaofiscal' then
            SubtotalizaNaoFiscal( StringToFloatDef( Cmd.Params(0), 0) )  {Acresc/Desc}
 
@@ -545,13 +612,13 @@ begin
         else if Cmd.Metodo = 'cancelanaofiscal' then
            CancelaNaoFiscal
 
-        else if (Cmd.Metodo = 'leiturax') or (Cmd.Metodo = 'pafmf_lx_Impressao') then
+        else if (Cmd.Metodo = 'leiturax') or (Cmd.Metodo = 'pafmf_lx_impressao') then
            LeituraX
 
         else if Cmd.Metodo = 'leituraxserial' then
          begin
            if Cmd.Params(0) <> '' then
-              LeituraXSerial( Cmd.Params(0) )
+              LeituraXSerial(Cmd.Params(0))                         { Nome Arquivo }
            else
             begin
               Linhas := TStringList.Create ;
@@ -578,6 +645,9 @@ begin
 
         else if Cmd.Metodo = 'arredonda' then
            Cmd.Resposta := BoolToStr( Arredonda, true )
+
+        else if Cmd.Metodo = 'arredondaporqtd' then
+           Cmd.Resposta := BoolToStr( ArredondaPorQtd, true )
 
         else if Cmd.Metodo = 'arredondaitemmfd' then
            Cmd.Resposta := BoolToStr( ArredondaItemMFD, true )
@@ -701,6 +771,12 @@ begin
         else if Cmd.Metodo = 'estornaccd' then
              Cmd.Resposta := IntToStr(EstornaCCD(StrToBoolDef(Trim(Cmd.Params(0)),true))) {Estorna todos CCD}
 
+        else if Cmd.Metodo = 'segundaviavinculado' then
+           SegundaViaVinculado
+
+        else if Cmd.Metodo = 'reimpressaovinculado' then
+           ReimpressaoVinculado
+
         else if Cmd.Metodo = 'fecharelatorio' then
            FechaRelatorio
 
@@ -716,20 +792,20 @@ begin
 
         else if Cmd.Metodo = 'leituramemoriafiscalserial' then
          begin
-           if Cmd.Params(3) <> '' then
+           if Cmd.Params(2) <> '' then
             begin
-               if pos(DateSeparator,Cmd.Params(0)) > 0 then
+              if pos(DateSeparator,Cmd.Params(0)) > 0 then
                   LeituraMemoriaFiscalSerial(
                       StringToDateTime(Cmd.Params(0)),            { Dt.Inicial }
-                      StringToDateTime(Cmd.Params(1)),              { Dt.Final }
-                      Cmd.Params(3),                            { Nome Arquivo }
-                      StrToBoolDef(Trim(Cmd.Params(2)),False) )   {Simplificada}
+                      StringToDateTime(Cmd.Params(1)),            { Dt.Final }
+                      Cmd.Params(2),                              { Nome Arquivo }
+                      StrToBoolDef(Trim(Cmd.Params(3)),False) )   {Simplificada}
                else
                   LeituraMemoriaFiscalSerial(
-                      StrToInt(Trim(Cmd.Params(0))),          { ReducaoInicial }
-                      StrToInt(Trim(Cmd.Params(1))),            { ReducaoFinal }
-                      Cmd.Params(3),                            { Nome Arquivo }
-                      StrToBoolDef(Trim(Cmd.Params(2)),False) ) ; {Simplificada}
+                      StrToInt(Trim(Cmd.Params(0))),              { ReducaoInicial }
+                      StrToInt(Trim(Cmd.Params(1))),              { ReducaoFinal }
+                      Cmd.Params(2),                              { Nome Arquivo }
+                      StrToBoolDef(Trim(Cmd.Params(3)),False) ) ; { Simplificada}
             end
            else
             begin
@@ -738,15 +814,15 @@ begin
                  if pos(DateSeparator,Cmd.Params(0)) > 0 then
                     LeituraMemoriaFiscalSerial(
                         StringToDateTime(Cmd.Params(0)),          { Dt.Inicial }
-                        StringToDateTime(Cmd.Params(1)),            { Dt.Final }
-                        Linhas,                                      { Retorno }
-                        StrToBoolDef(Trim(Cmd.Params(2)),False) ) {Simplificada}
+                        StringToDateTime(Cmd.Params(1)),          { Dt.Final }
+                        Linhas,                                   { Retorno }
+                        StrToBoolDef(Trim(Cmd.Params(2)),False) ) { Simplificada}
                  else
                     LeituraMemoriaFiscalSerial(
-                        StrToInt(Trim(Cmd.Params(0))),        { ReducaoInicial }
-                        StrToInt(Trim(Cmd.Params(1))),          { ReducaoFinal }
-                        Linhas,                                      { Retorno }
-                        StrToBoolDef(Trim(Cmd.Params(2)),False) );{Simplificada}
+                        StrToInt(Trim(Cmd.Params(0))),            { ReducaoInicial }
+                        StrToInt(Trim(Cmd.Params(1))),            { ReducaoFinal }
+                        Linhas,                                   { Retorno }
+                        StrToBoolDef(Trim(Cmd.Params(2)),False) );{ Simplificada}
 
                  Cmd.Resposta := Linhas.Text ;
               finally
@@ -762,13 +838,13 @@ begin
                if pos(DateSeparator,Cmd.Params(0)) > 0 then
                   LeituraMFDSerial(
                       StringToDateTime(Cmd.Params(0)),            { Dt.Inicial }
-                      StringToDateTime(Cmd.Params(1)),              { Dt.Final }
-                      Cmd.Params(2) )                        { Nome do Arquivo }
+                      StringToDateTime(Cmd.Params(1)),            { Dt.Final }
+                      Cmd.Params(2) )                             { Nome do Arquivo }
                else
                   LeituraMFDSerial(
                       StrToInt(Trim(Cmd.Params(0))),              { COOInicial }
-                      StrToInt(Trim(Cmd.Params(1))),                { COOFinal }
-                      Cmd.Params(2) ) ;                      { Nome do Arquivo }
+                      StrToInt(Trim(Cmd.Params(1))),              { COOFinal }
+                      Cmd.Params(2) ) ;                           { Nome do Arquivo }
             end
            else
             begin
@@ -777,13 +853,13 @@ begin
                  if pos(DateSeparator,Cmd.Params(0)) > 0 then
                     LeituraMFDSerial(
                         StringToDateTime(Cmd.Params(0)),          { Dt.Inicial }
-                        StringToDateTime(Cmd.Params(1)),            { Dt.Final }
-                        Linhas )                                     { Retorno }
+                        StringToDateTime(Cmd.Params(1)),          { Dt.Final }
+                        Linhas )                                  { Retorno }
                  else
                     LeituraMFDSerial(
                         StrToInt(Trim(Cmd.Params(0))),            { COOInicial }
-                        StrToInt(Trim(Cmd.Params(1))),              { COOFinal }
-                        Linhas ) ;                                   { Retorno }
+                        StrToInt(Trim(Cmd.Params(1))),            { COOFinal }
+                        Linhas ) ;                                { Retorno }
 
                  Cmd.Resposta := Linhas.Text ;
               finally
@@ -829,11 +905,11 @@ begin
            if pos(DateSeparator,Cmd.Params(0)) > 0 then
               PafMF_LMFC_Impressao(
                       StringToDateTime(Cmd.Params(0)),            { Dt.Inicial }
-                      StringToDateTime(Cmd.Params(1)) )             { Dt.Final }
+                      StringToDateTime(Cmd.Params(1)) )           { Dt.Final }
            else
               PafMF_LMFC_Impressao(
                       StrToInt(Trim(Cmd.Params(0))),              { CRZInicial }
-                      StrToInt(Trim(Cmd.Params(1))) ) ;             { CRZFinal }
+                      StrToInt(Trim(Cmd.Params(1))) ) ;           { CRZFinal }
          end
 
         else if Cmd.Metodo = 'pafmf_lmfc_espelho' then
@@ -927,6 +1003,14 @@ begin
                       StrToInt(Trim(Cmd.Params(1))),                { COOFinal }
                       NomeArquivo )                          { Nome do Arquivo }
          end
+
+        else if Cmd.Metodo = 'pafmf_gerarcat52' then
+          begin
+              PafMF_GerarCAT52(
+                      StringToDateTime(Cmd.Params(0)),         { Dt.Inicial }
+                      StringToDateTime(Cmd.Params(1)),         { Dt.Final }
+                      Cmd.Params(2) )                          { Diretorio Arquivo }
+          end
 
         else if Cmd.Metodo = 'enviacomando' then
            if Cmd.Params(1) <> '' then

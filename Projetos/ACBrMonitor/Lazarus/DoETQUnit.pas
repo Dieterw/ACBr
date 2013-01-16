@@ -93,17 +93,17 @@ begin
         begin
            ImprimirTexto(
                          TACBrETQOrientacao(StrToInt(Cmd.Params(0))), { Orientacao }
-                         StrToInt(Cmd.Params(1)),                { Fonte }
-                         StrToInt(Cmd.Params(2)),                { MultiplicadorH }
-                         StrToInt(Cmd.Params(3)),                { MultiplicadorV }
-                         StrToInt(Cmd.Params(4)),                { Vertical }
-                         StrToInt(Cmd.Params(5)),                { Horizontal }
-                         Cmd.Params(6),                          { Texto }
-                         StrToInt(Cmd.Params(7))                 { Subfonte }
+                         StrToInt(Trim(Cmd.Params(1))),                { Fonte }
+                         StrToInt(Trim(Cmd.Params(2))),                { MultiplicadorH }
+                         StrToInt(Trim(Cmd.Params(3))),                { MultiplicadorV }
+                         StrToInt(Trim(Cmd.Params(4))),                { Vertical }
+                         StrToInt(Trim(Cmd.Params(5))),                { Horizontal }
+                         Cmd.Params(6),                                { Texto }
+                         StrToIntDef(Cmd.Params(7), 0)                 { Subfonte }
                          );
         end
 
-        else if Cmd.Metodo = 'imprimirbarras' then
+       else if Cmd.Metodo = 'imprimirbarras' then
            ImprimirBarras(
                          TACBrETQOrientacao(StrToInt(Cmd.Params(0))), { Orientacao }
                          StrToChr(Trim(Cmd.Params(1)),1),        { TipoBarras }

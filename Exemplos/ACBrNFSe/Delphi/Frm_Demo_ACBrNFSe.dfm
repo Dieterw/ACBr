@@ -319,6 +319,7 @@ object frmDemo_ACBrNFSe: TfrmDemo_ACBrNFSe
               'Cataguases/3115300/MG'
               'Cedral/3511300/SP'
               'Chapeco/4204202/SC'
+              'Colina/3512001/SP'
               'Contagem/3118601/MG'
               'Cotia/3513009/SP'
               'Cornelio Procopio/4106407/PR'

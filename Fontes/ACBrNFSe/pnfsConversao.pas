@@ -568,6 +568,7 @@ begin
   3503208, // Araraquara/SP
   3506359, // Bertioga/SP
   3511300, // Cedral/SP
+  3512001, // Colina/SP
   3513009, // Cotia/SP
   3513801, // Diadema/SP
   3516200, // Franca/SP
@@ -863,6 +864,7 @@ begin
   3509502: Cidade := 'Campinas/SP';
   3510104: Cidade := 'Candido Rodrigues/SP';
   3511300: Cidade := 'Cedral/SP';
+  3512001: Cidade := 'Colina/SP';
   3513009: Cidade := 'Cotia/SP';
   3513801: Cidade := 'Diadema/SP';
   3516200: Cidade := 'Franca/SP';

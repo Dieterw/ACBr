@@ -1,6 +1,6 @@
 object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
-  Left = 89
-  Top = 247
+  Left = 105
+  Top = 80
   Width = 1084
   Height = 768
   Caption = 'ACBRBoletoFCFortesFr'
@@ -709,7 +709,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       Left = 15
       Top = 222
       Width = 768
-      Height = 430
+      Height = 401
       BeforePrint = RLBand1BeforePrint
       object RLDraw21: TRLDraw
         Left = 117
@@ -1459,10 +1459,10 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         ParentFont = False
       end
       object txtNomeSacado2: TRLLabel
-        Left = 110
+        Left = 108
         Top = 289
         Width = 456
-        Height = 14
+        Height = 22
         AutoSize = False
         Caption = 'Nome do Sacado'
         Font.Charset = ANSI_CHARSET
@@ -1474,7 +1474,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       end
       object txtEnderecoSacado2: TRLLabel
         Left = 110
-        Top = 301
+        Top = 306
         Width = 455
         Height = 14
         AutoSize = False
@@ -1488,7 +1488,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       end
       object txtCidadeSacado2: TRLLabel
         Left = 110
-        Top = 317
+        Top = 319
         Width = 455
         Height = 12
         AutoSize = False
@@ -1613,7 +1613,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       end
       object txtSacadorAvalista2: TRLLabel
         Left = 108
-        Top = 329
+        Top = 330
         Width = 458
         Height = 14
         AutoSize = False
@@ -1734,7 +1734,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
     end
     object RLBand2: TRLBand
       Left = 15
-      Top = 652
+      Top = 623
       Width = 768
       Height = 452
       RealBounds.UsedUnit = buMilimeters
@@ -2776,7 +2776,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       Left = 30
       Top = 19
       Width = 745
-      Height = 360
+      Height = 365
       BeforePrint = RLBand3BeforePrint
       object RLDraw30: TRLDraw
         Left = 150
@@ -3563,9 +3563,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Transparent = False
       end
       object ImgLoja: TRLImage
-        Left = -2
+        Left = 5
         Top = 0
-        Width = 143
+        Width = 140
         Height = 41
         Center = True
         Scaled = True
@@ -3870,19 +3870,6 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Font.Style = [fsBold]
         ParentFont = False
       end
-      object txtNomeSacadoCarne: TRLLabel
-        Left = 0
-        Top = 269
-        Width = 144
-        Height = 16
-        AutoSize = False
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -11
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-      end
       object txtCodCedenteCarne2: TRLLabel
         Left = 572
         Top = 80
@@ -3954,6 +3941,19 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Font.Height = -24
         Font.Name = 'Arial'
         Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object txtNomeSacadoCarne: TRLMemo
+        Left = 5
+        Top = 265
+        Width = 137
+        Height = 18
+        Behavior = [beSiteExpander]
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
         ParentFont = False
       end
     end

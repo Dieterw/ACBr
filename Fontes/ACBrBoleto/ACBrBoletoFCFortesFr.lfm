@@ -1,10 +1,10 @@
 object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
-  Left = 330
-  Height = 817
-  Top = 173
+  Left = 273
+  Height = 750
+  Top = 159
   Width = 1033
   Caption = 'ACBRBoletoFCFortesFr'
-  ClientHeight = 817
+  ClientHeight = 750
   ClientWidth = 1033
   Color = clBtnFace
   Font.Color = clWindowText
@@ -4403,9 +4403,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Transparent = False
       end
       object ImgLoja: TRLImage
-        Left = -9
-        Height = 41
-        Top = 30
+        Left = 0
+        Height = 37
+        Top = 1
         Width = 143
         Center = True
         RealBounds.Left = 0
@@ -4746,21 +4746,6 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         RealBounds.Width = 0
         RealBounds.Height = 0
       end
-      object txtNomeSacadoCarne: TRLLabel
-        Left = 0
-        Height = 16
-        Top = 269
-        Width = 144
-        AutoSize = False
-        Font.Color = clBlack
-        Font.Height = -11
-        Font.Name = 'Arial'
-        ParentFont = False
-        RealBounds.Left = 0
-        RealBounds.Top = 0
-        RealBounds.Width = 0
-        RealBounds.Height = 0
-      end
       object txtCodCedenteCarne2: TRLLabel
         Left = 572
         Height = 13
@@ -4850,6 +4835,21 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Height = 13
         Top = 229
         Width = 386
+        AutoSize = False
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtNomeSacadoCarne: TRLMemo
+        Left = 0
+        Height = 16
+        Top = 269
+        Width = 144
         AutoSize = False
         Font.Color = clBlack
         Font.Height = -11

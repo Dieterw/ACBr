@@ -47,6 +47,14 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+
+Data: 16/01/13
+-- ACBrBoletoFCFortes ver. 0.0.18a --
+Layout Carnê
+[*] Ajustado campo de impressão do nome do sacado para quebrar em mais de uma linha.
+   (Nilson Sérgio)
+[-] Corrigido posição da impressão do logo do banco.(Anderson) 
+
 Data: 15/01/13
 -- ACBrBoleto ver. 0.0.60a --
 --ACBrBancoSicred --

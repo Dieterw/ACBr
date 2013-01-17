@@ -52,7 +52,7 @@ uses
   ACBrBoleto, ACBrBarCode ;
 
 const
-  CACBrBoletoFCFortes_Versao = '0.0.17a' ;
+  CACBrBoletoFCFortes_Versao = '0.0.18a' ;
 
 type
 
@@ -215,6 +215,7 @@ type
     RLLabel96: TRLLabel;
     RLLabel98: TRLLabel;
     txtNomeSacado: TRLLabel;
+    txtNomeSacadoCarne: TRLMemo;
     txtOrientacoesBanco: TRLMemo;
     RLMemo2: TRLMemo;
     txtDesconto5: TRLLabel;
@@ -227,7 +228,6 @@ type
     txtParcela: TRLLabel;
     txtCodCedenteCarne2: TRLLabel;
     txtCPFCarne2: TRLLabel;
-    txtNomeSacadoCarne: TRLLabel;
     txtValorCar: TRLLabel;
     txtNossoNumCan: TRLLabel;
     txtVencCanhoto: TRLLabel;
@@ -737,7 +737,7 @@ begin
       txtNossoNumeroCarne.Caption     := NossoNum;
       txtNossoNumCan.Caption          := NossoNum;
       txtNomeSacado.Caption           := Titulo.Sacado.NomeSacado;
-      txtNomeSacadoCarne.Caption      := txtNomeSacado.Caption;
+      txtNomeSacadoCarne.Lines.Text   := txtNomeSacado.Caption;
 
       txtLocal.Caption                := Titulo.LocalPagamento;
       txtNomeCedente.Caption          := Cedente.Nome;

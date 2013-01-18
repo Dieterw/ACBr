@@ -43,18 +43,18 @@ uses
 
 type
 
-  { TACBrBancoBradesco }
+  { TACBrBanestes }
 
   TACBrBanestes = class(TACBrBancoClass)
   private
     fASBACE: string;
-    function CalcularCampoASBACE(const ACBrTitulo: TACBrTitulo):string;
     function GetASBACE: string;
   protected
   public
     Constructor create(AOwner: TACBrBanco);
 
     property ASBACE: string read GetASBACE write fASBACE;
+    function CalcularCampoASBACE(const ACBrTitulo: TACBrTitulo):string;
     function CalcularDigitoVerificador(const ACBrTitulo:TACBrTitulo): String; override;
     function MontarCodigoBarras(const ACBrTitulo : TACBrTitulo): String; override;
     function MontarCampoNossoNumero(const ACBrTitulo :TACBrTitulo): String; override;
@@ -75,7 +75,7 @@ implementation
 
 uses ACBrUtil, StrUtils;
 
-{ TACBrBancoBradesco }
+{ TACBrBanestes }
 
 constructor TACBrBanestes.create(AOwner: TACBrBanco);
 begin

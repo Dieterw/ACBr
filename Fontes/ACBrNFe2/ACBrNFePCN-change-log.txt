@@ -47,6 +47,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+05/12/12 
+---------------
+[+] Acerto na na expansão do logotipo para o DANFE.FR3
+    conforme tópico: http://www.projetoacbr.com.br/forum/index.php?/topic/8668-logomarca-expandido-danfefr/
+
 05/12/12 (Regys Silveira, Itamar Bermond) 
 ---------------
 [+] Inclusão da impressão e geração de PDF de Eventos com FastReport.  

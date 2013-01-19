@@ -1095,7 +1095,7 @@ begin
     FieldDefs.Add('Contingencia_Descricao', ftString, 60);
     FieldDefs.Add('Contingencia_Valor', ftString, 60);
     FieldDefs.Add('LinhasPorPagina', ftInteger);
-
+    FieldDefs.Add('LogoExpandido', ftString, 1);
     CreateDataSet;
     Append;
 
@@ -1139,6 +1139,11 @@ begin
     if DANFEClassOwner.Logo <> '' then
       FieldByName('Imagem').AsString := DANFEClassOwner.Logo;
 
+    if DANFEClassOwner.ExpandirLogoMarca then
+      FieldByName('LogoExpandido').AsString := '1'
+    else
+      FieldByName('LogoExpandido').AsString := '0';
+    
     if FDANFEClassOwner.Sistema <> '' then
       FieldByName('Sistema').AsString := FDANFEClassOwner.Sistema
     else

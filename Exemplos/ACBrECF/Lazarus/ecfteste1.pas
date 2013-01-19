@@ -2238,16 +2238,24 @@ end;
 procedure TForm1.mProgramaRelatorioGerencialClick(Sender : TObject) ;
 var
    rg:String;
+   Posicao:String;
 begin
   rg := '' ;
+  Posicao:='';
   if not InputQuery('Programaçao de Relatório Gerencial',
                     'Entre com a Descrição do Relatório Gerencial:', rg ) then
      exit ;
+
+  if not InputQuery('Programaçao de Relatório Gerencial',
+                    'Entre com a Posição do Relatório Gerencial:', Posicao ) then
+     exit ;
+
   if MessageDlg('O Relatório Gerencial: ['+rg+'] será programado.'+sLineBreak+sLineBreak+
                 'Cuidado a programação de Relatórios Gerenciais é irreversivel'+sLineBreak+
                 'Confirma a operação ?',mtConfirmation,mbYesNoCancel,0) <> mrYes then
      exit ;
-  ACBrECF1.ProgramaRelatoriosGerenciais( rg );
+
+  ACBrECF1.ProgramaRelatoriosGerenciais( rg, Posicao );
 end;
 
 procedure TForm1.mSangriaClick(Sender : TObject) ;

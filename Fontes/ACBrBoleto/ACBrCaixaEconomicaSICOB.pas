@@ -120,7 +120,7 @@ begin
     // Retirar o código da operácão do'código do cedetnet,
     // sempre com 3 digitos, ex: 870
     // Sem o DV
-    ACedente := padL(Copy(CodigoCedente, Length(CodigoCedente) -7,8), 8, '0');
+    ACedente := padL(RightStr(CodigoCedente,8), 8, '0');
     Num := Agencia + ACedente;
 
     Modulo.CalculoPadrao;
@@ -367,17 +367,17 @@ function TACBrCaixaEconomicaSICOB.MontarCodigoBarras(const ACBrTitulo : TACBrTit
 var
   CodigoBarras, FatorVencimento, DigitoCodBarras :String;
   ANossoNumero, CampoLivre,aCodCedente :String;
+  teste: String;
 begin
    FatorVencimento := CalcularFatorVencimento(ACBrTitulo.Vencimento);
 
    ANossoNumero := FormataNossoNumero(ACBrTitulo);
-   aCodCedente:= ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente;
-   aCodCedente:= Copy(aCodCedente,Length(aCodCedente)-10,11);
+   aCodCedente:= padR(RightStr(ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente,11),11,'0');
 
    {Montando Campo Livre}
    CampoLivre := ANossoNumero +
                  Copy(ACBrTitulo.ACBrBoleto.Cedente.Agencia, 2, 4) +
-                 aCodCedente; //ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente;
+                 aCodCedente;
 
    {Codigo de Barras}
    with ACBrTitulo.ACBrBoleto do
@@ -493,7 +493,8 @@ begin
       ACodCedenteDV   := CalcularDVCedente(ACBrBanco.ACBrBoleto.ListadeBoletos[0]);
       ACodConvenio    := CodigoCedente + ACodCedenteDVAg;
 
-      aCodCedente:= Copy(CodigoCedente,Length(CodigoCedente)-7,8);
+      aCodCedente:= RightStr(CodigoCedente,8);
+
 
       { GERAR REGISTRO-HEADER DO ARQUIVO }
       Result:= IntToStrZero(ACBrBanco.Numero, 3)            + //   1 a   3 - Código do banco
@@ -672,8 +673,7 @@ begin
       else
          ADataDesconto := padR('', 8, '0');
 
-      aCodCedente:= Copy(ACBrBoleto.Cedente.CodigoCedente,
-                         Length(ACBrBoleto.Cedente.CodigoCedente)-7,8);
+      aCodCedente:= RightStr(ACBrBoleto.Cedente.CodigoCedente,8);
 
       Result:= IntToStrZero(ACBrBanco.Numero, 3)                          + //   1 a   3 - Código do banco
                '0001'                                                     + //   4 a   7 - Lote de Serviço

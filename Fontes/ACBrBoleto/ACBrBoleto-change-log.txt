@@ -48,6 +48,17 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Data: 21/01/13
+-- ACBrBoleto ver. 0.0.61a --
+-- ACBrBancoSantander --
+[-] Correção na geração de Registro de Remessa 400 (por: carlosmarian)
+http://www.projetoacbr.com.br/forum/index.php?/topic/8558-corre%C3%A7%C3%A3o-remessa-santander/
+
+-- ACBrCaicaExonomicaSicob --
+[-] Ajuste na montagem do Código de Barras para desconsiderar os digitos da agência 
+    no campo Código do Cedente. (por: Juliana Tamizou)
+	http://www.projetoacbr.com.br/forum/index.php?/topic/8492-remessa-cef/
+
 Data: 20/01/13
 -- ACBrBancoSantander --
 [-] Correção na geração de Registro de Remessa 400 (por: finoue)

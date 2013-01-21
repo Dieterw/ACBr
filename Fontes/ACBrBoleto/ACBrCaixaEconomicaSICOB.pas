@@ -366,16 +366,18 @@ end;
 function TACBrCaixaEconomicaSICOB.MontarCodigoBarras(const ACBrTitulo : TACBrTitulo): String;
 var
   CodigoBarras, FatorVencimento, DigitoCodBarras :String;
-  ANossoNumero, CampoLivre :String;
+  ANossoNumero, CampoLivre,aCodCedente :String;
 begin
    FatorVencimento := CalcularFatorVencimento(ACBrTitulo.Vencimento);
 
    ANossoNumero := FormataNossoNumero(ACBrTitulo);
+   aCodCedente:= ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente;
+   aCodCedente:= Copy(aCodCedente,Length(aCodCedente)-10,11);
 
    {Montando Campo Livre}
    CampoLivre := ANossoNumero +
                  Copy(ACBrTitulo.ACBrBoleto.Cedente.Agencia, 2, 4) +
-                 ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente;
+                 aCodCedente; //ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente;
 
    {Codigo de Barras}
    with ACBrTitulo.ACBrBoleto do
@@ -457,6 +459,7 @@ end;
 function TACBrCaixaEconomicaSICOB.MontarCampoCodigoCedente (
    const ACBrTitulo: TACBrTitulo ) : String;
 begin
+
   with ACBrTitulo.ACBrBoleto do
   begin
      Result := Cedente.Agencia + '.'+

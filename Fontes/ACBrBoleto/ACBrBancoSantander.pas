@@ -281,7 +281,10 @@ begin
                   padL( Sacado.Bairro,12,' ')                             +
                   padL( OnlyNumber(Sacado.CEP) , 8, ' ' )                 +
                   padL( Sacado.Cidade, 15, ' ') + Sacado.UF               +
-                  padL(Sacado.Avalista, 30, ' ' )+ ' '+ 'I'               +
+				  IfThen(ACBrBoleto.Cedente.TipoInscricao = pJuridica,
+                         Space(30),
+                         padL(Sacado.Avalista, 30, ' ' )
+                         )+ ' '+ 'I'                                       +
                   Copy(Cedente.Conta,Length(Cedente.Conta),1)             +
                   Cedente.ContaDigito + Space(6)                          +
                   Protesto + ' '                                          +

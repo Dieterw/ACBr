@@ -294,7 +294,7 @@ begin
             wLinha:= wLinha + sLineBreak                         +
                      '2' + space(16)                             +
                      padL(Cedente.CodigoTransmissao,20,'0')      +
-                     Space(10) + IntToStrZero(I+1,2)             +
+                     Space(10) + '01'                            +
                      padL(Mensagem[I],50)                        +
                      Space(283) + 'I'                            +
                      Copy(Cedente.Conta,Length(Cedente.Conta),1) +

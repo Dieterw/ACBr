@@ -151,6 +151,10 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
     function GetNumGNF: String; override ;
     function GetNumGRG: String; override ;
     function GetNumCDC: String; override ;
+    function GetNumCFC: String; override ;
+    function GetNumGNFC: String; override ;
+    function GetNumCFD: String; override ;
+    function GetNumNCN: String; override ;
     function GetNumCRZ: String; override ;
     function GetVendaBruta: Double; override ;
     function GetTotalAcrescimos: Double; override ;
@@ -2217,11 +2221,8 @@ begin
 end;
 
 function TACBrECFSwedaSTX.GetNumCRZ: String;
-var
-   RetCMD:String;
 begin
-   RetCMD := Trim(RetornaInfoECF('A4'));
-   Result := Copy(RetCMD,5,4);
+  Result := Trim(copy( RetornaInfoECF( 'A4' ), 5, 4)) ;
 end;
 
 function TACBrECFSwedaSTX.GetTotalAcrescimos: Double;
@@ -2745,27 +2746,38 @@ begin
 end;
 
 function TACBrECFSwedaSTX.GetNumCDC: String;
-var
-   RetCMD:String;
 begin
-   RetCMD:= RetornaInfoECF('A4');
-   Result := Copy(RetCMD,39,4);
+  Result := Trim(copy( RetornaInfoECF( 'A4' ), 39, 4)) ;
+end;
+
+function TACBrECFSwedaSTX.GetNumCFC: String;
+begin
+  Result := Trim(copy( RetornaInfoECF( 'A4' ), 51, 4)) ;
+end;
+
+function TACBrECFSwedaSTX.GetNumGNFC: String;
+begin
+  Result := Trim(copy( RetornaInfoECF( 'A4' ), 47, 4)) ;
+end;
+
+function TACBrECFSwedaSTX.GetNumCFD: String;
+begin
+  Result := Trim(copy( RetornaInfoECF( 'A4' ), 27, 6)) ;
+end;
+
+function TACBrECFSwedaSTX.GetNumNCN: String;
+begin
+  Result := Trim(copy( RetornaInfoECF( 'A4' ), 43, 4)) ;
 end;
 
 function TACBrECFSwedaSTX.GetNumGNF: String;
-var
-   RetCMD:String;
 begin
-   RetCMD := RetornaInfoECF('A4');
-   Result := Copy(RetCMD,9,6);
+  Result := Trim(copy( RetornaInfoECF( 'A4' ), 9, 6)) ;
 end;
 
 function TACBrECFSwedaSTX.GetNumGRG: String;
-var
-   RetCMD:String;
 begin
-   RetCMD := RetornaInfoECF('A4');
-   Result := Copy(RetCMD,15,6);
+  Result := Trim(copy( RetornaInfoECF( 'A4' ), 15, 6)) ;
 end;
 
 function TACBrECFSwedaSTX.RetornaInfoECF(Registrador: String): AnsiString;

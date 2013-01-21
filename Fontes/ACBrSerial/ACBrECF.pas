@@ -318,6 +318,7 @@ TACBrECF = class( TACBrComponent )
     function GetNumCFCClass: String;
     function GetNumGNFCClass: String;
     function GetNumCFDClass: String;
+    function GetNumCRZClass: String ;
     function GetNumNCNClass: String;
     function GetNumCCDCClass: String;
     function GetArredondaPorQtd: Boolean;
@@ -350,7 +351,6 @@ TACBrECF = class( TACBrComponent )
     function GetDataMovimentoClass: TDateTime;
     function GetGrandeTotalClass: Double;
     function GetNumCOOInicialClass: String;
-    function GetNumCRZClass: String ;
     function GetVendaBrutaClass: Double;
     function GetTotalAcrescimosClass: Double;
     function GetTotalCancelamentosClass: Double;

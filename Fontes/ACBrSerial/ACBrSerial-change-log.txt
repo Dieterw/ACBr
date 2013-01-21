@@ -97,6 +97,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 21/01/2013
+-- ACBrECFSwedaSTX --
+[+] Adicionada leitura dos registradores: NumCFC, NumGNFC, NumCFD, NumNCN (por DSA)
+
 Data: 10/01/2013
 -- ACBrECFFiscNet --
 [-] Correção de erro em DescontoAcrescimoItemAnterior que ocorria em alguns modelos:

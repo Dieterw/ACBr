@@ -66,15 +66,14 @@ type
     fFastReportFile: String;
     function PrepareBoletos(const DmBoleto: TdmACBrBoletoFCFR): Boolean;
     function PrepareReport(const DmBoleto: TdmACBrBoletoFCFR): Boolean;
-    function GetPreparedReport: TfrxReport;
   public
     { Public declarations }
     constructor Create(AOwner: TComponent); override;
 
     procedure Imprimir; override;
+    function PreparedReport: TfrxReport;
   published
     property FastReportFile: String read FFastReportFile write FFastReportFile;
-    property PreparedReport: TfrxReport read GetPreparedReport;
   end;
 
   { TdmACbrBoletoFCFR }
@@ -203,7 +202,7 @@ begin
   fFastReportFile := '' ;
 end;
 
-function TACBrBoletoFCFR.GetPreparedReport: TfrxReport;
+function TACBrBoletoFCFR.PreparedReport: TfrxReport;
 var
   DmBoleto: TdmACBrBoletoFCFR;
 begin
@@ -217,55 +216,58 @@ begin
      cdsBanco.EmptyDataSet;
      cdsCedente.EmptyDataSet;
      cdsTitulo.EmptyDataSet;
+
      if PrepareReport(DmBoleto) then
        Result := frxReport
      else
        Result := nil;
   end;
   finally
-//    DmBoleto.Free;
+    // DmBoleto.Free;
   end;
 end;
 
 procedure TACBrBoletoFCFR.Imprimir;
 var
-DmBoleto: TdmACBrBoletoFCFR;
+  DmBoleto: TdmACBrBoletoFCFR;
 begin
   inherited Imprimir; // Verifica se a lista de boletos está vazia
-  //
+
   DmBoleto := TdmACBrBoletoFCFR.Create(Self);
   try
-  with DmBoleto do
-  begin
-     cdsBanco.EmptyDataSet;
-     cdsCedente.EmptyDataSet;
-     cdsTitulo.EmptyDataSet;
-     if PrepareReport(DmBoleto) then
-     begin
-        frxReport.PrintOptions.ShowDialog := MostrarSetup;
-        case Filtro of
-          fiNenhum:
-          begin
-             if MostrarPreview then
-                frxReport.ShowReport(False)
-             else
-                frxReport.Print;
+    with DmBoleto do
+    begin
+       cdsBanco.EmptyDataSet;
+       cdsCedente.EmptyDataSet;
+       cdsTitulo.EmptyDataSet;
+
+       if PrepareReport(DmBoleto) then
+       begin
+          frxReport.PrintOptions.ShowDialog := MostrarSetup;
+
+          case Filtro of
+            fiNenhum:
+            begin
+               if MostrarPreview then
+                  frxReport.ShowReport(False)
+               else
+                  frxReport.Print;
+            end;
+            fiPDF:
+            begin
+               frxPDFExport.FileName := NomeArquivo;
+               frxReport.Export(DmBoleto.frxPDFExport);
+            end;
+            fiHTML:
+            begin
+               frxHTMLExport.FileName := NomeArquivo;
+               frxReport.Export(DmBoleto.frxHTMLExport);
+            end;
+          else
+            exit;
           end;
-          fiPDF:
-          begin
-             frxPDFExport.FileName := NomeArquivo;
-             frxReport.Export(DmBoleto.frxPDFExport);
-          end;
-          fiHTML:
-          begin
-             frxHTMLExport.FileName := NomeArquivo;
-             frxReport.Export(DmBoleto.frxHTMLExport);
-          end;
-        else
-          exit;
-        end;
-     end;
-  end;
+       end;
+    end;
   finally
     DmBoleto.Free;
   end;
@@ -296,7 +298,6 @@ var
   iFor: Integer;
   sTipoDoc: String;
 begin
-   Result := False;
    with ACBrBoleto do
    begin
       // Banco
@@ -398,6 +399,7 @@ begin
          end;
       end;
    end;
+
    Result := True;
 end;
 

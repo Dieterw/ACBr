@@ -70,6 +70,8 @@ const
                                    'Deseja imprimir novamente ?' ;
    CACBrTEFD_Erro_NaoAtivo = 'O gerenciador padrão %s não está ativo !' ;
    CACBrTEFD_Erro_SemRequisicao = 'Nenhuma Requisição Iniciada' ;
+   CACBrTEFD_Erro_OutraFormaPagamento = 'Gostaria de continuar a transação com '+
+                                   'outra(s) forma(s) de pagamento ?';
 
 type
 
@@ -2359,7 +2361,8 @@ begin
               end;
 
            except
-              on EACBrTEFDECF do ImpressaoOk := False ;
+              on EACBrTEFDECF do
+                 ImpressaoOk := False ;
               else
                  raise ;
            end;
@@ -2494,8 +2497,7 @@ begin
                                { Ja tem RespostasPendentes ? }
        if UltimaTransacao and ( RespostasPendentes.Count > 0 ) then
        begin
-          if DoExibeMsg( opmYesNo, 'Gostaria de continuar a transação com outra(s) ' +
-                                   'forma(s) de pagamento ?' ) <> mrYes then
+          if DoExibeMsg( opmYesNo, CACBrTEFD_Erro_OutraFormaPagamento ) <> mrYes then
           begin
              ComandarECF( opeCancelaCupom );
              CancelarTransacoesPendentes;

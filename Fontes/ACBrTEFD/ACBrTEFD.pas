@@ -48,7 +48,8 @@ uses
   Classes, SysUtils, ACBrTEFDClass, ACBrTEFDAuttar,
   ACBrTEFDDial, ACBrTEFDDisc, ACBrTEFDHiper, ACBrTEFDCliSiTef, ACBrTEFDGpu,
   ACBrTEFDVeSPague, ACBrTEFDBanese, ACBrTEFDGoodCard, ACBrTEFDFoxWin,
-  ACBrTEFDCliDTEF, ACBrTEFDPetroCard, ACBrTEFDCrediShop, ACBrTEFDTicketCar
+  ACBrTEFDCliDTEF, ACBrTEFDPetroCard, ACBrTEFDCrediShop, ACBrTEFDTicketCar,
+  ACBrTEFDConvCard
   {$IFNDEF CONSOLE}
     {$IFDEF FPC}
       ,LResources
@@ -138,6 +139,7 @@ type
      fTefPetrocard : TACBrTEFDPetroCard ;
      fTefCrediShop : TACBrTEFDCrediShop ;
      fTefTicketCar : TACBrTEFDTicketCar ;
+     fTefConvCard  : TACBrTEFDConvCard ;     
 
      fEsperaSTS    : Integer;
      fTEFList      : TACBrTEFDClassList ;
@@ -287,6 +289,7 @@ type
      property TEFPetrocard : TACBrTEFDPetroCard  read fTefPetrocard ;
      property TEFCrediShop : TACBrTEFDCrediShop  read fTefCrediShop ;
      property TEFTicketCar : TACBrTEFDTicketCar  read fTefTicketCar ;
+     property TEFConvCard : TACBrTEFDConvCard read fTefConvCard ;     
 
      property OnAguardaResp : TACBrTEFDAguardaRespEvent read fOnAguardaResp
         write fOnAguardaResp ;
@@ -520,6 +523,13 @@ begin
    fTefTicketCar.SetSubComponent(True);   // Ajustando como SubComponente para aparecer no ObjectInspector
   {$ENDIF}
 
+  { Criando Classe CONV CARD }
+  fTefConvCard := TACBrTEFDConvCard.Create(self);
+  fTEFList.Add(fTefConvCard);     // Adicionando "fTefConvCard" na Lista Objetos de Classes de TEF
+  {$IFDEF COMPILER6_UP}
+   fTefConvCard.SetSubComponent(True);   // Ajustando como SubComponente para aparecer no ObjectInspector
+  {$ENDIF}  
+
   GPAtual := gpTefDial;
 end;
 
@@ -635,6 +645,7 @@ begin
     gpPetroCard : fTefClass := fTefPetrocard ;
     gpCrediShop : fTefClass := fTefCrediShop ;
     gpTicketCar : fTefClass := fTefTicketCar ;
+    gpConvCard  : fTefClass := fTefConvCard ;    
   end;
 
   fGPAtual := AValue;

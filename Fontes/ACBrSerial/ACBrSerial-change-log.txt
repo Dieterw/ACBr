@@ -97,6 +97,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 24/01/2013
+-- ACBrECF --
+[*] Corrigida a acentuação em métodos de relatórios de DAV_*   (por: DSA)
+
 Data: 21/01/2013
 -- ACBrECFSwedaSTX --
 [+] Adicionada leitura dos registradores: NumCFC, NumGNFC, NumCFD, NumNCN (por DSA)

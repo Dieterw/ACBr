@@ -67,7 +67,7 @@ var
 implementation
 
 uses
-  ECFTeste1;
+  ECFTeste1, ACBrUtil;
 
 {$R *.dfm}
 
@@ -107,10 +107,10 @@ begin
     edtProdCodigo.Text,
     edtProdDescricao.Text,
     edtProdUnidade.Text,
-    StrToFloat(edtProdQuantidade.Text),
-    StrToFloat(edtProdVlUnitario.Text),
-    StrToFloat(edtProdVlDesconto.Text),
-    StrToFloat(edtProdVlAcrescimo.Text),
+    StringToFloat(edtProdQuantidade.Text),
+    StringToFloat(edtProdVlUnitario.Text),
+    StringToFloat(edtProdVlDesconto.Text),
+    StringToFloat(edtProdVlAcrescimo.Text),
     ckbProdCancelado.Checked
   );
 end;

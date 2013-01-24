@@ -5154,11 +5154,11 @@ end;
 
    {$IFNDEF FRAMEWORK}
    if Assigned( fsMemoBobina ) then
-      fsMemoBobina.Lines.Add( NewLinhas ) ;
+      fsMemoBobina.Lines.Add( ACBrStr(NewLinhas) ) ;
    {$ENDIF}
 
    if Assigned( fsOnBobinaAdicionaLinhas ) then
-      fsOnBobinaAdicionaLinhas( NewLinhas, fsMemoOperacao ) ;
+      fsOnBobinaAdicionaLinhas( ACBrStr(NewLinhas), fsMemoOperacao ) ;
  end;
 
 function TACBrECF.MemoTraduzCode(Linha: String): String;
@@ -6228,8 +6228,8 @@ begin
     TextoRel.Add('CODIGO DESCRICAO QTD UN VL.UNIT VL.DESC VL.TOTAL');
     TextoRel.Add('</linha_simples>');
 
-    AbreRelatorioGerencial(AIndice);
-    LinhaRelatorioGerencial(TextoRel.Text);
+    AbreRelatorioGerencial( AIndice );
+    LinhaRelatorioGerencial( ACBrStr(TextoRel.Text) );
   finally
     TextoRel.Free;
   end;
@@ -6279,7 +6279,7 @@ begin
     if AVlrAcrescimo > 0 then
       TextoRel.Add(Format('acréscimo item %3.3d: %.2f', [FDAVItemCount, AVlrAcrescimo]));
 
-    LinhaRelatorioGerencial(TextoRel.Text);
+    LinhaRelatorioGerencial( ACBrStr(TextoRel.Text) );
   finally
     TextoRel.Free;
   end;
@@ -6318,7 +6318,7 @@ begin
     TextoRel.Add('');
     TextoRel.Add('');
 
-    LinhaRelatorioGerencial(TextoRel.Text);
+    LinhaRelatorioGerencial( ACBrStr(TextoRel.Text) );
   finally
     TextoRel.Free;
   end;

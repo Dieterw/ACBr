@@ -60,7 +60,7 @@ type TModalResult = (mrNone = 0, mrYes = 6, mrNo = 7, mrOK = 1, mrCancel = 2, mr
 {$ENDIF}
 
 const
-   CACBrTEFD_Versao      = '4.2.3' ;
+   CACBrTEFD_Versao      = '4.3.0' ;
    CACBrTEFD_EsperaSTS   = 7 ;
    CACBrTEFD_EsperaSleep = 250 ;
    CACBrTEFD_NumVias     = 2 ;
@@ -79,7 +79,8 @@ type
     filha de  TACBrTEFDClass }
   TACBrTEFDTipo = ( gpNenhum, gpTefDial, gpTefDisc, gpHiperTef, gpCliSiTef,
                     gpTefGpu, gpVeSPague, gpBanese, gpTefAuttar, gpGoodCard,
-                    gpFoxWin, gpCliDTEF, gpPetrocard, gpCrediShop, gpTicketCar ) ;
+                    gpFoxWin, gpCliDTEF, gpPetrocard, gpCrediShop, gpTicketCar,
+                    gpConvCard ) ;
 
   TACBrTEFDReqEstado = ( reqNenhum,             // Nennhuma Requisição em andamento
                          reqIniciando,          // Iniciando uma nova Requisicao

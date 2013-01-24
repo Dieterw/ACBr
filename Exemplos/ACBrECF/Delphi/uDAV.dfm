@@ -21,7 +21,7 @@ object frmDAV: TfrmDAV
     Top = 0
     Width = 620
     Height = 375
-    ActivePage = TabSheet1
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 0
     object TabSheet1: TTabSheet

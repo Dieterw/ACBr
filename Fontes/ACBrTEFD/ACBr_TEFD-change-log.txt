@@ -47,6 +47,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data:  24/01/2013 - 4.3.0
+-- ACBrTEFDConvCard --
+[+] Adicionada nova classe TEF ConvCard, (por: Marcio Batista)
+    http://www.projetoacbr.com.br/forum/index.php?/topic/8733-convcard/
+
 Data:  08/11/2012 - 4.2.3
 -- ACBrTEFD --
 [*] Modificação do método: FinalizarCupom, para:

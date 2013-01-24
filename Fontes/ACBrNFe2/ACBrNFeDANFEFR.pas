@@ -148,6 +148,14 @@ begin
 
   dmDanfe.frxReport.PrintOptions.Copies := NumCopias;
 
+  // Incluído por Luciano Enzweiler em 23/01/2013
+  // Define a impressora
+  if Impressora > '' then
+  begin
+    dmDanfe.frxReport.PrintOptions.ShowDialog := False;
+    dmDanfe.frxReport.PrintOptions.Printer := Impressora;
+  end;
+
   // preparar relatorio
   if Assigned(NFE) then
   begin

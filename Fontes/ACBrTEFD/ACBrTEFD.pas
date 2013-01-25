@@ -62,7 +62,11 @@ uses
     {$ELSE}
       ,Forms, Controls
     {$ENDIF}
- {$ENDIF} ;
+  {$ELSE}
+  {$IFDEF MSWINDOWS}
+  ,Windows
+  {$ENDIF}
+  {$ENDIF};
 
 type
 
@@ -1791,7 +1795,6 @@ begin
   if Assigned( fOnBloqueiaMouseTeclado ) then
      fOnBloqueiaMouseTeclado( Bloqueia, Tratado ) ;
 
-  {$IFNDEF FRAMEWORK}
   if not Bloqueia then
      LimparTeclado;
 
@@ -1802,24 +1805,20 @@ begin
         xBlockInput( Bloqueia ) ;
    {$ENDIF}
   end;
-  {$ENDIF}
 end;
 
  procedure TACBrTEFD.LimparTeclado;
  Var
    Tratado : Boolean ;
-   {$IFNDEF FRAMEWORK}
      {$IFDEF MSWINDOWS}
      Msg: TMsg;
      {$ENDIF}
-   {$ENDIF}
  begin
    Tratado := False ;
 
    if Assigned( fOnLimpaTeclado ) then
       fOnLimpaTeclado( Tratado ) ;
 
-   {$IFNDEF FRAMEWORK}
    {$IFDEF MSWINDOWS}
     if not Tratado then
     begin
@@ -1829,7 +1828,6 @@ end;
       except
       end
     end;
-   {$ENDIF}
    {$ENDIF};
  end;
 

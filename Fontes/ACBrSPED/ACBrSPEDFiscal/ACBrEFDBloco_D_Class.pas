@@ -1694,8 +1694,8 @@ begin
                LFill( VL_OPR,0,2 ) +
                LFill( VL_BC_ICMS,0,2 ) +
                LFill( VL_ICMS,0,2 ) +
-               LFill( VL_BC_ICMS_ST,0,2 ) +
-               LFill( VL_ICMS_ST,0,2 ) +
+               LFill( VL_BC_ICMS_UF,0,2 ) +
+               LFill( VL_ICMS_UF,0,2 ) +
                LFill( VL_RED_BC,0,2 ) +
                LFill( COD_OBS  ) ) ;
         end;

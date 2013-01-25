@@ -1272,8 +1272,8 @@ type
     property VL_OPR: currency read fVL_OPR write fVL_OPR;
     property VL_BC_ICMS: currency read fVL_BC_ICMS write fVL_BC_ICMS;
     property VL_ICMS: currency read fVL_ICMS write fVL_ICMS;
-    property VL_BC_ICMS_ST: currency read fVL_BC_ICMS_ST write fVL_BC_ICMS_ST;
-    property VL_ICMS_ST: currency read fVL_ICMS_ST write fVL_ICMS_ST;
+    property VL_BC_ICMS_UF: currency read fVL_BC_ICMS_ST write fVL_BC_ICMS_ST;
+    property VL_ICMS_UF: currency read fVL_ICMS_ST write fVL_ICMS_ST;
     property VL_RED_BC: currency read fVL_RED_BC write fVL_RED_BC;
     property COD_OBS: String read fCOD_OBS write fCOD_OBS;
   end;

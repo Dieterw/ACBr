@@ -62,10 +62,6 @@ uses
     {$ELSE}
       ,Forms, Controls
     {$ENDIF}
-  {$ELSE}
-  {$IFDEF MSWINDOWS}
-  ,Windows
-  {$ENDIF}
   {$ENDIF};
 
 type
@@ -1800,9 +1796,11 @@ begin
 
   if not Tratado then
   begin
+   {$IFNDEF Framework}
    {$IFDEF MSWINDOWS}
      if Assigned( xBlockInput ) then
         xBlockInput( Bloqueia ) ;
+   {$ENDIF}
    {$ENDIF}
   end;
 end;
@@ -1819,6 +1817,7 @@ end;
    if Assigned( fOnLimpaTeclado ) then
       fOnLimpaTeclado( Tratado ) ;
 
+   {$IFNDEF Framework}
    {$IFDEF MSWINDOWS}
     if not Tratado then
     begin
@@ -1828,6 +1827,7 @@ end;
       except
       end
     end;
+   {$ENDIF}
    {$ENDIF};
  end;
 

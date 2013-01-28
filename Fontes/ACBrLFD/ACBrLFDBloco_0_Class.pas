@@ -35,7 +35,7 @@ unit ACBrLFDBloco_0_Class;
 
 interface
 
-uses SysUtils, Classes, DateUtils, ACBrSped, ACBrLFDBlocos, ACBrLFDBloco_0,
+uses SysUtils, Classes, DateUtils, ACBrLFD3505, ACBrLFDBlocos, ACBrLFDBloco_0,
      ACBrTXTClass;
 
 
@@ -44,7 +44,7 @@ type
 
   { TBloco_0 }
 
-  TBloco_0 = class(TACBrSPED)
+  TBloco_0 = class(TACBrLFD3505)
   private
     FOnBeforeWriteRegistro0200: TWriteRegistroEvent;
     FOnBeforeWriteRegistro0210: TWriteRegistroEvent;
@@ -111,6 +111,9 @@ type
     function Registro0000New: TRegistro0000;
     function Registro0001New: TRegistro0001;
     function Registro0005New: TRegistro0005;
+    function Registro0025New: TRegistro0025;
+    function Registro0030New: TRegistro0005;
+    function Registro0035New: TRegistro0005;
     function Registro0100New: TRegistro0100;
     function Registro0150New: TRegistro0150;
     function Registro0175New: TRegistro0175;
@@ -154,7 +157,7 @@ type
 
 implementation
 
-uses ACBrSpedUtils, StrUtils;
+uses ACBrLFDUtils, StrUtils;
 
 { TBloco_0 }
 
@@ -218,6 +221,21 @@ end;
 function TBloco_0.Registro0005New: TRegistro0005;
 begin
    Result := FRegistro0001.Registro0005;
+end;
+
+function TBloco_0.Registro0025New: TRegistro0025;
+begin
+   Result := FRegistro0001.Registro0025.New(FRegistro0001);
+end;
+
+function TBloco_0.Registro0030New: TRegistro0005;
+begin
+
+end;
+
+function TBloco_0.Registro0035New: TRegistro0005;
+begin
+
 end;
 
 function TBloco_0.Registro0100New: TRegistro0100;

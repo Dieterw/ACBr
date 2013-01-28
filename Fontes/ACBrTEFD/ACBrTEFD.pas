@@ -1808,9 +1808,11 @@ end;
  procedure TACBrTEFD.LimparTeclado;
  Var
    Tratado : Boolean ;
+   {$IFNDEF Framework}
      {$IFDEF MSWINDOWS}
      Msg: TMsg;
      {$ENDIF}
+   {$ENDIF}
  begin
    Tratado := False ;
 

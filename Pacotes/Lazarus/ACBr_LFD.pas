@@ -2,20 +2,21 @@
   This source is only used to compile and install the package.
  }
 
-unit ACBrLFD;
+unit ACBr_LFD;
 
 interface
 
 uses
-  ACBrLFDBloco_0, ACBrLFDBloco_0_Class, ACBrLFDBlocos, ACBrSped, 
-  LazarusPackageIntf;
+  ACBrLFD3505, ACBrLFDUtils, ACBrLFDBloco_0, ACBrLFDBloco_0_Class, 
+  ACBrLFDBlocos, ACBrLFD, LazarusPackageIntf;
 
 implementation
 
 procedure Register;
 begin
+  RegisterUnit('ACBrLFD', @ACBrLFD.Register);
 end;
 
 initialization
-  RegisterPackage('ACBrLFD', @Register);
+  RegisterPackage('ACBr_LFD', @Register);
 end.

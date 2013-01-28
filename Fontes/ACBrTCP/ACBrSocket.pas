@@ -608,7 +608,7 @@ end ;
 procedure TACBrHTTP.HTTPGet(AURL: String);
 begin
   HTTPSend.Clear;
-  HTTPMethod('GET', AURL);
+  HTTPMethod( 'GET', AURL );
 end ;
 
 Procedure TACBrHTTP.HTTPPost( AURL : String ) ;

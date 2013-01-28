@@ -357,7 +357,7 @@ end ;
 procedure TACBrCEPWSClass.TestarChave;
 begin
   if fOwner.ChaveAcesso = EmptyStr then
-    raise EACBrCEPException.Create('Chave de acesso não informada.');
+    raise EACBrCEPException.Create( ACBrStr('Chave de acesso não informada.') );
 end;
 
 constructor TACBrCEPWSClass.Create( AOwner : TACBrCEP) ;

@@ -165,7 +165,6 @@ begin
   HTTPSend.Clear;
   HTTPSend.Protocol := '1.1';
   HTTPSend.MimeType := 'application/soap+xml; charset=utf-8';
-  HTTPSend.Headers.Add( 'SOAPAction: Consultar' );
 
   HTTPSend.Document.Write(Pointer(PostData)^,Length(PostData));
   HTTPPost( URL );

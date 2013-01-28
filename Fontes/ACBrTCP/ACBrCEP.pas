@@ -143,7 +143,6 @@ type
       procedure ErrorAbstract ;
     protected
       procedure TestarChave;
-      function LerTagXML(Texto, NomeCampo: string): String;
     public
       constructor Create( AOwner : TACBrCEP ) ; virtual ;
 
@@ -379,33 +378,6 @@ Procedure TACBrCEPWSClass.BuscarPorLogradouro(AMunicipio, ATipo_Logradouro,
 begin
   ErrorAbstract ;
 end ;
-
-function TACBrCEPWSClass.LerTagXML(Texto, NomeCampo: string): string;
-var
-  ConteudoTag: string;
-  inicio, fim: integer;
-begin
-  NomeCampo := '<'+UpperCase(Trim(NomeCampo))+'>';
-
-  inicio := pos(NomeCampo, UpperCase(Texto));
-  if inicio = 0 then
-    ConteudoTag := ''
-  else
-  begin
-    inicio := inicio + Length(NomeCampo);
-    Texto  := copy(Texto,inicio,length(Texto));
-    inicio := 0;
-    fim    := pos('</',Texto)-1;
-
-    ConteudoTag := trim(copy(Texto, inicio, fim));
-  end;
-
-  try
-     result := ConteudoTag;
-  except
-     raise EACBrCEPException.Create('Conteúdo inválido. '+ConteudoTag);
-  end;
-end;
 
 { TACBrWSBuscarCEP - http://www.buscarcep.com.br *******************************}
 

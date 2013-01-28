@@ -212,17 +212,17 @@ object Form1: TForm1
         end
         object Label1: TLabel
           Left = 70
-          Height = 16
+          Height = 15
           Top = 1
-          Width = 66
+          Width = 65
           Caption = 'Logradouro:'
           ParentColor = False
         end
         object Label6: TLabel
           Left = 14
-          Height = 16
+          Height = 15
           Top = 44
-          Width = 41
+          Width = 40
           Caption = 'Cidade:'
           ParentColor = False
         end
@@ -244,17 +244,17 @@ object Form1: TForm1
         end
         object Label7: TLabel
           Left = 159
-          Height = 16
+          Height = 15
           Top = 44
-          Width = 18
+          Width = 17
           Caption = 'UF:'
           ParentColor = False
         end
         object Label8: TLabel
           Left = 198
-          Height = 16
+          Height = 15
           Top = 44
-          Width = 89
+          Width = 88
           Caption = 'Bairro (opcional)'
           ParentColor = False
         end
@@ -275,9 +275,9 @@ object Form1: TForm1
         end
         object Label10: TLabel
           Left = 14
-          Height = 16
+          Height = 15
           Top = 1
-          Width = 28
+          Width = 27
           Caption = 'Tipo:'
           ParentColor = False
         end
@@ -285,8 +285,8 @@ object Form1: TForm1
     end
     object tsIBGE: TTabSheet
       Caption = 'Buscar IBGE'
-      ClientHeight = 109
-      ClientWidth = 586
+      ClientHeight = 108
+      ClientWidth = 580
       object GroupBox5: TGroupBox
         Left = 0
         Height = 108

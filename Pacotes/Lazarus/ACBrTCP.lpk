@@ -27,8 +27,8 @@
     <Description Value="Componentes para facilitar o uso das Calsses do Projeto Synapse"/>
     <License Value="LGPL
 "/>
-    <Version Minor="9"/>
-    <Files Count="8">
+    <Version Minor="10"/>
+    <Files Count="9">
       <Item1>
         <Filename Value="..\..\Fontes\ACBrTCP\ACBrSocket.pas"/>
         <UnitName Value="ACBrSocket"/>
@@ -62,6 +62,10 @@
         <Filename Value="..\..\Fontes\ACBrTCP\ACBrDownloadClass.pas"/>
         <UnitName Value="ACBrDownloadClass"/>
       </Item8>
+      <Item9>
+        <Filename Value="..\..\Fontes\ACBrTCP\ACBrNFPws.pas"/>
+        <UnitName Value="ACBrNFPws"/>
+      </Item9>
     </Files>
     <Type Value="RunAndDesignTime"/>
     <RequiredPkgs Count="4">
@@ -86,5 +90,8 @@
       <Version Value="2"/>
       <IgnoreBinaries Value="False"/>
     </PublishOptions>
+    <CustomOptions Items="ExternHelp" Version="2">
+      <_ExternHelp Items="Count"/>
+    </CustomOptions>
   </Package>
 </CONFIG>

@@ -38,6 +38,12 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+28/01/2013
+-- ACBrNFPws --
+[+] Adicionado componente para Enviar arquivos e Consultar status para o Nota
+    Fiscal Paulista (NFP)                         (por: DSA)
+[+] Adicionado Demo em Lazarus para o ACBrNFPws   (por: DSA)
+
 26/04/2012
 -- ACBrCEP --
 [+] Adicionado suporte ao provedor KingHost  (por: Sidnei alves)

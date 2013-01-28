@@ -116,6 +116,7 @@ Uses SysUtils, Math, Classes, ACBrConsts
 
 function ParseText( Texto : AnsiString; Decode : Boolean = True;
    IsUTF8: Boolean = True) : AnsiString;
+function LerTagXML( const AXML, ATag: String; IgnoreCase: Boolean = True) : String;
 function DecodeToSys( Texto : AnsiString; TextoIsUTF8: Boolean ) : String ;
 function SeparaDados( Texto : AnsiString; Chave : String; MantemChave : Boolean = False ) : AnsiString;
 
@@ -2310,20 +2311,22 @@ end;
 
 function DecodeToSys(Texto: AnsiString; TextoIsUTF8: Boolean): String;
 begin
+  Result := '';
+
   {$IFDEF UNICODE}
-   if not TextoIsUTF8 then
-      Result := ACBrStr( Texto )
-   else
-      {$IFNDEF FPC}
-       Result := UTF8Decode( Texto );
-      {$ENDIF}
+    if not TextoIsUTF8 then
+       Result := ACBrStr( Texto )
+    else
+       {$IFNDEF FPC}
+        Result := UTF8Decode( Texto )
+       {$ENDIF} ;
   {$ELSE}
-   if TextoIsUTF8 then
-      Result := Utf8ToAnsi( Texto ) ;
+    if TextoIsUTF8 then
+       Result := Utf8ToAnsi( Texto ) ;
   {$ENDIF}
 
   if Result = '' then
-     Result := Texto;
+     Result := String(Texto);
 end;
 
 function SeparaDados( Texto : AnsiString; Chave : String; MantemChave : Boolean = False ) : AnsiString;
@@ -2420,6 +2423,34 @@ begin
 
   Result := Texto;
 end;
+
+function LerTagXML(const AXML, ATag: String; IgnoreCase: Boolean): String;
+Var
+  PI, PF : Integer ;
+  UXML, UTAG: String;
+begin
+  Result := '';
+  if IgnoreCase then
+  begin
+    UXML := UpperCase(AXML) ;
+    UTAG := UpperCase(ATag) ;
+  end
+  else
+  begin
+    UXML := AXML ;
+    UTAG := ATag ;
+  end;
+
+  PI := pos('<'+UTAG+'>', UXML ) ;
+  if PI = 0 then exit ;
+
+  PI := PI + Length(UTAG) + 2;
+  PF := PosEx('</'+UTAG+'>', UXML, PI) ;
+  if PF = 0 then
+     PF := Length(AXML);
+
+  Result := copy(AXML, PI, PF-PI)
+end ;
 
 
 //*****************************************************************************************

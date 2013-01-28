@@ -112,7 +112,6 @@ type
     procedure LiberarBIO( Bio : pBIO);
 
     function BioToStr( ABio : pBIO) : String ;
-    function TagValue(AXML, ATag : AnsiString) : AnsiString ;
 
     function GetAbout: String;
 
@@ -233,22 +232,6 @@ begin
    EVPcleanup();
   {$ENDIF}
 end;
-
-function TACBrEAD.TagValue( AXML, ATag: AnsiString) : AnsiString;
-Var
-  PI, PF : Integer ;
-begin
-  Result := '';
-  ATag   := AnsiString(UpperCase(String(ATag)));
-  PI := pos('<'+String(ATag)+'>', UpperCase(String(AXML)) ) ;
-  if PI = 0 then exit ;
-  PI := PI + Length(ATag) + 2;
-  PF := PosEx('</'+String(ATag)+'>', UpperCase(String(AXML)) , PI) ;
-  if PF = 0 then
-     PF := Length(AXML);
-
-  Result := copy(AXML, PI, PF-PI)
-end ;
 
 function TACBrEAD.BioToStr(ABio : pBIO) : String ;
 Var
@@ -418,8 +401,8 @@ procedure TACBrEAD.LerChave_eECFc(ConteudoXML : AnsiString ) ;
 Var
   Modulo, Expoente : AnsiString ;
 begin
-  Modulo   := TagValue( ConteudoXML, 'modulo' );
-  Expoente := TagValue( ConteudoXML, 'expoente_publico' );
+  Modulo   := LerTagXML( ConteudoXML, 'modulo' );
+  Expoente := LerTagXML( ConteudoXML, 'expoente_publico' );
   fsIsXMLeECFc := True;
 
   LerChaveModuloExpoente( Modulo, Expoente );

@@ -193,6 +193,7 @@ TACBrHTTP = class( TACBrComponent )
     function AjustaParam(AParam : String) : String ;
     procedure HTTPGet( AURL : String) ; virtual ;
     Procedure HTTPPost( AURL : String ) ; virtual ;
+    procedure HTTPMethod( Method, AURL : String ); virtual ;
     function GetHeaderValue( AValue : String ) : String ;
 
     procedure LerConfiguracoesProxy; 
@@ -593,7 +594,7 @@ begin
   inherited Destroy;
 end ;
 
-Function TACBrHTTP.AjustaParam( AParam : String ) : String ;
+function TACBrHTTP.AjustaParam(AParam: String): String;
 begin
   Result := Trim( AParam ) ;
 
@@ -604,66 +605,18 @@ begin
   end ;
 end ;
 
-Procedure TACBrHTTP.HTTPGet( AURL : String ) ;
-var
-  OK : Boolean ;
-  {$IFNDEF CONSOLE}
-   OldCursor : TCursor ;
-  {$ENDIF}
-   CT : String ;
+procedure TACBrHTTP.HTTPGet(AURL: String);
 begin
-  {$IFNDEF CONSOLE}
-   OldCursor := Screen.Cursor ;
-   Screen.Cursor := crHourGlass;
-  {$ENDIF}
-  try
-    RespHTTP.Clear;
-    HTTPSend.Clear;
-
-    // DEBUG //
-    //WriteToTXT( 'c:\temp\HTTP.txt', 'URL: '+AURL );
-
-    {$IFDEF UNICODE}
-     HTTPSend.Headers.Add('Accept-Charset: utf-8;q=*;q=0.7') ;
-    {$ENDIF}
-
-    if Assigned( OnAntesAbrirHTTP ) then
-       OnAntesAbrirHTTP( AURL ) ;
-
-    OK := HTTPSend.HTTPMethod('GET', AURL) and (HTTPSend.ResultCode = 200);
-    RespHTTP.LoadFromStream( HTTPSend.Document ) ;
-
-    // DEBUG //
-    //WriteToTXT( 'c:\temp\HTTP.txt', 'RespHTTP 1: '+RespHTTP.Text );
-
-    if ParseText then
-      RespHTTP.Text := ACBrUtil.ParseText( RespHTTP.Text, True, False ) ;
-
-    // DEBUG //
-    //WriteToTXT( 'c:\temp\HTTP.txt', 'RespHTTP 2: '+RespHTTP.Text );
-
-    // Verifica se a Resposta está em ANSI //
-    CT := LowerCase( GetHeaderValue('Content-Type:') );
-    RespHTTP.Text := DecodeToSys( RespHTTP.Text, (pos('utf-8', CT) > 0) );
-
-    // DEBUG //
-    //WriteToTXT( 'c:\temp\HTTP.txt', 'RespHTTP 3: '+RespHTTP.Text );
-    //WriteToTXT( 'C:\TEMP\HeaderRESP.txt', HTTPSend.Headers.Text );
-
-    if not OK then
-       raise EACBrHTTPError.Create( 'Erro HTTP: '+IntToStr(HTTPSend.ResultCode)+' '+
-                                     HTTPSend.ResultString + sLineBreak +
-                                     'URL: '+AURL + sLineBreak + sLineBreak +
-                                     'Resposta HTTP:' + sLineBreak +
-                                     String( AjustaLinhas( AnsiString( RespHTTP.Text ), 80, 20) ) ) ;
-  finally
-    {$IFNDEF CONSOLE}
-     Screen.Cursor := OldCursor;
-    {$ENDIF}
-  end;
+  HTTPSend.Clear;
+  HTTPMethod('GET', AURL);
 end ;
 
 Procedure TACBrHTTP.HTTPPost( AURL : String ) ;
+begin
+  HTTPMethod( 'POST', AURL ) ;
+end ;
+
+procedure TACBrHTTP.HTTPMethod(Method, AURL: String);
 var
   OK : Boolean ;
   {$IFNDEF CONSOLE}
@@ -677,10 +630,6 @@ begin
   {$ENDIF}
   try
     RespHTTP.Clear;
-    //HTTPSend.Clear;
-
-    // DEBUG //
-    // WriteToTXT( '/tmp/HTTP.txt', 'URL: '+AURL );
 
     {$IFDEF UNICODE}
      HTTPSend.Headers.Add('Accept-Charset: utf-8;q=*;q=0.7') ;
@@ -689,9 +638,16 @@ begin
     if Assigned( OnAntesAbrirHTTP ) then
        OnAntesAbrirHTTP( AURL ) ;
 
-    HTTPSend.HTTPMethod('POST', AURL);
+    // DEBUG //
+    //HTTPSend.Document.SaveToFile( 'c:\temp\HttpSend.txt' );
+
+    HTTPSend.HTTPMethod(Method, AURL);
     OK := HTTPSend.ResultCode = 200;
     RespHTTP.LoadFromStream( HTTPSend.Document ) ;
+
+    // DEBUG //
+    //WriteToTXT( 'c:\temp\HttpResp.txt', RespHTTP.Text );
+    //WriteToTXT( 'c:\temp\HeaderResp.txt', HTTPSend.Headers.Text );
 
     if ParseText then
       RespHTTP.Text := ACBrUtil.ParseText( RespHTTP.Text, True, False );
@@ -699,10 +655,6 @@ begin
     // Verifica se a Resposta está em ANSI //
     CT := LowerCase( GetHeaderValue('Content-Type:') );
     RespHTTP.Text := DecodeToSys( RespHTTP.Text, (pos('utf-8', CT) > 0) );
-
-    // DEBUG //
-    // WriteToTXT( '/tmp/HTTP.txt', RespHTTP.Text );
-    // WriteToTXT( '/tmp/HeaderRESP.txt', HTTPSend.Headers.Text );
 
     if not OK then
        raise EACBrHTTPError.Create( 'Erro HTTP: '+IntToStr(HTTPSend.ResultCode)+' '+
@@ -715,7 +667,7 @@ begin
      Screen.Cursor := OldCursor;
     {$ENDIF}
   end;
-end ;
+end;
 
 function TACBrHTTP.GetHeaderValue(AValue : String) : String ;
 var

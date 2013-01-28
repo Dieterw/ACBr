@@ -1859,8 +1859,10 @@ end;
  end;
 
 {$ifdef FPC}
+{$IFNDEF FRAMEWORK}
 initialization
    {$I ACBrTEFD.lrs}
+{$endif}
 {$endif}
 
 end.

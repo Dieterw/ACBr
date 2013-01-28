@@ -38,6 +38,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 28/01/2013
+-- ACBrUtil --
+[+] Adicionada função para ler conteudo de Tags de XML   (por: DSA)
+    function LerTagXML( const AXML, ATag: String; IgnoreCase: Boolean = True) : String;
+[-] Corrigido bug em DecodeToSys, quando operando com Parâmetros utf-8
+
 Data: 20/12/2012
 -- ACBrUtil --
 [*] Modificação em ACBrStr, para usar o método: SysToUTF8 quando for Lazarus/FPC

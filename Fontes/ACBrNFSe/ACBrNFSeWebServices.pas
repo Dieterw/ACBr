@@ -841,6 +841,7 @@ begin
 
  FDadosMsg := FProvedorClass.Gera_DadosMsgConsNFSeRPS(Prefixo3,
                                                       Prefixo4,
+                                                      NameSpaceDad, 
                                                       FVersaoXML,
                                                       TNFSeConsultarNfseRPS(Self).Numero,
                                                       TNFSeConsultarNfseRPS(Self).Serie,
@@ -933,6 +934,7 @@ begin
 
  FDadosMsg := FProvedorClass.Gera_DadosMsgConsNFSe(Prefixo3,
                                                    Prefixo4,
+                                                   NameSpaceDad, 
                                                    FVersaoXML,
                                                    SomenteNumeros(TNFSeConsultarNfse(Self).Cnpj),
                                                    TNFSeConsultarNfse(Self).InscricaoMunicipal,
@@ -1045,6 +1047,7 @@ begin
  FTagF := FProvedorClass.Gera_TagF(acCancelar, Prefixo3);
 
  FDadosMsg := FProvedorClass.Gera_DadosMsgCancelarNFSe(Prefixo4,
+                                                       NameSpaceDad, 
                                                        TNFSeCancelarNfse(Self).FNumeroRPS,
                                                        TNFSeCancelarNfse(Self).FCnpj,
                                                        TNFSeCancelarNfse(Self).FIM,

@@ -45,14 +45,14 @@ type
    function Gera_DadosMsgConsLote(Prefixo3, Prefixo4, NameSpaceDad,
                                   VersaoXML, Protocolo, CNPJ, IM: String;
                                   TagI, TagF: AnsiString): AnsiString; OverRide;
-   function Gera_DadosMsgConsNFSeRPS(Prefixo3, Prefixo4, VersaoXML,
+   function Gera_DadosMsgConsNFSeRPS(Prefixo3, Prefixo4, NameSpaceDad, VersaoXML,
                                      NumeroRps, SerieRps, TipoRps, CNPJ, IM: String;
                                      TagI, TagF: AnsiString): AnsiString; OverRide;
-   function Gera_DadosMsgConsNFSe(Prefixo3, Prefixo4, VersaoXML,
+   function Gera_DadosMsgConsNFSe(Prefixo3, Prefixo4, NameSpaceDad, VersaoXML,
                                   CNPJ, IM: String;
                                   DataInicial, DataFinal: TDateTime;
                                   TagI, TagF: AnsiString; NumeroNFSe: string = ''): AnsiString; OverRide;
-   function Gera_DadosMsgCancelarNFSe(Prefixo4, NumeroNFSe, CNPJ, IM,
+   function Gera_DadosMsgCancelarNFSe(Prefixo4, NameSpaceDad, NumeroNFSe, CNPJ, IM,
                                       CodMunicipio, CodCancelamento: String;
                                       TagI, TagF: AnsiString): AnsiString; OverRide;
    function Gera_DadosMsgGerarNFSe(Prefixo3, Prefixo4, Identificador,
@@ -336,7 +336,7 @@ begin
 end;
 
 function TProvedorBetha.Gera_DadosMsgConsNFSe(Prefixo3, Prefixo4,
-  VersaoXML, CNPJ, IM: String; DataInicial, DataFinal: TDateTime; TagI,
+  NameSpaceDad, VersaoXML, CNPJ, IM: String; DataInicial, DataFinal: TDateTime; TagI,
   TagF: AnsiString; NumeroNFSe: string = ''): AnsiString;
 var
  DadosMsg: AnsiString;
@@ -381,7 +381,7 @@ begin
 end;
 
 function TProvedorBetha.Gera_DadosMsgConsNFSeRPS(Prefixo3, Prefixo4,
-  VersaoXML, NumeroRps, SerieRps, TipoRps, CNPJ, IM: String; TagI,
+  NameSpaceDad, VersaoXML, NumeroRps, SerieRps, TipoRps, CNPJ, IM: String; TagI,
   TagF: AnsiString): AnsiString;
 var
  DadosMsg: AnsiString;
@@ -421,7 +421,7 @@ begin
  Result := TagI + DadosMsg + TagF;
 end;
 
-function TProvedorBetha.Gera_DadosMsgCancelarNFSe(Prefixo4, NumeroNFSe,
+function TProvedorBetha.Gera_DadosMsgCancelarNFSe(Prefixo4, NameSpaceDad, NumeroNFSe,
   CNPJ, IM, CodMunicipio, CodCancelamento: String; TagI,
   TagF: AnsiString): AnsiString;
 var

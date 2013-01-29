@@ -2398,10 +2398,10 @@ fazer Pausa entre as vias a Mensagem enviada ao usuário também foi modificada *)
   while Imp < Vias do
   begin
     if Bufferiza then
-       Texto :=  Format('Enviando %s  %dª Via ',['Relatório Gerêncial',Imp+1 ])
+       Texto :=  Format('Enviando %s  %dª Via ',['Relatório Gerencial',Imp+1 ])
     else
        try
-          Texto := Format(MsgRelatorio,['Relatório Gerêncial',Imp+1 ]) ;
+          Texto := Format(MsgRelatorio,['Relatório Gerencial',Imp+1 ]) ;
        except
           Texto := MsgRelatorio ;
        end ;

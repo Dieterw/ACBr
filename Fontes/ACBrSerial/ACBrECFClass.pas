@@ -3623,7 +3623,7 @@ begin
   while Imp < Vias do
   begin
     try
-      Texto := Format(MsgRelatorio,['Relatório Gerêncial',Imp+1 ]) ;
+      Texto := Format(MsgRelatorio,['Relatório Gerencial',Imp+1 ]) ;
     except
       Texto := MsgRelatorio ;
     end ;

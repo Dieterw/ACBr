@@ -47,6 +47,16 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+29/01/12
+--------
+[-] Acertos feitos pelo usuário Luis Fernando para o DANFE quickreport.
+    http://www.projetoacbr.com.br/forum/index.php?/topic/8706-altera%C3%A7%C3%B5es-no-danfe-qreport-retrato-para-nf-e/
+    - Local impressão Canhoto.
+    - Mensagem obrigatória quando emitido em contingencia.
+    - Estouro da linha dos itens.
+    - Local Endereço Entrega.
+    - Mensagem livre no lugar do software que distribui.
+
 05/12/12 
 ---------------
 [+] Acerto na na expansão do logotipo para o DANFE.FR3

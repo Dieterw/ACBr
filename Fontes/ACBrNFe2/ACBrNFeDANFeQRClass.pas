@@ -114,7 +114,9 @@ begin
                                     , CasasDecimais._vUnCom
                                     , Impressora
                                     , ExibirResumoCanhoto_Texto
-                                    , ExpandirLogoMarca);
+                                    , ExpandirLogoMarca
+                                    , NFeCancelada  //Incluido por Luis Fernando em  22/01/2013
+                                    , LocalImpCanhoto ); //Incluido por Luis Fernando em  22/01/2013);
       end;
    end
   else
@@ -136,7 +138,9 @@ begin
                                 , CasasDecimais._vUnCom
                                 , Impressora
                                 , ExibirResumoCanhoto_Texto
-                                , ExpandirLogoMarca);
+                                , ExpandirLogoMarca
+                                , NFeCancelada  //Incluido por Luis Fernando em  22/01/2013
+                                , LocalImpCanhoto ); //Incluido por Luis Fernando em  22/01/2013););
 
   fqrDANFeQRRetrato.Free;
 end;
@@ -176,7 +180,9 @@ begin
                                     , CasasDecimais._qCom
                                     , CasasDecimais._vUnCom
                                     , ExibirResumoCanhoto_Texto
-                                    , ExpandirLogoMarca);
+                                    , ExpandirLogoMarca
+                                    , NFeCancelada  //Incluido por Luis Fernando em  22/01/2013
+                                    , LocalImpCanhoto ); //Incluido por Luis Fernando em  22/01/2013););
       end;
    end
   else
@@ -200,7 +206,9 @@ begin
                                 , CasasDecimais._qCom
                                 , CasasDecimais._vUnCom
                                 , ExibirResumoCanhoto_Texto
-                                , ExpandirLogoMarca);
+                                , ExpandirLogoMarca
+                                , NFeCancelada  //Incluido por Luis Fernando em  22/01/2013
+                                , LocalImpCanhoto ); //Incluido por Luis Fernando em  22/01/2013););
   end;
 
   fqrDANFeQRRetrato.Free;

@@ -1386,11 +1386,16 @@ end;
 
 Procedure TACBrECFSwedaSTX.ReducaoZ(DataHora: TDateTime) ;
 Var Cmd : String ;
+     DtHrECF : TDateTime ;
 begin
   Cmd := '16' ;
   if DataHora <> 0 then
+  begin
+     DtHrECF  := GetDataHora;
+     DataHora := max( IncMinute(DtHrECF,-5), min( IncMinute(DtHrECF,5), DataHora)) ;
      Cmd := Cmd + '|' + FormatDateTime('dd"/"mm"/"yyyy',DataHora) +
                   '|' + FormatDateTime('hh":"nn":"ss',DataHora) ;
+  end;
 
   try
      AguardaImpressao := True ;

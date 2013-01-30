@@ -39,6 +39,23 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+30/01/2013
+----------
+[*] Revisão das alterações implementadas conforme post:
+    http://www.projetoacbr.com.br/forum/index.php?/topic/5676-instalando-o-acbr-no-delphi-7-e-xe2
+[-] correção de identação do código
+[-] Limpeza do código para remoção de comentários desnecessários
+[*] melhoria na forma de tratamento do log da cópia de dlls e outros
+    por: Regys Silveira
+
+18/01/2013
+----------
+[+] Implementada opção para instalar as "OUtras" DLL´s
+    Implementado recurso para escolha do destino dos arquivos DLL que serão instalados.
+[-] Corrigido problema de cópia das DLL´s durante a instalação.
+    Diretorio do Windows ou Diretório personalizado
+    por : João Ishiwatari
+
 24/10/2012
 ----------
 [*] Adicionada opção para instalar o ACBrNFSe

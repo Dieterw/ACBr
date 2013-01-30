@@ -50,6 +50,8 @@ uses
   JvExComCtrls, JvComCtrls, JvCheckTreeView, uFrameLista;
 
 type
+  TDestino = (tdSystem, tdDelphi, tdNone);
+
   TfrmPrincipal = class(TForm)
     wizPrincipal: TJvWizard;
     wizMapa: TJvWizardRouteMapNodes;
@@ -103,6 +105,8 @@ type
     wizPgPacotes: TJvWizardInteriorPage;
     frameDpk: TframePacotes;
     ckbUtilizarOpenSSL: TCheckBox;
+    rdgDLL: TRadioGroup;
+    ckbCopiarTodasDll: TCheckBox;
     procedure imgPropaganda1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -125,6 +129,8 @@ type
     procedure btnVisualizarLogCompilacaoClick(Sender: TObject);
     procedure wizPgInstalacaoEnterPage(Sender: TObject;
       const FromPage: TJvWizardCustomPage);
+    procedure rdgDLLClick(Sender: TObject);
+    procedure ckbUtilizarOpenSSLClick(Sender: TObject);
   private
     FCountErros: Integer;
     oACBr: TJclBorRADToolInstallations;
@@ -135,6 +141,8 @@ type
     sDirPackage: string;
     sDirBPLPath: string;
     sDirDCPpath: string;
+    sDestino   : TDestino;
+    sPathBin   : String;
     procedure BeforeExecute(Sender: TJclBorlandCommandLineTool);
     procedure AddLibrarySearchPath;
     procedure OutputCallLine(const Text: string);
@@ -148,10 +156,14 @@ type
     function PathArquivoLog: String;
     procedure InstalarCapicom;
     procedure InstalarOpenSSL;
+    procedure InstalarXMLSec;
+    procedure InstalarDiversos;
+    procedure InstalarMSVCR;
+    procedure InstalarCLX;
     function PathSystem: String;
     function RegistrarActiveXServer(const AServerLocation: string;
       const ARegister: Boolean): Boolean;
-    procedure CopiarArquivoToSystem(const ANomeArquivo: String);
+    procedure CopiarArquivoTo(ADestino : TDestino; const ANomeArquivo: String);//    procedure CopiarArquivoToSystem(const ANomeArquivo: String);
     procedure ConfigurarParaUtilizarOpenSSL(const AUtilizar: Boolean);
   public
 
@@ -215,7 +227,7 @@ begin
     ComentarLinha('{$DEFINE ACBrCTeOpenSSL}', not(AUtilizar));
     ComentarLinha('{$DEFINE ACBrNFSeOpenSSL}', not(AUtilizar));
 
-    WriteToTXT(PathArquivo, F.Text, False, False);
+    ACBrUtil.WriteToTXT(PathArquivo, F.Text, False, False);
   finally
     F.Free;
   end;
@@ -239,10 +251,8 @@ end;
 // retornar o caminho completo para o arquivo de logs
 function TfrmPrincipal.PathArquivoLog: String;
 begin
-  Result :=
-    PathApp + 'log_' +
-    StringReplace(edtDelphiVersion.Text, ' ', '_', [rfReplaceAll]) +
-    '.txt';
+  Result := PathApp +
+    'log_' + StringReplace(edtDelphiVersion.Text, ' ', '_', [rfReplaceAll]) + '.txt';
 end;
 
 // verificar se no caminho informado já existe o .svn indicando que o
@@ -279,6 +289,15 @@ begin
   end
   else
     raise EFileNotFoundException.Create('Ocorreu um erro ao tentar obter o diretório do windows.');
+end;
+
+procedure TfrmPrincipal.rdgDLLClick(Sender: TObject);
+begin
+  case rdgdll.ItemIndex of
+    0 : sDestino := tdSystem;
+    1 : sDestino := tdDelphi;
+    2 : sDestino := tdNone;
+  end;
 end;
 
 function TfrmPrincipal.RegistrarActiveXServer(const AServerLocation: string;
@@ -327,53 +346,109 @@ begin
   end;
 end;
 
-procedure TfrmPrincipal.CopiarArquivoToSystem(const ANomeArquivo: String);
+
+procedure TfrmPrincipal.CopiarArquivoTo(ADestino : TDestino; const ANomeArquivo: String);
 var
   PathOrigem: String;
   PathDestino: String;
   DirSystem: String;
   DirACBr: String;
 begin
-  DirSystem := Trim(PathSystem);
-  DirACBr   := IncludeTrailingPathDelimiter(edtDirDestino.Text);
+  case ADestino of
+    tdSystem: DirSystem := Trim(PathSystem);
+    tdDelphi: DirSystem := sPathBin;
+  end;
 
-  if DirSystem = '' then
-    raise EFileNotFoundException.Create('Diretório de sistema não encontrado.')
+  DirACBr := IncludeTrailingPathDelimiter(edtDirDestino.Text);
+
+  if DirSystem <> EmptyStr then
+    DirSystem := IncludeTrailingPathDelimiter(DirSystem)
   else
-    DirSystem := IncludeTrailingPathDelimiter(DirSystem);
+    raise EFileNotFoundException.Create('Diretório de sistema não encontrado.');
 
-  PathOrigem  := DirACBr + 'DLLs\Capicom\' + ANomeArquivo;
-  PathDestino := DirSystem + ANomeArquivo;
+  PathOrigem  := DirACBr + 'DLLs\' + ANomeArquivo;
+  PathDestino := DirSystem + ExtractFileName(ANomeArquivo);
 
   if FileExists(PathOrigem) and not(FileExists(PathDestino)) then
   begin
     if not CopyFileTo(PathOrigem, PathDestino, True) then
+    begin
       raise EFilerError.CreateFmt(
         'Ocorreu o seguinte erro ao tentar copiar o arquivo "%s": %d - %s', [
-        ANomeArquivo,
-        GetLastError,
-        SysErrorMessage(GetLastError)
+        ANomeArquivo, GetLastError, SysErrorMessage(GetLastError)
       ]);
+    end;
   end;
 end;
 
-// copia as dlls da pasta capcom para a pasta de sistema e registra a dll
+// copia as dlls da pasta capcom para a pasta escolhida pelo usuario e registra a dll
 procedure TfrmPrincipal.InstalarCapicom;
 begin
-  CopiarArquivoToSystem('capicom.dll');
-  CopiarArquivoToSystem('msxml5.dll');
-  CopiarArquivoToSystem('msxml5r.dll');
+  if sDestino <> tdNone then
+  begin
+    CopiarArquivoTo(sDestino,'Capicom\capicom.dll');
+    CopiarArquivoTo(sDestino,'Capicom\msxml5.dll');
+    CopiarArquivoTo(sDestino,'Capicom\msxml5r.dll');
 
-  RegistrarActiveXServer('capicom.dll', True);
-  RegistrarActiveXServer('msxml5.dll', True);
+    if sDestino = tdDelphi then
+    begin
+      RegistrarActiveXServer(sPathBin + 'capicom.dll', True);
+      RegistrarActiveXServer(sPathBin + 'msxml5.dll', True);
+    end
+    else
+    begin
+      RegistrarActiveXServer('capicom.dll', True);
+      RegistrarActiveXServer('msxml5.dll', True);
+    end;
+  end;
+end;
+
+//copia as dlls da pasta CLX para a pasta escolhida pelo usuario
+procedure TfrmPrincipal.InstalarCLX;
+begin
+  if sDestino <> tdNone then
+    CopiarArquivoTo(sDestino,'CLX\qtintf70.dll');
+end;
+
+//copia as dlls da pasta Diversoso para a pasta escolhida pelo usuario
+procedure TfrmPrincipal.InstalarDiversos;
+begin
+  if sDestino <> tdNone then
+  begin
+    CopiarArquivoTo(sDestino,'Diversos\iconv.dll');
+    CopiarArquivoTo(sDestino,'Diversos\inpout32.dll');
+  end;
+end;
+
+//copia as dlls da pasta MSVCR para a pasta escolhida pelo usuario
+procedure TfrmPrincipal.InstalarMSVCR;
+begin
+  if sDestino <> tdNone then
+    CopiarArquivoTo(sDestino,'MSVCR\msvcr71.dll');
 end;
 
 // copia as dlls da pasta openssl, estas dlls são utilizadas para assinar
 // arquivos e outras coisas mais
 procedure TfrmPrincipal.InstalarOpenSSL;
 begin
-  CopiarArquivoToSystem('libeay32.dll');
-  CopiarArquivoToSystem('ssleay32.dll');
+  if sDestino <> tdNone then
+  begin
+    CopiarArquivoTo(sDestino,'OpenSSL\libeay32.dll');
+    CopiarArquivoTo(sDestino,'OpenSSL\ssleay32.dll');
+  end;
+end;
+
+//copia as dlls da pasta XMLSec para a pasta escolhida pelo usuario
+procedure TfrmPrincipal.InstalarXMLSec;
+begin
+  if sDestino <> tdNone then
+  begin
+    CopiarArquivoTo(sDestino, 'XMLSec\libxml2.dll');
+    CopiarArquivoTo(sDestino, 'XMLSec\libxmlsec.dll');
+    CopiarArquivoTo(sDestino, 'XMLSec\libxmlsec-openssl.dll');
+    CopiarArquivoTo(sDestino, 'XMLSec\libxslt.dll');
+    CopiarArquivoTo(sDestino, 'XMLSec\zlib1.dll');
+  end;
 end;
 
 // ler o arquivo .ini de configurações e setar os campos com os valores lidos
@@ -391,6 +466,8 @@ begin
     ckbInstalarCapicom.Checked := ArqIni.ReadBool('CONFIG', 'InstalarCapicom', True);
     ckbInstalarOpenSSL.Checked := ArqIni.ReadBool('CONFIG', 'InstalarOpenSSL', True);
     ckbUtilizarOpenSSL.Checked := ArqIni.ReadBool('CONFIG', 'UtilizarOpenSSL', False);
+    rdgDLL.ItemIndex           := ArqIni.ReadInteger('CONFIG','DestinoDLL',0);
+    ckbCopiarTodasDll.Checked  := ArqIni.ReadBool('CONFIG','CopiarTodasDLLs',False);
 
     if Trim(edtDelphiVersion.Text) = '' then
       edtDelphiVersion.ItemIndex := 0;
@@ -419,6 +496,8 @@ begin
     ArqIni.WriteBool('CONFIG', 'InstalarCapicom', ckbInstalarCapicom.Checked);
     ArqIni.WriteBool('CONFIG', 'InstalarOpenSSL', ckbInstalarOpenSSL.Checked);
     ArqIni.WriteBool('CONFIG', 'UtilizarOpenSSL', ckbUtilizarOpenSSL.Checked);
+    ArqIni.WriteInteger('CONFIG','DestinoDLL', rdgDLL.ItemIndex);
+    ArqIni.WriteBool('CONFIG','CopiarTodasDLLs',ckbCopiarTodasDll.Checked);
 
     for I := 0 to frameDpk.Pacotes.Count - 1 do
       ArqIni.WriteBool('PACOTES', frameDpk.Pacotes[I].Caption, frameDpk.Pacotes[I].Checked);
@@ -661,6 +740,39 @@ var
   bRunOnly: Boolean;
   NomePacote: String;
   Cabecalho: String;
+
+  procedure MostrarMensagemInstalado(const aMensagem: String; const aErro: String = '');
+  var
+    Msg: String;
+  begin
+
+
+    if Trim(aErro) = EmptyStr then
+    begin
+      case sDestino of
+        tdSystem: Msg := Format(aMensagem + ' em "%s"', [PathSystem]);
+        tdDelphi: Msg := Format(aMensagem + ' em "%s"', [sPathBin]);
+        tdNone:   Msg := 'Tipo de destino "nenhum" não aceito!';
+      end;
+    end
+    else
+    begin
+      Inc(FCountErros);
+
+      case sDestino of
+        tdSystem: Msg := Format(aMensagem + ' em "%s": "%s"', [PathSystem, aErro]);
+        tdDelphi: Msg := Format(aMensagem + ' em "%s": "%s"', [sPathBin, aErro]);
+        tdNone:   Msg := 'Tipo de destino "nenhum" não aceito!';
+      end;
+    end;
+
+    ACBrUtil.WriteToTXT(AnsiString(PathArquivoLog), AnsiString(''));
+    ACBrUtil.WriteToTXT(AnsiString(PathArquivoLog), Msg);
+
+    lstMsgInstalacao.Items.Add(Msg);
+    lstMsgInstalacao.ItemIndex := lstMsgInstalacao.Count - 1;
+  end;
+
 begin
   FCountErros := 0;
 
@@ -826,34 +938,53 @@ begin
       lstMsgInstalacao.ItemIndex := lstMsgInstalacao.Count - 1;
     end;
 
+
+    lstMsgInstalacao.Items.Add('');
+    lstMsgInstalacao.Items.Add('INSTALANDO OUTROS REQUISITOS...');
+    lstMsgInstalacao.ItemIndex := lstMsgInstalacao.Count - 1;
+
     // instalar capicom
-    if ckbInstalarCapicom.Checked then
+    if ckbInstalarCapicom.Checked And (sDestino <> tdNone) then
     begin
       try
         InstalarCapicom;
-        lstMsgInstalacao.Items.Add(Format('CAPICOM instalado com sucesso em "%s".', [PathSystem]));
-        lstMsgInstalacao.ItemIndex := lstMsgInstalacao.Count - 1;
+        MostrarMensagemInstalado('CAPICOM instalado com sucesso');
       except
         on E: Exception do
         begin
-          lstMsgInstalacao.Items.Add(Format('Ocorreu erro ao instalar a CAPICOM em "%s": %s', [PathSystem, E.Message]));
-          lstMsgInstalacao.ItemIndex := lstMsgInstalacao.Count - 1;
+          MostrarMensagemInstalado('Ocorreu erro ao instalar a CAPICOM', E.Message);
         end;
       end;
     end;
 
     // instalar OpenSSL
-    if ckbInstalarOpenSSL.Checked then
+    if ckbInstalarOpenSSL.Checked And (sDestino <> tdNone) then
     begin
       try
         InstalarOpenSSL;
-        lstMsgInstalacao.Items.Add(Format('OPENSSL instalado com sucesso em "%s".', [PathSystem]));
-        lstMsgInstalacao.ItemIndex := lstMsgInstalacao.Count - 1;
+        MostrarMensagemInstalado('OPENSSL instalado com sucesso');
       except
         on E: Exception do
         begin
-          lstMsgInstalacao.Items.Add(Format('Ocorreu erro ao instalar a OPENSSL em "%s": %s', [PathSystem, E.Message]));
-          lstMsgInstalacao.ItemIndex := lstMsgInstalacao.Count - 1;
+          MostrarMensagemInstalado('Ocorreu erro ao instalar a OPENSSL', E.Message);
+        end;
+      end;
+    end;
+
+    //instalar todas as "OUTRAS" DLLs
+    if ckbCopiarTodasDll.Checked then
+    begin
+      try
+        InstalarXMLSec;
+        InstalarDiversos;
+        InstalarMSVCR;
+        InstalarCLX;
+
+        MostrarMensagemInstalado('Outras DLL´s instaladas com sucesso');
+      except
+        on E: Exception do
+        begin
+          MostrarMensagemInstalado('Ocorreu erro ao instalar Outras DLL´s', E.Message)
         end;
       end;
     end;
@@ -907,7 +1038,7 @@ end;
 procedure TfrmPrincipal.edtDelphiVersionChange(Sender: TObject);
 begin
   iVersion := edtDelphiVersion.ItemIndex;
-
+  sPathBin := IncludeTrailingPathDelimiter(oACBr.Installations[iVersion].BinFolderName);
   // -- Plataforma só habilita para Delphi XE2
   // -- Desabilita para versão diferente de Delphi XE2
   edtPlatform.Enabled := oACBr.Installations[iVersion].VersionNumber >= 9;
@@ -1100,6 +1231,13 @@ end;
 procedure TfrmPrincipal.btnVisualizarLogCompilacaoClick(Sender: TObject);
 begin
   ShellExecute(Handle, 'open', PWideChar(PathArquivoLog), '', '', 1);
+end;
+
+procedure TfrmPrincipal.ckbUtilizarOpenSSLClick(Sender: TObject);
+begin
+  ckbInstalarOpenSSL.Enabled := not(ckbUtilizarOpenSSL.Checked);
+  if ckbUtilizarOpenSSL.Checked then
+    ckbInstalarOpenSSL.Checked := True;
 end;
 
 procedure TfrmPrincipal.wizPgObterFontesNextButtonClick(Sender: TObject;

@@ -590,7 +590,7 @@ begin
   3548500, // Santos/SP
   3548708, // Sao Bernardo do Campos/SP
   3548807, // Sao Caetano do Sul/SP
-  3548909, // Sao Carlos/SP
+  3548906, // Sao Carlos/SP
   3549805, // Sao Jose do Rio Preto/SP
   3549904, // Sao Jose dos Campos/SP
   3554003, // Tatui/SP
@@ -904,7 +904,7 @@ begin
   3548500: Cidade := 'Santos/SP';
   3548708: Cidade := 'São Bernardo do Campos/SP';
   3548807: Cidade := 'São Caetano do Sul/SP';
-  3548909: Cidade := 'São Carlos/SP';
+  3548906: Cidade := 'São Carlos/SP';
   3549805: Cidade := 'São José do Rio Preto/SP';
   3549904: Cidade := 'São José dos Campos/SP';
   3550308: Cidade := 'São Paulo/SP';

@@ -22,9 +22,9 @@ type
    { public }
    Constructor Create;
 
-   function GetConfigCidade(ACodigo, AAmbiente: Integer): TConfigCidade; OverRide;
-   function GetConfigSchema(ACodigo: Integer): TConfigSchema; OverRide;
-   function GetConfigURL(ACodigo: Integer): TConfigURL; OverRide;
+   function GetConfigCidade(ACodCidade, AAmbiente: Integer): TConfigCidade; OverRide;
+   function GetConfigSchema(ACodCidade: Integer): TConfigSchema; OverRide;
+   function GetConfigURL(ACodCidade: Integer): TConfigURL; OverRide;
    function GetURI(URI: String): String; OverRide;
    function GetAssinarXML(Acao: TnfseAcao): Boolean; OverRide;
    // Sugestão de Rodrigo Cantelli
@@ -84,7 +84,7 @@ begin
  {----}
 end;
 
-function TProvedorISSIntel.GetConfigCidade(ACodigo,
+function TProvedorISSIntel.GetConfigCidade(ACodCidade,
   AAmbiente: Integer): TConfigCidade;
 var
  ConfigCidade: TConfigCidade;
@@ -96,7 +96,7 @@ begin
  ConfigCidade.Prefixo4      := '';
  ConfigCidade.Identificador := 'Id';
 
- case ACodigo of
+ case ACodCidade of
   3131307: begin // Ipatinga/MG
             ConfigCidade.CodigoURLs := 1;
             if AAmbiente = 1
@@ -116,7 +116,7 @@ begin
  Result := ConfigCidade;
 end;
 
-function TProvedorISSIntel.GetConfigSchema(ACodigo: Integer): TConfigSchema;
+function TProvedorISSIntel.GetConfigSchema(ACodCidade: Integer): TConfigSchema;
 var
  ConfigSchema: TConfigSchema;
 begin
@@ -136,19 +136,19 @@ begin
  Result := ConfigSchema;
 end;
 
-function TProvedorISSIntel.GetConfigURL(ACodigo: Integer): TConfigURL;
+function TProvedorISSIntel.GetConfigURL(ACodCidade: Integer): TConfigURL;
 var
  ConfigURL: TConfigURL;
 begin
- case ACodigo of
-  1: begin
-      ConfigURL.HomNomeCidade         := 'ipatinga-mg';
-      ConfigURL.ProNomeCidade         := 'ipatinga-mg';
-     end;
-  2: begin
-      ConfigURL.HomNomeCidade         := 'santaluzia-mg';
-      ConfigURL.ProNomeCidade         := 'santaluzia-mg';
-     end;
+ case ACodCidade of
+  3131307: begin
+            ConfigURL.HomNomeCidade := 'ipatinga-mg';
+            ConfigURL.ProNomeCidade := 'ipatinga-mg';
+           end;
+  3157807: begin
+            ConfigURL.HomNomeCidade := 'santaluzia-mg';
+            ConfigURL.ProNomeCidade := 'santaluzia-mg';
+           end;
  end;
 
  ConfigURL.HomRecepcaoLoteRPS    := 'https://' + ConfigURL.HomNomeCidade + '.treino-issintel.com.br/webservices/abrasf/api';

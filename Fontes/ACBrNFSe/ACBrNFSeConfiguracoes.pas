@@ -297,9 +297,9 @@ type
   public
    Constructor Create;
 
-   function GetConfigCidade(ACodigo, AAmbiente: Integer): TConfigCidade; Virtual; Abstract;
-   function GetConfigSchema(ACodigo: Integer): TConfigSchema; Virtual; Abstract;
-   function GetConfigURL(ACodigo: Integer): TConfigURL; Virtual; Abstract;
+   function GetConfigCidade(ACodCidade, AAmbiente: Integer): TConfigCidade; Virtual; Abstract;
+   function GetConfigSchema(ACodCidade: Integer): TConfigSchema; Virtual; Abstract;
+   function GetConfigURL(ACodCidade: Integer): TConfigURL; Virtual; Abstract;
    function GetURI(URI: String): String; Virtual; Abstract;
    function GetAssinarXML(Acao: TnfseAcao): Boolean; Virtual; Abstract;
    // Sugestão de Rodrigo Catelli
@@ -688,8 +688,12 @@ begin
  ConfigCidade   := FProvedorClass.GetConfigCidade(FCodigoMunicipio, FAmbienteCodigo);
 
  FVersaoSoap    := ConfigCidade.VersaoSoap;
- FCodigoSchemas := ConfigCidade.CodigoSchemas;
- FCodigoURLs    := ConfigCidade.CodigoURLs;
+
+ FCodigoSchemas := FCodigoMunicipio;
+ FCodigoURLs    := FCodigoMunicipio;
+
+// FCodigoSchemas := ConfigCidade.CodigoSchemas;
+// FCodigoURLs    := ConfigCidade.CodigoURLs;
  FPrefixo2      := ConfigCidade.Prefixo2;
  FPrefixo3      := ConfigCidade.Prefixo3;
  FPrefixo4      := ConfigCidade.Prefixo4;
@@ -699,7 +703,7 @@ begin
  TConfiguracoes( Self.Owner ).Certificados.FAssinaRPS  := ConfigCidade.AssinaRPS;
  TConfiguracoes( Self.Owner ).Certificados.FAssinaLote := ConfigCidade.AssinaLote;
 
- ConfigSchema := FProvedorClass.GetConfigSchema(FCodigoSchemas);
+ ConfigSchema := FProvedorClass.GetConfigSchema(FCodigoMunicipio {FCodigoSchemas});
 
  FVersaoCabecalho := ConfigSchema.VersaoCabecalho;
  FVersaoDados     := ConfigSchema.VersaoDados;
@@ -715,7 +719,7 @@ begin
  FServicoGerar    := ConfigSchema.ServicoGerar;
  FDefTipos        := ConfigSchema.DefTipos;
 
- ConfigURL := FProvedorClass.GetConfigURL(FCodigoURLs);
+ ConfigURL := FProvedorClass.GetConfigURL(FCodigoMunicipio {FCodigoURLs});
 
  FHomNomeCidade         := ConfigURL.HomNomeCidade;
  FHomRecepcaoLoteRPS    := ConfigURL.HomRecepcaoLoteRPS;

@@ -22,9 +22,9 @@ type
    { public }
    Constructor Create;
 
-   function GetConfigCidade(ACodigo, AAmbiente: Integer): TConfigCidade; OverRide;
-   function GetConfigSchema(ACodigo: Integer): TConfigSchema; OverRide;
-   function GetConfigURL(ACodigo: Integer): TConfigURL; OverRide;
+   function GetConfigCidade(ACodCidade, AAmbiente: Integer): TConfigCidade; OverRide;
+   function GetConfigSchema(ACodCidade: Integer): TConfigSchema; OverRide;
+   function GetConfigURL(ACodCidade: Integer): TConfigURL; OverRide;
    function GetURI(URI: String): String; OverRide;
    function GetAssinarXML(Acao: TnfseAcao): Boolean; OverRide;
    // Sugestão de Rodrigo Cantelli
@@ -84,7 +84,7 @@ begin
  {----}
 end;
 
-function TProvedorFISSLEX.GetConfigCidade(ACodigo,
+function TProvedorFISSLEX.GetConfigCidade(ACodCidade,
   AAmbiente: Integer): TConfigCidade;
 var
  ConfigCidade: TConfigCidade;
@@ -96,7 +96,7 @@ begin
  ConfigCidade.Prefixo4      := '';
  ConfigCidade.Identificador := 'Id';
 
- case ACodigo of
+ case ACodCidade of
   5107958: begin // Tangara da Serra/MT
             ConfigCidade.CodigoURLs    := 1;
             if AAmbiente = 1
@@ -110,7 +110,7 @@ begin
  Result := ConfigCidade;
 end;
 
-function TProvedorFISSLEX.GetConfigSchema(ACodigo: Integer): TConfigSchema;
+function TProvedorFISSLEX.GetConfigSchema(ACodCidade: Integer): TConfigSchema;
 var
  ConfigSchema: TConfigSchema;
 begin
@@ -130,15 +130,15 @@ begin
  Result := ConfigSchema;
 end;
 
-function TProvedorFISSLEX.GetConfigURL(ACodigo: Integer): TConfigURL;
+function TProvedorFISSLEX.GetConfigURL(ACodCidade: Integer): TConfigURL;
 var
  ConfigURL: TConfigURL;
 begin
- case ACodigo of
-  1: begin
-      ConfigURL.HomNomeCidade         := 'tangara';
-      ConfigURL.ProNomeCidade         := 'tangara';
-     end;
+ case ACodCidade of
+  5107958: begin
+            ConfigURL.HomNomeCidade := 'tangara';
+            ConfigURL.ProNomeCidade := 'tangara';
+           end;
  end;
 
  ConfigURL.HomRecepcaoLoteRPS    := 'https://demo.fisslex.com.br/fiss-lex/servlet/aws_recepcionarloterps';

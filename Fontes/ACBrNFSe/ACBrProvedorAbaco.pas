@@ -22,9 +22,9 @@ type
    { public }
    Constructor Create;
 
-   function GetConfigCidade(ACodigo, AAmbiente: Integer): TConfigCidade; OverRide;
-   function GetConfigSchema(ACodigo: Integer): TConfigSchema; OverRide;
-   function GetConfigURL(ACodigo: Integer): TConfigURL; OverRide;
+   function GetConfigCidade(ACodCidade, AAmbiente: Integer): TConfigCidade; OverRide;
+   function GetConfigSchema(ACodCidade: Integer): TConfigSchema; OverRide;
+   function GetConfigURL(ACodCidade: Integer): TConfigURL; OverRide;
    function GetURI(URI: String): String; OverRide;
    function GetAssinarXML(Acao: TnfseAcao): Boolean; OverRide;
    // Sugestão de Rodrigo Cantelli
@@ -84,7 +84,7 @@ begin
  {----}
 end;
 
-function TProvedorAbaco.GetConfigCidade(ACodigo,
+function TProvedorAbaco.GetConfigCidade(ACodCidade,
   AAmbiente: Integer): TConfigCidade;
 var
  ConfigCidade: TConfigCidade;
@@ -92,7 +92,7 @@ begin
  ConfigCidade.VersaoSoap    := '1.1';
  ConfigCidade.CodigoSchemas := 1;
 
- case ACodigo of
+ case ACodCidade of
   4304606: ConfigCidade.CodigoURLs := 1; // Canoas/RS
   5107602: ConfigCidade.CodigoURLs := 2; // Rondonopolis/MT
  end;
@@ -110,7 +110,7 @@ begin
  Result := ConfigCidade;
 end;
 
-function TProvedorAbaco.GetConfigSchema(ACodigo: Integer): TConfigSchema;
+function TProvedorAbaco.GetConfigSchema(ACodCidade: Integer): TConfigSchema;
 var
  ConfigSchema: TConfigSchema;
 begin
@@ -130,19 +130,19 @@ begin
  Result := ConfigSchema;
 end;
 
-function TProvedorAbaco.GetConfigURL(ACodigo: Integer): TConfigURL;
+function TProvedorAbaco.GetConfigURL(ACodCidade: Integer): TConfigURL;
 var
  ConfigURL: TConfigURL;
 begin
- case ACodigo of
-  01: begin
-       ConfigURL.HomNomeCidade := 'canoas';
-       ConfigURL.ProNomeCidade := 'canoas';
-      end;
-  02: begin
-       ConfigURL.HomNomeCidade := 'roo';
-       ConfigURL.ProNomeCidade := 'roo';
-      end;
+ case ACodCidade of
+  4304606: begin
+            ConfigURL.HomNomeCidade := 'canoas';
+            ConfigURL.ProNomeCidade := 'canoas';
+           end;
+  5107602: begin
+            ConfigURL.HomNomeCidade := 'roo';
+            ConfigURL.ProNomeCidade := 'roo';
+           end;
  end;
 
  ConfigURL.HomRecepcaoLoteRPS    := 'http://www.e-nfs.com.br/'+ ConfigURL.HomNomeCidade +'_homologa/servlet/arecepcionarloterps?wsdl';

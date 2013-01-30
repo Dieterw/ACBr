@@ -22,9 +22,9 @@ type
    { public }
    Constructor Create;
 
-   function GetConfigCidade(ACodigo, AAmbiente: Integer): TConfigCidade; OverRide;
-   function GetConfigSchema(ACodigo: Integer): TConfigSchema; OverRide;
-   function GetConfigURL(ACodigo: Integer): TConfigURL; OverRide;
+   function GetConfigCidade(ACodCidade, AAmbiente: Integer): TConfigCidade; OverRide;
+   function GetConfigSchema(ACodCidade: Integer): TConfigSchema; OverRide;
+   function GetConfigURL(ACodCidade: Integer): TConfigURL; OverRide;
    function GetURI(URI: String): String; OverRide;
    function GetAssinarXML(Acao: TnfseAcao): Boolean; OverRide;
    // Sugestão de Rodrigo Cantelli
@@ -84,7 +84,7 @@ begin
  {----}
 end;
 
-function TProvedorPublica.GetConfigCidade(ACodigo,
+function TProvedorPublica.GetConfigCidade(ACodCidade,
   AAmbiente: Integer): TConfigCidade;
 var
  ConfigCidade: TConfigCidade;
@@ -107,7 +107,7 @@ begin
  Result := ConfigCidade;
 end;
 
-function TProvedorPublica.GetConfigSchema(ACodigo: Integer): TConfigSchema;
+function TProvedorPublica.GetConfigSchema(ACodCidade: Integer): TConfigSchema;
 var
  ConfigSchema: TConfigSchema;
 begin
@@ -127,7 +127,7 @@ begin
  Result := ConfigSchema;
 end;
 
-function TProvedorPublica.GetConfigURL(ACodigo: Integer): TConfigURL;
+function TProvedorPublica.GetConfigURL(ACodCidade: Integer): TConfigURL;
 var
  ConfigURL: TConfigURL;
 begin

@@ -22,9 +22,9 @@ type
    { public }
    Constructor Create;
 
-   function GetConfigCidade(ACodigo, AAmbiente: Integer): TConfigCidade; OverRide;
-   function GetConfigSchema(ACodigo: Integer): TConfigSchema; OverRide;
-   function GetConfigURL(ACodigo: Integer): TConfigURL; OverRide;
+   function GetConfigCidade(ACodCidade, AAmbiente: Integer): TConfigCidade; OverRide;
+   function GetConfigSchema(ACodCidade: Integer): TConfigSchema; OverRide;
+   function GetConfigURL(ACodCidade: Integer): TConfigURL; OverRide;
    function GetURI(URI: String): String; OverRide;
    function GetAssinarXML(Acao: TnfseAcao): Boolean; OverRide;
    // Sugestão de Rodrigo Cantelli
@@ -84,15 +84,15 @@ begin
  {----}
 end;
 
-function TProvedorSaatri.GetConfigCidade(ACodigo,
+function TProvedorSaatri.GetConfigCidade(ACodCidade,
   AAmbiente: Integer): TConfigCidade;
 var
  ConfigCidade: TConfigCidade;
 begin
  ConfigCidade.VersaoSoap    := '1.1';
  ConfigCidade.CodigoSchemas := 1;
- case ACodigo of
-  1400100:ConfigCidade.CodigoURLs := 1; // Boa Vista/RR
+ case ACodCidade of
+  1400100: ConfigCidade.CodigoURLs := 1; // Boa Vista/RR
  end;
  ConfigCidade.CodigoURLs    := 1;
  ConfigCidade.Prefixo2      := '';
@@ -110,7 +110,7 @@ begin
  Result := ConfigCidade;
 end;
 
-function TProvedorSaatri.GetConfigSchema(ACodigo: Integer): TConfigSchema;
+function TProvedorSaatri.GetConfigSchema(ACodCidade: Integer): TConfigSchema;
 var
  ConfigSchema: TConfigSchema;
 begin
@@ -131,30 +131,30 @@ begin
  Result := ConfigSchema;
 end;
 
-function TProvedorSaatri.GetConfigURL(ACodigo: Integer): TConfigURL;
+function TProvedorSaatri.GetConfigURL(ACodCidade: Integer): TConfigURL;
 var
  ConfigURL: TConfigURL;
 begin
- case ACodigo of
-  01: begin
-       ConfigURL.HomNomeCidade         := '';
-       ConfigURL.HomRecepcaoLoteRPS    := 'https://homologa-boavista.saatri.com.br/servicos/nfse.svc';
-       ConfigURL.HomConsultaLoteRPS    := 'https://homologa-boavista.saatri.com.br/servicos/nfse.svc';
-       ConfigURL.HomConsultaNFSeRPS    := 'https://homologa-boavista.saatri.com.br/servicos/nfse.svc';
-       ConfigURL.HomConsultaSitLoteRPS := 'https://homologa-boavista.saatri.com.br/servicos/nfse.svc';
-       ConfigURL.HomConsultaNFSe       := 'https://homologa-boavista.saatri.com.br/servicos/nfse.svc';
-       ConfigURL.HomCancelaNFSe        := 'https://homologa-boavista.saatri.com.br/servicos/nfse.svc';
-       ConfigURL.HomGerarNFSe          := 'https://homologa-boavista.saatri.com.br/servicos/nfse.svc';
+ case ACodCidade of
+  1400100: begin
+            ConfigURL.HomNomeCidade         := '';
+            ConfigURL.HomRecepcaoLoteRPS    := 'https://homologa-boavista.saatri.com.br/servicos/nfse.svc';
+            ConfigURL.HomConsultaLoteRPS    := 'https://homologa-boavista.saatri.com.br/servicos/nfse.svc';
+            ConfigURL.HomConsultaNFSeRPS    := 'https://homologa-boavista.saatri.com.br/servicos/nfse.svc';
+            ConfigURL.HomConsultaSitLoteRPS := 'https://homologa-boavista.saatri.com.br/servicos/nfse.svc';
+            ConfigURL.HomConsultaNFSe       := 'https://homologa-boavista.saatri.com.br/servicos/nfse.svc';
+            ConfigURL.HomCancelaNFSe        := 'https://homologa-boavista.saatri.com.br/servicos/nfse.svc';
+            ConfigURL.HomGerarNFSe          := 'https://homologa-boavista.saatri.com.br/servicos/nfse.svc';
 
-       ConfigURL.ProNomeCidade         := '';
-       ConfigURL.ProRecepcaoLoteRPS    := 'https://boavista.saatri.com.br/servicos/nfse.svc';
-       ConfigURL.ProConsultaLoteRPS    := 'https://boavista.saatri.com.br/servicos/nfse.svc';
-       ConfigURL.ProConsultaNFSeRPS    := 'https://boavista.saatri.com.br/servicos/nfse.svc';
-       ConfigURL.ProConsultaSitLoteRPS := 'https://boavista.saatri.com.br/servicos/nfse.svc';
-       ConfigURL.ProConsultaNFSe       := 'https://boavista.saatri.com.br/servicos/nfse.svc';
-       ConfigURL.ProCancelaNFSe        := 'https://boavista.saatri.com.br/servicos/nfse.svc';
-       ConfigURL.ProGerarNFSe          := 'https://boavista.saatri.com.br/servicos/nfse.svc';
-      end;
+            ConfigURL.ProNomeCidade         := '';
+            ConfigURL.ProRecepcaoLoteRPS    := 'https://boavista.saatri.com.br/servicos/nfse.svc';
+            ConfigURL.ProConsultaLoteRPS    := 'https://boavista.saatri.com.br/servicos/nfse.svc';
+            ConfigURL.ProConsultaNFSeRPS    := 'https://boavista.saatri.com.br/servicos/nfse.svc';
+            ConfigURL.ProConsultaSitLoteRPS := 'https://boavista.saatri.com.br/servicos/nfse.svc';
+            ConfigURL.ProConsultaNFSe       := 'https://boavista.saatri.com.br/servicos/nfse.svc';
+            ConfigURL.ProCancelaNFSe        := 'https://boavista.saatri.com.br/servicos/nfse.svc';
+            ConfigURL.ProGerarNFSe          := 'https://boavista.saatri.com.br/servicos/nfse.svc';
+           end;
  end;
 
  Result := ConfigURL;

@@ -22,9 +22,9 @@ type
    { public }
    Constructor Create;
 
-   function GetConfigCidade(ACodigo, AAmbiente: Integer): TConfigCidade; OverRide;
-   function GetConfigSchema(ACodigo: Integer): TConfigSchema; OverRide;
-   function GetConfigURL(ACodigo: Integer): TConfigURL; OverRide;
+   function GetConfigCidade(ACodCidade, AAmbiente: Integer): TConfigCidade; OverRide;
+   function GetConfigSchema(ACodCidade: Integer): TConfigSchema; OverRide;
+   function GetConfigURL(ACodCidade: Integer): TConfigURL; OverRide;
    function GetURI(URI: String): String; OverRide;
    function GetAssinarXML(Acao: TnfseAcao): Boolean; OverRide;
    // Sugestão de Rodrigo Cantelli
@@ -84,14 +84,14 @@ begin
  {----}
 end;
 
-function TProvedorISSNet.GetConfigCidade(ACodigo,
+function TProvedorISSNet.GetConfigCidade(ACodCidade,
   AAmbiente: Integer): TConfigCidade;
 var
  ConfigCidade: TConfigCidade;
 begin
  ConfigCidade.VersaoSoap    := '1.1';
  ConfigCidade.CodigoSchemas := 2;
- case ACodigo of
+ case ACodCidade of
   3530607: ConfigCidade.CodigoURLs := 01; // Mogi das Cruzes/SP
   4313409: ConfigCidade.CodigoURLs := 02; // Novo Hamburgo/RS
   5103403: ConfigCidade.CodigoURLs := 03; // Cuiaba/MT
@@ -113,7 +113,7 @@ begin
  Result := ConfigCidade;
 end;
 
-function TProvedorISSNet.GetConfigSchema(ACodigo: Integer): TConfigSchema;
+function TProvedorISSNet.GetConfigSchema(ACodCidade: Integer): TConfigSchema;
 var
  ConfigSchema: TConfigSchema;
 begin
@@ -133,31 +133,31 @@ begin
  Result := ConfigSchema;
 end;
 
-function TProvedorISSNet.GetConfigURL(ACodigo: Integer): TConfigURL;
+function TProvedorISSNet.GetConfigURL(ACodCidade: Integer): TConfigURL;
 var
  ConfigURL: TConfigURL;
 begin
- case ACodigo of
-  01: begin
-       ConfigURL.HomNomeCidade         := 'mogidascruzes';
-       ConfigURL.ProNomeCidade         := 'mogidascruzes';
-      end;
-  02: begin
-       ConfigURL.HomNomeCidade         := 'novohamburgo';
-       ConfigURL.ProNomeCidade         := 'novohamburgo';
-      end;
-  03: begin
-       ConfigURL.HomNomeCidade         := 'cuiaba';
-       ConfigURL.ProNomeCidade         := 'cuiaba';
-      end;
-  04: begin
-       ConfigURL.HomNomeCidade         := 'anapolis';
-       ConfigURL.ProNomeCidade         := 'anapolis';
-      end;
-  05: begin
-       ConfigURL.HomNomeCidade         := 'aparecidadegoiania';
-       ConfigURL.ProNomeCidade         := 'aparecidadegoiania';
-      end;
+ case ACodCidade of
+  3530607: begin
+            ConfigURL.HomNomeCidade := 'mogidascruzes';
+            ConfigURL.ProNomeCidade := 'mogidascruzes';
+           end;
+  4313409: begin
+            ConfigURL.HomNomeCidade := 'novohamburgo';
+            ConfigURL.ProNomeCidade := 'novohamburgo';
+           end;
+  5103403: begin
+            ConfigURL.HomNomeCidade := 'cuiaba';
+            ConfigURL.ProNomeCidade := 'cuiaba';
+           end;
+  5201108: begin
+            ConfigURL.HomNomeCidade := 'anapolis';
+            ConfigURL.ProNomeCidade := 'anapolis';
+           end;
+  5201405: begin
+            ConfigURL.HomNomeCidade := 'aparecidadegoiania';
+            ConfigURL.ProNomeCidade := 'aparecidadegoiania';
+           end;
  end;
 
  ConfigURL.HomRecepcaoLoteRPS    := 'http://www.issnetonline.com.br/webserviceabrasf/homologacao/servicos.asmx';

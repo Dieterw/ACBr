@@ -22,9 +22,9 @@ type
    { public }
    Constructor Create;
 
-   function GetConfigCidade(ACodigo, AAmbiente: Integer): TConfigCidade; OverRide;
-   function GetConfigSchema(ACodigo: Integer): TConfigSchema; OverRide;
-   function GetConfigURL(ACodigo: Integer): TConfigURL; OverRide;
+   function GetConfigCidade(ACodCidade, AAmbiente: Integer): TConfigCidade; OverRide;
+   function GetConfigSchema(ACodCidade: Integer): TConfigSchema; OverRide;
+   function GetConfigURL(ACodCidade: Integer): TConfigURL; OverRide;
    function GetURI(URI: String): String; OverRide;
    function GetAssinarXML(Acao: TnfseAcao): Boolean; OverRide;
    function GetValidarLote: Boolean; OverRide;
@@ -83,7 +83,7 @@ begin
  {----}
 end;
 
-function TProvedorIssCuritiba.GetConfigCidade(ACodigo,
+function TProvedorIssCuritiba.GetConfigCidade(ACodCidade,
   AAmbiente: Integer): TConfigCidade;
 var
  ConfigCidade: TConfigCidade;
@@ -106,7 +106,7 @@ begin
  Result := ConfigCidade;
 end;
 
-function TProvedorIssCuritiba.GetConfigSchema(ACodigo: Integer): TConfigSchema;
+function TProvedorIssCuritiba.GetConfigSchema(ACodCidade: Integer): TConfigSchema;
 var
  ConfigSchema: TConfigSchema;
 begin
@@ -126,7 +126,7 @@ begin
  Result := ConfigSchema;
 end;
 
-function TProvedorIssCuritiba.GetConfigURL(ACodigo: Integer): TConfigURL;
+function TProvedorIssCuritiba.GetConfigURL(ACodCidade: Integer): TConfigURL;
 var
  ConfigURL: TConfigURL;
 begin

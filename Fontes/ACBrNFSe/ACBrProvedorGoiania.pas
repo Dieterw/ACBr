@@ -22,9 +22,9 @@ type
    { public }
    Constructor Create;
 
-   function GetConfigCidade(ACodigo, AAmbiente: Integer): TConfigCidade; OverRide;
-   function GetConfigSchema(ACodigo: Integer): TConfigSchema; OverRide;
-   function GetConfigURL(ACodigo: Integer): TConfigURL; OverRide;
+   function GetConfigCidade(ACodCidade, AAmbiente: Integer): TConfigCidade; OverRide;
+   function GetConfigSchema(ACodCidade: Integer): TConfigSchema; OverRide;
+   function GetConfigURL(ACodCidade: Integer): TConfigURL; OverRide;
    function GetURI(URI: String): String; OverRide;
    function GetAssinarXML(Acao: TnfseAcao): Boolean; OverRide;
    function GetValidarLote: Boolean; OverRide;
@@ -83,7 +83,7 @@ begin
  {----}
 end;
 
-function TProvedorGoiania.GetConfigCidade(ACodigo, AAmbiente: Integer): TConfigCidade;
+function TProvedorGoiania.GetConfigCidade(ACodCidade, AAmbiente: Integer): TConfigCidade;
 var
   ConfigCidade: TConfigCidade;
 begin
@@ -106,7 +106,7 @@ begin
  	Result := ConfigCidade;
 end;
 
-function TProvedorGoiania.GetConfigSchema(ACodigo: Integer): TConfigSchema;
+function TProvedorGoiania.GetConfigSchema(ACodCidade: Integer): TConfigSchema;
 var
  ConfigSchema: TConfigSchema;
 begin
@@ -127,7 +127,7 @@ begin
  Result := ConfigSchema;
 end;
 
-function TProvedorGoiania.GetConfigURL(ACodigo: Integer): TConfigURL;
+function TProvedorGoiania.GetConfigURL(ACodCidade: Integer): TConfigURL;
 var
  	ConfigURL: TConfigURL;
 begin

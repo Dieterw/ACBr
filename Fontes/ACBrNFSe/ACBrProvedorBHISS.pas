@@ -22,9 +22,9 @@ type
    { public }
    Constructor Create;
 
-   function GetConfigCidade(ACodigo, AAmbiente: Integer): TConfigCidade; OverRide;
-   function GetConfigSchema(ACodigo: Integer): TConfigSchema; OverRide;
-   function GetConfigURL(ACodigo: Integer): TConfigURL; OverRide;
+   function GetConfigCidade(ACodCidade, AAmbiente: Integer): TConfigCidade; OverRide;
+   function GetConfigSchema(ACodCidade: Integer): TConfigSchema; OverRide;
+   function GetConfigURL(ACodCidade: Integer): TConfigURL; OverRide;
    function GetURI(URI: String): String; OverRide;
    function GetAssinarXML(Acao: TnfseAcao): Boolean; OverRide;
    // Sugestão de Rodrigo Cantelli
@@ -84,14 +84,14 @@ begin
  {----}
 end;
 
-function TProvedorBHISS.GetConfigCidade(ACodigo,
+function TProvedorBHISS.GetConfigCidade(ACodCidade,
   AAmbiente: Integer): TConfigCidade;
 var
  ConfigCidade: TConfigCidade;
 begin
  ConfigCidade.VersaoSoap    := '1.1';
  ConfigCidade.CodigoSchemas := 1;
- case ACodigo of
+ case ACodCidade of
   3106200: ConfigCidade.CodigoURLs := 1; // Belo Horizonte/MG
   3136702: ConfigCidade.CodigoURLs := 2; // Juiz de Fora/MG
  end;
@@ -110,7 +110,7 @@ begin
  Result := ConfigCidade;
 end;
 
-function TProvedorBHISS.GetConfigSchema(ACodigo: Integer): TConfigSchema;
+function TProvedorBHISS.GetConfigSchema(ACodCidade: Integer): TConfigSchema;
 var
  ConfigSchema: TConfigSchema;
 begin
@@ -130,45 +130,45 @@ begin
  Result := ConfigSchema;
 end;
 
-function TProvedorBHISS.GetConfigURL(ACodigo: Integer): TConfigURL;
+function TProvedorBHISS.GetConfigURL(ACodCidade: Integer): TConfigURL;
 var
  ConfigURL: TConfigURL;
 begin
- case ACodigo of
-  1: begin
-      ConfigURL.HomNomeCidade         := '';
-      ConfigURL.HomRecepcaoLoteRPS    := 'https://bhisshomologa.pbh.gov.br/bhiss-ws/nfse';
-      ConfigURL.HomConsultaLoteRPS    := 'https://bhisshomologa.pbh.gov.br/bhiss-ws/nfse';
-      ConfigURL.HomConsultaNFSeRPS    := 'https://bhisshomologa.pbh.gov.br/bhiss-ws/nfse';
-      ConfigURL.HomConsultaSitLoteRPS := 'https://bhisshomologa.pbh.gov.br/bhiss-ws/nfse';
-      ConfigURL.HomConsultaNFSe       := 'https://bhisshomologa.pbh.gov.br/bhiss-ws/nfse';
-      ConfigURL.HomCancelaNFSe        := 'https://bhisshomologa.pbh.gov.br/bhiss-ws/nfse';
+ case ACodCidade of
+  3106200: begin
+            ConfigURL.HomNomeCidade         := '';
+            ConfigURL.HomRecepcaoLoteRPS    := 'https://bhisshomologa.pbh.gov.br/bhiss-ws/nfse';
+            ConfigURL.HomConsultaLoteRPS    := 'https://bhisshomologa.pbh.gov.br/bhiss-ws/nfse';
+            ConfigURL.HomConsultaNFSeRPS    := 'https://bhisshomologa.pbh.gov.br/bhiss-ws/nfse';
+            ConfigURL.HomConsultaSitLoteRPS := 'https://bhisshomologa.pbh.gov.br/bhiss-ws/nfse';
+            ConfigURL.HomConsultaNFSe       := 'https://bhisshomologa.pbh.gov.br/bhiss-ws/nfse';
+            ConfigURL.HomCancelaNFSe        := 'https://bhisshomologa.pbh.gov.br/bhiss-ws/nfse';
 
-      ConfigURL.ProNomeCidade         := '';
-      ConfigURL.ProRecepcaoLoteRPS    := 'https://bhissdigital.pbh.gov.br/bhiss-ws/nfse';
-      ConfigURL.ProConsultaLoteRPS    := 'https://bhissdigital.pbh.gov.br/bhiss-ws/nfse';
-      ConfigURL.ProConsultaNFSeRPS    := 'https://bhissdigital.pbh.gov.br/bhiss-ws/nfse';
-      ConfigURL.ProConsultaSitLoteRPS := 'https://bhissdigital.pbh.gov.br/bhiss-ws/nfse';
-      ConfigURL.ProConsultaNFSe       := 'https://bhissdigital.pbh.gov.br/bhiss-ws/nfse';
-      ConfigURL.ProCancelaNFSe        := 'https://bhissdigital.pbh.gov.br/bhiss-ws/nfse';
-     end;
-  2: begin
-      ConfigURL.HomNomeCidade         := '';
-      ConfigURL.HomRecepcaoLoteRPS    := 'https://nfsejuizdefora-teste.pbh.gov.br/bhiss-ws/nfse';
-      ConfigURL.HomConsultaLoteRPS    := 'https://nfsejuizdefora-teste.pbh.gov.br/bhiss-ws/nfse';
-      ConfigURL.HomConsultaNFSeRPS    := 'https://nfsejuizdefora-teste.pbh.gov.br/bhiss-ws/nfse';
-      ConfigURL.HomConsultaSitLoteRPS := 'https://nfsejuizdefora-teste.pbh.gov.br/bhiss-ws/nfse';
-      ConfigURL.HomConsultaNFSe       := 'https://nfsejuizdefora-teste.pbh.gov.br/bhiss-ws/nfse';
-      ConfigURL.HomCancelaNFSe        := 'https://nfsejuizdefora-teste.pbh.gov.br/bhiss-ws/nfse';
+            ConfigURL.ProNomeCidade         := '';
+            ConfigURL.ProRecepcaoLoteRPS    := 'https://bhissdigital.pbh.gov.br/bhiss-ws/nfse';
+            ConfigURL.ProConsultaLoteRPS    := 'https://bhissdigital.pbh.gov.br/bhiss-ws/nfse';
+            ConfigURL.ProConsultaNFSeRPS    := 'https://bhissdigital.pbh.gov.br/bhiss-ws/nfse';
+            ConfigURL.ProConsultaSitLoteRPS := 'https://bhissdigital.pbh.gov.br/bhiss-ws/nfse';
+            ConfigURL.ProConsultaNFSe       := 'https://bhissdigital.pbh.gov.br/bhiss-ws/nfse';
+            ConfigURL.ProCancelaNFSe        := 'https://bhissdigital.pbh.gov.br/bhiss-ws/nfse';
+           end;
+  3136702: begin
+            ConfigURL.HomNomeCidade         := '';
+            ConfigURL.HomRecepcaoLoteRPS    := 'https://nfsejuizdefora-teste.pbh.gov.br/bhiss-ws/nfse';
+            ConfigURL.HomConsultaLoteRPS    := 'https://nfsejuizdefora-teste.pbh.gov.br/bhiss-ws/nfse';
+            ConfigURL.HomConsultaNFSeRPS    := 'https://nfsejuizdefora-teste.pbh.gov.br/bhiss-ws/nfse';
+            ConfigURL.HomConsultaSitLoteRPS := 'https://nfsejuizdefora-teste.pbh.gov.br/bhiss-ws/nfse';
+            ConfigURL.HomConsultaNFSe       := 'https://nfsejuizdefora-teste.pbh.gov.br/bhiss-ws/nfse';
+            ConfigURL.HomCancelaNFSe        := 'https://nfsejuizdefora-teste.pbh.gov.br/bhiss-ws/nfse';
 
-      ConfigURL.ProNomeCidade         := '';
-      ConfigURL.ProRecepcaoLoteRPS    := 'https://nfse.pjf.mg.gov.br/bhiss-ws/nfse';
-      ConfigURL.ProConsultaLoteRPS    := 'https://nfse.pjf.mg.gov.br/bhiss-ws/nfse';
-      ConfigURL.ProConsultaNFSeRPS    := 'https://nfse.pjf.mg.gov.br/bhiss-ws/nfse';
-      ConfigURL.ProConsultaSitLoteRPS := 'https://nfse.pjf.mg.gov.br/bhiss-ws/nfse';
-      ConfigURL.ProConsultaNFSe       := 'https://nfse.pjf.mg.gov.br/bhiss-ws/nfse';
-      ConfigURL.ProCancelaNFSe        := 'https://nfse.pjf.mg.gov.br/bhiss-ws/nfse';
-     end;
+            ConfigURL.ProNomeCidade         := '';
+            ConfigURL.ProRecepcaoLoteRPS    := 'https://nfse.pjf.mg.gov.br/bhiss-ws/nfse';
+            ConfigURL.ProConsultaLoteRPS    := 'https://nfse.pjf.mg.gov.br/bhiss-ws/nfse';
+            ConfigURL.ProConsultaNFSeRPS    := 'https://nfse.pjf.mg.gov.br/bhiss-ws/nfse';
+            ConfigURL.ProConsultaSitLoteRPS := 'https://nfse.pjf.mg.gov.br/bhiss-ws/nfse';
+            ConfigURL.ProConsultaNFSe       := 'https://nfse.pjf.mg.gov.br/bhiss-ws/nfse';
+            ConfigURL.ProCancelaNFSe        := 'https://nfse.pjf.mg.gov.br/bhiss-ws/nfse';
+           end;
  end;
 
  Result := ConfigURL;

@@ -22,9 +22,9 @@ type
    { public }
    Constructor Create;
 
-   function GetConfigCidade(ACodigo, AAmbiente: Integer): TConfigCidade; OverRide;
-   function GetConfigSchema(ACodigo: Integer): TConfigSchema; OverRide;
-   function GetConfigURL(ACodigo: Integer): TConfigURL; OverRide;
+   function GetConfigCidade(ACodCidade, AAmbiente: Integer): TConfigCidade; OverRide;
+   function GetConfigSchema(ACodCidade: Integer): TConfigSchema; OverRide;
+   function GetConfigURL(ACodCidade: Integer): TConfigURL; OverRide;
    function GetURI(URI: String): String; OverRide;
    function GetAssinarXML(Acao: TnfseAcao): Boolean; OverRide;
    // Sugestão de Rodrigo Cantelli
@@ -84,7 +84,7 @@ begin
  {----}
 end;
 
-function TProvedorfintelISS.GetConfigCidade(ACodigo,
+function TProvedorfintelISS.GetConfigCidade(ACodCidade,
   AAmbiente: Integer): TConfigCidade;
 var
  ConfigCidade: TConfigCidade;
@@ -97,7 +97,7 @@ begin
  ConfigCidade.Prefixo4      := '';
  ConfigCidade.Identificador := 'Id';
 
- case ACodigo of
+ case ACodCidade of
   4119905: begin // Ponta Grossa/PR
             if AAmbiente = 1
              then ConfigCidade.NameSpaceEnvelope := 'https://iss.pontagrossa.pr.gov.br'
@@ -110,7 +110,7 @@ begin
  Result := ConfigCidade;
 end;
 
-function TProvedorfintelISS.GetConfigSchema(ACodigo: Integer): TConfigSchema;
+function TProvedorfintelISS.GetConfigSchema(ACodCidade: Integer): TConfigSchema;
 var
  ConfigSchema: TConfigSchema;
 begin
@@ -132,7 +132,7 @@ begin
  Result := ConfigSchema;
 end;
 
-function TProvedorfintelISS.GetConfigURL(ACodigo: Integer): TConfigURL;
+function TProvedorfintelISS.GetConfigURL(ACodCidade: Integer): TConfigURL;
 var
  ConfigURL: TConfigURL;
 begin

@@ -19,7 +19,7 @@ object frmDemo_ACBrNFSe: TfrmDemo_ACBrNFSe
     Left = 0
     Top = 0
     Width = 297
-    Height = 530
+    Height = 534
     Align = alLeft
     TabOrder = 0
     object lblColaborador: TLabel
@@ -399,7 +399,7 @@ object frmDemo_ACBrNFSe: TfrmDemo_ACBrNFSe
               'Sao Bernardo do Campos/3548708/SP'
               'Sao Borja/4318002/RS'
               'Sao Caetano do Sul/3548807/SP'
-              'Sao Carlos/3548909/SP'
+              'Sao Carlos/3548906/SP'
               'Sao Jose/4216602/SC'
               'Sao Jose do Rio Preto/3549805/SP'
               'Sao Jose dos Campos/3549904/SP'
@@ -998,14 +998,14 @@ object frmDemo_ACBrNFSe: TfrmDemo_ACBrNFSe
   object Panel2: TPanel
     Left = 297
     Top = 0
-    Width = 566
-    Height = 530
+    Width = 574
+    Height = 534
     Align = alClient
     TabOrder = 1
     object Panel3: TPanel
       Left = 1
       Top = 1
-      Width = 564
+      Width = 572
       Height = 136
       Align = alTop
       TabOrder = 0
@@ -1112,8 +1112,8 @@ object frmDemo_ACBrNFSe: TfrmDemo_ACBrNFSe
     object PageControl2: TPageControl
       Left = 1
       Top = 137
-      Width = 564
-      Height = 392
+      Width = 572
+      Height = 396
       ActivePage = TabSheet5
       Align = alClient
       TabOrder = 1
@@ -1122,8 +1122,8 @@ object frmDemo_ACBrNFSe: TfrmDemo_ACBrNFSe
         object MemoResp: TMemo
           Left = 0
           Top = 0
-          Width = 556
-          Height = 364
+          Width = 564
+          Height = 368
           Align = alClient
           TabOrder = 0
         end
@@ -1165,8 +1165,8 @@ object frmDemo_ACBrNFSe: TfrmDemo_ACBrNFSe
         object trvwNFSe: TTreeView
           Left = 0
           Top = 0
-          Width = 556
-          Height = 364
+          Width = 564
+          Height = 368
           Align = alClient
           Indent = 19
           TabOrder = 0

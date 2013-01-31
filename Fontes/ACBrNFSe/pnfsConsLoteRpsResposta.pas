@@ -583,7 +583,8 @@ begin
       end; // fim do ListaNfse - Nivel 2
 
       // Ler a Lista de Mensagens
-      if leitor.rExtrai(2, 'ListaMensagemRetorno') <> '' then
+      if (leitor.rExtrai(2, 'ListaMensagemRetorno') <> '') or
+         (leitor.rExtrai(2, 'ListaMensagemRetornoLote') <> '') then
       begin
         i := 0;
         while Leitor.rExtrai(3, prefixo4 + 'MensagemRetorno', '', i + 1) <> '' do

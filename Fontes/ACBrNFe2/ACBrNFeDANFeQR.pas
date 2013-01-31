@@ -52,7 +52,6 @@
 |* 20/05/2011: Peterson de Cerqueira Matos
 |*  - Acréscimo do parâmetro "FResumoCanhoto_Texto"
 ******************************************************************************}
-
 {$I ACBr.inc}
 
 unit ACBrNFeDANFeQR;
@@ -98,6 +97,8 @@ type
     FCasasDecimaisvUnCom: Integer;
     FImpressora         : String;
     FResumoCanhoto_Texto: String;
+    FNFeCancelada       : Boolean; //Incluido por Luis Fernando em  22/01/2013
+    FLocalImpCanhoto    : Integer; //Incluido por Luis Fernando em  22/01/2013
 
     procedure qrlSemValorFiscalPrint(sender: TObject; var Value: String);
     procedure SetBarCodeImage ( ACode : String ; QRImage : TQRImage ) ;
@@ -122,7 +123,9 @@ type
                              ACasasDecimaisvUncCom: Integer  = 4;
                              AImpressora         : String    = '';
                              AResumoCanhoto_Texto: String    = '';
-                             AExpandirLogoMarca  : Boolean   = False); // Incluido por Italo em 18/06/2012
+                             AExpandirLogoMarca  : Boolean   = False; // Incluido por Italo em 18/06/2012
+                             ANFeCancelada       : Boolean   = False; //Incluido por Luis Fernando em  22/01/2013
+                             ALocalImpCanhoto    : Integer   = 0); //Incluido por Luis Fernando em  22/01/2013
 
     class procedure SavePDF(AFile: String;
                             ANFe                : TNFe;
@@ -141,7 +144,9 @@ type
                             ACasasDecimaisqCom  : Integer   = 4;
                             ACasasDecimaisvUncCom: Integer  = 4;
                             AResumoCanhoto_Texto: String    = '';
-                            AExpandirLogoMarca  : Boolean   = False); // Incluido por Italo em 18/06/2012
+                            AExpandirLogoMarca  : Boolean   = False; // Incluido por Italo em 18/06/2012
+                            ANFeCancelada       : Boolean   = False; //Incluido por Luis Fernando em  22/01/2013
+                            ALocalImpCanhoto    : Integer   = 0); //Incluido por Luis Fernando em  22/01/2013
 
   end;
 
@@ -170,7 +175,9 @@ class procedure TfqrDANFeQR.Imprimir(ANFe               : TNFe;
                                     ACasasDecimaisvUncCom: Integer  = 4;
                                     AImpressora         : String    = '';
                                     AResumoCanhoto_Texto: String    = '';
-                                    AExpandirLogoMarca  : Boolean   = False); // Incluido por Italo em 18/06/2012
+                                    AExpandirLogoMarca  : Boolean   = False; // Incluido por Italo em 18/06/2012
+                                    ANFeCancelada       : Boolean   = False; //Incluido por Luis Fernando em  22/01/2013
+                                    ALocalImpCanhoto    : Integer   = 0); //Incluido por Luis Fernando em  22/01/2013
 begin
   with Create ( nil ) do
      try
@@ -192,6 +199,8 @@ begin
         FImpressora         := AImpressora;
         FResumoCanhoto_Texto:= AResumoCanhoto_Texto;
         FExpandirLogoMarca  := AExpandirLogoMarca;  // Incluido por Italo em 18/06/2012
+        FNFeCancelada       := ANFeCancelada;//Incluido por Luis Fernando em  22/01/2013
+        FLocalImpCanhoto    := ALocalImpCanhoto;//Incluido por Luis Fernando em  22/01/2013
 
         Printer := TPrinter.Create;
 
@@ -244,7 +253,9 @@ class procedure TfqrDANFeQR.SavePDF(AFile               : String;
                                     ACasasDecimaisqCom  : Integer   = 4;
                                     ACasasDecimaisvUncCom: Integer  = 4;
                                     AResumoCanhoto_Texto: String    = '';
-                                    AExpandirLogoMarca  : Boolean   = False); // Incluido por Italo em 18/06/2012
+                                    AExpandirLogoMarca  : Boolean   = False; // Incluido por Italo em 18/06/2012
+                                    ANFeCancelada       : Boolean   = False; //Incluido por Luis Fernando em  22/01/2013
+                                    ALocalImpCanhoto    : Integer   = 0); //Incluido por Luis Fernando em  22/01/2013
 {$IFDEF QReport_PDF}
 var
   qf : TQRPDFDocumentFilter;
@@ -271,6 +282,8 @@ begin
         FCasasDecimaisvUnCom := ACasasDecimaisvUncCom;
         FResumoCanhoto_Texto:= AResumoCanhoto_Texto;
         FExpandirLogoMarca  := AExpandirLogoMarca; // Incluido por Italo em 18/06/2012
+        FNFeCancelada       := ANFeCancelada;//Incluido por Luis Fernando em  22/01/2013
+        FLocalImpCanhoto    := ALocalImpCanhoto;//Incluido por Luis Fernando em  22/01/2013
 
         for i := 0 to ComponentCount -1 do
           begin

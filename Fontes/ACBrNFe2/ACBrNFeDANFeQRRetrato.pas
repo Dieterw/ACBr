@@ -84,6 +84,8 @@
 |     para evitar Acess Violation em NF-e's com mais de 15 duplicatas
 |   - Tratamento da propriedade "ExibirResumoCanhoto"
 |   - Tratamento da propriedade "ExibirResumoCanhoto_Texto"
+|  22/01/2013 : LUIS FERNANDO COSTA
+|   - Ajustado "FSistema" para que fique uma msg livre
 ******************************************************************************}
 
 {$I ACBr.inc}
@@ -96,7 +98,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, QuickRpt, QRCtrls,  XMLIntf, XMLDoc, 
   JPEG, ACBrNFeDANFeQR, ACBrNFeQRCodeBar, pcnConversao, DB,
-  DBClient, ACBrNFeDANFEClass, ACBrNFeDANFeQRClass{, QRPDFFilt {Descomentar para usar PDF};
+  DBClient, ACBrNFeDANFEClass, ACBrNFeDANFeQRClass, QRPDFFilt;
 
 type
 
@@ -389,7 +391,6 @@ type
     qrmDadosAdicionais: TQRMemo;
     rbDadosAdicionais: TQRShape;
     QRShape67: TQRShape;
-    qrlMsgTeste: TQRLabel;
     QRLabel6: TQRLabel;
     qrbItens: TQRBand;
     qrmProdutoCodigo: TQRDBText;
@@ -433,6 +434,34 @@ type
     qrs15: TQRShape;
     cdsItensCSOSN: TStringField;
     qrlResumo: TQRLabel;
+    QRShape74: TQRShape;
+    QRLabel15: TQRLabel;
+    QRShape75: TQRShape;
+    QRLabel16: TQRLabel;
+    QRLabel21: TQRLabel;
+    QRLabel73: TQRLabel;
+    QRLabel74: TQRLabel;
+    QRShape76: TQRShape;
+    QRShape77: TQRShape;
+    qrlDestCNPJEnt: TQRLabel;
+    qrlDestEnderecoEnt: TQRLabel;
+    qrlDestBairroEnt: TQRLabel;
+    qrlDestCidadeEnt: TQRLabel;
+    qrlMsgTeste: TQRLabel;
+    qrlMsgTipoEmissao: TQRLabel;
+    QRShape70: TQRShape;
+    QRLabel8: TQRLabel;
+    QRShape71: TQRShape;
+    QRShape72: TQRShape;
+    QRShape73: TQRShape;
+    qrlRecebemosDe1Rodape: TQRLabel;
+    qrlNumNF0Rodape: TQRLabel;
+    qrlSERIE0Rodape: TQRLabel;
+    QRLabel23: TQRLabel;
+    QRLabel25: TQRLabel;
+    QRLabel28: TQRLabel;
+    QRLabel33: TQRLabel;
+    qrlResumoRodape: TQRLabel;
     procedure QRNFeBeforePrint(Sender: TCustomQuickRep;
       var PrintReport: Boolean);
     procedure qrbReciboBeforePrint(Sender: TQRCustomBand;
@@ -805,6 +834,59 @@ var
   nRestItens : Integer;
 begin
   inherited;
+   if FLocalImpCanhoto = 0 then
+    begin
+      QRShape69.Enabled:=False;
+      qrlDataHoraImpressao.Top := QRShape70.Top-10;
+      qrlSistema.Top := QRShape70.Top-10;
+    end;
+
+   if (FLocalImpCanhoto = 1) or (FResumoCanhoto = False) then
+    begin
+      QRShape70.Enabled := False;
+      qrlDataHoraImpressao.Top := 122;
+      qrlSistema.Top := 122;
+      QRLabel8.Enabled := False;
+      QRShape73.Enabled := False;
+      QRShape71.Enabled := False;
+      QRLabel33.Enabled := False;
+      QRShape72.Enabled := False;
+      qrlResumoRodape.Enabled := False;
+      qrlRecebemosDe1Rodape.Enabled := False;
+      QRShape73.Enabled := False;
+      QRLabel28.Enabled := False;
+      QRLabel25.Enabled := False;
+      qrlNumNF0Rodape.Enabled := False;
+      QRLabel23.Enabled := False;
+      qrlSERIE0Rodape.Enabled := False;
+      QRShape56.Height := 108;
+      qrmDadosAdicionais.Height := 135;
+      rbDadosAdicionais.Height := 108;
+      qrmDadosAdicionais.Height := 91;
+      qrlMsgTeste.Top := 17;
+    end;
+
+    if (FResumoCanhoto = True) and (FLocalImpCanhoto = 0) then
+      begin
+        // Arrumar
+        //qrlDataHoraImpressao.Top := QRShape70.Top;
+        //qrlSistema.Top := QRShape70.Top;
+
+        if FResumoCanhoto_Texto <> '' then
+          qrlResumoRodape.Caption := FResumoCanhoto_Texto
+        else
+        begin
+          qrlResumoRodape.Caption := 'EMISSÃO: ' + FormatDateTime('DD/MM/YYYY',
+            FNFe.Ide.dEmi) + '  -  ' + 'DEST. / REM.: ' + FNFe.Dest.xNome +
+            '  -  ' + 'VALOR TOTAL: R$ ' + DFeUtil.FormatFloat(FNFe.Total.ICMSTot.vNF, '###,###,###,##0.00');
+          qrlRecebemosDe1Rodape.Caption := StringReplace(qrlRecebemosDe1.Caption, '%s', FNFe.Emit.xNome, [rfReplaceAll]);
+          qrlNumNF0Rodape.Caption := FormatFloat('000,000,000', FNFe.Ide.nNF);
+          qrlSERIE0Rodape.Caption := IntToStr(FNFe.Ide.serie);
+        end; // if FResumoCanhoto_Texto <> ''
+      end // if FResumoCanhoto = True
+    else
+      qrlResumoRodape.Caption := '';
+
    //Alteracao infoaxel 01/09/2010
    qrbISSQN.Height := 46;
    qrbDadosAdicionais.Height := 135;
@@ -842,23 +924,25 @@ procedure TfqrDANFeQRRetrato.qrbReciboBeforePrint(Sender: TQRCustomBand;
   var PrintBand: Boolean);
 begin
 
-  if FResumoCanhoto = True then
+  if FLocalImpCanhoto = 1 then
+  begin
+    if FResumoCanhoto = True then
     begin
+      qrbRecibo.Enabled := True;
       if FResumoCanhoto_Texto <> '' then
         qrlResumo.Caption := FResumoCanhoto_Texto
       else
-        begin
-          qrlResumo.Caption := 'EMISSÃO: ' +
-                           FormatDateTime('DD/MM/YYYY', FNFe.Ide.dEmi) +
-                           '  -  ' +
-                           'DEST. / REM.: ' + FNFe.Dest.xNome + '  -  ' +
-                           'VALOR TOTAL: R$ ' +
-                           DFeUtil.FormatFloat(FNFe.Total.ICMSTot.vNF,
-                           '###,###,###,##0.00');
-        end; // if FResumoCanhoto_Texto <> ''
+      begin
+        qrlResumo.Caption := 'EMISSÃO: ' + FormatDateTime('DD/MM/YYYY', FNFe.Ide.dEmi) +
+                             '  -  ' + 'DEST. / REM.: ' + FNFe.Dest.xNome +
+          '  -  ' + 'VALOR TOTAL: R$ ' + DFeUtil.FormatFloat(FNFe.Total.ICMSTot.vNF, '###,###,###,##0.00');
+      end; // if FResumoCanhoto_Texto <> ''
     end // if FResumoCanhoto = True
+    else
+      qrlResumo.Caption := '';
+  end
   else
-    qrlResumo.Caption := '';
+    qrbRecibo.Enabled := False;
 
   inherited;
    PrintBand := QRNFe.PageNumber = 1;
@@ -898,7 +982,15 @@ begin
     end;
 
 
-    intTamanhoLinha:= 15 * (intDivisaoDescricao+intDivisaoAdicional);
+    //intTamanhoLinha:= 15 * (intDivisaoDescricao+intDivisaoAdicional);
+    if (intTamanhoDescricao <= 35) AND (cdsItens.FieldByName('INFADIPROD').AsString = '') then
+      begin
+        intTamanhoLinha := 12;
+      end;
+      if (intTamanhoDescricao <= 35) AND (cdsItens.FieldByName('INFADIPROD').AsString <> '') then
+      begin
+        intTamanhoLinha := 22;
+      end;
 
     qrs1.Height:= intTamanhoLinha;
     qrs2.Height:= intTamanhoLinha;
@@ -960,7 +1052,7 @@ end;
 procedure TfqrDANFeQRRetrato.qrbEmitenteDestinatarioBeforePrint(Sender: TQRCustomBand;
   var PrintBand: Boolean);
 var
-   x, iQuantDup: integer;
+   x, iQuantDup, vTpEmissao: integer;
    Ok: Boolean;
 begin
   inherited;
@@ -1105,46 +1197,89 @@ begin
 
    // Mensagem para modo Homologacao.
 
-    if FNFe.Ide.tpAmb = taHomologacao then
+   if FNFe.Ide.tpAmb = taHomologacao then
     begin
-        qrlMsgTeste.Caption := 'AMBIENTE DE HOMOLOGAÇÃO - SEM VALOR FISCAL';
-        qrlMsgTeste.Enabled := True;
-        qrlMsgTeste.Visible := True;
-    end else
-    begin
-        if FNFe.procNFe.cStat > 0 then
-        begin
-            // Alterado por Italo em 29/11/2012
-            // if FNFe.procNFe.cStat = 101 then
-            if FNFe.procNFe.cStat in [101, 151, 155] then
-            begin
-               qrlMsgTeste.Caption  := 'NF-e CANCELADA';
-               qrlMsgTeste.Visible  := True;
-               qrlMsgTeste.Enabled := True;
-            end;
-            // Alterado de 102 para 110 por Italo em 27/01/2012
-            if FNFe.procNFe.cStat = 110 then
-            begin
-               qrlMsgTeste.Caption  := 'NF-e DENEGADA';
-               qrlMsgTeste.Visible  := True;
-               qrlMsgTeste.Enabled := True;
-            end;
-
-            // Alterado por Italo em 29/11/2012
-            // if not FNFe.procNFe.cStat in [101, 110, 100] then
-            if not FNFe.procNFe.cStat in [100, 101, 110, 151, 155] then
-            begin
-                qrlMsgTeste.Caption:=  FNFe.procNFe.xMotivo;
-                qrlMsgTeste.Visible := True;
-                qrlMsgTeste.Enabled := True;
-            end;
-        end else
-        begin
-            qrlMsgTeste.Caption  := 'NF-E NÃO ENVIADA PARA SEFAZ';
-            qrlMsgTeste.Visible  := True;
-            qrlMsgTeste.Enabled  := True;
-        end;
+      qrlMsgTeste.Caption := 'AMBIENTE DE HOMOLOGAÇÃO - SEM VALOR FISCAL';
+      qrlMsgTeste.Enabled := True;
+      qrlMsgTeste.Visible := True;
     end;
+
+   if FNFe.procNFe.cStat > 0 then
+    begin
+      if ((FNFe.procNFe.cStat in [101, 151, 155]) or (FNFeCancelada)) then
+      begin
+        qrlMsgTeste.Caption := 'NF-e CANCELADA';
+        qrlMsgTeste.Visible := True;
+        qrlMsgTeste.Enabled := True;
+      end;
+      // Alterado de 102 para 110 por Italo em 27/01/2012
+      if FNFe.procNFe.cStat = 110 then
+      begin
+        qrlMsgTeste.Caption := 'NF-e DENEGADA';
+        qrlMsgTeste.Visible := True;
+        qrlMsgTeste.Enabled := True;
+      end;
+
+      // Alterado de 102 para 110 por Italo em 27/01/2012
+      if not FNFe.procNFe.cStat in [100, 101, 110, 151, 155] then
+      begin
+        qrlMsgTeste.Caption := FNFe.procNFe.xMotivo;
+        qrlMsgTeste.Visible := True;
+        qrlMsgTeste.Enabled := True;
+      end;
+    end;
+
+
+    if FNFe.Ide.tpEmis = teContingencia then
+      vTpEmissao:=2
+    else
+    if FNFe.Ide.tpEmis = teDPEC then
+      vTpEmissao:=4
+    else
+    if FNFe.Ide.tpEmis = teFSDA then
+      vTpEmissao:=5;
+
+    case vTpEmissao of
+      2:begin
+        qrlMsgTipoEmissao.Caption := 'DANFE em Contingência - impresso em decorrência de problemas técnicos';
+        qrlMsgTipoEmissao.Visible := True;
+        qrlMsgTipoEmissao.Enabled := True;
+      end;
+      4:begin
+        qrlMsgTipoEmissao.Caption := 'DANFE impresso em contingência - DPEC regularmente recebida pela Receita Federal do Brasil';
+        qrlMsgTipoEmissao.Visible := True;
+        qrlMsgTipoEmissao.Enabled := True;
+      end;
+      5:begin
+        qrlMsgTipoEmissao.Caption := 'DANFE em Contingência - impresso em decorrência de problemas técnicos';
+        qrlMsgTipoEmissao.Visible := True;
+        qrlMsgTipoEmissao.Enabled := True;
+      end;
+    end;
+
+    //Incluido por Luis Fernando Costa
+    with FNFe.Entrega do
+      begin
+        if CNPJCPF <> '' then
+          qrlDestCNPJEnt.Caption     := CNPJCPF
+        else
+          qrlDestCNPJEnt.Caption     := '';
+
+        if xLgr <> '' then
+          qrlDestEnderecoEnt.Caption := xLgr+', '+nro
+        else
+          qrlDestEnderecoEnt.Caption := '';
+
+        if xBairro <> '' then
+          qrlDestBairroEnt.Caption   := xBairro
+        else
+          qrlDestBairroEnt.Caption   := '';
+
+        if xMun <> '' then
+          qrlDestCidadeEnt.Caption   := xMun+'-'+UF
+        else
+          qrlDestCidadeEnt.Caption   := '';
+      end;
 
     qrlMsgTeste.Repaint;
       
@@ -1290,13 +1425,12 @@ begin
         end;
 
         // imprime sistema
+        //Ajustado por Luis Fernando - para que fique uma msg livre - 22/01/2013
         if FSistema <> '' then
-        begin
-            qrlSistema.Caption:= 'Desenvolvido por ' + FSistema;
-        end else
-        begin
-            qrlSistema.Caption:= '';
-        end;
+          qrlSistema.Caption:= FSistema
+        else
+          qrlSistema.Caption:= '';
+
     end;
 end;
 

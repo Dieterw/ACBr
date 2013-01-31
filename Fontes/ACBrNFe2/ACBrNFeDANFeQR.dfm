@@ -1,7 +1,7 @@
 object fqrDANFeQR: TfqrDANFeQR
   Left = 194
   Top = 125
-  Width = 880
+  Width = 897
   Height = 742
   Caption = 'fqrDANFeQR'
   Color = clBtnFace

@@ -40,6 +40,7 @@
 |* 16/12/2008: Wemerson Souto
 |*  - Doação do componente para o Projeto ACBr
 ******************************************************************************}
+
 {$I ACBr.inc}
 
 unit ACBrNFeDANFEClass;
@@ -93,7 +94,7 @@ type
     FSite : String;
     FEmail: String;
     FImprimeDescPorc : Boolean;
- 	 FProtocoloNFe: string;
+    FProtocoloNFe: string;
     FMargemInferior: Double;
     FMargemSuperior: Double;
     FMargemEsquerda: Double;
@@ -106,6 +107,7 @@ type
     FProdutosPorPagina: integer;
     FImprimirDetalhamentoEspecifico: boolean;
     FNFeCancelada : boolean;
+    FLocalImpCanhoto: integer; // Incluido por Italo em 31/01/2013
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
   public
     constructor Create(AOwner: TComponent); override;
@@ -144,6 +146,7 @@ type
     property ProdutosPorPagina: Integer read FProdutosPorPagina write FProdutosPorPagina ;
     property ImprimirDetalhamentoEspecifico: Boolean read FImprimirDetalhamentoEspecifico write FImprimirDetalhamentoEspecifico ;
     property NFeCancelada: Boolean read FNFeCancelada write FNFeCancelada ;
+    property LocalImpCanhoto: Integer read FLocalImpCanhoto write FLocalImpCanhoto; // Incluido por Italo em 31/01/2013
   end;
 
 implementation
@@ -214,6 +217,7 @@ begin
   FProdutosPorPagina := 0;
   FImprimirDetalhamentoEspecifico := true;
   FNFeCancelada := False;
+  FLocalImpCanhoto := 0;  // Incluido por Italo em 31/01/2013
   FCasasDecimais := TCasasDecimais.Create(self);
   FCasasDecimais.Name:= 'CasasDecimais' ;
   {$IFDEF COMPILER6_UP}

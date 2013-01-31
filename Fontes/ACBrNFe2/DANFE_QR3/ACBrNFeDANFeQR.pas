@@ -52,7 +52,6 @@
 |* 20/05/2011: Peterson de Cerqueira Matos
 |*  - Acréscimo do parâmetro "FResumoCanhoto_Texto"
 ******************************************************************************}
-
 {$I ACBr.inc}
 
 unit ACBrNFeDANFeQR;

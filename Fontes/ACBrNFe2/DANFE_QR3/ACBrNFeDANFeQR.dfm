@@ -1,9 +1,9 @@
 object fqrDANFeQR: TfqrDANFeQR
   Left = 194
   Top = 125
+  Width = 897
+  Height = 742
   Caption = 'fqrDANFeQR'
-  ClientHeight = 708
-  ClientWidth = 872
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText

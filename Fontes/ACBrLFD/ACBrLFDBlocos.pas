@@ -36,7 +36,7 @@ unit ACBrLFDBlocos;
 interface
 
 uses
-  SysUtils, Classes, DateUtils, ACBrTXTClass;
+  SysUtils, Classes, DateUtils, ACBrTXTClass, contnrs;
 
 Const
   /// Código da Situação Tributária referente ao IPI.
@@ -60,6 +60,68 @@ type
   TACBrIndicadorMovimento = (imComDados, // 0- Bloco com dados informados;
                              imSemDados  // 1- Bloco sem dados informados.
                              );
+
+  /// Código indicador de circulação
+  TACBrIndicadorCirculacao = (icReal, // 0- Movimentação (circulação) real do ite
+                              icSimbolica // 1- Movimentação (circulação) simbólica do item
+                              );
+
+  /// Indicador do tipo de totalização do ECF
+  TACBrTipoTotalECF = (itDiario, // 0 - Total do dia
+                       itMensal // 1 - Total do mês
+                       );
+
+  /// Indicador de observações do Mapa-Resumo ECF
+  TACBrObsMapaResumo = (ioSemObservacoes, // 0- MR-ECF sem observação
+                        ioComObservacoes // 1- MR-ECF com observação(ões)
+                        );
+
+  TACBrDataInventario = (di0, // 0- Levantado no último dia do ano civil, coincidente com a data do balanço
+                         di1, // 1- Levantado no último dia do ano civil, divergente da data do balanço
+                         di2, // 2- Levantado na data do balanço, divergente do último dia do ano civil
+                         di3 // 3- Levantado em data divergente da data do último balanço e do último dia do ano civil
+                         );
+
+  TACBrTotalAquisicaoPrestacao = (isSubtotalAquisicaoInterna, // 0- Subtotal das aquisições internas
+                                  isSubtotalAquisicaoOutros, // 1- Subtotal das aquisições de outros municípios
+                                  isSubtotalAquisicaoExterior, // 2- Subtotal das aquisições do exterior
+                                  isTotalAquisicoes, // 3- Total das aquisições do período
+                                  isSubtotalPrestacaoInterna, // 4- Subtotal das prestações internas
+                                  isSubtotalPrestacaoOutros, // 5- Subtotal das prestações para outros municípios
+                                  isSubtotalPrestacaoExterior, // 6- Subtotal das prestações para o exterior
+                                  isTotalPrestacoes // 7- Total das prestações do período
+                                  );
+
+  TACBrTipoDeducaoISS = (tdCompensacaoAMaior, // 0- Compensação do ISS calculado a maior
+                         tdIncentivoCultura, // 1- Benefício fiscal por incentivo à cultura
+                         tdDecisaoJudicial, // 2- Decisão administrativa ou judicial
+                         tdOutros // 9- Outros
+                         );
+
+  /// Indicador do tipo de compensação do ISS
+  TACBrTipoCompensacaoISS = (ciCancelamento, // 0- Cancelamento de nota fiscal
+                             ciGlosaValor, // 1- Glosa de valor faturado
+                             ciErroValor, // 2- Erro de preenchimento de valor faturado
+                             ciErroValorDeclarado, // 3- Erro de preenchimento de valor faturado
+                             ciErroValorDeducao, // 4- Erro de preenchimento de valor de dedução da base de cálculo
+                             ciErroValorISSRetido, // 5- Erro de preenchimento de valor de ISS retido
+                             ciOutros // 9- Outros
+                             );
+
+  /// Indicador de habilitação profissional
+  TACBrHabilitacaoProfissional = (hpHabilitado, // 0- Profissional habilitado
+                                  hpNaoHabilitado // 1- Profissional não habilitado
+                                  );
+
+  /// Indicador de escolaridade
+  TACBrEscolaridade = (neSuperior, // 0- Nïvel superior
+                            neMedio // 1- Nível médio
+                            );
+
+  /// Indicador de participação societária
+  TACBrParticipacaoSocietaria = (psSocio, // 0- Sócio
+                                 psNaoSocio // 1- Não sócio
+                                 );
 
   {Juliana Tamizou - começa aqui}
   /// Versão do Leiaute do arquivo - TRegistro0000
@@ -418,8 +480,22 @@ type
     property IND_MOV: TACBrIndicadorMovimento read FIND_MOV write FIND_MOV;
   end;
 
+  TACBrLFDRegistros = class(TObjectList)
+  public
+    function AchaUltimoPai(ANomePai, ANomeFilho: String): Integer;
+  end;
+
 implementation
 
 { TOpenBlocos }
+
+{ TACBrLFDRegistros }
+
+function TACBrLFDRegistros.AchaUltimoPai(ANomePai, ANomeFilho: String): Integer;
+begin
+  Result := Count - 1;
+  if Result < 0 then
+    raise Exception.CreateFmt('O registro %:0s deve ser filho do registro %:1s, e não existe nenhum %:1s pai!', [ANomeFilho, ANomePai]);
+end;
 
 end.

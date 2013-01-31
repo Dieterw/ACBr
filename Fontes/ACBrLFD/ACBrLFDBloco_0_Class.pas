@@ -138,9 +138,12 @@ type
     property Registro0030Count: Integer read FRegistro0030Count write FRegistro0030Count;
     property Registro0120Count: Integer read FRegistro0120Count write FRegistro0120Count;
     property Registro0150Count: Integer read FRegistro0150Count write FRegistro0150Count;
+    property Registro0175Count: Integer read FRegistro0175Count write FRegistro0175Count;
     property Registro0200Count: Integer read FRegistro0200Count write FRegistro0200Count;
+    property Registro0205Count: Integer read FRegistro0205Count write FRegistro0205Count;
     property Registro0400Count: Integer read FRegistro0400Count write FRegistro0400Count;
     property Registro0450Count: Integer read FRegistro0450Count write FRegistro0450Count;
+    property Registro0460Count: Integer read FRegistro0460Count write FRegistro0460Count;
 
     property OnBeforeWriteRegistro0200: TWriteRegistroEvent read FOnBeforeWriteRegistro0200 write FOnBeforeWriteRegistro0200;
     property OnBeforeWriteRegistro0210: TWriteRegistroEvent read FOnBeforeWriteRegistro0210 write FOnBeforeWriteRegistro0210;

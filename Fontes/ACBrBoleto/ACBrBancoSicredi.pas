@@ -154,7 +154,7 @@ function TACBrBancoSicredi.MontarCampoNossoNumero (const ACBrTitulo: TACBrTitulo
 var
   aNossoNumero: String;
 begin
-   ACBrTitulo.NossoNumero:=FormatDateTime('yy',date)+'2'+copy(ACBrTitulo.NossoNumero,4,6);
+   ACBrTitulo.NossoNumero:=FormatDateTime('yy',ACBrTitulo.DataDocumento)+'2'+copy(ACBrTitulo.NossoNumero,4,6);
    Result:= copy(ACBrTitulo.NossoNumero,1,2) + '/' +
             copy(ACBrTitulo.NossoNumero,3,6) + '-' +
             CalcularDigitoVerificador(ACBrTitulo);

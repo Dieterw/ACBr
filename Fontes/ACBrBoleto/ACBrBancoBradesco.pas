@@ -239,7 +239,8 @@ begin
          tbCliEmite : TipoBoleto := '2';
       else
          TipoBoleto := '1';
-         DigitoNossoNumero := '0';
+         if NossoNumero = EmptyStr then
+           DigitoNossoNumero := '0';
       end;
 
       {Pegando Especie}

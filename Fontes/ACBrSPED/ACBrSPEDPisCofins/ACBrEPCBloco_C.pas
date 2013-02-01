@@ -146,7 +146,7 @@ type
     fIND_EMIT              : TACBrEmitente;           /// Indicador do emitente do documento fiscal: 0- Emissão própria; 1- Terceiros
     fCOD_PART              : String;                  /// Código do participante (campo 02 do Registro 0150):
     fCOD_MOD               : String;                  /// Código do modelo do documento fiscal, conforme a Tabela 4.1.1
-    fCOD_SIT               : TACBrSituacaoDocto;      /// Código da situação do documento fiscal, conforme a Tabela 4.1.2
+    fCOD_SIT               : TACBrCodSit;             /// Código da situação do documento fiscal, conforme a Tabela 4.1.2
     fSER                   : String;                  /// Série do documento fiscal
     fNUM_DOC               : String;                  /// Número do documento fiscal
     fCHV_NFE               : String;                  /// Chave da Nota Fiscal Eletrônica
@@ -183,7 +183,7 @@ type
     property IND_EMIT      : TACBrEmitente      read FIND_EMIT      write FIND_EMIT;
     property COD_PART      : String             read FCOD_PART      write FCOD_PART;
     property COD_MOD       : String             read FCOD_MOD       write FCOD_MOD;
-    property COD_SIT       : TACBrSituacaoDocto read FCOD_SIT       write FCOD_SIT;
+    property COD_SIT       : TACBrCodSit        read FCOD_SIT       write FCOD_SIT;
     property SER           : String             read FSER           write FSER;
     property NUM_DOC       : String             read FNUM_DOC       write FNUM_DOC;
     property CHV_NFE       : String             read FCHV_NFE       write FCHV_NFE;
@@ -1155,7 +1155,7 @@ type
   private
     fCOD_PART             : string;               //02	COD_PART	Código do participante do fornecedor (campo 02 do Registro 0150). 	C	060	-
     fCOD_MOD              : string;               //03	COD_MOD	Código do modelo do documento fiscal, conforme a Tabela 4.1.1 	C	002*	-
-    fCOD_SIT              : TACBrSituacaoDocto;   //04	COD_SIT	Código da situação do documento fiscal, conforme a Tabela 4.1.2 	N	002*	-
+    fCOD_SIT              : TACBrCodSit;          //04	COD_SIT	Código da situação do documento fiscal, conforme a Tabela 4.1.2 	N	002*	-
     fSER                  : string;               //05	SER	Série do documento fiscal	C	004	-
     fSUB                  : Integer;              //06	SUB	Subsérie do documento fiscal	N	003	-
     fNUM_DOC              : Integer;              //07	NUM_DOC	Número do documento fiscal	N	009	-
@@ -1176,7 +1176,7 @@ type
 
     property COD_PART     : string             read FCOD_PART     write FCOD_PART;
     property COD_MOD      : string             read FCOD_MOD      write FCOD_MOD;
-    property COD_SIT      : TACBrSituacaoDocto read FCOD_SIT      write FCOD_SIT;
+    property COD_SIT      : TACBrCodSit        read FCOD_SIT      write FCOD_SIT;
     property SER          : string             read FSER          write FSER;
     property SUB          : Integer            read FSUB          write FSUB;
     property NUM_DOC      : Integer            read FNUM_DOC      write FNUM_DOC;

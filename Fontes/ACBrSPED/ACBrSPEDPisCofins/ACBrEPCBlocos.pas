@@ -173,20 +173,6 @@ type
                   csfOutros               // 99 – Outros
                   );
 
-  /// Código da situação do documento fiscal:
-  TACBrCodSit = (
-                 sdfRegular,                 // 00 – Documento regular
-                 sdfExtRegular,              // 01 - Escrituração extemporânea de documento regular
-                 sdfCancelado,               // 02 – Documento cancelado
-                 sdfExtCancelado,            // 03 Escrituração extemporânea de documento cancelado
-                 sdfDenegado,                // 04 NF-e ou CT-e – denegado
-                 sdfInutilizado,             // 05 NF-e ou CT-e - Numeração inutilizada
-                 sdfComplementar,            // 06 Documento Fiscal Complementar
-                 sdfExtComplementar,         // 07 Escrituração extemporânea de documento complementar
-                 sdfEspecial                 // 08 Documento Fiscal emitido com base em Regime Especial ou Norma Específica
-                 );
-  TACBrSituacaoDF = TACBrCodSit;
-
   /// Indicador do tipo de pagamento
   TACBrIndPgto = (
                   tpVista,             // 0 - À Vista
@@ -372,6 +358,22 @@ type
 //                         tnCabotagem
 //                        );
   /// Situação do Documento
+  /// Código da situação do documento fiscal:
+  /// Código da situação do documento fiscal:
+  TACBrCodSit = (
+                 sdfRegular,                 // 00 – Documento regular
+                 sdfExtRegular,              // 01 - Escrituração extemporânea de documento regular
+                 sdfCancelado,               // 02 – Documento cancelado
+                 sdfExtCancelado,            // 03 Escrituração extemporânea de documento cancelado
+                 sdfDenegado,                // 04 NF-e ou CT-e – denegado
+                 sdfInutilizado,             // 05 NF-e ou CT-e - Numeração inutilizada
+                 sdfComplementar,            // 06 Documento Fiscal Complementar
+                 sdfExtComplementar,         // 07 Escrituração extemporânea de documento complementar
+                 sdfEspecial                 // 08 Documento Fiscal emitido com base em Regime Especial ou Norma Específica
+                 );
+  TACBrSituacaoDF = TACBrCodSit;
+
+(*
   TACBrSituacaoDocto = (
                          sdRegular,                 // 00 - Documento regular
                          sdExtempRegular,           // 01 - Escrituração extemporânea de documento regular
@@ -383,6 +385,7 @@ type
                          sdExtempCompl,             // 07 - Escrituração extemporânea de documento complementar
                          sdRegimeEspecNEsp          // 08 - Documento Fiscal emitido com base em Regime Especial ou Norma Específica
                         );
+*)
   /// Indicador do tipo de tarifa aplicada:
 //  TACBrTipoTarifa = (
 //                      tipExp,     // 0 - Exp
@@ -1054,6 +1057,16 @@ cstipi53 = stipiSaidaNaoTributada;
 cstipi54 = stipiSaidaImune;
 cstipi55 = stipiSaidaComSuspensao;
 cstipi99 = stipiOutrasSaidas;
+
+sdRegular = sdfRegular;
+sdExtempRegular = sdfExtRegular;
+sdCancelado = sdfCancelado;
+sdCanceladoExtemp = sdfExtCancelado;
+sdDoctoDenegado = sdfDenegado;
+sdDoctoNumInutilizada = sdfInutilizado;
+sdFiscalCompl = sdfComplementar;
+sdExtempCompl = sdfExtComplementar;
+sdRegimeEspecNEsp = sdfEspecial;
 
 function CodVerToStr(AValue: TACBrCodVer): string;
 function StrToCodVer(AValue: string): TACBrCodVer;

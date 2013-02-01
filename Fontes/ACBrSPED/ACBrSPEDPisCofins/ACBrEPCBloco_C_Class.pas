@@ -745,17 +745,21 @@ begin
             edEmissaoPropria  : strIND_EMIT := '0';
             edTerceiros       : strIND_EMIT := '1';
           end;
-          case COD_SIT of
-            sdRegular             : strCOD_SIT := '00';
-            sdExtempRegular       : strCOD_SIT := '01';
-            sdCancelado           : strCOD_SIT := '02';
-            sdCanceladoExtemp     : strCOD_SIT := '03';
-            sdDoctoDenegado       : strCOD_SIT := '04';
-            sdDoctoNumInutilizada : strCOD_SIT := '05';
-            sdFiscalCompl         : strCOD_SIT := '06';
-            sdExtempCompl         : strCOD_SIT := '07';
-            sdRegimeEspecNEsp     : strCOD_SIT := '08';
-          end;
+
+//          case COD_SIT of
+//            sdRegular             : strCOD_SIT := '00';
+//            sdExtempRegular       : strCOD_SIT := '01';
+//            sdCancelado           : strCOD_SIT := '02';
+//            sdCanceladoExtemp     : strCOD_SIT := '03';
+//            sdDoctoDenegado       : strCOD_SIT := '04';
+//            sdDoctoNumInutilizada : strCOD_SIT := '05';
+//            sdFiscalCompl         : strCOD_SIT := '06';
+//            sdExtempCompl         : strCOD_SIT := '07';
+//            sdRegimeEspecNEsp     : strCOD_SIT := '08';
+//          end;
+
+          // Substitui o código acima comentado.
+          strCOD_SIT := CodSitToStr(COD_SIT);
 
           /// Tratamento NFs canceladas 02/03, denegada 04 ou inutilizada 05 - Jean Barreiros 25Nov2009
           if Pos(strCOD_SIT,'02, 03, 04, 05') > 0 then
@@ -2317,6 +2321,7 @@ begin
      begin
         with RegC010.RegistroC500.Items[intFor] do
         begin
+{
            case COD_SIT of
              sdRegular             : strCOD_SIT := '00';
              sdExtempRegular       : strCOD_SIT := '01';
@@ -2328,11 +2333,11 @@ begin
              sdExtempCompl         : strCOD_SIT := '07';
              sdRegimeEspecNEsp     : strCOD_SIT := '08';
            end;
-
+}
            Add( LFill('C500')               +
                 LFill( COD_PART )           +
                 LFill( COD_MOD,2 )          +
-                LFill( strCOD_SIT )         +
+                LFill( CodSitToStr(COD_SIT) )  +
                 LFill( SER )                +
                 LFill( SUB, 3 )                +
                 LFill( NUM_DOC,9 )          +

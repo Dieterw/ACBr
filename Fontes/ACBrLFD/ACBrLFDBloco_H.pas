@@ -280,6 +280,7 @@ implementation
 constructor TRegistroH001.Create;
 begin
   FRegistroH020 := TRegistroH020List.Create;
+  IND_MOV := imSemDados;
 end;
 
 destructor TRegistroH001.Destroy;

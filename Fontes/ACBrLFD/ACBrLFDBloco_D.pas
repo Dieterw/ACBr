@@ -54,6 +54,7 @@ type
   TRegistroD001 = class(TOpenBlocos)
   private
   public
+    constructor Create; virtual; /// Create
   end;
 
   /// Registro D990 - Encerramento do Bloco D
@@ -68,5 +69,12 @@ type
   end;
 
 implementation
+
+{ TRegistroD001 }
+
+constructor TRegistroD001.Create;
+begin
+   IND_MOV := imSemDados;
+end;
 
 end.

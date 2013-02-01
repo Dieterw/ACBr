@@ -464,7 +464,8 @@ begin
        with FRegistroB001 do
        begin
           Add( LFill( 'B001' ) +
-               LFill( Integer(IND_MOV), 0 ) ) ;
+               LFill( Integer(IND_MOV), 0 ) +
+               LFill(COD_MUN,7)) ;
 
           if IND_MOV = imComDados then
           begin

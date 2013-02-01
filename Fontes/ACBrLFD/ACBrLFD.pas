@@ -56,10 +56,12 @@ uses
   DateUtils, ACBrLFD3505 ,ACBrTXTClass, ACBrLFDBlocos, 
   ACBrLFDBloco_0_Class,
   ACBrLFDBloco_A_Class, ACBrLFDBloco_B_Class, ACBrLFDBloco_C_Class, ACBrLFDBloco_D_Class,
-  ACBrLFDBloco_E_Class, ACBrLFDBloco_H_Class, ACBrLFDBloco_8_Class, ACBrLFDBloco_9_Class,
+  ACBrLFDBloco_E_Class, ACBrLFDBloco_F_Class, ACBrLFDBloco_G_Class, ACBrLFDBloco_H_Class,
+  ACBrLFDBloco_Z_Class, ACBrLFDBloco_8_Class, ACBrLFDBloco_9_Class,
   ACBrLFDBloco_0_Events,
   ACBrLFDBloco_A_Events, ACBrLFDBloco_B_Events, ACBrLFDBloco_C_Events, ACBrLFDBloco_D_Events,
-  ACBrLFDBloco_E_Events, ACBrLFDBloco_H_Events, ACBrLFDBloco_8_Events, ACBrLFDBloco_9_Events;
+  ACBrLFDBloco_E_Events, ACBrLFDBloco_F_Events, ACBrLFDBloco_G_Events, ACBrLFDBloco_H_Events,
+  ACBrLFDBloco_Z_Events, ACBrLFDBloco_8_Events, ACBrLFDBloco_9_Events;
 
 const
   CACBrLFD_Versao = '1.00';
@@ -81,6 +83,11 @@ type
     FEventsBloco_C: TEventsBloco_C;
     FEventsBloco_D: TEventsBloco_D;
     FEventsBloco_E: TEventsBloco_E;
+    FEventsBloco_F: TEventsBloco_F;
+    FEventsBloco_G: TEventsBloco_G;
+    FEventsBloco_H: TEventsBloco_H;
+    FEventsBloco_Z: TEventsBloco_Z;
+    FEventsBloco_8: TEventsBloco_8;
 
     FDT_INI: TDateTime;           /// Data inicial das informações contidas no arquivo
     FDT_FIN: TDateTime;           /// Data final das informações contidas no arquivo
@@ -97,7 +104,10 @@ type
     FBloco_C: TBloco_C;
     FBloco_D: TBloco_D;
     FBloco_E: TBloco_E;
+    FBloco_F: TBloco_F;
+    FBloco_G: TBloco_G;
     FBloco_H: TBloco_H;
+    FBloco_Z: TBloco_Z;
     FBloco_8: TBloco_8;
     FBloco_9: TBloco_9;
 
@@ -143,9 +153,12 @@ type
     /// BLOCO E
     procedure WriteRegistroE001;
     procedure WriteRegistroE990;
+    /// BLOCO F
+    procedure WriteRegistroF001;
+    procedure WriteRegistroF990;
     /// BLOCO G
-    {procedure WriteRegistroG001;
-    procedure WriteRegistroG990;}
+    procedure WriteRegistroG001;
+    procedure WriteRegistroG990;
     /// BLOCO H
     procedure WriteRegistroH001;
     procedure WriteRegistroH990;
@@ -173,8 +186,10 @@ type
     procedure WriteBloco_C( FechaBloco: Boolean );
     procedure WriteBloco_D;
     procedure WriteBloco_E;
+    procedure WriteBloco_F;
     procedure WriteBloco_G;
     procedure WriteBloco_H;
+    procedure WriteBloco_Z;
     procedure WriteBloco_8;
     procedure WriteBloco_9;
 
@@ -189,7 +204,10 @@ type
     property Bloco_C: TBloco_C read FBloco_C write FBloco_C;
     property Bloco_D: TBloco_D read FBloco_D write FBloco_D;
     property Bloco_E: TBloco_E read FBloco_E write FBloco_E;
+    property Bloco_F: TBloco_F read FBloco_F write FBloco_F;
+    property Bloco_G: TBloco_G read FBloco_G write FBloco_G;
     property Bloco_H: TBloco_H read FBloco_H write FBloco_H;
+    property Bloco_Z: TBloco_Z read FBloco_Z write FBloco_Z;
     property Bloco_8: TBloco_8 read FBloco_8 write FBloco_8;
     property Bloco_9: TBloco_9 read FBloco_9 write FBloco_9;
   published
@@ -206,10 +224,16 @@ type
 
     property OnError: TErrorEvent read GetOnError write SetOnError;
 
-    property EventsBloco_0: TEventsBloco_0 read FEventsBloco_0; // write FOnEventsBloco_0;
-    property EventsBloco_C: TEventsBloco_C read FEventsBloco_C; // write FOnEventsBloco_C;
-    property EventsBloco_D: TEventsBloco_D read FEventsBloco_D; // write FOnEventsBloco_D;
-    property EventsBloco_E: TEventsBloco_E read FEventsBloco_E; // write FOnEventsBloco_E;
+    property EventsBloco_0: TEventsBloco_0 read FEventsBloco_0;
+    property EventsBloco_C: TEventsBloco_C read FEventsBloco_C;
+    property EventsBloco_D: TEventsBloco_D read FEventsBloco_D;
+    property EventsBloco_E: TEventsBloco_E read FEventsBloco_E;
+    property EventsBloco_F: TEventsBloco_F read FEventsBloco_F;
+    property EventsBloco_G: TEventsBloco_G read FEventsBloco_G;
+    property EventsBloco_H: TEventsBloco_H read FEventsBloco_H;
+    property EventsBloco_Z: TEventsBloco_Z read FEventsBloco_Z;
+    property EventsBloco_8: TEventsBloco_8 read FEventsBloco_8;
+
   end;
 
 procedure Register;
@@ -243,18 +267,12 @@ begin
   FBloco_C := TBloco_C.Create;
   FBloco_D := TBloco_D.Create;
   FBloco_E := TBloco_E.Create;
+  FBloco_F := TBloco_F.Create;
+  FBloco_G := TBloco_G.Create;
   FBloco_H := TBloco_H.Create;
+  FBloco_Z := TBloco_Z.Create;
   FBloco_8 := TBloco_8.Create;
   FBloco_9 := TBloco_9.Create;
-
-  /// Objeto passado por referência para que possamos usa-lo para fazer pesquisa
-  /// em seus registros.
-  /// Ex: Do Bloco_C registro C425, pesquisar o Bloco_0 registro 0200.
-  //FBloco_C.Bloco_0 := FBloco_0;
-  {FBloco_D.Bloco_0 := FBloco_0;
-  FBloco_E.Bloco_0 := FBloco_0;
-  FBloco_G.Bloco_0 := FBloco_0;
-  FBloco_H.Bloco_0 := FBloco_0;}
 
   FPath := ExtractFilePath(ParamStr(0));
   FDelimitador := '|';
@@ -281,6 +299,26 @@ begin
   FEventsBloco_E := TEventsBloco_E.Create(Self);
   FEventsBloco_E.Name := 'EventsBloco_E';
   FEventsBloco_E.SetSubComponent(True);
+
+  FEventsBloco_F := TEventsBloco_F.Create(Self);
+  FEventsBloco_F.Name := 'EventsBloco_F';
+  FEventsBloco_F.SetSubComponent(True);
+
+  FEventsBloco_G := TEventsBloco_G.Create(Self);
+  FEventsBloco_G.Name := 'EventsBloco_G';
+  FEventsBloco_G.SetSubComponent(True);
+
+  FEventsBloco_H := TEventsBloco_H.Create(Self);
+  FEventsBloco_H.Name := 'EventsBloco_H';
+  FEventsBloco_H.SetSubComponent(True);
+
+  FEventsBloco_Z := TEventsBloco_Z.Create(Self);
+  FEventsBloco_Z.Name := 'EventsBloco_Z';
+  FEventsBloco_Z.SetSubComponent(True);
+
+  FEventsBloco_8 := TEventsBloco_8.Create(Self);
+  FEventsBloco_8.Name := 'EventsBloco_8';
+  FEventsBloco_8.SetSubComponent(True);
 end;
 
 destructor TACBrLFD.Destroy;
@@ -291,6 +329,11 @@ begin
   FEventsBloco_C.Free;
   FEventsBloco_D.Free;
   FEventsBloco_E.Free;
+  FEventsBloco_F.Free;
+  FEventsBloco_G.Free;
+  FEventsBloco_H.Free;
+  FEventsBloco_Z.Free;
+  FEventsBloco_8.Free;
 
   FBloco_0.Free;
   FBloco_A.Free;
@@ -298,7 +341,10 @@ begin
   FBloco_C.Free;
   FBloco_D.Free;
   FBloco_E.Free;
+  FBloco_F.Free;
+  FBloco_G.Free;
   FBloco_H.Free;
+  FBloco_Z.Free;
   FBloco_8.Free;
   FBloco_9.Free;
   inherited;
@@ -312,7 +358,10 @@ begin
   FBloco_C.LimpaRegistros;
   FBloco_D.LimpaRegistros;
   FBloco_E.LimpaRegistros;
+  FBloco_F.LimpaRegistros;
+  FBloco_G.LimpaRegistros;
   FBloco_H.LimpaRegistros;
+  FBloco_Z.LimpaRegistros;
   FBloco_8.LimpaRegistros;
   FBloco_9.LimpaRegistros;
 end;
@@ -347,7 +396,10 @@ begin
   FBloco_C.Delimitador := Value;
   FBloco_D.Delimitador := Value;
   FBloco_E.Delimitador := Value;
+  FBloco_F.Delimitador := Value;
+  FBloco_G.Delimitador := Value;
   FBloco_H.Delimitador := Value;
+  FBloco_Z.Delimitador := Value;
   FBloco_8.Delimitador := Value;
   FBloco_9.Delimitador := Value;
 end;
@@ -377,7 +429,10 @@ begin
   FBloco_C.CurMascara := Value;
   FBloco_D.CurMascara := Value;
   FBloco_E.CurMascara := Value;
+  FBloco_F.CurMascara := Value;
+  FBloco_G.CurMascara := Value;
   FBloco_H.CurMascara := Value;
+  FBloco_Z.CurMascara := Value;
   FBloco_8.CurMascara := Value;
   FBloco_9.CurMascara := Value;
 end;
@@ -397,7 +452,10 @@ begin
   FBloco_C.TrimString := Value;
   FBloco_D.TrimString := Value;
   FBloco_E.TrimString := Value;
+  FBloco_F.TrimString := Value;
+  FBloco_G.TrimString := Value;
   FBloco_H.TrimString := Value;
+  FBloco_Z.TrimString := Value;
   FBloco_8.TrimString := Value;
   FBloco_9.TrimString := Value;
 end;
@@ -431,7 +489,10 @@ begin
   InicializaBloco( Bloco_C ) ;
   InicializaBloco( Bloco_D ) ;
   InicializaBloco( Bloco_E ) ;
+  InicializaBloco( Bloco_F ) ;
+  InicializaBloco( Bloco_G ) ;
   InicializaBloco( Bloco_H ) ;
+  InicializaBloco( Bloco_Z ) ;
   InicializaBloco( Bloco_8 ) ;
   InicializaBloco( Bloco_9 ) ;
 
@@ -458,7 +519,10 @@ begin
   Bloco_C.RegistroC990.QTD_LIN_C := 0;
   Bloco_D.RegistroD990.QTD_LIN_D := 0;
   Bloco_E.RegistroE990.QTD_LIN_E := 0;
+  Bloco_F.RegistroF990.QTD_LIN_F := 0;
+  Bloco_G.RegistroG990.QTD_LIN_G := 0;
   Bloco_H.RegistroH990.QTD_LIN_H := 0;
+  Bloco_Z.RegistroZ990.QTD_LIN_Z := 0;
   Bloco_8.Registro8990.QTD_LIN_8 := 0;
   Bloco_9.Registro9990.QTD_LIN_9 := 0;
 
@@ -489,14 +553,17 @@ begin
   FBloco_C.DT_INI := Value;
   FBloco_D.DT_INI := Value;
   FBloco_E.DT_INI := Value;
+  FBloco_F.DT_INI := Value;
+  FBloco_G.DT_INI := Value;
   FBloco_H.DT_INI := Value;
+  FBloco_Z.DT_INI := Value;
   FBloco_8.DT_INI := Value;
   FBloco_9.DT_INI := Value;
 
   if Assigned(FBloco_0) then
   begin
     FBloco_0.Registro0000.DT_INI := Value;
-    //     FBloco_E.RegistroE100.DT_INI := Value;
+    {FBloco_E.RegistroE100.DT_INI := Value;}
   end;
 end;
 
@@ -515,14 +582,17 @@ begin
   FBloco_C.DT_FIN := Value;
   FBloco_D.DT_FIN := Value;
   FBloco_E.DT_FIN := Value;
+  FBloco_F.DT_FIN := Value;
+  FBloco_G.DT_FIN := Value;
   FBloco_H.DT_FIN := Value;
+  FBloco_Z.DT_FIN := Value;
   FBloco_8.DT_FIN := Value;
   FBloco_9.DT_FIN := Value;
 
   if Assigned(FBloco_0) then
   begin
     FBloco_0.Registro0000.DT_FIN := Value;
-    //     FBloco_E.RegistroE100.DT_FIN := Value;
+    {FBloco_E.RegistroE100.DT_FIN := Value;}
   end;
 end;
 
@@ -541,7 +611,10 @@ begin
   FBloco_C.OnError := Value;
   FBloco_D.OnError := Value;
   FBloco_E.OnError := Value;
+  FBloco_F.OnError := Value;
+  FBloco_G.OnError := Value;
   FBloco_H.OnError := Value;
+  FBloco_Z.OnError := Value;
   FBloco_8.OnError := Value;
   FBloco_9.OnError := Value;
 end;
@@ -552,12 +625,17 @@ begin
     IniciaGeracao;
 
     WriteBloco_0;
+
     WriteBloco_A;
     WriteBloco_B;
     WriteBloco_C( True );    // True = Fecha o Bloco
     WriteBloco_D;
     WriteBloco_E;
+    WriteBloco_F;
+    WriteBloco_G;
     WriteBloco_H;
+    WriteBloco_Z;
+
     WriteBloco_8;
     WriteBloco_9;
   finally
@@ -571,7 +649,7 @@ end;
 
 procedure TACBrLFD.WriteBloco_0;
 begin
-  if Bloco_0.Gravado then exit ;
+  if Bloco_0.Gravado then Exit;
 
   if not FInicializado then
      raise Exception.Create( 'Métodos "IniciaGeracao" não foi executado' );
@@ -587,132 +665,166 @@ end;
 
 procedure TACBrLFD.WriteBloco_A;
 begin
-   if Bloco_A.Gravado then exit ;
+  if Bloco_A.Gravado then Exit;
 
-   if not FInicializado then
-      raise Exception.Create( 'Métodos "IniciaGeracao" não foi executado' );
+  if not Bloco_0.Gravado then
+    WriteBloco_0;
 
-   WriteRegistroA001;
-   WriteRegistroA990;
-   Bloco_A.WriteBuffer;
-   Bloco_A.Conteudo.Clear;
-   Bloco_A.Gravado := True ;
+  /// BLOCO A
+  WriteRegistroA001;
+  WriteRegistroA990;
+  Bloco_A.WriteBuffer;
+  Bloco_A.Conteudo.Clear;
+  Bloco_A.Gravado := True ;
 end;
 
 procedure TACBrLFD.WriteBloco_B;
 begin
-   if Bloco_B.Gravado then exit ;
+  if Bloco_B.Gravado then Exit;
 
-   if not FInicializado then
-      raise Exception.Create( 'Métodos "IniciaGeracao" não foi executado' );
+  if not Bloco_A.Gravado then
+    WriteBloco_A;
 
-   WriteRegistroB001;
-   WriteRegistroB990;
-   Bloco_B.WriteBuffer;
-   Bloco_B.Conteudo.Clear;
-   Bloco_B.Gravado := True ;
+  /// BLOCO B
+  WriteRegistroB001;
+  WriteRegistroB990;
+  Bloco_B.WriteBuffer;
+  Bloco_B.Conteudo.Clear;
+  Bloco_B.Gravado := True ;
 end;
 
 procedure TACBrLFD.WriteBloco_C( FechaBloco : Boolean );
 begin
-   if Bloco_C.Gravado then exit ;
+  if Bloco_C.Gravado then Exit;
 
-   if not Bloco_0.Gravado then
-      WriteBloco_0 ;
+  if not Bloco_B.Gravado then
+    WriteBloco_B;
 
-   /// BLOCO C
-   WriteRegistroC001;
+  /// BLOCO C
+  WriteRegistroC001;
 
-   if Bloco_C.RegistroC001.IND_MOV = imSemDados then
-      FechaBloco := True ;
+  if Bloco_C.RegistroC001.IND_MOV = imSemDados then
+    FechaBloco := True;
 
-   if FechaBloco then
-      WriteRegistroC990;
+  if FechaBloco then
+    WriteRegistroC990;
 
-   Bloco_C.WriteBuffer;
-   Bloco_C.Conteudo.Clear;
-
-   Bloco_C.Gravado := FechaBloco;
+  Bloco_C.WriteBuffer;
+  Bloco_C.Conteudo.Clear;
+  Bloco_C.Gravado := FechaBloco;
 end;
 
 procedure TACBrLFD.WriteBloco_D;
 begin
-   if Bloco_D.Gravado then exit ;
+  if Bloco_D.Gravado then Exit;
 
-   if not Bloco_C.Gravado then
-      WriteBloco_C(True);
+  if not Bloco_C.Gravado then
+    WriteBloco_C(True);
 
-   /// BLOCO D
-   WriteRegistroD001;
-   WriteRegistroD990;
-   Bloco_D.WriteBuffer;
-   Bloco_D.Conteudo.Clear;
-   Bloco_D.Gravado := True ;
+  /// BLOCO D
+  WriteRegistroD001;
+  WriteRegistroD990;
+  Bloco_D.WriteBuffer;
+  Bloco_D.Conteudo.Clear;
+  Bloco_D.Gravado := True ;
 end;
 
 procedure TACBrLFD.WriteBloco_E;
 begin
-   {if Bloco_E.Gravado then exit ;
+  if Bloco_E.Gravado then Exit;
 
-   if not Bloco_D.Gravado then
-      WriteBloco_D;
+  if not Bloco_D.Gravado then
+    WriteBloco_D;
 
-   /// BLOCO E
-   WriteRegistroE001;
-   WriteRegistroE990;
-   Bloco_E.WriteBuffer;
-   Bloco_E.Conteudo.Clear;
-   Bloco_E.Gravado := True ;  }
+  /// BLOCO E
+  WriteRegistroE001;
+  WriteRegistroE990;
+  Bloco_E.WriteBuffer;
+  Bloco_E.Conteudo.Clear;
+  Bloco_E.Gravado := True ;
+end;
+
+procedure TACBrLFD.WriteBloco_F;
+begin
+  if Bloco_F.Gravado then Exit;
+
+  if not Bloco_E.Gravado then
+    WriteBloco_E;
+
+  /// BLOCO F
+  WriteRegistroF001;
+  WriteRegistroF990;
+  Bloco_F.WriteBuffer;
+  Bloco_F.Conteudo.Clear;
+  Bloco_F.Gravado := True ;
 end;
 
 procedure TACBrLFD.WriteBloco_G;
 begin
-   (*if Bloco_G.Gravado then exit ;
+  if Bloco_G.Gravado then Exit;
 
-   if not Bloco_E.Gravado then
-      WriteBloco_E;
+  if not Bloco_F.Gravado then
+    WriteBloco_F;
 
-   /// Este ato entra em vigor na data de sua publicação, produzindo efeitos
-   /// para as escriturações referentes aos períodos a partir de 1º de  janeiro de 2010,
-   /// --> exceto quanto ao BLOCO G e registros pertinentes ao Livro de
-   /// Controle de Crédito de ICMS do Ativo Permanente cujos efeitos serão
-   /// a partir de 1º de julho de 2010 <--.
-   /// Exigência do Art. 3º do AC 09/08
-   ///
-   /// Prorrogado para 01/01/2011 conforme Guia Prático da EFD 2.01
-   /// *Bloco G incluído para vigorar a partir do período de apuração de janeiro de 2011.
-   if DT_INI >= EncodeDate(2011,01,01) then
-   begin
-     /// BLOCO G
-     WriteRegistroG001;
-     WriteRegistroG990;
-     Bloco_G.WriteBuffer;
-   end;
-
-   Bloco_G.Conteudo.Clear;
-   Bloco_G.Gravado := True ;*)
+  /// BLOCO G
+  WriteRegistroG001;
+  WriteRegistroG990;
+  Bloco_G.WriteBuffer;
+  Bloco_G.Conteudo.Clear;
+  Bloco_G.Gravado := True ;
 end;
 
 procedure TACBrLFD.WriteBloco_H;
 begin
-   {if Bloco_H.Gravado then exit ;
+  if Bloco_H.Gravado then Exit;
 
-   /// BLOCO H
-   WriteRegistroH001;
-   WriteRegistroH990;
-   Bloco_H.WriteBuffer;
-   Bloco_H.Conteudo.Clear;
-   Bloco_H.Gravado := True ;  }
+  if not Bloco_G.Gravado then
+    WriteBloco_G;
+
+  /// BLOCO H
+  WriteRegistroH001;
+  WriteRegistroH990;
+  Bloco_H.WriteBuffer;
+  Bloco_H.Conteudo.Clear;
+  Bloco_H.Gravado := True;
+end;
+
+procedure TACBrLFD.WriteBloco_Z;
+begin
+  if Bloco_Z.Gravado then Exit;
+
+  if not Bloco_H.Gravado then
+    WriteBloco_H;
+
+  /// BLOCO Z
+  WriteRegistroZ001;
+  WriteRegistroZ990;
+  Bloco_Z.WriteBuffer;
+  Bloco_Z.Conteudo.Clear;
+  Bloco_Z.Gravado := True;
 end;
 
 procedure TACBrLFD.WriteBloco_8;
 begin
+  if Bloco_8.Gravado then Exit;
 
+  if not Bloco_Z.Gravado then
+    WriteBloco_Z;
+
+  /// BLOCO 8
+  WriteRegistro8001;
+  WriteRegistro8990;
+  Bloco_8.WriteBuffer;
+  Bloco_8.Conteudo.Clear;
+  Bloco_8.Gravado := True;
 end;
 
 procedure TACBrLFD.WriteBloco_9;
 begin
-   {if Bloco_9.Gravado then exit ;
+   if Bloco_9.Gravado then exit ;
+
+   if not Bloco_8.Gravado then
+      WriteBloco_8;
 
    /// BLOCO 9
    WriteRegistro9001;
@@ -722,7 +834,7 @@ begin
 
    Bloco_9.WriteBuffer;
    Bloco_9.Conteudo.Clear;
-   Bloco_9.Gravado := True ; }
+   Bloco_9.Gravado := True ;
 end;
 
 procedure TACBrLFD.WriteRegistro0000;
@@ -1271,6 +1383,314 @@ end;
 procedure TACBrLFD.WriteRegistroC001;
 begin
   Bloco_C.WriteRegistroC001;
+  with Bloco_9.Registro9900.New do
+  begin
+     REG_BLC    := 'C001';
+     QTD_REG_BLC:= 1;
+  end;
+
+  if Bloco_C.RegistroC001.IND_MOV = imComDados then
+  begin
+     with Bloco_9.Registro9900 do
+     begin
+        if Bloco_C.RegistroC020Count > 0 then
+        begin
+           with New do
+           begin
+              REG_BLC := 'C020';
+              QTD_REG_BLC := Bloco_C.RegistroC020Count;
+           end;
+        end;
+
+        if Bloco_C.RegistroC030Count > 0 then
+        begin
+           with New do
+           begin
+              REG_BLC := 'C030';
+              QTD_REG_BLC := Bloco_C.RegistroC030Count;
+           end;
+        end;
+
+        if Bloco_C.RegistroC035Count > 0 then
+        begin
+           with New do
+           begin
+              REG_BLC := 'C035';
+              QTD_REG_BLC := Bloco_C.RegistroC035Count;
+           end;
+        end;
+
+        if Bloco_C.RegistroC040Count > 0 then
+        begin
+           with New do
+           begin
+              REG_BLC := 'C040';
+              QTD_REG_BLC := Bloco_C.RegistroC040Count;
+           end;
+        end;
+
+        if Bloco_C.RegistroC250Count > 0 then
+        begin
+           with New do
+           begin
+              REG_BLC := 'C250';
+              QTD_REG_BLC := Bloco_C.RegistroC250Count;
+           end;
+        end;
+
+        if Bloco_C.RegistroC255Count > 0 then
+        begin
+           with New do
+           begin
+              REG_BLC := 'C255';
+              QTD_REG_BLC := Bloco_C.RegistroC255Count;
+           end;
+        end;
+
+        if Bloco_C.RegistroC260Count > 0 then
+        begin
+           with New do
+           begin
+              REG_BLC := 'C260';
+              QTD_REG_BLC := Bloco_C.RegistroC260Count;
+           end;
+        end;
+
+        if Bloco_C.RegistroC265Count > 0 then
+        begin
+           with New do
+           begin
+              REG_BLC := 'C265';
+              QTD_REG_BLC := Bloco_C.RegistroC265Count;
+           end;
+        end;
+
+        if Bloco_C.RegistroC300Count > 0 then
+        begin
+           with New do
+           begin
+              REG_BLC := 'C300';
+              QTD_REG_BLC := Bloco_C.RegistroC300Count;
+           end;
+        end;
+
+        if Bloco_C.RegistroC305Count > 0 then
+        begin
+           with New do
+           begin
+              REG_BLC := 'C305';
+              QTD_REG_BLC := Bloco_C.RegistroC305Count;
+           end;
+        end;
+
+        if Bloco_C.RegistroC310Count > 0 then
+        begin
+           with New do
+           begin
+              REG_BLC := 'C310';
+              QTD_REG_BLC := Bloco_C.RegistroC310Count;
+           end;
+        end;
+
+        if Bloco_C.RegistroC315Count > 0 then
+        begin
+           with New do
+           begin
+              REG_BLC := 'C315';
+              QTD_REG_BLC := Bloco_C.RegistroC315Count;
+           end;
+        end;
+
+        if Bloco_C.RegistroC320Count > 0 then
+        begin
+           with New do
+           begin
+              REG_BLC := 'C320';
+              QTD_REG_BLC := Bloco_C.RegistroC320Count;
+           end;
+        end;
+
+        if Bloco_C.RegistroC325Count > 0 then
+        begin
+           with New do
+           begin
+              REG_BLC := 'C325';
+              QTD_REG_BLC := Bloco_C.RegistroC325Count;
+           end;
+        end;
+
+        if Bloco_C.RegistroC550Count > 0 then
+        begin
+           with New do
+           begin
+              REG_BLC := 'C550';
+              QTD_REG_BLC := Bloco_C.RegistroC550Count;
+           end;
+        end;
+
+        if Bloco_C.RegistroC560Count > 0 then
+        begin
+           with New do
+           begin
+              REG_BLC := 'C560';
+              QTD_REG_BLC := Bloco_C.RegistroC560Count;
+           end;
+        end;
+
+        if Bloco_C.RegistroC570Count > 0 then
+        begin
+           with New do
+           begin
+              REG_BLC := 'C570';
+              QTD_REG_BLC := Bloco_C.RegistroC570Count;
+           end;
+        end;
+
+        if Bloco_C.RegistroC575Count > 0 then
+        begin
+           with New do
+           begin
+              REG_BLC := 'C575';
+              QTD_REG_BLC := Bloco_C.RegistroC575Count;
+           end;
+        end;
+
+        if Bloco_C.RegistroC600Count > 0 then
+        begin
+           with New do
+           begin
+              REG_BLC := 'C600';
+              QTD_REG_BLC := Bloco_C.RegistroC600Count;
+           end;
+        end;
+
+        if Bloco_C.RegistroC605Count > 0 then
+        begin
+           with New do
+           begin
+              REG_BLC := 'C605';
+              QTD_REG_BLC := Bloco_C.RegistroC605Count;
+           end;
+        end;
+
+        if Bloco_C.RegistroC610Count > 0 then
+        begin
+           with New do
+           begin
+              REG_BLC := 'C610';
+              QTD_REG_BLC := Bloco_C.RegistroC610Count;
+           end;
+        end;
+
+        if Bloco_C.RegistroC615Count > 0 then
+        begin
+           with New do
+           begin
+              REG_BLC := 'C615';
+              QTD_REG_BLC := Bloco_C.RegistroC615Count;
+           end;
+        end;
+
+        if Bloco_C.RegistroC620Count > 0 then
+        begin
+           with New do
+           begin
+              REG_BLC := 'C620';
+              QTD_REG_BLC := Bloco_C.RegistroC620Count;
+           end;
+        end;
+
+        if Bloco_C.RegistroC625Count > 0 then
+        begin
+           with New do
+           begin
+              REG_BLC := 'C625';
+              QTD_REG_BLC := Bloco_C.RegistroC625Count;
+           end;
+        end;
+
+        if Bloco_C.RegistroC700Count > 0 then
+        begin
+           with New do
+           begin
+              REG_BLC := 'C700';
+              QTD_REG_BLC := Bloco_C.RegistroC700Count;
+           end;
+        end;
+
+        if Bloco_C.RegistroC705Count > 0 then
+        begin
+           with New do
+           begin
+              REG_BLC := 'C705';
+              QTD_REG_BLC := Bloco_C.RegistroC705Count;
+           end;
+        end;
+
+        if Bloco_C.RegistroC710Count > 0 then
+        begin
+           with New do
+           begin
+              REG_BLC := 'C710';
+              QTD_REG_BLC := Bloco_C.RegistroC710Count;
+           end;
+        end;
+
+        if Bloco_C.RegistroC715Count > 0 then
+        begin
+           with New do
+           begin
+              REG_BLC := 'C715';
+              QTD_REG_BLC := Bloco_C.RegistroC715Count;
+           end;
+        end;
+
+        if Bloco_C.RegistroC720Count > 0 then
+        begin
+           with New do
+           begin
+              REG_BLC := 'C720';
+              QTD_REG_BLC := Bloco_C.RegistroC720Count;
+           end;
+        end;
+
+        if Bloco_C.RegistroC750Count > 0 then
+        begin
+           with New do
+           begin
+              REG_BLC := 'C750';
+              QTD_REG_BLC := Bloco_C.RegistroC750Count;
+           end;
+        end;
+
+        if Bloco_C.RegistroC755Count > 0 then
+        begin
+           with New do
+           begin
+              REG_BLC := 'C755';
+              QTD_REG_BLC := Bloco_C.RegistroC755Count;
+           end;
+        end;
+
+        if Bloco_C.RegistroC770Count > 0 then
+        begin
+           with New do
+           begin
+              REG_BLC := 'C770';
+              QTD_REG_BLC := Bloco_C.RegistroC770Count;
+           end;
+        end;
+
+        if Bloco_C.RegistroC775Count > 0 then
+        begin
+           with New do
+           begin
+              REG_BLC := 'C775';
+              QTD_REG_BLC := Bloco_C.RegistroC775Count;
+           end;
+        end;
+     end;
+  end;
 end;
 
 procedure TACBrLFD.WriteRegistroC990;
@@ -1801,73 +2221,62 @@ begin
   Bloco_E.WriteRegistroE990;
 end;
 
-{procedure TACBrLFD.WriteRegistroG001;
+procedure TACBrLFD.WriteRegistroF001;
 begin
-   
-end;}
+  Bloco_F.WriteRegistroF001;
 
-{procedure TACBrLFD.WriteRegistroG990;
+  with Bloco_9.Registro9900.New do
+  begin
+      REG_BLC    := 'F001';
+      QTD_REG_BLC:= 1;
+  end;
+
+  if Bloco_F.RegistroF001.IND_MOV = imComDados then
+    with Bloco_9.Registro9900, Bloco_F do
+    begin
+
+    end;
+end;
+
+procedure TACBrLFD.WriteRegistroF990;
+begin
+  with Bloco_9.Registro9900.New do
+  begin
+     REG_BLC    := 'F990';
+     QTD_REG_BLC:= 1;
+  end;
+  Bloco_F.WriteRegistroF990;
+end;
+
+procedure TACBrLFD.WriteRegistroG001;
+begin
+  Bloco_G.WriteRegistroG001;
+  with Bloco_9.Registro9900.New do
+  begin
+      REG_BLC    := 'G001';
+      QTD_REG_BLC:= 1;
+  end;
+
+  if Bloco_G.RegistroG001.IND_MOV = imComDados then
+    with Bloco_9.Registro9900, Bloco_G do
+    begin
+      {New('G110', RegistroG110Count);
+      New('G125', RegistroG125Count);
+      New('G126', RegistroG126Count);
+      New('G130', RegistroG130Count);
+      New('G140', RegistroG140Count);}
+    end;
+end;
+
+procedure TACBrLFD.WriteRegistroG990;
 begin
   with Bloco_9.Registro9900.New do
   begin
     REG_BLC := 'G990';
     QTD_REG_BLC := 1;
   end;
-end;  }
-
-{procedure TACBrLFD.WriteRegistroH001;
-begin
-   Bloco_H.WriteRegistroH001;
-   //
-   with Bloco_9.Registro9900 do
-   begin
-      with New do
-      begin
-         REG_BLC := 'H001';
-         QTD_REG_BLC := 1;
-      end;
-   end;
-   if Bloco_H.RegistroH001.IND_MOV = imComDados then
-   begin
-      with Bloco_9.Registro9900 do
-      begin
-         if Bloco_H.RegistroH005Count > 0 then
-         begin
-            with New do
-            begin
-               REG_BLC := 'H005';
-               QTD_REG_BLC := Bloco_H.RegistroH005Count;
-            end;
-         end;
-         if Bloco_H.RegistroH010Count > 0 then
-         begin
-            with New do
-            begin
-               REG_BLC := 'H010';
-               QTD_REG_BLC := Bloco_H.RegistroH010Count;
-            end;
-         end;
-         if Bloco_H.RegistroH020Count > 0 then
-         begin
-            with New do
-            begin
-               REG_BLC := 'H020';
-               QTD_REG_BLC := Bloco_H.RegistroH020Count;
-            end;
-         end;
-      end;
-   end;
-end;  }
-
-{procedure TACBrLFD.WriteRegistroG990;
-begin
-  (*with Bloco_9.Registro9900.New do
-  begin
-    REG_BLC := 'G990';
-    QTD_REG_BLC := 1;
-  end;
-  Bloco_G.WriteRegistroG990;*)
-end; }
+  Bloco_G.WriteRegistroG990;
+end; 
 
 procedure TACBrLFD.WriteRegistroH001;
 begin
@@ -1952,12 +2361,22 @@ end;
 
 procedure TACBrLFD.WriteRegistroZ001;
 begin
-
+  Bloco_Z.WriteRegistroZ001;
+  with Bloco_9.Registro9900.New do
+  begin
+     REG_BLC    := 'H001';
+     QTD_REG_BLC:= 1;
+  end;
 end;
 
 procedure TACBrLFD.WriteRegistroZ990;
 begin
-
+  with Bloco_9.Registro9900.New do
+  begin
+     REG_BLC    := 'Z990';
+     QTD_REG_BLC:= 1;
+  end;
+  Bloco_Z.WriteRegistroZ990;
 end;
 
 procedure TACBrLFD.WriteRegistro8001;
@@ -2054,14 +2473,15 @@ end;
 procedure TACBrLFD.WriteRegistro9999;
 begin
   Bloco_9.Registro9999.QTD_LIN := Bloco_9.Registro9999.QTD_LIN + Bloco_0.Registro0990.QTD_LIN_0 +
-                                                                 ///Bloco_1.Registro1990.QTD_LIN_1 +
                                                                  Bloco_A.RegistroA990.QTD_LIN_A +
                                                                  Bloco_B.RegistroB990.QTD_LIN_B +
                                                                  Bloco_C.RegistroC990.QTD_LIN_C +
                                                                  Bloco_D.RegistroD990.QTD_LIN_D +
                                                                  Bloco_E.RegistroE990.QTD_LIN_E +
-                                                                 ///ifThen(Bloco_G.DT_INI >= EncodeDate(2011,01,01), Bloco_G.RegistroG990.QTD_LIN_G, 0) +
+                                                                 Bloco_F.RegistroF990.QTD_LIN_F +
+                                                                 Bloco_G.RegistroG990.QTD_LIN_G +
                                                                  Bloco_H.RegistroH990.QTD_LIN_H +
+                                                                 Bloco_Z.RegistroZ990.QTD_LIN_Z +
                                                                  Bloco_8.Registro8990.QTD_LIN_8 +
                                                                  Bloco_9.Registro9990.QTD_LIN_9;
   Bloco_9.WriteRegistro9999;

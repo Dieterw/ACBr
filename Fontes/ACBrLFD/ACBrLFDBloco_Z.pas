@@ -34,11 +34,11 @@
 {******************************************************************************
 |* Historico
 |*
-|* 26/01/2013: Nilson Sergio
+|* 31/01/2013: Nilson Sergio
 |*  - Criação e distribuição da Primeira Versao
 *******************************************************************************}
 
-unit ACBrLFDBloco_E;
+unit ACBrLFDBloco_Z;
 
 interface
 
@@ -47,34 +47,28 @@ uses
 
 type
 
-  /// Registro E001 - Abertura do Bloco E
+  /// Registro Z001 - ABERTURA DO BLOCO Z
 
-  { TRegistroE001 }
+  { TRegistroZ001 }
 
-  TRegistroE001 = class(TOpenBlocos)
+  TRegistroZ001 = class(TOpenBlocos)
   private
+
   public
-    constructor Create; virtual; /// Create
+
   end;
 
-  /// Registro E990 - Encerramento do Bloco E
+  /// Registro Z990 - ENCERRAMENTO DO BLOCO Z
 
-  { TRegistroE990 }
+  { TRegistroZ990 }
 
-  TRegistroE990 = class
+  TRegistroZ990 = class
   private
-    fQTD_LIN_E: Integer;
+    FQTD_LIN_Z: Integer;
   public
-    property QTD_LIN_E: Integer read fQTD_LIN_E write fQTD_LIN_E;
+    property QTD_LIN_Z: Integer read FQTD_LIN_Z write FQTD_LIN_Z;
   end;
 
 implementation
-
-{ TRegistroE001 }
-
-constructor TRegistroE001.Create;
-begin
-   IND_MOV := imSemDados;
-end;
 
 end.

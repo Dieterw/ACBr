@@ -71,6 +71,7 @@ type
   TRegistroC580List = class;
   TRegistroC600List = class;
   TRegistroC605List = class;
+  TRegistroC610List = class;
   TRegistroC615 = class;
   TRegistroC620List = class;
   TRegistroC625List = class;
@@ -519,7 +520,7 @@ type
     FVL_ITEM: Currency; /// Valor do item
     FNCM: String; /// Código da Nomenclatura Comum do Mercosul
     FCST: String; /// Código da Situação Tributária
-    FCFOP: String; /// Código Fiscal de Operação e Prestação
+    FCFOP: Integer; /// Código Fiscal de Operação e Prestação
     FVL_BC_ICMS_I: Currency; /// Valor da base de cálculo do ICMS
     FALIQ_ICMS: Currency; /// Alíquota do ICMS
     FVL_ICMS_I: Currency; /// Valor do ICMS
@@ -549,7 +550,7 @@ type
     property VL_ITEM: Currency read FVL_ITEM write FVL_ITEM;
     property NCM: String read FNCM write FNCM;
     property CST: String read FCST write FCST;
-    property CFOP: String read FCFOP write FCFOP;
+    property CFOP: Integer read FCFOP write FCFOP;
     property VL_BC_ICMS_I: Currency read FVL_BC_ICMS_I write FVL_BC_ICMS_I;
     property ALIQ_ICMS: Currency read FALIQ_ICMS write FALIQ_ICMS;
     property VL_ICMS_I: Currency read FVL_ICMS_I write FVL_ICMS_I;
@@ -684,7 +685,7 @@ type
   TRegistroC500 = class
   private
     fCST: String; /// Código da Situação Tributária
-    fCFOP: String; /// Código Fiscal de Operação e Prestação
+    fCFOP: Integer; /// Código Fiscal de Operação e Prestação
     fVL_CONT_P: Currency; /// Parcela correspondente ao “Valor Contábil”
     fVL_BC_ICMS_P: Currency; /// Parcela correspondente ao "Valor da base
     fALIQ_ICMS: Currency; /// Alíquota do ICMS
@@ -695,7 +696,7 @@ type
     constructor Create(AOwner: TRegistroC020); virtual; /// Create
 
     property CST: String read fCST write fCST;
-    property CFOP: String read fCFOP write fCFOP;
+    property CFOP: Integer read fCFOP write fCFOP;
     property VL_CONT_P: Currency read fVL_CONT_P write fVL_CONT_P;
     property VL_BC_ICMS_P: Currency read fVL_BC_ICMS_P write fVL_BC_ICMS_P;
     property ALIQ_ICMS: Currency read fALIQ_ICMS write fALIQ_ICMS;
@@ -791,7 +792,7 @@ type
     FVL_ACMO_I: Currency; /// Valor do desconto
     FVL_ITEM: Currency; /// Valor do item
     FCST: String; /// Código da Situação Tributária
-    FCFOP: String; /// Código Fiscal de Operação e Prestação
+    FCFOP: Integer; /// Código Fiscal de Operação e Prestação
     FVL_BC_ICMS_I: Currency; /// Valor da base de cálculo do ICMS do item
     FALIQ_ICMS: Currency; /// Alíquota do ICMS
     FVL_ICMS_I: Currency; /// Valor do ICMS
@@ -807,7 +808,7 @@ type
     property VL_ACMO_I: Currency read FVL_ACMO_I write FVL_ACMO_I;
     property VL_ITEM: Currency read FVL_ITEM write FVL_ITEM;
     property CST: String read FCST write FCST;
-    property CFOP: String read FCFOP write FCFOP;
+    property CFOP: Integer read FCFOP write FCFOP;
     property VL_BC_ICMS_I: Currency read FVL_BC_ICMS_I write FVL_BC_ICMS_I;
     property ALIQ_ICMS: Currency read FALIQ_ICMS write FALIQ_ICMS;
     property VL_ICMS_I: Currency read FVL_ICMS_I write FVL_ICMS_I;
@@ -888,7 +889,7 @@ type
     FQTD: Double; /// Quantidade acumulada do item
     FVL_ITEM: Currency; /// Valor acumulado do item
     FCST: String; /// Código da Situação Tributária
-    FCFOP: String; /// Código Fiscal de Operação e Prestação
+    FCFOP: Integer; /// Código Fiscal de Operação e Prestação
     FVL_BC_ICMS_I: Currency; /// Valor acumulado da base de cálculo do ICMS
     FALIQ_ICMS: Currency; /// Alíquota do ICMS
     FVL_ICMS_I: Currency; /// Valor do ICMS
@@ -900,7 +901,7 @@ type
     property UNID: String read FUNID write FUNID;
     property VL_ITEM: Currency read FVL_ITEM write FVL_ITEM;
     property CST: String read FCST write FCST;
-    property CFOP: String read FCFOP write FCFOP;
+    property CFOP: Integer read FCFOP write FCFOP;
     property VL_BC_ICMS_I: Currency read FVL_BC_ICMS_I write FVL_BC_ICMS_I;
     property ALIQ_ICMS: Currency read FALIQ_ICMS write FALIQ_ICMS;
     property VL_ICMS_I: Currency read FVL_ICMS_I write FVL_ICMS_I;
@@ -989,6 +990,7 @@ type
     FVL_ICMS_ST: Currency; /// Valor do ICMS da substituição tributária
 
     FRegistroC605: TRegistroC605List;
+    FRegistroC610: TRegistroC610List;
   public
     constructor Create(AOwner: TRegistroC001); virtual; /// Create
     destructor Destroy; override; /// Destroy;
@@ -1015,6 +1017,7 @@ type
     property VL_ICMS_ST: Currency read FVL_ICMS_ST write FVL_ICMS_ST;
 
     property RegistroC605: TRegistroC605List read FRegistroC605 write FRegistroC605;
+    property RegistroC610: TRegistroC610List read FRegistroC610 write FRegistroC610;
   end;
 
   /// Registro C600 - Lista
@@ -1085,7 +1088,7 @@ type
     FVL_ACMO_I: Currency; /// Valor do acréscimo
     FVL_ITEM: Currency; /// Valor líquido do item, já computados o desconto ou acréscimo e o cancelamento parcial
     FCST: String; /// Código da Situação Tributária do ICMS
-    FCFOP: String; /// Código Fiscal de Operações e Prestações
+    FCFOP: Integer; /// Código Fiscal de Operações e Prestações
     FVL_BC_ICMS_I: Currency; /// Valor da base de cálculo do ICMS
     FALIQ_ICMS: Currency; /// Alíquota do ICMS
     FVL_ICMS_I: Currency; /// Valor do ICMS
@@ -1107,7 +1110,7 @@ type
     property VL_ACMO_I: Currency read FVL_ACMO_I write FVL_ACMO_I;
     property VL_ITEM: Currency read FVL_ITEM write FVL_ITEM;
     property CST: String read FCST write FCST;
-    property CFOP: String read FCFOP write FCFOP;
+    property CFOP: Integer read FCFOP write FCFOP;
     property VL_BC_ICMS_I: Currency read FVL_BC_ICMS_I write FVL_BC_ICMS_I;
     property ALIQ_ICMS: Currency read FALIQ_ICMS write FALIQ_ICMS;
     property VL_ICMS_I: Currency read FVL_ICMS_I write FVL_ICMS_I;
@@ -1116,6 +1119,19 @@ type
     property VL_ICMS_ST_I: Currency read FVL_ICMS_ST_I write FVL_ICMS_ST_I;
 
     property RegistroC615: TRegistroC615 read FRegistroC615 write FRegistroC615;
+  end;
+
+  /// Registro C610 - Lista
+
+  { TRegistroC610List }
+
+  TRegistroC610List = class(TACBrLFDRegistros)
+  private
+    function GetItem(Index: Integer): TRegistroC610;
+    procedure SetItem(Index: Integer; const Value: TRegistroC610);
+  public
+    function New(AOwner: TRegistroC600): TRegistroC610;
+    property Items[Index: Integer]: TRegistroC610 read GetItem write SetItem;
   end;
 
   /// Registro C615 - COMPLEMENTO DO ITEM - ISS
@@ -1234,7 +1250,7 @@ type
     FVL_DESC_I: Currency; /// Valor acumulado dos descontos
     FVL_ACMO_I: Currency; /// Valor acumulado dos acréscimos
     FVL_ITEM: Currency; /// Valor acumulado do item
-    FCFOP: String; /// Código Fiscal de Operações e Prestações preponderante no dia
+    FCFOP: Integer; /// Código Fiscal de Operações e Prestações preponderante no dia
     FVL_BC_ICMS_I: Currency; /// Valor acumulado da base de cálculo do ICMS
     FALIQ_ICMS: Currency; /// Alíquota do ICMS
     FVL_ICMS_I: Currency; /// Valor acumulado do ICMS
@@ -1255,7 +1271,7 @@ type
     property VL_DESC_I: Currency read FVL_DESC_I write FVL_DESC_I;
     property VL_ACMO_I: Currency read FVL_ACMO_I write FVL_ACMO_I;
     property VL_ITEM: Currency read FVL_ITEM write FVL_ITEM;
-    property CFOP: String read FCFOP write FCFOP;
+    property CFOP: Integer read FCFOP write FCFOP;
     property VL_BC_ICMS_I: Currency read FVL_BC_ICMS_I write FVL_BC_ICMS_I;
     property ALIQ_ICMS: Currency read FALIQ_ICMS write FALIQ_ICMS;
     property VL_ICMS_I: Currency read FVL_ICMS_I write FVL_ICMS_I;
@@ -1540,7 +1556,7 @@ type
     FVL_ACMO_I: Currency; /// Valor do acréscimo
     FVL_ITEM: Currency; /// Valor do item
     FCST: String; /// Código da Situação Tributária
-    FCFOP: String; /// Código Fiscal de Operação e Prestação
+    FCFOP: Integer; /// Código Fiscal de Operação e Prestação
     FVL_BC_ICMS_I: Currency; /// Valor da base de cálculo do ICMS
     FALIQ_ICMS: Currency; /// Alíquota do ICMS
     FVL_ICMS_I: Currency; /// Valor do ICMS
@@ -1559,7 +1575,7 @@ type
     property VL_ACMO_I: Currency read FVL_ACMO_I write FVL_ACMO_I;
     property VL_ITEM: Currency read FVL_ITEM write FVL_ITEM;
     property CST: String read FCST write FCST;
-    property CFOP: String read FCFOP write FCFOP;
+    property CFOP: Integer read FCFOP write FCFOP;
     property VL_BC_ICMS_I: Currency read FVL_BC_ICMS_I write FVL_BC_ICMS_I;
     property ALIQ_ICMS: Currency read FALIQ_ICMS write FALIQ_ICMS;
     property VL_ICMS_I: Currency read FVL_ICMS_I write FVL_ICMS_I;
@@ -1604,7 +1620,7 @@ type
   TRegistroC760 = class
   private
     fCST: String; /// Código da Situação Tributária
-    fCFOP: String; /// Código Fiscal de Operação e Prestação
+    fCFOP: Integer; /// Código Fiscal de Operação e Prestação
     fVL_CONT_P: Currency; /// Parcela correspondente ao “Valor Contábil” referente à combinação CFOP, CST e alíquota do ICMS
     fVL_BC_ICMS_P: Currency; /// Parcela correspondente ao "Valor da base de cálculo do ICMS" referente à combinação CFOP, CST e alíquota do ICMS
     fALIQ_ICMS: Currency; /// Alíquota do ICMS
@@ -1613,7 +1629,7 @@ type
     constructor Create(AOwner: TRegistroC700); virtual; /// Create
 
     property CST: String read fCST write fCST;
-    property CFOP: String read fCFOP write fCFOP;
+    property CFOP: Integer read fCFOP write fCFOP;
     property VL_CONT_P: Currency read fVL_CONT_P write fVL_CONT_P;
     property VL_BC_ICMS_P: Currency read fVL_BC_ICMS_P write fVL_BC_ICMS_P;
     property ALIQ_ICMS: Currency read fALIQ_ICMS write fALIQ_ICMS;
@@ -1716,7 +1732,7 @@ type
     FQTD: Double; /// Quantidade acumulada do item
     FVL_ITEM: Currency; /// Valor acumulado do item
     FCST: String; /// Código da Situação Tributária, conforme a tabela indicada no item
-    FCFOP: String; /// Código Fiscal de Operação e Prestação preponderante, conforme a tabela indicada no item
+    FCFOP: Integer; /// Código Fiscal de Operação e Prestação preponderante, conforme a tabela indicada no item
     FALIQ_ICMS: Currency; /// Alíquota do ICMS
     FVL_BC_ICMS_I: Currency; /// Valor acumulado da base de cálculo do ICMS
     FVL_ICMS_I: Currency; /// Valor acumulado do ICMS
@@ -1732,7 +1748,7 @@ type
     property QTD: Double read FQTD write FQTD;
     property VL_ITEM: Currency read FVL_ITEM write FVL_ITEM;
     property CST: String read FCST write FCST;
-    property CFOP: String read FCFOP write FCFOP;
+    property CFOP: Integer read FCFOP write FCFOP;
     property ALIQ_ICMS: Currency read FALIQ_ICMS write FALIQ_ICMS;
     property VL_BC_ICMS_I: Currency read FVL_BC_ICMS_I write FVL_BC_ICMS_I;
     property VL_ICMS_I: Currency read FVL_ICMS_I write FVL_ICMS_I;
@@ -1761,7 +1777,7 @@ type
   TRegistroC780 = class
   private
     fCST: String; /// Código da Situação Tributária
-    fCFOP: String; /// Código Fiscal de Operação e Prestação
+    fCFOP: Integer; /// Código Fiscal de Operação e Prestação
     fVL_CONT_P: Currency; /// Parcela correspondente ao “Valor Contábil” referente à combinação CFOP, CST e ICMS
     fVL_BC_ICMS_P: Currency; /// Parcela correspondente ao "Valor da base de cálculo do ICMS"
     fALIQ_ICMS: Currency; /// Alíquota do ICMS
@@ -1770,7 +1786,7 @@ type
     constructor Create(AOwner: TRegistroC770); virtual; /// Create
 
     property CST: String read fCST write fCST;
-    property CFOP: String read fCFOP write fCFOP;
+    property CFOP: Integer read fCFOP write fCFOP;
     property VL_CONT_P: Currency read fVL_CONT_P write fVL_CONT_P;
     property VL_BC_ICMS_P: Currency read fVL_BC_ICMS_P write fVL_BC_ICMS_P;
     property ALIQ_ICMS: Currency read fALIQ_ICMS write fALIQ_ICMS;
@@ -2237,11 +2253,13 @@ end;
 constructor TRegistroC600.Create(AOwner: TRegistroC001);
 begin
   FRegistroC605 := TRegistroC605List.Create;
+  FRegistroC610 := TRegistroC610List.Create;
 end;
 
 destructor TRegistroC600.Destroy;
 begin
   FRegistroC605.Free;
+  FRegistroC610.Free;
   inherited;
 end;
 
@@ -2298,6 +2316,24 @@ destructor TRegistroC610.Destroy;
 begin
   FRegistroC615.Free;
   inherited;
+end;
+
+{ TRegistroC610List }
+
+function TRegistroC610List.GetItem(Index: Integer): TRegistroC610;
+begin
+  Result := TRegistroC610(Get(Index));
+end;
+
+function TRegistroC610List.New(AOwner: TRegistroC600): TRegistroC610;
+begin
+  Result := TRegistroC610.Create(AOwner);
+  Add(Result);
+end;
+
+procedure TRegistroC610List.SetItem(Index: Integer; const Value: TRegistroC610);
+begin
+  Put(Index, Value);
 end;
 
 { TRegistroC615 }

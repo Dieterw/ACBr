@@ -66,6 +66,7 @@ type
     FRegistro0025Count: Integer;
     FRegistro0030Count: Integer;
     FRegistro0100Count: Integer;
+    FRegistro0125Count: Integer;
     FRegistro0120Count: Integer;
     FRegistro0150Count: Integer;
     FRegistro0175Count: Integer;
@@ -87,6 +88,7 @@ type
     procedure WriteRegistro0040(Reg0030: TRegistro0030);
     procedure WriteRegistro0045(Reg0030: TRegistro0030);
     procedure WriteRegistro0100(Reg0001: TRegistro0001);
+    procedure WriteRegistro0125(Reg0001: TRegistro0001);
     procedure WriteRegistro0120(Reg0001: TRegistro0001);
     procedure WriteRegistro0150(Reg0001: TRegistro0001);
     procedure WriteRegistro0175(Reg0150: TRegistro0150);
@@ -115,6 +117,7 @@ type
     function Registro0030New: TRegistro0005;
     function Registro0035New: TRegistro0005;
     function Registro0100New: TRegistro0100;
+    function Registro0125New: TRegistro0125;
     function Registro0150New: TRegistro0150;
     function Registro0175New: TRegistro0175;
     function Registro0200New: TRegistro0200;
@@ -185,6 +188,7 @@ begin
   FRegistro0005Count := 0;
   FRegistro0025Count := 0;
   FRegistro0030Count := 0;
+  FRegistro0175Count := 0;
   FRegistro0120Count := 0;
   FRegistro0150Count := 0;
   FRegistro0200Count := 0;
@@ -244,6 +248,11 @@ end;
 function TBloco_0.Registro0100New: TRegistro0100;
 begin
    Result := FRegistro0001.Registro0100;
+end;
+
+function TBloco_0.Registro0125New: TRegistro0125;
+begin
+   Result := FRegistro0001.Registro0125;
 end;
 
 function TBloco_0.Registro0150New: TRegistro0150;
@@ -368,28 +377,35 @@ begin
        Check(funChecaCNPJ(CNPJ), '(0-0000) ENTIDADE: O CNPJ "%s" digitado é inválido!', [CNPJ]);
        Check(funChecaUF(UF), '(0-0000) ENTIDADE: A UF "%s" digitada é inválido!', [UF]);
        Check(funChecaIE(IE, UF), '(0-0000) ENTIDADE: A inscrição estadual "%s" digitada é inválida!', [IE]);
-       Check(funChecaMUN(COD_MUN), '(0-0000) ENTIDADE: O código do município "%s" digitado é inválido!', [IntToStr(COD_MUN)]);
+       //Check(funChecaMUN(COD_MUN), '(0-0000) ENTIDADE: O código do município "%s" digitado é inválido!', [IntToStr(COD_MUN)]);
 
        Add( LFill( '0000' )     +
             LFill( 'LFPD' )     +
+            LFill( strCOD_VER ) + //70/05
+            LFill( 0, 1)        + //70/05
+            LFill( strCOD_FIN ) + //70/05
             LFill( DT_INI )     +
             LFill( DT_FIN )     +
+            LFill( 2, 1)        + //70/05
+            LFill( 0, 1)        + //70/05
             LFill( NOME )       +
             LFill( CNPJ )       +
+            LFill('36054230867')           + //70/05
+            LFill('0')           + //70/05
             LFill( UF )         +
             LFill( IE )         +
             LFill( COD_MUN, 7 ) +
             LFill( IM )         +
-            LFill( 0, 1, true )   +
-            LFill( SUFRAMA )    +
-            LFill( strCOD_VER ) +
-            LFill( strCOD_FIN ) +
-            LFill( Integer(COD_CONTEUDO), 2 ) +
-            LFill( 'Brasil' )   +
-            LFill( FANTASIA )   +
-            LFill( NIRE, 11 )   +
-            LFill( 0, 1, true ) +
-            LFill( 0, 1, true ) );
+            //LFill( 0, 1, true )   +
+            LFill( SUFRAMA ));//    +
+            //LFill( strCOD_VER ) +
+            //LFill( strCOD_FIN ) +
+            //LFill( Integer(COD_CONTEUDO), 2 ) +
+            //LFill( 'Brasil' )   +
+            //LFill( FANTASIA )   +
+            //LFill( NIRE, 11 )   +
+            //LFill( 0, 1, true ) +
+            {LFill( 0, 1, true ) ); }
 
        Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
      end;
@@ -408,10 +424,11 @@ begin
         if IND_MOV = imComDados then
         begin
           WriteRegistro0005(FRegistro0001) ;
-          WriteRegistro0025(FRegistro0001) ;
-          WriteRegistro0030(FRegistro0001) ;
+          //WriteRegistro0025(FRegistro0001) ;
+          //WriteRegistro0030(FRegistro0001) ;
           WriteRegistro0100(FRegistro0001) ;
-          WriteRegistro0120(FRegistro0001) ;
+          WriteRegistro0125(FRegistro0001) ;
+          //WriteRegistro0120(FRegistro0001) ;
           WriteRegistro0150(FRegistro0001) ;
           WriteRegistro0200(FRegistro0001) ;
           WriteRegistro0400(FRegistro0001) ;
@@ -433,10 +450,21 @@ begin
        Check(funChecaCEP(CEP, Registro0000.UF), '(0-0005) COMPLEMENTO DO CONTRIBUINTE "%s": O CEP "%s" digitada é inválido para a unidade de federação "%s"!', [NOMERESP, CEP, Registro0000.UF]);
        ///
        Add( LFill('0005')     +
-            LFill(NOMERESP)   +
-            LFill(COD_ASS, 1) +
-            LFill(CPFRESP)    +
-            LFill(CEP, 8)     +
+            LFill('TESTE')    +   // 70/05
+            LFill(CEP, 8)     +  // 70/05
+            LFill(ENDERECO)   +  // 70/05
+            LFill(NUM)        +  // 70/05
+            LFill(COMPL)      +  // 70/05
+            LFill(BAIRRO)     +  // 70/05
+            LFill(CEP_CP, 8)  +  // 70/05
+            LFill(CP)         +  // 70/05
+            LFill(FONE)       +  // 70/05
+            LFill(FAX)        +  // 70/05
+            LFill(EMAIL) ) ;     // 70/05
+            //LFill(NOMERESP)   +
+            //LFill(COD_ASS, 1) +
+            //LFill(CPFRESP)    +
+            {LFill(CEP, 8)     +
             LFill(ENDERECO)   +
             LFill(NUM)        +
             LFill(COMPL)      +
@@ -445,7 +473,7 @@ begin
             LFill(CP)         +
             LFill(FONE)       +
             LFill(FAX)        +
-            LFill(EMAIL) ) ;
+            LFill(EMAIL) ) ; }
        ///
        Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
      end;
@@ -624,7 +652,21 @@ begin
        ///
        Add( LFill('0100')   +
             LFill(NOME)     +
-            LFill(COD_ASS)  +
+            LFill(CNPJ)     + // 70/05
+            LFill(CPF)      + // 70/05
+            LFill(CRC)      + // 70/05
+            LFill(UF)       + // 70/05
+            LFill(CEP, 8)   + // 70/05
+            LFill(ENDERECO) + // 70/05
+            LFill(NUM)      + // 70/05
+            LFill(COMPL)    + // 70/05
+            LFill(BAIRRO)   + // 70/05
+            LFill(CEP_CF,8) + // 70/05
+            LFill(CP)       + // 70/05
+            LFill(FONE)     + // 70/05
+            LFill(FAX)      + // 70/05
+            LFill(EMAIL)) ; // 70/05
+            {LFill(COD_ASS)  +
             LFill(CNPJ)     +
             LFill(CPF)      +
             LFill(CRC)      +
@@ -638,7 +680,31 @@ begin
             LFill(CP)       +
             LFill(FONE)     +
             LFill(FAX)      +
-            LFill(EMAIL)) ;
+            LFill(EMAIL)) ;  }
+       ///
+       Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
+     end;
+  end;
+end;
+
+procedure TBloco_0.WriteRegistro0125(Reg0001: TRegistro0001);
+begin
+  if Assigned(Reg0001.Registro0100) then
+  begin
+     with Reg0001.Registro0100 do
+     begin
+       Check(funChecaCPF(CPF),     '(0-0100) CONTADOR: %s, o CPF "%s" digitado é inválido!', [NOME, CPF]);
+       Check(funChecaCNPJ(CNPJ),   '(0-0100) CONTADOR: %s, o CNPJ "%s" digitado é inválido!', [NOME, CNPJ]);
+//       Check(funChecaCEP(CEP, Registro0000.UF), '(0-0100) CONTADOR: %s, o CEP "%s" digitada é inválido para a unidade de federação "%s"!', [NOME, CEP, Registro0000.UF]);
+       Check(NOME <> '', '(0-0100) CONTADOR: O nome do contabilista/escritório é obrigatório!');
+       ///
+       Add( LFill('0125')   +
+            LFill(NOME)     +
+            LFill(CNPJ)     + // 70/05
+            LFill(CPF)      + // 70/05
+            LFill(FONE)     + // 70/05
+            LFill(FAX)      + // 70/05
+            LFill(EMAIL)) ; // 70/05
        ///
        Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
      end;
@@ -658,7 +724,7 @@ begin
 
          Check(funChecaCPF(CPF),     '(0-0100) EMITENTE AVULSO: , o CPF "%s" digitado é inválido!', [CPF]);
 
-         Check(funChecaMUN(COD_MUN), '(0-0100) EMITENTE AVULSO: %s, o código do município "%s" digitado é inválido!', [IntToStr(COD_MUN)]);
+         //Check(funChecaMUN(COD_MUN), '(0-0100) EMITENTE AVULSO: %s, o código do município "%s" digitado é inválido!', [IntToStr(COD_MUN)]);
        ///
        Add( LFill('0120')     +
             LFill(CNPJ)       +

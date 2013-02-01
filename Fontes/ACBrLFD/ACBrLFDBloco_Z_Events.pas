@@ -3,9 +3,9 @@
 {  Biblioteca multiplataforma de componentes Delphi para interação com equipa- }
 { mentos de Automação Comercial utilizados no Brasil                           }
 {                                                                              }
-{ Direitos Autorais Reservados (c) 2009  Juliana Tamizou                       }
+{ Direitos Autorais Reservados (c) 2012   Isaque Pinheiro                      }
 {                                                                              }
-{ Colaboradores nesse arquivo: Isaque Pinheiro                                 }
+{ Colaboradores nesse arquivo:                                                 }
 {                                                                              }
 {  Você pode obter a última versão desse arquivo na pagina do  Projeto ACBr    }
 { Componentes localizado em      http://www.sourceforge.net/projects/acbr      }
@@ -34,47 +34,43 @@
 {******************************************************************************
 |* Historico
 |*
-|* 26/01/2013: Nilson Sergio
+|* 31/01/2013: Nilson Sergio
 |*  - Criação e distribuição da Primeira Versao
 *******************************************************************************}
 
-unit ACBrLFDBloco_E;
+unit ACBrLFDBloco_Z_Events;
 
 interface
 
 uses
-  SysUtils, Classes, DateUtils, ACBrLFDBlocos;
+  SysUtils, Math, Classes, ACBrLFD3505;
 
 type
 
-  /// Registro E001 - Abertura do Bloco E
+  { TEventsBloco_Z }
 
-  { TRegistroE001 }
-
-  TRegistroE001 = class(TOpenBlocos)
+  TEventsBloco_Z = class(TComponent)
   private
   public
-    constructor Create; virtual; /// Create
-  end;
-
-  /// Registro E990 - Encerramento do Bloco E
-
-  { TRegistroE990 }
-
-  TRegistroE990 = class
-  private
-    fQTD_LIN_E: Integer;
-  public
-    property QTD_LIN_E: Integer read fQTD_LIN_E write fQTD_LIN_E;
+    constructor Create(AOwner: TComponent); override; 
+    destructor Destroy; override;
+  published
   end;
 
 implementation
 
-{ TRegistroE001 }
+uses ACBrLFD;
 
-constructor TRegistroE001.Create;
+{ TEventsBloco_Z }
+
+constructor TEventsBloco_Z.Create(AOwner: TComponent);
 begin
-   IND_MOV := imSemDados;
+   inherited Create(AOwner);
+end;
+
+destructor TEventsBloco_Z.Destroy;
+begin
+   inherited Destroy;
 end;
 
 end.

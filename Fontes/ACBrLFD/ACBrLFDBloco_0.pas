@@ -47,6 +47,7 @@ type
   TRegistro0040 = class;
   TRegistro0045 = class;
   TRegistro0100 = class;
+  TRegistro0125 = class;
   TRegistro0120 = class;
   TRegistro0150List = class;
   TRegistro0175List = class;
@@ -110,6 +111,7 @@ type
     FRegistro0120: TRegistro0120;
     FRegistro0200: TRegistro0200List;
     FRegistro0100: TRegistro0100;
+    FRegistro0125: TRegistro0125;
     FRegistro0150: TRegistro0150List;
     FRegistro0400: TRegistro0400List;
     FRegistro0460: TRegistro0460List;
@@ -122,6 +124,7 @@ type
     property Registro0025: TRegistro0025List read FRegistro0025 write FRegistro0025;
     property Registro0030: TRegistro0030     read FRegistro0030 write FRegistro0030;
     property Registro0100: TRegistro0100     read FRegistro0100 write FRegistro0100;
+    property Registro0125: TRegistro0125     read FRegistro0125 write FRegistro0125;
     property Registro0120: TRegistro0120     read FRegistro0120 write FRegistro0120;
     property Registro0150: TRegistro0150List read FRegistro0150 write FRegistro0150;
     property Registro0200: TRegistro0200List read FRegistro0200 write FRegistro0200;
@@ -368,6 +371,29 @@ type
     property COD_SETOR: String read FCOD_SETOR write FCOD_SETOR;
     property CPF: String read FCPF write FCPF;
     property MATRICULA: String read FMATRICULA write FMATRICULA;
+  end;
+
+  /// Registro 0125 - DADOS DO TECNICO DA EMPRESA = 70/05
+
+  { TRegistro0125 }
+
+  TRegistro0125 = class
+  private
+    fNOME: String;        // Nome do contabilista/escritório:
+    fCPF: String;         // Número de inscrição no CPF:
+    fCNPJ: String;        // CNPJ do escritório de contabilidade, se houver:
+    fFONE: String;        // Número do telefone:
+    fFAX: String;         // Número do fax:
+    fEMAIL: String;       // Endereço do correio eletrônico:
+  public
+    constructor Create(AOwner: TRegistro0001); virtual; /// Create
+
+    property NOME: String read FNOME write FNOME;
+    property CPF: String read FCPF write FCPF;
+    property CNPJ: String read FCNPJ write FCNPJ;
+    property FONE: String read FFONE write FFONE;
+    property FAX: String read FFAX write FFAX;
+    property EMAIL: String read FEMAIL write FEMAIL;
   end;
 
 
@@ -856,6 +882,13 @@ type
 
 implementation
 
+{ TRegistro0125 }
+
+constructor TRegistro0125.Create(AOwner: TRegistro0001);
+begin
+
+end;
+
 { TRegistro0470List }
 
 function TRegistro0470List.GetItem(Index: Integer): TRegistro0470;
@@ -1061,6 +1094,7 @@ begin
   FRegistro0030 := TRegistro0030.Create(Self);
   FRegistro0200 := TRegistro0200List.Create;
   FRegistro0100 := TRegistro0100.Create(Self);
+  FRegistro0125 := TRegistro0125.Create(Self);
   FRegistro0120 := TRegistro0120.Create(Self);
   FRegistro0150 := TRegistro0150List.Create;
   FRegistro0400 := TRegistro0400List.Create;

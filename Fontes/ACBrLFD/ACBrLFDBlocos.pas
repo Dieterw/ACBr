@@ -473,11 +473,15 @@ type
                        alGanho  // 1 - Ganho
                        );
 
+  { TOpenBlocos }
+
   TOpenBlocos = class
   private
+    FCOD_MUN: Integer;
     FIND_MOV: TACBrIndicadorMovimento;    /// Indicador de movimento: 0- Bloco com dados informados, 1- Bloco sem dados informados.
   public
     property IND_MOV: TACBrIndicadorMovimento read FIND_MOV write FIND_MOV;
+    property COD_MUN: Integer read FCOD_MUN write FCOD_MUN;
   end;
 
   TACBrLFDRegistros = class(TObjectList)

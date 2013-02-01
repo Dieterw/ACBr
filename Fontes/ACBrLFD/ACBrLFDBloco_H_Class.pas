@@ -194,12 +194,57 @@ end;
 
 procedure TBloco_H.WriteRegistroH001;
 begin
+   if Assigned(FRegistroH001) then
+   begin
+      with FRegistroH001 do
+      begin
+         Add( LFill( 'H001' ) +
+              LFill( Integer(IND_MOV), 0 ) ) ;
 
+      WriteRegistroH020(FRegistroH001);
+    end;
+
+      RegistroH990.QTD_LIN_H := RegistroH990.QTD_LIN_H + 1;
+   end;
 end;
 
 procedure TBloco_H.WriteRegistroH020(RegH001: TRegistroH001);
+var
+  intFor: Integer;
+  H020: TRegistroH020;
 begin
+  if Assigned(RegH001.RegistroH020) then
+    for intFor := 0 to RegH001.RegistroH020.Count - 1 do
+    begin
+      H020 := RegH001.RegistroH020.Items[intFor];
+      with H020 do
+      begin
+        Add( LFill('H020') +
+             LFill(Integer(IND_DT), 0) +
+             LFill(DT_INV) +
+             LFill(VL_ESTQ) +
+             LFill(VL_ICMS_REC) +
+             LFill(VL_IPI_REC) +
+             LFill(VL_PIS_REC) +
+             LFill(VL_COFINS_REC) +
+             LFill(VL_TRIB_NC) +
+             LFill(VL_ESTQ_NC) +
+             LFill(NUM_LCTO) +
+             LFill(COD_INF_OBS) );
+      end;
 
+      if FRegistroH001.IND_MOV = imComDados then
+      begin
+        WriteRegistroH030(H020);
+        WriteRegistroH040(H020);
+        WriteRegistroH050(H020);
+        WriteRegistroH060(H020);
+      end;
+
+      FRegistroH990.QTD_LIN_H := FRegistroH990.QTD_LIN_H + 1;
+    end;
+
+  FRegistroH020Count := FRegistroH020Count + RegH001.RegistroH020.Count;
 end;
 
 procedure TBloco_H.WriteRegistroH030(RegH020: TRegistroH020);
@@ -223,8 +268,23 @@ begin
 end;
 
 procedure TBloco_H.WriteRegistroH990;
+var
+  strLinha: String;
 begin
+   //--Before
+   strLinha := '';
 
+   if Assigned(RegistroH990) then
+   begin
+      with RegistroH990 do
+      begin
+        QTD_LIN_H := QTD_LIN_H + 1;
+        ///
+        strLinha := LFill('H990') +
+                    LFill(QTD_LIN_H,0);
+        Add(strLinha);
+     end;
+  end;
 end;
 
 end.

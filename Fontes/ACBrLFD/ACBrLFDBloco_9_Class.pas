@@ -58,6 +58,14 @@ type
     FRegistro9990: TRegistro9990;
     FRegistro9999: TRegistro9999;
 
+    FRegistro9020Count: Integer;
+    FRegistro9030Count: Integer;
+    FRegistro9040Count: Integer;
+
+    procedure WriteRegistro9020(Reg9001: TRegistro9001);
+    procedure WriteRegistro9030(Reg9020: TRegistro9020);
+    procedure WriteRegistro9040(Reg9020: TRegistro9020);
+
     procedure CriaRegistros;
     procedure LiberaRegistros;
   public
@@ -100,6 +108,10 @@ begin
   FRegistro9900 := TRegistro9900List.Create;
   FRegistro9990 := TRegistro9990.Create;
   FRegistro9999 := TRegistro9999.Create;
+
+  FRegistro9020Count := 0;
+  FRegistro9030Count := 0;
+  FRegistro9040Count := 0;
 end;
 
 procedure TBloco_9.LiberaRegistros;
@@ -122,22 +134,75 @@ end;
 
 procedure TBloco_9.WriteRegistro9001;
 begin
+  if Assigned(FRegistro9001) then
+    with FRegistro9001 do
+    begin
+      Add( LFill('9001') +
+           LFill(Integer(IND_MOV), 0) );
+
+      if IND_MOV = imComDados then
+      begin
+        WriteRegistro9020(FRegistro9001);
+      end;
+
+      FRegistro9990.QTD_LIN_9 := FRegistro9990.QTD_LIN_9 + 1;
+    end;
+end;
+
+procedure TBloco_9.WriteRegistro9020(Reg9001: TRegistro9001);
+begin
+  {
+  WriteRegistro9030(FRegistro9001);
+  WriteRegistro9030(FRegistro9001);
+  }
+end;
+
+procedure TBloco_9.WriteRegistro9030(Reg9020: TRegistro9020);
+begin
+
+end;
+
+procedure TBloco_9.WriteRegistro9040(Reg9020: TRegistro9020);
+begin
 
 end;
 
 procedure TBloco_9.WriteRegistro9900;
+var
+  intFor: Integer;
 begin
+  if Assigned(FRegistro9900) then
+    for intFor := 0 to FRegistro9900.Count - 1 do
+      with FRegistro9900.Items[intFor] do
+      begin
+        Add( LFill('9900') +
+             LFill(REG_BLC) +
+             LFill(QTD_REG_BLC, 0) );
 
+        FRegistro9990.QTD_LIN_9 := FRegistro9990.QTD_LIN_9 + 1;
+      end;
 end;
 
 procedure TBloco_9.WriteRegistro9990;
 begin
+  if Assigned(FRegistro9990) then
+    with FRegistro9990 do
+    begin
+      QTD_LIN_9 := QTD_LIN_9 + 2;
 
+      Add( LFill('9990') +
+           LFill(QTD_LIN_9, 0) );
+    end;
 end;
 
 procedure TBloco_9.WriteRegistro9999;
 begin
-
+  if Assigned(FRegistro9999) then
+    with FRegistro9999 do
+    begin
+      Add( LFill('9999') +
+           LFill(QTD_LIN, 0) );
+    end;
 end;
 
 end.

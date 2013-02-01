@@ -114,6 +114,8 @@ type
     procedure WriteRegistroC580(RegC001: TRegistroC001);
     procedure WriteRegistroC600(RegC001: TRegistroC001);
     procedure WriteRegistroC605(RegC600: TRegistroC600);
+    procedure WriteRegistroC610(RegC600: TRegistroC600);
+    procedure WriteRegistroC615(RegC610: TRegistroC610);
     procedure WriteRegistroC620(RegC001: TRegistroC001);
     procedure WriteRegistroC625(RegC620: TRegistroC620);
     procedure WriteRegistroC640(RegC001: TRegistroC001);
@@ -475,13 +477,22 @@ begin
 end;
 
 function TBloco_C.RegistroC610New: TRegistroC610;
+var
+  C600: TRegistroC600;
 begin
-
+  with FRegistroC001.RegistroC600 do
+    C600 := Items[ AchaUltimoPai('C600', 'C610') ];
+  Result := C600.RegistroC610.New(C600);
 end;
 
 function TBloco_C.RegistroC615New: TRegistroC615;
+var
+  C600: TRegistroC600;
 begin
-
+  with FRegistroC001.RegistroC600 do
+    C600 := Items[ AchaUltimoPai('C600', 'C610') ];
+  with C600.RegistroC610 do
+    Result := Items[ AchaUltimoPai('C610', 'C615') ].RegistroC615;
 end;
 
 function TBloco_C.RegistroC620New: TRegistroC620;
@@ -592,8 +603,8 @@ begin
   begin
     with FRegistroC001 do
     begin
-      Add( LFill( 'C001' ) +
-           LFill( Integer(IND_MOV), 0 ) );
+      Add( LFill('C001') +
+           LFill(Integer(IND_MOV), 0) );
 
       if IND_MOV = imComDados then
       begin
@@ -631,25 +642,25 @@ begin
            LFill(COD_MOD) +
            LFill(SituacaoDoctoToStr(COD_SIT)) +
            LFill(SER) +
-           LFill(NUM_DOC) +
+           LFill(NUM_DOC, 0) +
            LFill(CHV_NFE) +
            LFill(DT_EMIS) +
            LFill(DT_DOC) +
            LFill(COD_NAT) +
            LFill(Integer(IND_PGTO), 1) +
-           LFill(VL_DOC) +
-           LFill(VL_DESC) +
-           LFill(VL_ACMO) +
-           LFill(VL_MERC) +
-           LFill(VL_FRT) +
-           LFill(VL_SEG) +
-           LFill(VL_OUT_DA) +
-           LFill(VL_BC_ICMS) +
-           LFill(VL_ICMS) +
-           LFill(VL_BC_ST) +
-           LFill(VL_ICMS_ST) +
-           LFill(VL_AT) +
-           LFill(VL_IPI) +
+           LFill(VL_DOC, 2) +
+           LFill(VL_DESC, 2) +
+           LFill(VL_ACMO, 2) +
+           LFill(VL_MERC, 2) +
+           LFill(VL_FRT, 2) +
+           LFill(VL_SEG, 2) +
+           LFill(VL_OUT_DA, 2) +
+           LFill(VL_BC_ICMS, 2) +
+           LFill(VL_ICMS, 2) +
+           LFill(VL_BC_ST, 2) +
+           LFill(VL_ICMS_ST, 2) +
+           LFill(VL_AT, 2) +
+           LFill(VL_IPI, 2) +
            LFill(COD_INF_OBS) );
     end;
 
@@ -714,8 +725,51 @@ begin
 end;
 
 procedure TBloco_C.WriteRegistroC300(RegC020: TRegistroC020);
+var
+  intFor: Integer;
+  C300: TRegistroC300;
 begin
+  if Assigned(RegC020.RegistroC300) then
+  begin
+    for intFor := 0 to RegC020.RegistroC300.Count - 1 do
+    begin
+      C300 := RegC020.RegistroC300.Items[intFor];
+      with C300 do
+      begin
+        Add( LFill('C300') +
+             LFill(NUM_ITEM, 0) +
+             LFill(COD_ITEM) +
+             LFill(UNID) +
+             LFill(Double(VL_UNIT), 6) +
+             LFill(Double(QTD), 6) +
+             LFill(VL_DESC_I, 2) +
+             LFill(VL_ACMO_I, 2) +
+             LFill(VL_ITEM, 2) +
+             LFill(NCM) +
+             LFill(CST, 0) +
+             LFill(CFOP, 0) +
+             LFill(VL_BC_ICMS_I, 2) +
+             LFill(ALIQ_ICMS, 2) +
+             LFill(VL_ICMS_I, 2) +
+             LFill(VL_BC_ST_I, 2) +
+             LFill(ALIQ_ST, 2) +
+             LFill(VL_ICMS_ST_I, 2) +
+             LFill(VL_BC_IPI, 2) +
+             LFill(ALIQ_IPI, 2) +
+             LFill(VL_IPI_I, 2) );
+      end;
 
+      WriteRegistroC320(C300);
+      WriteRegistroC310(C300);
+      WriteRegistroC325(C300);
+      WriteRegistroC305(C300);
+      WriteRegistroC315(C300);
+
+      FRegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+    end;
+
+    FRegistroC300Count := FRegistroC300Count + RegC020.RegistroC300.Count;
+  end;
 end;
 
 procedure TBloco_C.WriteRegistroC305(RegC300: TRegistroC300);
@@ -768,14 +822,14 @@ begin
            LFill(SituacaoDoctoToStr(COD_SIT)) +
            LFill(SER) +
            LFill(SUB) +
-           LFill(NUM_DOC) +
+           LFill(NUM_DOC, 0) +
            LFill(DT_DOC) +
-           LFill(VL_DOC) +
-           LFill(VL_DESC) +
-           LFill(VL_ACMO) +
-           LFill(VL_MERC) +
-           LFill(VL_BC_ICMS) +
-           LFill(VL_ICMS) +
+           LFill(VL_DOC, 2) +
+           LFill(VL_DESC, 2) +
+           LFill(VL_ACMO, 2) +
+           LFill(VL_MERC, 2) +
+           LFill(VL_BC_ICMS, 2) +
+           LFill(VL_ICMS, 2) +
            LFill(COD_INF_OBS) );
     end;
 
@@ -825,25 +879,26 @@ begin
            LFill(CNPJ_CONS) +
            LFill(COD_MOD) +
            LFill(SituacaoDoctoToStr(COD_SIT)) +
-           LFill(ECF_CX) +
+           LFill(ECF_CX, 0) +
            LFill(ECF_FAB) +
-           LFill(CRO) +
-           LFill(CRZ) +
-           LFill(NUM_DOC) +
+           LFill(CRO, 0) +
+           LFill(CRZ, 0) +
+           LFill(NUM_DOC, 0) +
            LFill(DT_DOC) +
            LFill(COP) +
-           LFill(VL_DOC) +
-           LFill(VL_CANC_ICMS) +
-           LFill(VL_DESC_ICMS) +
-           LFill(VL_ACMO_ICMS) +
-           LFill(VL_BC_ICMS) +
-           LFill(VL_ICMS) +
-           LFill(VL_ISN) +
-           LFill(VL_NT) +
-           LFill(VL_ICMS_ST) );
+           LFill(VL_DOC, 2) +
+           LFill(VL_CANC_ICMS, 2) +
+           LFill(VL_DESC_ICMS, 2) +
+           LFill(VL_ACMO_ICMS, 2) +
+           LFill(VL_BC_ICMS, 2) +
+           LFill(VL_ICMS, 2) +
+           LFill(VL_ISN, 2) +
+           LFill(VL_NT, 2) +
+           LFill(VL_ICMS_ST, 2) );
     end;
 
     WriteRegistroC605(RegC600);
+    WriteRegistroC610(RegC600);
 
     FRegistroC990.QTD_LIN_C := FRegistroC990.QTD_LIN_C + 1;
   end;
@@ -862,20 +917,65 @@ begin
     with C605 do
     begin
       Add( LFill('C605') +
-           LFill(VL_CANC_ISS) +
-           LFill(VL_DESC_ISS) +
-           LFill(VL_ACMO_ISS) +
-           LFill(VL_OP_ISS) +
-           LFill(VL_BC_ISS) +
-           LFill(VL_ISS) +
-           LFill(VL_ISN_ISS) +
-           LFill(VL_NT_ISS) );
+           LFill(VL_CANC_ISS, 2) +
+           LFill(VL_DESC_ISS, 2) +
+           LFill(VL_ACMO_ISS, 2) +
+           LFill(VL_OP_ISS, 2) +
+           LFill(VL_BC_ISS, 2) +
+           LFill(VL_ISS, 2) +
+           LFill(VL_ISN_ISS, 2) +
+           LFill(VL_NT_ISS, 2) );
     end;
 
     FRegistroC990.QTD_LIN_C := FRegistroC990.QTD_LIN_C + 1;
   end;
 
   FRegistroC605Count := FRegistroC605Count + RegC600.RegistroC605.Count;
+end;
+
+procedure TBloco_C.WriteRegistroC610(RegC600: TRegistroC600);
+var
+  intFor: Integer;
+  C610: TRegistroC610;
+begin
+  if Assigned(RegC600.RegistroC610) then
+  begin
+    for intFor := 0 to RegC600.RegistroC610.Count - 1 do
+    begin
+      C610 := RegC600.RegistroC610.Items[intFor];
+      with C610 do
+      begin
+        Add( LFill('C610') +
+             LFill(NUM_ITEM, 0) +
+             LFill(COD_ITEM) +
+             LFill(UNID) +
+             LFill(Double(VL_UNIT), 6) +
+             LFill(Double(QTD), 6) +
+             LFill(VL_DESC_I, 2) +
+             LFill(VL_ACMO_I, 2) +
+             LFill(VL_ITEM, 2) +
+             LFill(CST) +
+             LFill(CFOP, 0) +
+             LFill(VL_BC_ICMS_I, 2) +
+             LFill(ALIQ_ICMS, 2) +
+             LFill(VL_ICMS_I, 2) +
+             LFill(VL_ISN_I, 2) +
+             LFill(VL_NT_I, 2) +
+             LFill(VL_ICMS_ST_I, 2) );
+      end;
+
+      WriteRegistroC615(C610);
+
+      FRegistroC990.QTD_LIN_C := FRegistroC990.QTD_LIN_C + 1;
+    end;
+
+    FRegistroC610Count := FRegistroC610Count + RegC600.RegistroC610.Count;
+  end;
+end;
+
+procedure TBloco_C.WriteRegistroC615(RegC610: TRegistroC610);
+begin
+
 end;
 
 procedure TBloco_C.WriteRegistroC620(RegC001: TRegistroC001);
@@ -930,7 +1030,14 @@ end;
 
 procedure TBloco_C.WriteRegistroC990;
 begin
+  if Assigned(FRegistroC990) then
+    with FRegistroC990 do
+    begin
+      QTD_LIN_C := QTD_LIN_C + 1;
 
+      Add( LFill('C990') +
+           LFill(QTD_LIN_C, 0) );
+    end;
 end;
 
 end.

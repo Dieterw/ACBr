@@ -112,12 +112,37 @@ end;
 
 procedure TBloco_E.WriteRegistroE001;
 begin
+   if Assigned(FRegistroE001) then
+   begin
+      with FRegistroE001 do
+      begin
+         Add( LFill( 'E001' ) +
+              LFill( Integer(IND_MOV), 0 ) ) ;
 
+      end;
+
+      RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
+   end;
 end;
 
 procedure TBloco_E.WriteRegistroE990;
+var
+  strLinha: String;
 begin
+   //--Before
+   strLinha := '';
 
+   if Assigned(RegistroE990) then
+   begin
+      with RegistroE990 do
+      begin
+        QTD_LIN_E := QTD_LIN_E + 1;
+        ///
+        strLinha := LFill('E990') +
+                    LFill(QTD_LIN_E,0);
+        Add(strLinha);
+     end;
+  end;
 end;
 
 end.

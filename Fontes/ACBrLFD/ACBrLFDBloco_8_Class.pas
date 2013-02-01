@@ -154,12 +154,35 @@ end;
 
 procedure TBloco_8.WriteRegistro8001;
 begin
+   if Assigned(FRegistro8001) then
+   begin
+      with FRegistro8001 do
+      begin
+        WriteRegistro8020(FRegistro8001);
+      end;
+   end;
 
+   FRegistro8990.QTD_LIN_8 := FRegistro8990.QTD_LIN_8 + 1;
 end;
 
 procedure TBloco_8.WriteRegistro8020(Reg8001: TRegistro8001);
 begin
+  if Assigned(Reg8001.Registro8020) then
+    with Reg8001.Registro8020 do
+    begin
+      Add( LFill('8020') +
+           LFill(Integer(imComDados), 0) +
+           LFill(DT_INI) +
+           LFill(DT_FIN) +
+           LFill(COMB, 4) );
 
+      if IND_DAD = imComDados then
+      begin
+        WriteRegistro8025(Reg8001.Registro8020);
+      end;
+
+      FRegistro8990.QTD_LIN_8 := FRegistro8990.QTD_LIN_8 + 1;
+    end;
 end;
 
 procedure TBloco_8.WriteRegistro8025(Reg8020: TRegistro8020);
@@ -173,8 +196,23 @@ begin
 end;
 
 procedure TBloco_8.WriteRegistro8990;
+var
+  strLinha: String;
 begin
+//--Before
+   strLinha := '';
 
+   if Assigned(Registro8990) then
+   begin
+      with Registro8990 do
+      begin
+        QTD_LIN_8 := QTD_LIN_8 + 1;
+        ///
+        strLinha := LFill('8990') +
+                    LFill(QTD_LIN_8,0);
+        Add(strLinha);
+      end;
+   end;
 end;
 
 end.

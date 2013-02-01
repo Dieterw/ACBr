@@ -3,7 +3,7 @@
 {  Biblioteca multiplataforma de componentes Delphi para interação com equipa- }
 { mentos de Automação Comercial utilizados no Brasil                           }
 {                                                                              }
-{ Direitos Autorais Reservados (c) 2009  Juliana Tamizou                       }
+{ Direitos Autorais Reservados (c) 2009   Juliana Tamizou                      }
 {                                                                              }
 { Colaboradores nesse arquivo: Isaque Pinheiro                                 }
 {                                                                              }
@@ -34,47 +34,106 @@
 {******************************************************************************
 |* Historico
 |*
-|* 26/01/2013: Nilson Sergio
+|* 31/01/2013: Nilson Sergio
 |*  - Criação e distribuição da Primeira Versao
 *******************************************************************************}
 
-unit ACBrLFDBloco_E;
+unit ACBrLFDBloco_G_Class;
 
 interface
 
-uses
-  SysUtils, Classes, DateUtils, ACBrLFDBlocos;
+uses SysUtils, Classes, DateUtils, ACBrLFD3505, ACBrLFDBlocos, ACBrLFDBloco_G,
+     ACBrTXTClass;
 
 type
 
-  /// Registro E001 - Abertura do Bloco E
+  /// BLOCO G: INFORMAÇÕES ECONÔMICO-FISCAIS
 
-  { TRegistroE001 }
+  { TBloco_G }
 
-  TRegistroE001 = class(TOpenBlocos)
+  TBloco_G = class(TACBrLFD3505)
   private
+    FRegistroG001: TRegistroG001;
+    FRegistroG990: TRegistroG990;
+
+    procedure CriaRegistros;
+    procedure LiberaRegistros;
   public
-    constructor Create; virtual; /// Create
-  end;
+    constructor Create;           /// Create
+    destructor Destroy; override; /// Destroy
+    procedure LimpaRegistros;
 
-  /// Registro E990 - Encerramento do Bloco E
+    procedure WriteRegistroG001;
+    procedure WriteRegistroG990;
 
-  { TRegistroE990 }
-
-  TRegistroE990 = class
-  private
-    fQTD_LIN_E: Integer;
-  public
-    property QTD_LIN_E: Integer read fQTD_LIN_E write fQTD_LIN_E;
+    property RegistroG001: TRegistroG001 read FRegistroG001 write FRegistroG001;
+    property RegistroG990: TRegistroG990 read FRegistroG990 write FRegistroG990;
   end;
 
 implementation
 
-{ TRegistroE001 }
+uses ACBrLFDUtils, StrUtils;
 
-constructor TRegistroE001.Create;
+{ TBloco_G }
+
+constructor TBloco_G.Create ;
 begin
-   IND_MOV := imSemDados;
+  inherited ;
+  CriaRegistros;
+end;
+
+destructor TBloco_G.Destroy;
+begin
+  LiberaRegistros;
+  inherited;
+end;
+
+procedure TBloco_G.CriaRegistros;
+begin
+  FRegistroG001 := TRegistroG001.Create;
+  FRegistroG990 := TRegistroG990.Create;
+
+  FRegistroG990.QTD_LIN_G := 0;
+end;
+
+procedure TBloco_G.LiberaRegistros;
+begin
+  FRegistroG001.Free;
+  FRegistroG990.Free;
+end;
+
+procedure TBloco_G.LimpaRegistros;
+begin
+  /// Limpa os Registros
+  LiberaRegistros;
+  Conteudo.Clear;
+
+  /// Recriar os Registros Limpos
+  CriaRegistros;
+end;
+
+procedure TBloco_G.WriteRegistroG001;
+begin
+  if Assigned(FRegistroG001) then
+    with FRegistroG001 do
+    begin
+      Add( LFill('G001') +
+           LFill(Integer(IND_MOV), 0) );
+
+      FRegistroG990.QTD_LIN_G := FRegistroG990.QTD_LIN_G + 1;
+    end;
+end;
+
+procedure TBloco_G.WriteRegistroG990;
+begin
+  if Assigned(FRegistroG990) then
+    with FRegistroG990 do
+    begin
+      QTD_LIN_G := QTD_LIN_G + 1;
+
+      Add( LFill('G990') +
+           LFill(QTD_LIN_G, 0) );
+    end;
 end;
 
 end.

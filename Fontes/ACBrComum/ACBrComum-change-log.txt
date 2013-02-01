@@ -38,6 +38,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 01/02/2013
+-- ACBrAAC --
+[-] Correção para gravar a propriedade paraiba legal
+    (Regys Silveira)
+
 Data: 28/01/2013
 -- ACBrUtil --
 [+] Adicionada função para ler conteudo de Tags de XML   (por: DSA)

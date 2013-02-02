@@ -237,7 +237,7 @@ object Form1: TForm1
         Top = 0
         Width = 491
         Align = alClient
-        Caption = 'Consultar'
+        Caption = 'Enviar Arquivo'
         ClientHeight = 138
         ClientWidth = 487
         TabOrder = 1
@@ -346,6 +346,7 @@ object Form1: TForm1
   end
   object ACBrNFPws1: TACBrNFPws
     ProxyPort = '8080'
+    URL = 'https://www.nfp.fazenda.sp.gov.br/ws/arquivocf.asmx'
     CategoriaUsuario = nfpNenhum
     ModoTeste = True
     TipoDocto = docCupomFiscal

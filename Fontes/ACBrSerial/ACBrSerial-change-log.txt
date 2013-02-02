@@ -97,6 +97,13 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 02/02/2013
+-- ACBrECFFiscNet --
+[-] Correção do método ArquivoMFD_DLL para os modelos Urano (por: Welkson e DSA)
+   http://www.projetoacbr.com.br/forum/index.php?/topic/
+   8864-menu-fiscal-usando-urano-patch-no-acbrecf/
+
+
 Data: 30/01/2013
 -- ACBrECFSwedaStx --
 [-] Acerto no ajuste de hora da Redução Z

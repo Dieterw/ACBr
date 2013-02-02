@@ -128,10 +128,10 @@ TACBrECFFiscNET = class( TACBrECFClass )
 
     // urano e demais
     xDLLReadLeMemorias : function (szPortaSerial, szNomeArquivo, szSerieECF,
-         bAguardaConcluirLeitura : AnsiString) : Integer; stdcall;
+         bAguardaConcluirLeitura : PAnsiChar) : Integer; stdcall;
 
     xDLLATO17GeraArquivo : function (szArquivoBinario, szArquivoTexto, szPeriodoIni, szPeriodoFIM,
-         TipoPeriodo, szUsuario, szTipoLeitura : AnsiString) : Integer; stdcall;
+         TipoPeriodo, szUsuario, szTipoLeitura : PAnsiChar) : Integer; stdcall;
 
     //Elgin
     xElgin_AbrePortaSerial  : function : Integer; StdCall;
@@ -2603,7 +2603,7 @@ begin
      FiscNetFunctionDetect(LIB_FiscNet, 'Elgin_LeMemoriasBinario', @xElgin_LeMemoriasBinario );
      FiscNetFunctionDetect(LIB_FiscNet, 'Elgin_GeraArquivoATO17Binario', @xElgin_GeraArquivoATO17Binario  );
    end
-  else
+  else    // Urano e demais
    begin
      FiscNetFunctionDetect('Leitura.dll', 'DLLReadLeMemorias',  @xDLLReadLeMemorias );
      FiscNetFunctionDetect('ATO17.dll',   'DLLATO17GeraArquivo', @xDLLATO17GeraArquivo );
@@ -2802,7 +2802,7 @@ begin
 
      if (Finalidade = finMF) then
         cFinalidade := 'MF'
-     else if (Finalidade = finTDM) then
+     else if (Finalidade in [finTDM,finNFPTDM]) then
         cFinalidade := 'TDM'
      else
         cFinalidade := 'MFD';
@@ -2856,8 +2856,17 @@ begin
 
         xElgin_FechaPortaSerial();
       end
-     else
+     else    // Urano e demais
       begin
+        if (Finalidade = finNFPTDM) then
+        begin
+           //TODO: gerar o "nome do arquivo" no padrão CAT-52
+           //Geralmente as DLL's precisam somente do diretório, o nome do arquivo é gerado automaticamente.
+           //No caso da Urano você deve especificar o nome do arquivo (ACBr tem alguma função pra gerar esse nome no padrão cat?)
+           if Length(Trim(ExtractFileName(NomeArquivo))) = 0 then
+              NomeArquivo := NomeArquivo + 'CAT52.txt';
+        end;
+
         ArqTmp := ExtractFilePath( NomeArquivo ) + 'ACBr.TDM' ;
         if FileExists( NomeArquivo ) then
            DeleteFile( NomeArquivo ) ;
@@ -2865,15 +2874,17 @@ begin
         DiaIni := FormatDateTime('yyyymmdd', DataInicial);
         DiaFim := FormatDateTime('yyyymmdd', DataFinal);
 
-        iRet := xDLLReadLeMemorias( PortaSerial, ArqTmp, NumFab, #1);
+        iRet := xDLLReadLeMemorias( PAnsiChar(PortaSerial), PAnsiChar(ArqTmp),
+                                    PAnsiChar(NumFab), '1');
 
         if iRet <> 0 then
            raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar DLLReadLeMemorias.' + sLineBreak +
                                             'Cod.: '+ IntToStr(iRet) + ' - ' +
                                             GetErroAtoCotepe1704(iRet) )) ;
 
-        iRet := xDLLATO17GeraArquivo( ArqTmp, NomeArquivo, DiaIni, DiaFim,
-                                      'M', '1', cFinalidade );
+        iRet := xDLLATO17GeraArquivo( PAnsiChar(ArqTmp), PAnsiChar(NomeArquivo),
+                                      PAnsiChar(DiaIni), PAnsiChar(DiaFim),
+                                      'M', '1', PAnsiChar(cFinalidade) );
 
         if iRet <> 0 then
            raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar DLLATO17GeraArquivo.' + sLineBreak +
@@ -2959,15 +2970,17 @@ begin
         if FileExists( NomeArquivo ) then
            DeleteFile( NomeArquivo ) ;
 
-        iRet := xDLLReadLeMemorias( PortaSerial, ArqTmp, NumFab, '1');
+        iRet := xDLLReadLeMemorias( PAnsiChar(PortaSerial), PAnsiChar(ArqTmp),
+                                    PAnsiChar(NumFab), '1');
 
         if iRet <> 0 then
            raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar DLLReadLeMemorias.' + sLineBreak +
                                             'Cod.: '+ IntToStr(iRet) + ' - ' +
                                             GetErroAtoCotepe1704(iRet) )) ;
 
-        iRet := xDLLATO17GeraArquivo( ArqTmp, NomeArquivo, CooIni, CooFim,
-                                      'C', '1', cFinalidade );
+        iRet := xDLLATO17GeraArquivo( PAnsiChar(ArqTmp), PAnsiChar(NomeArquivo),
+                                      PAnsiChar(CooIni), PAnsiChar(CooFim),
+                                      'C', '1', PAnsiChar(cFinalidade) );
 
         if iRet <> 0 then
            raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar DLLATO17GeraArquivo.' + sLineBreak +

@@ -97,6 +97,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 04/02/2013
+-- ACBrECF --
+[-] Correção do rodape Cupom Mania estava pegando a data do computador (por: Rafael Dias)
+
 Data: 02/02/2013
 -- ACBrECFFiscNet --
 [-] Correção do método ArquivoMFD_DLL para os modelos Urano (por: Welkson e DSA)

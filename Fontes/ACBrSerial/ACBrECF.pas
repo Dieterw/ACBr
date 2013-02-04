@@ -2955,7 +2955,7 @@ begin
     Rodape := Rodape + #10 + 'CUPOM MANIA, CONCORRA A PRÊMIOS';
     Rodape := Rodape + #10 + 'ENVIE SMS P/ 6789: ' +
       Copy(OnlyNumber(fsECF.IE), 1, 8) +    // 8 primeiros digitos da Inscr.Estadual
-      FormatDateTime('ddmmyy', Date) +      // data atual
+      FormatDateTime('ddmmyy', Self.DataHora) +      // data atual
       Format('%6.6d', [StrToInt(NumCOO)]) + // numero do coo do cupom
       Format('%3.3d', [StrToInt(NumECF)]);  // numero do ecf
 

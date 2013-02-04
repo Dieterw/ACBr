@@ -60,7 +60,8 @@ type
   TRegistro1350List = class;
   TRegistro1360List = class;
   TRegistro1370List = class;
-  TRegistro1390List = class;  
+  TRegistro1390List = class;
+  TRegistro1391List = class;  
   TRegistro1400List = class;
   TRegistro1500List = class;
   TRegistro1510List = class;
@@ -79,6 +80,7 @@ type
     FRegistro1300: TRegistro1300List;
     FRegistro1350: TRegistro1350List;
     FRegistro1390: TRegistro1390List;
+    FRegistro1391: TRegistro1391List;
     FRegistro1400: TRegistro1400List;
     FRegistro1500: TRegistro1500List;
     FRegistro1600: TRegistro1600List;
@@ -94,6 +96,7 @@ type
     property Registro1300: TRegistro1300List read FRegistro1300 write FRegistro1300;
     property Registro1350: TRegistro1350List read FRegistro1350 write FRegistro1350;
     property Registro1390: TRegistro1390List read FRegistro1390 write FRegistro1390;
+    property Registro1391: TRegistro1391List read FRegistro1391 write FRegistro1391;
     property Registro1400: TRegistro1400List read FRegistro1400 write FRegistro1400;
     property Registro1500: TRegistro1500List read FRegistro1500 write FRegistro1500;
     property Registro1600: TRegistro1600List read FRegistro1600 write FRegistro1600;
@@ -542,10 +545,15 @@ type
   TRegistro1390 = class
   private
     fCOD_PROD: String;      /// Código do item (campo 02 do Registro 0200)
+
+    FRegistro1391: TRegistro1391List;  /// REGISTRO 1391: PRODUÇÃO DIÁRIA DA USINA
   public
     constructor Create(AOwner: TRegistro1001); virtual; /// Create
+    destructor Destroy; override; /// Destroy
 
     property COD_PROD: String read fCOD_PROD write fCOD_PROD;
+
+    property Registro1391: TRegistro1391List read FRegistro1391 write FRegistro1391;
   end;
 
   /// Registro 1390 - Lista
@@ -557,6 +565,58 @@ type
   public
     function New(AOwner: TRegistro1001): TRegistro1390;
     property Items[Index: Integer]: TRegistro1390 read GetItem write SetItem;
+  end;
+
+  /// REGISTRO 1391: PRODUÇÃO DIÁRIA DA USINA
+
+  TRegistro1391 = class
+  private
+    fDT_REGISTRO  : TDateTime;  /// Data de produção (DDMMAAAA)
+    fQTD_MOID     : Currency;   /// Quantidade de cana esmagada (toneladas)
+    fESTQ_INI     : Currency;   /// Estoque inicial (litros / Kg)
+    fQTD_PRODUZ   : Currency;   /// Quantidade produzida (litros / Kg)
+    fENT_ANID_HID : Currency;   /// Entrada de álcool anidro decorrente da transformação do álcool hidratado ou Entrada de álcool hidratado decorrente da transformação do álcool anidro (litros)
+    fOUTR_ENTR    : Currency;   /// Outras entradas (litros / Kg)
+    fPERDA        : Currency;   /// Evaporação (litros) ou Quebra de peso (Kg)
+    fCONS         : Currency;   /// Consumo (litros)
+    fSAI_ANI_HID  : Currency;   /// Saída para transformação (litros).
+    fSAIDAS       : Currency;   /// Saídas (litros / Kg)
+    fESTQ_FIN     : Currency;   /// Estoque final (litros / Kg)
+    fESTQ_INI_MEL : Currency;   /// Estoque inicial de mel residual (Kg)
+    fPROD_DIA_MEL : Currency;   /// Produção de mel residual (Kg) e entradas de mel (Kg)
+    fUTIL_MEL     : Currency;   /// Mel residual utilizado (Kg) e saídas de mel (Kg)
+    fPROD_ALC_MEL : Currency;   /// Produção de álcool (litros) ou açúcar (Kg) proveniente do mel residual.
+    fOBS          : String;     /// Observações
+  public                        
+    constructor Create(AOwner: TRegistro1390); virtual; /// Create
+
+    property DT_REGISTRO: TDateTime read fDT_REGISTRO write fDT_REGISTRO;
+    property QTD_MOID: Currency read fQTD_MOID write fQTD_MOID;
+    property ESTQ_INI: Currency read fESTQ_INI write fESTQ_INI;
+    property QTD_PRODUZ: Currency read fQTD_PRODUZ write fQTD_PRODUZ;
+    property ENT_ANID_HID: Currency read fENT_ANID_HID write fENT_ANID_HID;
+    property OUTR_ENTR: Currency read fOUTR_ENTR write fOUTR_ENTR;
+    property PERDA: Currency read fPERDA write fPERDA;
+    property CONS: Currency read fCONS write fCONS;
+    property SAI_ANI_HID: Currency read fSAI_ANI_HID write fSAI_ANI_HID;
+    property SAIDAS: Currency read fSAIDAS write fSAIDAS;
+    property ESTQ_FIN: Currency read fESTQ_FIN write fESTQ_FIN;
+    property ESTQ_INI_MEL: Currency read fESTQ_INI_MEL write fESTQ_INI_MEL;
+    property PROD_DIA_MEL: Currency read fPROD_DIA_MEL write fPROD_DIA_MEL;
+    property UTIL_MEL: Currency read fUTIL_MEL write fUTIL_MEL;
+    property PROD_ALC_MEL: Currency read fPROD_ALC_MEL write fPROD_ALC_MEL;
+    property OBS: String read fOBS write fOBS;
+  end;
+
+  /// Registro 1391 - Lista
+
+  TRegistro1391List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistro1391;
+    procedure SetItem(Index: Integer; const Value: TRegistro1391);
+  public
+    function New(AOwner: TRegistro1390): TRegistro1391;
+    property Items[Index: Integer]: TRegistro1391 read GetItem write SetItem;
   end;
 
 
@@ -1408,6 +1468,19 @@ end;
 
 constructor TRegistro1390.Create(AOwner: TRegistro1001);
 begin
+  fRegistro1391 := TRegistro1391List.Create;
+end;
+
+destructor TRegistro1390.Destroy;
+begin
+  FRegistro1391.Free;
+  inherited;
+end;
+
+{ TRegistro1391 }
+
+constructor TRegistro1391.Create(AOwner: TRegistro1390);
+begin
 end;
 
 { TRegistro1400 }
@@ -1432,6 +1505,25 @@ end;
 
 constructor TRegistro1800.Create(AOwner: TRegistro1001);
 begin
+end;
+
+{ TRegistro1391List }
+
+function TRegistro1391List.GetItem(Index: Integer): TRegistro1391;
+begin
+  Result := TRegistro1391(Inherited Items[Index]);
+end;
+
+function TRegistro1391List.New(AOwner: TRegistro1390): TRegistro1391;
+begin
+  Result := TRegistro1391.Create(AOwner);
+  Add(Result);
+end;
+
+procedure TRegistro1391List.SetItem(Index: Integer;
+  const Value: TRegistro1391);
+begin
+  Put(Index, Value);
 end;
 
 end.

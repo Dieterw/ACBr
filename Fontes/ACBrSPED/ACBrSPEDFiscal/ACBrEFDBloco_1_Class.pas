@@ -67,6 +67,7 @@ type
     FRegistro1360Count: Integer;
     FRegistro1370Count: Integer;
     FRegistro1390Count: Integer;
+    FRegistro1391Count: Integer;
     FRegistro1400Count: Integer;
     FRegistro1500Count: Integer;
     FRegistro1510Count: Integer;
@@ -88,6 +89,7 @@ type
     procedure WriteRegistro1360(Reg1350: TRegistro1350) ;
     procedure WriteRegistro1370(Reg1350: TRegistro1350) ;
     procedure WriteRegistro1390(Reg1001: TRegistro1001) ;
+    procedure WriteRegistro1391(Reg1390: TRegistro1390) ;
     procedure WriteRegistro1400(Reg1001: TRegistro1001) ;
     procedure WriteRegistro1500(Reg1001: TRegistro1001) ;
     procedure WriteRegistro1510(Reg1500: TRegistro1500) ;
@@ -116,7 +118,8 @@ type
     function Registro1350New: TRegistro1350;
     function Registro1360New: TRegistro1360;
     function Registro1370New: TRegistro1370;
-    function Registro1390New: TRegistro1390;    
+    function Registro1390New: TRegistro1390;
+    function Registro1391New: TRegistro1391;    
     function Registro1400New: TRegistro1400;
     function Registro1500New: TRegistro1500;
     function Registro1510New: TRegistro1510;
@@ -144,7 +147,8 @@ type
     property Registro1350Count: Integer read FRegistro1350Count write FRegistro1350Count;
     property Registro1360Count: Integer read FRegistro1360Count write FRegistro1360Count;
     property Registro1370Count: Integer read FRegistro1370Count write FRegistro1370Count;
-    property Registro1390Count: Integer read FRegistro1390Count write FRegistro1390Count;    
+    property Registro1390Count: Integer read FRegistro1390Count write FRegistro1390Count;
+    property Registro1391Count: Integer read FRegistro1391Count write FRegistro1391Count;    
     property Registro1400Count: Integer read FRegistro1400Count write FRegistro1400Count;
     property Registro1500Count: Integer read FRegistro1500Count write FRegistro1500Count;
     property Registro1510Count: Integer read FRegistro1510Count write FRegistro1510Count;
@@ -187,7 +191,8 @@ begin
   Registro1350Count := 0;
   Registro1360Count := 0;
   Registro1370Count := 0;
-  Registro1390Count := 0;  
+  Registro1390Count := 0;
+  Registro1391Count := 0;  
   Registro1400Count := 0;
   Registro1500Count := 0;
   Registro1510Count := 0;
@@ -346,6 +351,16 @@ begin
    Result := FRegistro1001.Registro1390.New(FRegistro1001);
 end;
 
+function TBloco_1.Registro1391New: TRegistro1391;
+var U1390: TRegistro1390;
+    U1390Count: Integer;
+begin
+   U1390Count := FRegistro1001.Registro1390.Count -1;
+   if U1390Count = -1 then
+      raise Exception.Create('O registro 1391 deve ser filho do registro 1390, e não existe nenhum 1390 pai!');
+   U1390  := FRegistro1001.Registro1390.Items[U1390Count];
+   Result := U1390.Registro1391.New(U1390);
+end;
 
 function TBloco_1.Registro1400New: TRegistro1400;
 begin
@@ -414,7 +429,7 @@ begin
          WriteRegistro1200(Registro1001) ;
          WriteRegistro1300(Registro1001) ;
          WriteRegistro1350(Registro1001) ;
-         WriteRegistro1390(Registro1001) ;         
+         WriteRegistro1390(Registro1001) ;
          WriteRegistro1400(Registro1001) ;
          WriteRegistro1500(Registro1001) ;
          WriteRegistro1600(Registro1001) ;
@@ -797,13 +812,50 @@ begin
           Add( LFill('1390') +
                LFill( COD_PROD ) ) ;
         end;
+        /// Registro FILHOS do FILHO
+        WriteRegistro1391( Reg1001.Registro1390.Items[intFor] ) ;
+
         Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
      end;
      /// Variavél para armazenar a quantidade de registro do tipo.
-     FRegistro1400Count := FRegistro1400Count + Reg1001.Registro1390.Count;
+     FRegistro1390Count := FRegistro1390Count + Reg1001.Registro1390.Count;
   end;
 end;
 
+procedure TBloco_1.WriteRegistro1391(Reg1390: TRegistro1390) ;
+var
+  intFor: integer;
+begin
+  if Assigned( Reg1390.Registro1391 ) then
+  begin
+     for intFor := 0 to Reg1390.Registro1391.Count - 1 do
+     begin
+        with Reg1390.Registro1391.Items[intFor] do
+        begin
+          Add( LFill('1391') +
+               LFill( DT_REGISTRO       ) +
+               LFill( QTD_MOID     ,0,2 ) +
+               LFill( ESTQ_INI     ,0,2 ) +
+               LFill( QTD_PRODUZ   ,0,2 ) +
+               LFill( ENT_ANID_HID ,0,2 ) +
+               LFill( OUTR_ENTR    ,0,2 ) +
+               LFill( PERDA        ,0,2 ) +
+               LFill( CONS         ,0,2 ) +
+               LFill( SAI_ANI_HID  ,0,2 ) +
+               LFill( SAIDAS       ,0,2 ) +
+               LFill( ESTQ_FIN     ,0,2 ) +
+               LFill( ESTQ_INI_MEL ,0,2 ) +
+               LFill( PROD_DIA_MEL ,0,2 ) +
+               LFill( UTIL_MEL     ,0,2 ) +
+               LFill( PROD_ALC_MEL ,0,2 ) +
+               LFill( OBS          )) ;
+        end;
+        Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
+     end;
+     /// Variavél para armazenar a quantidade de registro do tipo.
+     FRegistro1391Count := FRegistro1391Count + Reg1390.Registro1391.Count;
+  end;
+end;
 
 procedure TBloco_1.WriteRegistro1400(Reg1001: TRegistro1001) ;
 var

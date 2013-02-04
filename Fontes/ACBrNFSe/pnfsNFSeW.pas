@@ -163,6 +163,10 @@ begin
         Gerador.wCampoNFSe(tcStr, '#8', 'IncentivadorCultural  ', 01, 01, 1, SimNaoToStr(NFSe.IncentivadorCultural), '');
         Gerador.wCampoNFSe(tcStr, '#9', 'Status                ', 01, 01, 1, StatusRPSToStr(NFSe.Status), '');
         GerarRPSSubstituido;
+
+        if FProvedor = proSimplISS
+         then Gerador.wCampoNFSe(tcStr, '#11', 'OutrasInformacoes', 001, 255, 0, NFSe.OutrasInformacoes, '');
+
         GerarServico;
         GerarPrestador;
         GerarTomador;

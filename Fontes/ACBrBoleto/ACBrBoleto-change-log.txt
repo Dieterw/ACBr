@@ -55,7 +55,7 @@ Data: 01/02/13
     geração do Nosso Número é feita pelo Banco. (por: Andre Medeiros)
 
 -- ACBrBancoSIcred --
-[*] Melhorado rotina de montagem do Nosso Número para que os boletos re-impressos
+[-] Melhorado rotina de montagem do Nosso Número para que os boletos re-impressos
     mantenham o mesmo valor deste campo. (Juliana Tamizou)
 http://www.projetoacbr.com.br/forum/index.php?/topic/8825-d%C3%BAvida-nosso-n%C3%B9mero/
 

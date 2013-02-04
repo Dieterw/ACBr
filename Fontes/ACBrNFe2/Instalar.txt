@@ -47,11 +47,10 @@ descomente esta linha e salve o arquivo.
 -Na IDE do Delphi, clique em "File - Close All"
 
 -Procure pela pasta Pacotes\Delphi e abra o arquivo synapse.dpk e clique em compile.
- Procure pela pasta Pacotes\Delphi e abra o arquivo ACBrComum.dpk e clique em compile.
+ Procure pela pasta Pacotes\Delphi e abra o arquivo ACBrComum.dpk e clique em compile. 
  Procure pela pasta Pacotes\Delphi e abra o arquivo ACBrDiversos.dpk e clique em compile e depois clique em Install.
- Procure pela pasta Pacotes\Delphi e abra o arquivo ACBrCapicom.dpk e clique em compile.
- Procure pela pasta Pacotes\Delphi\ACBrNFe2 e abra o arquivo PCN2.dpk e clique em compile.
  Procure pela pasta Pacotes\Delphi e abra o arquivo ACBrOpenSSL.dpk e clique em compile.
+ Procure pela pasta Pacotes\Delphi\ACBrNFe2 e abra o arquivo PCN2.dpk e clique em compile.
  Procure pela pasta Pacotes\Delphi\ACBrNFe2 e abra o arquivo ACBr_NFe2.dpk e clique em compile e depois clique em Install.
 
 -Video de Instalacao da Versao OpenSSL: http://www.screentoaster.com/watch/stVExSREdIR15bQ1pfWVhaUldR
@@ -78,10 +77,11 @@ Versão CAPICOM
 
 
 -Procure pela pasta Pacotes\Delphi e abra o arquivo synapse.dpk e clique em compile.
- Procure pela pasta Pacotes\Delphi e abra o arquivo ACBrComum.dpk e clique em compile. 
+ Procure pela pasta Pacotes\Delphi e abra o arquivo ACBrComum.dpk e clique em compile.
  Procure pela pasta Pacotes\Delphi e abra o arquivo ACBrDiversos.dpk e clique em compile e depois clique em Install.
  Procure pela pasta Pacotes\Delphi e abra o arquivo ACBrCapicom.dpk e clique em compile.
  Procure pela pasta Pacotes\Delphi\ACBrNFe2 e abra o arquivo PCN2.dpk e clique em compile.
+ Procure pela pasta Pacotes\Delphi e abra o arquivo ACBrOpenSSL.dpk e clique em compile.
  Procure pela pasta Pacotes\Delphi\ACBrNFe2 e abra o arquivo ACBr_NFe2.dpk e clique em compile e depois clique em Install.
 
 -Video de Instalacao da Versao CAPICOM: http://www.screentoaster.com/watch/stVExSREdIR15bQ1pYXVhQVFFT

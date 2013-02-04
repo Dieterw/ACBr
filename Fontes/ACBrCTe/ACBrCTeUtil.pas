@@ -340,11 +340,11 @@ begin
             end;
         7 : begin // SVC-RS
              case ALayOut of
-               LayCTeRecepcao:      Result := DFeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefazvirtual.rs.gov.br/ws/CTeRecepcao/CTeRecepcao.asmx'          , 'https://homologacao.cte.sefazvirtual.rs.gov.br/ws/CTeRecepcao/CTeRecepcao.asmx');
-               LayCTeRetRecepcao:   Result := DFeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefazvirtual.rs.gov.br/ws/CTeRetRecepcao/CTeRetRecepcao.asmx'    , 'https://homologacao.cte.sefazvirtual.rs.gov.br/ws/CTeRetRecepcao/CTeRetRecepcao.asmx');
-               LayCTeCancelamento:  Result := DFeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefazvirtual.rs.gov.br/ws/CTeCancelamento/CTeCancelamento.asmx'  , 'https://homologacao.cte.sefazvirtual.rs.gov.br/ws/CTeCancelamento/CTeCancelamento.asmx');
-               LayCTeConsultaCT:    Result := DFeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefazvirtual.rs.gov.br/ws/CTeConsulta/CTeConsulta.asmx'          , 'https://homologacao.cte.sefazvirtual.rs.gov.br/ws/CTeConsulta/CTeConsulta.asmx');
-               LayCTeStatusServico: Result := DFeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefazvirtual.rs.gov.br/ws/CTeStatusServico/CTeStatusServico.asmx', 'https://homologacao.cte.sefazvirtual.rs.gov.br/ws/CTeStatusServico/CTeStatusServico.asmx');
+               LayCTeRecepcao:      Result := DFeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.rs.gov.br/ws/CTeRecepcao/CTeRecepcao.asmx'          , 'https://homologacao.cte.sefazvirtual.rs.gov.br/ws/CTeRecepcao/CTeRecepcao.asmx');
+               LayCTeRetRecepcao:   Result := DFeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.rs.gov.br/ws/CTeRetRecepcao/CTeRetRecepcao.asmx'    , 'https://homologacao.cte.sefazvirtual.rs.gov.br/ws/CTeRetRecepcao/CTeRetRecepcao.asmx');
+               LayCTeCancelamento:  Result := DFeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.rs.gov.br/ws/CTeCancelamento/CTeCancelamento.asmx'  , 'https://homologacao.cte.sefazvirtual.rs.gov.br/ws/CTeCancelamento/CTeCancelamento.asmx');
+               LayCTeConsultaCT:    Result := DFeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.rs.gov.br/ws/CTeConsulta/CTeConsulta.asmx'          , 'https://homologacao.cte.sefazvirtual.rs.gov.br/ws/CTeConsulta/CTeConsulta.asmx');
+               LayCTeStatusServico: Result := DFeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.rs.gov.br/ws/CTeStatusServico/CTeStatusServico.asmx', 'https://homologacao.cte.sefazvirtual.rs.gov.br/ws/CTeStatusServico/CTeStatusServico.asmx');
              end;
             end;
         8 : begin // SVC-SP

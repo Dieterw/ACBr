@@ -1430,7 +1430,7 @@ end;
 
 function CodSitToStr(AValue: TACBrCodSit): string;
 begin
-   Result := FormatFloat('00', Integer( AValue ) + 1 );
+   Result := FormatFloat('00', Integer( AValue ) );
 
 //   Result := EnumeradoToStr(AValue, ['00', '01', '02', '03', '04', '05', '06', '07', '08'],
 //                                    [sdfRegular,

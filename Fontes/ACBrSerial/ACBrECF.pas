@@ -2989,7 +2989,7 @@ begin
     begin
       Rodape := Rodape + #10 +
         'ESTABELECIMENTO INCLUÍDO NO PROGRAMA DE'#10 +
-        'CONCESSÃO DE CRÉDITOS - LEI 4.159/08.';
+        'CONCESSÃO DE CRÉDITOS - LEI Nº 4.159/08.';
     end;
 
     Rodape := Rodape + #10 + '<n>NOTA LEGAL:</n>';

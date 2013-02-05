@@ -317,6 +317,7 @@ type
     procedure SetItem(Index: Integer; const Value: TRegistro0150);
   public
     function New: TRegistro0150;
+    function LocalizaRegistro(Value: String): boolean;
     property Items[Index: Integer]: TRegistro0150 read GetItem write SetItem;
   end;
 
@@ -647,6 +648,41 @@ end;
 function TRegistro0150List.GetItem(Index: Integer): TRegistro0150;
 begin
   Result := TRegistro0150(Inherited Items[Index]);
+end;
+
+function TRegistro0150List.LocalizaRegistro(Value: String): boolean;
+var
+intFor: integer;
+begin
+   Result := false;
+   for intFor := 0 to Self.Count - 1 do
+   begin
+      if Length(Value) = 14 then
+      begin
+         if Self.Items[intFor].CNPJ = Value then
+         begin
+            Result := true;
+            Break;
+         end;
+      end
+      else
+      if Length(Value) = 11 then
+      begin
+         if Self.Items[intFor].CPF = Value then
+         begin
+            Result := true;
+            Break;
+         end;
+      end
+      else
+      begin
+         if Self.Items[intFor].COD_PART = Value then
+         begin
+            Result := true;
+            Break;
+         end;
+      end
+   end;
 end;
 
 function TRegistro0150List.New: TRegistro0150;

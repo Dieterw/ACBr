@@ -166,13 +166,6 @@ type
                  );
   TACBrIndicadorEmitenteDF = TACBrIndEmit;
 
-  /// Código da situação do documento fiscal (Registro 1900):
-  TACBrCodSitF = (
-                  csffRegular,            // 00 – Documento regular
-                  csfCancelado,           // 02 – Documento cancelado
-                  csfOutros               // 99 – Outros
-                  );
-
   /// Indicador do tipo de pagamento
   TACBrIndPgto = (
                   tpVista,             // 0 - À Vista
@@ -372,6 +365,13 @@ type
                  sdfEspecial                 // 08 Documento Fiscal emitido com base em Regime Especial ou Norma Específica
                  );
   TACBrSituacaoDF = TACBrCodSit;
+
+  /// Código da situação do documento fiscal (Registro 1900):
+  TACBrCodSitF = (
+                  csffRegular,            // 00 – Documento regular
+                  csfCancelado,           // 02 – Documento cancelado
+                  csfOutros               // 99 – Outros
+                  );
 
 (*
   TACBrSituacaoDocto = (

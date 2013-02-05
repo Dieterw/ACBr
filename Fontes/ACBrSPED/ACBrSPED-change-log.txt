@@ -47,6 +47,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 1.02 05/02/2013
+-- ACBrSPEDPisCofins --
+[+] Implementado controle de hierarquia nos registros filhos, no Bloco_0.
+    (por Isaque Pinheiro)
+
 Versão 1.01 05/02/2013
 -- ACBrSPEDFiscal --
 [*] A função LocalizaRegistro do Registro 0150, agora pesquisa o participante por:

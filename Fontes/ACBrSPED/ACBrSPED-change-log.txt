@@ -47,6 +47,16 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 1.01 05/02/2013
+-- ACBrSPEDFiscal --
+[*] A função LocalizaRegistro do Registro 0150, agora pesquisa o participante por:
+    CPF, CNPJ ou Código Interno (por Agnaldo Prates e Isaque Pinheiro)
+
+Versão 1.01 05/02/2013
+-- ACBrSPEDPisCofins --
+[*] A função LocalizaRegistro do Registro 0150, agora pesquisa o participante por:
+    CPF, CNPJ ou Código Interno (por Agnaldo Prates e Isaque Pinheiro)
+
 Versão 1.01 23/11/2012
 -- ACBrSPEDPisCofins --
 [+] Finalmente..., adicionado algumas funções de conversão de tipos:

@@ -77,7 +77,6 @@ type
     procedure LimpaRegistros;
 
     function RegistroH001New: TRegistroH001;
-    function RegistroH020New: TRegistroH020;
     function RegistroH030New: TRegistroH030;
     function RegistroH040New: TRegistroH040;
     function RegistroH050New: TRegistroH050;
@@ -151,45 +150,28 @@ begin
   Result := FRegistroH001;
 end;
 
-function TBloco_H.RegistroH020New: TRegistroH020;
-begin
-  Result := FRegistroH001.RegistroH020.New(FRegistroH001);
-end;
-
 function TBloco_H.RegistroH030New: TRegistroH030;
 var
   H020: TRegistroH020;
 begin
-  with FRegistroH001.RegistroH020 do
-    H020 := Items[ AchaUltimoPai('H020', 'H030') ];
-  Result := H020.RegistroH030.New(H020);
 end;
 
 function TBloco_H.RegistroH040New: TRegistroH040;
 var
   H020: TRegistroH020;
 begin
-  with FRegistroH001.RegistroH020 do
-    H020 := Items[ AchaUltimoPai('H020', 'H040') ];
-  Result := H020.RegistroH040.New(H020);
 end;
 
 function TBloco_H.RegistroH050New: TRegistroH050;
 var
   H020: TRegistroH020;
 begin
-  with FRegistroH001.RegistroH020 do
-    H020 := Items[ AchaUltimoPai('H020', 'H050') ];
-  Result := H020.RegistroH050.New(H020);
 end;
 
 function TBloco_H.RegistroH060New: TRegistroH060;
 var
   H020: TRegistroH020;
 begin
-  with FRegistroH001.RegistroH020 do
-    H020 := Items[ AchaUltimoPai('H020', 'H060') ];
-  Result := H020.RegistroH060.New(H020);
 end;
 
 procedure TBloco_H.WriteRegistroH001;
@@ -209,42 +191,16 @@ begin
 end;
 
 procedure TBloco_H.WriteRegistroH020(RegH001: TRegistroH001);
-var
-  intFor: Integer;
-  H020: TRegistroH020;
 begin
   if Assigned(RegH001.RegistroH020) then
-    for intFor := 0 to RegH001.RegistroH020.Count - 1 do
-    begin
-      H020 := RegH001.RegistroH020.Items[intFor];
-      with H020 do
+      with RegH001.RegistroH020 do
       begin
-        Add( LFill('H020') +
-             LFill(Integer(IND_DT), 0) +
-             LFill(DT_INV) +
-             LFill(VL_ESTQ) +
-             LFill(VL_ICMS_REC) +
-             LFill(VL_IPI_REC) +
-             LFill(VL_PIS_REC) +
-             LFill(VL_COFINS_REC) +
-             LFill(VL_TRIB_NC) +
-             LFill(VL_ESTQ_NC) +
-             LFill(NUM_LCTO) +
-             LFill(COD_INF_OBS) );
-      end;
-
-      if FRegistroH001.IND_MOV = imComDados then
-      begin
-        WriteRegistroH030(H020);
-        WriteRegistroH040(H020);
-        WriteRegistroH050(H020);
-        WriteRegistroH060(H020);
+         Add( LFill('H020') +
+              LFill(DT_INV) +
+              LFill(VL_ESTQ,0,0,false,'0','#0.##') );
       end;
 
       FRegistroH990.QTD_LIN_H := FRegistroH990.QTD_LIN_H + 1;
-    end;
-
-  FRegistroH020Count := FRegistroH020Count + RegH001.RegistroH020.Count;
 end;
 
 procedure TBloco_H.WriteRegistroH030(RegH020: TRegistroH020);

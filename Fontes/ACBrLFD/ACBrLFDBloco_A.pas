@@ -95,6 +95,7 @@ type
 
   TRegistroA020 = class
   private
+    FCOD_NAT: String;
     FIND_OPER: TACBrTipoOperacao; /// Indicador do tipo de operação
     FIND_EMIT: TACBrEmitente; /// Indicador do emitente do documento fiscal
     FCOD_PART: String; /// Código do participante (campo 02 do Registro 0150)
@@ -140,6 +141,7 @@ type
     property COD_SIT: TACBrSituacaoDocto read FCOD_SIT write FCOD_SIT;
     property SER: String read FSER write FSER;
     property SUB: String read FSUB write FSUB;
+    property COD_NAT: String read FCOD_NAT write FCOD_NAT;
     property NUM_DOC: Integer read FNUM_DOC write FNUM_DOC;
     property DT_DOC: TDate read FDT_DOC write FDT_DOC;
     property COP: String read FCOP write FCOP;
@@ -688,6 +690,9 @@ type
     FNUM_DOC: Integer; /// Número do documento fiscal
     FDT_DOC: TDate; /// Data da emissão do documento fiscal
     FCOP: String; /// Código Fiscal de Prestações de Serviços
+    FVL_ACMO_ICMS: Currency;
+    FVL_CANC_ICMS: Currency;
+    FVL_DESC_ICMS: Currency;
     FVL_DOC: Currency; /// Valor do documento fiscal
     FVL_CANC_ISS: Currency; /// Valor dos cancelamentos referentes ao ISS
     FVL_DESC_ISS: Currency; /// Valor dos descontos referentes ao ISS
@@ -699,6 +704,7 @@ type
 
     FRegistroA355: TRegistroA355;
     FRegistroA360: TRegistroA360List;
+    FVL_RET_ISS: Currency;
   public
     constructor Create(AOwner: TRegistroA001); virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -716,12 +722,16 @@ type
     property COP: String read FCOP write FCOP;
     property VL_DOC: Currency read FVL_DOC write FVL_DOC;
     property VL_CANC_ISS: Currency read FVL_CANC_ISS write FVL_CANC_ISS;
+    property VL_CANC_ICMS: Currency read FVL_CANC_ICMS write FVL_CANC_ICMS;
     property VL_DESC_ISS: Currency read FVL_DESC_ISS write FVL_DESC_ISS;
+    property VL_DESC_ICMS: Currency read FVL_DESC_ICMS write FVL_DESC_ICMS;
     property VL_ACMO_ISS: Currency read FVL_ACMO_ISS write FVL_ACMO_ISS;
+    property VL_ACMO_ICMS: Currency read FVL_ACMO_ICMS write FVL_ACMO_ICMS;
     property VL_BC_ISS: Currency read FVL_BC_ISS write FVL_BC_ISS;
     property VL_ISS: Currency read FVL_ISS write FVL_ISS;
     property VL_ISN_ISS: Currency read FVL_ISN_ISS write FVL_ISN_ISS;
     property VL_NT_ISS: Currency read FVL_NT_ISS write FVL_NT_ISS;
+    property VL_RET_ISS: Currency read FVL_RET_ISS write FVL_RET_ISS;
 
     property RegistroA355: TRegistroA355 read FRegistroA355 write FRegistroA355;
     property RegistroA360: TRegistroA360List read FRegistroA360 write FRegistroA360;

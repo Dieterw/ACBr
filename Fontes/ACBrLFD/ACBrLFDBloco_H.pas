@@ -47,7 +47,7 @@ uses
 
 type
 
-  TRegistroH020List = class;
+  TRegistroH020 = class;
   TRegistroH030List = class;
   TRegistroH040List = class;
   TRegistroH050List = class;
@@ -59,12 +59,12 @@ type
 
   TRegistroH001 = class(TOpenBlocos)
   private
-    FRegistroH020: TRegistroH020List;
+    FRegistroH020: TRegistroH020;
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
 
-    property RegistroH020: TRegistroH020List read FRegistroH020 write FRegistroH020;
+    property RegistroH020: TRegistroH020 read FRegistroH020 write FRegistroH020;
   end;
 
   /// Registro H020 - Totais do Inventário
@@ -73,55 +73,14 @@ type
 
   TRegistroH020 = class
   private
-    FIND_DT: TACBrDataInventario; /// Indicador da data do inventário
-    FDT_INV: TDate; // Data do inventário
-    FVL_ESTQ: Currency; /// Valor do estoque na data assinalada
-    FVL_ICMS_REC: Currency; /// Valor do ICMS a recuperar
-    FVL_IPI_REC: Currency; /// Valor do IPI a recuperar
-    FVL_PIS_REC: Currency; /// Valor do PIS a recuperar
-    FVL_COFINS_REC: Currency; /// Valor da COFINS a recuperar
-    FVL_TRIB_NC: Currency; /// Valor dos tributos não-cumulativos recuperáveis
-    FVL_ESTQ_NC: Currency; /// Valor do estoque, retirado o valor dos tributos recuperáveis
-    FNUM_LCTO: String; /// Número ou código de identificação única do lançamento contábil
-    FCOD_INF_OBS: String; /// Código de referência à observação
-
-    FRegistroH030: TRegistroH030List;
-    FRegistroH040: TRegistroH040List;
-    FRegistroH050: TRegistroH050List;
-    FRegistroH060: TRegistroH060List;
+    FDT_INV: TDate;
+    FVL_ESTQ: Currency;
   public
     constructor Create(AOwner: TRegistroH001); virtual; /// Create
     destructor Destroy; override; /// Destroy
 
-    property IND_DT: TACBrDataInventario read FIND_DT write FIND_DT;
     property DT_INV: TDate read FDT_INV write FDT_INV;
     property VL_ESTQ: Currency read FVL_ESTQ write FVL_ESTQ;
-    property VL_ICMS_REC: Currency read FVL_ICMS_REC write FVL_ICMS_REC;
-    property VL_IPI_REC: Currency read FVL_IPI_REC write FVL_IPI_REC;
-    property VL_PIS_REC: Currency read FVL_PIS_REC write FVL_PIS_REC;
-    property VL_COFINS_REC: Currency read FVL_COFINS_REC write FVL_COFINS_REC;
-    property VL_TRIB_NC: Currency read FVL_TRIB_NC write FVL_TRIB_NC;
-    property VL_ESTQ_NC: Currency read FVL_ESTQ_NC write FVL_ESTQ_NC;
-    property NUM_LCTO: String read FNUM_LCTO write FNUM_LCTO;
-    property COD_INF_OBS: String read FCOD_INF_OBS write FCOD_INF_OBS;
-
-    property RegistroH030: TRegistroH030List read FRegistroH030 write FRegistroH030;
-    property RegistroH040: TRegistroH040List read FRegistroH040 write FRegistroH040;
-    property RegistroH050: TRegistroH050List read FRegistroH050 write FRegistroH050;
-    property RegistroH060: TRegistroH060List read FRegistroH060 write FRegistroH060;
-  end;
-
-  /// Registro H020 - Lista
-
-  { TRegistroH020List }
-
-  TRegistroH020List = class(TACBrLFDRegistros)
-  private
-    function GetItem(Index: Integer): TRegistroH020;
-    procedure SetItem(Index: Integer; const Value: TRegistroH020);
-  public
-    function New(AOwner: TRegistroH001): TRegistroH020;
-    property Items[Index: Integer]: TRegistroH020 read GetItem write SetItem;
   end;
 
   /// Registro H030 - Inventário
@@ -279,7 +238,7 @@ implementation
 
 constructor TRegistroH001.Create;
 begin
-  FRegistroH020 := TRegistroH020List.Create;
+  FRegistroH020 := TRegistroH020.Create(Self);
   IND_MOV := imSemDados;
 end;
 
@@ -293,37 +252,11 @@ end;
 
 constructor TRegistroH020.Create(AOwner: TRegistroH001);
 begin
-  FRegistroH030 := TRegistroH030List.Create;
-  FRegistroH040 := TRegistroH040List.Create;
-  FRegistroH050 := TRegistroH050List.Create;
-  FRegistroH060 := TRegistroH060List.Create;
 end;
 
 destructor TRegistroH020.Destroy;
 begin
-  FRegistroH030.Free;
-  FRegistroH040.Free;
-  FRegistroH050.Free;
-  FRegistroH060.Free;
   inherited;
-end;
-
-{ TRegistroH020List }
-
-function TRegistroH020List.GetItem(Index: Integer): TRegistroH020;
-begin
-  Result := TRegistroH020(Get(Index));
-end;
-
-function TRegistroH020List.New(AOwner: TRegistroH001): TRegistroH020;
-begin
-  Result := TRegistroH020.Create(AOwner);
-  Add(Result);
-end;
-
-procedure TRegistroH020List.SetItem(Index: Integer; const Value: TRegistroH020);
-begin
-  Put(Index, Value);
 end;
 
 { TRegistroH030 }

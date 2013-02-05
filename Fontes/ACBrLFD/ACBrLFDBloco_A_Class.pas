@@ -358,8 +358,46 @@ begin
 end;
 
 procedure TBloco_A.WriteRegistroA020(RegA001: TRegistroA001);
+var
+  intFor: Integer;
 begin
+   if Assigned(RegA001.RegistroA020) then
+   begin
+      for intFor := 0 to RegA001.RegistroA020.Count - 1 do
+      begin
+         with RegA001.RegistroA020.Items[intFor] do
+         begin
+            Add( LFill('A020') +
+                 LFill(Integer(IND_OPER),1) +
+                 LFill(Integer(IND_EMIT),1) +
+                 LFill(COD_PART) +
+                 LFill(COD_MOD)  +
+                 LFill(Integer(COD_SIT),1) +
+                 LFill(SER) +
+                 LFill(SUB) +
+                 LFill(NUM_DOC) +
+                 LFill(DT_DOC) +
+                 LFill(COP,4) +
+                 LFill(COD_MUN_SERV,7) +
+                 LFill(COD_NAT) +
+                 LFill(VL_DOC) +
+                 LFill(integer(IND_PGTO),1 )+
+                 LFill(VL_SUB) +
+                 LFill(VL_DESC) +
+                 LFill(VL_SERV) +
+                 LFill(VL_MAT_PROP) +
+                 LFill(VL_MAT_TERC) +
+                 LFill(VL_DA) +
+                 LFill(VL_BC_ISS) +
+                 LFill(VL_ISS) +
+                 LFill(VL_BC_RT_ISS) +
+                 LFill(VL_RT_ISS) +
+                 LFill(COD_INF_OBS) );
 
+         end;
+         RegistroA990.QTD_LIN_A := RegistroA990.QTD_LIN_A + 1;
+      end;
+  end;
 end;
 
 procedure TBloco_A.WriteRegistroA035(RegA020: TRegistroA020);
@@ -388,8 +426,36 @@ begin
 end;
 
 procedure TBloco_A.WriteRegistroA300(RegA001: TRegistroA001);
+var
+  intFor: Integer;
 begin
-
+   if Assigned(RegA001.RegistroA300) then
+   begin
+      for intFor := 0 to RegA001.RegistroA300.Count - 1 do
+      begin
+         with RegA001.RegistroA300.Items[intFor] do
+         begin
+            Add( LFill('A300') +
+                 LFill(CPF_CONS) +
+                 LFill(COD_MOD)  +
+                 LFill(Integer(COD_SIT),1) +
+                 LFill(SER) +
+                 LFill(SUB) +
+                 LFill(NUM_DOC) +
+                 LFill(DT_DOC) +
+                 LFill(COP,4) +
+                 LFill(VL_DOC) +
+                 LFill(VL_DESC) +
+                 LFill(VL_SERV) +
+                 LFill(VL_MAT_PROP) +
+                 LFill(VL_DA) +
+                 LFill(VL_BC_ISS) +
+                 LFill(VL_ISS) +
+                 LFill(COD_INF_OBS) );
+         end;
+         RegistroA990.QTD_LIN_A := RegistroA990.QTD_LIN_A + 1;
+      end;
+  end;
 end;
 
 procedure TBloco_A.WriteRegistroA310(RegA300: TRegistroA300);
@@ -408,8 +474,43 @@ begin
 end;
 
 procedure TBloco_A.WriteRegistroA350(RegA001: TRegistroA001);
+var
+  intFor: Integer;
 begin
-
+   if Assigned(RegA001.RegistroA350) then
+   begin
+      for intFor := 0 to RegA001.RegistroA350.Count - 1 do
+      begin
+         with RegA001.RegistroA350.Items[intFor] do
+         begin
+            Add( LFill('A350') +
+                 LFill(COD_MOD)  +
+                 LFill(Integer(COD_SIT),1) +
+                 LFill(ECF_CX) +
+                 LFill(ECF_FAB) +
+                 LFill(CRO) +
+                 LFill(CRZ) +
+                 LFill(NUM_DOC) +
+                 LFill(COP,4) +
+                 LFill(VL_DOC) +
+                 LFill(VL_CANC_ISS) +
+                 LFill(VL_CANC_ICMS) +
+                 LFill(VL_CANC_ISS + VL_CANC_ICMS) +
+                 LFill(VL_DESC_ISS) +
+                 LFill(VL_DESC_ICMS) +
+                 LFill(VL_DESC_ISS + VL_DESC_ICMS) +
+                 LFill(VL_ACMO_ISS) +
+                 LFill(VL_ACMO_ICMS) +
+                 LFill(VL_ACMO_ISS + VL_ACMO_ICMS) +
+                 LFill(VL_BC_ISS) +
+                 LFill(VL_ISS) +
+                 LFill(VL_ISN_ISS) +
+                 LFill(VL_NT_ISS) +
+                 LFill(VL_RET_ISS) );
+         end;
+         RegistroA990.QTD_LIN_A := RegistroA990.QTD_LIN_A + 1;
+      end;
+  end;
 end;
 
 procedure TBloco_A.WriteRegistroA355(RegA350: TRegistroA350);

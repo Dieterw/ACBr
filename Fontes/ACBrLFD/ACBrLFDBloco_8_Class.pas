@@ -155,14 +155,20 @@ end;
 procedure TBloco_8.WriteRegistro8001;
 begin
    if Assigned(FRegistro8001) then
-   begin
-      with FRegistro8001 do
-      begin
-        WriteRegistro8020(FRegistro8001);
-      end;
-   end;
+    begin
+       with FRegistro8001 do
+       begin
+          Add( LFill( '8001' ) +
+               LFill( Integer(IND_MOV), 0 ) ) ;
 
-   FRegistro8990.QTD_LIN_8 := FRegistro8990.QTD_LIN_8 + 1;
+          if IND_MOV = imComDados then
+          begin
+            WriteRegistro8020(FRegistro8001) ;
+          end;
+       end;
+
+       Registro8990.QTD_LIN_8 := Registro8990.QTD_LIN_8 + 1;
+    end;
 end;
 
 procedure TBloco_8.WriteRegistro8020(Reg8001: TRegistro8001);

@@ -473,6 +473,18 @@ type
                        alGanho  // 1 - Ganho
                        );
 
+  {Indicador de Tipo de Complemento de ICMS}
+  TACBrIndCompICMS = ( cSemValor,         // 00- Sem valor de crédito do ICMS a complementar;
+                       cDifICMSST,        // 01- Complemento relativo à diferença do ICMS da substituição tributária calculado a menor;
+                       cDifAliqAtivoFixo, // 02- Complemento do diferencial de alíquotas do ICMS relativo a aquisições para o ativo fixo;
+                       cAliqUsoConsumo,   // 03- Complemento do diferencial de alíquotas do ICMS relativo a aquisições para uso e/ou consumo;
+                       cAliqOutrasSitu,   // 04- Complemento do diferencial de alíquotas do ICMS relativo a outras situações;
+                       cAntecTributaria,  // 05- Complemento relativo à antecipação tributária;
+                       cProgBenFical,     // 06- Complemento relativo a programa de benefício fiscal;
+                       cOutrasSituacoes   // 99- Outras situações (descrever em observações)
+                      );
+
+
   { TOpenBlocos }
 
   TOpenBlocos = class

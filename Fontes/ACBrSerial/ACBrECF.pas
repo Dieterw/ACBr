@@ -5927,7 +5927,6 @@ begin
     Relatorio.Add('Nome Comerc.: ' + IdentificacaoPaf.Paf.Nome);
     Relatorio.Add('Versao......: ' + IdentificacaoPaf.Paf.Versao);
 //    Relatorio.Add('Laudo.......: ' + IdentificacaoPaf.NumeroLaudo);
-    Relatorio.Add('ER-PAF-ECF..: ' + IdentificacaoPaf.VersaoER);
     Relatorio.Add('Princ. Exec.: ' + IdentificacaoPaf.Paf.PrincipalExe.Nome);
     Relatorio.Add('MD5.........: ' + IdentificacaoPaf.Paf.PrincipalExe.MD5);
 
@@ -5945,6 +5944,11 @@ begin
     Relatorio.Add('</linha_simples>');
     Relatorio.Add(ExtractFileName(IdentificacaoPaf.ArquivoListaAutenticados.Nome));
     Relatorio.Add('MD5: ' + IdentificacaoPaf.ArquivoListaAutenticados.MD5);
+
+    Relatorio.Add('');
+    Relatorio.Add('<n>VERSAO ER-PAF-ECF</n>');
+    Relatorio.Add('</linha_simples>');
+    Relatorio.Add('ER-PAF-ECF..: ' + IdentificacaoPaf.VersaoER);
 
     Relatorio.Add('');
     Relatorio.Add('<n>ECFS AUTORIZADOS</n>');

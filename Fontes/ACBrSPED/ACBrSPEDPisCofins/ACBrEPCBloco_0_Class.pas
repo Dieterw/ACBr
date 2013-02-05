@@ -353,7 +353,6 @@ end;
 
 procedure TBloco_0.WriteRegistro0000;
 var
-strCOD_VER: AnsiString;
 strTIPO_ESCRIT: AnsiString;
 strIND_SIT_ESP: AnsiString;
 strIND_NAT_PJ: AnsiString;
@@ -364,12 +363,6 @@ begin
   begin
      with Registro0000 do
      begin
-       case COD_VER of
-         vlVersao100: strCOD_VER := '001'; // Código 001 - Versão 100 ADE Cofis nº 31/2010 de 01/01/2011
-         vlVersao101: strCOD_VER := '002'; // Código 002 - Versão 101 ADE Cofis nº 34/2010 de 01/01/2011
-         vlVersao200: strCOD_VER := '002'; // Código 002 - Versão 200 ADE Cofis nº 20/2012
-         vlVersao201: strCOD_VER := '003'; // Código 003 - Versão 201 ADE Cofis nº 20/2012 de 14/03/2012
-       end;
        case TIPO_ESCRIT of
          tpEscrOriginal: strTIPO_ESCRIT := '0';
          tpEscrRetificadora: strTIPO_ESCRIT := '1';
@@ -406,7 +399,7 @@ begin
        Check(funChecaMUN(COD_MUN), '(0-0000) ENTIDADE: O código do município "%s" digitado é inválido!', [IntToStr(COD_MUN)]);
        ///
        Add( LFill( '0000' ) +
-            LFill( strCOD_VER ) +
+            LFill( CodVerToStr(COD_VER) ) +
             LFill( strTIPO_ESCRIT ) +
             LFill( strIND_SIT_ESP ) +
             LFill( strNUM_REC_ANTERIOR) +

@@ -1153,22 +1153,29 @@ implementation
 
 function CodVerToStr(AValue: TACBrCodVer): string;
 begin
-   Result := IntToStr( Integer( AValue ) + 1 );
-
-//   Result := EnumeradoToStr(AValue, ['1', '2', '3', '4'], [vlVersao100,
-//                                                           vlVersao101,
-//                                                           vlVersao200,
-//                                                           vlVersao201]);
+   if AValue = vlVersao100 then
+      Result := '001'
+   else
+   if AValue = vlVersao101 then
+      Result := '002'
+   else
+   if AValue = vlVersao200 then
+      Result := '002'
+   else
+   if AValue = vlVersao201 then
+      Result := '003'
 end;
 
 function StrToCodVer(AValue: string): TACBrCodVer;
 begin
-   Result := TACBrCodVer( StrToIntDef( AValue, 1) -1 );
-
-//   Result := StrToEnumerado(AValue, ['1', '2', '3', '4'], [vlVersao100,
-//                                                           vlVersao101,
-//                                                           vlVersao200,
-//                                                           vlVersao201]);
+   if AValue = '001' then
+      Result := vlVersao100
+   else
+   if AValue = '002' then
+      Result := vlVersao200
+   else
+   if AValue = '003' then
+      Result := vlVersao201;
 end;
 
 function IndMovToStr(AValue: TACBrIndMov): string;

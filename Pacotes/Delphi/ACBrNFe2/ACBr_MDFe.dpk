@@ -28,7 +28,6 @@ package ACBr_MDFe;
 requires
   rtl,
   vcl,
-  visualclx,
   PCN2,
   ACBrComum,
   designide,
@@ -39,9 +38,8 @@ requires
   soaprtl,
   xmlrtl,
   inet,
-  dbrtl,
-  dsnap;
-
+  dbrtl;
+  
 contains
   ACBrMDFe in '..\..\..\Fontes\ACBrMDFe\ACBrMDFe.pas',
   ACBrMDFeConfiguracoes in '..\..\..\Fontes\ACBrMDFe\ACBrMDFeConfiguracoes.pas',

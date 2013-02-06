@@ -87,7 +87,6 @@
 |  22/01/2013 : LUIS FERNANDO COSTA
 |   - Ajustado "FSistema" para que fique uma msg livre
 ******************************************************************************}
-
 {$I ACBr.inc}
 
 unit ACBrNFeDANFeQRRetrato;
@@ -98,7 +97,11 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, QuickRpt, QRCtrls,  XMLIntf, XMLDoc, 
   JPEG, ACBrNFeDANFeQR, ACBrNFeQRCodeBar, pcnConversao, DB,
-  DBClient, ACBrNFeDANFEClass, ACBrNFeDANFeQRClass, QRPDFFilt;
+  // Incluido por Italo em 06/02/2013
+  {$IFDEF QReport_PDF}
+     QRPDFFilt,
+  {$ENDIF}
+  DBClient, ACBrNFeDANFEClass, ACBrNFeDANFeQRClass;
 
 type
 

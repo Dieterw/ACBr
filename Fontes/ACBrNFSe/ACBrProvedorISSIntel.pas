@@ -471,7 +471,8 @@ begin
                        'xmlns:urn="' + URLNS + '">' +
             '<S:Body>' +
              '<urn:RecepcionarLoteRps>' +
-               DadosMsg +
+               StringReplace(StringReplace(DadosMsg, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
+//               DadosMsg +
              '</urn:RecepcionarLoteRps>' +
             '</S:Body>' +
            '</S:Envelope>';
@@ -487,9 +488,10 @@ begin
                        'xmlns:urn="' + URLNS + '">' +
             '<s:Body>' +
              '<urn:ConsultarSituacaoLoteRps>' +
-               DadosMsg +
+               StringReplace(StringReplace(DadosMsg, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
+//               DadosMsg +
              '</urn:ConsultarSituacaoLoteRps>' +
-             '</s:Body>' +
+            '</s:Body>' +
            '</s:Envelope>';
 end;
 
@@ -503,7 +505,8 @@ begin
                        'xmlns:urn="' + URLNS + '">' +
             '<s:Body>' +
              '<urn:ConsultarLoteRps>' +
-               DadosMsg +
+               StringReplace(StringReplace(DadosMsg, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
+//               DadosMsg +
              '</urn:ConsultarLoteRps>' +
             '</s:Body>' +
            '</s:Envelope>';
@@ -519,7 +522,8 @@ begin
                        'xmlns:urn="' + URLNS + '">' +
             '<s:Body>' +
              '<urn:ConsultarNfsePorRps>' +
-               DadosMsg +
+               StringReplace(StringReplace(DadosMsg, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
+//               DadosMsg +
              '</urn:ConsultarNfsePorRps>' +
             '</s:Body>' +
            '</s:Envelope>';
@@ -535,7 +539,8 @@ begin
                        'xmlns:urn="' + URLNS + '">' +
             '<s:Body>' +
              '<urn:ConsultarNfse>' +
-               DadosMsg +
+               StringReplace(StringReplace(DadosMsg, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
+//               DadosMsg +
              '</urn:ConsultarNfse>' +
             '</s:Body>' +
            '</s:Envelope>';
@@ -551,7 +556,8 @@ begin
                        'xmlns:urn="' + URLNS + '">' +
             '<s:Body>' +
              '<urn:CancelarNfse>' +
-               DadosMsg +
+               StringReplace(StringReplace(DadosMsg, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
+//               DadosMsg +
              '</urn:CancelarNfse>' +
             '</s:Body>' +
            '</s:Envelope>';

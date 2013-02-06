@@ -98,6 +98,7 @@ type
     Label16: TLabel;
     Label17: TLabel;
     Label18: TLabel;
+    ACBr_MDFe_dpk: TCheckBox;
     procedure btnPacotesMarcarTodosClick(Sender: TObject);
     procedure btnPacotesDesmarcarTodosClick(Sender: TObject);
     procedure VerificarCheckboxes(Sender: TObject);
@@ -156,10 +157,10 @@ end;
 
 function TframePacotes.IsPacoteNF2(const ANomePacote: String): Boolean;
 const
-  PACOTES_NF2: array [0..7] of String =
-    ('PCN2.dpk', 'ACBr_NFe2.dpk', 'ACBr_CTe.dpk', 'ACBrNFeDanfeFRpkg.dpk',
-     'ACBrCTeDacteFRpkg.dpk', 'ACBrNFeDanfeRV.dpk', 'ACBrNFeDanfeRVCodeBase.dpk',
-     'ACBr_NFSe.dpk');
+  PACOTES_NF2: array [0..8] of String =
+    ('PCN2.dpk', 'ACBr_NFe2.dpk', 'ACBr_CTe.dpk', 'ACBr_NFSe.dpk', 'ACBr_MDFe.dpk',
+     'ACBrNFeDanfeFRpkg.dpk', 'ACBrCTeDacteFRpkg.dpk', 'ACBrNFeDanfeRV.dpk',
+     'ACBrNFeDanfeRVCodeBase.dpk');
 begin
   Result := MatchText(ANomePacote, PACOTES_NF2);
 end;
@@ -218,7 +219,7 @@ begin
   if not FUtilizarBotoesMarcar then
   begin
     // dependencias da NFe e CTe
-    if (ACBr_NFe2_dpk.Checked) or (ACBr_CTe_dpk.Checked) or (ACBr_NFSe_dpk.Checked) then
+    if (ACBr_NFe2_dpk.Checked) or (ACBr_CTe_dpk.Checked) or (ACBr_NFSe_dpk.Checked) or (ACBr_MDFe_dpk.Checked) then
     begin
       PCN2_dpk.Checked        := True;
       ACBrCapicom_dpk.Checked := True;

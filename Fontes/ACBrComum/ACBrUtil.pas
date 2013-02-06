@@ -174,6 +174,7 @@ function PosEx(const SubStr, S: AnsiString; Offset: Cardinal = 1): Integer;
     AFalse: string = ''): string; overload;
 {$endif}
 
+function IfEmptyThen( const AValue, DefaultValue: String; DoTrim: Boolean = True) : String;
 function PosAt(const SubStr, S: AnsiString; Ocorrencia : Cardinal = 1): Integer;
 function PosLast(const SubStr, S: AnsiString): Integer;
 function CountStr(const AString, SubStr : AnsiString ) : Integer ;
@@ -801,6 +802,26 @@ begin
   end;
 end;
 {$endif}
+
+{-----------------------------------------------------------------------------
+  Verifica se "AValue" é vazio, se for retorna "DefaultValue". "DoTrim", se
+  verdadeiro (default) faz Trim em "AValue" antes da comparação
+ ---------------------------------------------------------------------------- }
+function IfEmptyThen(const AValue, DefaultValue: String; DoTrim: Boolean
+  ): String;
+Var
+  AStr : String;
+begin
+  if DoTrim then
+     AStr := Trim(AValue)
+  else
+     AStr := AValue;
+
+  if AStr = EmptyStr then
+     Result := DefaultValue
+  else
+     Result := AValue;
+end;
 
 {-----------------------------------------------------------------------------
   Acha a e-nesima "Ocorrencia" de "SubStr" em "S"

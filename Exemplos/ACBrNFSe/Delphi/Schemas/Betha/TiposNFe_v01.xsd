@@ -108,6 +108,15 @@
       <xs:pattern value="[1-6]{1}" />
     </xs:restriction>
   </xs:simpleType>
+  
+  <xs:simpleType name="TsSituacaoTributaria">
+    <xs:annotation>
+      <xs:documentation>Código da situacao tributária</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:int">
+      <xs:pattern value="[1-3]{1}" />
+    </xs:restriction>
+  </xs:simpleType>
 
   <xs:simpleType name="tsRegimeEspecialTributacao">
     <xs:annotation>
@@ -482,8 +491,8 @@
       <xs:element name="ValorCofins" type="tipos:TsValor" minOccurs="0" maxOccurs="1" />
       <xs:element name="ValorInss" type="tipos:TsValor" minOccurs="0" maxOccurs="1" />
       <xs:element name="ValorIr" type="tipos:TsValor" minOccurs="0" maxOccurs="1" />
-      <xs:element name="ValorCsll" type="tipos:TsValor" minOccurs="0" maxOccurs="1" />
-      <xs:element name="IssRetido" type="tipos:TsSimNao" minOccurs="1" maxOccurs="1" />
+      <xs:element name="ValorCsll" type="tipos:TsValor" minOccurs="0" maxOccurs="1" />  
+      <xs:element name="IssRetido" type="tipos:TsSituacaoTributaria" minOccurs="1" maxOccurs="1" />
       <xs:element name="ValorIss" type="tipos:TsValor" minOccurs="0" maxOccurs="1" />
       <xs:element name="OutrasRetencoes" type="tipos:TsValor" minOccurs="0" maxOccurs="1" />
       <xs:element name="BaseCalculo" type="tipos:TsValor" minOccurs="0" maxOccurs="1" >

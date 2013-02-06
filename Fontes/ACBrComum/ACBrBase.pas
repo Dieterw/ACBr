@@ -243,7 +243,7 @@ begin
 
   if Value then
   begin
-    {$IFDEF DELPHI12_UP}
+    {$IFDEF DELPHI14_UP}
       if Suspended then Start ;
     {$ELSE}
       if Suspended then Resume ;

@@ -120,13 +120,12 @@ begin
  ConfigSchema.VersaoXML       := '2';
  ConfigSchema.NameSpaceXML    := 'http://www.betha.com.br/e-nota-contribuinte-ws';
  ConfigSchema.Cabecalho       := 'nfse_v01.xsd';
- // Alterado por Italo em 06/02/2013
- ConfigSchema.ServicoEnviar   := 'nfse_v01.xsd'; //'servico_enviar_lote_rps_envio_v01.xsd';
- ConfigSchema.ServicoConSit   := 'nfse_v01.xsd'; //'servico_consultar_situacao_lote_rps_envio_v01.xsd';
- ConfigSchema.ServicoConLot   := 'nfse_v01.xsd'; //'servico_consultar_lote_rps_envio_v01.xsd';
- ConfigSchema.ServicoConRps   := 'nfse_v01.xsd'; //'servico_enviar_lote_rps_resposta_v01.xsd';
- ConfigSchema.ServicoConNfse  := 'nfse_v01.xsd'; //'servico_consultar_nfse_envio_v01.xsd';
- ConfigSchema.ServicoCancelar := 'nfse_v01.xsd'; //'servico_cancelar_nfse_envio_v01.xsd';
+ ConfigSchema.ServicoEnviar   := 'servico_enviar_lote_rps_envio_v01.xsd';
+ ConfigSchema.ServicoConSit   := 'servico_consultar_situacao_lote_rps_envio_v01.xsd';
+ ConfigSchema.ServicoConLot   := 'servico_consultar_lote_rps_envio_v01.xsd';
+ ConfigSchema.ServicoConRps   := 'servico_enviar_lote_rps_resposta_v01.xsd';
+ ConfigSchema.ServicoConNfse  := 'servico_consultar_nfse_envio_v01.xsd';
+ ConfigSchema.ServicoCancelar := 'servico_cancelar_nfse_envio_v01.xsd';
  ConfigSchema.DefTipos        := '';
 
  Result := ConfigSchema;

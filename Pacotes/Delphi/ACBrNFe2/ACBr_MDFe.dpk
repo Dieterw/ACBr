@@ -32,7 +32,6 @@ requires
   ACBrComum,
   designide,
   vclactnband,
-  vclx,
   ACBrCapicom,
   synapse,
   soaprtl,

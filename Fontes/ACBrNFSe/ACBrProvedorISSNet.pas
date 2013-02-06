@@ -210,10 +210,18 @@ begin
    acConsLote:    Result := '<' + Prefixo3 + 'ConsultarLoteRpsEnvio' + NameSpaceDad;
    acConsNFSeRps: Result := '<' + Prefixo3 + 'ConsultarNfseRpsEnvio' + NameSpaceDad;
    acConsNFSe:    Result := '<' + Prefixo3 + 'ConsultarNfseEnvio' + NameSpaceDad;
-   acCancelar:    Result := '<' + Prefixo3 + 'CancelarNfseEnvio' + NameSpaceDad +
+   acCancelar:    Result := '<p1:CancelarNfseEnvio' +
+                              ' xmlns:p1="http://www.issnetonline.com.br/webserviceabrasf/vsd/servico_cancelar_nfse_envio.xsd"' +
+                              ' xmlns:tc="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_complexos.xsd"' +
+                              ' xmlns:ts="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_simples.xsd">' +
+//   NameSpaceDad +
                              '<' + Prefixo3 + 'Pedido>' +
                               '<' + Prefixo4 + 'InfPedidoCancelamento' +
                                  DFeUtil.SeSenao(Identificador <> '', ' ' + Identificador + '="' + URI + '"', '') + '>';
+//   acCancelar:    Result := '<' + Prefixo3 + 'CancelarNfseEnvio' + NameSpaceDad +
+//                             '<' + Prefixo3 + 'Pedido>' +
+//                              '<' + Prefixo4 + 'InfPedidoCancelamento' +
+//                                 DFeUtil.SeSenao(Identificador <> '', ' ' + Identificador + '="' + URI + '"', '') + '>';
    acGerar:       Result := '';
  end;
 end;
@@ -240,7 +248,8 @@ begin
    acConsNFSeRps: Result := '</' + Prefixo3 + 'ConsultarNfseRpsEnvio>';
    acConsNFSe:    Result := '</' + Prefixo3 + 'ConsultarNfseEnvio>';
    acCancelar:    Result := '</' + Prefixo3 + 'Pedido>' +
-                            '</' + Prefixo3 + 'CancelarNfseEnvio>';
+                            '</p1:CancelarNfseEnvio>';
+//                            '</' + Prefixo3 + 'CancelarNfseEnvio>';
    acGerar:       Result := '';
  end;
 end;

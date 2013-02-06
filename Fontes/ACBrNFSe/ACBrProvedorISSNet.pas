@@ -190,7 +190,7 @@ begin
    acConsLote:    Result := False;
    acConsNFSeRps: Result := False;
    acConsNFSe:    Result := False;
-   acCancelar:    Result := False;
+   acCancelar:    Result := True;
    acGerar:       Result := False;
    else           Result := False;
  end;
@@ -459,7 +459,8 @@ begin
               '</' + Prefixo4 + 'CodigoCancelamento>' +
              '</' + Prefixo4 + 'InfPedidoCancelamento>';
 
- Result := TagI + DadosMsg + TagF;
+// Result := TagI + DadosMsg + TagF;
+ Result := DadosMsg;
 end;
 
 function TProvedorISSNet.Gera_DadosMsgGerarNFSe(Prefixo3, Prefixo4,
@@ -561,7 +562,14 @@ end;
 
 function TProvedorISSNet.GeraEnvelopeCancelarNFSe(URLNS: String; CabMsg,
   DadosMsg, DadosSenha: AnsiString): AnsiString;
+var
+ Texto: AnsiString;
 begin
+ Texto := '<?xml version="1.0" encoding="UTF-8"?>' +
+          DadosMsg;
+
+ Texto := StringReplace(StringReplace(Texto, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]);
+
  result := '<?xml version="1.0" encoding="UTF-8"?>' +
            '<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" ' +
                        'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
@@ -569,8 +577,7 @@ begin
             '<s:Body>' +
              '<CancelarNfse xmlns="' + URLNS + '">' +
               '<xml>' +
-                '&lt;?xml version="1.0" encoding="UTF-8"?&gt;' +
-                StringReplace(StringReplace(DadosMsg, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
+                Texto +
               '</xml>' +
              '</CancelarNfse>' +
             '</s:Body>' +

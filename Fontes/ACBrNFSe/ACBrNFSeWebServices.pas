@@ -593,8 +593,7 @@ end;
 
 procedure TWebServicesBase.DoNFSeConsultarSituacaoLoteRPS;
 var
- URI       : String;
- Separador : String;
+ URISig, URIRef, Separador : String;
 begin
  if RightStr(FHTTP_AG, 1) = '/'
   then Separador := ''
@@ -642,11 +641,13 @@ begin
 
  FCabMsg := FProvedorClass.Gera_CabMsg(Prefixo2, FVersaoLayOut, FVersaoDados, NameSpaceCab);
 
- URI := '';
+ URISig := '';
+ URIRef := '';
 
- URI := FProvedorClass.GetURI(URI);
+ URISig := FProvedorClass.GetURI(URISig);
+ URIRef := URISig;
 
- FTagI := FProvedorClass.Gera_TagI(acConsSit, Prefixo3, Prefixo4, NameSpaceDad, FConfiguracoes.WebServices.Identificador, URI);
+ FTagI := FProvedorClass.Gera_TagI(acConsSit, Prefixo3, Prefixo4, NameSpaceDad, FConfiguracoes.WebServices.Identificador, URISig);
 
  FDadosSenha := FProvedorClass.Gera_DadosSenha(FConfiguracoes.WebServices.UserWeb,
                                                FConfiguracoes.WebServices.SenhaWeb);
@@ -666,15 +667,15 @@ begin
  if FProvedorClass.GetAssinarXML(acConsSit)
   then begin
   {$IFDEF ACBrNFSeOpenSSL}
-   if not(NotaUtil.AssinarXML(FDadosMsg, URI, FTagI, FTagF,
+   if not(NotaUtil.AssinarXML(FDadosMsg, URISig, URIRef, FTagI, FTagF,
                    FConfiguracoes.Certificados.Certificado,
                    FConfiguracoes.Certificados.Senha,
-                   FvAssinada, FMsg))
+                   FvAssinada, FMsg, FProvedor))
     then raise Exception.Create('Falha ao assinar o XML ' + FMsg)
     else FDadosMsg := FvAssinada;
   {$ELSE}
-   if not(NotaUtil.AssinarXML(FDadosMsg, URI, FTagI, FTagF,
-                   FConfiguracoes.Certificados.GetCertificado, FvAssinada, FMsg))
+   if not(NotaUtil.AssinarXML(FDadosMsg, URISig, URIRef, FTagI, FTagF,
+                   FConfiguracoes.Certificados.GetCertificado, FvAssinada, FMsg, FProvedor))
     then raise Exception.Create('Falha ao assinar o XML ' + FMsg)
     else FDadosMsg := FvAssinada;
   {$ENDIF}
@@ -683,8 +684,7 @@ end;
 
 procedure TWebServicesBase.DoNFSeConsultarLoteRPS;
 var
- URI       : String;
- Separador : String;
+ URISig, URIRef, Separador : String;
 begin
  if RightStr(FHTTP_AG, 1) = '/'
   then Separador := ''
@@ -732,11 +732,13 @@ begin
 
  FCabMsg := FProvedorClass.Gera_CabMsg(Prefixo2, FVersaoLayOut, FVersaoDados, NameSpaceCab);
 
- URI := '';
+ URISig := '';
+ URIRef := '';
 
- URI := FProvedorClass.GetURI(URI);
+ URISig := FProvedorClass.GetURI(URISig);
+ URIRef := URISig;
 
- FTagI := FProvedorClass.Gera_TagI(acConsLote, Prefixo3, Prefixo4, NameSpaceDad, FConfiguracoes.WebServices.Identificador, URI);
+ FTagI := FProvedorClass.Gera_TagI(acConsLote, Prefixo3, Prefixo4, NameSpaceDad, FConfiguracoes.WebServices.Identificador, URISig);
 
  if (TNFSeConsultarLoteRPS(Self).FCNPJ = '') then
     TNFSeConsultarLoteRPS(Self).FCNPJ:=SomenteNumeros(TNFSeConsultarLoteRPS(Self).FNotasFiscais.Items[0].NFSe.Prestador.Cnpj);
@@ -762,15 +764,15 @@ begin
  if FProvedorClass.GetAssinarXML(acConsLote)
   then begin
   {$IFDEF ACBrNFSeOpenSSL}
-   if not(NotaUtil.AssinarXML(FDadosMsg, URI, FTagI, FTagF,
+   if not(NotaUtil.AssinarXML(FDadosMsg, URISig, URIRef, FTagI, FTagF,
                    FConfiguracoes.Certificados.Certificado,
                    FConfiguracoes.Certificados.Senha,
-                   FvAssinada, FMsg))
+                   FvAssinada, FMsg, FProvedor))
     then raise Exception.Create('Falha ao assinar o XML ' + FMsg)
     else FDadosMsg := FvAssinada;
   {$ELSE}
-   if not(NotaUtil.AssinarXML(FDadosMsg, URI, FTagI, FTagF,
-                   FConfiguracoes.Certificados.GetCertificado, FvAssinada, FMsg))
+   if not(NotaUtil.AssinarXML(FDadosMsg, URISig, URIRef, FTagI, FTagF,
+                   FConfiguracoes.Certificados.GetCertificado, FvAssinada, FMsg, FProvedor))
     then raise Exception.Create('Falha ao assinar o XML ' + FMsg)
     else FDadosMsg := FvAssinada;
   {$ENDIF}
@@ -779,8 +781,7 @@ end;
 
 procedure TWebServicesBase.DoNFSeConsultarNFSeporRPS;
 var
- URI       : String;
- Separador : String;
+ URISig, URIRef, Separador : String;
 begin
  if RightStr(FHTTP_AG, 1) = '/'
   then Separador := ''
@@ -828,11 +829,13 @@ begin
 
  FCabMsg := FProvedorClass.Gera_CabMsg(Prefixo2, FVersaoLayOut, FVersaoDados, NameSpaceCab);
 
- URI := '';
+ URISig := '';
+ URIRef := '';
 
- URI := FProvedorClass.GetURI(URI);
+ URISig := FProvedorClass.GetURI(URISig);
+ URIRef := URISig;
 
- FTagI := FProvedorClass.Gera_TagI(acConsNFSeRps, Prefixo3, Prefixo4, NameSpaceDad, FConfiguracoes.WebServices.Identificador, URI);
+ FTagI := FProvedorClass.Gera_TagI(acConsNFSeRps, Prefixo3, Prefixo4, NameSpaceDad, FConfiguracoes.WebServices.Identificador, URISig);
 
  FDadosSenha := FProvedorClass.Gera_DadosSenha(FConfiguracoes.WebServices.UserWeb,
                                                FConfiguracoes.WebServices.SenhaWeb);
@@ -854,15 +857,15 @@ begin
  if FProvedorClass.GetAssinarXML(acConsNFSeRps)
   then begin
   {$IFDEF ACBrNFSeOpenSSL}
-   if not(NotaUtil.AssinarXML(FDadosMsg, URI, FTagI, FTagF,
+   if not(NotaUtil.AssinarXML(FDadosMsg, URISig, URIRef, FTagI, FTagF,
                    FConfiguracoes.Certificados.Certificado,
                    FConfiguracoes.Certificados.Senha,
-                   FvAssinada, FMsg))
+                   FvAssinada, FMsg, FProvedor))
     then raise Exception.Create('Falha ao assinar o XML ' + FMsg)
     else FDadosMsg := FvAssinada;
   {$ELSE}
-   if not(NotaUtil.AssinarXML(FDadosMsg, URI, FTagI, FTagF,
-                   FConfiguracoes.Certificados.GetCertificado, FvAssinada, FMsg))
+   if not(NotaUtil.AssinarXML(FDadosMsg, URISig, URIRef, FTagI, FTagF,
+                   FConfiguracoes.Certificados.GetCertificado, FvAssinada, FMsg, FProvedor))
     then raise Exception.Create('Falha ao assinar o XML ' + FMsg)
     else FDadosMsg := FvAssinada;
   {$ENDIF}
@@ -872,8 +875,7 @@ end;
 
 procedure TWebServicesBase.DoNFSeConsultarNFSe;
 var
- URI       : String;
- Separador : String;
+ URISig, URIRef, Separador : String;
 begin
  if RightStr(FHTTP_AG, 1) = '/'
   then Separador := ''
@@ -921,11 +923,13 @@ begin
 
  FCabMsg := FProvedorClass.Gera_CabMsg(Prefixo2, FVersaoLayOut, FVersaoDados, NameSpaceCab);
 
- URI := '';
+ URISig := '';
+ URIRef := '';
 
- URI := FProvedorClass.GetURI(URI);
+ URISig := FProvedorClass.GetURI(URISig);
+ URIRef := URISig;
 
- FTagI := FProvedorClass.Gera_TagI(acConsNFSe, Prefixo3, Prefixo4, NameSpaceDad, FConfiguracoes.WebServices.Identificador, URI);
+ FTagI := FProvedorClass.Gera_TagI(acConsNFSe, Prefixo3, Prefixo4, NameSpaceDad, FConfiguracoes.WebServices.Identificador, URISig);
 
  FDadosSenha := FProvedorClass.Gera_DadosSenha(FConfiguracoes.WebServices.UserWeb,
                                                FConfiguracoes.WebServices.SenhaWeb);
@@ -934,7 +938,7 @@ begin
 
  FDadosMsg := FProvedorClass.Gera_DadosMsgConsNFSe(Prefixo3,
                                                    Prefixo4,
-                                                   NameSpaceDad, 
+                                                   NameSpaceDad,
                                                    FVersaoXML,
                                                    SomenteNumeros(TNFSeConsultarNfse(Self).Cnpj),
                                                    TNFSeConsultarNfse(Self).InscricaoMunicipal,
@@ -947,15 +951,15 @@ begin
  if FProvedorClass.GetAssinarXML(acConsNFSe)
   then begin
   {$IFDEF ACBrNFSeOpenSSL}
-   if not(NotaUtil.AssinarXML(FDadosMsg, URI, FTagI, FTagF,
+   if not(NotaUtil.AssinarXML(FDadosMsg, URISig, URIRef, FTagI, FTagF,
                    FConfiguracoes.Certificados.Certificado,
                    FConfiguracoes.Certificados.Senha,
-                   FvAssinada, FMsg))
+                   FvAssinada, FMsg, FProvedor))
     then raise Exception.Create('Falha ao assinar o XML ' + FMsg)
     else FDadosMsg := FvAssinada;
   {$ELSE}
-   if not(NotaUtil.AssinarXML(FDadosMsg, URI, FTagI, FTagF,
-                   FConfiguracoes.Certificados.GetCertificado, FvAssinada, FMsg))
+   if not(NotaUtil.AssinarXML(FDadosMsg, URISig, URIRef, FTagI, FTagF,
+                   FConfiguracoes.Certificados.GetCertificado, FvAssinada, FMsg, FProvedor))
     then raise Exception.Create('Falha ao assinar o XML ' + FMsg)
     else FDadosMsg := FvAssinada;
   {$ENDIF}
@@ -965,8 +969,7 @@ end;
 
 procedure TWebServicesBase.DoNFSeCancelarNFSe;
 var
- URI       : String;
- Separador : String;
+ URISig, URIRef, Separador : String;
 begin
  if RightStr(FHTTP_AG, 1) = '/'
   then Separador := ''
@@ -1035,14 +1038,22 @@ begin
  FCabMsg := FProvedorClass.Gera_CabMsg(Prefixo2, FVersaoLayOut, FVersaoDados, NameSpaceCab);
 
  case FProvedor of
-  proSaatri: URI := 'Cancelamento_' + TNFSeCancelarNfse(Self).FCnpj;
- else        URI := 'pedidoCancelamento_' + TNFSeCancelarNfse(Self).FCnpj +
+  proSaatri: URISig := 'Cancelamento_' + TNFSeCancelarNfse(Self).FCnpj;
+  proISSNet: begin
+              URISig := '';
+              URIRef := 'http://www.w3.org/TR/2000/REC-xhtml1-20000126/';
+             end;
+ else        URISig := 'pedidoCancelamento_' + TNFSeCancelarNfse(Self).FCnpj +
                     TNFSeCancelarNfse(Self).FIM + TNFSeCancelarNfse(Self).FNumeroRPS;
  end;
 
- URI := FProvedorClass.GetURI(URI);
+ if FProvedor <> proISSNet
+  then begin
+   URISig := FProvedorClass.GetURI(URISig);
+   URIRef := URISig;
+  end;
 
- FTagI := FProvedorClass.Gera_TagI(acCancelar, Prefixo3, Prefixo4, NameSpaceDad, FConfiguracoes.WebServices.Identificador, URI);
+ FTagI := FProvedorClass.Gera_TagI(acCancelar, Prefixo3, Prefixo4, NameSpaceDad, FConfiguracoes.WebServices.Identificador, URISig);
 
  FTagF := FProvedorClass.Gera_TagF(acCancelar, Prefixo3);
 
@@ -1059,15 +1070,15 @@ begin
  if FProvedorClass.GetAssinarXML(acCancelar)
   then begin
   {$IFDEF ACBrNFSeOpenSSL}
-   if not(NotaUtil.AssinarXML(FDadosMsg, URI, FTagI, FTagF,
+   if not(NotaUtil.AssinarXML(FDadosMsg, URISig, URIRef, FTagI, FTagF,
                    FConfiguracoes.Certificados.Certificado,
                    FConfiguracoes.Certificados.Senha,
-                   FvAssinada, FMsg))
+                   FvAssinada, FMsg, FProvedor))
     then raise Exception.Create('Falha ao assinar o XML ' + FMsg)
     else FDadosMsg := FvAssinada;
   {$ELSE}
-   if not(NotaUtil.AssinarXML(FDadosMsg, URI, FTagI, FTagF,
-                   FConfiguracoes.Certificados.GetCertificado, FvAssinada, FMsg))
+   if not(NotaUtil.AssinarXML(FDadosMsg, URISig, URIRef, FTagI, FTagF,
+                   FConfiguracoes.Certificados.GetCertificado, FvAssinada, FMsg, FProvedor))
     then raise Exception.Create('Falha ao assinar o XML ' + FMsg)
     else FDadosMsg := FvAssinada;
   {$ENDIF}

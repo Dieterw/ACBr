@@ -69,11 +69,13 @@ type
 
     // Alterado por Italo em 29/10/2012
     {$IFDEF ACBrNFSeOpenSSL}
-     class function AssinarXML(AXML, FURI, FTagI, FTagF, ArqPFX, PFXSenha: AnsiString;
-                               out AXMLAssinado, FMensagem: AnsiString): Boolean;
+     class function AssinarXML(AXML, FURISig, FURIRef, FTagI, FTagF, ArqPFX, PFXSenha: AnsiString;
+                               out AXMLAssinado, FMensagem: AnsiString;
+                               AProvedor: TnfseProvedor = proNenhum): Boolean;
     {$ELSE}
-     class function AssinarXML(AXML, FURI, FTagI, FTagF: AnsiString; Certificado : ICertificate2;
-                               out AXMLAssinado, FMensagem: AnsiString): Boolean;
+     class function AssinarXML(AXML, FURISig, FURIRef, FTagI, FTagF: AnsiString; Certificado : ICertificate2;
+                               out AXMLAssinado, FMensagem: AnsiString;
+                               AProvedor: TnfseProvedor = proNenhum): Boolean;
     {$ENDIF}
 
     class function Valida(const AXML: AnsiString;
@@ -872,8 +874,9 @@ begin
 end;
 
 {$IFDEF ACBrNFSeOpenSSL}
-class function NotaUtil.AssinarXML(AXML, FURI, FTagI, FTagF, ArqPFX, PFXSenha: AnsiString;
-                             out AXMLAssinado, FMensagem: AnsiString): Boolean;
+class function NotaUtil.AssinarXML(AXML, FURISig, FURIRef, FTagI, FTagF, ArqPFX, PFXSenha: AnsiString;
+                             out AXMLAssinado, FMensagem: AnsiString;
+                             AProvedor: TnfseProvedor = proNenhum): Boolean;
 var
  I, Tipo, PosIni, PosFim : Integer;
  XmlAss : AnsiString;
@@ -891,14 +894,15 @@ begin
    end;
 
   AXML := AXML+'<Signature xmlns="http://www.w3.org/2000/09/xmldsig#"'+
-                     DFeUtil.SeSenao(FURI = '', '',' Id="Ass_'+ FURI +'"')+'>'+
+                     DFeUtil.SeSenao(FURISig = '', '',' Id="Ass_'+ FURISig +'"')+'>'+
                  '<SignedInfo>'+
                   '<CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />'+
                   '<SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />'+
-                  '<Reference URI="'+DFeUtil.SeSenao(FURI = '', '','#'+FURI)+'">'+
+                  '<Reference URI="'+DFeUtil.SeSenao(FURIRef = '', '','#'+FURIRef)+'">'+
                    '<Transforms>'+
                     '<Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />'+
-                    '<Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />'+
+                    DFeUtil.SeSenao((AProvedor = proISSNet), '',
+                    '<Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />') +
                    '</Transforms>'+
                    '<DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />'+
                    '<DigestValue></DigestValue>'+
@@ -958,9 +962,12 @@ begin
   Result := True;
 end;
 {$ELSE}
-class function NotaUtil.AssinarXML(AXML, FURI, FTagI, FTagF: AnsiString; Certificado : ICertificate2; out AXMLAssinado, FMensagem: AnsiString): Boolean;
+class function NotaUtil.AssinarXML(AXML, FURISig, FURIRef, FTagI, FTagF: AnsiString; Certificado : ICertificate2;
+                                   out AXMLAssinado, FMensagem: AnsiString;
+                                   AProvedor: TnfseProvedor = proNenhum): Boolean;
 var
  I, PosIni, PosFim : Integer;
+ Numero: String;
 
  xmlHeaderAntes, xmlHeaderDepois : AnsiString;
 
@@ -969,15 +976,20 @@ var
  dsigKey   : IXMLDSigKey;
  signedKey : IXMLDSigKey;
 begin
+   if Copy(FURIRef, 1, 4) = 'http'
+    then Numero := ''
+    else Numero := '#';
+
    AXML := AXML+'<Signature xmlns="http://www.w3.org/2000/09/xmldsig#"'+
-                     DFeUtil.SeSenao(FURI = '', '',' Id="Ass_'+ FURI +'"')+'>'+
+                     DFeUtil.SeSenao(FURISig = '', '',' Id="Ass_'+ FURISig +'"')+'>'+
                  '<SignedInfo>'+
                   '<CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />'+
                   '<SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />'+
-                  '<Reference URI="'+DFeUtil.SeSenao(FURI = '', '','#'+FURI)+'">'+
+                  '<Reference URI="'+DFeUtil.SeSenao(FURIRef = '', '',Numero+FURIRef)+'">'+
                    '<Transforms>'+
                     '<Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />'+
-                    '<Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />'+
+                    DFeUtil.SeSenao((AProvedor = proISSNet), '',
+                    '<Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />') +
                    '</Transforms>'+
                    '<DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />'+
                    '<DigestValue></DigestValue>'+

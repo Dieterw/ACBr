@@ -704,12 +704,14 @@ end;
 
 procedure TACBrECFBematech.Desativar;
 begin
+  {$ifdef windows}
   if fsEnviaPorDLL and Ativo then
      try
         FechaPortaSerialDLL(False);
      except
         {Exceção muda pois Porta pode já estar fechada}
      end ;
+   {$endif}
 
   inherited Desativar ;
 end;

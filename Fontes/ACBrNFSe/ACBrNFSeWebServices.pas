@@ -154,7 +154,7 @@ type
 
   TNFSeEnviarLoteRPS = Class(TWebServicesBase)
   private
-    FNumeroLote: Integer;
+    FNumeroLote: String;
     FDataRecebimento: TDateTime;
     FProtocolo : String;
     // Incluido por Rodrigo Cantelli
@@ -163,7 +163,7 @@ type
   public
     function Executar: Boolean; override;
     constructor Create(AOwner : TComponent; ANotasFiscais : TNotasFiscais); reintroduce;
-    property NumeroLote: integer read FNumeroLote;
+    property NumeroLote: String read FNumeroLote;
     property DataRecebimento: TDateTime read FDataRecebimento;
     property Protocolo: String read FProtocolo;
     // Incluido por Rodrigo Cantelli
@@ -313,7 +313,8 @@ type
   public
     constructor Create(AFNotaFiscalEletronica: TComponent); reintroduce;
     destructor Destroy; override;
-    function Envia(ALote:Integer): Boolean;
+    function Envia(ALote:Integer): Boolean; overload;
+    function Envia(ALote:String): Boolean; overload;
     function ConsultaSituacao(ACnpj, AInscricaoMunicipal, AProtocolo: String): Boolean;
     function ConsultaLoteRps(AProtocolo: String;
                              const CarregaProps: boolean = true): Boolean; overload;
@@ -562,7 +563,7 @@ begin
                                                      NameSpaceDad,
                                                      VersaoDados,
                                                      FVersaoXML,
-                                                     IntToStr(TNFSeEnviarLoteRps(Self).NumeroLote),
+                                                     TNFSeEnviarLoteRps(Self).NumeroLote,
                                                      SomenteNumeros(TNFSeEnviarLoteRPS(Self).FNotasFiscais.Items[0].NFSe.Prestador.Cnpj),
                                                      TNFSeEnviarLoteRPS(Self).FNotasFiscais.Items[0].NFSe.Prestador.InscricaoMunicipal,
                                                      IntToStr(TNFSeEnviarLoteRps(Self).FNotasFiscais.Count),
@@ -587,7 +588,7 @@ begin
                           FConfiguracoes.WebServices.ServicoEnviar,
                           FConfiguracoes.WebServices.Prefixo4))
     then raise Exception.Create('Falha na validação do Lote ' +
-                   IntToStr(TNFSeEnviarLoteRps(Self).NumeroLote) + sLineBreak + FMsg);
+                   TNFSeEnviarLoteRps(Self).NumeroLote + sLineBreak + FMsg);
   end;
 end;
 
@@ -1320,7 +1321,7 @@ begin
   then FConfiguracoes.Geral.Save('-xxx1.xml', FDadosMsg);
 
  if not (FProvedor = profintelISS) then
-  FDadosMsg := TNFSeGerarNFSe(Self).FNotasFiscais.AssinarLoteRps(TNFSeGerarNFSe(Self).NumeroRps, FDadosMSg);
+  FDadosMsg := TNFSeGerarNFSe(Self).FNotasFiscais.AssinarLoteRps(IntToStr(TNFSeGerarNFSe(Self).NumeroRps), FDadosMSg);
 
  if FConfiguracoes.WebServices.Salvar
   then FConfiguracoes.Geral.Save('-xxx2.xml', FDadosMsg);
@@ -1333,7 +1334,7 @@ begin
                           FConfiguracoes.WebServices.ServicoEnviar,
                           FConfiguracoes.WebServices.Prefixo4))
     then raise Exception.Create('Falha na validação do Lote ' +
-                   IntToStr(TNFSeEnviarLoteRps(Self).NumeroLote) + sLineBreak + FMsg);
+                   TNFSeEnviarLoteRps(Self).NumeroLote + sLineBreak + FMsg);
   end;
 end;
 
@@ -1377,6 +1378,11 @@ begin
 end;
 
 function TWebServices.Envia(ALote:Integer): Boolean;
+begin
+  Result := Envia(IntToStr(ALote));
+end;
+
+function TWebServices.Envia(ALote: String): Boolean;
 begin
  self.Enviar.FNumeroLote := ALote;
 
@@ -1644,10 +1650,10 @@ begin
   TACBrNFSe( FACBrNFSe ).SetStatus( stNFSeRecepcao );
 
   if FConfiguracoes.WebServices.Salvar
-   then FConfiguracoes.Geral.Save(IntToStr(NumeroLote)+'-env-lot-c.xml', Texto, FConfiguracoes.Arquivos.GetPathGer);
+   then FConfiguracoes.Geral.Save(NumeroLote+'-env-lot-c.xml', Texto, FConfiguracoes.Arquivos.GetPathGer);
 
   if FConfiguracoes.Geral.Salvar
-   then FConfiguracoes.Geral.Save(IntToStr(NumeroLote)+'-env-lot.xml', FDadosMsg, FConfiguracoes.Arquivos.GetPathGer);
+   then FConfiguracoes.Geral.Save(NumeroLote+'-env-lot.xml', FDadosMsg, FConfiguracoes.Arquivos.GetPathGer);
 
   {$IFDEF ACBrNFSeOpenSSL}
     HTTP.Document.LoadFromStream(Stream);
@@ -1673,10 +1679,10 @@ begin
   {$ENDIF}
 
   if FConfiguracoes.WebServices.Salvar
-   then FConfiguracoes.Geral.Save(IntToStr(NumeroLote)+'-rec-c.xml', FRetornoWS, FConfiguracoes.Arquivos.GetPathGer);
+   then FConfiguracoes.Geral.Save(NumeroLote+'-rec-c.xml', FRetornoWS, FConfiguracoes.Arquivos.GetPathGer);
 
   if FConfiguracoes.Geral.Salvar
-   then FConfiguracoes.Geral.Save(IntToStr(NumeroLote)+'-rec.xml', FRetWS, FConfiguracoes.Arquivos.GetPathGer);
+   then FConfiguracoes.Geral.Save(NumeroLote+'-rec.xml', FRetWS, FConfiguracoes.Arquivos.GetPathGer);
 
   NFSeRetorno          := TretEnvLote.Create;
   NFSeRetorno.Prefixo2 := FConfiguracoes.WebServices.Prefixo2;

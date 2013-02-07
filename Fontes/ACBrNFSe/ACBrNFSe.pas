@@ -40,7 +40,8 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-    function Enviar(ALote: Integer; Imprimir:Boolean = True): Boolean;
+    function Enviar(ALote: Integer; Imprimir:Boolean = True): Boolean; overload;
+    function Enviar(ALote: String; Imprimir:Boolean = True): Boolean; overload;
     function ConsultarSituacao(ACnpj, AInscricaoMunicipal, AProtocolo: String): Boolean;
     function ConsultarLoteRps(ANumLote, AProtocolo: String): Boolean;
     function ConsultarNFSeporRps(ANumero, ASerie, ATipo, ACnpj, AInscricaoMunicipal: String): Boolean;
@@ -153,6 +154,11 @@ begin
 end;
 
 function TACBrNFSe.Enviar(ALote: Integer; Imprimir: Boolean): Boolean;
+begin
+  Result := Enviar(IntToStr(ALote),Imprimir);
+end;
+
+function TACBrNFSe.Enviar(ALote: String; Imprimir: Boolean): Boolean;
 var
  i: Integer;
 begin

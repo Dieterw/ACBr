@@ -127,11 +127,12 @@ TACBrECFFiscNET = class( TACBrECFClass )
                                                  DataReducaoFinal   : AnsiString) : integer; stdcall;
 
     // urano e demais
-    xDLLReadLeMemorias : function (szPortaSerial, szNomeArquivo, szSerieECF,
-         bAguardaConcluirLeitura : PAnsiChar) : Integer; stdcall;
+    xDLLReadLeMemorias : function (szPortaSerial, szNomeArquivo,
+       szSerieECF: AnsiString; bAguardaConcluirLeitura : Char) : Integer; stdcall;
 
-    xDLLATO17GeraArquivo : function (szArquivoBinario, szArquivoTexto, szPeriodoIni, szPeriodoFIM,
-         TipoPeriodo, szUsuario, szTipoLeitura : PAnsiChar) : Integer; stdcall;
+    xDLLATO17GeraArquivo : function (szArquivoBinario, szArquivoTexto, szPeriodoIni,
+       szPeriodoFIM: AnsiString; TipoPeriodo: Char;
+       szUsuario, szTipoLeitura: AnsiString) : Integer; stdcall;
 
     //Elgin
     xElgin_AbrePortaSerial  : function : Integer; StdCall;
@@ -2874,17 +2875,15 @@ begin
         DiaIni := FormatDateTime('yyyymmdd', DataInicial);
         DiaFim := FormatDateTime('yyyymmdd', DataFinal);
 
-        iRet := xDLLReadLeMemorias( PAnsiChar(PortaSerial), PAnsiChar(ArqTmp),
-                                    PAnsiChar(NumFab), '1');
+        iRet := xDLLReadLeMemorias( PortaSerial, ArqTmp, NumFab, '1');
 
         if iRet <> 0 then
            raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar DLLReadLeMemorias.' + sLineBreak +
                                             'Cod.: '+ IntToStr(iRet) + ' - ' +
                                             GetErroAtoCotepe1704(iRet) )) ;
 
-        iRet := xDLLATO17GeraArquivo( PAnsiChar(ArqTmp), PAnsiChar(NomeArquivo),
-                                      PAnsiChar(DiaIni), PAnsiChar(DiaFim),
-                                      'M', '1', PAnsiChar(cFinalidade) );
+        iRet := xDLLATO17GeraArquivo( ArqTmp, NomeArquivo, DiaIni, DiaFim,
+                                      'M', '1', cFinalidade );
 
         if iRet <> 0 then
            raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar DLLATO17GeraArquivo.' + sLineBreak +
@@ -2970,17 +2969,15 @@ begin
         if FileExists( NomeArquivo ) then
            DeleteFile( NomeArquivo ) ;
 
-        iRet := xDLLReadLeMemorias( PAnsiChar(PortaSerial), PAnsiChar(ArqTmp),
-                                    PAnsiChar(NumFab), '1');
+        iRet := xDLLReadLeMemorias( PortaSerial, ArqTmp, NumFab, '1');
 
         if iRet <> 0 then
            raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar DLLReadLeMemorias.' + sLineBreak +
                                             'Cod.: '+ IntToStr(iRet) + ' - ' +
                                             GetErroAtoCotepe1704(iRet) )) ;
 
-        iRet := xDLLATO17GeraArquivo( PAnsiChar(ArqTmp), PAnsiChar(NomeArquivo),
-                                      PAnsiChar(CooIni), PAnsiChar(CooFim),
-                                      'C', '1', PAnsiChar(cFinalidade) );
+        iRet := xDLLATO17GeraArquivo( ArqTmp, NomeArquivo, CooIni, CooFim,
+                                      'C', '1', cFinalidade );
 
         if iRet <> 0 then
            raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar DLLATO17GeraArquivo.' + sLineBreak +

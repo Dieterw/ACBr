@@ -1892,7 +1892,7 @@ function TNFeRetRecepcao.Executar: Boolean;
        ConfiguraReqResp( ReqResp );
        ReqResp.URL := FURL;
        ReqResp.UseUTF8InHeader := True;
-       ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico2';
+       ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetRecepcao2';
     {$ENDIF}
 
     FNFeRetorno := TRetConsReciNFe.Create;
@@ -1906,7 +1906,7 @@ function TNFeRetRecepcao.Executar: Boolean;
        end;
       {$IFDEF ACBrNFeOpenSSL}
          HTTP.Document.LoadFromStream(Stream);
-         ConfiguraHTTP(HTTP,'SOAPAction: "http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico2"');
+         ConfiguraHTTP(HTTP,'SOAPAction: "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetRecepcao2"');
          HTTP.HTTPMethod('POST', FURL);
 
          StrStream := TStringStream.Create('');

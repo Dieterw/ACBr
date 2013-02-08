@@ -652,7 +652,7 @@ begin
 
  ACBrNFSe1.NotasFiscais.Clear;
  GerarNFSe(vAux);
- ACBrNFSe1.Enviar(StrToInt(vNumLote));
+ ACBrNFSe1.Enviar(vNumLote);
 
  ACBrNFSe1.NotasFiscais.Clear;
 end;

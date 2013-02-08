@@ -408,6 +408,7 @@ object frmDemo_ACBrNFSe: TfrmDemo_ACBrNFSe
               'Sao Lourenco do Oeste/4216909/SC'
               'Sao Miguel do Oeste/4217204/SC'
               'Saquarema/3305505/RJ'
+              'Schroeder/4217402/SC'
               'Sinop/5107909/MT'
               'Tangara da Serra/5107958/MT'
               'Tatui/3554003/SP'

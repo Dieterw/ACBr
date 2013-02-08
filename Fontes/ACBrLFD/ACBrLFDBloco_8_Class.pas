@@ -159,7 +159,8 @@ begin
        with FRegistro8001 do
        begin
           Add( LFill( '8001' ) +
-               LFill( Integer(IND_MOV), 0 ) ) ;
+               LFill( Integer(IND_MOV), 0 ) +
+               LFill('DF')) ;
 
           if IND_MOV = imComDados then
           begin

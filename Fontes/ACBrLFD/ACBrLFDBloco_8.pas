@@ -58,10 +58,12 @@ type
   TRegistro8001 = class(TOpenBlocos)
   private
     FRegistro8020: TRegistro8020;
+    FUF: String;
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
 
+    property UF: String read FUF write FUF;
     property Registro8020: TRegistro8020 read FRegistro8020 write FRegistro8020;
   end;
 

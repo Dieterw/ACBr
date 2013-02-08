@@ -683,11 +683,11 @@ begin
     WriteBloco_D;
     WriteBloco_E;
     WriteBloco_H;
-    WriteBloco_I;
-    WriteBloco_J;
-    WriteBloco_K;
-    WriteBloco_L;
-    WriteBloco_Z;
+    //WriteBloco_I;
+    //WriteBloco_J;
+    //WriteBloco_K;
+   //WriteBloco_L;
+   //WriteBloco_Z;
 
     WriteBloco_8;
     WriteBloco_9;
@@ -891,8 +891,8 @@ procedure TACBrLFD.WriteBloco_8;
 begin
   if Bloco_8.Gravado then Exit;
 
-  if not Bloco_Z.Gravado then
-    WriteBloco_Z;
+  {if not Bloco_Z.Gravado then
+    WriteBloco_Z;}
 
   /// BLOCO 8
   WriteRegistro8001;

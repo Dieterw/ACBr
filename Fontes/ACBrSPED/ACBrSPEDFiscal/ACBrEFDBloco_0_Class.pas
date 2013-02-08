@@ -679,7 +679,7 @@ begin
                       LFill( strTIPO_ITEM ) +
                       LFill( COD_NCM ) +
                       LFill( EX_IPI ) +
-                      LFill( COD_GEN, 2 ) +
+                      LFill( COD_GEN ) +
                       LFill( COD_LST ) +
                       LFill( ALIQ_ICMS,0,2 );
           //-- Write

@@ -13,13 +13,13 @@ type
   { TfrExtenso }
 
   TfrExtenso = class(TForm)
+    ACBrExtenso1: TACBrExtenso;
     ComboBox1: TComboBox;
     edValor: TEdit;
     Label1: TLabel;
     bExtenso: TButton;
     Label2: TLabel;
     mExtenso: TMemo;
-    ACBrExtenso1: TACBrExtenso;
     cbZeroAEsquerda: TCheckBox;
     procedure bExtensoClick(Sender: TObject);
     procedure ComboBox1Change(Sender: TObject);

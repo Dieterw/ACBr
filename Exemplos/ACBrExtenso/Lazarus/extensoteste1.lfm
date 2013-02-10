@@ -1,7 +1,7 @@
 object frExtenso: TfrExtenso
-  Left = 271
+  Left = 485
   Height = 216
-  Top = 101
+  Top = 161
   Width = 234
   HorzScrollBar.Page = 233
   HorzScrollBar.Range = 225
@@ -9,25 +9,26 @@ object frExtenso: TfrExtenso
   VertScrollBar.Range = 121
   ActiveControl = edValor
   Caption = 'Numeros por Extenso'
+  ClientHeight = 216
+  ClientWidth = 234
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
+  LCLVersion = '1.0.4.0'
   object Label1: TLabel
     Left = 8
-    Height = 13
+    Height = 14
     Top = 8
-    Width = 78
+    Width = 64
     Caption = 'Digite o Valor'
-    Color = clNone
     ParentColor = False
   end
   object Label2: TLabel
     Left = 53
-    Height = 13
-    Top = 192
-    Width = 49
+    Height = 14
+    Top = 191
+    Width = 42
     Anchors = [akLeft, akBottom]
     Caption = 'Formato:'
-    Color = clNone
     ParentColor = False
   end
   object edValor: TEdit
@@ -63,9 +64,9 @@ object frExtenso: TfrExtenso
   end
   object cbZeroAEsquerda: TCheckBox
     Left = 13
-    Height = 20
-    Top = 152
-    Width = 128
+    Height = 19
+    Top = 153
+    Width = 99
     Anchors = [akLeft, akBottom]
     Caption = 'Zero a Esquerda'
     OnClick = cbZeroAEsquerdaClick
@@ -77,13 +78,12 @@ object frExtenso: TfrExtenso
     Top = 182
     Width = 116
     Anchors = [akLeft, akRight, akBottom]
-    AutoCompleteText = [cbactEndOfLineComplete, cbactSearchAscending]
+    ItemHeight = 13
     ItemIndex = 0
     Items.Strings = (
       'extPadrao'
       'extDolar'
     )
-    MaxLength = 0
     OnChange = ComboBox1Change
     Style = csDropDownList
     TabOrder = 4
@@ -94,7 +94,7 @@ object frExtenso: TfrExtenso
     StrMoedas = 'Reais'
     StrCentavo = 'Centavo'
     StrCentavos = 'Centavos'
-    left = 48
-    top = 80
+    left = 76
+    top = 88
   end
 end

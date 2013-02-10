@@ -13,9 +13,9 @@ type
   { TfrCHQ }
 
   TfrCHQ = class(TForm)
-    ACBrExtenso1: TACBrExtenso;
-    ACBrECF1: TACBrECF;
     ACBrCHQ1: TACBrCHQ;
+    ACBrECF1: TACBrECF;
+    ACBrExtenso1: TACBrExtenso;
     pFrente: TPanel;
     Image1: TImage;
     lExtenso2: TLabel;

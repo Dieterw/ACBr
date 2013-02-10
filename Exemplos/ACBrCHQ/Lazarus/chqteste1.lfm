@@ -9,9 +9,16 @@ object frCHQ: TfrCHQ
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'Teste ACBrCHQ'
+  ClientHeight = 263
+  ClientWidth = 606
+  LCLVersion = '1.0.4.0'
   object pVerso: TPanel
+    Left = 0
     Height = 262
+    Top = 0
     Width = 604
+    ClientHeight = 262
+    ClientWidth = 604
     TabOrder = 0
     object Image2: TImage
       Left = 1
@@ -4983,12 +4990,17 @@ object frCHQ: TfrCHQ
         'Telefone:'
         'Endereço:'
       )
+      ParentFont = False
       TabOrder = 2
     end
   end
   object pFrente: TPanel
+    Left = 0
     Height = 262
+    Top = 0
     Width = 605
+    ClientHeight = 262
+    ClientWidth = 605
     TabOrder = 1
     object Image1: TImage
       Left = 1
@@ -14936,13 +14948,13 @@ object frCHQ: TfrCHQ
       Top = 84
       Width = 489
       AutoSize = False
-      Color = clNone
       Font.Color = clBlack
       Font.Height = -19
       Font.Name = 'Arial'
       Font.Pitch = fpVariable
       Font.Style = [fsBold, fsItalic]
       ParentColor = False
+      ParentFont = False
     end
     object lExtenso1: TLabel
       Left = 112
@@ -14950,21 +14962,20 @@ object frCHQ: TfrCHQ
       Top = 54
       Width = 481
       AutoSize = False
-      Color = clNone
       Font.Color = clBlack
       Font.Height = -19
       Font.Name = 'Arial'
       Font.Pitch = fpVariable
       Font.Style = [fsBold, fsItalic]
       ParentColor = False
+      ParentFont = False
     end
     object Label3: TLabel
       Left = 180
-      Height = 14
+      Height = 16
       Top = 227
-      Width = 93
+      Width = 105
       Caption = '&Verificar Formulário'
-      Color = clNone
       FocusControl = cbVerifica
       ParentColor = False
     end
@@ -14974,20 +14985,19 @@ object frCHQ: TfrCHQ
       Top = 181
       Width = 26
       Caption = '&Porta'
-      Color = clNone
       FocusControl = cbxPorta
       Font.Height = 11
       Font.Name = 'MS Sans Serif'
       Font.Pitch = fpVariable
       ParentColor = False
+      ParentFont = False
     end
     object Label1: TLabel
       Left = 160
-      Height = 14
+      Height = 16
       Top = 144
-      Width = 35
+      Width = 42
       Caption = '&Modelo'
-      Color = clNone
       FocusControl = cbxModelo
       ParentColor = False
     end
@@ -14997,7 +15007,6 @@ object frCHQ: TfrCHQ
       Hint = 'Testar impressora ligada a ACBrECF (Modelo: Bematech MP40 FI - COM1)'
       Top = 188
       Width = 31
-      Color = clBtnFace
       Glyph.Data = {
         96010000424D9601000000000000760000002800000018000000180000000100
         04000000000020010000120B0000120B00001000000010000000000000000000
@@ -15030,6 +15039,7 @@ object frCHQ: TfrCHQ
       Font.Style = [fsBold]
       OnExit = edValorExit
       OnKeyPress = edValorKeyPress
+      ParentFont = False
       TabOrder = 1
     end
     object edFavorecido: TEdit
@@ -15043,13 +15053,14 @@ object frCHQ: TfrCHQ
       Font.Name = 'Arial'
       Font.Pitch = fpVariable
       Font.Style = [fsBold, fsItalic]
+      ParentFont = False
       TabOrder = 2
       Text = 'Projeto  ACBr  (Automação Comercial Brasil)'
     end
     object edDia: TEdit
       Cursor = crIBeam
       Left = 368
-      Height = 21
+      Height = 23
       Top = 160
       Width = 24
       TabOrder = 4
@@ -15057,7 +15068,7 @@ object frCHQ: TfrCHQ
     object edCidade: TEdit
       Cursor = crIBeam
       Left = 288
-      Height = 21
+      Height = 23
       Top = 160
       Width = 73
       TabOrder = 3
@@ -15075,24 +15086,24 @@ object frCHQ: TfrCHQ
       Font.Pitch = fpVariable
       Font.Style = [fsBold]
       OnExit = edBancoExit
+      ParentFont = False
       TabOrder = 0
       Text = '001'
     end
     object edAno: TEdit
       Cursor = crIBeam
       Left = 536
-      Height = 21
+      Height = 23
       Top = 159
       Width = 41
       TabOrder = 6
     end
     object cbxPorta: TComboBox
       Left = 160
-      Height = 21
+      Height = 23
       Top = 197
       Width = 65
-      AutoCompleteText = [cbactEndOfLineComplete, cbactSearchAscending]
-      ItemHeight = 13
+      ItemHeight = 15
       ItemIndex = 0
       Items.Strings = (
         'COM1'
@@ -15104,18 +15115,16 @@ object frCHQ: TfrCHQ
         'LPT2'
         'LPT3'
       )
-      MaxLength = 0
       OnChange = cbxPortaChange
       TabOrder = 11
       Text = 'COM1'
     end
     object cbxModelo: TComboBox
       Left = 160
-      Height = 21
+      Height = 23
       Top = 160
       Width = 113
-      AutoCompleteText = [cbactEndOfLineComplete, cbactSearchAscending]
-      ItemHeight = 13
+      ItemHeight = 15
       Items.Strings = (
         'chqNenhuma'
         'chqImpressoraECF'
@@ -15127,25 +15136,23 @@ object frCHQ: TfrCHQ
         'chqSotomaq'
         'chqUrano'
       )
-      MaxLength = 0
       OnChange = cbxModeloChange
       Style = csDropDownList
       TabOrder = 10
     end
     object cbVerifica: TCheckBox
       Left = 160
-      Height = 13
+      Height = 19
       Top = 227
       Width = 20
       TabOrder = 12
     end
     object cbMes: TComboBox
       Left = 408
-      Height = 21
+      Height = 23
       Top = 160
       Width = 99
-      AutoCompleteText = [cbactEndOfLineComplete, cbactSearchAscending]
-      ItemHeight = 13
+      ItemHeight = 15
       Items.Strings = (
         'Janeiro'
         'Fevereiro'
@@ -15160,7 +15167,6 @@ object frCHQ: TfrCHQ
         'Novembro'
         'Dezembro'
       )
-      MaxLength = 0
       TabOrder = 5
     end
     object bVerso: TButton
@@ -15194,36 +15200,72 @@ object frCHQ: TfrCHQ
       TabOrder = 9
     end
   end
-  object ACBrExtenso1: TACBrExtenso
-    StrMoeda = 'Real'
-    StrMoedas = 'Reais'
-    StrCentavo = 'Centavo'
-    StrCentavos = 'Centavos'
-    left = 560
-    top = 48
-  end
   object ACBrECF1: TACBrECF
     Modelo = ecfBematech
     Porta = 'COM1'
     MsgAguarde = 'Aguardando a resposta da Impressora: %d segundos'
+    MsgTrabalhando = 'Impressora está trabalhando'
     MsgRelatorio = 'Imprimindo %s  %dª Via '
     MsgPausaRelatorio = 'Destaque a %dª via, <ENTER> proxima, %d seg.'
+    PaginaDeCodigo = 850
     FormMsgFonte.Color = clWhite
     FormMsgFonte.Height = 11
     FormMsgFonte.Name = 'MS Sans Serif'
     FormMsgFonte.Pitch = fpVariable
     FormMsgColor = clHighlight
+    MemoParams.Strings = (
+      '[Cabecalho]'
+      'LIN000=<center><b>Nome da Empresa</b></center>'
+      'LIN001=<center>Nome da Rua , 1234  -  Bairro</center>'
+      'LIN002=<center>Cidade  -  UF  -  99999-999</center>'
+      'LIN003=<center>CNPJ: 01.234.567/0001-22    IE: 012.345.678.90</center>'
+      'LIN004=<table width=100%><tr><td align=left><code>Data</code> <code>Hora</code></td><td align=right>COO: <b><code>NumCupom</code></b></td></tr></table>'
+      'LIN005=<hr>'
+      ' '
+      '[Cabecalho_Item]'
+      'LIN000=ITEM   CODIGO      DESCRICAO'
+      'LIN001=QTD         x UNITARIO       Aliq     VALOR (R$)'
+      'LIN002=<hr>'
+      'MascaraItem=III CCCCCCCCCCCCCC DDDDDDDDDDDDDDDDDDDDDDDDDDDDDQQQQQQQQ UU x VVVVVVVVVVVVV AAAAAA TTTTTTTTTTTTT'
+      ' '
+      '[Rodape]'
+      'LIN000=<hr>'
+      'LIN001=<table width=100%><tr><td align=left><code>Data</code> <code>Hora</code></td><td align=right>Projeto ACBr: <b><code>ACBR</code></b></td></tr></table>'
+      'LIN002=<center>Obrigado Volte Sempre</center>'
+      'LIN003=<hr>'
+      ' '
+      '[Formato]'
+      'Colunas=48'
+      'HTML=1'
+      'HTML_Title_Size=2'
+      'HTML_Font=<font size="2" face="Lucida Console">'
+    )
     Device.HandShake = hsRTS_CTS
     Device.HardFlow = True
+    ConfigBarras.MostrarCodigo = True
+    ConfigBarras.LarguraLinha = 3
+    ConfigBarras.Altura = 10
+    InfoRodapeCupom.CupomMania = False
+    InfoRodapeCupom.MinasLegal = False
+    InfoRodapeCupom.ParaibaLegal = False
+    InfoRodapeCupom.NotaLegalDF.Imprimir = False
+    InfoRodapeCupom.NotaLegalDF.ProgramaDeCredito = False
+    InfoRodapeCupom.NotaLegalDF.ValorICMS = 0
+    InfoRodapeCupom.NotaLegalDF.ValorISS = 0
     left = 488
     top = 48
   end
+  object ACBrExtenso1: TACBrExtenso
+    StrMoeda = 'Real'
+    StrMoedas = 'Reais'
+    StrCentavo = 'Centavo'
+    StrCentavos = 'Centavos'
+    left = 532
+    top = 51
+  end
   object ACBrCHQ1: TACBrCHQ
-    Modelo = chqImpressoraComum
     Porta = 'COM1'
-    Device.HandShake = hsRTS_CTS
-    Device.HardFlow = True
-    left = 528
-    top = 48
+    left = 416
+    top = 56
   end
 end

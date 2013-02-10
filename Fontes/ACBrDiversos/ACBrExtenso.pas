@@ -241,9 +241,10 @@ function TACBrExtenso.ExtensoAux(Str3 : String) : String;
   digitos, (nao acressenta a moeda ou Titulo (Mil, Milhao, etc..))
   Str3 -> String com 3 casas com Valor a transformar em extenso }
 Var POS1, POS2, POS3 : Integer ;
+Var Resultado : AnsiString;
 begin
 
-  Result := '' ;
+  Resultado := '' ;
 
   POS1 := StrToIntDef(copy(Str3,1,1),0) ;
   POS2 := StrToIntDef(copy(Str3,2,1),0) ;
@@ -255,31 +256,32 @@ begin
      if (POS1 = 1) and ((POS2 + POS3) = 0) then
         POS1 := 0 ;
 
-     Result := cCentenas[ POS1 ] ;
+     Resultado := cCentenas[ POS1 ] ;
   end ;
 
   if POS2 > 0 then    { Se possuir numero na casa da dezena processe }
   begin
-     if Result <> '' then  { Se ja possui algum Texto adiciona o ' e ' }
-        Result := Result + ' e ' ;
+     if Resultado <> '' then  { Se ja possui algum Texto adiciona o ' e ' }
+        Resultado := Resultado + ' e ' ;
 
      if POS2 = 1 then {  Se for na casa dos dez usa vetor de Dezenas }
       begin
-        Result := Result + cDez[ POS3 ] ;   { Dez, Onze, Doze... }
+        Resultado := Resultado + cDez[ POS3 ] ;   { Dez, Onze, Doze... }
         POS3 := 0 ;
       end
      else
-        Result := Result + cDezenas[ POS2 - 2 ] ; {Vinte, Trinta...}
+        Resultado := Resultado + cDezenas[ POS2 - 2 ] ; {Vinte, Trinta...}
   end ;
 
   if POS3 > 0 then    {  Se possuir numero na casa da unidade processe }
   begin
-     if Result <> '' then  { Se ja possui algum Texto adiciona o ' e ' }
-        Result := Result + ' e ' ;
+     if Resultado <> '' then  { Se ja possui algum Texto adiciona o ' e ' }
+        Resultado := Resultado + ' e ' ;
 
-     Result := Result + cUnidade[ POS3 - 1 ] ;
+     Resultado := Resultado + cUnidade[ POS3 - 1 ] ;
   end ;
 
+  Result := ACBrStr(Resultado);
 end;
 
 procedure TACBrExtenso.SetfsTexto(const Value: String);

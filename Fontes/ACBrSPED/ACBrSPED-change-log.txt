@@ -47,6 +47,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+
+Versão 1.01  08/02/2013
+-- ACBrSPEDFiscal --
+[+] Modificado campo COD_GEN do registro 0200 para ter o mesmo comportamento
+    do campo NCM.(Juliana Tamizou)
+
 Versão 1.02 05/02/2013
 -- ACBrSPEDPisCofins --
 [+] Implementado controle de hierarquia nos registros filhos, no Bloco_0.

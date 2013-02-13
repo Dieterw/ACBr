@@ -205,6 +205,7 @@ type
      property ExpandirLogoMarca:boolean read FExpandirLogoMarca write FExpandirLogoMarca default false;
      property MostrarStatus:boolean read FMostrarStatus write FMostrarStatus default true;
      property MostrarSetup:boolean read FMostrarSetup write FMostrarSetup default true;
+     property MostrarPreview: boolean read FMostrarPreview write FMostrarPreview default false;
   end;
 
 

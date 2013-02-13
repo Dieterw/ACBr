@@ -783,7 +783,6 @@ end;
 function TACBrDevice.LeString(ATimeOut: Integer; NumBytes: Integer): String;
 var
    Buffer: AnsiString;
-   AChar: AnsiChar;
    Fim: TDateTime;
 begin
   Result := '';

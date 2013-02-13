@@ -756,7 +756,7 @@ begin
   /// BLOCO C
   WriteRegistroC001;
 
-  if Bloco_C.RegistroC001.IND_MOV = imSemDados then
+  if Bloco_C.RegistroC001.IND_MOV = imlSemDados then
     FechaBloco := True;
 
   if FechaBloco then
@@ -942,7 +942,7 @@ begin
          QTD_REG_BLC := 1;
       end;
    end;
-   if Bloco_0.Registro0001.IND_MOV = imComDados then
+   if Bloco_0.Registro0001.IND_MOV = imlComDados then
    begin
       with Bloco_9.Registro9900 do
       begin
@@ -1050,7 +1050,7 @@ begin
      end;
   end;
 
-  if Bloco_A.RegistroA001.IND_MOV = imComDados then
+  if Bloco_A.RegistroA001.IND_MOV = imlComDados then
     with Bloco_9.Registro9900 do
     begin
        if Bloco_A.RegistroA020Count > 0 then
@@ -1228,7 +1228,7 @@ begin
      QTD_REG_BLC:= 1;
   end;
 
-  if Bloco_A.RegistroA001.IND_MOV = imComDados then
+  if Bloco_A.RegistroA001.IND_MOV = imlComDados then
     with Bloco_9.Registro9900 do
     begin
        if Bloco_A.RegistroA020Count > 0 then
@@ -1477,7 +1477,7 @@ begin
      QTD_REG_BLC:= 1;
   end;
 
-  if Bloco_C.RegistroC001.IND_MOV = imComDados then
+  if Bloco_C.RegistroC001.IND_MOV = imlComDados then
   begin
      with Bloco_9.Registro9900 do
      begin
@@ -1607,12 +1607,30 @@ begin
            end;
         end;
 
+        if Bloco_C.RegistroC500Count > 0 then
+        begin
+           with New do
+           begin
+              REG_BLC := 'C500';
+              QTD_REG_BLC := Bloco_C.RegistroC500Count;
+           end;
+        end;
+
         if Bloco_C.RegistroC550Count > 0 then
         begin
            with New do
            begin
               REG_BLC := 'C550';
               QTD_REG_BLC := Bloco_C.RegistroC550Count;
+           end;
+        end;
+
+        if Bloco_C.RegistroC555Count > 0 then
+        begin
+           with New do
+           begin
+              REG_BLC := 'C555';
+              QTD_REG_BLC := Bloco_C.RegistroC555Count;
            end;
         end;
 
@@ -1801,7 +1819,7 @@ begin
      QTD_REG_BLC:= 1;
   end;
 
-  if Bloco_D.RegistroD001.IND_MOV = imComDados then
+  if Bloco_D.RegistroD001.IND_MOV = imlComDados then
   begin
      with Bloco_9.Registro9900 do
      begin
@@ -2161,7 +2179,7 @@ begin
       QTD_REG_BLC:= 1;
    end;
 
-   if Bloco_E.RegistroE001.IND_MOV = imComDados then
+   if Bloco_E.RegistroE001.IND_MOV = imlComDados then
    begin
       with Bloco_9.Registro9900 do
       begin
@@ -2329,7 +2347,7 @@ begin
       QTD_REG_BLC:= 1;
   end;
 
-  if Bloco_I.RegistroI001.IND_MOV = imComDados then
+  if Bloco_I.RegistroI001.IND_MOV = imlComDados then
     with Bloco_9.Registro9900, Bloco_I do
     begin
 
@@ -2433,7 +2451,7 @@ begin
       QTD_REG_BLC := 1;
    end;
 
-   if Bloco_H.RegistroH001.IND_MOV = imComDados then
+   if Bloco_H.RegistroH001.IND_MOV = imlComDados then
    begin
       with Bloco_9.Registro9900 do
       begin
@@ -2524,7 +2542,7 @@ begin
      QTD_REG_BLC:= 1;
   end;
 
-  if Bloco_8.Registro8001.IND_MOV = imComDados then
+  if Bloco_8.Registro8001.IND_MOV = imlComDados then
     with Bloco_9.Registro9900 do
     begin
        if Bloco_8.Registro8020Count > 0 then

@@ -57,8 +57,8 @@ Const
 
 type
   /// Indicador de movimento - TOpenBlocos
-  TACBrIndicadorMovimento = (imComDados, // 0- Bloco com dados informados;
-                             imSemDados  // 1- Bloco sem dados informados.
+  TACBrLIndicadorMovimento = (imlComDados, // 0- Bloco com dados informados;
+                             imlSemDados  // 1- Bloco sem dados informados.
                              );
 
   /// Código indicador de circulação
@@ -125,7 +125,7 @@ type
 
   {Juliana Tamizou - começa aqui}
   /// Versão do Leiaute do arquivo - TRegistro0000
-  TACBrVersaoLeiaute      = (vlVersao1001,  // Código 1001 - Versão 1.0.0.1
+  TACBrLVersaoLeiaute      = (vlVersao1001,  // Código 1001 - Versão 1.0.0.1
                              vlVersao1002,  // Código 1002 - Versão 1.0.0.2
                              vlVersao1003,  // Código 1003 - Versão 1.0.0.3
                              vlVersao1004,  // Código 1004 - Versão 1.0.0.4
@@ -133,48 +133,48 @@ type
                              vlVersao2000   // Código 2000 - Versão 2.0.0.0
                              );
   /// Código da finalidade do arquivo - TRegistro0000
-  TACBrCodFinalidade      = (raRegular,                       // 00 - Remessa regular do arquivo original
-                             raSubstituto,                    // 01 - Remessa do arquivo substituto
-                             raDadosAdicionais,               // 02 - Remessa de arquivo com dados adicionais a arquivo anteriormente remetido
-                             raIntimacaoEsp,                  // 03 - Remessa de arquivo requerido por intimação específica
-                             raCorrecaoIDP,                   // 04 - Remessa de arquivo requerido para correção do Índice de Participação dos Municípios
-                             raPubDiarioOficial,              // 05 - Remessa de arquivo requerido por ato publicado no Diário Oficial
-                             raSintegraRegular,               // 15 - Sintegra - remessa regular de arquivo das operações interestaduais
-                             raSintegraSubstituto,            // 16 - Sintegra - remessa de arquivo substituto das operações interestaduais
-                             raSintegraDadosAdicionais,       // 17 - Sintegra - remessa de arquivo com dados adicionais das operações interestaduais
-                             raSintegraRegularICMSST,         // 18 - Sintegra - remessa regular de arquivo das operações interestaduais com substituição tributária do ICMS
-                             raSintegraSubstitutoICMSST,      // 19 - Sintegra - remessa de arquivo substituto das operações interestaduais com substituição tributária do ICMS
-                             raSintegraDadosAdicionaisICMSST, // 20 - Sintegra - remessa de arquivo com dados adicionais das operações interestaduais com substituição tributária do ICMS
-                             raRegularSefin,                  // 25 - Remessa para a Sefin/Mun de arquivo de retenções do ISS efetuadas por terceiros
-                             raSubstitutoSefin,               // 26 - Remessa para a Sefin/Mun de arquivo substituto de retenções do ISS efetuadas por terceiros
-                             raDadosAdicionaisSefin,          // 27 - Remessa para a Sefin/Mun de arquivo com dados adicionais de retenções do ISS efetuadas por terceiros
-                             raEmissaoDocumento,              // 30 - Emissão de documento
-                             raEmissaoDocAvulso,              // 31 - Emissão de documento fiscal avulso por repartição fiscal
-                             raSolicAuditorFical,             // 61 - Solicitação de Auditor-Fiscal da Secretaria da Receita Previdenciária através de MPF
-                             raEntregaSecretariaReceita,      // 62 - Entrega na Secretaria da Receita Previdenciária - movimento anual de órgão público, conforme intimação
-                             raInfComplementarSefaz           // 90 - Remessa de informações complementares para a Sefaz da unidade da federação de origem
+  TACBrLCodFinalidade      = (ralRegular,                       // 00 - Remessa regular do arquivo original
+                             ralSubstituto,                    // 01 - Remessa do arquivo substituto
+                             ralDadosAdicionais,               // 02 - Remessa de arquivo com dados adicionais a arquivo anteriormente remetido
+                             ralIntimacaoEsp,                  // 03 - Remessa de arquivo requerido por intimação específica
+                             ralCorrecaoIDP,                   // 04 - Remessa de arquivo requerido para correção do Índice de Participação dos Municípios
+                             ralPubDiarioOficial,              // 05 - Remessa de arquivo requerido por ato publicado no Diário Oficial
+                             ralSintegraRegular,               // 15 - Sintegra - remessa regular de arquivo das operações interestaduais
+                             ralSintegraSubstituto,            // 16 - Sintegra - remessa de arquivo substituto das operações interestaduais
+                             ralSintegraDadosAdicionais,       // 17 - Sintegra - remessa de arquivo com dados adicionais das operações interestaduais
+                             ralSintegraRegularICMSST,         // 18 - Sintegra - remessa regular de arquivo das operações interestaduais com substituição tributária do ICMS
+                             ralSintegraSubstitutoICMSST,      // 19 - Sintegra - remessa de arquivo substituto das operações interestaduais com substituição tributária do ICMS
+                             ralSintegraDadosAdicionaisICMSST, // 20 - Sintegra - remessa de arquivo com dados adicionais das operações interestaduais com substituição tributária do ICMS
+                             ralRegularSefin,                  // 25 - Remessa para a Sefin/Mun de arquivo de retenções do ISS efetuadas por terceiros
+                             ralSubstitutoSefin,               // 26 - Remessa para a Sefin/Mun de arquivo substituto de retenções do ISS efetuadas por terceiros
+                             ralDadosAdicionaisSefin,          // 27 - Remessa para a Sefin/Mun de arquivo com dados adicionais de retenções do ISS efetuadas por terceiros
+                             ralEmissaoDocumento,              // 30 - Emissão de documento
+                             ralEmissaoDocAvulso,              // 31 - Emissão de documento fiscal avulso por repartição fiscal
+                             ralSolicAuditorFical,             // 61 - Solicitação de Auditor-Fiscal da Secretaria da Receita Previdenciária através de MPF
+                             ralEntregaSecretariaReceita,      // 62 - Entrega na Secretaria da Receita Previdenciária - movimento anual de órgão público, conforme intimação
+                             ralInfComplementarSefaz           // 90 - Remessa de informações complementares para a Sefaz da unidade da federação de origem
                              );
 
 
   /// Situação do Documento
-  TACBrSituacaoDocto = (sdRegular,                     // 00 - Documento regular
-                        sdExtempRegular,               // 01 - Escrituração extemporânea de documento regular
-                        sdCancelado,                   // 02 - Documento cancelado
-                        sdCancelamentoDocAnterior,     // 03 - Cancelamento de cupom fiscal anterior
-                        sdCanceladoExtemp,             // 04 - Escrituração extemporânea de documento cancelado
-                        sdDesfazimentoNegocio,         // 05 - Desfazimento de negócio
-                        sdDocumentoReferenciado,       // 06 - Documento referenciado
-                        sdRegularSimples,              // 07 - Documento regular - Simples Nacional
-                        sdExtempRegularSimples,        // 08 - Documento regular extemporâneo - Simples Nacional
-                        sdLancDoctoregular,            // 50 - Lançamento de documento regular
-                        sdLancExtempDoctoRegular,      // 51 - Lançamento de documento regular extemporâneo
-                        sdLancDoctoCancelado,          // 52 - Lançamento de documento cancelado
-                        sdLancCancelamentoDocAnterior, // 53 - Lançamento de cancelamento de cupom fiscal anterior
-                        sdLancCanceladoExtemp,         // 54 - Lançamento de documento cancelado extemporâneo
-                        sdLancDesfazimentoNegocio,     // 55 - Lançamento de desfazimento de negócio
-                        sdLancDocumentoReferenciado,   // 56 - Lançamento de documento referenciado
-                        sdLancDoctoOutrasSituacoes,    // 58 - Lançamento de documento em outras situações de repercussão nula
-                        sdLancDoctoRepercNevativa      // 59 - Lançamento de documento com repercussão negativa
+  TACBrlSituacaoDocto = (sdlRegular,                     // 00 - Documento regular
+                        sdlExtempRegular,               // 01 - Escrituração extemporânea de documento regular
+                        sdlCancelado,                   // 02 - Documento cancelado
+                        sdlCancelamentoDocAnterior,     // 03 - Cancelamento de cupom fiscal anterior
+                        sdlCanceladoExtemp,             // 04 - Escrituração extemporânea de documento cancelado
+                        sdlDesfazimentoNegocio,         // 05 - Desfazimento de negócio
+                        sdlDocumentoReferenciado,       // 06 - Documento referenciado
+                        sdlRegularSimples,              // 07 - Documento regular - Simples Nacional
+                        sdlExtempRegularSimples,        // 08 - Documento regular extemporâneo - Simples Nacional
+                        sdlLancDoctoregular,            // 50 - Lançamento de documento regular
+                        sdlLancExtempDoctoRegular,      // 51 - Lançamento de documento regular extemporâneo
+                        sdlLancDoctoCancelado,          // 52 - Lançamento de documento cancelado
+                        sdlLancCancelamentoDocAnterior, // 53 - Lançamento de cancelamento de cupom fiscal anterior
+                        sdlLancCanceladoExtemp,         // 54 - Lançamento de documento cancelado extemporâneo
+                        sdlLancDesfazimentoNegocio,     // 55 - Lançamento de desfazimento de negócio
+                        sdlLancDocumentoReferenciado,   // 56 - Lançamento de documento referenciado
+                        sdlLancDoctoOutrasSituacoes,    // 58 - Lançamento de documento em outras situações de repercussão nula
+                        sdlLancDoctoRepercNevativa      // 59 - Lançamento de documento com repercussão negativa
                         );
 
   /// Tipo do item – Atividades Industriais, Comerciais e Serviços:
@@ -188,33 +188,33 @@ type
                    );
 
   /// Indicador do tipo de operação:
-  TACBrTipoOperacao = (tpEntradaAquisicao, // 0 - Entrada
-                       tpSaidaPrestacao    // 1 - Saída
+  TACBrLTipoOperacao = (tplEntradaAquisicao, // 0 - Entrada
+                       tplSaidaPrestacao    // 1 - Saída
                        );
 
   /// Indicador do emitente do documento fiscal
-  TACBrEmitente = (edEmissaoPropria,         // 0 - Emissão própria
-                   edTerceiros               // 1 - Terceiro
+  TACBrlEmitente = (edlEmissaoPropria,         // 0 - Emissão própria
+                   edlTerceiros               // 1 - Terceiro
                    );
 
   /// Indicador do tipo de pagamento
-  TACBrTipoPagamento = (tpVista,             // 0 - À Vista
-                        tpPrazo              // 1 - A Prazo
+  TACBrlTipoPagamento = (tplVista,             // 0 - À Vista
+                        tplPrazo              // 1 - A Prazo
                         );
 
   /// Indicador do tipo do frete
-  TACBrTipoFrete = (tfPorContaEmitente,      // 0 - Por conta do emitente
-                    tfPorContaDestinatario,  // 1 - Por conta do destinatário
-                    tfSemIndicacaoFrete,     // 2 - Sem indicação de frete
-                    tfPorContaTerceiros      // 3 - Por conta de terceiros
+  TACBrTipoFrete = (tflPorContaEmitente,      // 0 - Por conta do emitente
+                    tflPorContaDestinatario,  // 1 - Por conta do destinatário
+                    tflSemIndicacaoFrete,     // 2 - Sem indicação de frete
+                    tflPorContaTerceiros      // 3 - Por conta de terceiros
                     );
 
   /// Indicador da origem do processo
-  TACBrOrigemProcesso = (opSefaz,            // 0 - Sefaz
-                         opJusticaFederal,   // 1 - Justiça Federal
-                         opJusticaEstadual,  // 2 - Justiça Estadual
-                         opOutros,           // 9 - Outros
-                         opNenhum           // Preencher vazio
+  TACBrlOrigemProcesso = (oplSefaz,            // 0 - Sefaz
+                         oplJusticaFederal,   // 1 - Justiça Federal
+                         oplJusticaEstadual,  // 2 - Justiça Estadual
+                         oplOutros,           // 9 - Outros
+                         oplNenhum           // Preencher vazio
                          );
   /// Indicador do tipo de operação
   TACBrTipoOperacaoST = (toCombustiveisLubrificantes, // 0 - Combustíveis e Lubrificantes
@@ -317,8 +317,8 @@ type
                           );
 
   /// Indicador de movimento
-  TACBrMovimentoST = (mstSemOperacaoST,   // 0 - Sem operações com ST
-                      mstComOperacaoST    // 1 - Com operações de ST
+  TACBrlMovimentoST = (mstlSemOperacaoST,   // 0 - Sem operações com ST
+                      mstlComOperacaoST    // 1 - Com operações de ST
                       );
 
   /// Indicador do tipo de ajuste
@@ -334,9 +334,9 @@ type
                       );
 
   /// Indicador de propriedade/posse do item
-  TACBrPosseItem = (piInformante,           // 0- Item de propriedade do informante e em seu poder;
-                    piInformanteNoTerceiro, // 1- Item de propriedade do informante em posse de terceiros;
-                    piTerceiroNoInformante  // 2- Item de propriedade de terceiros em posse do informante
+  TACBrlPosseItem = (pilInformante,           // 0- Item de propriedade do informante e em seu poder;
+                    pilInformanteNoTerceiro, // 1- Item de propriedade do informante em posse de terceiros;
+                    pilTerceiroNoInformante  // 2- Item de propriedade de terceiros em posse do informante
                     );
 
   /// Identificador de medição
@@ -490,9 +490,9 @@ type
   TOpenBlocos = class
   private
     FCOD_MUN: Integer;
-    FIND_MOV: TACBrIndicadorMovimento;    /// Indicador de movimento: 0- Bloco com dados informados, 1- Bloco sem dados informados.
+    FIND_MOV: TACBrLIndicadorMovimento;    /// Indicador de movimento: 0- Bloco com dados informados, 1- Bloco sem dados informados.
   public
-    property IND_MOV: TACBrIndicadorMovimento read FIND_MOV write FIND_MOV;
+    property IND_MOV: TACBrLIndicadorMovimento read FIND_MOV write FIND_MOV;
     property COD_MUN: Integer read FCOD_MUN write FCOD_MUN;
   end;
 

@@ -75,7 +75,7 @@ implementation
 
 constructor TRegistroL001.Create;
 begin
-   IND_MOV := imSemDados;
+   IND_MOV := imlSemDados;
 end;
 
 end.

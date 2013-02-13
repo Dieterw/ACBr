@@ -65,6 +65,7 @@ type
   TRegistroC325 = class;
   TRegistroC500List = class;
   TRegistroC550List = class;
+  TRegistroC555List = class;
   TRegistroC560List = class;
   TRegistroC570List = class;
   TRegistroC575List = class;
@@ -119,18 +120,19 @@ type
 
   TRegistroC020 = class
   private
-    FIND_OPER: TACBrTipoOperacao; // Indicador de operação
-    FIND_EMIT: TACBrEmitente; // Indicador do emitente
+    FIND_FRT: TACBrTipoFrete;
+    FIND_OPER: TACBrlTipoOperacao; // Indicador de operação
+    FIND_EMIT: TACBrlEmitente; // Indicador do emitente
     FCOD_PART: String; // Código do participante
     FCOD_MOD: String; // Código do modelo do documento fiscal
-    FCOD_SIT: TACBrSituacaoDocto; // Código da situação do documento fiscal
+    FCOD_SIT: TACBrlSituacaoDocto; // Código da situação do documento fiscal
     FSER: String; // Série do documento fiscal
     FNUM_DOC: Integer; // Número do documento fiscal
     FCHV_NFE: String; // Chave de acesso da Nota Fiscal Eletrônica
     FDT_EMIS: TDate; // Data da emissão do documento fiscal
     FDT_DOC: TDate; // Data da entrada ou da saída
     FCOD_NAT: String; // Código da natureza da operação ou prestação
-    FIND_PGTO: TACBrTipoPagamento; // Indicador do pagamento
+    FIND_PGTO: TACBrlTipoPagamento; // Indicador do pagamento
     FVL_DOC: Currency; // Valor do documento fiscal
     FVL_DESC: Currency; // Valor dos descontos
     FVL_ACMO: Currency; // Valor dos acréscimos
@@ -158,22 +160,23 @@ type
     constructor Create(AOwner: TRegistroC001); virtual; /// Create
     destructor Destroy; override; /// Destroy
 
-    property IND_OPER: TACBrTipoOperacao read FIND_OPER write FIND_OPER;
-    property IND_EMIT: TACBrEmitente read FIND_EMIT write FIND_EMIT;
+    property IND_OPER: TACBrlTipoOperacao read FIND_OPER write FIND_OPER;
+    property IND_EMIT: TACBrlEmitente read FIND_EMIT write FIND_EMIT;
     property COD_PART: String read FCOD_PART write FCOD_PART;
     property COD_MOD: String read FCOD_MOD write FCOD_MOD;
-    property COD_SIT: TACBrSituacaoDocto read FCOD_SIT write FCOD_SIT;
+    property COD_SIT: TACBrlSituacaoDocto read FCOD_SIT write FCOD_SIT;
     property SER: String read FSER write FSER;
     property NUM_DOC: Integer read FNUM_DOC write FNUM_DOC;
     property CHV_NFE: String read FCHV_NFE write FCHV_NFE;
     property DT_EMIS: TDate read FDT_EMIS write FDT_EMIS;
     property DT_DOC: TDate read FDT_DOC write FDT_DOC;
     property COD_NAT: String read FCOD_NAT write FCOD_NAT;
-    property IND_PGTO: TACBrTipoPagamento read FIND_PGTO write FIND_PGTO;
+    property IND_PGTO: TACBrlTipoPagamento read FIND_PGTO write FIND_PGTO;
     property VL_DOC: Currency read FVL_DOC write FVL_DOC;
     property VL_DESC: Currency read FVL_DESC write FVL_DESC;
     property VL_ACMO: Currency read FVL_ACMO write FVL_ACMO;
     property VL_MERC: Currency read FVL_MERC write FVL_MERC;
+    property IND_FRT: TACBrTipoFrete read FIND_FRT write FIND_FRT;
     property VL_FRT: Currency read FVL_FRT write FVL_FRT;
     property VL_SEG: Currency read FVL_SEG write FVL_SEG;
     property VL_OUT_DA: Currency read FVL_OUT_DA write FVL_OUT_DA;
@@ -727,7 +730,7 @@ type
     FCPF_CONS: String; // CPF do consumidor adquirente
     FCNPJ_CONS: String; // CNPJ do consumidor adquirente
     FCOD_MOD: String; /// Código do modelo do documento fiscal
-    FCOD_SIT: TACBrSituacaoDocto; /// Código da situação do documento fiscal
+    FCOD_SIT: TACBrlSituacaoDocto; /// Código da situação do documento fiscal
     FSER: String; /// Série do documento fiscal
     FSUB: String; /// Subsérie do documento fiscal
     FNUM_DOC: Integer; /// Número do documento fiscal
@@ -741,7 +744,7 @@ type
     FVL_ICMS: Currency; /// Valor do ICMS
     FCOD_INF_OBS: String; /// Código de referência a informação
 
-    FRegistroC560: TRegistroC560List;
+    FRegistroC555: TRegistroC555List;
   public
     constructor Create(AOwner: TRegistroC001); virtual; /// Create
     destructor Destroy; override; /// Destroy;
@@ -749,7 +752,7 @@ type
     property CPF_CONS: String read FCPF_CONS write FCPF_CONS;
     property CNPJ_CONS: String read FCNPJ_CONS write FCNPJ_CONS;
     property COD_MOD: String read FCOD_MOD write FCOD_MOD;
-    property COD_SIT: TACBrSituacaoDocto read FCOD_SIT write FCOD_SIT;
+    property COD_SIT: TACBrlSituacaoDocto read FCOD_SIT write FCOD_SIT;
     property SER: String read FSER write FSER;
     property SUB: String read FSUB write FSUB;
     property NUM_DOC: Integer read FNUM_DOC write FNUM_DOC;
@@ -763,7 +766,7 @@ type
     property VL_ICMS: Currency read FVL_ICMS write FVL_ICMS;
     property COD_INF_OBS: String read FCOD_INF_OBS write FCOD_INF_OBS;
 
-    property RegistroC560: TRegistroC560List read FRegistroC560 write FRegistroC560;
+    property RegistroC555: TRegistroC555List read FRegistroC555 write FRegistroC555;
   end;
 
   /// Registro C550 - Lista
@@ -775,6 +778,58 @@ type
   public
     function New(AOwner: TRegistroC001): TRegistroC550;
     property Items[Index: Integer]: TRegistroC550 read GetItem write SetItem;
+  end;
+
+
+
+   /// Registro C555 - ITENS DO DOCUMENTO
+
+  { TRegistroC555 }
+
+  TRegistroC555 = class
+  private
+    FNUM_ITEM: Integer; ///  Número seqüencial do item
+    FCOD_ITEM: String; /// Código do item
+    FUNID: String; /// Unidade do item
+    FVL_UNIT: Currency; /// Valor unitário
+    FQTD: Double; /// Quantidade do item
+    FVL_DESC_I: Currency; /// Valor do desconto
+    FVL_ACMO_I: Currency; /// Valor do desconto
+    FVL_ITEM: Currency; /// Valor do item
+    FCST: String; /// Código da Situação Tributária
+    FCFOP: String; /// Código Fiscal de Operação e Prestação
+    FVL_BC_ICMS_I: Currency; /// Valor da base de cálculo do ICMS do item
+    FALIQ_ICMS: Currency; /// Alíquota do ICMS
+    FVL_ICMS_I: Currency; /// Valor do ICMS
+  public
+    constructor Create(AOwner: TRegistroC550); virtual; /// Create
+
+    property NUM_ITEM: Integer read FNUM_ITEM write FNUM_ITEM;
+    property COD_ITEM: String read FCOD_ITEM write FCOD_ITEM;
+    property UNID: String read FUNID write FUNID;
+    property VL_UNIT: Currency read FVL_UNIT write FVL_UNIT;
+    property QTD: Double read FQTD write FQTD;
+    property VL_DESC_I: Currency read FVL_DESC_I write FVL_DESC_I;
+    property VL_ACMO_I: Currency read FVL_ACMO_I write FVL_ACMO_I;
+    property VL_ITEM: Currency read FVL_ITEM write FVL_ITEM;
+    property CST: String read FCST write FCST;
+    property CFOP: String read FCFOP write FCFOP;
+    property VL_BC_ICMS_I: Currency read FVL_BC_ICMS_I write FVL_BC_ICMS_I;
+    property ALIQ_ICMS: Currency read FALIQ_ICMS write FALIQ_ICMS;
+    property VL_ICMS_I: Currency read FVL_ICMS_I write FVL_ICMS_I;
+  end;
+
+  /// Registro 555 - Lista
+
+  { TRegistroC555List }
+
+  TRegistroC555List = class(TACBrLFDRegistros)
+  private
+    function GetItem(Index: Integer): TRegistroC555;
+    procedure SetItem(Index: Integer; const Value: TRegistroC555);
+  public
+    function New(AOwner: TRegistroC550): TRegistroC555;
+    property Items[Index: Integer]: TRegistroC555 read GetItem write SetItem;
   end;
 
   /// Registro C560 - ITENS DO DOCUMENTO
@@ -971,7 +1026,7 @@ type
     FCPF_CONS: String; /// Número de inscrição do adquirente no CPF
     FCNPJ_CONS: String; /// Número de inscrição do adquirente no CNPJ
     fCOD_MOD: String; /// Código do modelo do documento fiscal
-    fCOD_SIT: TACBrSituacaoDocto; /// Código da situação do documento fiscal
+    fCOD_SIT: TACBrlSituacaoDocto; /// Código da situação do documento fiscal
     fECF_CX: Integer; /// Número do caixa atribuído ao ECF
     fECF_FAB: String; /// Número de série de fabricação do ECF
     fCRO: Integer; /// Posição do Contador de Reinício de Operação
@@ -979,6 +1034,9 @@ type
     fNUM_DOC: Integer; /// Número do documento fiscal
     fDT_DOC: TDate; /// Data da emissão do documento fiscal
     FCOP: String; /// Código da classe da operação
+    FVL_ACMO_ISS: Currency;
+    FVL_CANC_ISS: Currency;
+    FVL_DESC_ISS: Currency;
     fVL_DOC: Currency; /// Valor do documento fiscal
     FVL_CANC_ICMS: Currency; /// Valor dos cancelamentos referentes ao ICMS
     FVL_DESC_ICMS: Currency; /// Valor dos descontos referentes ao ICMS
@@ -986,6 +1044,7 @@ type
     FVL_BC_ICMS: Currency; /// Valor da base de cálculo do ICMS
     FVL_ICMS: Currency; /// Valor do ICMS
     FVL_ISN: Currency; /// Valor das operações isentas do ICMS
+    FVL_ISS: Currency;
     FVL_NT: Currency; /// Valor das operações não-tributadas pelo ICMS
     FVL_ICMS_ST: Currency; /// Valor do ICMS da substituição tributária
 
@@ -998,7 +1057,7 @@ type
     property CPF_CONS: String read FCPF_CONS write FCPF_CONS;
     property CNPJ_CONS: String read FCNPJ_CONS write FCNPJ_CONS;
     property COD_MOD: String read FCOD_MOD write FCOD_MOD;
-    property COD_SIT: TACBrSituacaoDocto read FCOD_SIT write FCOD_SIT;
+    property COD_SIT: TACBrlSituacaoDocto read FCOD_SIT write FCOD_SIT;
     property ECF_CX: Integer read FECF_CX write FECF_CX;
     property ECF_FAB: String read FECF_FAB write FECF_FAB;
     property CRO: Integer read FCRO write FCRO;
@@ -1010,10 +1069,14 @@ type
     property VL_CANC_ICMS: Currency read FVL_CANC_ICMS write FVL_CANC_ICMS;
     property VL_DESC_ICMS: Currency read FVL_DESC_ICMS write FVL_DESC_ICMS;
     property VL_ACMO_ICMS: Currency read FVL_ACMO_ICMS write FVL_ACMO_ICMS;
+    property VL_CANC_ISS: Currency read FVL_CANC_ISS write FVL_CANC_ISS;
+    property VL_DESC_ISS: Currency read FVL_DESC_ISS write FVL_DESC_ISS;
+    property VL_ACMO_ISS: Currency read FVL_ACMO_ISS write FVL_ACMO_ISS;
     property VL_BC_ICMS: Currency read FVL_BC_ICMS write FVL_BC_ICMS;
     property VL_ICMS: Currency read FVL_ICMS write FVL_ICMS;
     property VL_ISN: Currency read FVL_ISN write FVL_ISN;
     property VL_NT: Currency read FVL_NT write FVL_NT;
+    property VL_ISS: Currency read FVL_ISS write FVL_ISS;
     property VL_ICMS_ST: Currency read FVL_ICMS_ST write FVL_ICMS_ST;
 
     property RegistroC605: TRegistroC605List read FRegistroC605 write FRegistroC605;
@@ -1039,25 +1102,47 @@ type
 
   TRegistroC605 = class
   private
-    FVL_CANC_ISS: Currency; /// Valor dos cancelamentos referentes ao ISS
-    FVL_DESC_ISS: Currency; /// Valor dos descontos referentes ao ISS
-    FVL_ACMO_ISS: Currency; /// Valor dos acréscimos referentes ao ISS
-    FVL_OP_ISS: Currency; /// Valor das operações tributadas pelo ISS
-    FVL_BC_ISS: Currency; /// Valor da base de cálculo do ISS
-    FVL_ISS: Currency; /// Valor do ISS
-    FVL_ISN_ISS: Currency; /// Valor da operação isenta do ISS
-    FVL_NT_ISS: Currency; /// Valor da operação não-tributada pelo ISS
+    FALIQ_ICMS: Currency;
+    FCFOP: String;
+    FCOD_ITEM: String;
+    FCST: String;
+    FNUM_ITEM: Integer;
+    FQTD: Double;
+    FQTD_CANC_I: Double;
+    FUNID: String;
+    FVL_ACMO_I: Currency;
+    FVL_BC_ICMS_I: Currency;
+    FVL_CANC_I: Currency;
+    FVL_DESC_I: Currency;
+    FVL_ICMS_I: Currency;
+    FVL_ICMS_ST_I: Currency;
+    FVL_ISN_I: Currency;
+    FVL_ISS: Currency;
+    FVL_ITEM: Currency;
+    FVL_NT_I: Currency;
+    FVL_UNIT: Currency;
   public
     constructor Create(AOwner: TRegistroC600); virtual; /// Create
 
-    property VL_CANC_ISS: Currency read FVL_CANC_ISS write FVL_CANC_ISS;
-    property VL_DESC_ISS: Currency read FVL_DESC_ISS write FVL_DESC_ISS;
-    property VL_ACMO_ISS: Currency read FVL_ACMO_ISS write FVL_ACMO_ISS;
-    property VL_OP_ISS: Currency read FVL_OP_ISS write FVL_OP_ISS;
-    property VL_BC_ISS: Currency read FVL_BC_ISS write FVL_BC_ISS;
+    property NUM_ITEM: Integer read FNUM_ITEM write FNUM_ITEM;
+    property COD_ITEM: String read FCOD_ITEM write FCOD_ITEM;
+    property UNID: String read FUNID write FUNID;
+    property VL_UNIT: Currency read FVL_UNIT write FVL_UNIT;
+    property QTD: Double read FQTD write FQTD;
+    property QTD_CANC_I: Double read FQTD_CANC_I write FQTD_CANC_I;
+    property VL_ITEM: Currency read FVL_ITEM write FVL_ITEM;
+    property VL_DESC_I: Currency read FVL_DESC_I write FVL_DESC_I;
+    property VL_CANC_I: Currency read FVL_CANC_I write FVL_CANC_I;
+    property VL_ACMO_I: Currency read FVL_ACMO_I write FVL_ACMO_I;
     property VL_ISS: Currency read FVL_ISS write FVL_ISS;
-    property VL_ISN_ISS: Currency read FVL_ISN_ISS write FVL_ISN_ISS;
-    property VL_NT_ISS: Currency read FVL_NT_ISS write FVL_NT_ISS;
+    property CST: String read FCST write FCST;
+    property CFOP: String read FCFOP write FCFOP;
+    property VL_BC_ICMS_I: Currency read FVL_BC_ICMS_I write FVL_BC_ICMS_I;
+    property ALIQ_ICMS: Currency read FALIQ_ICMS write FALIQ_ICMS;
+    property VL_ICMS_I: Currency read FVL_ICMS_I write FVL_ICMS_I;
+    property VL_ISN_I: Currency read FVL_ISN_I write FVL_ISN_I;
+    property VL_NT_I: Currency read FVL_NT_I write FVL_NT_I;
+    property VL_ICMS_ST_I: Currency read FVL_ICMS_ST_I write FVL_ICMS_ST_I;
   end;
 
   /// Registro C605 - Lista
@@ -1081,7 +1166,10 @@ type
   private
     FNUM_ITEM: Integer; /// Número seqüencial do item no documento fiscal
     FCOD_ITEM: String; /// Código do item (campo 02 da Linha 0200)
+    FQTD_CANC_I: Double;
     FUNID: String; /// Unidade do item
+    FVL_CANC_I: Currency;
+    FVL_ISS: Currency;
     FVL_UNIT: Currency; /// Valor unitário
     FQTD: Double; /// Quantidade líquida do item, já computado o cancelamento parcial
     FVL_DESC_I: Currency; // Valor do desconto
@@ -1106,9 +1194,12 @@ type
     property UNID: String read FUNID write FUNID;
     property VL_UNIT: Currency read FVL_UNIT write FVL_UNIT;
     property QTD: Double read FQTD write FQTD;
-    property VL_DESC_I: Currency read FVL_DESC_I write FVL_DESC_I;
-    property VL_ACMO_I: Currency read FVL_ACMO_I write FVL_ACMO_I;
+    property QTD_CANC_I: Double read FQTD_CANC_I write FQTD_CANC_I;
     property VL_ITEM: Currency read FVL_ITEM write FVL_ITEM;
+    property VL_DESC_I: Currency read FVL_DESC_I write FVL_DESC_I;
+    property VL_CANC_I: Currency read FVL_CANC_I write FVL_CANC_I;
+    property VL_ACMO_I: Currency read FVL_ACMO_I write FVL_ACMO_I;
+    property VL_ISS: Currency read FVL_ISS write FVL_ISS;
     property CST: String read FCST write FCST;
     property CFOP: Integer read FCFOP write FCFOP;
     property VL_BC_ICMS_I: Currency read FVL_BC_ICMS_I write FVL_BC_ICMS_I;
@@ -1356,11 +1447,11 @@ type
 
   TRegistroC700 = class
   private
-    FIND_OPER: TACBrTipoOperacao; /// Indicador do tipo de operação
-    FIND_EMIT: TACBrEmitente; /// Indicador do emitente do documento fiscal
+    FIND_OPER: TACBrlTipoOperacao; /// Indicador do tipo de operação
+    FIND_EMIT: TACBrlEmitente; /// Indicador do emitente do documento fiscal
     FCOD_PART: String; /// Código do participante (campo 02 do Registro 0150)
     FCOD_MOD: String; /// Código do modelo do documento fiscal
-    FCOD_SIT: TACBrSituacaoDocto; /// Código da situação do documento fiscal
+    FCOD_SIT: TACBrlSituacaoDocto; /// Código da situação do documento fiscal
     FSER: String; /// Série do documento fiscal
     FSUB: String; /// Subsérie do documento fiscal
     FCOD_ASS: Integer; /// Código do tipo de consumidor ou assinante
@@ -1386,11 +1477,11 @@ type
     constructor Create(AOwner: TRegistroC001); virtual; /// Create
     destructor Destroy; override; /// Destroy;
 
-    property IND_OPER: TACBrTipoOperacao read FIND_OPER write FIND_OPER;
-    property IND_EMIT: TACBrEmitente read FIND_EMIT write FIND_EMIT;
+    property IND_OPER: TACBrlTipoOperacao read FIND_OPER write FIND_OPER;
+    property IND_EMIT: TACBrlEmitente read FIND_EMIT write FIND_EMIT;
     property COD_PART: String read FCOD_PART write FCOD_PART;
     property COD_MOD: String read FCOD_MOD write FCOD_MOD;
-    property COD_SIT: TACBrSituacaoDocto read FCOD_SIT write FCOD_SIT;
+    property COD_SIT: TACBrlSituacaoDocto read FCOD_SIT write FCOD_SIT;
     property SER: String read FSER write FSER;
     property SUB: String read FSUB write FSUB;
     property COD_ASS: Integer read FCOD_ASS write FCOD_ASS;
@@ -1819,6 +1910,13 @@ type
 
 implementation
 
+{ TRegistroC555 }
+
+constructor TRegistroC555.Create(AOwner: TRegistroC550);
+begin
+
+end;
+
 { TRegistroC001 }
 
 constructor TRegistroC001.Create;
@@ -1831,7 +1929,7 @@ begin
   FRegistroC700 := TRegistroC700List.Create;
   FRegistroC770 := TRegistroC770List.Create;
   //
-  IND_MOV := imSemDados;
+  IND_MOV := imlSemDados;
 end;
 
 destructor TRegistroC001.Destroy;
@@ -2118,12 +2216,12 @@ end;
 
 constructor TRegistroC550.Create(AOwner: TRegistroC001);
 begin
-  FRegistroC560 := TRegistroC560List.Create;
+  FRegistroC555 := TRegistroC555List.Create;
 end;
 
 destructor TRegistroC550.Destroy;
 begin
-  FRegistroC560.Free;
+  FRegistroC555.Free;
   inherited;
 end;
 
@@ -2145,11 +2243,41 @@ begin
   Put(Index, Value);
 end;
 
+
 { TRegistroC560 }
 
 constructor TRegistroC560.Create(AOwner: TRegistroC550);
 begin
 end;
+
+{ TRegistroC555List }
+
+function TRegistroC555List.GetItem(Index: Integer): TRegistroC555;
+begin
+  Result := TRegistroC555(Get(Index));
+end;
+
+procedure TRegistroC555List.SetItem(Index: Integer; const Value: TRegistroC555);
+begin
+   Put(Index, Value);
+end;
+
+function TRegistroC555List.New(AOwner: TRegistroC550): TRegistroC555;
+begin
+  Result := TRegistroC555.Create(AOwner);
+  Add(Result);
+end;
+
+procedure TRegistroC560List.SetItem(Index: Integer; const Value: TRegistroC560);
+begin
+  Put(Index, Value);
+end;
+
+{ TRegistroC560 }
+
+{constructor TRegistroC560.Create(AOwner: TRegistroC550);
+begin
+end;   }
 
 { TRegistroC560List }
 
@@ -2164,10 +2292,10 @@ begin
   Add(Result);
 end;
 
-procedure TRegistroC560List.SetItem(Index: Integer; const Value: TRegistroC560);
+{procedure TRegistroC560List.SetItem(Index: Integer; const Value: TRegistroC560);
 begin
   Put(Index, Value);
-end;
+end;}
 
 { TRegistroC570 }
 

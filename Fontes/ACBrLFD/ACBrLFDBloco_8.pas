@@ -73,7 +73,7 @@ type
 
   TRegistro8020 = class
   private
-    FIND_DAD: TACBrIndicadorMovimento; // Indicador de conteúdo
+    FIND_DAD: TACBrLIndicadorMovimento; // Indicador de conteúdo
     FDT_INI: TDate; /// Data inicial a que o mapa se refere
     FDT_FIN: TDate; /// Data final a que o mapa se refere
     FCOMB: Integer; /// Tipo de combustível
@@ -83,7 +83,7 @@ type
     constructor Create(AOwner: TRegistro8001); virtual; /// Create
     destructor Destroy; override; /// Destroy
 
-    property IND_DAD: TACBrIndicadorMovimento read FIND_DAD write FIND_DAD;
+    property IND_DAD: TACBrLIndicadorMovimento read FIND_DAD write FIND_DAD;
     property DT_INI: TDate read FDT_INI write FDT_INI;
     property DT_FIN: TDate read FDT_FIN write FDT_FIN;
     property COMB: Integer read FCOMB write FCOMB;
@@ -196,7 +196,7 @@ constructor TRegistro8001.Create;
 begin
   FRegistro8020 := TRegistro8020.Create(Self);
 
-  IND_MOV := imSemDados;
+  IND_MOV := imlSemDados;
 end;
 
 destructor TRegistro8001.Destroy;
@@ -211,7 +211,7 @@ constructor TRegistro8020.Create(AOwner: TRegistro8001);
 begin
   FRegistro8025 := TRegistro8025List.Create;
 
-  IND_DAD := imSemDados;
+  IND_DAD := imlSemDados;
 end;
 
 destructor TRegistro8020.Destroy;

@@ -162,7 +162,7 @@ begin
                LFill( Integer(IND_MOV), 0 ) +
                LFill('DF')) ;
 
-          if IND_MOV = imComDados then
+          if IND_MOV = imlComDados then
           begin
             WriteRegistro8020(FRegistro8001) ;
           end;
@@ -178,12 +178,12 @@ begin
     with Reg8001.Registro8020 do
     begin
       Add( LFill('8020') +
-           LFill(Integer(imComDados), 0) +
+           LFill(Integer(imlComDados), 0) +
            LFill(DT_INI) +
            LFill(DT_FIN) +
            LFill(COMB, 4) );
 
-      if IND_DAD = imComDados then
+      if IND_DAD = imlComDados then
       begin
         WriteRegistro8025(Reg8001.Registro8020);
       end;

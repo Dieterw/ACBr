@@ -140,7 +140,7 @@ begin
       Add( LFill('9001') +
            LFill(Integer(IND_MOV), 0) );
 
-      if IND_MOV = imComDados then
+      if IND_MOV = imlComDados then
       begin
         WriteRegistro9020(FRegistro9001);
       end;

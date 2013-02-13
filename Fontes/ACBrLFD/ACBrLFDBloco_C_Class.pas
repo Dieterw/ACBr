@@ -70,7 +70,9 @@ type
     FRegistroC315Count: Integer;
     FRegistroC320Count: Integer;
     FRegistroC325Count: Integer;
+    FRegistroC500Count: Integer;
     FRegistroC550Count: Integer;
+    FRegistroC555Count: Integer;
     FRegistroC560Count: Integer;
     FRegistroC570Count: Integer;
     FRegistroC575Count: Integer;
@@ -108,6 +110,7 @@ type
     procedure WriteRegistroC325(RegC300: TRegistroC300);
     procedure WriteRegistroC500(RegC020: TRegistroC020);
     procedure WriteRegistroC550(RegC001: TRegistroC001);
+    procedure WriteRegistroC555(RegC550: TRegistroC550);
     procedure WriteRegistroC560(RegC550: TRegistroC550);
     procedure WriteRegistroC570(RegC001: TRegistroC001);
     procedure WriteRegistroC575(RegC570: TRegistroC570);
@@ -130,7 +133,7 @@ type
     procedure CriaRegistros;
     procedure LiberaRegistros;
 
-    function SituacaoDoctoToStr(ASituacao: TACBrSituacaoDocto): String;
+    function SituacaoDoctoToStr(ASituacao: TACBrlSituacaoDocto): String;
   public
     constructor Create;           /// Create
     destructor Destroy; override; /// Destroy
@@ -152,6 +155,7 @@ type
     function RegistroC320New: TRegistroC320;
     function RegistroC325New: TRegistroC325;
     function RegistroC550New: TRegistroC550;
+    function RegistroC555New: TRegistroC555;
     function RegistroC560New: TRegistroC560;
     function RegistroC570New: TRegistroC570;
     function RegistroC575New: TRegistroC575;
@@ -191,7 +195,9 @@ type
     property RegistroC315Count: Integer read FRegistroC315Count write FRegistroC315Count;
     property RegistroC320Count: Integer read FRegistroC320Count write FRegistroC320Count;
     property RegistroC325Count: Integer read FRegistroC325Count write FRegistroC325Count;
+    property RegistroC500Count: Integer read FRegistroC500Count write FRegistroC500Count;
     property RegistroC550Count: Integer read FRegistroC550Count write FRegistroC550Count;
+    property RegistroC555Count: Integer read FRegistroC555Count write FRegistroC555Count;
     property RegistroC560Count: Integer read FRegistroC560Count write FRegistroC560Count;
     property RegistroC570Count: Integer read FRegistroC570Count write FRegistroC570Count;
     property RegistroC575Count: Integer read FRegistroC575Count write FRegistroC575Count;
@@ -241,7 +247,9 @@ begin
   FRegistroC315Count := 0;
   FRegistroC320Count := 0;
   FRegistroC325Count := 0;
+  FRegistroC500Count := 0;
   FRegistroC550Count := 0;
+  FRegistroC555Count := 0;
   FRegistroC560Count := 0;
   FRegistroC570Count := 0;
   FRegistroC575Count := 0;
@@ -439,13 +447,22 @@ begin
   Result := FRegistroC001.RegistroC550.New(FRegistroC001);
 end;
 
+function TBloco_C.RegistroC555New: TRegistroC555;
+var
+  C550: TRegistroC550;
+begin
+  with FRegistroC001.RegistroC550 do
+    C550 := Items[ AchaUltimoPai('C550', 'C555') ];
+  Result := C550.RegistroC555.New(C550);
+end;
+
 function TBloco_C.RegistroC560New: TRegistroC560;
 var
   C550: TRegistroC550;
 begin
   with FRegistroC001.RegistroC550 do
     C550 := Items[ AchaUltimoPai('C550', 'C560') ];
-  Result := C550.RegistroC560.New(C550);
+ // Result := C550.RegistroC560.New(C550);
 end;
 
 function TBloco_C.RegistroC570New: TRegistroC570;
@@ -573,27 +590,27 @@ begin
   Result := C770.RegistroC775.New(C770);
 end;
 
-function TBloco_C.SituacaoDoctoToStr(ASituacao: TACBrSituacaoDocto): String;
+function TBloco_C.SituacaoDoctoToStr(ASituacao: TACBrlSituacaoDocto): String;
 begin
   case ASituacao of
-    sdRegular: Result := '00';
-    sdExtempRegular: Result := '01';
-    sdCancelado: Result := '02';
-    sdCancelamentoDocAnterior: Result := '03';
-    sdCanceladoExtemp: Result := '04';
-    sdDesfazimentoNegocio: Result := '05';
-    sdDocumentoReferenciado: Result := '06';
-    sdRegularSimples: Result := '07';
-    sdExtempRegularSimples: Result := '08';
-    sdLancDoctoregular: Result := '50';
-    sdLancExtempDoctoRegular: Result := '51';
-    sdLancDoctoCancelado: Result := '52';
-    sdLancCancelamentoDocAnterior: Result := '53';
-    sdLancCanceladoExtemp: Result := '54';
-    sdLancDesfazimentoNegocio: Result := '55';
-    sdLancDocumentoReferenciado: Result := '56';
-    sdLancDoctoOutrasSituacoes: Result := '58';
-    sdLancDoctoRepercNevativa: Result := '59';
+    sdlRegular: Result := '00';
+    sdlExtempRegular: Result := '01';
+    sdlCancelado: Result := '02';
+    sdlCancelamentoDocAnterior: Result := '03';
+    sdlCanceladoExtemp: Result := '04';
+    sdlDesfazimentoNegocio: Result := '05';
+    sdlDocumentoReferenciado: Result := '06';
+    sdlRegularSimples: Result := '07';
+    sdlExtempRegularSimples: Result := '08';
+    sdlLancDoctoregular: Result := '50';
+    sdlLancExtempDoctoRegular: Result := '51';
+    sdlLancDoctoCancelado: Result := '52';
+    sdlLancCancelamentoDocAnterior: Result := '53';
+    sdlLancCanceladoExtemp: Result := '54';
+    sdlLancDesfazimentoNegocio: Result := '55';
+    sdlLancDocumentoReferenciado: Result := '56';
+    sdlLancDoctoOutrasSituacoes: Result := '58';
+    sdlLancDoctoRepercNevativa: Result := '59';
   end;
 end;
 
@@ -606,7 +623,7 @@ begin
       Add( LFill('C001') +
            LFill(Integer(IND_MOV), 0) );
 
-      if IND_MOV = imComDados then
+      if IND_MOV = imlComDados then
       begin
         WriteRegistroC020(FRegistroC001);
         WriteRegistroC550(FRegistroC001);
@@ -643,15 +660,14 @@ begin
            LFill(SituacaoDoctoToStr(COD_SIT)) +
            LFill(SER) +
            LFill(NUM_DOC, 0) +
-           LFill(CHV_NFE) +
            LFill(DT_EMIS) +
            LFill(DT_DOC) +
            LFill(COD_NAT) +
-           LFill(Integer(IND_PGTO), 1) +
            LFill(VL_DOC, 2) +
+           LFill(Integer(IND_PGTO), 1) +
            LFill(VL_DESC, 2) +
-           LFill(VL_ACMO, 2) +
            LFill(VL_MERC, 2) +
+           LFill(Integer(IND_FRT), 0) +
            LFill(VL_FRT, 2) +
            LFill(VL_SEG, 2) +
            LFill(VL_OUT_DA, 2) +
@@ -659,7 +675,6 @@ begin
            LFill(VL_ICMS, 2) +
            LFill(VL_BC_ST, 2) +
            LFill(VL_ICMS_ST, 2) +
-           LFill(VL_AT, 2) +
            LFill(VL_IPI, 2) +
            LFill(COD_INF_OBS) );
     end;
@@ -736,27 +751,34 @@ begin
       C300 := RegC020.RegistroC300.Items[intFor];
       with C300 do
       begin
-        Add( LFill('C300') +
-             LFill(NUM_ITEM, 0) +
-             LFill(COD_ITEM) +
-             LFill(UNID) +
-             LFill(Double(VL_UNIT), 6) +
-             LFill(Double(QTD), 6) +
-             LFill(VL_DESC_I, 2) +
-             LFill(VL_ACMO_I, 2) +
-             LFill(VL_ITEM, 2) +
-             LFill(NCM) +
-             LFill(CST, 0) +
-             LFill(CFOP, 0) +
-             LFill(VL_BC_ICMS_I, 2) +
-             LFill(ALIQ_ICMS, 2) +
-             LFill(VL_ICMS_I, 2) +
-             LFill(VL_BC_ST_I, 2) +
-             LFill(ALIQ_ST, 2) +
-             LFill(VL_ICMS_ST_I, 2) +
-             LFill(VL_BC_IPI, 2) +
-             LFill(ALIQ_IPI, 2) +
+        Add( LFill('C300')             +
+             LFill(NUM_ITEM, 0)        +
+             LFill(COD_ITEM)           +
+             DFill(VL_UNIT,3) +
+             DFill(QTD, 3)     +
+             LFill(UNID)               +
+             LFill(VL_ITEM, 2)         +
+             LFill(VL_DESC_I, 2)       +
+             LFill('0')                +
+             LFill(NCM)                +
+             LFill('')                 +
+             LFill('')                 +
+             LFill(CST, 0)             +
+             LFill(CFOP, 0)            +
+             LFill(VL_BC_ICMS_I, 2)    +
+             LFill(ALIQ_ICMS, 2)       +
+             LFill(VL_ICMS_I, 2)       +
+             LFill(VL_BC_ST_I, 2)      +
+             LFill(ALIQ_ST, 2)         +
+             LFill(VL_ICMS_ST_I, 2)    +
+             LFill('')                 +
+             LFill(VL_BC_IPI, 2)       +
+             LFill(ALIQ_IPI, 2)        +
              LFill(VL_IPI_I, 2) );
+
+
+
+
       end;
 
       WriteRegistroC320(C300);
@@ -798,8 +820,32 @@ begin
 end;
 
 procedure TBloco_C.WriteRegistroC500(RegC020: TRegistroC020);
+var
+  RegC500: TRegistroC500;
+  intFor: Integer;
 begin
+  for intFor := 0 to RegC020.RegistroC500.Count - 1 do
+  begin
+    RegC500 := RegC020.RegistroC500.Items[intFor];
+    with RegC500 do
+    begin
+      Add( LFill('C500') +
+           LFill(CST) +
+           LFill(CFOP) +
+           DFill(VL_CONT_P, 2) +
+           DFill(VL_BC_ICMS_P,2) +
+           LFill(ALIQ_ICMS, 2) +
+           LFill(VL_ICMS_P, 2)  +
+           LFill(VL_ICMS_ST_P, 2) +
+           LFill(VL_IPI_P, 2) );
 
+
+    end;
+
+    FRegistroC990.QTD_LIN_C := FRegistroC990.QTD_LIN_C + 1;
+  end;
+
+  FRegistroC500Count := FRegistroC500Count + RegC020.RegistroC500.Count;
 end;
 
 procedure TBloco_C.WriteRegistroC550(RegC001: TRegistroC001);
@@ -812,12 +858,7 @@ begin
     RegC550 := RegC001.RegistroC550.Items[intFor];
     with RegC550 do
     begin
-      Check(funChecaCPF(CPF_CONS), '(C-C550) ENTIDADE: O CPF "%s" digitado é inválido!', [CPF_CONS]);
-      Check(funChecaCNPJ(CNPJ_CONS), '(C-C550) ENTIDADE: O CNPJ "%s" digitado é inválido!', [CNPJ_CONS]);
-
       Add( LFill('C550') +
-           LFill(CPF_CONS) +
-           LFill(CNPJ_CONS) +
            LFill(COD_MOD) +
            LFill(SituacaoDoctoToStr(COD_SIT)) +
            LFill(SER) +
@@ -826,19 +867,49 @@ begin
            LFill(DT_DOC) +
            LFill(VL_DOC, 2) +
            LFill(VL_DESC, 2) +
-           LFill(VL_ACMO, 2) +
            LFill(VL_MERC, 2) +
            LFill(VL_BC_ICMS, 2) +
            LFill(VL_ICMS, 2) +
            LFill(COD_INF_OBS) );
     end;
 
-    WriteRegistroC560(RegC550);
+    WriteRegistroC555(RegC550);
 
     FRegistroC990.QTD_LIN_C := FRegistroC990.QTD_LIN_C + 1;
   end;
 
   FRegistroC550Count := FRegistroC550Count + RegC001.RegistroC550.Count;
+end;
+
+procedure TBloco_C.WriteRegistroC555(RegC550: TRegistroC550);
+var
+  RegC555: TRegistroC555;
+  intFor: Integer;
+begin
+  for intFor := 0 to RegC550.RegistroC555.Count - 1 do
+  begin
+    RegC555 := RegC550.RegistroC555.Items[intFor];
+    with RegC555 do
+    begin
+      Add( LFill('C555') +
+           LFill(NUM_ITEM,0) +
+           LFill(COD_ITEM) +
+           DFill(VL_UNIT, 3) +
+           DFill(QTD,3) +
+           LFill(UNID) +
+           LFill(VL_ITEM, 2) +
+           LFill(VL_DESC_I, 2) +
+           LFill(CST) +
+           LFill(CFOP) +
+           LFill(VL_BC_ICMS_I, 2) +
+           LFill(ALIQ_ICMS, 2) +
+           LFill(VL_ICMS_I, 2) );
+    end;
+
+    FRegistroC990.QTD_LIN_C := FRegistroC990.QTD_LIN_C + 1;
+  end;
+
+  FRegistroC555Count := FRegistroC555Count + RegC550.RegistroC555.Count;
 end;
 
 procedure TBloco_C.WriteRegistroC560(RegC550: TRegistroC550);
@@ -875,8 +946,6 @@ begin
       Check(funChecaCNPJ(CNPJ_CONS), '(C-C600) ENTIDADE: O CNPJ "%s" digitado é inválido!', [CNPJ_CONS]);
 
       Add( LFill('C600') +
-           LFill(CPF_CONS) +
-           LFill(CNPJ_CONS) +
            LFill(COD_MOD) +
            LFill(SituacaoDoctoToStr(COD_SIT)) +
            LFill(ECF_CX, 0) +
@@ -885,11 +954,17 @@ begin
            LFill(CRZ, 0) +
            LFill(NUM_DOC, 0) +
            LFill(DT_DOC) +
-           LFill(COP) +
            LFill(VL_DOC, 2) +
+           LFill(VL_CANC_ISS, 2) +
            LFill(VL_CANC_ICMS, 2) +
+           LFill(VL_CANC_ISS + VL_CANC_ICMS, 2) +
+           LFill(VL_DESC_ISS, 2) +
            LFill(VL_DESC_ICMS, 2) +
+           LFill(VL_DESC_ISS + VL_DESC_ICMS, 2) +
+           LFill(VL_ACMO_ISS, 2) +
            LFill(VL_ACMO_ICMS, 2) +
+           LFill(VL_ACMO_ISS + VL_ACMO_ICMS, 2) +
+           LFill(VL_ISS, 2) +
            LFill(VL_BC_ICMS, 2) +
            LFill(VL_ICMS, 2) +
            LFill(VL_ISN, 2) +
@@ -898,7 +973,7 @@ begin
     end;
 
     WriteRegistroC605(RegC600);
-    WriteRegistroC610(RegC600);
+   // WriteRegistroC610(RegC600);
 
     FRegistroC990.QTD_LIN_C := FRegistroC990.QTD_LIN_C + 1;
   end;
@@ -917,14 +992,25 @@ begin
     with C605 do
     begin
       Add( LFill('C605') +
-           LFill(VL_CANC_ISS, 2) +
-           LFill(VL_DESC_ISS, 2) +
-           LFill(VL_ACMO_ISS, 2) +
-           LFill(VL_OP_ISS, 2) +
-           LFill(VL_BC_ISS, 2) +
+           LFill(NUM_ITEM,0) +
+           LFill(COD_ITEM) +
+           DFill(VL_UNIT, 3) +
+           DFill(QTD,3) +
+           DFill(QTD_CANC_I,3) +
+           LFill(UNID) +
+           LFill(VL_ITEM, 2) +
+           LFill(VL_DESC_I, 2) +
+           LFill(VL_CANC_I, 2) +
+           LFill(VL_ACMO_I, 2) +
            LFill(VL_ISS, 2) +
-           LFill(VL_ISN_ISS, 2) +
-           LFill(VL_NT_ISS, 2) );
+           LFill(CST) +
+           LFill(CFOP) +
+           LFill(VL_BC_ICMS_I, 2) +
+           LFill(ALIQ_ICMS, 2) +
+           LFill(VL_ICMS_I, 2) +
+           LFill(VL_ISN_I, 2) +
+           LFill(VL_NT_I, 2) +
+           LFill(VL_ICMS_ST_I, 2) );
     end;
 
     FRegistroC990.QTD_LIN_C := FRegistroC990.QTD_LIN_C + 1;

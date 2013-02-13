@@ -431,7 +431,7 @@ begin
    //FRegistroE005 := TRegistroE005List.Create;
    FRegistroE300 := TRegistroE300.Create(Self);
    FRegistroE500 := TRegistroE500.Create(Self);
-   IND_MOV := imSemDados;
+   IND_MOV := imlSemDados;
 end;
 
 destructor TRegistroE001.Destroy;

@@ -467,7 +467,7 @@ begin
                LFill( Integer(IND_MOV), 0 ) +
                LFill(COD_MUN,7)) ;
 
-          if IND_MOV = imComDados then
+          if IND_MOV = imlComDados then
           begin
             WriteRegistroB020(FRegistroB001) ;
           end;

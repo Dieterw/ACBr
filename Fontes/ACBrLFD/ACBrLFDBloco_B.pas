@@ -109,11 +109,11 @@ type
 
   TRegistroB020 = class
   private
-    FIND_OPER: TACBrTipoOperacao; /// Indicador do tipo de operação
-    FIND_EMIT: TACBrEmitente; /// Indicador do emitente do documento fiscal
+    FIND_OPER: TACBrlTipoOperacao; /// Indicador do tipo de operação
+    FIND_EMIT: TACBrlEmitente; /// Indicador do emitente do documento fiscal
     FCOD_PART: String; /// Código do participante
     FCOD_MOD: String; /// Código do modelo do documento fiscal
-    FCOD_SIT: TACBrSituacaoDocto; /// Código do modelo do documento fiscal
+    FCOD_SIT: TACBrlSituacaoDocto; /// Código do modelo do documento fiscal
     FSER: String; /// Série do documento fiscal
     FSUB: String; /// Subsérie do documento fiscal
     FNUM_DOC: Integer; /// Número do documento fiscal
@@ -137,11 +137,11 @@ type
     constructor Create(AOwner: TRegistroB001); virtual; /// Create
     destructor Destroy; override; /// Destroy
 
-    property IND_OPER: TACBrTipoOperacao read FIND_OPER write FIND_OPER;
-    property IND_EMIT: TACBrEmitente read FIND_EMIT write FIND_EMIT;
+    property IND_OPER: TACBrlTipoOperacao read FIND_OPER write FIND_OPER;
+    property IND_EMIT: TACBrlEmitente read FIND_EMIT write FIND_EMIT;
     property COD_PART: String read FCOD_PART write FCOD_PART;
     property COD_MOD: String read FCOD_MOD write FCOD_MOD;
-    property COD_SIT: TACBrSituacaoDocto read FCOD_SIT write FCOD_SIT;
+    property COD_SIT: TACBrlSituacaoDocto read FCOD_SIT write FCOD_SIT;
     property SER: String read FSER write FSER;
     property SUB: String read FSUB write FSUB;
     property NUM_DOC: Integer read FNUM_DOC write FNUM_DOC;
@@ -609,7 +609,7 @@ type
   private
     FDT_INI: TDate; /// Data inicial a que a apuração se refere
     FDT_FIN: TDate; /// Data final a que a apuração se refere
-    FIND_DAD: TACBrIndicadorMovimento;  /// Indicador de conteúdo
+    FIND_DAD: TACBrLIndicadorMovimento;  /// Indicador de conteúdo
 
     FRegistroB410: TRegistroB410List;
     FRegistroB420: TRegistroB420List;
@@ -628,7 +628,7 @@ type
 
     property DT_INI: TDate read FDT_INI write FDT_INI;
     property DT_FIN: TDate read FDT_FIN write FDT_FIN;
-    property IND_DAD: TACBrIndicadorMovimento read FIND_DAD write FIND_DAD;
+    property IND_DAD: TACBrLIndicadorMovimento read FIND_DAD write FIND_DAD;
 
     property RegistroB410: TRegistroB410List read FRegistroB410 write FRegistroB410;
     property RegistroB420: TRegistroB420List read FRegistroB420 write FRegistroB420;
@@ -782,7 +782,7 @@ type
 
   TRegistroB440 = class
   private
-    FIND_OPER: TACBrTipoOperacao; /// Indicador do tipo de operação
+    FIND_OPER: TACBrlTipoOperacao; /// Indicador do tipo de operação
     FCOD_PART: String; /// Código do participante (campo 02 do Registro 0150)
     FVL_CONT_RT: Currency; /// Totalização do "Valor Contábil" referente ao ISS retido pelo tomador
     FVL_BC_ISS_RT: Currency; /// Totalização do "Valor da base de cálculo de retenção do ISS retido pelo tomador"
@@ -791,7 +791,7 @@ type
   public
     constructor Create(AOwner: TRegistroB400); virtual; /// Create
 
-    property IND_OPER: TACBrTipoOperacao read FIND_OPER write FIND_OPER;
+    property IND_OPER: TACBrlTipoOperacao read FIND_OPER write FIND_OPER;
     property COD_PART: String read FCOD_PART write FCOD_PART;
     property VL_CONT_RT: Currency read FVL_CONT_RT write FVL_CONT_RT;
     property VL_BC_ISS_RT: Currency read FVL_BC_ISS_RT write FVL_BC_ISS_RT;
@@ -818,7 +818,7 @@ type
 
   TRegistroB450 = class
   private
-    FIND_OPER: TACBrTipoOperacao; /// Indicador do tipo de totalização
+    FIND_OPER: TACBrlTipoOperacao; /// Indicador do tipo de totalização
     FCOD_MUN_SERV: Integer; /// Código do município onde o serviço foi prestado
     FVL_CONT: Currency; /// Totalização do "Valor Contábil" por município
     FVL_BC_ISS: Currency; /// Totalização do "Valor da base de cálculo do ISS" por município
@@ -829,7 +829,7 @@ type
   public
     constructor Create(AOwner: TRegistroB400); virtual; /// Create
 
-    property IND_OPER: TACBrTipoOperacao read FIND_OPER write FIND_OPER;
+    property IND_OPER: TACBrlTipoOperacao read FIND_OPER write FIND_OPER;
     property COD_MUN_SERV: Integer read FCOD_MUN_SERV write FCOD_MUN_SERV;
     property VL_CONT: Currency read FVL_CONT write FVL_CONT;
     property VL_BC_ISS: Currency read FVL_BC_ISS write FVL_BC_ISS;
@@ -861,7 +861,7 @@ type
     FIND_DED: TACBrTipoDeducaoISS; /// Indicador do tipo de dedução
     FVL_DED: Currency; /// Valor da dedução
     FNUM_PROC: String; /// Número do processo ao qual o ajuste está vinculado
-    FIND_PROC: TACBrOrigemProcesso; /// Indicador da origem do processo
+    FIND_PROC: TACBrlOrigemProcesso; /// Indicador da origem do processo
     FPROC: String; /// Descrição do processo que embasou o lançamento
     FCOD_INF_OBS: String; /// Código de referência à observação
 
@@ -873,7 +873,7 @@ type
     property IND_DED: TACBrTipoDeducaoISS read FIND_DED write FIND_DED;
     property VL_DED: Currency read FVL_DED write FVL_DED;
     property NUM_PROC: String read FNUM_PROC write FNUM_PROC;
-    property IND_PROC: TACBrOrigemProcesso read FIND_PROC write FIND_PROC;
+    property IND_PROC: TACBrlOrigemProcesso read FIND_PROC write FIND_PROC;
     property PROC: String read FPROC write FPROC;
     property COD_INF_OBS: String read FCOD_INF_OBS write FCOD_INF_OBS;
 
@@ -1062,7 +1062,7 @@ type
     FCOD_REC: String; /// Código de receita referente à obrigação
     FCOD_MUN_SERV: Integer; /// Código do município a que se destina a obrigação, conforme a tabela indicada no item 3.3.1
     FNUM_PROC: String; /// Número do processo ao qual a obrigação está vinculada
-    FIND_PROC: TACBrOrigemProcesso; /// Indicador da origem do processo
+    FIND_PROC: TACBrlOrigemProcesso; /// Indicador da origem do processo
     FPROC: String; /// Descrição do processo que embasou o lançamento
     FCOD_INF_OBS: String; /// Código de referência à observação
   public
@@ -1074,7 +1074,7 @@ type
     property COD_REC: String read FCOD_REC write FCOD_REC;
     property COD_MUN_SERV: Integer read FCOD_MUN_SERV write FCOD_MUN_SERV;
     property NUM_PROC: String read FNUM_PROC write FNUM_PROC;
-    property IND_PROC: TACBrOrigemProcesso read FIND_PROC write FIND_PROC;
+    property IND_PROC: TACBrlOrigemProcesso read FIND_PROC write FIND_PROC;
     property PROC: String read FPROC write FPROC;
     property COD_INF_OBS: String read FCOD_INF_OBS write FCOD_INF_OBS;
   end;
@@ -1276,7 +1276,7 @@ begin
   FRegistroB040 := TRegistroB040List.Create;
   FRegistroB050 := TRegistroB050List.Create;
   //
-  IND_MOV := imSemDados;
+  IND_MOV := imlSemDados;
 end;
 
 destructor TRegistroB001.Destroy;

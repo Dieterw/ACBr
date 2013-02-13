@@ -69,8 +69,8 @@ type
   TRegistro0000 = class
   private
     FCOD_CONTEUDO: TACBrConteudoArquivo;/// Código do conteúdo do arquivo
-    fCOD_VER: TACBrVersaoLeiaute;       /// Código da versão do leiaute: 100, 101, 102
-    fCOD_FIN: TACBrCodFinalidade;       /// Código da finalidade do arquivo: 0 - Remessa do arquivo original / 1 - Remessa do arquivo substituto.
+    fCOD_VER: TACBrLVersaoLeiaute;       /// Código da versão do leiaute: 100, 101, 102
+    fCOD_FIN: TACBrLCodFinalidade;       /// Código da finalidade do arquivo: 0 - Remessa do arquivo original / 1 - Remessa do arquivo substituto.
     fDT_INI: TDateTime;                 /// Data inicial das informações contidas no arquivo
     fDT_FIN: TDateTime;                 /// Data final das informações contidas no arquivo
     FFANTASIA: String;                  /// Nome de fantasia associado ao nome empresarial
@@ -83,8 +83,8 @@ type
     fIM: String;                        /// Inscrição Municipal do contribuinte:
     fSUFRAMA: String;                   /// Número de inscrição do contribuinte:
   public
-    property COD_VER: TACBrVersaoLeiaute read FCOD_VER write FCOD_VER;
-    property COD_FIN: TACBrCodFinalidade read FCOD_FIN write FCOD_FIN;
+    property COD_VER: TACBrLVersaoLeiaute read FCOD_VER write FCOD_VER;
+    property COD_FIN: TACBrLCodFinalidade read FCOD_FIN write FCOD_FIN;
     property DT_INI: TDateTime read FDT_INI write FDT_INI;
     property DT_FIN: TDateTime read FDT_FIN write FDT_FIN;
     property NOME: String read FNOME write FNOME;
@@ -776,8 +776,8 @@ type
     FDT_EMISSAO: TDate;            // Data da emissão, da entrada ou do lançamento
     FIE: String;                   // Inscrição Estadual do participante
     FIM: String;                   // Inscrição Municipal do participante
-    FIND_EMIT: TACBrEmitente;      // Indicador do emitente do título
-    FIND_OPER: TACBrTipoOperacao;  // Indicador do tipo de operação
+    FIND_EMIT: TACBrlEmitente;      // Indicador do emitente do título
+    FIND_OPER: TACBrlTipoOperacao;  // Indicador do tipo de operação
     FNUMDOCTO: Integer;            // Número do documento fiscal
     FSERIE: String;                // Série do documento fiscal
     FSUBSERIE: Integer;            // Subsérie do documento fiscal
@@ -791,8 +791,8 @@ type
   public
     constructor Create(AOwner: TRegistro0450); virtual; /// Create
 
-    property IND_OPER: TACBrTipoOperacao read FIND_OPER write FIND_OPER;
-    property IND_EMIT: TACBrEmitente read FIND_EMIT write FIND_EMIT;
+    property IND_OPER: TACBrlTipoOperacao read FIND_OPER write FIND_OPER;
+    property IND_EMIT: TACBrlEmitente read FIND_EMIT write FIND_EMIT;
     property CNPJ: String read FCNPJ write FCNPJ;
     property CPF: String read FCPF write FCPF;
     property UF: String read FUF write FUF;
@@ -1101,7 +1101,7 @@ begin
   FRegistro0460 := TRegistro0460List.Create;
   FRegistro0450 := TRegistro0450List.Create;
   //
-  IND_MOV := imSemDados;
+  IND_MOV := imlComDados;
 end;
 
 destructor TRegistro0001.Destroy;

@@ -77,7 +77,7 @@ type
     //VAZIO -> Texto fixo contendo “”
     FARQ_SUFRAMA: String; /// Inscrição do contribuinte na Suframa do arquivo associado
     FARQ_COD_VER: String; /// Código da versão do leiaute do arquivo associado
-    FARQ_COD_FIN: TACBrCodFinalidade; /// Código da finalidade do arquivo associado
+    FARQ_COD_FIN: TACBrLCodFinalidade; /// Código da finalidade do arquivo associado
     FARQ_COD_CTD: String; /// Código do conteúdo do arquivo associado
     //ARQ_PAIS -> Texto fixo contendo “Brasil”
     FARQ_CPF: String; /// CPF do contribuinte do arquivo associado
@@ -103,7 +103,7 @@ type
     property ARQ_IM: String read FARQ_IM write FARQ_IM;
     property ARQ_SUFRAMA: String read FARQ_SUFRAMA write FARQ_SUFRAMA;
     property ARQ_COD_VER: String read FARQ_COD_VER write FARQ_COD_VER;
-    property ARQ_COD_FIN: TACBrCodFinalidade read FARQ_COD_FIN write FARQ_COD_FIN;
+    property ARQ_COD_FIN: TACBrLCodFinalidade read FARQ_COD_FIN write FARQ_COD_FIN;
     property ARQ_COD_CTD: String read FARQ_COD_CTD write FARQ_COD_CTD;
     property ARQ_CPF: String read FARQ_CPF write FARQ_CPF;
     property ARQ_FANTASIA: String read FARQ_FANTASIA write FARQ_FANTASIA;

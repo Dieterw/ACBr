@@ -350,28 +350,28 @@ begin
        end;
 
        case COD_FIN of
-         raRegular           : strCOD_FIN := '00';
-         raSubstituto        : strCOD_FIN := '01';
-         raDadosAdicionais   : strCOD_FIN := '02';
-         raIntimacaoEsp      : strCOD_FIN := '03';
-         raCorrecaoIDP       : strCOD_FIN := '04';
-         raPubDiarioOficial  : strCOD_FIN := '05';
-         raSintegraRegular   : strCOD_FIN := '15';
-         raSintegraSubstituto: strCOD_FIN := '16';
+         ralRegular           : strCOD_FIN := '00';
+         ralSubstituto        : strCOD_FIN := '01';
+         ralDadosAdicionais   : strCOD_FIN := '02';
+         ralIntimacaoEsp      : strCOD_FIN := '03';
+         ralCorrecaoIDP       : strCOD_FIN := '04';
+         ralPubDiarioOficial  : strCOD_FIN := '05';
+         ralSintegraRegular   : strCOD_FIN := '15';
+         ralSintegraSubstituto: strCOD_FIN := '16';
 
-         raSintegraDadosAdicionais : strCOD_FIN := '17';
-         raSintegraRegularICMSST   : strCOD_FIN := '18';
-         raSintegraSubstitutoICMSST: strCOD_FIN := '19';
-         raSintegraDadosAdicionaisICMSST: strCOD_FIN := '20';
+         ralSintegraDadosAdicionais : strCOD_FIN := '17';
+         ralSintegraRegularICMSST   : strCOD_FIN := '18';
+         ralSintegraSubstitutoICMSST: strCOD_FIN := '19';
+         ralSintegraDadosAdicionaisICMSST: strCOD_FIN := '20';
 
-         raRegularSefin        : strCOD_FIN := '25';
-         raSubstitutoSefin     : strCOD_FIN := '26';
-         raDadosAdicionaisSefin: strCOD_FIN := '27';
-         raEmissaoDocumento    : strCOD_FIN := '30';
-         raEmissaoDocAvulso    : strCOD_FIN := '31';
-         raSolicAuditorFical   : strCOD_FIN := '61';
-         raEntregaSecretariaReceita: strCOD_FIN := '62';
-         raInfComplementarSefaz: strCOD_FIN := '90';
+         ralRegularSefin        : strCOD_FIN := '25';
+         ralSubstitutoSefin     : strCOD_FIN := '26';
+         ralDadosAdicionaisSefin: strCOD_FIN := '27';
+         ralEmissaoDocumento    : strCOD_FIN := '30';
+         ralEmissaoDocAvulso    : strCOD_FIN := '31';
+         ralSolicAuditorFical   : strCOD_FIN := '61';
+         ralEntregaSecretariaReceita: strCOD_FIN := '62';
+         ralInfComplementarSefaz: strCOD_FIN := '90';
        end;
 
        Check(funChecaCNPJ(CNPJ), '(0-0000) ENTIDADE: O CNPJ "%s" digitado é inválido!', [CNPJ]);
@@ -390,7 +390,7 @@ begin
             LFill( 0, 1)        + //70/05
             LFill( NOME )       +
             LFill( CNPJ )       +
-            LFill('36054230867')           + //70/05
+            LFill('')           + //70/05
             LFill('0')           + //70/05
             LFill( UF )         +
             LFill( IE )         +
@@ -421,7 +421,7 @@ begin
         Add( LFill( '0001' ) +
              LFill( Integer(IND_MOV), 0 ) ) ;
 
-        if IND_MOV = imComDados then
+        if IND_MOV = imlComDados then
         begin
           WriteRegistro0005(FRegistro0001) ;
           //WriteRegistro0025(FRegistro0001) ;
@@ -766,7 +766,8 @@ begin
                LFill(COD_PAIS) +
                LFill(CNPJ)     +
                LFill(CPF)      +
-               ' '             +
+               LFill('')       +
+               LFill('')       +
                LFill(UF)       +
                LFill(IE)       +
                LFill(IE_ST)    +
@@ -834,18 +835,18 @@ begin
         strLinha := '';
         with Reg0001.Registro0200.Items[intFor] do
         begin
-           if COD_GEN <> EmptyStr then
+           {if COD_GEN <> EmptyStr then
            begin
               COD_GEN := funStrZero(COD_GEN, 2);
               Check(funChecaGENERO(COD_GEN), '(0-0200) O código do gênero "%s" digitado é inválido! ' +
                     'Produto %s %s', [COD_GEN, DESCR_ITEM]);
-           end;
+           end;}
 
            strLinha := LFill('0200')       +
                        LFill( COD_ITEM )   +
                        LFill( DESCR_ITEM ) +
                        LFill( COD_GEN, 2 ) +
-                       LFill( COD_LST,4 );
+                       LFill( COD_LST );
            //-- Write
            if Assigned(FOnWriteRegistro0200) then
               FOnWriteRegistro0200(strLinha);

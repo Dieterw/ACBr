@@ -96,18 +96,18 @@ type
   TRegistroA020 = class
   private
     FCOD_NAT: String;
-    FIND_OPER: TACBrTipoOperacao; /// Indicador do tipo de operação
-    FIND_EMIT: TACBrEmitente; /// Indicador do emitente do documento fiscal
+    FIND_OPER: TACBrlTipoOperacao; /// Indicador do tipo de operação
+    FIND_EMIT: TACBrlEmitente; /// Indicador do emitente do documento fiscal
     FCOD_PART: String; /// Código do participante (campo 02 do Registro 0150)
     FCOD_MUN_SERV: Integer; /// Código do município onde o serviço foi prestado
     FCOD_MOD: String; /// Código do modelo do documento fiscal
-    FCOD_SIT: TACBrSituacaoDocto; /// Código da situação do documento fiscal
+    FCOD_SIT: TACBrlSituacaoDocto; /// Código da situação do documento fiscal
     FSER: String; /// Série do documento fiscal
     FSUB: String; /// Subsérie do documento fiscal
     FNUM_DOC: Integer; /// Número do documento fiscal
     FDT_DOC: TDate; /// Data da emissão do documento fiscal
     FCOP: String; // Código da classe da prestação
-    FIND_PGTO: TACBrTipoPagamento; /// Indicador do tipo de pagamento
+    FIND_PGTO: TACBrlTipoPagamento; /// Indicador do tipo de pagamento
     FVL_DOC: Currency; /// Valor total do documento fiscal
     FVL_DESC: Currency; /// Valor total do desconto
     FVL_ACMO: Currency; /// Valor dos acréscimos
@@ -133,19 +133,19 @@ type
     constructor Create(AOwner: TRegistroA001); virtual; /// Create
     destructor Destroy; override; /// Destroy
 
-    property IND_OPER: TACBrTipoOperacao read FIND_OPER write FIND_OPER;
-    property IND_EMIT: TACBrEmitente read FIND_EMIT write FIND_EMIT;
+    property IND_OPER: TACBrlTipoOperacao read FIND_OPER write FIND_OPER;
+    property IND_EMIT: TACBrlEmitente read FIND_EMIT write FIND_EMIT;
     property COD_PART: String read FCOD_PART write FCOD_PART;
     property COD_MUN_SERV: Integer read FCOD_MUN_SERV write FCOD_MUN_SERV;
     property COD_MOD: String read FCOD_MOD write FCOD_MOD;
-    property COD_SIT: TACBrSituacaoDocto read FCOD_SIT write FCOD_SIT;
+    property COD_SIT: TACBrlSituacaoDocto read FCOD_SIT write FCOD_SIT;
     property SER: String read FSER write FSER;
     property SUB: String read FSUB write FSUB;
     property COD_NAT: String read FCOD_NAT write FCOD_NAT;
     property NUM_DOC: Integer read FNUM_DOC write FNUM_DOC;
     property DT_DOC: TDate read FDT_DOC write FDT_DOC;
     property COP: String read FCOP write FCOP;
-    property IND_PGTO: TACBrTipoPagamento read FIND_PGTO write FIND_PGTO;
+    property IND_PGTO: TACBrlTipoPagamento read FIND_PGTO write FIND_PGTO;
     property VL_DOC: Currency read FVL_DOC write FVL_DOC;
     property VL_DESC: Currency read FVL_DESC write FVL_DESC;
     property VL_ACMO: Currency read FVL_ACMO write FVL_ACMO;
@@ -474,7 +474,7 @@ type
     FCPF_CONS: String; /// Número de inscrição do tomador do serviço no CPF
     FCNPJ_CONS: String; /// Número de inscrição do tomador do serviço no CNPJ
     FCOD_MOD: String; /// Código do modelo do documento fiscal
-    FCOD_SIT: TACBrSituacaoDocto; /// Código da situação do documento fiscal
+    FCOD_SIT: TACBrlSituacaoDocto; /// Código da situação do documento fiscal
     FSER: String; /// Série do documento fiscal
     FSUB: String; /// Subsérie do documento fiscal
     FNUM_DOC: String; /// Número do documento fiscal
@@ -498,7 +498,7 @@ type
     property CPF_CONS: String read FCPF_CONS write FCPF_CONS;
     property CNPJ_CONS: String read FCNPJ_CONS write FCNPJ_CONS;
     property COD_MOD: String read FCOD_MOD write FCOD_MOD;
-    property COD_SIT: TACBrSituacaoDocto read FCOD_SIT write FCOD_SIT;
+    property COD_SIT: TACBrlSituacaoDocto read FCOD_SIT write FCOD_SIT;
     property SER: String read FSER write FSER;
     property SUB: String read FSUB write FSUB;
     property NUM_DOC: String read FNUM_DOC write FNUM_DOC;
@@ -682,7 +682,7 @@ type
     FCPF_CONS: String; /// Número de inscrição do tomador do serviço no CPF
     FCNPJ_CONS: String; /// Número de inscrição do tomador do serviço no CNPJ
     FCOD_MOD: String; /// Código do modelo do documento fiscal
-    FCOD_SIT: TACBrSituacaoDocto; /// Código da situação do documento fiscal
+    FCOD_SIT: TACBrlSituacaoDocto; /// Código da situação do documento fiscal
     FECF_CX: Integer; /// Número do caixa atribuído ao ECF
     FECF_FAB: String; /// Número de série de fabricação do ECF
     FCRO: Integer; /// Posição do Contador de Reinício de Operação
@@ -712,7 +712,7 @@ type
     property CPF_CONS: String read FCPF_CONS write FCPF_CONS;
     property CNPJ_CONS: String read FCNPJ_CONS write FCNPJ_CONS;
     property COD_MOD: String read FCOD_MOD write FCOD_MOD;
-    property COD_SIT: TACBrSituacaoDocto read FCOD_SIT write FCOD_SIT;
+    property COD_SIT: TACBrlSituacaoDocto read FCOD_SIT write FCOD_SIT;
     property ECF_CX: Integer read FECF_CX write FECF_CX;
     property ECF_FAB: String read FECF_FAB write FECF_FAB;
     property CRO: Integer read FCRO write FCRO;
@@ -1024,7 +1024,7 @@ begin
   FRegistroA370 := TRegistroA370List.Create;
   FRegistroA350 := TRegistroA350List.Create;
   //
-  IND_MOV := imSemDados;
+  IND_MOV := imlSemDados;
 end;
 
 destructor TRegistroA001.Destroy;

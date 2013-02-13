@@ -89,7 +89,7 @@ type
 
   TRegistroH030 = class
   private
-    FIND_POSSE: TACBrPosseItem; /// Indicador de propriedade/posse do item
+    FIND_POSSE: TACBrlPosseItem; /// Indicador de propriedade/posse do item
     FCOD_PART: String; /// Código do participante do proprietário ou possuidor que não seja o informante do arquivo
     FIND_ITEM: TACBrTipoItem; /// Indicador do tipo de item inventeriado
     FCOD_NCM: String; /// Código da Nomenclatura Comum do Mercosul
@@ -107,7 +107,7 @@ type
   public
     constructor Create(AOwner: TRegistroH020); virtual; /// Create
 
-    property IND_POSSE: TACBrPosseItem read FIND_POSSE write FIND_POSSE;
+    property IND_POSSE: TACBrlPosseItem read FIND_POSSE write FIND_POSSE;
     property COD_PART: String read FCOD_PART write FCOD_PART;
     property IND_ITEM: TACBrTipoItem read FIND_ITEM write FIND_ITEM;
     property COD_NCM: String read FCOD_NCM write FCOD_NCM;
@@ -143,12 +143,12 @@ type
 
   TRegistroH040 = class
   private
-    FIND_POSSE: TACBrPosseItem; /// Indicador de posse a ser totalizado
+    FIND_POSSE: TACBrlPosseItem; /// Indicador de posse a ser totalizado
     FVL_SUB_POSSE: Currency; /// Valor subtotal por possuidor ou proprietário
   public
     constructor Create(AOwner: TRegistroH020); virtual; /// Create
 
-    property IND_POSSE: TACBrPosseItem read FIND_POSSE write FIND_POSSE;
+    property IND_POSSE: TACBrlPosseItem read FIND_POSSE write FIND_POSSE;
     property VL_SUB_POSSE: Currency read FVL_SUB_POSSE write FVL_SUB_POSSE;
   end;
 
@@ -239,7 +239,7 @@ implementation
 constructor TRegistroH001.Create;
 begin
   FRegistroH020 := TRegistroH020.Create(Self);
-  IND_MOV := imSemDados;
+  IND_MOV := imlSemDados;
 end;
 
 destructor TRegistroH001.Destroy;

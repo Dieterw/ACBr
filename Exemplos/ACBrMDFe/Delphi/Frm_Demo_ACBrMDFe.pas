@@ -103,13 +103,13 @@ type
     btnConsultar: TButton;
     btnValidarXML: TButton;
     btnStatusServ: TButton;
-    btnCancMDFe: TButton;
+    btnCancelamento: TButton;
     btnCriarEnviar: TButton;
     btnGerarMDFe: TButton;
     btnGerarPDF: TButton;
     btnConsultarRecibo: TButton;
     btnConsultarChave: TButton;
-    btnCancelarChave: TButton;
+    btnEncerramento: TButton;
     PageControl2: TPageControl;
     TabSheet5: TTabSheet;
     MemoResp: TMemo;
@@ -139,8 +139,8 @@ type
     procedure btnCriarEnviarClick(Sender: TObject);
     procedure btnConsultarClick(Sender: TObject);
     procedure btnConsultarChaveClick(Sender: TObject);
-    procedure btnCancMDFeClick(Sender: TObject);
-    procedure btnCancelarChaveClick(Sender: TObject);
+    procedure btnCancelamentoClick(Sender: TObject);
+    procedure btnEncerramentoClick(Sender: TObject);
     procedure btnConsultarReciboClick(Sender: TObject);
     procedure btnGerarMDFeClick(Sender: TObject);
     procedure btnGerarPDFClick(Sender: TObject);
@@ -301,8 +301,8 @@ begin
   ACBrMDFe1.Configuracoes.Arquivos.Salvar           := True;
   ACBrMDFe1.Configuracoes.Arquivos.PastaMensal      := True;
   ACBrMDFe1.Configuracoes.Arquivos.AdicionarLiteral := True;
+//  ACBrMDFe1.Configuracoes.Arquivos.PathMDFe := Caminho;
   Caminho := ACBrMDFe1.Configuracoes.Arquivos.GetPathMDFe(0);
-  ACBrMDFe1.Configuracoes.Arquivos.PathMDFe := Caminho;
 
   ACBrMDFe1.Configuracoes.Geral.PathSalvar := Caminho;
 
@@ -500,7 +500,7 @@ end;
 
 procedure TfrmDemo_ACBrMDFe.sbtnGetCertClick(Sender: TObject);
 begin
- {$IFNDEF ACBrCTeOpenSSL}
+ {$IFNDEF ACBrMDFeOpenSSL}
   edtNumSerie.Text := ACBrMDFe1.Configuracoes.Certificados.SelecionarCertificado;
  {$ENDIF}
 end;
@@ -581,7 +581,7 @@ procedure TfrmDemo_ACBrMDFe.btnCriarEnviarClick(Sender: TObject);
 var
  vAux, vNumLote : String;
 begin
- if not(InputQuery('WebServices Enviar', 'Numero do Conhecimento', vAux))
+ if not(InputQuery('WebServices Enviar', 'Numero do Manifesto', vAux))
   then exit;
 
  if not(InputQuery('WebServices Enviar', 'Numero do Lote', vNumLote))
@@ -635,7 +635,7 @@ begin
  ShowMessage('Opção não Implementada!');
 end;
 
-procedure TfrmDemo_ACBrMDFe.btnCancMDFeClick(Sender: TObject);
+procedure TfrmDemo_ACBrMDFe.btnCancelamentoClick(Sender: TObject);
 var
  vAux : String;
 begin
@@ -661,7 +661,7 @@ begin
   end;
 end;
 
-procedure TfrmDemo_ACBrMDFe.btnCancelarChaveClick(Sender: TObject);
+procedure TfrmDemo_ACBrMDFe.btnEncerramentoClick(Sender: TObject);
 begin
  ShowMessage('Opção não Implementada!');
 end;
@@ -670,8 +670,8 @@ procedure TfrmDemo_ACBrMDFe.btnConsultarReciboClick(Sender: TObject);
 var
  aux : String;
 begin
- if not(InputQuery('Consultar Recibo Lote', 'Número do Recibo', aux))
-  then exit;
+  if not(InputQuery('Consultar Recibo Lote', 'Número do Recibo', aux))
+   then exit;
 
   ACBrMDFe1.WebServices.Recibo.Recibo := aux;
   ACBrMDFe1.WebServices.Recibo.Executar;
@@ -725,15 +725,6 @@ begin
   begin
    ACBrMDFe1.Manifestos.Clear;
    ACBrMDFe1.Manifestos.LoadFromFile(OpenDialog1.FileName);
-   if ACBrMDFe1.Manifestos.Items[0].MDFe.Ide.tpEmis = teDPEC then
-    begin
-     {
-     ACBrMDFe1.WebServices.ConsultaDPEC.MDFeChave := ACBrMDFe1.Manifestos.Items[0].MDFe.infMDFe.ID;
-     ACBrMDFe1.WebServices.ConsultaDPEC.Executar;
-     ACBrMDFe1.DAMDFe.ProtocoloMDFe := ACBrMDFe1.WebServices.ConsultaDPEC.nRegDPEC +
-       ' '+ DateTimeToStr(ACBrMDFe1.WebServices.ConsultaDPEC.retDPEC.dhRegDPEC);
-     }
-    end;
    ACBrMDFe1.Manifestos.Imprimir;
   end;
 end;
@@ -750,7 +741,7 @@ begin
    ACBrMDFe1.Manifestos.Clear;
    ACBrMDFe1.Manifestos.LoadFromFile(OpenDialog1.FileName);
    ACBrMDFe1.Manifestos.Valida;
-   showmessage('Conhecimento de Transporte Eletrônico Valido');
+   showmessage('Manifesto Eletrônico de Documentos Fiscais Valido');
   end;
 end;
 

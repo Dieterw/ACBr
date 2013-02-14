@@ -16,6 +16,7 @@ type
     ACBrNFPws1: TACBrNFPws;
     btConsultar: TButton;
     btEnviar: TButton;
+    btEnviar1: TButton;
     cbxTipoContr: TComboBox;
     edObservacoes: TEdit;
     edProxyHost: TEdit;
@@ -49,6 +50,7 @@ type
     tsConf: TTabSheet;
     tsEnvio: TTabSheet;
     procedure btConsultarClick(Sender: TObject);
+    procedure btEnviar1Click(Sender: TObject);
     procedure btEnviarClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private
@@ -73,6 +75,46 @@ begin
   AjustaUsuario;
 
   Memo1.Lines.Add( ACBrNFPws1.Consultar( edProtocolo.Text ) );
+end;
+
+procedure TForm1.btEnviar1Click(Sender: TObject);
+Var
+  Resp, Protocolo : String ;
+  SL : TStringList;
+begin
+  AjustaProxy;
+  AjustaUsuario;
+
+  Protocolo := '';
+  Resp      := ACBrNFPws1.Enviar( edFileNameEdit.Text, edObservacoes.Text ) ;
+
+  SL := TStringList.Create;
+  try
+    SL.Text := StringReplace( Resp, '|', sLineBreak, [rfReplaceAll] );
+    Memo1.Lines.Add( 'Resposta Envio:' );
+    Memo1.Lines.Add( Resp );
+    Memo1.Lines.Add( '------------------' );
+    Memo1.lines.AddStrings( SL );
+    Memo1.Lines.Add( '------------------' );
+
+    if SL.Count > 0 then
+      Protocolo := SL[1];
+
+    if Protocolo <> '' then
+    begin
+      Resp := ACBrNFPws1.Consultar( Protocolo );
+
+      SL.Text := StringReplace( Resp, '|', sLineBreak, [rfReplaceAll] );
+      Memo1.Lines.Add( 'Resposta Consulta:' );
+      Memo1.Lines.Add( Resp );
+      Memo1.Lines.Add( '------------------' );
+      Memo1.lines.AddStrings( SL );
+      Memo1.Lines.Add( '------------------' );
+    end;
+  finally
+    SL.Free;
+  end;
+
 end;
 
 procedure TForm1.btEnviarClick(Sender: TObject);

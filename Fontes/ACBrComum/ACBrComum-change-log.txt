@@ -38,6 +38,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 14/02/2013
+[+] Função DesligarMaquina modificada para permitir efetuar apenas o LogOff  (por: DSA)
+    DesligarMaquina(Reboot: Boolean = False; Forcar: Boolean = False;
+                    LogOff: Boolean = False) ;
+
 Data: 01/02/2013
 -- ACBrAAC --
 [-] Correção para gravar a propriedade paraiba legal

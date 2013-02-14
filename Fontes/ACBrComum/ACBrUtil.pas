@@ -245,7 +245,8 @@ function UnLoadLibrary(LibName: AnsiString ): Boolean ;
 function FlushToDisk( sFile: string): boolean;
 function FlushFileToDisk( sFile: string): boolean;
 
-Procedure DesligarMaquina(Reboot: Boolean = False; Forcar: Boolean = False) ;
+Procedure DesligarMaquina(Reboot: Boolean = False; Forcar: Boolean = False;
+   LogOff: Boolean = False) ;
 Procedure WriteToTXT( const ArqTXT, AString : AnsiString;
    const AppendIfExists : Boolean = True; AddLineBreak : Boolean = True );
 
@@ -2003,7 +2004,8 @@ end ;
  - Se "Reboot" for true Reinicializa
  *** Versão Windows extraida do www.forumweb.com.br/forum  por: Rafael Luiz ***
  ---------------------------------------------------------------------------- }
-Procedure DesligarMaquina(Reboot: Boolean = False; Forcar: Boolean = False) ;
+Procedure DesligarMaquina(Reboot: Boolean = False; Forcar: Boolean = False;
+   LogOff: Boolean = False) ;
 
 {$IFDEF MSWINDOWS}
    function WindowsNT: Boolean;
@@ -2049,6 +2051,8 @@ Procedure DesligarMaquina(Reboot: Boolean = False; Forcar: Boolean = False) ;
 
       if Reboot then
          RebootParam := EWX_REBOOT
+      else if LogOff then
+         RebootParam := EWX_LOGOFF
       else
          RebootParam := EWX_SHUTDOWN  ;
 

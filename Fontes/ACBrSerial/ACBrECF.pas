@@ -1815,7 +1815,8 @@ end;
 
 function TACBrECF.GetNumECFClass: String;
 begin
-  ComandoLOG := 'NumECF' ;
+  if ComandoLOG = '' then
+     ComandoLOG := 'NumECF' ;
   Result := fsECF.NumECF ;
 end;
 
@@ -1881,13 +1882,15 @@ end;
 
 function TACBrECF.GetNumLojaClass: String;
 begin
-  ComandoLOG := 'NumLoja' ;
+  if ComandoLOG = '' then
+     ComandoLOG := 'NumLoja' ;
   Result := fsECF.NumLoja ;
 end;
 
 function TACBrECF.GetNumSerieClass: String;
 begin
-  ComandoLOG := 'NumSerie' ;
+  if ComandoLOG = '' then
+     ComandoLOG := 'NumSerie' ;
   Result := fsECF.NumSerie ;
 end;
 
@@ -1988,13 +1991,15 @@ end;
 
 function TACBrECF.GetCNPJClass: String;
 begin
-  ComandoLOG := 'CNPJ' ;
+  if ComandoLOG = '' then
+     ComandoLOG := 'CNPJ' ;
   Result := Trim(fsECF.CNPJ) ;
 end;
 
 function TACBrECF.GetIEClass: String;
 begin
-  ComandoLOG := 'IE' ;
+  if ComandoLOG = '' then
+     ComandoLOG := 'IE' ;
   Result := Trim(fsECF.IE) ;
 end;
 
@@ -2012,7 +2017,8 @@ end;
 
 function TACBrECF.GetUsuarioAtualClass: String;
 begin
-  ComandoLOG := 'UsuarioAtual' ;
+  if ComandoLOG = '' then
+     ComandoLOG := 'UsuarioAtual' ;
   Result := fsECF.UsuarioAtual ;
 end;
 
@@ -2036,14 +2042,16 @@ end;
 
 function TACBrECF.GetDataMovimentoClass: TDateTime;
 begin
-  ComandoLOG := 'DataMovimento' ;
+  if ComandoLOG = '' then
+     ComandoLOG := 'DataMovimento' ;
   Result := fsECF.DataMovimento ;
 end;
 
 function TACBrECF.GetGrandeTotalClass: Double;
 begin
   IgnorarErroSemPapel := True;
-  ComandoLOG := 'GrandeTotal' ;
+  if ComandoLOG = '' then
+     ComandoLOG := 'GrandeTotal' ;
   Result := RoundTo( fsECF.GrandeTotal, -2) ;
 end;
 

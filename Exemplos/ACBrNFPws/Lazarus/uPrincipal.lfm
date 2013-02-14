@@ -222,10 +222,11 @@ object Form1: TForm1
         object btConsultar: TButton
           AnchorSideLeft.Control = GroupBox3
           AnchorSideLeft.Side = asrCenter
-          Left = 83
+          Left = 82
           Height = 25
           Top = 80
-          Width = 75
+          Width = 77
+          AutoSize = True
           Caption = 'Consultar'
           OnClick = btConsultarClick
           TabOrder = 1
@@ -261,11 +262,12 @@ object Form1: TForm1
           AnchorSideLeft.Control = GroupBox4
           AnchorSideLeft.Side = asrCenter
           AnchorSideTop.Side = asrCenter
-          Left = 224
+          Left = 214
           Height = 25
           Top = 104
-          Width = 75
+          Width = 58
           Anchors = [akTop, akRight]
+          AutoSize = True
           Caption = 'Enviar'
           OnClick = btEnviarClick
           TabOrder = 1
@@ -340,6 +342,20 @@ object Form1: TForm1
             'NF mod1'
           )
           TabOrder = 4
+        end
+        object btEnviar1: TButton
+          AnchorSideLeft.Control = GroupBox4
+          AnchorSideLeft.Side = asrCenter
+          AnchorSideTop.Side = asrCenter
+          Left = 22
+          Height = 25
+          Top = 104
+          Width = 121
+          Anchors = [akTop, akRight]
+          AutoSize = True
+          Caption = 'Enviar e Consultar'
+          OnClick = btEnviar1Click
+          TabOrder = 5
         end
       end
     end

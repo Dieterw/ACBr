@@ -742,7 +742,8 @@ begin
   3157807  // Santa Luzia/MG
          : Provedor := 'ISSIntel';
 
-  1400100  // Boa Vista/RR
+  1400100, // Boa Vista/RR
+  2903201  // Barreiras/BA
          : Provedor := 'Saatri';
 
   5107958  // Tangara da Serra/MT
@@ -791,6 +792,7 @@ begin
 
   2704302: Cidade := 'Maceio/AL';
 
+  2903201: Cidade := 'Barreiras/BA';
   2910727: Cidade := 'Eunapolis/BA';
   2910800: Cidade := 'Feira de Santana/BA';
   2919207: Cidade := 'Lauro de Freitas/BA';

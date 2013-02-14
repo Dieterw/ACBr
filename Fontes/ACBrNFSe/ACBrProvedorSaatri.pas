@@ -137,25 +137,32 @@ var
 begin
  case ACodCidade of
   1400100: begin
-            ConfigURL.HomNomeCidade         := '';
-            ConfigURL.HomRecepcaoLoteRPS    := 'https://homologa-boavista.saatri.com.br/servicos/nfse.svc';
-            ConfigURL.HomConsultaLoteRPS    := 'https://homologa-boavista.saatri.com.br/servicos/nfse.svc';
-            ConfigURL.HomConsultaNFSeRPS    := 'https://homologa-boavista.saatri.com.br/servicos/nfse.svc';
-            ConfigURL.HomConsultaSitLoteRPS := 'https://homologa-boavista.saatri.com.br/servicos/nfse.svc';
-            ConfigURL.HomConsultaNFSe       := 'https://homologa-boavista.saatri.com.br/servicos/nfse.svc';
-            ConfigURL.HomCancelaNFSe        := 'https://homologa-boavista.saatri.com.br/servicos/nfse.svc';
-            ConfigURL.HomGerarNFSe          := 'https://homologa-boavista.saatri.com.br/servicos/nfse.svc';
+            ConfigURL.HomNomeCidade         := 'boavista';
 
-            ConfigURL.ProNomeCidade         := '';
-            ConfigURL.ProRecepcaoLoteRPS    := 'https://boavista.saatri.com.br/servicos/nfse.svc';
-            ConfigURL.ProConsultaLoteRPS    := 'https://boavista.saatri.com.br/servicos/nfse.svc';
-            ConfigURL.ProConsultaNFSeRPS    := 'https://boavista.saatri.com.br/servicos/nfse.svc';
-            ConfigURL.ProConsultaSitLoteRPS := 'https://boavista.saatri.com.br/servicos/nfse.svc';
-            ConfigURL.ProConsultaNFSe       := 'https://boavista.saatri.com.br/servicos/nfse.svc';
-            ConfigURL.ProCancelaNFSe        := 'https://boavista.saatri.com.br/servicos/nfse.svc';
-            ConfigURL.ProGerarNFSe          := 'https://boavista.saatri.com.br/servicos/nfse.svc';
+            ConfigURL.ProNomeCidade         := 'boavista';
+           end;
+  2903201: begin
+            ConfigURL.HomNomeCidade         := 'barreiras';
+
+            ConfigURL.ProNomeCidade         := 'barreiras';
            end;
  end;
+
+ ConfigURL.HomRecepcaoLoteRPS    := 'https://homologa-' + ConfigURL.HomNomeCidade + '.saatri.com.br/servicos/nfse.svc';
+ ConfigURL.HomConsultaLoteRPS    := 'https://homologa-' + ConfigURL.HomNomeCidade + '.saatri.com.br/servicos/nfse.svc';
+ ConfigURL.HomConsultaNFSeRPS    := 'https://homologa-' + ConfigURL.HomNomeCidade + '.saatri.com.br/servicos/nfse.svc';
+ ConfigURL.HomConsultaSitLoteRPS := 'https://homologa-' + ConfigURL.HomNomeCidade + '.saatri.com.br/servicos/nfse.svc';
+ ConfigURL.HomConsultaNFSe       := 'https://homologa-' + ConfigURL.HomNomeCidade + '.saatri.com.br/servicos/nfse.svc';
+ ConfigURL.HomCancelaNFSe        := 'https://homologa-' + ConfigURL.HomNomeCidade + '.saatri.com.br/servicos/nfse.svc';
+ ConfigURL.HomGerarNFSe          := 'https://homologa-' + ConfigURL.HomNomeCidade + '.saatri.com.br/servicos/nfse.svc';
+
+ ConfigURL.ProRecepcaoLoteRPS    := 'https://' + ConfigURL.ProNomeCidade + '.saatri.com.br/servicos/nfse.svc';
+ ConfigURL.ProConsultaLoteRPS    := 'https://' + ConfigURL.ProNomeCidade + '.saatri.com.br/servicos/nfse.svc';
+ ConfigURL.ProConsultaNFSeRPS    := 'https://' + ConfigURL.ProNomeCidade + '.saatri.com.br/servicos/nfse.svc';
+ ConfigURL.ProConsultaSitLoteRPS := 'https://' + ConfigURL.ProNomeCidade + '.saatri.com.br/servicos/nfse.svc';
+ ConfigURL.ProConsultaNFSe       := 'https://' + ConfigURL.ProNomeCidade + '.saatri.com.br/servicos/nfse.svc';
+ ConfigURL.ProCancelaNFSe        := 'https://' + ConfigURL.ProNomeCidade + '.saatri.com.br/servicos/nfse.svc';
+ ConfigURL.ProGerarNFSe          := 'https://' + ConfigURL.ProNomeCidade + '.saatri.com.br/servicos/nfse.svc';
 
  Result := ConfigURL;
 end;
@@ -667,6 +674,8 @@ begin
   then begin
    case ACodMunicipio of
     1400100: Result := 'https://boavista.saatri.com.br/VisualizarNotaFiscal?numero=' +
+                       IntToStr(ANumeroNFSe) + '&codigoVerificacao=' + ACodVerificacao;
+    2903201: Result := 'https://barreiras.saatri.com.br/Relatorio/VisualizarNotaFiscal?numero=' +
                        IntToStr(ANumeroNFSe) + '&codigoVerificacao=' + ACodVerificacao;
    else Result := '';
    end;

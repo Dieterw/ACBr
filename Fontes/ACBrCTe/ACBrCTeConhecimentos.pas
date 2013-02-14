@@ -123,9 +123,11 @@ type
     property Configuracoes: TConfiguracoes read FConfiguracoes  write FConfiguracoes;
 
     function GetNamePath: string; override ;
-    function LoadFromFile(CaminhoArquivo: string): boolean;
-    function LoadFromStream(Stream: TStringStream): boolean;
-    function LoadFromString(AString: String): boolean;
+    // Incluido o Parametro AGerarCTe que determina se após carregar os dados do CTe
+    // para o componente, será gerado ou não novamente o XML do CTe.
+    function LoadFromFile(CaminhoArquivo: string; AGerarCTe: Boolean = True): boolean;
+    function LoadFromStream(Stream: TStringStream; AGerarCTe: Boolean = True): boolean;
+    function LoadFromString(AString: String; AGerarCTe: Boolean = True): boolean;
     function SaveToFile(PathArquivo: string = ''): boolean;
 
     property ACBrCTe : TComponent read FACBrCTe ;
@@ -559,7 +561,7 @@ begin
   end;
 end;
 
-function TConhecimentos.LoadFromFile(CaminhoArquivo: string): boolean;
+function TConhecimentos.LoadFromFile(CaminhoArquivo: string; AGerarCTe: Boolean = True): boolean;
 var
  LocCTeR : TCTeR;
  ArquivoXML: TStringList;
@@ -587,7 +589,7 @@ begin
           LocCTeR.LerXml;
           Items[Self.Count-1].XML := LocCTeR.Leitor.Arquivo;
           Items[Self.Count-1].NomeArq := CaminhoArquivo;
-          GerarCTe;
+          if AGerarCTe then GerarCTe;
        finally
           LocCTeR.Free;
        end;
@@ -599,7 +601,7 @@ begin
  end;
 end;
 
-function TConhecimentos.LoadFromStream(Stream: TStringStream): boolean;
+function TConhecimentos.LoadFromStream(Stream: TStringStream; AGerarCTe: Boolean = True): boolean;
 var
  LocCTeR : TCTeR;
 begin
@@ -610,7 +612,7 @@ begin
        LocCTeR.Leitor.CarregarArquivo(Stream);
        LocCTeR.LerXml;
        Items[Self.Count-1].XML := LocCTeR.Leitor.Arquivo;
-       GerarCTe;
+       if AGerarCTe then GerarCTe;
     finally
        LocCTeR.Free
     end;
@@ -640,7 +642,7 @@ begin
  end;
 end;
 
-function TConhecimentos.LoadFromString(AString: String): boolean;
+function TConhecimentos.LoadFromString(AString: String; AGerarCTe: Boolean = True): boolean;
 var
   XMLCTe: TStringStream;
 begin
@@ -648,7 +650,7 @@ begin
     XMLCTe := TStringStream.Create('');
     try
       XMLCTe.WriteString(AString);
-      Result := LoadFromStream(XMLCTe);
+      Result := LoadFromStream(XMLCTe, AGerarCTe);
     finally
       XMLCTe.Free;
     end;

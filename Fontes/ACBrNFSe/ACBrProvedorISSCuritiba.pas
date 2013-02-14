@@ -180,7 +180,7 @@ begin
    acRecepcionar: Result := '<' + Prefixo3 + 'EnviarLoteRpsEnvio' + //+ NameSpaceDad;
                               ' xmlns="http://isscuritiba.curitiba.pr.gov.br/iss/nfse.xsd"' +
                               ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"' +
-                              ' xsi:schemaLocation="http://isscuritiba.curitiba.pr.gov.br/iss/nfse.xsd"';
+                              ' xsi:schemaLocation="http://isscuritiba.curitiba.pr.gov.br/iss/nfse.xsd">';
    acConsSit:     Result := '<' + Prefixo3 + 'ConsultarSituacaoLoteRpsEnvio' + NameSpaceDad;
    acConsLote:    Result := '<' + Prefixo3 + 'ConsultarLoteRpsEnvio' + NameSpaceDad;
    acConsNFSeRps: Result := '<' + Prefixo3 + 'ConsultarNfseRpsEnvio' + NameSpaceDad;

@@ -175,7 +175,7 @@ end;
 
 function TProvedorBetim.GetValidarLote: Boolean;
 begin
- Result := True;
+ Result := False;
 end;
 
 function TProvedorBetim.Gera_TagI(Acao: TnfseAcao; Prefixo3, Prefixo4,
@@ -457,100 +457,120 @@ begin
  AXML := StringReplace(StringReplace(AXML, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]);
 
  result := '<?xml version="1.0" encoding="UTF-8"?>' +
-           '<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" ' +
+           '<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" ' +
+                       'xmlns:soapenc="http://schemas.xmlsoap,org/soap/encoding/" ' +
+                       'xmlns:tns="' + URLNS + '" ' +
+                       'xmlns:types="' + URLNS + '/encodedTypes" ' +
                        'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
                        'xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
-            '<S:Body>' +
-             '<ns2:EnviarLoteRpsEnvio xmlns:ns2="' + URLNS + '">' +
-               AXML +
-             '</ns2:EnviarLoteRpsEnvio>' +
-            '</S:Body>' +
-           '</S:Envelope>';
+            '<soap:Body soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">' +
+             '<tns:RecepcionarLoteRps>' +
+              '<EnviarLoteRpsEnvio xsi:type="xsd:string">' +
+                AXML +
+              '</EnviarLoteRpsEnvio>' +
+             '</tns:RecepcionarLoteRps>' +
+            '</soap:Body>' +
+           '</soap:Envelope>';
 end;
 
 function TProvedorBetim.GeraEnvelopeConsultarSituacaoLoteRPS(
   URLNS: String; CabMsg, DadosMsg, DadosSenha: AnsiString): AnsiString;
 begin
  result := '<?xml version="1.0" encoding="UTF-8"?>' +
-           '<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" ' +
+           '<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" ' +
+                       'xmlns:soapenc="http://schemas.xmlsoap,org/soap/encoding/" ' +
+                       'xmlns:tns="' + URLNS + '" ' +
+                       'xmlns:types="' + URLNS + '/encodedTypes" ' +
                        'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
                        'xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
-            '<S:Body>' +
+            '<soap:Body soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">' +
              '<ConsultarSituacaoLoteRpsEnvio xmlns="' + URLNS + '">' +
               '<MensagemXML>' +
                 StringReplace(StringReplace(DadosMsg, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
               '</MensagemXML>' +
              '</ConsultarSituacaoLoteRpsEnvio>' +
-            '</S:Body>' +
-           '</S:Envelope>';
+            '</soap:Body>' +
+           '</soap:Envelope>';
 end;
 
 function TProvedorBetim.GeraEnvelopeConsultarLoteRPS(URLNS: String;
   CabMsg, DadosMsg, DadosSenha: AnsiString): AnsiString;
 begin
  result := '<?xml version="1.0" encoding="UTF-8"?>' +
-           '<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" ' +
+           '<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" ' +
+                       'xmlns:soapenc="http://schemas.xmlsoap,org/soap/encoding/" ' +
+                       'xmlns:tns="' + URLNS + '" ' +
+                       'xmlns:types="' + URLNS + '/encodedTypes" ' +
                        'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
                        'xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
-            '<S:Body>' +
+            '<soap:Body soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">' +
              '<ConsultarLoteRpsEnvio xmlns="' + URLNS + '">' +
               '<MensagemXML>' +
                 StringReplace(StringReplace(DadosMsg, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
               '</MensagemXML>' +
              '</ConsultarLoteRpsEnvio>' +
-            '</S:Body>' +
-           '</S:Envelope>';
+            '</soap:Body>' +
+           '</soap:Envelope>';
 end;
 
 function TProvedorBetim.GeraEnvelopeConsultarNFSeporRPS(URLNS: String;
   CabMsg, DadosMsg, DadosSenha: AnsiString): AnsiString;
 begin
  result := '<?xml version="1.0" encoding="UTF-8"?>' +
-           '<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" ' +
+           '<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" ' +
+                       'xmlns:soapenc="http://schemas.xmlsoap,org/soap/encoding/" ' +
+                       'xmlns:tns="' + URLNS + '" ' +
+                       'xmlns:types="' + URLNS + '/encodedTypes" ' +
                        'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
                        'xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
-            '<S:Body>' +
+            '<soap:Body soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">' +
              '<ConsultarNfseRpsEnvio xmlns="' + URLNS + '">' +
               '<MensagemXML>' +
                 StringReplace(StringReplace(DadosMsg, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
               '</MensagemXML>' +
              '</ConsultarNfseRpsEnvio>' +
-            '</S:Body>' +
-           '</S:Envelope>';
+            '</soap:Body>' +
+           '</soap:Envelope>';
 end;
 
 function TProvedorBetim.GeraEnvelopeConsultarNFSe(URLNS: String; CabMsg,
   DadosMsg, DadosSenha: AnsiString): AnsiString;
 begin
  result := '<?xml version="1.0" encoding="UTF-8"?>' +
-           '<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" ' +
+           '<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" ' +
+                       'xmlns:soapenc="http://schemas.xmlsoap,org/soap/encoding/" ' +
+                       'xmlns:tns="' + URLNS + '" ' +
+                       'xmlns:types="' + URLNS + '/encodedTypes" ' +
                        'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
                        'xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
-            '<S:Body>' +
+            '<soap:Body soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">' +
              '<ConsultarNfseEnvio xmlns="' + URLNS + '">' +
               '<MensagemXML>' +
                 StringReplace(StringReplace(DadosMsg, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
               '</MensagemXML>' +
              '</ConsultarNfseEnvio>' +
-            '</S:Body>' +
-           '</S:Envelope>';
+            '</soap:Body>' +
+           '</soap:Envelope>';
 end;
 
 function TProvedorBetim.GeraEnvelopeCancelarNFSe(URLNS: String; CabMsg,
   DadosMsg, DadosSenha: AnsiString): AnsiString;
 begin
  result := '<?xml version="1.0" encoding="UTF-8"?>' +
-           '<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" ' +
+           '<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" ' +
+                       'xmlns:soapenc="http://schemas.xmlsoap,org/soap/encoding/" ' +
+                       'xmlns:tns="' + URLNS + '" ' +
+                       'xmlns:types="' + URLNS + '/encodedTypes" ' +
                        'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
                        'xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
-            '<S:Body>' +
+            '<soap:Body soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">' +
              '<CancelarNfseEnvio xmlns="' + URLNS + '">' +
               '<MensagemXML>' +
                 StringReplace(StringReplace(DadosMsg, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
               '</MensagemXML>' +
              '</CancelarNfseEnvio>' +
-            '</S:Body>' +
-           '</S:Envelope>';
+            '</soap:Body>' +
+           '</soap:Envelope>';
 end;
 
 function TProvedorBetim.GeraEnvelopeGerarNFSe(URLNS: String; CabMsg,

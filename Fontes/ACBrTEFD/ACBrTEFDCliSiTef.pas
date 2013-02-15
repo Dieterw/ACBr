@@ -73,6 +73,9 @@ Const
    CACBrTEFD_CliSiTef_Erro7  = 'Falta de memória' ;
    CACBrTEFD_CliSiTef_Erro8  = 'Não encontrou a CliSiTef ou ela está com problemas' ;
    CACBrTEFD_CliSiTef_Erro10 = 'O PinPad não está devidamente configurado no arquivo CliSiTef.ini' ;
+   CACBrTEFD_CliSiTef_Erro11 = 'Dados inválidos passados pela automação.';
+   CACBrTEFD_CliSiTef_Erro12 = 'Modo seguro não ativo (possível falta de configuração no servidor SiTef do arquivo .cha).';
+   CACBrTEFD_CliSiTef_Erro13 = 'Caminho da DLL inválido (o caminho cmpleto das bibliotecas está muito grande).';
 
 {$IFDEF LINUX}
   CACBrTEFD_CliSiTef_Lib = 'libclisitef.so' ;
@@ -599,6 +602,9 @@ begin
     7 : Erro := CACBrTEFD_CliSiTef_Erro7;
     8 : Erro := CACBrTEFD_CliSiTef_Erro8;
    10 : Erro := CACBrTEFD_CliSiTef_Erro10;
+   11 : Erro := CACBrTEFD_CliSiTef_Erro11;
+   12 : Erro := CACBrTEFD_CliSiTef_Erro12;
+   13 : Erro := CACBrTEFD_CliSiTef_Erro13;
   end;
 
   if Erro <> '' then

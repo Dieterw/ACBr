@@ -1655,86 +1655,100 @@ begin
   if FConfiguracoes.Geral.Salvar
    then FConfiguracoes.Geral.Save(NumeroLote+'-env-lot.xml', FDadosMsg, FConfiguracoes.Arquivos.GetPathGer);
 
-  {$IFDEF ACBrNFSeOpenSSL}
-    HTTP.Document.LoadFromStream(Stream);
-    ConfiguraHTTP(HTTP, 'SOAPAction: "'+ FProvedorClass.GetSoapAction(acRecepcionar, FNomeCidade) +'"');
-    HTTP.HTTPMethod('POST', FURL);
+  try
+    {$IFDEF ACBrNFSeOpenSSL}
+      HTTP.Document.LoadFromStream(Stream);
+      ConfiguraHTTP(HTTP, 'SOAPAction: "'+ FProvedorClass.GetSoapAction(acRecepcionar, FNomeCidade) +'"');
+      HTTP.HTTPMethod('POST', FURL);
 
-    StrStream := TStringStream.Create('');
-    StrStream.CopyFrom(HTTP.Document, 0);
+      StrStream := TStringStream.Create('');
+      StrStream.CopyFrom(HTTP.Document, 0);
 
-    FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
-    FRetWS     := FProvedorClass.GetRetornoWS(acRecepcionar, FRetornoWS);
+      FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
+      FRetWS     := FProvedorClass.GetRetornoWS(acRecepcionar, FRetornoWS);
 
-    StrStream.Free;
-  {$ELSE}
-    ReqResp.Execute(Acao.Text, Stream);
-    StrStream := TStringStream.Create('');
-    StrStream.CopyFrom(Stream, 0);
+      StrStream.Free;
+    {$ELSE}
+      ReqResp.Execute(Acao.Text, Stream);
+      StrStream := TStringStream.Create('');
+      StrStream.CopyFrom(Stream, 0);
 
-    FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
-    FRetWS     := FProvedorClass.GetRetornoWS(acRecepcionar, FRetornoWS);
+      FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
+      FRetWS     := FProvedorClass.GetRetornoWS(acRecepcionar, FRetornoWS);
 
-    StrStream.Free;
-  {$ENDIF}
+      StrStream.Free;
+    {$ENDIF}
 
-  if FConfiguracoes.WebServices.Salvar
-   then FConfiguracoes.Geral.Save(NumeroLote+'-rec-c.xml', FRetornoWS, FConfiguracoes.Arquivos.GetPathGer);
+    if FConfiguracoes.WebServices.Salvar
+     then FConfiguracoes.Geral.Save(NumeroLote+'-rec-c.xml', FRetornoWS, FConfiguracoes.Arquivos.GetPathGer);
 
-  if FConfiguracoes.Geral.Salvar
-   then FConfiguracoes.Geral.Save(NumeroLote+'-rec.xml', FRetWS, FConfiguracoes.Arquivos.GetPathGer);
+    if FConfiguracoes.Geral.Salvar
+     then FConfiguracoes.Geral.Save(NumeroLote+'-rec.xml', FRetWS, FConfiguracoes.Arquivos.GetPathGer);
 
-  NFSeRetorno          := TretEnvLote.Create;
-  NFSeRetorno.Prefixo2 := FConfiguracoes.WebServices.Prefixo2;
-  NFSeRetorno.Prefixo3 := FConfiguracoes.WebServices.Prefixo3;
+    NFSeRetorno          := TretEnvLote.Create;
+    NFSeRetorno.Prefixo2 := FConfiguracoes.WebServices.Prefixo2;
+    NFSeRetorno.Prefixo3 := FConfiguracoes.WebServices.Prefixo3;
 
-  // Alterado por Rodrigo Cantelli
-  case FProvedor of
-   proBetha: NFSeRetorno.Prefixo3 := '';
+    // Alterado por Rodrigo Cantelli
+    case FProvedor of
+     proBetha: NFSeRetorno.Prefixo3 := '';
+    end;
+
+    NFSeRetorno.Leitor.Arquivo := FRetWS;
+    NFSeRetorno.LerXml;
+
+    TACBrNFSe( FACBrNFSe ).SetStatus( stNFSeIdle );
+
+    FDataRecebimento := NFSeRetorno.InfRec.DataRecebimento;
+    FProtocolo       := NFSeRetorno.InfRec.Protocolo;
+
+    // Lista de Mensagem de Retorno
+    FMsg := '';
+    if NFSeRetorno.InfRec.MsgRetorno.Count>0
+     then begin
+      aMsg:='';
+      for i:=0 to NFSeRetorno.InfRec.MsgRetorno.Count - 1 do
+       begin
+        FMsg := FMsg + NFSeRetorno.infRec.MsgRetorno.Items[i].Mensagem + IfThen(FMsg = '', '', ' / ');
+
+        aMsg := aMsg + 'Código Erro : ' + NFSeRetorno.InfRec.MsgRetorno.Items[i].Codigo + LineBreak +
+                       'Mensagem... : ' + NFSeRetorno.infRec.MsgRetorno.Items[i].Mensagem + LineBreak+
+                       'Correção... : ' + NFSeRetorno.InfRec.MsgRetorno.Items[i].Correcao + LineBreak+
+                       'Provedor... : ' + FxProvedor + LineBreak;
+       end;
+     end
+     else begin
+      for i:=0 to FNotasFiscais.Count -1 do
+       begin
+        FNotasFiscais.Items[i].NFSe.Protocolo     := FProtocolo;
+        FNotasFiscais.Items[i].NFSe.dhRecebimento := FDataRecebimento;
+       end;
+      aMsg := 'Numero do Lote : ' + NFSeRetorno.InfRec.NumeroLote + LineBreak +
+              'Recebimento... : ' + DFeUtil.SeSenao(FDataRecebimento = 0, '', DateTimeToStr(FDataRecebimento)) + LineBreak +
+              'Protocolo..... : ' + FProtocolo + LineBreak +
+              'Provedor...... : ' + FxProvedor + LineBreak;
+     end;
+
+    if FConfiguracoes.WebServices.Visualizar
+     then ShowMessage(aMsg);
+
+    if Assigned(TACBrNFSe( FACBrNFSe ).OnGerarLog)
+     then TACBrNFSe( FACBrNFSe ).OnGerarLog(aMsg);
+
+    Result := (NFSeRetorno.InfRec.Protocolo<>'');
+
+  //
+  // Alterado por Luis Fernando Vilela em 15/02/2013
+  //
+  // para capturar erro de conexao
+  except
+		on E: Exception do
+		begin
+     if Assigned(TACBrNFSe( FACBrNFSe ).OnGerarLog) then
+        TACBrNFSe( FACBrNFSe ).OnGerarLog(E.Message);
+     raise Exception.Create(E.Message);
+		end;
   end;
-
-  NFSeRetorno.Leitor.Arquivo := FRetWS;
-  NFSeRetorno.LerXml;
-
-  TACBrNFSe( FACBrNFSe ).SetStatus( stNFSeIdle );
-
-  FDataRecebimento := NFSeRetorno.InfRec.DataRecebimento;
-  FProtocolo       := NFSeRetorno.InfRec.Protocolo;
-
-  // Lista de Mensagem de Retorno
-  FMsg := '';
-  if NFSeRetorno.InfRec.MsgRetorno.Count>0
-   then begin
-    aMsg:='';
-    for i:=0 to NFSeRetorno.InfRec.MsgRetorno.Count - 1 do
-     begin
-      FMsg := FMsg + NFSeRetorno.infRec.MsgRetorno.Items[i].Mensagem + IfThen(FMsg = '', '', ' / ');
-
-      aMsg := aMsg + 'Código Erro : ' + NFSeRetorno.InfRec.MsgRetorno.Items[i].Codigo + LineBreak +
-                     'Mensagem... : ' + NFSeRetorno.infRec.MsgRetorno.Items[i].Mensagem + LineBreak+
-                     'Correção... : ' + NFSeRetorno.InfRec.MsgRetorno.Items[i].Correcao + LineBreak+
-                     'Provedor... : ' + FxProvedor + LineBreak;
-     end;
-   end
-   else begin
-    for i:=0 to FNotasFiscais.Count -1 do
-     begin
-      FNotasFiscais.Items[i].NFSe.Protocolo     := FProtocolo;
-      FNotasFiscais.Items[i].NFSe.dhRecebimento := FDataRecebimento;
-     end;
-    aMsg := 'Numero do Lote : ' + NFSeRetorno.InfRec.NumeroLote + LineBreak +
-            'Recebimento... : ' + DFeUtil.SeSenao(FDataRecebimento = 0, '', DateTimeToStr(FDataRecebimento)) + LineBreak +
-            'Protocolo..... : ' + FProtocolo + LineBreak +
-            'Provedor...... : ' + FxProvedor + LineBreak;
-   end;
-
-  if FConfiguracoes.WebServices.Visualizar
-   then ShowMessage(aMsg);
-
-  if Assigned(TACBrNFSe( FACBrNFSe ).OnGerarLog)
-   then TACBrNFSe( FACBrNFSe ).OnGerarLog(aMsg);
-
-  Result := (NFSeRetorno.InfRec.Protocolo<>'');
 
  finally
   {$IFDEF ACBrNFSeOpenSSL}

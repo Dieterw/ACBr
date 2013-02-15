@@ -1111,6 +1111,7 @@ begin
   FRegistro0030.Free;
   FRegistro0200.Free;
   FRegistro0100.Free;
+  FRegistro0125.Free;
   FRegistro0120.Free;
   FRegistro0150.Free;
   FRegistro0400.Free;

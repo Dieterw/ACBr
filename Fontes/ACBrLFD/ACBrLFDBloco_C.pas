@@ -688,7 +688,7 @@ type
   TRegistroC500 = class
   private
     fCST: String; /// Código da Situação Tributária
-    fCFOP: Integer; /// Código Fiscal de Operação e Prestação
+    fCFOP: String; /// Código Fiscal de Operação e Prestação
     fVL_CONT_P: Currency; /// Parcela correspondente ao “Valor Contábil”
     fVL_BC_ICMS_P: Currency; /// Parcela correspondente ao "Valor da base
     fALIQ_ICMS: Currency; /// Alíquota do ICMS
@@ -699,7 +699,7 @@ type
     constructor Create(AOwner: TRegistroC020); virtual; /// Create
 
     property CST: String read fCST write fCST;
-    property CFOP: Integer read fCFOP write fCFOP;
+    property CFOP: String read fCFOP write fCFOP;
     property VL_CONT_P: Currency read fVL_CONT_P write fVL_CONT_P;
     property VL_BC_ICMS_P: Currency read fVL_BC_ICMS_P write fVL_BC_ICMS_P;
     property ALIQ_ICMS: Currency read fALIQ_ICMS write fALIQ_ICMS;

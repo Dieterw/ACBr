@@ -859,6 +859,8 @@ begin
     with RegC550 do
     begin
       Add( LFill('C550') +
+           LFill(CPF_CONS) +
+           LFill(CNPJ_CONS) +
            LFill(COD_MOD) +
            LFill(SituacaoDoctoToStr(COD_SIT)) +
            LFill(SER) +
@@ -946,6 +948,8 @@ begin
       Check(funChecaCNPJ(CNPJ_CONS), '(C-C600) ENTIDADE: O CNPJ "%s" digitado é inválido!', [CNPJ_CONS]);
 
       Add( LFill('C600') +
+           LFill(CPF_CONS) +
+           LFill(CNPJ_CONS) +
            LFill(COD_MOD) +
            LFill(SituacaoDoctoToStr(COD_SIT)) +
            LFill(ECF_CX, 0) +
@@ -955,7 +959,7 @@ begin
            LFill(NUM_DOC, 0) +
            LFill(DT_DOC) +
            LFill(VL_DOC, 2) +
-           LFill(VL_CANC_ISS, 2) +
+           LFill(VL_CANC_ISS,2) +
            LFill(VL_CANC_ICMS, 2) +
            LFill(VL_CANC_ISS + VL_CANC_ICMS, 2) +
            LFill(VL_DESC_ISS, 2) +

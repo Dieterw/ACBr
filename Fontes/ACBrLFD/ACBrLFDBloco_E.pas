@@ -180,6 +180,8 @@ type
     FRegistroE360: TRegistroE360;
   public
     constructor Create(AOwner: TRegistroE001); virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property DT_INI: TDate read FDT_INI write FDT_INI;
     property DT_FIM: TDate read FDT_FIM write FDT_FIM;
 
@@ -273,6 +275,7 @@ type
     FRegistroE530: TRegistroE530;
   public
     constructor Create(AOwner: TRegistroE001); virtual; /// Create
+    destructor Destroy; override; /// Destroy
     property DT_INI: TDate read FDT_INI write FDT_INI;
     property DT_FIM: TDate read FDT_FIM write FDT_FIM;
 
@@ -337,6 +340,12 @@ begin
    FRegistroE530 := TRegistroE530.Create(Self);
 end;
 
+destructor TRegistroE500.Destroy;
+begin
+   FRegistroE530.Free;
+   inherited Destroy;
+end;
+
 { TRegistroE365List }
 
 function TRegistroE365List.GetItem(Index: Integer): TRegistroE365;
@@ -379,6 +388,12 @@ end;
 constructor TRegistroE300.Create(AOwner: TRegistroE001);
 begin
   FRegistroE360 := TRegistroE360.Create(Self);
+end;
+
+destructor TRegistroE300.Destroy;
+begin
+   FRegistroE360.Free;
+   inherited Destroy;
 end;
 
 { TRegistroE020List }

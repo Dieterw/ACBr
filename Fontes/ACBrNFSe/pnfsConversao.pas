@@ -625,6 +625,7 @@ begin
   3143302, // Montes Claros/MG
   3202405, // Guarapari/ES
   3305505, // Saquarema/RJ
+  3511102, // Catanduva/SP
   3530300, // Mirassol/SP'
   3541505, // Presidente Venceslau/SP
   4205902, // Gaspar/SC
@@ -865,6 +866,7 @@ begin
   3506508: Cidade := 'Birigui/SP';
   3509502: Cidade := 'Campinas/SP';
   3510104: Cidade := 'Candido Rodrigues/SP';
+  3511102: Cidade := 'Catanduva/SP';
   3511300: Cidade := 'Cedral/SP';
   3512001: Cidade := 'Colina/SP';
   3513009: Cidade := 'Cotia/SP';

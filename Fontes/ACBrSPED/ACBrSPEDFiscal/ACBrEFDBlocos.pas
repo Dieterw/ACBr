@@ -400,9 +400,64 @@ type
   public
     property IND_MOV: TACBrIndicadorMovimento read FIND_MOV write FIND_MOV;
   end;
+  // Fuções do ACBrEPCBlocos.
+  Function StrToCodVer(AValue: string): TACBrVersaoLeiaute;
+  Function CodVerToStr(AValue: TACBrVersaoLeiaute): string;
 
 implementation
 
 { TOpenBlocos }
+
+function StrToCodVer(AValue: string): TACBrVersaoLeiaute;
+begin
+   if AValue = '001' then
+      Result := vlVersao100
+   else
+   if AValue = '002' then
+      Result := vlVersao101
+   else
+   if AValue = '003' then
+      Result := vlVersao102
+   else
+   if AValue = '004' then
+      Result := vlVersao103
+   else
+   if AValue = '005' then
+      Result := vlVersao104
+   else
+   if AValue = '006' then
+      Result := vlVersao105
+   else
+   if AValue = '007' then
+      Result := vlVersao106
+      ;
+end;
+
+function CodVerToStr(AValue: TACBrVersaoLeiaute): string;
+begin
+   if AValue = vlVersao100 then
+      Result := '001'
+   else
+   if AValue = vlVersao101 then
+      Result := '002'
+   else
+   if AValue = vlVersao102 then
+      Result := '003'
+   else
+   if AValue = vlVersao103 then
+      Result := '004'
+   else
+   if AValue = vlVersao104 then
+      Result := '005'
+   else
+   if AValue = vlVersao105 then
+      Result := '006'
+   else
+   if AValue = vlVersao106 then
+      Result := '007'
+      ;
+
+end;
+
 
 end.

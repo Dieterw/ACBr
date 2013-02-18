@@ -791,7 +791,7 @@ type
     FCTISS: String; /// Código de Tributação do ISS
 
     FQTD: Double; /// Quantidade do item
-    FQTDCANC: Double;
+    FQTDCANC: Integer;
 
     FVL_CANC_I: Currency;
     FVL_RT_ISS_I: Currency;
@@ -816,7 +816,7 @@ type
     property UNID: String read FUNID write FUNID;
     property VL_UNIT: Currency read FVL_UNIT write FVL_UNIT;
     property QTD: Double read FQTD write FQTD;
-    property QTDCANC: Double read FQTDCANC write FQTDCANC;
+    property QTDCANC: Integer read FQTDCANC write FQTDCANC;
     property VL_DESC_I: Currency read FVL_DESC_I write FVL_DESC_I;
     property VL_ACMO_I: Currency read FVL_ACMO_I write FVL_ACMO_I;
     property VL_CANC_I: Currency read FVL_CANC_I write FVL_CANC_I;

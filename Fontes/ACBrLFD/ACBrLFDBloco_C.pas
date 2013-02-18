@@ -1050,6 +1050,7 @@ type
 
     FRegistroC605: TRegistroC605List;
     FRegistroC610: TRegistroC610List;
+    FVL_ST: Currency;
   public
     constructor Create(AOwner: TRegistroC001); virtual; /// Create
     destructor Destroy; override; /// Destroy;
@@ -1076,6 +1077,7 @@ type
     property VL_ICMS: Currency read FVL_ICMS write FVL_ICMS;
     property VL_ISN: Currency read FVL_ISN write FVL_ISN;
     property VL_NT: Currency read FVL_NT write FVL_NT;
+    property VL_ST: Currency read FVL_ST write FVL_ST;
     property VL_ISS: Currency read FVL_ISS write FVL_ISS;
     property VL_ICMS_ST: Currency read FVL_ICMS_ST write FVL_ICMS_ST;
 
@@ -1120,6 +1122,7 @@ type
     FVL_ISS: Currency;
     FVL_ITEM: Currency;
     FVL_NT_I: Currency;
+    FVL_ST_I: Currency;
     FVL_UNIT: Currency;
   public
     constructor Create(AOwner: TRegistroC600); virtual; /// Create
@@ -1142,6 +1145,7 @@ type
     property VL_ICMS_I: Currency read FVL_ICMS_I write FVL_ICMS_I;
     property VL_ISN_I: Currency read FVL_ISN_I write FVL_ISN_I;
     property VL_NT_I: Currency read FVL_NT_I write FVL_NT_I;
+    property VL_ST_I: Currency read FVL_ST_I write FVL_ST_I;
     property VL_ICMS_ST_I: Currency read FVL_ICMS_ST_I write FVL_ICMS_ST_I;
   end;
 

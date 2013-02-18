@@ -399,6 +399,7 @@ begin
          end;
          RegistroA990.QTD_LIN_A := RegistroA990.QTD_LIN_A + 1;
       end;
+      FRegistroA020Count := FRegistroA020Count + RegA001.RegistroA020.Count;
   end;
 end;
 
@@ -439,24 +440,26 @@ begin
          begin
             Add( LFill('A300') +
                  LFill(CPF_CONS) +
+                 LFill(CNPJ_CONS) +
                  LFill(COD_MOD)  +
-                 LFill(Integer(COD_SIT),1) +
+                 LFill(Integer(COD_SIT),2) +
                  LFill(SER) +
                  LFill(SUB) +
                  LFill(NUM_DOC) +
                  LFill(DT_DOC) +
                  LFill(COP,4) +
-                 LFill(VL_DOC) +
-                 LFill(VL_DESC) +
-                 LFill(VL_SERV) +
-                 LFill(VL_MAT_PROP) +
-                 LFill(VL_DA) +
-                 LFill(VL_BC_ISS) +
-                 LFill(VL_ISS) +
+                 LFill(VL_DOC,2) +
+                 LFill(VL_DESC,2) +
+                 LFill(VL_SERV,2) +
+                 LFill(VL_MAT_PROP,2) +
+                 LFill(VL_DA,2) +
+                 LFill(VL_BC_ISS,2) +
+                 LFill(VL_ISS,2) +
                  LFill(COD_INF_OBS) );
          end;
          RegistroA990.QTD_LIN_A := RegistroA990.QTD_LIN_A + 1;
       end;
+      FRegistroA300Count := FRegistroA300Count + RegA001.RegistroA300.Count;
   end;
 end;
 
@@ -491,7 +494,7 @@ begin
                  LFill(CPF_CONS) +
                  LFill(CNPJ_CONS) +
                  LFill(COD_MOD)  +
-                 LFill(Integer(COD_SIT),1) +
+                 LFill(Integer(COD_SIT),2) +
                  LFill(ECF_CX,0) +
                  LFill(ECF_FAB) +
                  LFill(CRO,0) +
@@ -542,7 +545,7 @@ begin
               LFill(COD_ITEM) +
               DFill(VL_UNIT, 3) +
               DFill(QTD,3) +
-              DFill(QTDCANC,3) +
+              LFill(QTDCANC,0) +
               LFill(UNID) +
               LFill(VL_ITEM, 2) +
               LFill(VL_DESC_I, 2) +

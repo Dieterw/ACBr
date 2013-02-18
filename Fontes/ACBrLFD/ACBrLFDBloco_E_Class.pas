@@ -54,8 +54,10 @@ type
     FRegistroE001: TRegistroE001;
     FRegistroE990: TRegistroE990;
 
+    FRegistroE020Count: Integer;
     FRegistroE365Count: Integer;
 
+    procedure WriteRegistroE020(RegE001: TRegistroE001);
     procedure WriteRegistroE300(RegE001: TRegistroE001);
     procedure WriteRegistroE360(RegE300: TRegistroE300);
     procedure WriteRegistroE365(RegE360: TRegistroE360);
@@ -71,6 +73,7 @@ type
 
     {function RegistroE001New: TRegistroE001;
     function RegistroE005New: TRegistroE005;}
+    function RegistroE020New: TRegistroE020;
     function RegistroE300New: TRegistroE300;
     function RegistroE360New: TRegistroE360;
     function RegistroE365New: TRegistroE365;
@@ -83,6 +86,7 @@ type
     property RegistroE001: TRegistroE001 read FRegistroE001 write FRegistroE001;
     property RegistroE990: TRegistroE990 read FRegistroE990 write FRegistroE990;
 
+    property RegistroE020Count: Integer read FRegistroE020Count write FRegistroE020Count;
     property RegistroE365Count: Integer read FRegistroE365Count write FRegistroE365Count;
   end;
 
@@ -102,6 +106,52 @@ destructor TBloco_E.Destroy;
 begin
   LiberaRegistros;
   inherited;
+end;
+
+procedure TBloco_E.WriteRegistroE020(RegE001: TRegistroE001);
+var
+  intFor: Integer;
+begin
+   if Assigned(RegE001.RegistroE020) then
+   begin
+      for intFor := 0 to RegE001.RegistroE020.Count - 1 do
+      begin
+         with RegE001.RegistroE020.Items[intFor] do
+         begin
+            Add( LFill('E020') +
+                 LFill(Integer(IND_OPER),1) +
+                 LFill(Integer(IND_EMIT),1) +
+                 LFill(COD_PART) +
+                 LFill(COD_MOD)  +
+                 LFill(Integer(COD_SIT),2) +
+                 LFill(SERIE) +
+                 LFill(NUMDOCTO) +
+                 LFill(CHV_NFE) +
+                 LFill(DT_EMISSAO) +
+                 LFill(DT_ES) +
+                 LFill(COD_NAT) +
+                 LFill(COP) +
+                 LFill(NUM_LCTO) +
+                 LFill(integer(IND_PGTO),1 )+
+                 LFill(VALOR_DOC,2) +
+                 LFill(VALOR_OP_ISS,2) +
+                 LFill(VALOR_BC_ICMS,2) +
+                 LFill(VALOR_ICMS,2) +
+                 LFill(VALOR_ST,2) +
+                 LFill(VALOR_STE,2) +
+                 LFill(VALOR_STS,2) +
+                 LFill(VALOR_AT,2) +
+                 LFill(VALOR_IN_ICMS,2) +
+                 LFill(VALOR_O_ICMS,2) +
+                 LFill(VALOR_BC_IPI,2) +
+                 LFill(VALOR_IPI,2) +
+                 LFill(COD_INF_OBS));
+
+         end;
+         RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
+      end;
+      FRegistroE020Count := FRegistroE020Count + RegE001.RegistroE020.Count;
+  end;
 end;
 
 procedure TBloco_E.WriteRegistroE300(RegE001: TRegistroE001);
@@ -235,6 +285,7 @@ begin
   FRegistroE001 := TRegistroE001.Create;
   FRegistroE990 := TRegistroE990.Create;
 
+  FRegistroE020Count := 0;
   FRegistroE365Count := 0;
   FRegistroE990.QTD_LIN_E := 0;
 end;
@@ -253,6 +304,11 @@ begin
 
   /// Recriar os Registros Limpos
   CriaRegistros;
+end;
+
+function TBloco_E.RegistroE020New: TRegistroE020;
+begin
+   Result := FRegistroE001.RegistroE020.New(FRegistroE001);
 end;
 
 {function TBloco_E.RegistroE001New: TRegistroE001;
@@ -303,6 +359,7 @@ begin
 
          Add(Astr);
 
+         WriteRegistroE020(FRegistroE001);
          WriteRegistroE300(FRegistroE001);
          WriteRegistroE500(FRegistroE001);
       end;

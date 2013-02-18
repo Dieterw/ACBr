@@ -973,7 +973,7 @@ begin
            LFill(VL_ICMS, 2) +
            LFill(VL_ISN, 2) +
            LFill(VL_NT, 2) +
-           LFill(VL_ICMS_ST, 2) );
+           LFill(VL_ST, 2) );
     end;
 
     WriteRegistroC605(RegC600);
@@ -1014,7 +1014,7 @@ begin
            LFill(VL_ICMS_I, 2) +
            LFill(VL_ISN_I, 2) +
            LFill(VL_NT_I, 2) +
-           LFill(VL_ICMS_ST_I, 2) );
+           LFill(VL_ST_I, 2) );
     end;
 
     FRegistroC990.QTD_LIN_C := FRegistroC990.QTD_LIN_C + 1;

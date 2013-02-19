@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<CONFIG>
+  <Package Version="4">
+    <PathDelim Value="\"/>
+    <Name Value="ACBr_NFe2"/>
+    <CompilerOptions>
+      <Version Value="11"/>
+      <PathDelim Value="\"/>
+      <SearchPaths>
+        <OtherUnitFiles Value="..\..\..\Fontes\ACBrNFe2"/>
+        <UnitOutputDirectory Value="..\..\..\Fontes\ACBrNFe2\lib\$(TargetCPU)-$(TargetOS)"/>
+      </SearchPaths>
+      <Other>
+        <CompilerMessages>
+          <MsgFileName Value=""/>
+        </CompilerMessages>
+        <CompilerPath Value="$(CompPath)"/>
+      </Other>
+    </CompilerOptions>
+    <Files Count="7">
+      <Item1>
+        <Filename Value="..\..\..\Fontes\ACBrNFe2\ACBrNFe.pas"/>
+        <UnitName Value="ACBrNFe"/>
+      </Item1>
+      <Item2>
+        <Filename Value="..\..\..\Fontes\ACBrNFe2\ACBrNFeConfiguracoes.pas"/>
+        <UnitName Value="ACBrNFeConfiguracoes"/>
+      </Item2>
+      <Item3>
+        <Filename Value="..\..\..\Fontes\ACBrNFe2\ACBrNFeDANFEClass.pas"/>
+        <UnitName Value="ACBrNFeDANFEClass"/>
+      </Item3>
+      <Item4>
+        <Filename Value="..\..\..\Fontes\ACBrNFe2\ACBrNFeNotasFiscais.pas"/>
+        <UnitName Value="ACBrNFeNotasFiscais"/>
+      </Item4>
+      <Item5>
+        <Filename Value="..\..\..\Fontes\ACBrNFe2\ACBrNFeReg.pas"/>
+        <HasRegisterProc Value="True"/>
+        <UnitName Value="ACBrNFeReg"/>
+      </Item5>
+      <Item6>
+        <Filename Value="..\..\..\Fontes\ACBrNFe2\ACBrNFeUtil.pas"/>
+        <UnitName Value="ACBrNFeUtil"/>
+      </Item6>
+      <Item7>
+        <Filename Value="..\..\..\Fontes\ACBrNFe2\ACBrNFeWebServices.pas"/>
+        <UnitName Value="ACBrNFeWebServices"/>
+      </Item7>
+    </Files>
+    <Type Value="RunAndDesignTime"/>
+    <RequiredPkgs Count="5">
+      <Item1>
+        <PackageName Value="lr_codereport_pkg"/>
+      </Item1>
+      <Item2>
+        <PackageName Value="synapse"/>
+      </Item2>
+      <Item3>
+        <PackageName Value="PCN2"/>
+      </Item3>
+      <Item4>
+        <PackageName Value="ACBrComum"/>
+      </Item4>
+      <Item5>
+        <PackageName Value="FCL"/>
+      </Item5>
+    </RequiredPkgs>
+    <UsageOptions>
+      <UnitPath Value="$(PkgOutDir)"/>
+    </UsageOptions>
+    <PublishOptions>
+      <Version Value="2"/>
+    </PublishOptions>
+  </Package>
+</CONFIG>

@@ -652,7 +652,10 @@ begin
 
   3148103, // Patrocinio/MG
   3503307, // Araras/SP
-  3541406  // Presidente Prudente/SP
+  3541406, // Presidente Prudente/SP
+  3549102, // São João da Boa Vista/SP
+  3549706, // São José do Rio Pardo/SP
+  3556404  // Vargem Grande do Sul/SP
          : Provedor := 'SimplISS';
 
   4108403  // Francisco Beltrao/PR
@@ -909,6 +912,8 @@ begin
   3548708: Cidade := 'São Bernardo do Campos/SP';
   3548807: Cidade := 'São Caetano do Sul/SP';
   3548906: Cidade := 'São Carlos/SP';
+  3549102: Cidade := 'São João da Boa Vista/SP';
+  3549706: Cidade := 'São José do Rio Pardo/SP';
   3549805: Cidade := 'São José do Rio Preto/SP';
   3549904: Cidade := 'São José dos Campos/SP';
   3550308: Cidade := 'São Paulo/SP';
@@ -918,6 +923,7 @@ begin
   3552809: Cidade := 'Taboão da Serra/SP';
   3554003: Cidade := 'Tatui/SP';
   3554805: Cidade := 'Tremembé/SP';
+  3556404: Cidade := 'Vargem Grande do Sul/SP';
   3556701: Cidade := 'Vinhedo/SP';
   3557105: Cidade := 'Votuporanga/SP';
 

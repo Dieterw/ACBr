@@ -183,6 +183,33 @@ begin
             ConfigURL.ProConsultaNFSe       := 'http://187.45.245.217/ws_nfse_' + ConfigURL.ProNomeCidade + '/nfseservice.svc';
             ConfigURL.ProCancelaNFSe        := 'http://187.45.245.217/ws_nfse_' + ConfigURL.ProNomeCidade + '/nfseservice.svc';
            end;
+  3549102: begin
+            ConfigURL.ProNomeCidade := 'sao_joao_boa_vista';
+            ConfigURL.ProRecepcaoLoteRPS    := 'http://187.45.245.217/ws_nfse_' + ConfigURL.ProNomeCidade + '/nfseservice.svc';
+            ConfigURL.ProConsultaLoteRPS    := 'http://187.45.245.217/ws_nfse_' + ConfigURL.ProNomeCidade + '/nfseservice.svc';
+            ConfigURL.ProConsultaNFSeRPS    := 'http://187.45.245.217/ws_nfse_' + ConfigURL.ProNomeCidade + '/nfseservice.svc';
+            ConfigURL.ProConsultaSitLoteRPS := 'http://187.45.245.217/ws_nfse_' + ConfigURL.ProNomeCidade + '/nfseservice.svc';
+            ConfigURL.ProConsultaNFSe       := 'http://187.45.245.217/ws_nfse_' + ConfigURL.ProNomeCidade + '/nfseservice.svc';
+            ConfigURL.ProCancelaNFSe        := 'http://187.45.245.217/ws_nfse_' + ConfigURL.ProNomeCidade + '/nfseservice.svc';
+           end;
+  3549706: begin
+            ConfigURL.ProNomeCidade := 'sao_jose_rio_pardo';
+            ConfigURL.ProRecepcaoLoteRPS    := 'http://187.45.245.217/ws_' + ConfigURL.ProNomeCidade + '/nfseservice.svc';
+            ConfigURL.ProConsultaLoteRPS    := 'http://187.45.245.217/ws_' + ConfigURL.ProNomeCidade + '/nfseservice.svc';
+            ConfigURL.ProConsultaNFSeRPS    := 'http://187.45.245.217/ws_' + ConfigURL.ProNomeCidade + '/nfseservice.svc';
+            ConfigURL.ProConsultaSitLoteRPS := 'http://187.45.245.217/ws_' + ConfigURL.ProNomeCidade + '/nfseservice.svc';
+            ConfigURL.ProConsultaNFSe       := 'http://187.45.245.217/ws_' + ConfigURL.ProNomeCidade + '/nfseservice.svc';
+            ConfigURL.ProCancelaNFSe        := 'http://187.45.245.217/ws_' + ConfigURL.ProNomeCidade + '/nfseservice.svc';
+           end;
+  3556404: begin
+            ConfigURL.ProNomeCidade := 'vargem_grande_sul';
+            ConfigURL.ProRecepcaoLoteRPS    := 'http://187.45.245.217/ws_nfse_' + ConfigURL.ProNomeCidade + '/nfseservice.svc';
+            ConfigURL.ProConsultaLoteRPS    := 'http://187.45.245.217/ws_nfse_' + ConfigURL.ProNomeCidade + '/nfseservice.svc';
+            ConfigURL.ProConsultaNFSeRPS    := 'http://187.45.245.217/ws_nfse_' + ConfigURL.ProNomeCidade + '/nfseservice.svc';
+            ConfigURL.ProConsultaSitLoteRPS := 'http://187.45.245.217/ws_nfse_' + ConfigURL.ProNomeCidade + '/nfseservice.svc';
+            ConfigURL.ProConsultaNFSe       := 'http://187.45.245.217/ws_nfse_' + ConfigURL.ProNomeCidade + '/nfseservice.svc';
+            ConfigURL.ProCancelaNFSe        := 'http://187.45.245.217/ws_nfse_' + ConfigURL.ProNomeCidade + '/nfseservice.svc';
+           end;
  end;
 
  Result := ConfigURL;

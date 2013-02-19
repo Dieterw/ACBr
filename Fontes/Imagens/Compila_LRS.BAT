@@ -92,7 +92,7 @@ echo.
 
 :NFe2
 %1\tools\lazres.exe ACBrNFe.lrs TACBrNFe.bmp TACBrDANFeQR.bmp TACBrDANFeRave.bmp TACBrDANFeRaveCB.bmp TACBrDANFeRL.bmp
-move ACBrNFe2.lrs ..\ACBrNFe2
+move ACBrNFe.lrs ..\ACBrNFe2
 echo.
 echo "****************************************"
 echo "* Arquivo    ACBrNFe.lrs     gerado    *"

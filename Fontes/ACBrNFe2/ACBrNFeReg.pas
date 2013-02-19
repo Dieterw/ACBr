@@ -192,9 +192,9 @@ begin
   Result := [paDialog];
 end;
 
+{$ifdef FPC}
 initialization
-{$IFDEF FPC}
-//   {$i acbrnfepcn_lcl.lrs}
-{$ENDIF}
+   {$i ACBrNFE.lrs}
+{$endif}
 
 end.

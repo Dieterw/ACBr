@@ -402,7 +402,9 @@ object frmDemo_ACBrNFSe: TfrmDemo_ACBrNFSe
               'Sao Borja/4318002/RS'
               'Sao Caetano do Sul/3548807/SP'
               'Sao Carlos/3548906/SP'
+              'Sao Joao da Boa Vista/3549102/SP'
               'Sao Jose/4216602/SC'
+              'Sao Jose do Rio Pardo/3549706/SP'
               'Sao Jose do Rio Preto/3549805/SP'
               'Sao Jose dos Campos/3549904/SP'
               'Sao Jose dos Pinhais/4125506/PR'
@@ -420,6 +422,7 @@ object frmDemo_ACBrNFSe: TfrmDemo_ACBrNFSe
               'Umuarama/4128104/PR'
               'Uniao da Vitoria/4128203/PR'
               'Urussanga/ 4219002/SC'
+              'Vargem Grande do Sul/3556404/SP'
               'Varginha/3170701/MG'
               'Votuporanga/3557105/SP')
           end

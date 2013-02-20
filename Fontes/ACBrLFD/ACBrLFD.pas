@@ -2183,10 +2183,34 @@ begin
    begin
       with Bloco_9.Registro9900 do
       begin
+         if Bloco_E.RegistroE020Count > 0 then
+         begin
+            with New do
+            begin
+               REG_BLC := 'E020';
+               QTD_REG_BLC := Bloco_E.RegistroE020Count;
+            end;
+         end;
+         if Bloco_E.RegistroE025Count > 0 then
+         begin
+            with New do
+            begin
+               REG_BLC := 'E025';
+               QTD_REG_BLC := Bloco_E.RegistroE025Count;
+            end;
+         end;
          with New do
          begin
             REG_BLC := 'E300';
             QTD_REG_BLC := 1;
+         end;
+         if Bloco_E.RegistroE310Count > 0 then
+         begin
+            with New do
+            begin
+               REG_BLC := 'E310';
+               QTD_REG_BLC := Bloco_E.RegistroE310Count;
+            end;
          end;
          with New do
          begin

@@ -1914,6 +1914,13 @@ type
 
 implementation
 
+{ TRegistroC605 }
+
+constructor TRegistroC605.Create(AOwner: TRegistroC600);
+begin
+
+end;
+
 { TRegistroC555 }
 
 constructor TRegistroC555.Create(AOwner: TRegistroC550);
@@ -2411,12 +2418,6 @@ end;
 procedure TRegistroC600List.SetItem(Index: Integer; const Value: TRegistroC600);
 begin
   Put(Index, Value);
-end;
-
-{ TRegistroC605 }
-
-constructor TRegistroC605.Create(AOwner: TRegistroC600);
-begin
 end;
 
 { TRegistroC605List }

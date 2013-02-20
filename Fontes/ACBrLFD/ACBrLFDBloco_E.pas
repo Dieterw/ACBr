@@ -47,10 +47,11 @@ uses
 
 type
   //TRegistroE005List = class;
-  TRegistroE300 = class;
-  TRegistroE360 = class;
   TRegistroE020List = class;
   TRegistroE025List = class;
+  TRegistroE300 = class;
+  TRegistroE310List = class;
+  TRegistroE360 = class;
   TRegistroE365List = class;
   TRegistroE500 = class;
   TRegistroE530 = class;
@@ -249,6 +250,7 @@ type
   private
     FDT_FIM: TDate;
     FDT_INI: TDate;
+    FRegistroE310: TRegistroE310List;
     FRegistroE360: TRegistroE360;
   public
     constructor Create(AOwner: TRegistroE001); virtual; /// Create
@@ -257,7 +259,44 @@ type
     property DT_INI: TDate read FDT_INI write FDT_INI;
     property DT_FIM: TDate read FDT_FIM write FDT_FIM;
 
+    property RegistroE310: TRegistroE310List read FRegistroE310 write FRegistroE310;
     property RegistroE360: TRegistroE360 read FRegistroE360 write FRegistroE360;
+  end;
+
+  { TRegistroE310 }
+
+  TRegistroE310 = class
+  private
+    FCFOP: String;
+    FVALOR_BC_ICMS: Double;
+    FVALOR_CONT: Double;
+    FVALOR_ICMS: Double;
+    FVALOR_IN_ICMS: Double;
+    FVALOR_O_ICMS: Double;
+    FVALOR_ST: Double;
+    FVL_ICMS_COMPL: Double;
+  public
+    property CFOP: String read FCFOP write FCFOP;
+    property VALOR_CONT: Double read FVALOR_CONT write FVALOR_CONT;
+    property VALOR_BC_ICMS: Double read FVALOR_BC_ICMS write FVALOR_BC_ICMS;
+    property VALOR_ICMS: Double read FVALOR_ICMS write FVALOR_ICMS;
+    property VALOR_ST: Double read FVALOR_ST write FVALOR_ST;
+    property VL_ICMS_COMPL: Double read FVL_ICMS_COMPL write FVL_ICMS_COMPL;
+    property VALOR_IN_ICMS: Double read FVALOR_IN_ICMS write FVALOR_IN_ICMS;
+    property VALOR_O_ICMS: Double read FVALOR_O_ICMS write FVALOR_O_ICMS;
+  end;
+
+  /// Registro E310 - Lista
+
+  { TRegistroE310List }
+
+  TRegistroE310List = class(TACBrLFDRegistros)
+  private
+     function GetItem(Index: Integer): TRegistroE310;
+     procedure SetItem(Index: Integer; const Value: TRegistroE310);
+  public
+     function New(AOwner: TRegistroE300): TRegistroE310;
+     property Items[Index: Integer]: TRegistroE310 read GetItem write SetItem;
   end;
 
   { TRegistroE360 }
@@ -393,6 +432,24 @@ type
 
 implementation
 
+{ TRegistroE310List }
+
+function TRegistroE310List.GetItem(Index: Integer): TRegistroE310;
+begin
+   Result := TRegistroE310(Get(Index));
+end;
+
+procedure TRegistroE310List.SetItem(Index: Integer; const Value: TRegistroE310);
+begin
+   Put(Index, Value);
+end;
+
+function TRegistroE310List.New(AOwner: TRegistroE300): TRegistroE310;
+begin
+   Result := TRegistroE310.Create;
+   Add(Result);
+end;
+
 { TRegistroE020 }
 
 constructor TRegistroE020.Create;
@@ -509,10 +566,12 @@ end;
 constructor TRegistroE300.Create(AOwner: TRegistroE001);
 begin
   FRegistroE360 := TRegistroE360.Create(Self);
+  FRegistroE310 := TRegistroE310List.Create;
 end;
 
 destructor TRegistroE300.Destroy;
 begin
+   FRegistroE310.Free;
    FRegistroE360.Free;
    inherited Destroy;
 end;

@@ -723,7 +723,7 @@ type
     property VL_DOC: Currency read FVL_DOC write FVL_DOC;
     property VL_CANC_ISS: Currency read FVL_CANC_ISS write FVL_CANC_ISS;
     property VL_CANC_ICMS: Currency read FVL_CANC_ICMS write FVL_CANC_ICMS;
-    property VL_DESC_ISS: Currency read FVL_DESC_ISS write FVL_DESC_ISS;
+    property VL_DESC_ISS: Currency  read FVL_DESC_ISS  write FVL_DESC_ISS;
     property VL_DESC_ICMS: Currency read FVL_DESC_ICMS write FVL_DESC_ICMS;
     property VL_ACMO_ISS: Currency read FVL_ACMO_ISS write FVL_ACMO_ISS;
     property VL_ACMO_ICMS: Currency read FVL_ACMO_ICMS write FVL_ACMO_ICMS;

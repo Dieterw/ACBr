@@ -138,6 +138,7 @@ type
     edtEmailRemetente: TEdit;
     Label30: TLabel;
     btnLinkNFSe: TButton;
+    btnGerarLoteRPS: TButton;
     procedure sbtnCaminhoCertClick(Sender: TObject);
     procedure sbtnGetCertClick(Sender: TObject);
     procedure sbtnLogoMarcaClick(Sender: TObject);
@@ -164,6 +165,7 @@ type
     procedure btnGerarEnviarNFSeClick(Sender: TObject);
     procedure btnEnviaremailClick(Sender: TObject);
     procedure btnLinkNFSeClick(Sender: TObject);
+    procedure btnGerarLoteRPSClick(Sender: TObject);
     {
     procedure lblMouseEnter(Sender: TObject);
     procedure lblMouseLeave(Sender: TObject);
@@ -915,6 +917,12 @@ procedure TfrmDemo_ACBrNFSe.btnGerarEnviarNFSeClick(Sender: TObject);
 var
  vNumRPS, sNomeArq : String;
 begin
+ //**************************************************************************
+ //
+ // A function Gerar só esta disponivel para alguns provedores.
+ //
+ //**************************************************************************
+
  if not(InputQuery('Gerar e Enviar Lote', 'Numero do RPS', vNumRPS))
   then exit;
 
@@ -993,6 +1001,33 @@ begin
 
  MemoResp.Lines.Add('Link Gerado: ' + sLink);
  PageControl2.ActivePageIndex := 0;
+end;
+
+procedure TfrmDemo_ACBrNFSe.btnGerarLoteRPSClick(Sender: TObject);
+var
+ vAux, vNumLote : String;
+begin
+ //**************************************************************************
+ //
+ // A function GerarLote apenas gera o XML do lote, assina se necessário
+ // e valida, salvando o arquivo com o nome: <lote>-lot-rps.xml na pasta Ger
+ // Não ocorre o envio para nenhum webservice.
+ //
+ //**************************************************************************
+
+ if not(InputQuery('Gerar e Enviar Lote', 'Numero do RPS', vAux))
+  then exit;
+
+ if not(InputQuery('Gerar e Enviar Lote', 'Numero do Lote', vNumLote))
+  then exit;
+
+ ACBrNFSe1.NotasFiscais.Clear;
+ GerarNFSe(vAux);
+ ACBrNFSe1.GerarLote(vNumLote);
+
+ ShowMessage('Arquivo gerado em: '+ACBrNFSe1.NotasFiscais.Items[0].NomeArq);
+
+ ACBrNFSe1.NotasFiscais.Clear;
 end;
 
 end.

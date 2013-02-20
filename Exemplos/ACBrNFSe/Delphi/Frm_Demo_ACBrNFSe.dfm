@@ -1114,13 +1114,22 @@ object frmDemo_ACBrNFSe: TfrmDemo_ACBrNFSe
         TabOrder = 10
         OnClick = btnLinkNFSeClick
       end
+      object btnGerarLoteRPS: TButton
+        Left = 376
+        Top = 104
+        Width = 177
+        Height = 25
+        Caption = 'Gerar Lote RPS'
+        TabOrder = 11
+        OnClick = btnGerarLoteRPSClick
+      end
     end
     object PageControl2: TPageControl
       Left = 1
       Top = 137
       Width = 572
       Height = 396
-      ActivePage = TabSheet5
+      ActivePage = TabSheet8
       Align = alClient
       TabOrder = 1
       object TabSheet5: TTabSheet

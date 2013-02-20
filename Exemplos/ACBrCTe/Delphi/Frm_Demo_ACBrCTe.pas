@@ -1236,8 +1236,18 @@ begin
 end;
 
 procedure TfrmDemo_ACBrCTe.btnConsultarChaveClick(Sender: TObject);
+var
+ vChave : String;
 begin
- ShowMessage('Opção não Implementada!');
+  if not(InputQuery('WebServices Consultar', 'Chave do CT-e:', vChave)) then
+    exit;
+
+  ACBrCTe1.WebServices.Consulta.CTeChave := vChave;
+  ACBrCTe1.WebServices.Consulta.Executar;
+
+  MemoResp.Lines.Text :=  UTF8Encode(ACBrCTe1.WebServices.Consulta.RetWS);
+  memoRespWS.Lines.Text :=  UTF8Encode(ACBrCTe1.WebServices.Consulta.RetornoWS);
+  LoadXML(MemoResp, WBResposta);
 end;
 
 procedure TfrmDemo_ACBrCTe.btnCancCTeClick(Sender: TObject);

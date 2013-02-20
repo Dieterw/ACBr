@@ -50,6 +50,7 @@ type
     procedure DoNFSeCancelarNFSe;
     procedure DoNFSeGerarNFSe;
     procedure DoNFSeLinkNFSe;
+    procedure DoNFSeGerarLote;
 
     {$IFDEF ACBrNFSeOpenSSL}
       procedure ConfiguraHTTP( HTTP : THTTPSend; Action : AnsiString);
@@ -104,6 +105,7 @@ type
     FCancelaNFSe: String;
     FGerarNFSe: String;
     FLinkNFSe: String;
+    FGerarLoteRps: String;
 
     procedure LoadMsgEntrada;
     procedure LoadURL;
@@ -150,6 +152,7 @@ type
     property CancelaNFSe: String read FCancelaNFSe;
     property GerarNFSe: String read FGerarNFSe;
     property LinkNFSe: String read FLinkNFSe;
+    property GerarLoteRps: String read FGerarLoteRps;
   end;
 
   TNFSeEnviarLoteRPS = Class(TWebServicesBase)
@@ -299,6 +302,16 @@ type
     property Link: String read FLink;
   end;
 
+  TNFSeGerarLoteRPS = Class(TWebServicesBase)
+  private
+    FNumeroLote: String;
+    FNotasFiscais : TNotasFiscais;
+  public
+    function Executar: Boolean; override;
+    constructor Create(AOwner : TComponent; ANotasFiscais : TNotasFiscais); reintroduce;
+    property NumeroLote: String read FNumeroLote;
+  end;
+
   TWebServices = Class(TWebServicesBase)
   private
     FACBrNFSe: TComponent;
@@ -310,6 +323,7 @@ type
     FCancNfse: TNFSeCancelarNfse;
     FGerarNfse: TNFSeGerarNfse;
     FLinkNfse: TNFSeLinkNfse;
+    FGerarLoteRPS: TNFSeGerarLoteRPS;
   public
     constructor Create(AFNotaFiscalEletronica: TComponent); reintroduce;
     destructor Destroy; override;
@@ -328,6 +342,8 @@ type
                          ACodigoMunicipio: string): Boolean; overload;
     function Gera(ARps:Integer): Boolean;
     function LinkNFSeGerada(ANumeroNFSe: Integer; ACodVerificacao: String): String;
+    function GeraLote(ALote:Integer): Boolean; overload;
+    function GeraLote(ALote:String): Boolean; overload;
   published
     property ACBrNFSe: TComponent read FACBrNFSe write FACBrNFSe;
     property Enviar: TNFSeEnviarLoteRPS read FEnviar write FEnviar;
@@ -338,6 +354,7 @@ type
     property CancNfse: TNFSeCancelarNfse read FCancNfse write FCancNfse;
     property GerarNfse: TNFSeGerarNfse read FGerarNfse write FGerarNfse;
     property LinkNfse: TNFSeLinkNfse read FLinkNfse write FLinkNfse;
+    property GerarLoteRPS: TNFSeGerarLoteRPS read FGerarLoteRPS write FGerarLoteRPS;
   end;
 
 implementation
@@ -1160,6 +1177,8 @@ begin
   then DoNFSeGerarNfse
   else if self is TNFSeLinkNfse
   then DoNFSeLinkNfse
+  else if self is TNFSeGerarLoteRPS
+  then DoNFSeGerarLote
 end;
 
 procedure TWebServicesBase.LoadURL;
@@ -1334,7 +1353,7 @@ begin
                           FConfiguracoes.WebServices.ServicoEnviar,
                           FConfiguracoes.WebServices.Prefixo4))
     then raise Exception.Create('Falha na validação do Lote ' +
-                   TNFSeEnviarLoteRps(Self).NumeroLote + sLineBreak + FMsg);
+                   IntToStr(TNFSeGerarNFSe(Self).NumeroRps) + sLineBreak + FMsg);
   end;
 end;
 
@@ -1346,21 +1365,162 @@ begin
                                       FConfiguracoes.WebServices.AmbienteCodigo);
 end;
 
+procedure TWebServicesBase.DoNFSeGerarLote;
+var
+ i         : Integer;
+ vNotas    : WideString;
+ URI,
+ Separador,
+ PathSalvar: String;
+begin
+ vNotas := '';
+
+ if RightStr(FHTTP_AG, 1) = '/'
+  then Separador := ''
+  else Separador := '/';
+
+ if FCabecalho <> ''
+  then begin
+   if Prefixo2 <> ''
+    then FNameSpaceCab := ' xmlns:' + stringReplace(Prefixo2, ':', '', []) + '="' + FHTTP_AG + Separador + FCabecalho +'">'
+    else FNameSpaceCab := ' xmlns="' + FHTTP_AG + Separador + FCabecalho +'">';
+  end
+  else FNameSpaceCab := '>';
+
+ if FServicoEnviar <> ''
+  then begin
+   if (RightStr(FHTTP_AG, 1) = '/')
+    then begin
+     if Prefixo3 <> ''
+      then FNameSpaceDad := 'xmlns:' + stringReplace(Prefixo3, ':', '', []) + '="' + FHTTP_AG + Separador + FServicoEnviar + '"'
+      else FNameSpaceDad := 'xmlns="' + FHTTP_AG + Separador + FServicoEnviar + '"';
+    end
+    else begin
+     if Prefixo3 <> ''
+      then FNameSpaceDad := 'xmlns:' + stringReplace(Prefixo3, ':', '', []) + '="' + FHTTP_AG + '"'
+      else FNameSpaceDad := 'xmlns="' + FHTTP_AG + '"';
+    end;
+  end
+  else FNameSpaceDad := '';
+
+ if (FDefTipos = '') and (FNameSpaceDad <> '')
+  then FNameSpaceDad := FNameSpaceDad + '>';
+
+ if FDefTipos <> ''
+  then begin
+   if Prefixo4 <> ''
+    then FNameSpaceDad := FNameSpaceDad +
+                        ' xmlns:' + stringReplace(Prefixo4, ':', '', []) + '="' + FHTTP_AG + Separador + FDefTipos + '">'
+    else FNameSpaceDad := FNameSpaceDad + ' xmlns="' + FHTTP_AG + Separador + FDefTipos + '">';
+  end;
+
+ if FNameSpaceDad = ''
+  then FNameSpaceDad := '>'
+  else FNameSpaceDad := ' ' + FNameSpaceDad;
+
+ if FConfiguracoes.Certificados.AssinaRPS
+  then begin
+   for i := 0 to TNFSeGerarLoteRPS(Self).FNotasFiscais.Count-1 do
+    begin
+     if (FProvedor in [profintelISS, proSaatri, proGoiania])
+      then vNotas := vNotas + '<' + Prefixo4 + 'Rps>' +
+                               '<' + Prefixo4 + 'InfDeclaracaoPrestacaoServico' +
+                                 RetornarConteudoEntre(TNFSeGerarLoteRPS(Self).FNotasFiscais.Items[I].XML_Rps_Ass,
+                                   '<' + Prefixo4 + 'InfDeclaracaoPrestacaoServico', '</Signature>') +
+                               '</Signature>'+
+                              '</' + Prefixo4 + 'Rps>'
+      else vNotas := vNotas + '<' + Prefixo4 + 'Rps>' +
+                               '<' + Prefixo4 + 'InfRps' +
+                                 RetornarConteudoEntre(TNFSeGerarLoteRPS(Self).FNotasFiscais.Items[I].XML_Rps_Ass,
+                                   '<' + Prefixo4 + 'InfRps', '</Rps>') +
+                              '</' + Prefixo4 + 'Rps>';
+    end;
+  end
+  else begin
+   for i := 0 to TNFSeGerarLoteRPS(Self).FNotasFiscais.Count-1 do
+    begin
+     if (FProvedor in [profintelISS, proSaatri, proGoiania])
+      then vNotas := vNotas + '<' + Prefixo4 + 'Rps>' +
+                               '<' + Prefixo4 + 'InfDeclaracaoPrestacaoServico' +
+                                 RetornarConteudoEntre(TNFSeGerarLoteRPS(Self).FNotasFiscais.Items[I].XML_Rps,
+                                   '<' + Prefixo4 + 'InfDeclaracaoPrestacaoServico', '</' + Prefixo4 + 'InfDeclaracaoPrestacaoServico>') +
+                               '</' + Prefixo4 + 'InfDeclaracaoPrestacaoServico>'+
+                              '</' + Prefixo4 + 'Rps>'
+      else vNotas := vNotas + '<' + Prefixo4 + 'Rps>' +
+                               '<' + Prefixo4 + 'InfRps' +
+                                 RetornarConteudoEntre(TNFSeGerarLoteRPS(Self).FNotasFiscais.Items[I].XML_Rps,
+                                   '<' + Prefixo4 + 'InfRps', '</Rps>') +
+                              '</' + Prefixo4 + 'Rps>';
+    end;
+  end;
+
+ FCabMsg := FProvedorClass.Gera_CabMsg(Prefixo2, FVersaoLayOut, FVersaoDados, NameSpaceCab);
+
+ URI := '';
+
+ URI := FProvedorClass.GetURI(URI);
+
+ FTagI := FProvedorClass.Gera_TagI(acRecepcionar, Prefixo3, Prefixo4, NameSpaceDad, FConfiguracoes.WebServices.Identificador, URI);
+
+ FDadosSenha := FProvedorClass.Gera_DadosSenha(FConfiguracoes.WebServices.UserWeb,
+                                               FConfiguracoes.WebServices.SenhaWeb);
+ FTagF := FProvedorClass.Gera_TagF(acRecepcionar, Prefixo3);
+
+ FDadosMsg := FProvedorClass.Gera_DadosMsgEnviarLote(Prefixo3,
+                                                     Prefixo4,
+                                                     FConfiguracoes.WebServices.Identificador,
+                                                     NameSpaceDad,
+                                                     VersaoDados,
+                                                     FVersaoXML,
+                                                     TNFSeGerarLoteRps(Self).NumeroLote,
+                                                     SomenteNumeros(TNFSeGerarLoteRPS(Self).FNotasFiscais.Items[0].NFSe.Prestador.Cnpj),
+                                                     TNFSeGerarLoteRPS(Self).FNotasFiscais.Items[0].NFSe.Prestador.InscricaoMunicipal,
+                                                     IntToStr(TNFSeGerarLoteRps(Self).FNotasFiscais.Count),
+                                                     vNotas,
+                                                     FTagI,
+                                                     FTagF);
+
+// if FConfiguracoes.WebServices.Salvar
+//  then FConfiguracoes.Geral.Save('-xxx1.xml', FDadosMsg);
+
+ FDadosMsg := TNFSeGerarLoteRPS(Self).FNotasFiscais.AssinarLoteRps(TNFSeGerarLoteRps(Self).NumeroLote, FDadosMSg);
+
+  if FConfiguracoes.Geral.Salvar
+   then begin
+    PathSalvar := FConfiguracoes.Arquivos.GetPathGer;
+    TNFSeGerarLoteRps(Self).FNotasFiscais.Items[0].NomeArq := PathWithDelim(PathSalvar) +
+                                                              TNFSeGerarLoteRps(Self).NumeroLote+'-lot-rps.xml';
+    FConfiguracoes.Geral.Save(TNFSeGerarLoteRps(Self).NumeroLote+'-lot-rps.xml', FDadosMsg, PathSalvar);
+   end;
+
+ if FProvedorClass.GetValidarLote
+  then begin
+   if not(NotaUtil.Valida(FDadosMsg, FMsg,
+                          FConfiguracoes.Geral.PathSchemas,
+                          FConfiguracoes.WebServices.URL,
+                          FConfiguracoes.WebServices.ServicoEnviar,
+                          FConfiguracoes.WebServices.Prefixo4))
+    then raise Exception.Create('Falha na validação do Lote ' +
+                   TNFSeGerarLoteRps(Self).NumeroLote + sLineBreak + FMsg);
+  end;
+end;
+
 { TWebServices }
 
 constructor TWebServices.Create(AFNotaFiscalEletronica: TComponent);
 begin
  inherited Create( AFNotaFiscalEletronica );
 
- FACBrNFSe    := TACBrNFSe(AFNotaFiscalEletronica);
- FEnviar      := TNFSeEnviarLoteRPS.Create(AFNotaFiscalEletronica, TACBrNFSe(AFNotaFiscalEletronica).NotasFiscais);
- FConsSitLote := TNFSeConsultarSituacaoLoteRPS.Create(AFNotaFiscalEletronica, TACBrNFSe(AFNotaFiscalEletronica).NotasFiscais);
- FConsLote    := TNFSeConsultarLoteRPS.Create(AFNotaFiscalEletronica, TACBrNFSe(AFNotaFiscalEletronica).NotasFiscais);
- FConsNfseRps := TNFSeConsultarNfseRPS.Create(AFNotaFiscalEletronica, TACBrNFSe(AFNotaFiscalEletronica).NotasFiscais);
- FConsNfse    := TNFSeConsultarNfse.Create(AFNotaFiscalEletronica, TACBrNFSe(AFNotaFiscalEletronica).NotasFiscais);
- FCancNfse    := TNFSeCancelarNfse.Create(AFNotaFiscalEletronica, TACBrNFSe(AFNotaFiscalEletronica).NotasFiscais);
- FGerarNFSe   := TNFSeGerarNFSe.Create(AFNotaFiscalEletronica, TACBrNFSe(AFNotaFiscalEletronica).NotasFiscais);
- FLinkNfse    := TNFSeLinkNFSe.Create(AFNotaFiscalEletronica, TACBrNFSe(AFNotaFiscalEletronica).NotasFiscais);
+ FACBrNFSe     := TACBrNFSe(AFNotaFiscalEletronica);
+ FEnviar       := TNFSeEnviarLoteRPS.Create(AFNotaFiscalEletronica, TACBrNFSe(AFNotaFiscalEletronica).NotasFiscais);
+ FConsSitLote  := TNFSeConsultarSituacaoLoteRPS.Create(AFNotaFiscalEletronica, TACBrNFSe(AFNotaFiscalEletronica).NotasFiscais);
+ FConsLote     := TNFSeConsultarLoteRPS.Create(AFNotaFiscalEletronica, TACBrNFSe(AFNotaFiscalEletronica).NotasFiscais);
+ FConsNfseRps  := TNFSeConsultarNfseRPS.Create(AFNotaFiscalEletronica, TACBrNFSe(AFNotaFiscalEletronica).NotasFiscais);
+ FConsNfse     := TNFSeConsultarNfse.Create(AFNotaFiscalEletronica, TACBrNFSe(AFNotaFiscalEletronica).NotasFiscais);
+ FCancNfse     := TNFSeCancelarNfse.Create(AFNotaFiscalEletronica, TACBrNFSe(AFNotaFiscalEletronica).NotasFiscais);
+ FGerarNFSe    := TNFSeGerarNFSe.Create(AFNotaFiscalEletronica, TACBrNFSe(AFNotaFiscalEletronica).NotasFiscais);
+ FLinkNfse     := TNFSeLinkNFSe.Create(AFNotaFiscalEletronica, TACBrNFSe(AFNotaFiscalEletronica).NotasFiscais);
+ FGerarLoteRPS := TNFSeGerarLoteRPS.Create(AFNotaFiscalEletronica, TACBrNFSe(AFNotaFiscalEletronica).NotasFiscais);
 end;
 
 destructor TWebServices.Destroy;
@@ -1373,6 +1533,7 @@ begin
  FCancNfse.Free;
  FGerarNFSe.Free;
  FLinkNfse.Free;
+ FGerarLoteRPS.Free;
 
  inherited;
 end;
@@ -1596,6 +1757,25 @@ begin
   end;
 
  Result := self.LinkNFSe.FLink;
+end;
+
+function TWebServices.GeraLote(ALote: Integer): Boolean;
+begin
+  Result := GeraLote(IntToStr(ALote));
+end;
+
+function TWebServices.GeraLote(ALote: String): Boolean;
+begin
+ self.GerarLoteRPS.FNumeroLote := ALote;
+
+ if not (Self.GerarLoteRPS.Executar)
+  then begin
+   if Assigned(TACBrNFSe( FACBrNFSe ).OnGerarLog)
+    then TACBrNFSe( FACBrNFSe ).OnGerarLog(Self.GerarLoteRPs.Msg);
+   raise Exception.Create(Self.GerarLoteRps.Msg);
+  end;
+
+ Result := true;
 end;
 
 { TNFSeEnviarLoteRPS }
@@ -2993,6 +3173,21 @@ begin
 end;
 
 function TNFSeLinkNFSe.Executar: Boolean;
+begin
+ inherited Executar;
+end;
+
+{ TNFSeGerarLoteRPS }
+
+constructor TNFSeGerarLoteRPS.Create(AOwner: TComponent;
+  ANotasFiscais: TNotasFiscais);
+begin
+ inherited Create(AOwner);
+
+ FNotasFiscais := ANotasFiscais;
+end;
+
+function TNFSeGerarLoteRPS.Executar: Boolean;
 begin
  inherited Executar;
 end;

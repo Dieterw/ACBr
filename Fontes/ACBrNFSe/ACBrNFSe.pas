@@ -49,6 +49,8 @@ type
     function CancelarNFSe(ACodigoCancelamento: String): Boolean;
     function Gerar(ARps: Integer): Boolean;
     function LinkNFSe(ANumeroNFSe: Integer; ACodVerificacao: String): String;
+    function GerarLote(ALote: Integer): Boolean; overload;
+    function GerarLote(ALote: String): Boolean; overload;
 
     property WebServices: TWebServices   read FWebServices  write FWebServices;
     property NotasFiscais: TNotasFiscais read FNotasFiscais write FNotasFiscais;
@@ -302,6 +304,37 @@ function TACBrNFSe.LinkNFSe(ANumeroNFSe: Integer;
   ACodVerificacao: String): String;
 begin
  Result := WebServices.LinkNFSeGerada(ANumeroNFSe, ACodVerificacao);
+end;
+
+function TACBrNFSe.GerarLote(ALote: Integer): Boolean;
+begin
+  Result := GerarLote(IntToStr(ALote));
+end;
+
+function TACBrNFSe.GerarLote(ALote: String): Boolean;
+var
+ i: Integer;
+begin
+ if NotasFiscais.Count <= 0
+  then begin
+   if Assigned(Self.OnGerarLog)
+    then Self.OnGerarLog('ERRO: Nenhum RPS adicionado ao Lote');
+   raise Exception.Create('ERRO: Nenhum RPS adicionado ao Lote');
+   exit;
+  end;
+
+ if NotasFiscais.Count > 50
+  then begin
+   if Assigned(Self.OnGerarLog)
+    then Self.OnGerarLog('ERRO: Conjunto de RPS transmitidos (máximo de 50) excedido. Quantidade atual: '+IntToStr(NotasFiscais.Count));
+   raise Exception.Create('ERRO: Conjunto de RPS transmitidos (máximo de 50) excedido. Quantidade atual: '+IntToStr(NotasFiscais.Count));
+   exit;
+  end;
+
+ NotasFiscais.Assinar; // Assina os Rps
+
+ Result := WebServices.GeraLote(ALote);
+
 end;
 
 end.

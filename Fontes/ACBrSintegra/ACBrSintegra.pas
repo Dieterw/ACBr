@@ -78,6 +78,8 @@
 |     assim, ter a ordenação de registros 60 filhos corretamente. Para isso,
 |     crie os registros dentro do 60M, usando seus respectivos correspondentes
 |     Regs60A, Regs60D, Regs60I.
+|* 20/02/2013: Juliana Tamizou
+|   - Corrigido memory leak no registro 60R
 *******************************************************************************}
 
 {$I ACBr.inc}
@@ -1617,14 +1619,15 @@ begin
   // Seus itens então precisarão ser destruídos manualmente.
   // Veja: http://stackoverflow.com/questions/10410019/use-of-tlist-and-tobjectlist
   // AOwnsObject é False para que, ao gerar um arquivo da FVersaoValidador = vv574,
-  //  o TACBrSintegra possa jogar os itens das propriedade Registros60A(D)(I)(R)
+  //  o TACBrSintegra possa jogar os itens das propriedade Registros60M 60D 60I
   //  dentro do Registro60M nas propriedades equivalentes,
   //  (a saber FRegs60A, FRegs60D e FRegs60I),  e não cause Access Violation
   //  ao tentar destruir os registros novamente;
   FRegistros60A:=TRegistros60A.Create(False);
   FRegistros60D:=TRegistros60D.Create(False);
   FRegistros60I:=TRegistros60I.Create(False);
-  FRegistros60R:=TRegistros60R.Create(False);
+
+  FRegistros60R:=TRegistros60R.Create(True);
 
   FRegistros61:=TRegistros61.Create(True);
   FRegistros61R:=TRegistros61R.Create(True);

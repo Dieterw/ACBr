@@ -64,8 +64,6 @@ type
 
     function WriteRegistroR03(RegR02: TRegistroR02): String;
     function WriteRegistroR05(RegR04: TRegistroR04): String;
-    function WriteRegistroR07_4(RegR04: TRegistroR04): String;
-    function WriteRegistroR07_6(RegR06: TRegistroR06): String;
 
     procedure CriaRegistros;
     procedure LiberaRegistros;
@@ -78,6 +76,7 @@ type
     function WriteRegistroR02: String;
     function WriteRegistroR04: String;
     function WriteRegistroR06: String;
+    function WriteRegistroR07: String;
 
     property RegistroR01: TRegistroR01 read FRegistroR01 write FRegistroR01;
     property RegistroR02: TRegistroR02List read FRegistroR02 write FRegistroR02;
@@ -173,15 +172,44 @@ function OrdenarR07(const ARegistro1, ARegistro2: Pointer): Integer;
 var
   Pagto1, Pagto2: String;
 begin
-  Pagto1 :=
-    Format('%6.6d', [TRegistroR07(ARegistro1).GNF]) +
-    Format('%6.6d', [TRegistroR07(ARegistro1).CCF]) +
-    Format('%-15s', [TRegistroR07(ARegistro1).MP]);
 
-  Pagto2 :=
-    Format('%6.6d', [TRegistroR07(ARegistro2).GNF]) +
-    Format('%6.6d', [TRegistroR07(ARegistro2).CCF]) +
-    Format('%-15s', [TRegistroR07(ARegistro2).MP]);
+  if TRegistroR07(ARegistro1).TipoRegistroPai = 'R04' then
+  begin
+    Pagto1 :=
+      Format('%2.2d', [TRegistroR04(TRegistroR07(ARegistro1).RegistroPai).NUM_USU]) +
+      Format('%6.6d', [TRegistroR04(TRegistroR07(ARegistro1).RegistroPai).COO]) +
+      Format('%6.6d', [TRegistroR07(ARegistro1).GNF]) +
+      Format('%6.6d', [TRegistroR07(ARegistro1).CCF]) +
+      Format('%-15s', [TRegistroR07(ARegistro1).MP]);
+  end
+  else if TRegistroR07(ARegistro1).TipoRegistroPai = 'R06' then
+  begin
+    Pagto1 :=
+      Format('%2.2d', [TRegistroR06(TRegistroR07(ARegistro1).RegistroPai).NUM_USU]) +
+      Format('%6.6d', [TRegistroR06(TRegistroR07(ARegistro1).RegistroPai).COO]) +
+      Format('%6.6d', [TRegistroR07(ARegistro1).GNF]) +
+      Format('%6.6d', [TRegistroR07(ARegistro1).CCF]) +
+      Format('%-15s', [TRegistroR07(ARegistro1).MP]);
+  end;
+
+  if TRegistroR07(ARegistro2).TipoRegistroPai = 'R04' then
+  begin
+    Pagto2 :=
+      Format('%2.2d', [TRegistroR04(TRegistroR07(ARegistro2).RegistroPai).NUM_USU]) +
+      Format('%6.6d', [TRegistroR04(TRegistroR07(ARegistro2).RegistroPai).COO]) +
+      Format('%6.6d', [TRegistroR07(ARegistro2).GNF]) +
+      Format('%6.6d', [TRegistroR07(ARegistro2).CCF]) +
+      Format('%-15s', [TRegistroR07(ARegistro2).MP]);
+  end
+  else if TRegistroR07(ARegistro2).TipoRegistroPai = 'R06' then
+  begin
+    Pagto2 :=
+      Format('%2.2d', [TRegistroR06(TRegistroR07(ARegistro2).RegistroPai).NUM_USU]) +
+      Format('%6.6d', [TRegistroR06(TRegistroR07(ARegistro2).RegistroPai).COO]) +
+      Format('%6.6d', [TRegistroR07(ARegistro2).GNF]) +
+      Format('%6.6d', [TRegistroR07(ARegistro2).CCF]) +
+      Format('%-15s', [TRegistroR07(ARegistro2).MP]);
+  end;
 
   Result := AnsiCompareText(Pagto1, Pagto2);
 end;
@@ -384,8 +412,8 @@ begin
         strRegistroR05 := strRegistroR05 +
                           WriteRegistroR05(FRegistroR04.Items[intFor]);
 
-        FRegistroR07 := FRegistroR07 +
-                        WriteRegistroR07_4(FRegistroR04.Items[intFor]);
+//        FRegistroR07 := FRegistroR07 +
+//                        WriteRegistroR07_4(FRegistroR04.Items[intFor]);
      end;
   end;
   Result := strRegistroR04 + strRegistroR05;
@@ -471,71 +499,68 @@ begin
         end;
 
         // Registro FILHOS
-        FRegistroR07 := FRegistroR07 +
-                        WriteRegistroR07_6(FRegistroR06.Items[intFor]);
+//        FRegistroR07 := FRegistroR07 +
+//                        WriteRegistroR07_6(FRegistroR06.Items[intFor]);
      end;
   end;
   Result := strRegistroR06;
 end;
 
-function TPAF_R.WriteRegistroR07_4(RegR04: TRegistroR04): String;
+function TPAF_R.WriteRegistroR07: String;
 var
-intFor: integer;
-strRegistroR07: string;
-begin
-  strRegistroR07 := '';
-
-  if Assigned(RegR04.RegistroR07) then
-  begin
-     RegR04.RegistroR07.Sort(@OrdenarR07);
-
-     for intFor := 0 to RegR04.RegistroR07.Count - 1 do
-     begin
-        with RegR04.RegistroR07.Items[intFor] do
-        begin
-          strRegistroR07 := strRegistroR07 + LFill('R07') +
-                                             RFill(FRegistroR01.NUM_FAB, 20) +
-                                             RFill(FRegistroR01.MF_ADICIONAL, 1) +
-                                             RFill(FRegistroR01.MODELO_ECF, 20, ifThen(RegistroValido, ' ', '?')) +
-                                             LFill(RegR04.NUM_USU, 2) +
-                                             LFill(RegR04.COO, 6) +
-                                             LFill(CCF, 6) +
-                                             LFill(GNF, 6) +
-                                             RFill(MP, 15) +
-                                             LFill(VL_PAGTO, 13, 2) +
-                                             RFill(IND_EST, 1) +
-                                             LFill(VL_EST, 13, 2) +
-                                             sLineBreak;
-        end;
-     end;
-     // Variavél para armazenar a quantidade de registro do tipo.
-     FRegistroR07Count := FRegistroR07Count + RegR04.RegistroR07.Count;
-  end;
-
-  Result := strRegistroR07;
-end;
-
-function TPAF_R.WriteRegistroR07_6(RegR06: TRegistroR06): String;
-var
-  intFor: integer;
+  intForPai, intForFilho: Integer;
   strRegistroR07: string;
+  FRegistroR07x: TRegistroR07xList;   // Lista de RegistroR07 para ordenação
 begin
   strRegistroR07 := '';
 
-  if Assigned(RegR06.RegistroR07) then
-  begin
-     RegR06.RegistroR07.Sort(@OrdenarR07);
+  //  Result := RegistroR07;
+  Result := '';
 
-     for intFor := 0 to RegR06.RegistroR07.Count - 1 do
-     begin
-        with RegR06.RegistroR07.Items[intFor] do
+  { TODO : Percorrer os Registros R07 e reordená-los, retornando o resultado da montagem de todos os registros. }
+  FRegistroR07x := TRegistroR07xList.Create;;
+  try
+    FRegistroR07x.OwnsObjects := False; //Os objetos adicionados nessa lista não podem ser destruídos por ela.
+
+    //Adiciona os R07 que são itens do R04 na lista
+    for intForPai := 0 to FRegistroR04.Count - 1 do
+    begin
+      if Assigned(FRegistroR04.Items[intForPai].RegistroR07) then
+      begin
+        for intForFilho := 0 to FRegistroR04.Items[intForPai].RegistroR07.Count - 1 do
+        begin
+          FRegistroR07x.Add( FRegistroR04.Items[intForPai].RegistroR07.Items[intForFilho]);
+        end;
+      end;
+    end;
+
+    //Adiciona os R07 que são itens do R06 na lista
+    for intForPai := 0 to FRegistroR06.Count - 1 do
+    begin
+      if Assigned(FRegistroR06.Items[intForPai].RegistroR07) then
+      begin
+        for intForFilho := 0 to FRegistroR06.Items[intForPai].RegistroR07.Count - 1 do
+        begin
+          FRegistroR07x.Add( FRegistroR06.Items[intForPai].RegistroR07.Items[intForFilho]);
+        end;
+      end;
+    end;
+
+    //Faz ordenação
+    FRegistroR07x.Sort(@OrdenarR07);
+
+    for intForPai := 0 to FRegistroR07x.Count - 1 do
+    begin
+      with FRegistroR07x.Items[intForPai] do
+      begin
+        if TipoRegistroPai = 'R04' then
         begin
           strRegistroR07 := strRegistroR07 + LFill('R07') +
                                              RFill(FRegistroR01.NUM_FAB, 20) +
                                              RFill(FRegistroR01.MF_ADICIONAL, 1) +
                                              RFill(FRegistroR01.MODELO_ECF, 20, ifThen(RegistroValido, ' ', '?')) +
-                                             LFill(RegR06.NUM_USU, 2) +
-                                             LFill(RegR06.COO, 6) +
+                                             LFill(TRegistroR04(RegistroPai).NUM_USU, 2) +
+                                             LFill(TRegistroR04(RegistroPai).COO, 6) +
                                              LFill(CCF, 6) +
                                              LFill(GNF, 6) +
                                              RFill(MP, 15) +
@@ -543,13 +568,31 @@ begin
                                              RFill(IND_EST, 1) +
                                              LFill(VL_EST, 13, 2) +
                                              sLineBreak;
-        end;
-     end;
-     // Variavél para armazenar a quantidade de registro do tipo.
-     FRegistroR07Count := FRegistroR07Count + RegR06.RegistroR07.Count;
-  end;
+        end
+        else if TipoRegistroPai = 'R06' then
+        begin
+          strRegistroR07 := strRegistroR07 + LFill('R07') +
+                                             RFill(FRegistroR01.NUM_FAB, 20) +
+                                             RFill(FRegistroR01.MF_ADICIONAL, 1) +
+                                             RFill(FRegistroR01.MODELO_ECF, 20, ifThen(RegistroValido, ' ', '?')) +
+                                             LFill(TRegistroR06(RegistroPai).NUM_USU, 2) +
+                                             LFill(TRegistroR06(RegistroPai).COO, 6) +
+                                             LFill(CCF, 6) +
+                                             LFill(GNF, 6) +
+                                             RFill(MP, 15) +
+                                             LFill(VL_PAGTO, 13, 2) +
+                                             RFill(IND_EST, 1) +
+                                             LFill(VL_EST, 13, 2) +
+                                             sLineBreak;
 
-  Result := strRegistroR07;
+        end;
+      end;
+    end;
+
+    Result := strRegistroR07;
+  finally
+    FreeAndNil(FRegistroR07x);
+  end;
 end;
 
 end.

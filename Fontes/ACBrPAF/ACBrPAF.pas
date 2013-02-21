@@ -526,8 +526,8 @@ begin
       if FPAF_R.RegistroR06.Count > 0 then
         Write(txtFile, FPAF_R.WriteRegistroR06);
 
-      if Trim(FPAF_R.RegistroR07) <> EmptyStr then
-        Write(txtFile, FPAF_R.RegistroR07);
+      if (FPAF_R.RegistroR04.Count + FPAF_R.RegistroR06.Count) > 0 then
+        Write(txtFile, FPAF_R.WriteRegistroR07);
     finally
       CloseFile(txtFile);
     end;

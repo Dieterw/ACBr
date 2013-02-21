@@ -340,138 +340,156 @@ end;
 
 procedure TForm6.btnRClick(Sender: TObject);
 var
-     i,j: integer;
+  i,j: integer;
 begin
-     // Registro R1
-     with ACBrPAF.PAF_R.RegistroR01 do
-     begin
-        // Comentei porque atribuindo as constantes ao gerar o R02 as propriedades
-        // estavam vazias, não sei porque ?????
+  // Registro R1 - Identificação do ECF, do Usuário, do PAF-ECF e da Empresa Desenvolvedora e Dados do Arquivo
+  with ACBrPAF.PAF_R.RegistroR01 do
+  begin
+    NUM_FAB     := 'NUMFAB78901234567890'; //NUM_FAB;
+    MF_ADICIONAL:= ''; // MF_ADICIONAL;
+    TIPO_ECF    := 'ECF-IF'; // TIPO_ECF;
+    MARCA_ECF   := 'IMPRESSORA ACBr'; //MARCA_ECF;
+    MODELO_ECF  := 'MODELO DE ECF........'; //MODELO_ECF;
+    VERSAO_SB   := '010101';
+    DT_INST_SB  := date;
+    HR_INST_SB  := time;
+    NUM_SEQ_ECF := 1;
+    CNPJ        := edtCNPJ.Text;
+    IE          := edtIE.Text;
+    CNPJ_SH     := edtCNPJ.Text;
+    IE_SH       := edtIE.Text;
+    IM_SH       := edtIM.Text;
+    NOME_SH     := edtRAZAO.Text;
+    NOME_PAF    := 'MeuPAFECF';
+    VER_PAF     := '0107';
+    COD_MD5     := GerarDados('S', 32);
+    DT_INI      := Date;
+    DT_FIN      := date;
+    ER_PAF_ECF  := '0104';
+  end;
 
-        // Descobri, é porque as constantes tem o mesmo noma das propriedades
-        // ai ele ta buscando o valor das proprias propriedades e não das contantes.
-        NUM_FAB     :='NUMFAB78901234567890'; //NUM_FAB;
-        MF_ADICIONAL:=''; // MF_ADICIONAL;
-        TIPO_ECF    :='ECF-IF'; // TIPO_ECF;
-        MARCA_ECF   :='ACBr'; //MARCA_ECF;
-        MODELO_ECF  :='PAF'; //MODELO_ECF;
-        VERSAO_SB   :='010101';
-        DT_INST_SB  :=date;
-        HR_INST_SB  :=time;
-        NUM_SEQ_ECF :=1;
-        CNPJ        :=edtCNPJ.Text;
-        IE          :=edtIE.Text;
-        CNPJ_SH     :=edtCNPJ.Text;
-        IE_SH       :=edtIE.Text;
-        IM_SH       :=edtIM.Text;
-        NOME_SH     :=edtRAZAO.Text;
-        NOME_PAF    :='PAFECF';
-        VER_PAF     :='0107';
-        COD_MD5     :=GerarDados('S',32);
-        DT_INI      :=Date;
-        DT_FIN      :=date;
-        ER_PAF_ECF  :='0104';
-     end;
-     // Registro R02 e R03
-     for I := 1 to 10 do
-     begin
-       with ACBrPAF.PAF_R.RegistroR02.New do
-       begin
-          NUM_USU     :=1;
-          CRZ         :=GerarDados('I',3);
-          COO         :=GerarDados('I',3);
-          CRO         :=GerarDados('I',3);
-          DT_MOV      :=DATE;
-          DT_EMI      :=DATE;
-          HR_EMI      :=TIME;
-          VL_VBD      :=GerarDados('I',3);
-          PAR_ECF     :='';
-          // Registro R03 - FILHO
-          for J := 1 to 5 do
-          begin
-            with RegistroR03.New do
-            begin
-               TOT_PARCIAL :=GerarDados('S',2);
-               VL_ACUM     :=GerarDados('I',2);
-            end;
-          end;
-       end;
-     end;
-     // Registro R04 e R05
-     for I := 1 to 10 do
-     begin
-       with ACBrPAF.PAF_R.RegistroR04.New do
-       begin
-          NUM_USU     :=1;
-          NUM_CONT    :=GerarDados('I',3);
-          COO         :=GerarDados('I',3);
-          DT_INI      :=date;
-          SUB_DOCTO   :=GerarDados('I',2);
-          SUB_DESCTO  :=GerarDados('I',2);
-          TP_DESCTO   :='V';
-          SUB_ACRES   :=0;
-          TP_ACRES    :='V';
-          VL_TOT      :=GerarDados('I',2);
-          CANC        :='N';
-          VL_CA       :=0;
-          ORDEM_DA    :='D';
-          NOME_CLI    :=GerarDados('S',50);
-          CNPJ_CPF    :=GerarDados('I',12);
-          // Registro R05 - FILHO
-          for J := 1 to RandomRange(1,4) do
-          begin
-            with RegistroR05.New do
-            begin
-               NUM_ITEM     :=J;
-               COD_ITEM     :=GerarDados('I',14);
-               DESC_ITEM    :=GerarDados('S',50);
-               QTDE_ITEM    :=RandomRange(1,4);
-               UN_MED       :=GerarDados('S',2);
-               VL_UNIT      :=GerarDados('I',2);
-               DESCTO_ITEM  :=0;
-               ACRES_ITEM   :=0;
-               VL_TOT_ITEM  :=GerarDados('I',2);
-               COD_TOT_PARC :='FF';
-               IND_CANC     :='N';
-               QTDE_CANC    :=0;
-               VL_CANC      :=0;
-               VL_CANC_ACRES:=0;
-               IAT          :='A';
-               IPPT         :='T';
-               QTDE_DECIMAL :=2;
-               VL_DECIMAL   :=2;
-            end;
-          end;
-       end;
-     end;
-     // Registro R06 e R07
-     for I := 1 to 10 do
-     begin
-       with ACBrPAF.PAF_R.RegistroR06.New do
-       begin
-          NUM_USU     :=1;
-          COO         :=GerarDados('I',3);
-          GNF         :=GerarDados('I',3);
-          GRG         :=GerarDados('I',3);
-          CDC         :=GerarDados('I',3);
-          DENOM       :=GerarDados('S',2);
-          DT_FIN      :=date;
-          HR_FIN      :=date;
-          // Registro R07 - FILHO
-          for J := 1 to 3 do
-          begin
-            with RegistroR07.New do
-            begin
-               CCF         :=GerarDados('I',3);
-               MP          :=GerarDados('S',7);
-               VL_PAGTO    :=GerarDados('I',2);
-               IND_EST     :='N';
-               VL_EST      :=0;
-            end;
-          end;
-       end;
-     end;
-     ACBrPAF.SaveFileTXT_R('PAF_R.txt');
+  // Registro R02 - Relação de Reduções Z
+  //        e R03 - Detalhe da Redução Z
+  for I := 1 to 15 do
+  begin
+   with ACBrPAF.PAF_R.RegistroR02.New do
+   begin
+      NUM_USU     := 1;
+      CRZ         := GerarDados('I', 3);
+      COO         := GerarDados('I', 3);
+      CRO         := GerarDados('I', 3);
+      DT_MOV      := DATE;
+      DT_EMI      := DATE;
+      HR_EMI      := TIME;
+      VL_VBD      := GerarDados('I', 3);
+      PAR_ECF     := '';
+      // Registro R03 - FILHO
+      for J := 1 to 7 do
+      begin
+        with RegistroR03.New do
+        begin
+           TOT_PARCIAL := 'TOT ' + GerarDados('S', 2);
+           VL_ACUM     := GerarDados('I', 2);
+        end;
+      end;
+   end;
+  end;
+
+  // Registro R04 - Cupom Fiscal, Nota Fiscal de Venda a Consumidor ou Bilhete de Passagem
+  //        e R05 - Detalhe do Cupom Fiscal, Nota Fiscal de Venda a Consumidor ou Bilhete de Passagem
+  //        e R07 - Detalhe do Cupom Fiscal e do Documento Não Fiscal - Meio de Pagamento
+  for I := 1 to 22 do
+  begin
+   with ACBrPAF.PAF_R.RegistroR04.New do
+   begin
+      NUM_USU     := 1;
+      NUM_CONT    := 900 + I; //Esse daqui é o CCF!!
+      COO         := 1000 + I;
+      DT_INI      := date;
+      SUB_DOCTO   := GerarDados('I', 2);
+      SUB_DESCTO  := GerarDados('I', 2);
+      TP_DESCTO   := 'V';
+      SUB_ACRES   := 0;
+      TP_ACRES    := 'V';
+      VL_TOT      := GerarDados('I', 2);
+      CANC        := 'N';
+      VL_CA       := 0;
+      ORDEM_DA    := 'D';
+      NOME_CLI    := 'CLIENTE' + GerarDados('S', 43);
+      CNPJ_CPF    := GerarDados('I',12);
+
+      // Registro R05 - FILHO
+      for J := 1 to RandomRange(1, 10) do
+      begin
+        with RegistroR05.New do
+        begin
+           NUM_ITEM     := J;
+           COD_ITEM     := GerarDados('I', 14); //Código do produto ou Serviço
+           DESC_ITEM    := 'DESCRICAO '+ GerarDados('S', 86) + ' FIM';
+           QTDE_ITEM    := RandomRange(1, 5);
+           UN_MED       := GerarDados('S', 2);
+           VL_UNIT      := GerarDados('I', 2);
+           DESCTO_ITEM  := 0;
+           ACRES_ITEM   := 0;
+           VL_TOT_ITEM  := VL_UNIT * QTDE_ITEM; //GerarDados('I', 2);
+           COD_TOT_PARC := 'FF';
+           IND_CANC     := 'N';
+           QTDE_CANC    := 0;
+           VL_CANC      := 0;
+           VL_CANC_ACRES:= 0;
+           IAT          := 'A';
+           IPPT         := 'T';
+           QTDE_DECIMAL := 2;
+           VL_DECIMAL   := 2;
+        end;
+      end;
+
+      // Registro R07 - FILHO
+      for J := 1 to RandomRange(1, 3) do
+      begin
+        with RegistroR07.New do
+        begin
+           CCF         := NUM_CONT; //GerarDados('I',3); //Pega do R04
+           MP          := 'PG_CUPOM ';// + GerarDados('S', 6);
+           VL_PAGTO    := GerarDados('I', 2);
+           IND_EST     := 'N';
+           VL_EST      := 0;
+        end;
+      end;
+   end;
+  end;
+
+  // Registro R06 - Demais documentos emitidos pelo ECF
+  //        e R07 - Detalhe do Cupom Fiscal e do Documento Não Fiscal - Meio de Pagamento
+  for I := 1 to 10 do
+  begin
+   with ACBrPAF.PAF_R.RegistroR06.New do
+   begin
+      NUM_USU     := 1;
+      COO         := 300 + I; // GerarDados('I',3);
+      GNF         := GerarDados('I', 3);
+      GRG         := GerarDados('I', 3);
+      CDC         := GerarDados('I', 3);
+      DENOM       := GerarDados('S', 2);
+      DT_FIN      := now;
+      HR_FIN      := now;
+      // Registro R07 - FILHO
+      for J := 1 to 3 do
+      begin
+        with RegistroR07.New do
+        begin
+//           CCF         := 0; //GerarDados('I', 3); // Outros documentos não tem CCF
+           MP          := 'PG_R06 ' + GerarDados('S', 7);
+           VL_PAGTO    := GerarDados('I', 2);
+           IND_EST     := 'N';
+           VL_EST      := 0;
+        end;
+      end;
+   end;
+  end;
+
+
+  ACBrPAF.SaveFileTXT_R('PAF_R.txt');
 end;
 
 procedure TForm6.btnTClick(Sender: TObject);

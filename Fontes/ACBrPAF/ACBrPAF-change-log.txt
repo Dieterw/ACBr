@@ -47,6 +47,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+21/02/2012
+[-] http://www.projetoacbr.com.br/forum/index.php?/topic/2640-ordena%C3%A7%C3%A3o-do-registro-r07/
+    Registros R07 precisam ser ordenados levando em conta o COO e NUM_USU.
+    por: EMBarbosa
+
 26/10/2012
 [+] Adicinado a geração da Tabela de Indice Tecnico de Producao.
     Como não existe um layout definido, então fizemos um layout padronizado

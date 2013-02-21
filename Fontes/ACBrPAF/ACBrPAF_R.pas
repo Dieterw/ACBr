@@ -49,6 +49,7 @@ type
   TRegistroR03List = class;
   TRegistroR05List = class;
   TRegistroR07List = class;
+  TRegistroR07xList = class;
 
   /// REGISTRO TIPO R01 - IDENTIFICAÇÃO DO ECF, DO USUÁRIO, DO PAF-ECF E DA EMPRESA DESENVOLVEDORA E DADOS DO ARQUIVO
 
@@ -307,14 +308,16 @@ type
     fDT_FIN: TDateTime;         /// Data final de emissão (impressa no rodapé do documento)
     fHR_FIN: TDateTime;         /// Hora final de emissão (impressa no rodapé do documento)
 
-    fRegistroR07: TRegistroR07List; /// Registro FILHO
+    fRegistroR07: TRegistroR07List;
+    procedure setNUM_USU(const Value: integer);
+    procedure setCOO(const Value: integer); /// Registro FILHO
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
 
     property RegistroValido: Boolean read fRegistroValido write fRegistroValido default True;
-    property NUM_USU: integer read FNUM_USU write FNUM_USU;
-    property COO: integer read FCOO write FCOO;
+    property NUM_USU: integer read FNUM_USU write setNUM_USU;
+    property COO: integer read FCOO write setCOO;
     property GNF: integer read FGNF write FGNF;
     property GRG: integer read FGRG write FGRG;
     property CDC: integer read FCDC write FCDC;
@@ -347,8 +350,10 @@ type
     fVL_PAGTO: currency;        /// Valor do pagamento efetuado, com duas casas decimais
     fIND_EST: string;           /// Informar "S" ou "N", conforme tenha ocorrido ou não, o estorno do pagamento, ou “P” para estorno parcial do pagamento
     fVL_EST: currency;          /// Valor do estorno efetuado, com duas casas decimais
+    fTipoRegistroPai: string;
+    fRegistroPai: Pointer;
   public
-    constructor Create; virtual; /// Create
+    constructor Create(const cTipoRegistroPai:string; cRegistroPai:Pointer); virtual; /// Create
 
     property RegistroValido: Boolean read fRegistroValido write fRegistroValido default True;
     property CCF: integer read FCCF write FCCF;
@@ -357,11 +362,26 @@ type
     property VL_PAGTO: currency read FVL_PAGTO write FVL_PAGTO;
     property IND_EST: string read FIND_EST write FIND_EST;
     property VL_EST: currency read FVL_EST write FVL_EST;
+    property TipoRegistroPai: string read fTipoRegistroPai write fTipoRegistroPai;
+    property RegistroPai: Pointer read fRegistroPai write fRegistroPai;
   end;
 
   /// REGISTRO R07 - Lista
 
   TRegistroR07List = class(TObjectList)
+  private
+    fTipoRegistroPai: string;
+    fRegistroPai: Pointer;
+    function GetItem(Index: Integer): TRegistroR07;
+    procedure SetItem(Index: Integer; const Value: TRegistroR07);
+  public
+    function New: TRegistroR07;
+    property Items[Index: Integer]: TRegistroR07 read GetItem write SetItem;
+    property TipoRegistroPai: string read fTipoRegistroPai write fTipoRegistroPai;
+    property RegistroPai: Pointer read fRegistroPai write fRegistroPai;
+  end;
+
+  TRegistroR07xList = class(TObjectList)
   private
     function GetItem(Index: Integer): TRegistroR07;
     procedure SetItem(Index: Integer; const Value: TRegistroR07);
@@ -471,7 +491,7 @@ end;
 
 function TRegistroR07List.New: TRegistroR07;
 begin
-  Result := TRegistroR07.Create;
+  Result := TRegistroR07.Create(TipoRegistroPai, RegistroPai);
   Add(Result);
 end;
 
@@ -516,6 +536,8 @@ begin
   fRegistroValido := True;
   FRegistroR05 := TRegistroR05List.Create;
   FRegistroR07 := TRegistroR07List.Create;
+  FRegistroR07.fTipoRegistroPai := 'R04';
+  FRegistroR07.fRegistroPai := Self;
 end;
 
 destructor TRegistroR04.Destroy;
@@ -538,6 +560,8 @@ constructor TRegistroR06.Create;
 begin
   fRegistroValido := True;
   FRegistroR07 := TRegistroR07List.Create;
+  FRegistroR07.fTipoRegistroPai := 'R06';
+  FRegistroR07.fRegistroPai := Self;
 end;
 
 destructor TRegistroR06.Destroy;
@@ -546,11 +570,42 @@ begin
   inherited;
 end;
 
+procedure TRegistroR06.setCOO(const Value: integer);
+begin
+  FCOO := Value;
+end;
+
+procedure TRegistroR06.setNUM_USU(const Value: integer);
+begin
+  FNUM_USU := Value;
+end;
+
 { TRegistroR07 }
 
-constructor TRegistroR07.Create;
+constructor TRegistroR07.Create(const cTipoRegistroPai:string; cRegistroPai:Pointer);
 begin
   fRegistroValido := True;
+  fTipoRegistroPai := cTipoRegistroPai;
+  fRegistroPai := cRegistroPai;
+end;
+
+{ TRegistroR07xList }
+
+
+function TRegistroR07xList.GetItem(Index: Integer): TRegistroR07;
+begin
+  Result := TRegistroR07(inherited Items[Index]);
+end;
+
+function TRegistroR07xList.New: TRegistroR07;
+begin
+  Result := TRegistroR07.Create('x',self);
+  Add(Result);
+end;
+
+procedure TRegistroR07xList.SetItem(Index: Integer; const Value: TRegistroR07);
+begin
+  Put(Index, Value);
 end;
 
 end.

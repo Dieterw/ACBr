@@ -59,7 +59,7 @@ type
   TRegistroB2 = class
   private
     fRegistroValido: boolean;
-    fTANQUE: string;
+//    fTANQUE: string;
     fBOMBA: string;
     fBICO: string;
     fDATA: TDateTime;

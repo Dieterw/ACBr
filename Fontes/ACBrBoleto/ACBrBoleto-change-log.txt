@@ -54,6 +54,10 @@ Data: 20/02/13
 [-] Correção na geração do arquivo remessa CNAB400. (por: rafaelrlucindo)
 http://www.projetoacbr.com.br/forum/index.php?/topic/9068-bancoob-problema-na-remessa/
 
+-- ACBrBancoSicredi --
+[-] Correção na leitura do arquivo retorno CNAB400. (por: Anderson Luis)
+http://www.projetoacbr.com.br/forum/index.php?/topic/8825-d%C3%BAvida-nosso-n%C3%B9mero/
+
 
 Data: 01/02/13
 -- ACBrBoleto ver. 0.0.62a --

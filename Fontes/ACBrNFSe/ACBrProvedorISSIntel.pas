@@ -124,6 +124,7 @@ begin
  ConfigSchema.VersaoDados     := '1.00';
  ConfigSchema.VersaoXML       := '2';
  ConfigSchema.NameSpaceXML    := 'http://www.abrasf.org.br/';
+// ConfigSchema.NameSpaceXML    := 'http://www.abrasf.org.br/ABRASF/arquivos/';
  ConfigSchema.Cabecalho       := 'nfse.xsd';
  ConfigSchema.ServicoEnviar   := 'nfse.xsd';
  ConfigSchema.ServicoConSit   := 'nfse.xsd';
@@ -465,17 +466,17 @@ function TProvedorISSIntel.GeraEnvelopeRecepcionarLoteRPS(URLNS: String;
   CabMsg, DadosMsg, DadosSenha: AnsiString): AnsiString;
 begin
  result := '<?xml version="1.0" encoding="UTF-8"?>' +
-           '<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" ' +
-                       'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
-                       'xmlns:xsd="http://www.w3.org/2001/XMLSchema" ' +
+           '<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" ' +
+//                       'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
+//                       'xmlns:xsd="http://www.w3.org/2001/XMLSchema" ' +
                        'xmlns:urn="' + URLNS + '">' +
             '<S:Body>' +
              '<urn:RecepcionarLoteRps>' +
-               StringReplace(StringReplace(DadosMsg, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
-//               DadosMsg +
+//               StringReplace(StringReplace(DadosMsg, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
+               DadosMsg +
              '</urn:RecepcionarLoteRps>' +
-            '</S:Body>' +
-           '</S:Envelope>';
+            '</s:Body>' +
+           '</s:Envelope>';
 end;
 
 function TProvedorISSIntel.GeraEnvelopeConsultarSituacaoLoteRPS(
@@ -483,13 +484,13 @@ function TProvedorISSIntel.GeraEnvelopeConsultarSituacaoLoteRPS(
 begin
  result := '<?xml version="1.0" encoding="UTF-8"?>' +
            '<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" ' +
-                       'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
-                       'xmlns:xsd="http://www.w3.org/2001/XMLSchema" ' +
+//                       'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
+//                       'xmlns:xsd="http://www.w3.org/2001/XMLSchema" ' +
                        'xmlns:urn="' + URLNS + '">' +
             '<s:Body>' +
              '<urn:ConsultarSituacaoLoteRps>' +
-               StringReplace(StringReplace(DadosMsg, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
-//               DadosMsg +
+//               StringReplace(StringReplace(DadosMsg, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
+               DadosMsg +
              '</urn:ConsultarSituacaoLoteRps>' +
             '</s:Body>' +
            '</s:Envelope>';
@@ -500,13 +501,13 @@ function TProvedorISSIntel.GeraEnvelopeConsultarLoteRPS(URLNS: String;
 begin
  result := '<?xml version="1.0" encoding="UTF-8"?>' +
            '<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" ' +
-                       'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
-                       'xmlns:xsd="http://www.w3.org/2001/XMLSchema" ' +
+//                       'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
+//                       'xmlns:xsd="http://www.w3.org/2001/XMLSchema" ' +
                        'xmlns:urn="' + URLNS + '">' +
             '<s:Body>' +
              '<urn:ConsultarLoteRps>' +
-               StringReplace(StringReplace(DadosMsg, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
-//               DadosMsg +
+//               StringReplace(StringReplace(DadosMsg, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
+               DadosMsg +
              '</urn:ConsultarLoteRps>' +
             '</s:Body>' +
            '</s:Envelope>';
@@ -517,13 +518,13 @@ function TProvedorISSIntel.GeraEnvelopeConsultarNFSeporRPS(URLNS: String;
 begin
  result := '<?xml version="1.0" encoding="UTF-8"?>' +
            '<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" ' +
-                       'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
-                       'xmlns:xsd="http://www.w3.org/2001/XMLSchema" ' +
+//                       'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
+//                       'xmlns:xsd="http://www.w3.org/2001/XMLSchema" ' +
                        'xmlns:urn="' + URLNS + '">' +
             '<s:Body>' +
              '<urn:ConsultarNfsePorRps>' +
-               StringReplace(StringReplace(DadosMsg, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
-//               DadosMsg +
+//               StringReplace(StringReplace(DadosMsg, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
+               DadosMsg +
              '</urn:ConsultarNfsePorRps>' +
             '</s:Body>' +
            '</s:Envelope>';
@@ -534,13 +535,13 @@ function TProvedorISSIntel.GeraEnvelopeConsultarNFSe(URLNS: String; CabMsg,
 begin
  result := '<?xml version="1.0" encoding="UTF-8"?>' +
            '<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" ' +
-                       'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
-                       'xmlns:xsd="http://www.w3.org/2001/XMLSchema" ' +
+//                       'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
+//                       'xmlns:xsd="http://www.w3.org/2001/XMLSchema" ' +
                        'xmlns:urn="' + URLNS + '">' +
             '<s:Body>' +
              '<urn:ConsultarNfse>' +
-               StringReplace(StringReplace(DadosMsg, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
-//               DadosMsg +
+//               StringReplace(StringReplace(DadosMsg, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
+               DadosMsg +
              '</urn:ConsultarNfse>' +
             '</s:Body>' +
            '</s:Envelope>';
@@ -551,13 +552,13 @@ function TProvedorISSIntel.GeraEnvelopeCancelarNFSe(URLNS: String; CabMsg,
 begin
  result := '<?xml version="1.0" encoding="UTF-8"?>' +
            '<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" ' +
-                       'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
-                       'xmlns:xsd="http://www.w3.org/2001/XMLSchema" ' +
+//                       'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
+//                       'xmlns:xsd="http://www.w3.org/2001/XMLSchema" ' +
                        'xmlns:urn="' + URLNS + '">' +
             '<s:Body>' +
              '<urn:CancelarNfse>' +
-               StringReplace(StringReplace(DadosMsg, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
-//               DadosMsg +
+//               StringReplace(StringReplace(DadosMsg, '<', '&lt;', [rfReplaceAll]), '>', '&gt;', [rfReplaceAll]) +
+               DadosMsg +
              '</urn:CancelarNfse>' +
             '</s:Body>' +
            '</s:Envelope>';

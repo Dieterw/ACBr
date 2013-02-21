@@ -335,7 +335,7 @@ begin
                   IntToStrZero( Round( ValorDocumento * 100 ), 13)        +  // Valor do Título
                   IntToStrZero( Banco.Numero, 3)                          +  // Número Banco: "756"
                   padR(OnlyNumber(Cedente.Agencia), 4, '0')               +  // Prefixo da Agência Cobradora: “0000”
-                  Space(1)                                                +  // Dígito Verificador do Prefixo da Agência Cobradora: Brancos
+                  padR( Cedente.AgenciaDigito, 1, ' ')                    +  // Dígito Verificador do Prefixo da Agência Cobradora: Brancos
                   padL(aEspecie,2)                                        +  // Espécie do Título
                   ATipoAceite                                             +  // Identificação
                   FormatDateTime( 'ddmmyy', DataDocumento )               +  // 32 Data de Emissão

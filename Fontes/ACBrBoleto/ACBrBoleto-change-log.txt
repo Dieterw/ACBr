@@ -48,6 +48,13 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Data: 20/02/13
+-- ACBrBoleto ver. 0.0.63a --
+-- ACBrBancoob --
+[-] Correção na geração do arquivo remessa CNAB400. (por: rafaelrlucindo)
+http://www.projetoacbr.com.br/forum/index.php?/topic/9068-bancoob-problema-na-remessa/
+
+
 Data: 01/02/13
 -- ACBrBoleto ver. 0.0.62a --
 -- ACBrBancoBradesco --

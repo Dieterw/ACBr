@@ -106,7 +106,7 @@ uses
   Windows, Messages, Graphics, Controls, Forms, Dialogs, ExtCtrls,
   {$ENDIF}
   RLReport, pcnNFe, pcnConversao, ACBrNFe, RLFilters, MaskUtils, RLPrinters,
-  RLPDFFilter, DB, {$IFDEF BORLAND} DBClient{$ELSE} DBClient{$ENDIF},RLConsts;
+  RLPDFFilter, DB, {$IFDEF BORLAND} DBClient{$ELSE} BufDataset{$ENDIF},RLConsts;
     
 type
   TPosCanhoto = (pcCabecalho, pcRodape);
@@ -150,7 +150,7 @@ type
     FExibirEAN: Boolean;
     FProtocoloNFe : String;
     FResumoCanhoto_Texto: String;
-    cdsItens: TClientDataSet;
+    cdsItens:  {$IFDEF BORLAND} TClientDataSet {$ELSE} TBufDataset{$ENDIF};
     procedure ConfigDataSet;
   public
     { Public declarations }
@@ -212,7 +212,7 @@ implementation
 procedure TfrlDANFeRL.ConfigDataSet;
 begin
  if not Assigned( cdsItens ) then
- cdsItens:=  {$IFDEF BORLAND}  TClientDataSet.create(nil)  {$ELSE}  TClientDataSet.create(nil) {$ENDIF};
+ cdsItens:=  {$IFDEF BORLAND}  TClientDataSet.create(nil)  {$ELSE}  TBufDataset.create(nil) {$ENDIF};
 
   if cdsItens.Active then
  begin
@@ -233,8 +233,14 @@ begin
   TClientDataSet(cdsItens).Aggregates.Clear;
   TClientDataSet(cdsItens).AggFields.Clear;
   end;
+ {$ELSE}
+ if cdsItens is TBufDataset then
+  begin
+  TBufDataset(cdsItens).IndexDefs.Clear;
+  TBufDataset(cdsItens).IndexFieldNames:='';
+  TBufDataset(cdsItens).IndexName:='';
+  end;
  {$ENDIF}
-
 
  with cdsItens do
   if FieldCount = 0 then
@@ -262,8 +268,10 @@ begin
    {$IFDEF BORLAND}
     if cdsItens is TClientDataSet then
     TClientDataSet(cdsItens).CreateDataSet;
+   {$ELSE}
+    if cdsItens is TBufDataset then
+    TBufDataset(cdsItens).CreateDataSet;
    {$ENDIF}
-
    end;
 
  {$IFDEF BORLAND}

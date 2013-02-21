@@ -76,9 +76,10 @@ procedure Register;
 begin
   RegisterComponents('ACBr', [TACBrNFeDANFeRL]);
 end;
-initialization
+
 {$IFDEF FPC}
-//   {$i acbrnfepcn_lcl.lrs}
+initialization
+   {$i ACBrNFeDANFeRL.lrs}
 {$ENDIF}
 
 end.

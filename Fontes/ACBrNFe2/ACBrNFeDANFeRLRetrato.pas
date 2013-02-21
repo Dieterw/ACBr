@@ -137,8 +137,8 @@ uses
   {$ELSE}
   Windows, Messages, Graphics, Controls, Forms, Dialogs, ExtCtrls, MaskUtils, StdCtrls,
   {$ENDIF}
-  RLReport, RLFilters, RLPDFFilter, XMLIntf, XMLDoc,
-  ACBrNFeDANFeRL, pcnConversao, RLBarcode, jpeg, DB, StrUtils;
+  RLReport, RLFilters, RLPDFFilter, {$IFDEF BORLAND} XMLIntf, XMLDoc, jpeg, {$ENDIF}
+  ACBrNFeDANFeRL, pcnConversao, RLBarcode, DB, StrUtils;
 
 type
   TfrlDANFeRLRetrato = class(TfrlDANFeRL)

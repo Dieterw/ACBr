@@ -329,7 +329,7 @@ end ;
 
 procedure TACBrECFEmpresa.SetRazaoSocial(const AValue : string) ;
 begin
-  fsRazaoSocial := Trim(LeftStr( AValue, 40));
+  fsRazaoSocial := AValue;
 end ;
 
 { TACBrECFArquivo }

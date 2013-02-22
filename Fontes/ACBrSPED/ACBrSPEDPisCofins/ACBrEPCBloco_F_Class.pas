@@ -1324,6 +1324,8 @@ begin
       //
       RegistroF990.QTD_LIN_F := RegistroF990.QTD_LIN_F + 1;
     end;
+    // Variavél para armazenar a quantidade de registro do tipo.
+    FRegistroF205Count := FRegistroF205Count + 1;
   end;
 end;
 

@@ -36,7 +36,7 @@ uses
     ACBrProvedorEquiplano, ACBrProvedorfintelISS, ACBrProvedorDigifred,
     ACBrProvedorBetha, ACBrProvedorBetim, ACBrProvedorSaatri,
     ACBrProvedorAbaco, ACBrProvedorGoiania, ACBrProvedorIssCuritiba,
-    ACBrProvedorBHISS;
+    ACBrProvedorBHISS, ACBrProvedorNatal;
 
 type
 
@@ -1140,6 +1140,7 @@ begin
   proGoiania:     FProvedorClass := TProvedorGoiania.Create;
   proIssCuritiba: FProvedorClass := TProvedorIssCuritiba.Create;
   proBHISS:       FProvedorClass := TProvedorBHISS.Create;
+  proNatal:       FProvedorClass := TProvedorNatal.Create;
  end;
 
  FPrefixo2     := FConfiguracoes.WebServices.Prefixo2;

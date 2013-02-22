@@ -549,12 +549,14 @@ begin
 
    AXML := AXML + '<Signature xmlns="http://www.w3.org/2000/09/xmldsig#"' + AID +
                  '<SignedInfo>' +
-                  '<CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />' +
+                   DFeUtil.SeSenao((AProvedor = proNatal),
+                    '<CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments" />',
+                    '<CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />') +
                   '<SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />' +
                   '<Reference URI="' + DFeUtil.SeSenao(URI = '', '">', '#' + URI + '">') +
                    '<Transforms>' +
                     '<Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />' +
-                      DFeUtil.SeSenao((AProvedor in [profintelISS, proGovBr, proISSNet]), '',
+                      DFeUtil.SeSenao((AProvedor in [profintelISS, proGovBr, proISSNet, proNatal]), '',
                     '<Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />') +
                    '</Transforms>' +
                    '<DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />' +
@@ -602,18 +604,20 @@ begin
       end
       else URI := '';
 
-     if (URI = '') or (AProvedor in [profintelISS, proRecife])
+     if (URI = '') or (AProvedor in [profintelISS, proRecife, proNatal])
       then AID := '>'
       else AID := ' ' + Identificador + '="Ass_' + URI + '">';
 
      Assinatura := '<Signature xmlns="http://www.w3.org/2000/09/xmldsig#"' + AID +
                     '<SignedInfo>' +
-                    '<CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />' +
+                      DFeUtil.SeSenao((AProvedor = proNatal),
+                       '<CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments" />',
+                       '<CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />') +
                      '<SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />' +
                      '<Reference URI="' + DFeUtil.SeSenao(URI = '', '">', '#' + URI + '">') +
                       '<Transforms>' +
                        '<Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />' +
-                       DFeUtil.SeSenao((AProvedor in [profintelISS, proGovBr, proISSNet]), '',
+                       DFeUtil.SeSenao((AProvedor in [profintelISS, proGovBr, proISSNet, proNatal]), '',
                        '<Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />') +
                       '</Transforms>' +
                       '<DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />' +

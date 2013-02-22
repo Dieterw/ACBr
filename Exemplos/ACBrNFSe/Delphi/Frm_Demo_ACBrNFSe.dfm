@@ -370,6 +370,7 @@ object frmDemo_ACBrNFSe: TfrmDemo_ACBrNFSe
               'Mogi das Cruzes/3530607/SP'
               'Montes Claros/3143302/MG'
               'Muriae/3143906/MG'
+              'Natal/2408102/RN'
               'Novo Hamburgo/4313409/RS'
               'Niteroi/3303302/RJ'
               'Olimpia/3533908/SP'

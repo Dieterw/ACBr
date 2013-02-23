@@ -1,74 +1,60 @@
- DM_CNT.Parametros.Close;
- DM_CNT.Parametros.SQL.Clear;
- DM_CNT.Parametros.SQL.Add('Select * From Cnt_Parametros');
- DM_CNT.Parametros.SQL.Add('Where Empresa = :xEmpresa');
- DM_CNT.Parametros.Params[0].AsString:=DM_CTA.xCodEmpresa;
- DM_CNT.Parametros.Active:=True;
- DM_CNT.Parametros.Open;
-
- CopiaPara       := trim(DM_CNT.ParametrosCopiaPara.AsString);
- PedeConfirmacao := (DM_CNT.ParametrosPedeConfirmacao.AsString='S');
- AguardarEnvio   := (DM_CNT.ParametrosAguardarEnvio.AsString='S');
- UsaIndy         := (DM_CNT.ParametrosUsaIndy.AsString='S');
- EnviaPDF        := (DM_CNT.ParametrosEnviaPDF.AsString='S');
- EnviaBoleto     := (DM_CNT.ParametrosEnviaBoleto.AsString='S');
-
- chkVisualizar.Visible:=True;
- chkVisualizar.Checked:=False;
-
  // Configurações -> Arquivos
- DMCTE.CTe.Configuracoes.Arquivos.AdicionarLiteral:=True;
- DMCTE.CTe.Configuracoes.Arquivos.EmissaoPathCTe:=True;
- DMCTE.CTe.Configuracoes.Arquivos.PastaMensal:=True;
- DMCTE.CTe.Configuracoes.Arquivos.PathCan:=trim(DM_CNT.ParametrosCTeGeralPathSalvar.AsString);
- DMCTE.CTe.Configuracoes.Arquivos.PathDPEC:=trim(DM_CNT.ParametrosCTeGeralPathSalvar.AsString);
- DMCTE.CTe.Configuracoes.Arquivos.PathInu:=trim(DM_CNT.ParametrosCTeGeralPathSalvar.AsString);
- DMCTE.CTe.Configuracoes.Arquivos.PathCTe:=trim(DM_CNT.ParametrosCTeGeralPathSalvar.AsString);
- DMCTE.CTe.Configuracoes.Arquivos.Salvar:=True;
- PathMensal:=DMCTE.CTe.Configuracoes.Arquivos.GetPathCTe(0);
+ DMCTE.CTe.Configuracoes.Arquivos.AdicionarLiteral := True;
+ DMCTE.CTe.Configuracoes.Arquivos.EmissaoPathCTe := True;
+ DMCTE.CTe.Configuracoes.Arquivos.PastaMensal := True;
+ DMCTE.CTe.Configuracoes.Arquivos.PathCan := trim(DM_CNT.ParametrosCTeGeralPathSalvar.AsString);
+ DMCTE.CTe.Configuracoes.Arquivos.PathDPEC := trim(DM_CNT.ParametrosCTeGeralPathSalvar.AsString);
+ DMCTE.CTe.Configuracoes.Arquivos.PathInu := trim(DM_CNT.ParametrosCTeGeralPathSalvar.AsString);
+ DMCTE.CTe.Configuracoes.Arquivos.PathCTe := trim(DM_CNT.ParametrosCTeGeralPathSalvar.AsString);
+ DMCTE.CTe.Configuracoes.Arquivos.Salvar := True;
+
+ PathMensal := DMCTE.CTe.Configuracoes.Arquivos.GetPathCTe(0);
 
  // Configurações -> Certificados
- DMCTE.CTe.Configuracoes.Certificados.NumeroSerie:=trim(DM_CNT.ParametrosCTeCertNumSerie.AsString);
- DMCTE.CTe.Configuracoes.Certificados.Senha:=trim(DM_CNT.ParametrosCTeCertSenha.AsString);
+ DMCTE.CTe.Configuracoes.Certificados.NumeroSerie := trim(DM_CNT.ParametrosCTeCertNumSerie.AsString);
+ DMCTE.CTe.Configuracoes.Certificados.Senha := trim(DM_CNT.ParametrosCTeCertSenha.AsString);
 
  // Configurações -> Geral
  case DM_CNT.ParametrosCTeGeralFormaEm.AsInteger of
-  0: DMCTE.CTe.Configuracoes.Geral.FormaEmissao:=teNormal;
-  1: DMCTE.CTe.Configuracoes.Geral.FormaEmissao:=teContingencia;
-  2: DMCTE.CTe.Configuracoes.Geral.FormaEmissao:=teDPEC;
-  3: DMCTE.CTe.Configuracoes.Geral.FormaEmissao:=teFSDA;
-  4: DMCTE.CTe.Configuracoes.Geral.FormaEmissao:=teSCAN;
+  0: DMCTE.CTe.Configuracoes.Geral.FormaEmissao := teNormal;
+  1: DMCTE.CTe.Configuracoes.Geral.FormaEmissao := teFSDA;
+  2: DMCTE.CTe.Configuracoes.Geral.FormaEmissao := teSVCRS;
+  3: DMCTE.CTe.Configuracoes.Geral.FormaEmissao := teSVCSP;
  end;
- DMCTE.CTe.Configuracoes.Geral.PathSalvar:=PathMensal;
- DMCTE.CTe.Configuracoes.Geral.PathSchemas:=trim(DM_CNT.ParametrosCTeGeralPathSchema.AsString);
- DMCTE.CTe.Configuracoes.Geral.Salvar:=True;
+
+ rgTipoEmissao.ItemIndex  :=  DM_CNT.ParametrosCTeGeralFormaEm.AsInteger;
+
+ DMCTE.CTe.Configuracoes.Geral.PathSalvar := PathMensal;
+ DMCTE.CTe.Configuracoes.Geral.PathSchemas := trim(DM_CNT.ParametrosCTeGeralPathSchema.AsString);
+ DMCTE.CTe.Configuracoes.Geral.Salvar := True;
 
  // Configurações -> WebServices
- DMCTE.CTe.Configuracoes.WebServices.AguardarConsultaRet:=0;
- DMCTE.CTe.Configuracoes.WebServices.AjustaAguardaConsultaRet:=False;
+ DMCTE.CTe.Configuracoes.WebServices.AguardarConsultaRet := 0;
+ DMCTE.CTe.Configuracoes.WebServices.AjustaAguardaConsultaRet := False;
+
  case DM_CNT.ParametrosCTeWebServAmbiente.AsInteger of
-  0: DMCTE.CTe.Configuracoes.WebServices.Ambiente:=taHomologacao;
-  1: DMCTE.CTe.Configuracoes.WebServices.Ambiente:=taProducao;
+  0: DMCTE.CTe.Configuracoes.WebServices.Ambiente := taHomologacao;
+  1: DMCTE.CTe.Configuracoes.WebServices.Ambiente := taProducao;
  end;
- DMCTE.CTe.Configuracoes.WebServices.IntervaloTentativas:=0;
- DMCTE.CTe.Configuracoes.WebServices.ProxyHost:=trim(DM_CNT.ParametrosCTeProxyHost.AsString);
- DMCTE.CTe.Configuracoes.WebServices.ProxyPass:=trim(DM_CNT.ParametrosCTeProxyPass.AsString);
- DMCTE.CTe.Configuracoes.WebServices.ProxyPort:=trim(DM_CNT.ParametrosCTeProxyPorta.AsString);
- DMCTE.CTe.Configuracoes.WebServices.ProxyUser:=trim(DM_CNT.ParametrosCTeProxyUser.AsString);
- DMCTE.CTe.Configuracoes.WebServices.Tentativas:=5;
- DMCTE.CTe.Configuracoes.WebServices.UF:=DM_CNT.ParametrosCTeWebServUF.AsString;
- DMCTE.CTe.Configuracoes.WebServices.Visualizar:=(DM_CNT.ParametrosCTeWebServVisualizar.AsString='S');
+
+ DMCTE.CTe.Configuracoes.WebServices.IntervaloTentativas := 0;
+ DMCTE.CTe.Configuracoes.WebServices.ProxyHost := trim(DM_CNT.ParametrosCTeProxyHost.AsString);
+ DMCTE.CTe.Configuracoes.WebServices.ProxyPass := trim(DM_CNT.ParametrosCTeProxyPass.AsString);
+ DMCTE.CTe.Configuracoes.WebServices.ProxyPort := trim(DM_CNT.ParametrosCTeProxyPorta.AsString);
+ DMCTE.CTe.Configuracoes.WebServices.ProxyUser := trim(DM_CNT.ParametrosCTeProxyUser.AsString);
+ DMCTE.CTe.Configuracoes.WebServices.Tentativas := 5;
+ DMCTE.CTe.Configuracoes.WebServices.UF := DM_CNT.ParametrosCTeWebServUF.AsString;
+ DMCTE.CTe.Configuracoes.WebServices.Visualizar := (DM_CNT.ParametrosCTeWebServVisualizar.AsString='S');
 
  // DACTe
- DMCTE.DACTe.PathPDF:=PathMensal;
- DMCTE.DACTe.ExpandirLogoMarca:=False;
- DMCTE.DACTe.ImprimirDescPorc:=False;
- DMCTE.DACTe.ImprimirHoraSaida:=True;
- DMCTE.DACTe.ImprimirHoraSaida_Hora:=DateToStr(Date);
- DMCTE.DACTe.Logo:=trim(DM_CNT.ParametrosCTeGeralLogoMarca.AsString);
- DMCTE.DACTe.MostrarPreview:=chkVisualizar.Checked;
- DMCTE.DACTe.Sistema:='Sistema: Controle de Conhecimentos '+
-                     'Versão: 4.0';
- DMCTE.DACTe.Site:=trim(DM_CTA.EmpresaSite.AsString);
- DMCTE.DACTe.TipoDACTE:=tiRetrato;
- DMCTE.DACTe.Usuario:='Usuário: '+DM_CTA.xUserName;
+ DMCTE.DACTe.PathPDF := PathMensal;
+ DMCTE.DACTe.ExpandirLogoMarca := False;
+ DMCTE.DACTe.ImprimirDescPorc := False;
+ DMCTE.DACTe.ImprimirHoraSaida := True;
+ DMCTE.DACTe.ImprimirHoraSaida_Hora := DateToStr(Date);
+ DMCTE.DACTe.Logo := trim(DM_CNT.ParametrosCTeGeralLogoMarca.AsString);
+ DMCTE.DACTe.MostrarPreview := chkVisualizar.Checked;
+ DMCTE.DACTe.Sistema := 'Sistema: Controle de Conhecimentos Versão: 4.0';
+ DMCTE.DACTe.Site := trim(DM_CTA.EmpresaSite.AsString);
+ DMCTE.DACTe.TipoDACTE := tiRetrato;
+ DMCTE.DACTe.Usuario := 'Usuário: '+DM_CTA.xUserName;

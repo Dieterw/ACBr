@@ -263,20 +263,34 @@ begin
        wVLTotalCreditos := (wVLSubTotalCred + VL_SALDO_CREDANT);
 
        Add( LFill('E360')       +
-            LFill(VL_DEB_SAIDA,0,0,false,'0','#0.##') +
+            IfThen(VL_DEB_SAIDA > 0,
+                   LFill(VL_DEB_SAIDA,2),
+                   LFill(VL_DEB_SAIDA,0,0,false,'0', '#0.##')) +
             LFill(VL_ODEB,0,0,false,'0','#0.##')      +
-            LFill(VL_EST_CRED,0,0,false,'0','#0.##')  +
-            LFill(wVLTotalDebito,0,0,false,'0','#0.##') +
+            IfThen(VL_EST_CRED > 0,
+                   LFill(VL_EST_CRED,2),
+                   LFill(VL_EST_CRED,0,0,false,'0', '#0.##')) +
+            IfThen(wVLTotalDebito > 0,
+                   LFill(wVLTotalDebito,2),
+                   LFill(wVLTotalDebito,0,0,false,'0', '#0.##')) +
             LFill(VL_CRED_ENT,0,0,false,'0','#0.##')  +
             LFill(VL_OCRED,0,0,false,'0','#0.##')     +
             LFill(VL_EST_DEB,0,0,false,'0','#0.##' )  +
             LFill(wVLSubTotalCred,0,0,false,'0','#0.##')  +
-            LFill(VL_SALDO_CREDANT,0,0,false,'0','#0.##') +
+            IfThen(VL_SALDO_CREDANT > 0,
+                   LFill(VL_SALDO_CREDANT,2),
+                   LFill(VL_SALDO_CREDANT,0,0,false,'0', '#0.##')) +
             LFill(wVLTotalCreditos,0,0,false,'0','#0.##') +
-            LFill(wVLTotalCreditos - wVLTotalDebito,0,0,false,'0','#0.##') +
-            LFill(wVLTotalDebito - wVLTotalCreditos,0,0,false,'0','#0.##') +
-            LFill(VL_DEDUCOES,0,0,false,'0','#0.##')     +
-            LFill((wVLTotalCreditos - wVLTotalDebito) - VL_DEDUCOES,0,0,false,'0','#0.##' ) +
+            IfThen(wVLTotalCreditos > 0,
+                   LFill(wVLTotalCreditos,2),
+                   LFill(wVLTotalCreditos,0,0,false,'0', '#0.##')) +
+            IfThen(wVLTotalDebito > 0,
+                   LFill(wVLTotalDebito,2),
+                   LFill(wVLTotalDebito,0,0,false,'0', '#0.##')) +
+            LFill(abs(VL_DEDUCOES),0,0,false,'0','#0.##')     +
+            IfThen((abs((wVLTotalCreditos - wVLTotalDebito) - VL_DEDUCOES)) > 0,
+                   LFill(abs((wVLTotalCreditos - wVLTotalDebito) - VL_DEDUCOES),2),
+                   LFill(abs((wVLTotalCreditos - wVLTotalDebito) - VL_DEDUCOES),0,0,false,'0', '#0.##')) +
             LFill(VL_ICMS_ST_ENT,0,0,false,'0','#0.##')  +
             LFill(VL_ICMS_ST_SAI,0,0,false,'0','#0.##')  +
             LFill(VL_DIF_ICMS,0,0,false,'0','#0.##' )    +
@@ -362,6 +376,8 @@ begin
   FRegistroE990 := TRegistroE990.Create;
 
   FRegistroE020Count := 0;
+  FRegistroE025Count := 0;
+  FRegistroE310Count := 0;
   FRegistroE365Count := 0;
   FRegistroE990.QTD_LIN_E := 0;
 end;

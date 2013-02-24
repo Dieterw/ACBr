@@ -282,8 +282,6 @@ begin
 end;
 
 function TACBrTXTClass.LFill(Value: Integer; Size: Integer; Nulo: Boolean = false; Caracter: Char = '0'): String;
-var
-  teste: String;
 begin
   /// Se o parametro Nulo = true e Value = 0, será retornado '|'
   if (Nulo) and (Value = 0) then
@@ -291,7 +289,6 @@ begin
      Result := FDelimitador;
      Exit;
   end;
-  teste:= LFill(IntToStr(Value), Size, Caracter);
   Result := LFill(IntToStr(Value), Size, Caracter);
 end;
 

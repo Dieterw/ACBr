@@ -362,7 +362,7 @@ uses
  ACBrProvedorEquiplano, ACBrProvedorfintelISS, ACBrProvedorDigifred,
  ACBrProvedorBetha, ACBrProvedorBetim, ACBrProvedorSaatri,
  ACBrProvedorAbaco, ACBrProvedorGoiania, ACBrProvedorIssCuritiba,
- ACBrProvedorBHISS, ACBrProvedorNatal;
+ ACBrProvedorBHISS;
 
 { TConfiguracoes }
 
@@ -683,7 +683,7 @@ begin
   proGoiania:     FProvedorClass := TProvedorGoiania.Create;
   proIssCuritiba: FProvedorClass := TProvedorIssCuritiba.Create;
   proBHISS:       FProvedorClass := TProvedorBHISS.Create;
-  proNatal:       FProvedorClass := TProvedorNatal.Create;
+  //proNatal:       FProvedorClass := TProvedorNatal.Create;
  end;
 
  ConfigCidade   := FProvedorClass.GetConfigCidade(FCodigoMunicipio, FAmbienteCodigo);

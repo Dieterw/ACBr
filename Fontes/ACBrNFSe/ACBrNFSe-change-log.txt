@@ -51,6 +51,8 @@ Símbolo : Significado
 -- ACBrNFSe --
 [-] Comentei as chamadas referentes ao Provedor de Natal porque estavam 
     causando erros de compilação por falta do arquivo.
+    A pessoa responsável por adicionar o provedor de Natal por favor adicione 
+    o arquivo e descomente.    (por Regys Silveira)
 
 22/11/2012
 -- ACBrDFeUtil
